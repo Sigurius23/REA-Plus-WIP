@@ -20,6 +20,10 @@ import {
   javascriptApplicationAnalysisResultSchema,
 } from "../../domain/javascript/javascriptApplicationAnalysis.js";
 import {
+  searchJavaScriptStringsInputSchema,
+  searchJavaScriptStringsResultSchema,
+} from "../../domain/javascript/javascriptStringSearchSchemas.js";
+import {
   javascriptRuntimeReconciliationResultSchema,
   reconcileJavaScriptRuntimeInputSchema,
 } from "../../domain/javascript/javascriptRuntimeReconciliationSchemas.js";
@@ -106,6 +110,32 @@ export const ELECTRON_TOOL_CONTRACTS = [
         input: {
           input_path: "/Applications/Example.app/Contents/Resources/app.asar",
           detail: "summary",
+        },
+      },
+    ],
+  },
+  {
+    name: "search_javascript_strings",
+    ...toolContractMetadata("search_javascript_strings"),
+    description:
+      "Search a local JavaScript application directory or .asar for a case-sensitive substring across inventoried UTF-8 JavaScript string constants — string literals, directive literals and static template quasis — without executing code; select the identifiers scope to match runtime identifier names instead, excluding type positions. Returns matching file paths, content digests, byte offsets, values and literal kinds in scan order, with parse-failure, file-limit and match-limit omissions as explicit counts and coverage. File-level search is cheaper than analyze_javascript_application, which alone attributes matches to bundler modules and derives the application graph.",
+    kind: "electron-provider",
+    inputSchema: searchJavaScriptStringsInputSchema,
+    outputSchema: evidenceResultOf(searchJavaScriptStringsResultSchema),
+    examples: [
+      {
+        title: "Search string constants in an extracted Electron app",
+        input: {
+          input_path: "/Applications/Example.app/Contents/Resources/app",
+          query: "amplitude",
+        },
+      },
+      {
+        title: "Search identifier names",
+        input: {
+          input_path: "/Applications/Example.app/Contents/Resources/app.asar",
+          query: "ipcMessages",
+          scope: "identifiers",
         },
       },
     ],

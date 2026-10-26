@@ -20,6 +20,25 @@ files when neither `--provider` nor `--snapshot` is supplied. See
 [JavaScript artifact reconstruction](javascript-artifact-reconstruction.md)
 for results, integrity checks and coverage.
 
+## Search JavaScript strings
+
+Search a local JavaScript application's string constants — string literals,
+directive literals and static template quasis — by case-sensitive substring
+without a full application reconstruction. Locations are file-level artifact
+digests and byte offsets; parse failures, file-limit and match-limit omissions
+are explicit counts with partial coverage:
+
+```bash
+rea search-javascript-strings /absolute/path/to/app amplitude --json
+rea search-javascript-strings /absolute/path/to/app ipcMessages --scope identifiers --json
+```
+
+The optional `--scope identifiers` mode matches runtime identifier names
+instead and excludes compile-time type positions. `--file-limit` (default 256,
+cap 8192) bounds the scanned JavaScript files in path order and `--match-limit`
+(default 1024, cap 8192) bounds returned matches. Bundler module attribution
+for a match needs the `analyze_javascript_application` graph.
+
 The complete application Evidence can be hundreds of megabytes for a real
 application. When an agent or a person reads the result, save it to a file and
 project a summary, a module page or one module from the saved Evidence:

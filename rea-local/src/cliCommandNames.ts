@@ -140,6 +140,7 @@ export const CLI_COMMANDS = Object.freeze({
   listJavaScriptRuntimeTargets: "list-javascript-runtime-targets",
   observeJavaScriptRuntime: "observe-javascript-runtime",
   analyzeJavaScriptApplication: "analyze-javascript-application",
+  searchJavascriptStrings: "search-javascript-strings",
   reconcileJavaScriptRuntime: "reconcile-javascript-runtime",
   traceApplicationFeature: "trace-application-feature",
   traceJavaScriptSemantics: "trace-javascript-semantics",

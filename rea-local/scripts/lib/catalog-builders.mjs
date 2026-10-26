@@ -447,7 +447,9 @@ export const providerCatalog = (sources) => {
 const electronContractSlices = (sources) => {
   const applicationContracts =
     sources.electronContracts.ELECTRON_TOOL_CONTRACTS.filter(
-      ({ name }) => name === "analyze_javascript_application",
+      ({ name }) =>
+        name === "analyze_javascript_application" ||
+        name === "search_javascript_strings",
     );
   const reconciliationContracts =
     sources.electronContracts.ELECTRON_TOOL_CONTRACTS.filter(
@@ -457,6 +459,7 @@ const electronContractSlices = (sources) => {
     sources.electronContracts.ELECTRON_TOOL_CONTRACTS.filter(
       ({ name }) =>
         name !== "analyze_javascript_application" &&
+        name !== "search_javascript_strings" &&
         name !== "reconcile_javascript_runtime" &&
         name !== "capture_electron_scenario",
     );
@@ -465,7 +468,7 @@ const electronContractSlices = (sources) => {
       ({ name }) => name === "capture_electron_scenario",
     );
   if (
-    applicationContracts.length !== 1 ||
+    applicationContracts.length !== 2 ||
     reconciliationContracts.length !== 1 ||
     observationContracts.length !== 2 ||
     activeContracts.length !== 1

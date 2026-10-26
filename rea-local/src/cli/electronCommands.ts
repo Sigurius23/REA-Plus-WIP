@@ -17,7 +17,10 @@ import {
   electronPageInspectionOptions,
   javascriptApplicationOptions,
 } from "../cliObservationOptions.js";
-import { runCliJavaScriptApplicationAnalysis } from "./javascriptApplicationAnalysis.js";
+import {
+  runCliJavaScriptApplicationAnalysis,
+  runCliJavaScriptStringSearch,
+} from "./javascriptApplicationAnalysis.js";
 import { withCommandCancellation } from "./commandCancellation.js";
 
 /** Register CLI equivalents of the Electron MCP tools. */
@@ -29,6 +32,7 @@ export const registerElectronCommands = (
   registerElectronObservationCommands(cli, logger);
   registerElectronActiveCommand(cli, logger, environment);
   registerJavaScriptApplicationCommand(cli, logger);
+  registerJavaScriptStringSearchCommand(cli, logger);
   registerJavaScriptRuntimeReconciliationCommand(cli, logger);
 };
 
@@ -81,6 +85,70 @@ const registerElectronActiveCommand = (
             );
             return result.ok ? result.value : cliError(result.error);
           },
+        ),
+      ),
+  });
+};
+
+const registerJavaScriptStringSearchCommand = (
+  cli: ReturnType<typeof Cli.create>,
+  logger: Logger,
+): void => {
+  cli.command(CLI_COMMANDS.searchJavascriptStrings, {
+    description:
+      "Search an extracted JavaScript application's string constants or identifiers by case-sensitive substring",
+    args: z.object({
+      path: z.string().describe("ASAR or extracted application path"),
+      query: z.string().min(1).describe("Case-sensitive substring to find"),
+    }),
+    options: z.object({
+      scope: z
+        .enum(["strings", "identifiers"])
+        .optional()
+        .describe(
+          "Search string constants (default) or runtime identifier names",
+        ),
+      fileLimit: z
+        .number()
+        .int()
+        .positive()
+        .max(8192)
+        .optional()
+        .describe(
+          "JavaScript files to scan in path order (default 256, cap 8192)",
+        ),
+      matchLimit: z
+        .number()
+        .int()
+        .positive()
+        .max(8192)
+        .optional()
+        .describe("Returned matches (default 1024, cap 8192)"),
+      integrityPolicy: z
+        .enum(["fail", "record-and-continue"])
+        .optional()
+        .describe("Declared-versus-observed integrity handling (default fail)"),
+    }),
+    run: ({ args, options }) =>
+      withCommandCancellation((signal) =>
+        logCliCommand(logger, CLI_COMMANDS.searchJavascriptStrings, () =>
+          runCliJavaScriptStringSearch(
+            {
+              input_path: args.path,
+              query: args.query,
+              ...(options.scope === undefined ? {} : { scope: options.scope }),
+              ...(options.fileLimit === undefined
+                ? {}
+                : { file_limit: options.fileLimit }),
+              ...(options.matchLimit === undefined
+                ? {}
+                : { match_limit: options.matchLimit }),
+              ...(options.integrityPolicy === undefined
+                ? {}
+                : { integrity_policy: options.integrityPolicy }),
+            },
+            signal,
+          ),
         ),
       ),
   });

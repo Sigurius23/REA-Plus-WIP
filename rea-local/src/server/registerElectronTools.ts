@@ -18,6 +18,7 @@ import {
   listElectronTargets,
 } from "../application/javascript/ElectronObservationService.js";
 import { analyzeJavaScriptApplicationValidated } from "../application/javascript/JavaScriptApplicationService.js";
+import { searchJavaScriptStrings } from "../application/javascript/JavaScriptStringSearchService.js";
 import type { ArtifactResourceScope } from "../artifacts/ArtifactResourceScope.js";
 import { reconcileJavaScriptRuntimeEvidenceValidated } from "../application/javascript/JavaScriptRuntimeReconciliationService.js";
 import type { ProgressReporter } from "../application/ProgressReporter.js";
@@ -61,6 +62,7 @@ export const registerElectronTools = (
   const listContract = toolContract("list_electron_targets");
   const inspectContract = toolContract("inspect_electron_page");
   const analyzeContract = toolContract("analyze_javascript_application");
+  const searchContract = toolContract("search_javascript_strings");
   const reconcileContract = toolContract("reconcile_javascript_runtime");
   const activeContract = toolContract("capture_electron_scenario");
 
@@ -113,6 +115,21 @@ export const registerElectronTools = (
             ? summarizeRetainedAnalysis(analyzed.value, options)
             : analyzed;
         },
+      ),
+  );
+  server.registerTool(
+    searchContract.name,
+    toolRegistrationOptions(searchContract),
+    (input, context) =>
+      runElectronTool(
+        registration,
+        searchContract,
+        { input, context },
+        (parsed, { signal, progress }) =>
+          searchJavaScriptStrings(parsed, options.artifactResources, {
+            signal,
+            progress,
+          }),
       ),
   );
   server.registerTool(

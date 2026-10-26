@@ -20,7 +20,8 @@ export class ArtifactOperationError extends AnalysisError {
       | "export_web_scripts"
       | "trace_web_module_imports"
       | "trace_web_source_location"
-      | "analyze_javascript_application",
+      | "analyze_javascript_application"
+      | "search_javascript_strings",
     readonly reason:
       | "cancelled"
       | "format"

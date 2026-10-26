@@ -478,6 +478,7 @@ export const TOOL_EFFECTS: Readonly<Record<string, ToolEffects>> = {
   list_javascript_runtime_targets: browserEvidence,
   observe_javascript_runtime: browserEvidence,
   analyze_javascript_application: evidence,
+  search_javascript_strings: evidence,
   export_web_scripts: effects({
     mutatesSession: true,
     writesFilesystem: true,

@@ -268,7 +268,10 @@ const optionalProviderFailureFor = ({
 const javascriptApplicationAvailability = ({
   name,
 }: AvailabilityContext): Availability | null => {
-  if (name === "analyze_javascript_application")
+  if (
+    name === "analyze_javascript_application" ||
+    name === "search_javascript_strings"
+  )
     return { reason: "available", remediation: null };
   return name === "reconcile_javascript_runtime"
     ? { reason: "available", remediation: null }

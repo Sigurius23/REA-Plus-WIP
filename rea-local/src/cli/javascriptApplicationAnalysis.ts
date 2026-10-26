@@ -51,6 +51,50 @@ export const runCliJavaScriptApplicationAnalysis = async (
   return result.ok ? result.value : cliError(result.error);
 };
 
+/** Execute the shared one-shot CLI boundary for the JavaScript string search. */
+export const runCliJavaScriptStringSearch = async (
+  input: unknown,
+  signal?: AbortSignal,
+): Promise<JsonValue> => {
+  const { searchJavaScriptStrings } =
+    await import("../application/javascript/JavaScriptStringSearchService.js");
+  const progress = createProgressReporter(
+    async (update) => {
+      process.stderr.write(`${JSON.stringify({ rea_progress: update })}\n`);
+    },
+    { minimumIntervalMs: 0 },
+  );
+  const resources = new ArtifactResourceScope();
+  const result = await searchJavaScriptStrings(input, resources, {
+    progress,
+    ...(signal === undefined ? {} : { signal }),
+  });
+  try {
+    await resources.close();
+  } catch (cause: unknown) {
+    const cleanup = ArtifactReaderFailure.cleanupObservation(
+      cause,
+      "JavaScript string search resources",
+    );
+    const failure = new ProviderCleanupError(
+      JAVASCRIPT_APPLICATION_PROVIDER.id,
+      cleanup.resources,
+      { reason: cleanup.reason },
+      { cause, operation: "search_javascript_strings" },
+    );
+    return cliError(
+      result.ok
+        ? failure
+        : analysisErrorWithCleanupFailure(
+            result.error,
+            failure,
+            "search_javascript_strings",
+          ),
+    );
+  }
+  return result.ok ? result.value : cliError(result.error);
+};
+
 const cliError = (
   error: Parameters<typeof projectAnalysisError>[0],
 ): JsonValue => ({
