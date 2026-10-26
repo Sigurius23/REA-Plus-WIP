@@ -157,15 +157,18 @@ large Electron investigations.
     remaining follow-up.
 
 18. **Dynamic IPC channels never resolve to names.**
-    109 `dynamic_channel_operations`, 0 literal channels, 0 paired
-    transmissions on Rize because every channel is an imported constant
-    (`utils/ipcMessages.js`) or a template-literal composition of constants at
-    the call site. The structural graph already carries
-    `declared_specifier`/import relationships to the constant modules; the IPC
-    extractor does not follow them. Propose: resolve channel names through
-    lexical import bindings to single-string constant modules, including
-    template compositions, then pair renderer transmissions with the 58
-    `ipcMain` handlers. This is the single biggest Electron-graph gap.
+    LANDED (parent-side): dynamic channel expressions are split into fixed
+    text and import-bound roots (`electronIpcChannelParts.ts`), then resolved
+    against each file's projected module IR — import-binding `provenance`
+    origins for the consumer, exported literal-string constants for the
+    provider — with artifact-scoped module-specifier path resolution one hop
+    between them. Resolved findings keep their recorded expression, gain
+    `channel_origin: "imported-constant"`, and pair/summarize unchanged;
+    unresolved stays dynamic. Fail-closed on local constants, shadows/folded
+    bindings, multi-fragment member paths, re-export chains, and constants
+    outside the artifact. Graph edges label the source honestly as
+    `imported-constant` instead of `literal`. Re-run the Rize field test to
+    confirm the 58 `ipcMain` handlers now pair up.
 
 19. **`contextBridge.exposeInMainWorld` through a helper is blind.**
     Rize exposes all 17 bridges via one helper (`src/utils/createPreload.js`),
