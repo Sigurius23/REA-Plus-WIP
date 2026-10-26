@@ -167,8 +167,19 @@ large Electron investigations.
     unresolved stays dynamic. Fail-closed on local constants, shadows/folded
     bindings, multi-fragment member paths, re-export chains, and constants
     outside the artifact. Graph edges label the source honestly as
-    `imported-constant` instead of `literal`. Re-run the Rize field test to
-    confirm the 58 `ipcMain` handlers now pair up.
+    `imported-constant` instead of `literal`.
+    Rize field re-test (2026-10-26, evidence 565 MB vs same `git` tree): the
+    resolver works end to end — a scratch fixture with relative imports
+    resolves 3 of 4 channels through an imported constant in the CLI — but
+    Rize stays at 109/109 dynamic and 0 paired, because all its channel
+    constants are bound through **bare specifiers** (`utils/ipcMessages`)
+    that webpack resolves against its extra module directory
+    (`resolve.modules: ['node_modules', './src']` in
+    `webpack.main.config.js`). `resolveArtifactPathByContext` only walks
+    enclosing `node_modules` directories and reports such specifiers
+    `external` before the constant table is consulted; no webpack
+    `resolve.modules` support exists anywhere in the codebase. Remaining
+    as item 28 below.
 
 19. **`contextBridge.exposeInMainWorld` through a helper is blind.**
     Rize exposes all 17 bridges via one helper (`src/utils/createPreload.js`),
@@ -256,7 +267,20 @@ item 8 remain open as REA+ gaps:
     regions up through the APK Signing Block. Position unchanged: build it
     only when a caller task actually needs tamper/lift detection.
 
-28. **`search-android-strings` boundaries are standing measurement gaps.**
+28. **Bare specifiers through an application module root are unresolvable.**
+    New (2026-10-26) follow-up from the Rize gap-18 re-test: webpack's
+    `resolve.modules: ['node_modules', './src']` binds the app's own
+    directories into bare-specifier resolution (`utils/ipcMessages` →
+    `src/utils/ipcMessages.js`), and Rize — and Electron apps like it —
+    rely on it. To resolve, read the extra module directories from an
+    inventoried webpack/rspack/jest config (or accept caller-supplied roots),
+    admit them as a *lower-precedence* candidate class after `node_modules`
+    (never shadowing a real package), strictly inside the artifact, and keep
+    unresolved outcomes honest as `external` with the reason. This unblocks
+    item 18's pairing for these apps; without it the 58 `ipcMain` handlers
+    stay `0 paired`.
+
+29. **`search-android-strings` boundaries are standing measurement gaps.**
     From the done item 9: large-APK memory behavior (>8,192 classes or memory
     pressure near a 4 GiB heap) is unmeasured in production; APKs over 8,192
     classes hit third-party JAR LRU cache eviction on rescans;
