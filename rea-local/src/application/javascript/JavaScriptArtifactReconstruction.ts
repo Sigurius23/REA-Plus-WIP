@@ -28,6 +28,7 @@ import {
 } from "./JavaScriptArtifactReconstructionInput.js";
 import { scanCanonicalArtifactInventoryInScope } from "../../artifacts/inventory/scanCanonical.js";
 import { summarizeElectronBoundaries } from "./ElectronBoundaryAnalysis.js";
+import { resolveElectronIpcChannelsViaImports } from "./ElectronIpcChannelResolution.js";
 import { createJavaScriptSemanticGraphProjection } from "./JavaScriptSemanticGraphBuilder.js";
 import type { ProgressReporter } from "../ProgressReporter.js";
 import {
@@ -182,7 +183,12 @@ export const reconstructJavaScriptArtifact = async (
           cleanupFailure = cause;
         }
       }
-      const analysis = outcome.analysis;
+      // Imported-constant IPC channels resolve before any consumer builds
+      // relationships or counts, so the summary and graph report one state.
+      const channelResolution = resolveElectronIpcChannelsViaImports(
+        outcome.analysis,
+      );
+      const analysis = channelResolution.analysis;
       const interruption = cleanupFailure ?? outcome.interruption;
       if (interruption !== null && interruption !== undefined) {
         effectiveSignal = undefined;

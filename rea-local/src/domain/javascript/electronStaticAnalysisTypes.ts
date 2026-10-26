@@ -125,7 +125,14 @@ export type ElectronIpcFinding = ElectronIpcDescriptor &
   (
     | { readonly channel: string; readonly channel_expression: null }
     | { readonly channel: null; readonly channel_expression: string }
-  );
+  ) &
+  /**
+   * Set only by the parent-side channel resolution: the channel was not a
+   * source literal but was proven to equal an imported string constant.
+   */
+  {
+    readonly channel_origin?: "imported-constant";
+  };
 
 /** Static check involving an IPC sender, frame, process, URL, or origin. */
 export interface ElectronSenderValidationFinding {

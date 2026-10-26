@@ -1,5 +1,8 @@
 import type { ApplicationNode } from "../../domain/javascript/javascriptApplicationGraphSchemas.js";
-import type { ElectronSenderValidationFinding } from "../../domain/javascript/electronStaticAnalysisTypes.js";
+import type {
+  ElectronIpcFinding,
+  ElectronSenderValidationFinding,
+} from "../../domain/javascript/electronStaticAnalysisTypes.js";
 import type { JavaScriptArtifactFile } from "../../domain/javascript/javascriptArtifactFiles.js";
 import {
   artifactLocalIdentity,
@@ -103,7 +106,7 @@ const addIpcRecord = (
       operation: record.finding.operation,
       channel: record.finding.channel,
       channel_expression: record.finding.channel_expression,
-      resolution: record.finding.channel === null ? "dynamic" : "literal",
+      resolution: ipcResolutionLabel(record.finding),
     },
   });
 };
@@ -134,7 +137,7 @@ const addChannelNode = (
           mode: finding.mode,
           channel: finding.channel,
           channel_expression: finding.channel_expression,
-          resolution: finding.channel === null ? "dynamic" : "literal",
+          resolution: ipcResolutionLabel(finding),
         },
         evidence: astObservationEvidence({
           sha256: file.sha256,
@@ -208,7 +211,7 @@ const addHandlerNode = (input: IpcHandlerInput): ApplicationNode => {
     properties: {
       channel: finding.channel,
       channel_expression: finding.channel_expression,
-      resolution: finding.channel === null ? "dynamic" : "literal",
+      resolution: ipcResolutionLabel(finding),
     },
   });
   return handler;
@@ -330,6 +333,12 @@ const rangeMagnitude = (
     : (range.end.line - range.start.line) * 1_000_000 +
       range.end.column -
       range.start.column;
+
+/** How a finding's channel was established: never guesses beyond syntax. */
+const ipcResolutionLabel = (
+  finding: ElectronIpcFinding,
+): "literal" | "imported-constant" | "dynamic" =>
+  finding.channel_origin ?? (finding.channel === null ? "dynamic" : "literal");
 
 const coverageFor = (
   context: JavaScriptArtifactGraphContext,
