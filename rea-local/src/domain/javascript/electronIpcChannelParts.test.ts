@@ -1,8 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  electronIpcChannelParts,
-} from "./electronIpcChannelParts.js";
+import { electronIpcChannelParts } from "./electronIpcChannelParts.js";
 
 describe("Electron IPC channel expression splitting", () => {
   it("splits identifiers, template literals, and concatenation in source order", () => {
@@ -42,11 +40,7 @@ describe("Electron IPC channel expression splitting", () => {
   });
 
   it("fails closed on dynamic or unsupported expression syntax", () => {
-    for (const expression of [
-      "next()",
-      "ipcMessages[CHANNEL]",
-      "a ? b : c",
-    ]) {
+    for (const expression of ["next()", "ipcMessages[CHANNEL]", "a ? b : c"]) {
       expect(electronIpcChannelParts(expression), expression).toBeNull();
     }
   });

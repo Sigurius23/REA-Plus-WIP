@@ -1,7 +1,10 @@
 import * as t from "@babel/types";
 import { parse } from "@babel/parser";
 
-import { semanticStaticPropertyName, unwrapJavaScriptExpression } from "./javascriptAstValues.js";
+import {
+  semanticStaticPropertyName,
+  unwrapJavaScriptExpression,
+} from "./javascriptAstValues.js";
 
 /**
  * One piece of a composed IPC channel expression: fixed literal text or a
@@ -11,7 +14,11 @@ import { semanticStaticPropertyName, unwrapJavaScriptExpression } from "./javasc
  */
 export type ElectronIpcChannelPart =
   | { readonly kind: "fixed-text"; readonly text: string }
-  | { readonly kind: "module-binding"; readonly root: string; readonly members: readonly string[] };
+  | {
+      readonly kind: "module-binding";
+      readonly root: string;
+      readonly members: readonly string[];
+    };
 
 /** Piece budget before one composition becomes unresolvable. */
 const PIECE_LIMIT = 32;
@@ -26,11 +33,17 @@ const memberChain = (node: t.Node): MemberChain | null => {
   const members: string[] = [];
   let current = unwrapJavaScriptExpression(node).node;
   for (;;) {
-    if (t.isMemberExpression(current) || t.isOptionalMemberExpression(current)) {
+    if (
+      t.isMemberExpression(current) ||
+      t.isOptionalMemberExpression(current)
+    ) {
       if (!t.isNode(current.object)) return null;
       // `semanticStaticPropertyName` returns "" for any dynamic key, so
       // computed or derived members fail closed here.
-      const member = semanticStaticPropertyName(current.property, current.computed);
+      const member = semanticStaticPropertyName(
+        current.property,
+        current.computed,
+      );
       if (member === "") return null;
       members.push(member);
       current = current.object;

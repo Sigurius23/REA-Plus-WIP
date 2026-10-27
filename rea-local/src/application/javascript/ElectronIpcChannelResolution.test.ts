@@ -121,8 +121,11 @@ describe("Electron IPC channel resolution through imported constants", () => {
       },
     );
 
-    const { analysis: resolved, resolved_channel_operations, unresolved_channel_operations } =
-      resolveElectronIpcChannelsViaImports(analysis);
+    const {
+      analysis: resolved,
+      resolved_channel_operations,
+      unresolved_channel_operations,
+    } = resolveElectronIpcChannelsViaImports(analysis);
 
     expect(resolved_channel_operations).toBe(0);
     expect(unresolved_channel_operations).toBe(3);
@@ -130,22 +133,81 @@ describe("Electron IPC channel resolution through imported constants", () => {
       ({ javascript }) => javascript?.electron.ipc ?? [],
     );
     for (const { channel } of findings) expect(channel).toBeNull();
-    expect(resolved.limitations).toEqual(
-      analysis.limitations,
+    expect(resolved.limitations).toEqual(analysis.limitations);
+  });
+});
+
+describe("Electron IPC channel resolution across artifact module roots", () => {
+  it("resolves bare-specifier constants admitted by module roots", () => {
+    const analysis = analysisOf(
+      {
+        path: "src/utils/ipcMessages.js",
+        text: `export const CHECK_CONNECTION = "checkConnection";`,
+      },
+      {
+        path: "src/main/modules/online.js",
+        text: `
+          import { ipcMain } from "electron";
+          import { CHECK_CONNECTION } from "utils/ipcMessages";
+          ipcMain.handle(CHECK_CONNECTION, () => true);
+        `,
+      },
+    );
+
+    const { analysis: resolved, resolved_channel_operations } =
+      resolveElectronIpcChannelsViaImports(analysis, ["src"]);
+
+    expect(resolved_channel_operations).toBe(1);
+    const findings = resolved.files.flatMap(
+      ({ javascript }) => javascript?.electron.ipc ?? [],
+    );
+    expect(findings[0]).toEqual(
+      expect.objectContaining({
+        channel: "checkConnection",
+        channel_origin: "imported-constant",
+      }),
     );
   });
 
-  it("fails closed when the provider constant leaves the artifact", () => {
+  it("keeps bare-specifier constants dynamic without admitted module roots", () => {
     const analysis = analysisOf(
       {
-        path: "app/src/main/store.js",
+        path: "src/utils/ipcMessages.js",
+        text: `export const CHECK_CONNECTION = "checkConnection";`,
+      },
+      {
+        path: "src/main/modules/online.js",
         text: `
+          import { ipcMain } from "electron";
+          import { CHECK_CONNECTION } from "utils/ipcMessages";
+          ipcMain.handle(CHECK_CONNECTION, () => true);
+        `,
+      },
+    );
+
+    const {
+      analysis: resolved,
+      resolved_channel_operations,
+      unresolved_channel_operations,
+    } = resolveElectronIpcChannelsViaImports(analysis);
+
+    expect(resolved_channel_operations).toBe(0);
+    expect(unresolved_channel_operations).toBe(1);
+    const findings = resolved.files.flatMap(
+      ({ javascript }) => javascript?.electron.ipc ?? [],
+    );
+    for (const { channel } of findings) expect(channel).toBeNull();
+  });
+
+  it("fails closed when the provider constant leaves the artifact", () => {
+    const analysis = analysisOf({
+      path: "app/src/main/store.js",
+      text: `
           import { ipcMain } from "electron";
           import { CLOSE_WINDOW } from "electron-remote-constants";
           ipcMain.handle(CLOSE_WINDOW, () => "d");
         `,
-      },
-    );
+    });
 
     const { analysis: resolved, unresolved_channel_operations } =
       resolveElectronIpcChannelsViaImports(analysis);

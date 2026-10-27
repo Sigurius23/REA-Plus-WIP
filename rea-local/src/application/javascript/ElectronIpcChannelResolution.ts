@@ -1,15 +1,7 @@
-import type {
-  ElectronIpcFinding,
-} from "../../domain/javascript/electronStaticAnalysisTypes.js";
-import type {
-  JavaScriptModuleSemanticIr,
-} from "../../domain/javascript/javascriptModuleSemanticIr.js";
-import type {
-  JavaScriptSemanticBinding,
-} from "../../domain/javascript/javascriptSemanticIr.js";
-import type {
-  JavaScriptArtifactFile,
-} from "../../domain/javascript/javascriptArtifactFiles.js";
+import type { ElectronIpcFinding } from "../../domain/javascript/electronStaticAnalysisTypes.js";
+import type { JavaScriptModuleSemanticIr } from "../../domain/javascript/javascriptModuleSemanticIr.js";
+import type { JavaScriptSemanticBinding } from "../../domain/javascript/javascriptSemanticIr.js";
+import type { JavaScriptArtifactFile } from "../../domain/javascript/javascriptArtifactFiles.js";
 import { electronIpcChannelParts } from "../../domain/javascript/electronIpcChannelParts.js";
 import type { JavaScriptModuleArtifactAnalysis } from "./JavaScriptArtifactAnalysisTypes.js";
 import { resolveArtifactPathByContext } from "./JavaScriptArtifactPathResolution.js";
@@ -37,7 +29,25 @@ export interface ElectronIpcChannelResolutionResult {
  */
 export const resolveElectronIpcChannelsViaImports = (
   analysis: JavaScriptModuleArtifactAnalysis,
+  moduleRoots: readonly string[] = [],
 ): ElectronIpcChannelResolutionResult => {
+  if (process.env.REA_DEBUG_CHANNEL_RESOLUTION !== undefined) {
+    const dynamic = analysis.files.reduce(
+      (count, { javascript }) =>
+        count +
+        (javascript?.electron.ipc ?? []).filter(
+          (finding) => finding.channel === null,
+        ).length,
+      0,
+    );
+    const semantic = analysis.files.reduce(
+      (count, { semantic }) => count + (semantic === null ? 0 : 1),
+      0,
+    );
+    process.stderr.write(
+      `[channel-resolution] resolver-roots=${JSON.stringify(moduleRoots)} files=${String(analysis.files.length)} semantic-files=${String(semantic)} dynamic-findings=${String(dynamic)}\n`,
+    );
+  }
   const fileTable = new Map(
     analysis.files.map(({ file, semantic }) => [file, semantic?.ir ?? null]),
   );
@@ -50,8 +60,17 @@ export const resolveElectronIpcChannelsViaImports = (
   const resolvedFiles: JavaScriptModuleArtifactAnalysis["files"] =
     analysis.files.map((analyzed) => {
       const { file, javascript, semantic } = analyzed;
-      if (javascript === null || semantic === null)
-        return analyzed;
+      if (process.env.REA_DEBUG_CHANNEL_RESOLUTION !== undefined) {
+        const ipcCount = (javascript?.electron.ipc ?? []).length;
+        const dynamicCount = (javascript?.electron.ipc ?? []).filter(
+          (finding) => finding.channel === null,
+        ).length;
+        if (dynamicCount > 0)
+          process.stderr.write(
+            `[channel-resolution] entry ${file.path} js=${ipcCount} dyn=${dynamicCount} semantic=${semantic === null ? "null" : "ir"} table=${String(fileTable.get(file) === null ? "null-ir" : "ir")}\n`,
+          );
+      }
+      if (javascript === null || semantic === null) return analyzed;
       const ir = fileTable.get(file);
       if (ir === undefined || ir === null) return analyzed;
 
@@ -67,10 +86,16 @@ export const resolveElectronIpcChannelsViaImports = (
             constants,
             file,
             files,
+            moduleRoots,
           );
           if (channel === null) return finding;
           resolved += 1;
-          return { ...finding, channel, channel_expression: null, channel_origin: "imported-constant" };
+          return {
+            ...finding,
+            channel,
+            channel_expression: null,
+            channel_origin: "imported-constant",
+          };
         });
       resolvedChannelOperations += resolved;
       if (resolved === 0) return analyzed;
@@ -171,11 +196,21 @@ const resolveChannel = (
   constants: ReadonlyMap<string, ReadonlyMap<string, string>>,
   file: JavaScriptArtifactFile,
   files: ReadonlyMap<string, JavaScriptArtifactFile>,
+  moduleRoots: readonly string[],
 ): string | null => {
   // The caller filters, but this function owns its own fail-closed narrowing.
   if (finding.channel !== null) return null;
   const parts = electronIpcChannelParts(finding.channel_expression);
-  if (parts === null || parts.length === 0) return null;
+  const debug = process.env.REA_DEBUG_CHANNEL_RESOLUTION !== undefined;
+  const fail = (reason: string): null => {
+    if (debug)
+      process.stderr.write(
+        `[channel-resolution] ${file.path} '${finding.channel_expression}' -> ${reason}\n`,
+      );
+    return null;
+  };
+  if (parts === null || parts.length === 0)
+    return fail(`splitter-null (${finding.channel_expression})`);
   let channel = "";
   for (const part of parts) {
     if (part.kind === "fixed-text") {
@@ -183,16 +218,19 @@ const resolveChannel = (
       continue;
     }
     const origin = importedOrigin(part.root, ir);
-    if (origin === null) return null;
+    if (origin === null) return fail(`origin-null root=${part.root}`);
     const importedPath = [...origin.importedPath, ...part.members];
-    if (importedPath.length !== 1) return null;
+    if (importedPath.length !== 1)
+      return fail(`member-path-len ${JSON.stringify(importedPath)}`);
     const [exportedName] = importedPath;
-    if (exportedName === "" || exportedName === undefined) return null;
+    if (exportedName === "" || exportedName === undefined)
+      return fail(`empty-export-name`);
     const provider = resolveArtifactPathByContext({
       declaredPath: origin.specifier,
       sourcePath: file.path,
       context: "module-specifier",
       files,
+      ...(moduleRoots.length > 0 ? { module_roots: moduleRoots } : {}),
       ...(moduleKinds.get(part.root) === "require"
         ? { moduleKind: "require" as const }
         : {}),
@@ -200,12 +238,19 @@ const resolveChannel = (
         ? { moduleKind: "import" as const }
         : {}),
     });
-    if (provider.resolved_path === null) return null;
+    if (provider.resolved_path === null)
+      return fail(
+        `provider-null spec=${origin.specifier} status=${provider.resolution_status} kind=${moduleKinds.get(part.root) ?? "none"}`,
+      );
     const value = constants.get(provider.resolved_path)?.get(exportedName);
-    if (value === undefined) return null;
+    if (value === undefined)
+      return fail(
+        `no-constant path=${provider.resolved_path} name=${exportedName} table=${String(constants.get(provider.resolved_path) === undefined ? "missing-file" : "missing-name")}`,
+      );
     channel += value;
   }
-  return channel === "" ? null : channel;
+  if (channel === "") return fail("empty-channel");
+  return channel;
 };
 
 /**
@@ -216,7 +261,10 @@ const resolveChannel = (
 const importedOrigin = (
   root: string,
   ir: JavaScriptModuleSemanticIr,
-): { readonly specifier: string; readonly importedPath: readonly string[] } | null => {
+): {
+  readonly specifier: string;
+  readonly importedPath: readonly string[];
+} | null => {
   const matches = ir.bindings.filter((binding) => binding.name === root);
   if (matches.length !== 1) {
     return null;

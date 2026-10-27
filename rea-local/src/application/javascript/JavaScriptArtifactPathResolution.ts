@@ -55,6 +55,9 @@ export interface ResolveArtifactPathInput {
   readonly files: ReadonlyMap<string, JavaScriptArtifactFile>;
   readonly htmlBaseHref?: string | null;
   readonly moduleKind?: "import" | "require";
+  /** Artifact-relative bundler module roots; only bare-specifier resolution.
+   * Admitted as a lower-precedence candidate class after node_modules. */
+  readonly module_roots?: readonly string[];
 }
 
 const EXTENSIONS = [
@@ -230,9 +233,37 @@ const bareModuleCandidate = (
     if (directory === "." || directory === "") break;
     directory = posix.dirname(directory);
   }
+  const roots = input.module_roots ?? [];
+  if (roots.length > 0) {
+    const viaRoots = moduleRootsCandidate(input, declared, roots);
+    if (viaRoots !== null) return viaRoots;
+    return unresolvedCandidate("external", [
+      "No matching bare package was inventoried in an enclosing node_modules directory.",
+      `The webpack/rspack module root${roots.length === 1 ? "" : "s"} ${roots.map((root) => (root === "" ? "the artifact root" : `'${root}'`)).join(", ")} admitted for this artifact do not contain a matching file or index for this bare specifier.`,
+    ]);
+  }
   return unresolvedCandidate("external", [
     "No matching bare package was inventoried in an enclosing node_modules directory.",
   ]);
+};
+
+/**
+ * The first resolution through a declared application module root, tried only
+ * after the node_modules walk fails (webpack-style extra module directories);
+ * an admitted package in node_modules never gets shadowed by these roots.
+ */
+const moduleRootsCandidate = (
+  input: ResolveArtifactPathInput,
+  declared: string,
+  roots: readonly string[],
+): CandidateResolution | null => {
+  for (const root of roots) {
+    const candidate = confineCandidate(posix.join(root, declared));
+    if (typeof candidate !== "string") continue;
+    const attempt = resolveCandidate(input, candidate, new Set());
+    if (attempt.status === "resolved") return attempt;
+  }
+  return null;
 };
 
 /** Self references use the nearest package scope before dependency lookup. */

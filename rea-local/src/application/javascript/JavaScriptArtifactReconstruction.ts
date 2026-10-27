@@ -29,6 +29,7 @@ import {
 import { scanCanonicalArtifactInventoryInScope } from "../../artifacts/inventory/scanCanonical.js";
 import { summarizeElectronBoundaries } from "./ElectronBoundaryAnalysis.js";
 import { resolveElectronIpcChannelsViaImports } from "./ElectronIpcChannelResolution.js";
+import { discoverJavaScriptModuleRoots } from "../../domain/javascript/javascriptModuleRoots.js";
 import { createJavaScriptSemanticGraphProjection } from "./JavaScriptSemanticGraphBuilder.js";
 import type { ProgressReporter } from "../ProgressReporter.js";
 import {
@@ -185,10 +186,20 @@ export const reconstructJavaScriptArtifact = async (
       }
       // Imported-constant IPC channels resolve before any consumer builds
       // relationships or counts, so the summary and graph report one state.
+      // Webpack-style extra module directories are admitted for the bare
+      // specifiers these apps bind constants through.
+      const moduleRoots = discoverJavaScriptModuleRoots(files.files);
       const channelResolution = resolveElectronIpcChannelsViaImports(
         outcome.analysis,
+        moduleRoots.roots,
       );
-      const analysis = channelResolution.analysis;
+      const analysis = {
+        ...channelResolution.analysis,
+        limitations: [
+          ...moduleRoots.limitations,
+          ...channelResolution.analysis.limitations,
+        ],
+      };
       const interruption = cleanupFailure ?? outcome.interruption;
       if (interruption !== null && interruption !== undefined) {
         effectiveSignal = undefined;

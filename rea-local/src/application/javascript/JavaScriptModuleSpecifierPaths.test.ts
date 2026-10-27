@@ -410,3 +410,75 @@ describe("package exports URL path rejections", () => {
     },
   );
 });
+
+describe("application module roots admitted for bare specifiers", () => {
+  const resolve = (
+    declared: string,
+    paths: readonly string[],
+    moduleRoots: readonly string[],
+  ) =>
+    resolveArtifactPathByContext({
+      declaredPath: declared,
+      sourcePath: "src/main/modules/online.js",
+      context: "module-specifier",
+      files: filesFor(paths),
+      module_roots: moduleRoots,
+    });
+
+  it.each(["import", "require"] as const)(
+    "resolves a bare specifier through a module root (%s)",
+    (moduleKind) => {
+      expect(
+        resolve("utils/ipcMessages", ["src/utils/ipcMessages.js"], ["src"]),
+      ).toMatchObject({
+        resolution_status: "resolved",
+        resolved_path: "src/utils/ipcMessages.js",
+      });
+    },
+  );
+
+  it("resolves a directory index under a module root", () => {
+    expect(
+      resolve("utils/domain", ["src/utils/domain/index.cjs"], ["src"]),
+    ).toMatchObject({
+      resolution_status: "resolved",
+      resolved_path: "src/utils/domain/index.cjs",
+    });
+  });
+
+  it("never lets a module root shadow a real node_modules package", () => {
+    expect(
+      resolve("aria/package", ["node_modules/aria/package.js"], ["src"]),
+    ).toMatchObject({
+      resolution_status: "resolved",
+      resolved_path: "node_modules/aria/package.js",
+    });
+  });
+
+  it("keeps the honest external outcome when no module root contains the specifier", () => {
+    const resolution = resolve(
+      "utils/absent",
+      ["src/utils/ipcMessages.js"],
+      ["src"],
+    );
+    expect(resolution).toMatchObject({
+      resolved_path: null,
+      resolution_status: "external",
+    });
+    expect(resolution.limitations).toEqual([
+      "No matching bare package was inventoried in an enclosing node_modules directory.",
+      "The webpack/rspack module root 'src' admitted for this artifact do not contain a matching file or index for this bare specifier.",
+    ]);
+  });
+
+  it("does not admit roots outside its declared class when no roots exist", () => {
+    expect(
+      resolveArtifactPathByContext({
+        declaredPath: "utils/ipcMessages",
+        sourcePath: "src/main/modules/online.js",
+        context: "module-specifier",
+        files: filesFor(["src/utils/ipcMessages.js"]),
+      }),
+    ).toMatchObject({ resolved_path: null, resolution_status: "external" });
+  });
+});

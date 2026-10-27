@@ -373,6 +373,19 @@ candidate. Dynamic channels are never paired, and multiple compatible handlers
 are reported as ambiguous without adding a caller-to-handler edge. A matching
 channel still does not prove registration order, reachability, or runtime use.
 
+Dynamic IPC channel expressions are additionally resolved statically when every
+piece is fixed text or one string constant imported from a module inside the
+artifact: consumer import provenance plus provider exported literal constants,
+with artifact-scoped module-specifier resolution one hop between them. Bare
+specifiers also admit webpack/rspack `resolve.modules` extra module directories,
+read string-literal-only from inventoried configuration files, as a
+lower-precedence candidate class after `node_modules`; a package there is never
+shadowed. Resolved channels gain `channel_origin: "imported-constant"` and pair
+like literal channels. Everything unresolvable — local constants, shadowed
+bindings, multi-hop member paths, re-export chains, constants outside the
+artifact, non-literal `resolve.modules` records, or specs resolved through no
+admitted directory — stays dynamic, and configuration code is never executed.
+
 For `.node` bindings, member names mean “requested by JavaScript syntax.” A
 resolved add-on path does not convert them into verified native exports. Native
 symbol verification remains a separate deep-analysis claim.
