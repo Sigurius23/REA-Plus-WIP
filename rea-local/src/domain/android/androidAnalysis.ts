@@ -145,8 +145,9 @@ const common = { engine };
  */
 const scalarValueOptions = [
   z.strictObject({ kind: z.literal("null"), value: z.null() }),
+  z.strictObject({ kind: z.literal("boolean"), value: z.boolean() }),
   z.strictObject({
-    kind: z.enum(["boolean", "byte", "short", "int"]),
+    kind: z.enum(["byte", "short", "int"]),
     value: z.number().int().safe(),
   }),
   z.strictObject({

@@ -145,17 +145,22 @@ and do not fragment-match: pass those operations the container path itself.
 
 ## Analyze a XAPK container
 
-The five Android operations admit `.xapk` packages (crucible/XAPK-style ZIP
+The Android operations admit `.xapk` packages (including APKPure-style ZIP
 containers) in addition to standalone APKs. Admission composes the analysis
 image the engine actually loads, instead of copying the container into the
 session's private runtime root:
 
 - The container must carry a top-level `manifest.json` and one readable,
-  top-level `base.apk`; mis-shaped containers are refused with their
-  disproportionate or nested members listed as ignored.
+  top-level base APK. A `split_apks` entry with `id: "base"` selects its exact
+  `file`, including APKPure names such as `com.whoop.android.apk`. Without an
+  explicit base declaration, one unambiguous `<package_name>.apk` or `base.apk`
+  is accepted unless declared as a non-base split. Missing declared members,
+  duplicate module declarations, ambiguous fallback names, and malformed
+  manifests are refused. Manifest JSON is bounded to 1 MiB before parsing.
 - The base module's entries are copied into a stored-entry `bundle.apk` as-is
   (manifest, resources, native libraries, signing metadata), so the loaded
-  package stays byte-derived from `base.apk`.
+  package stays byte-derived from the selected base; its original filename
+  remains in member identities and coverage limitations.
 - Every other top-level APK member (split APKs) contributes only its `*.dex`
   entries. A colliding declared name — each split ships its own `classes.dex` —
   is kept under `splits/<member>/<name>`, e.g.
@@ -189,7 +194,9 @@ Inventory and extraction treat `.xapk` like any other ZIP package family.
 - Class and method inspection also project the declared dex annotations and (for
   classes) encoded static field initial values into `annotations` and
   `static_inits`, with `value_coverage: "partial"` whenever a projection limit
-  cut something. Values are parsed dex data, not runtime loading: Retrofit
+  cut something. Method annotations are snapshotted before code generation,
+  preserving original literals even when JADX later replaces them with field
+  references while decompiling. Values are parsed dex data, not runtime loading: Retrofit
   endpoint strings, BLE UUID-like constants and other encoded values appear as
   typed `{kind, value}` records. Field, enum and method references keep only
   their identity strings; type references are descriptors such as

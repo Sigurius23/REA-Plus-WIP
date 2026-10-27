@@ -427,7 +427,10 @@ it("projects declared annotations and encoded static field inits as parsed dex d
     {
       class: "retrofit2/http/GET",
       visibility: "runtime",
-      values: { value: { kind: "string", value: "/v1/fixture" } },
+      values: {
+        hasBody: { kind: "boolean", value: false },
+        value: { kind: "string", value: "/v1/fixture" },
+      },
     },
   ]);
   expect(result.static_inits).toEqual([
@@ -451,7 +454,10 @@ it("projects declared annotations and encoded static field inits as parsed dex d
     {
       class: "retrofit2/http/GET",
       visibility: "runtime",
-      values: { value: { kind: "type", value: "java.lang.String" } },
+      values: {
+        hasBody: { kind: "boolean", value: true },
+        value: { kind: "type", value: "java.lang.String" },
+      },
     },
   ]);
   expect(methodResult.value_coverage).toBe("complete");
@@ -459,7 +465,7 @@ it("projects declared annotations and encoded static field inits as parsed dex d
   await verifyCleanup(launches);
 });
 
-it.each(["malformed-values"])(
+it.each(["malformed-values", "malformed-boolean"])(
   "rejects %s projection output instead of presenting invalid encoded values",
   async (mode) => {
     const { service, apk, launches, provider } = await setup(mode);

@@ -21,11 +21,10 @@ import {
 import { AnalysisError } from "../domain/analysisErrorBase.js";
 import type { AndroidOperation } from "../domain/android/androidAnalysis.js";
 import type { BinaryTarget } from "../domain/binaryTargetTypes.js";
+import { resolveXapkBaseName } from "./AndroidXapkManifest.js";
 
 /** Top-level XAPK manifest describing the packaged APK members. */
 const XAPK_MANIFEST_ENTRY = "manifest.json";
-/** Base APK name every XAPK must carry next to the manifest. */
-const XAPK_BASE_APK_ENTRY = "base.apk";
 /** Smallest plausible ZIP file entry; smaller "APK" members are packaging debris. */
 const MINIMUM_APK_MEMBER_BYTES = 4;
 /** Upper bound on the composed analysis image, mirroring the 4 GiB ZIP ceiling. */
@@ -51,8 +50,13 @@ export interface AndroidXapkBundleSnapshot {
 
 interface XapkMember {
   readonly entry: ArtifactEntry;
-  /** Member name inside the composed image; the base module keeps base.apk. */
+  /** Original member identity, also used to namespace colliding split entries. */
   readonly destination: string;
+}
+
+interface XapkCompositionPlan {
+  readonly members: readonly XapkMember[];
+  readonly baseName: string;
 }
 
 /**
@@ -85,7 +89,7 @@ export const composeAndroidXapkBundle = async (
     undefined,
   );
   try {
-    const members = await planXapkComposition(
+    const plan = await planXapkComposition(
       reader,
       target.path,
       operation,
@@ -95,7 +99,7 @@ export const composeAndroidXapkBundle = async (
     return await composeMergedImage(
       reader,
       target.path,
-      members,
+      plan,
       root,
       operation,
       signal,
@@ -113,15 +117,15 @@ const planXapkComposition = async (
   containerPath: string,
   operation: AndroidOperation,
   signal: AbortSignal,
-): Promise<readonly XapkMember[]> => {
-  let hasManifest = false;
+): Promise<XapkCompositionPlan> => {
+  let manifest: ArtifactEntry | undefined;
   const ignored: string[] = [];
   const members: XapkMember[] = [];
   for await (const entry of reader.entries(signal)) {
     signal.throwIfAborted();
     if (entry.kind !== "file") continue;
     if (entry.path === XAPK_MANIFEST_ENTRY) {
-      hasManifest = true;
+      manifest = entry;
       continue;
     }
     const member = xapkMemberFor(entry, ignored);
@@ -129,14 +133,30 @@ const planXapkComposition = async (
   }
   signal.throwIfAborted();
   enforceDeclaredContainerSize(members, containerPath, operation);
-  verifyAdmittedMembership(
-    members,
-    hasManifest,
-    ignored,
-    containerPath,
-    operation,
+  if (manifest === undefined)
+    throw unsupportedXapk(
+      operation,
+      containerPath,
+      `XAPK containers must include a top-level ${JSON.stringify(XAPK_MANIFEST_ENTRY)} describing their APK members.`,
+    );
+  const baseName = await resolveXapkBaseName(
+    reader,
+    manifest,
+    members.map(({ destination }) => destination),
+    signal,
   );
-  return [...members].sort(compareMemberOrder);
+  if (baseName === undefined)
+    throw unsupportedXapk(
+      operation,
+      containerPath,
+      `XAPK containers must identify one readable top-level base APK through manifest.json or an unambiguous package filename/base.apk${describeIgnored(ignored)}.`,
+    );
+  return {
+    baseName,
+    members: [...members].sort((left, right) =>
+      compareMemberOrder(left, right, baseName),
+    ),
+  };
 };
 
 /**
@@ -155,7 +175,7 @@ const xapkMemberFor = (
     ignored.push(`${entry.path} (encrypted)`);
     return undefined;
   }
-  if (entry.path.includes("/")) {
+  if (entry.path.includes("/") || entry.path.includes("\\")) {
     ignored.push(`${entry.path} (nested below the manifest)`);
     return undefined;
   }
@@ -163,7 +183,7 @@ const xapkMemberFor = (
     ignored.push(`${entry.path} (too small to hold APK bytes)`);
     return undefined;
   }
-  return { entry, destination: basename(entry.path).toLowerCase() };
+  return { entry, destination: entry.path };
 };
 
 /** Capacity refusal operates on declared sizes before any bytes are read. */
@@ -186,27 +206,6 @@ const enforceDeclaredContainerSize = (
   ]);
 };
 
-const verifyAdmittedMembership = (
-  members: readonly XapkMember[],
-  hasManifest: boolean,
-  ignored: readonly string[],
-  containerPath: string,
-  operation: AndroidOperation,
-): void => {
-  if (!hasManifest)
-    throw unsupportedXapk(
-      operation,
-      containerPath,
-      `XAPK containers must include a top-level ${JSON.stringify(XAPK_MANIFEST_ENTRY)} describing their APK members.`,
-    );
-  if (!members.some(({ destination }) => destination === XAPK_BASE_APK_ENTRY))
-    throw unsupportedXapk(
-      operation,
-      containerPath,
-      `XAPK containers must carry one readable top-level ${JSON.stringify(XAPK_BASE_APK_ENTRY)} as the base module${describeIgnored(ignored)}.`,
-    );
-};
-
 const describeIgnored = (ignored: readonly string[]): string => {
   if (ignored.length === 0) return "";
   const listed = ignored.slice(0, MAXIMUM_LISTED_MEMBERS).join(", ");
@@ -215,10 +214,14 @@ const describeIgnored = (ignored: readonly string[]): string => {
 };
 
 /** The base module sorts ahead so manifest/resources map before split code. */
-const compareMemberOrder = (left: XapkMember, right: XapkMember): number => {
+const compareMemberOrder = (
+  left: XapkMember,
+  right: XapkMember,
+  baseName: string,
+): number => {
   if (left.destination === right.destination) return 0;
-  if (left.destination === XAPK_BASE_APK_ENTRY) return -1;
-  if (right.destination === XAPK_BASE_APK_ENTRY) return 1;
+  if (left.destination === baseName) return -1;
+  if (right.destination === baseName) return 1;
   return left.destination < right.destination
     ? -1
     : left.destination > right.destination
@@ -226,15 +229,10 @@ const compareMemberOrder = (left: XapkMember, right: XapkMember): number => {
       : 0;
 };
 
-const basename = (path: string): string => {
-  const separator = path.lastIndexOf("/");
-  return separator === -1 ? path : path.slice(separator + 1);
-};
-
 const composeMergedImage = async (
   container: ZipArtifactReader,
   containerPath: string,
-  members: readonly XapkMember[],
+  { members, baseName }: XapkCompositionPlan,
   root: string,
   operation: AndroidOperation,
   signal: AbortSignal,
@@ -266,12 +264,13 @@ const composeMergedImage = async (
         const merged = await copyMemberEntries(
           memberReader,
           member.destination,
+          member.destination === baseName,
           composedNames,
           writer,
           containerPath,
           signal,
         );
-        if (merged || member.destination === XAPK_BASE_APK_ENTRY)
+        if (merged || member.destination === baseName)
           mergedMembers.push(member.destination);
       } finally {
         await memberReader.close().catch(() => undefined);
@@ -378,6 +377,7 @@ const stageMemberApk = async (
 const copyMemberEntries = async (
   memberReader: ZipArtifactReader,
   memberName: string,
+  isBase: boolean,
   composedNames: Set<string>,
   writer: ComposedImageWriter,
   containerPath: string,
@@ -391,7 +391,7 @@ const copyMemberEntries = async (
     const declared = entry.path.replace(/^\/+/u, "");
     if (declared.length === 0) continue;
     const isDex = declared.toLowerCase().endsWith(".dex");
-    if (memberName !== XAPK_BASE_APK_ENTRY && !isDex) continue;
+    if (!isBase && !isDex) continue;
     if (!isDex && !adoptedBaseEntry(declared)) continue;
     if (declaredNames.has(declared.toLowerCase()))
       throw memberIntegrityFailure(
@@ -449,7 +449,7 @@ const uniqueEntryName = (
 ): string => {
   const lower = declared.toLowerCase();
   if (!composedNames.has(lower)) return declared;
-  const stem = memberName.replace(/\.apk$/u, "");
+  const stem = memberName.replace(/\.apk$/iu, "");
   return `splits/${stem}/${declared}`;
 };
 
@@ -457,10 +457,9 @@ const composedImageLimitations = (
   mergedMembers: readonly string[],
   dexEntryCount: number,
 ): readonly string[] => {
-  const splits = mergedMembers.filter((name) => name !== XAPK_BASE_APK_ENTRY);
   const scope =
-    splits.length === 0
-      ? "base.apk only"
+    mergedMembers.length === 1
+      ? `${mergedMembers[0]} only`
       : `${mergedMembers.length} members (${mergedMembers.join(", ")})`;
   return [
     `Composed XAPK analysis merged JAVA code of ${scope} (${dexEntryCount} DEX entries) into one analysis image; split resources, native libraries and member signatures were not merged, and the image is not the signed install package.`,

@@ -174,6 +174,11 @@ register(
           class: "retrofit2/http/GET",
           visibility: "runtime",
           values: {
+            hasBody: {
+              kind: "boolean",
+              value:
+                mode === "malformed-boolean" ? 1 : method_name !== undefined,
+            },
             value: {
               kind: method_name === undefined ? "string" : "type",
               value:

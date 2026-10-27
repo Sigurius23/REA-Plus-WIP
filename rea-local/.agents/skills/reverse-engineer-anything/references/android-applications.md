@@ -7,7 +7,10 @@ older server.
 Start with `inspect_android_package` on the caller's APK path for package
 identity, manifest declarations, coverage, and inline Evidence. The same
 operations also admit whole `.xapk` containers (a ZIP with `manifest.json`,
-`base.apk` and split APKs): REA+ composes one analysis image from the base
+a base APK and split APKs). The manifest's `split_apks` entry with `id: "base"`
+selects the base filename, including APKPure's `<package_name>.apk`; legacy
+bundles can use one unambiguous package filename or `base.apk`. Conflicting or
+missing declarations are rejected. REA+ composes one analysis image from the base
 module plus every split's DEX entries, so class coverage spans all modules, but
 split resources and signatures are not merged — check the evidence limitations.
 Loose split-APK sets (directories or `.apks` bundles) are not supported yet.

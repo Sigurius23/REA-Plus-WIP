@@ -67,85 +67,236 @@ const entryBytes = async (
 };
 
 describe("XAPK bundle admission", () => {
-  it("composes one stored-entry APK with base plus split DEX entries", async () => {
-    const root = await createTestTempDirectory("rea-xapk-");
+  it.each([
+    { baseName: "base.apk", manifest: {} },
+    {
+      baseName: "Com.Whoop.Android.apk",
+      manifest: {
+        package_name: "com.whoop.android",
+        split_apks: [
+          { id: "base", file: "Com.Whoop.Android.apk" },
+          { id: "config.arm64", file: "split_config.arm64_v8a.apk" },
+        ],
+      },
+    },
+    {
+      baseName: "com.whoop.android.apk",
+      manifest: { package_name: "com.whoop.android" },
+    },
+  ])(
+    "composes base $baseName with split DEX entries",
+    async ({ baseName, manifest }) => {
+      const root = await createTestTempDirectory("rea-xapk-");
+      const base = await buildApk([
+        ["AndroidManifest.xml", MANIFEST_BYTES],
+        ["resources.arsc", RESOURCE_BYTES],
+        ["classes.dex", DEX_BYTES],
+        ["lib/arm64-v8a/libbase.so", ELF_BYTES],
+      ]);
+      const split = await buildApk([
+        ["classes.dex", Uint8Array.from([1, 2, 3])],
+        ["classes2.dex", Uint8Array.from([4, 5, 6, 7])],
+        ["lib/arm64-v8a/libsplit.so", ELF_BYTES],
+      ]);
+      const container = await buildXapk([
+        ["manifest.json", new TextEncoder().encode(JSON.stringify(manifest))],
+        ["split_config.arm64_v8a.apk", split],
+        [baseName, base],
+      ]);
+      const containerPath = await writeFixture(root, "Bundle.xapk", container);
+      const runtimeRoot = join(root, "runtime");
+      await mkdir(runtimeRoot);
+
+      const snapshot = await composeAndroidXapkBundle(
+        {
+          path: containerPath,
+          sha256: createHash("sha256").update(container).digest("hex"),
+        },
+        runtimeRoot,
+        "inspect_android_package",
+        new AbortController().signal,
+      );
+
+      expect(snapshot.members).toEqual([
+        baseName,
+        "split_config.arm64_v8a.apk",
+      ]);
+      expect(snapshot.mergedMembers).toEqual([
+        baseName,
+        "split_config.arm64_v8a.apk",
+      ]);
+      expect(snapshot.limitations.join(" ")).toContain(
+        "split_config.arm64_v8a",
+      );
+      expect(snapshot.limitations.join(" ")).toContain(baseName);
+      expect(await existsOnDisk(snapshot.path)).toBe(true);
+      const observed = await readFile(snapshot.path);
+      expect(snapshot.sha256).toBe(
+        createHash("sha256").update(observed).digest("hex"),
+      );
+
+      // The composed image keeps base entries verbatim, adds split DEX entries,
+      // and only lets colliding split names through under splits/<member>/.
+      expect(await entryBytes(snapshot.path, "AndroidManifest.xml")).toEqual(
+        Buffer.from(MANIFEST_BYTES),
+      );
+      expect(await entryBytes(snapshot.path, "resources.arsc")).toEqual(
+        Buffer.from(RESOURCE_BYTES),
+      );
+      expect(await entryBytes(snapshot.path, "classes.dex")).toEqual(
+        Buffer.from(DEX_BYTES),
+      );
+      expect(await entryBytes(snapshot.path, "classes2.dex")).toEqual(
+        Buffer.from([4, 5, 6, 7]),
+      );
+      expect(
+        await entryBytes(
+          snapshot.path,
+          "splits/split_config.arm64_v8a/classes.dex",
+        ),
+      ).toEqual(Buffer.from([1, 2, 3]));
+      expect(
+        await entryBytes(snapshot.path, "lib/arm64-v8a/libbase.so"),
+      ).toEqual(Buffer.from(ELF_BYTES));
+      // Split resources and native libraries stay out of the merged image.
+      expect(
+        await entryBytes(snapshot.path, "lib/arm64-v8a/libsplit.so"),
+      ).toBeUndefined();
+
+      // Staged member APKs are transient admission state inside the runtime root.
+      expect(await readdir(runtimeRoot)).toEqual(["bundle.apk"]);
+
+      await rm(snapshot.path, { force: true });
+    },
+  );
+});
+
+describe("XAPK manifest validation", () => {
+  it.each([
+    { name: "invalid JSON", manifest: "{", reason: /valid UTF-8 JSON/u },
+    {
+      name: "invalid schema",
+      manifest: '{"split_apks":{}}',
+      reason: /invalid.*metadata/u,
+    },
+    {
+      name: "multiple base declarations",
+      manifest: JSON.stringify({
+        split_apks: [
+          { id: "base", file: "base.apk" },
+          { id: "base", file: "com.whoop.android.apk" },
+        ],
+      }),
+      reason: /duplicate module/u,
+    },
+    {
+      name: "conflicting file roles",
+      manifest: JSON.stringify({
+        split_apks: [
+          { id: "base", file: "base.apk" },
+          { id: "config", file: "base.apk" },
+        ],
+      }),
+      reason: /duplicate module/u,
+    },
+    {
+      name: "missing declared base despite fallback filename",
+      manifest: JSON.stringify({
+        split_apks: [{ id: "base", file: "missing.apk" }],
+      }),
+      reason: /not a readable top-level/u,
+    },
+    {
+      name: "path traversal declaration",
+      manifest: JSON.stringify({
+        split_apks: [{ id: "base", file: "../base.apk" }],
+      }),
+      reason: /not a readable top-level/u,
+    },
+    {
+      name: "ambiguous filename fallbacks",
+      manifest: '{"package_name":"com.whoop.android"}',
+      reason: /ambiguous base APK/u,
+    },
+    {
+      name: "manifest beyond memory budget",
+      manifest: " ".repeat(1024 * 1024) + "{}",
+      reason: /JSON memory budget/u,
+    },
+  ])(
+    "refuses $name before creating an analysis image",
+    async ({ manifest, reason }) => {
+      const root = await createTestTempDirectory("rea-xapk-invalid-manifest-");
+      const apk = await buildApk([["classes.dex", DEX_BYTES]]);
+      const container = await buildXapk([
+        ["manifest.json", new TextEncoder().encode(manifest)],
+        ["base.apk", apk],
+        ["com.whoop.android.apk", apk],
+      ]);
+      const path = await writeFixture(root, "Bundle.xapk", container);
+      const runtime = join(root, "runtime");
+      await mkdir(runtime);
+      await expect(
+        composeAndroidXapkBundle(
+          {
+            path,
+            sha256: createHash("sha256").update(container).digest("hex"),
+          },
+          runtime,
+          "inspect_android_package",
+          new AbortController().signal,
+        ),
+      ).rejects.toMatchObject({
+        _tag: "AnalysisInputError",
+        issues: [{ path: ["path"], message: expect.stringMatching(reason) }],
+      });
+      expect(await readdir(runtime)).toEqual([]);
+    },
+  );
+});
+
+describe("XAPK base selection", () => {
+  it("uses the declared base rather than a competing conventional filename", async () => {
+    const root = await createTestTempDirectory("rea-xapk-explicit-base-");
     const base = await buildApk([
       ["AndroidManifest.xml", MANIFEST_BYTES],
-      ["resources.arsc", RESOURCE_BYTES],
       ["classes.dex", DEX_BYTES],
-      ["lib/arm64-v8a/libbase.so", ELF_BYTES],
     ]);
     const split = await buildApk([
-      ["classes.dex", Uint8Array.from([1, 2, 3])],
-      ["classes2.dex", Uint8Array.from([4, 5, 6, 7])],
-      ["lib/arm64-v8a/libsplit.so", ELF_BYTES],
+      ["AndroidManifest.xml", Buffer.from("split")],
     ]);
     const container = await buildXapk([
-      ["manifest.json", new TextEncoder().encode("{}")],
-      ["base.apk", base],
-      ["split_config.arm64_v8a.apk", split],
+      [
+        "manifest.json",
+        Buffer.from(
+          JSON.stringify({
+            split_apks: [
+              { id: "base", file: "com.whoop.android.apk" },
+              { id: "config", file: "base.apk" },
+            ],
+          }),
+        ),
+      ],
+      ["base.apk", split],
+      ["com.whoop.android.apk", base],
     ]);
-    const containerPath = await writeFixture(root, "Bundle.xapk", container);
-    const runtimeRoot = join(root, "runtime");
-    await mkdir(runtimeRoot);
-
+    const path = await writeFixture(root, "Bundle.xapk", container);
+    const runtime = join(root, "runtime");
+    await mkdir(runtime);
     const snapshot = await composeAndroidXapkBundle(
-      {
-        path: containerPath,
-        sha256: createHash("sha256").update(container).digest("hex"),
-      },
-      runtimeRoot,
+      { path, sha256: createHash("sha256").update(container).digest("hex") },
+      runtime,
       "inspect_android_package",
       new AbortController().signal,
     );
-
-    expect(snapshot.members).toEqual([
-      "base.apk",
-      "split_config.arm64_v8a.apk",
-    ]);
-    expect(snapshot.mergedMembers).toEqual([
-      "base.apk",
-      "split_config.arm64_v8a.apk",
-    ]);
-    expect(snapshot.limitations.join(" ")).toContain("split_config.arm64_v8a");
-    expect(await existsOnDisk(snapshot.path)).toBe(true);
-    const observed = await readFile(snapshot.path);
-    expect(snapshot.sha256).toBe(
-      createHash("sha256").update(observed).digest("hex"),
-    );
-
-    // The composed image keeps base entries verbatim, adds split DEX entries,
-    // and only lets colliding split names through under splits/<member>/.
     expect(await entryBytes(snapshot.path, "AndroidManifest.xml")).toEqual(
       Buffer.from(MANIFEST_BYTES),
     );
-    expect(await entryBytes(snapshot.path, "resources.arsc")).toEqual(
-      Buffer.from(RESOURCE_BYTES),
+    expect(snapshot.members).toEqual(["com.whoop.android.apk", "base.apk"]);
+    expect(snapshot.mergedMembers).toEqual(["com.whoop.android.apk"]);
+    expect(snapshot.limitations.join(" ")).toContain(
+      "com.whoop.android.apk only",
     );
-    expect(await entryBytes(snapshot.path, "classes.dex")).toEqual(
-      Buffer.from(DEX_BYTES),
-    );
-    expect(await entryBytes(snapshot.path, "classes2.dex")).toEqual(
-      Buffer.from([4, 5, 6, 7]),
-    );
-    expect(
-      await entryBytes(
-        snapshot.path,
-        "splits/split_config.arm64_v8a/classes.dex",
-      ),
-    ).toEqual(Buffer.from([1, 2, 3]));
-    expect(await entryBytes(snapshot.path, "lib/arm64-v8a/libbase.so")).toEqual(
-      Buffer.from(ELF_BYTES),
-    );
-    // Split resources and native libraries stay out of the merged image.
-    expect(
-      await entryBytes(snapshot.path, "lib/arm64-v8a/libsplit.so"),
-    ).toBeUndefined();
-
-    // Staged member APKs are transient admission state inside the runtime root.
-    expect(await readdir(runtimeRoot)).toEqual(["bundle.apk"]);
-
-    await rm(snapshot.path, { force: true });
   });
 
   it("refuses a XAPK without a readable top-level base module", async () => {

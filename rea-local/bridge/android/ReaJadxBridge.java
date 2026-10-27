@@ -61,7 +61,8 @@ class ReaJadxBridge {
   private JadxSession indexedSession;
   private Map<String, List<ClassSnapshot>> classes = Map.of();
 
-  private record MethodSnapshot(String name, String shortId, Map<String, Object> summary) {}
+  private record MethodSnapshot(String name, String shortId, Map<String, Object> summary,
+      List<Object> annotations, boolean valuesTruncated) {}
   private record ClassSnapshot(JavaClass node, List<MethodSnapshot> methods, Map<String, Object> summary,
       List<Object> classAnnotations, List<Object> staticInits, boolean valuesTruncated) {}
 
@@ -121,8 +122,8 @@ class ReaJadxBridge {
         JadxDecompiler decompiler = current.getClasses().get(0).getClassNode().root().getDecompiler();
         // JavaClass.getMethods/getFields/getInnerClasses all load code. Raw nodes do not.
         // Snapshot every identity before code generation can rewrite aliases or members.
-        // Constant initial values and class annotations live on raw nodes too, but
-        // forced code generation clears them, so they are captured here as well.
+        // Snapshot parsed values too: code generation clears attributes and replaces
+        // annotation literals with derived field references, including on methods.
         for (JavaClass cls : decompiler.getClassesWithInners()) {
           ClassNode node = cls.getClassNode();
           List<MethodNode> ordered = new ArrayList<>(node.getMethods());
@@ -132,9 +133,14 @@ class ReaJadxBridge {
             String signature = name + "(" + method.getArgTypes().stream()
                 .map(Object::toString).collect(Collectors.joining(", "))
                 + "): " + method.getReturnType().toString();
+            Truncation truncation = new Truncation();
+            ValueEncoder encoder = new ValueEncoder(truncation);
+            List<Object> annotations = encodedAnnotations(
+                encoder.annotations(method.get(JadxAttrType.ANNOTATION_LIST)), encoder);
             return new MethodSnapshot(name, method.getMethodInfo().getShortId(), Map.of(
                 "name", name, "signature", signature,
-                "is_constructor", method.isConstructor(), "def_pos", 0));
+                "is_constructor", method.isConstructor(), "def_pos", 0),
+                annotations, truncation.hit);
           }).toList();
           List<Map<String, Object>> fields = node.getFields().stream()
               .sorted(Comparator.comparing(FieldNode::getAlias))
@@ -438,8 +444,7 @@ class ReaJadxBridge {
 
   private Map<String, Object> annotationValues(ClassSnapshot cls, JsonObject args) {
     String methodName = optionalString(args, "method_name");
-    Truncation truncation = new Truncation();
-    ValueEncoder encoder = new ValueEncoder(truncation);
+    boolean truncated;
     Map<String, Object> result = new LinkedHashMap<>();
     result.put("class_name", cls.summary().get("full_name"));
     if (methodName == null) {
@@ -447,20 +452,20 @@ class ReaJadxBridge {
       // Served from the pre-codegen snapshot; forced decomposition clears live attrs.
       result.put("annotations", cls.classAnnotations());
       result.put("static_inits", cls.staticInits());
-      truncation.hit = cls.valuesTruncated();
+      truncated = cls.valuesTruncated();
     } else {
       List<MethodSnapshot> overloads = methods(cls, args);
       int index = integer(args, "overload_index", 0);
       if (index >= overloads.size()) throw new InputFailure("overload_index",
           "overload_index out of range: " + index);
-      MethodNode node = method(cls, overloads.get(index)).getMethodNode();
-      List<IAnnotation> annotations = encoder.annotations(node.get(JadxAttrType.ANNOTATION_LIST));
+      MethodSnapshot method = overloads.get(index);
       result.put("method_name", methodName);
       result.put("overload_index", index);
       result.put("overload_count", overloads.size());
-      result.put("annotations", encodedAnnotations(annotations, encoder));
+      result.put("annotations", method.annotations());
+      truncated = method.valuesTruncated();
     }
-    result.put("truncated", truncation.hit);
+    result.put("truncated", truncated);
     return result;
   }
 
