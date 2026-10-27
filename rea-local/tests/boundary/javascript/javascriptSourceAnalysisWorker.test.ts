@@ -325,3 +325,37 @@ require("node:readline").createInterface({ input: process.stdin }).once("line", 
     }
   },
 );
+
+// The parent reserves result capacity for the compact static observations of
+// the sources that follow. Size that reserve from each run's own observed
+// per-source costs: a fixed large fraction of the budget reaches zero offers
+// partway through the run and silently strips semantic module facts from
+// every remaining source even when the actual static facts are tiny.
+it("admits semantic module facts for every small source past the reserve cliff", async () => {
+  const sourceCount = 64;
+  const worker = new JavaScriptAnalysisWorker(
+    { heapMb: 128, timeoutMs: 30_000 },
+    undefined,
+    sourceCount,
+  );
+  try {
+    const files: JavaScriptArtifactFile[] = [];
+    for (let index = 0; index < sourceCount; index += 1)
+      files.push(
+        source(
+          `small-${String(index).padStart(3, "0")}.mjs`,
+          `import { readFile } from "node:fs";\nexport const observed${String(index)} = readFile("fixture.txt", () => String(${String(index)}));\nexport const label${String(index)} = "module-${String(index)}";\n`,
+        ),
+      );
+    let admitted = 0;
+    for (const file of files) {
+      const result = await worker.analyze(file, 2_000);
+      if (!result.ok) throw result.error.error;
+      expect(result.value.javascript.parse_status).toBe("complete");
+      if (result.value.module !== null) admitted += 1;
+    }
+    expect(admitted).toBe(sourceCount);
+  } finally {
+    await worker.close();
+  }
+});

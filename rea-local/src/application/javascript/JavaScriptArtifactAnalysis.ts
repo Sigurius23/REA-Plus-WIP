@@ -215,10 +215,12 @@ export const analyzeAndAdoptJavaScriptArtifactFiles = async (
         if (facts.javascript.parse_status === "failed")
           state.parseFailures += 1;
       }
+      // Resource-constraint outcomes keep the run per file (static facts are
+      // retained, the file reports its own failure); capacity pressure no
+      // longer ends the analysis for every source that follows.
       if (
         error !== null &&
-        (!(error instanceof AnalysisResourceConstraintError) ||
-          error.reportedLimits?.parent_result_budget_exhausted === true)
+        !(error instanceof AnalysisResourceConstraintError)
       ) {
         interruption = error;
         break;
@@ -296,20 +298,29 @@ export const analyzeAndAdoptJavaScriptArtifactFiles = async (
 /**
  * Sources share one result budget and one semantic-graph node budget, first
  * come first served, and all but the last source leave most of the budget in
- * reserve for later sources. Analyzing JavaScript sources smallest first gives
- * the most sources complete facts and keeps one large bundle from using up
- * the budget before smaller ones are reached. Other files keep their place.
+ * reserve for later sources. Analyzing application sources before vendored
+ * modules keeps the sources a caller investigates from losing the semantic
+ * budget to the thousands of small vendor modules that would otherwise sort
+ * before them; size ascending still keeps one large bundle from using up the
+ * budget before smaller ones are reached within each group. Other files keep
+ * their place.
  */
 const analysisOrder = (
   files: readonly JavaScriptArtifactFile[],
 ): readonly JavaScriptArtifactFile[] => {
   const isSource = (file: JavaScriptArtifactFile): boolean =>
     file.kind === "javascript" && file.text.included;
+  const isVendor = (file: JavaScriptArtifactFile): boolean =>
+    file.path.split("/").includes("node_modules");
   const size = (file: JavaScriptArtifactFile): number =>
     file.text.included ? Buffer.byteLength(file.text.value) : 0;
   const sources = files
     .filter(isSource)
-    .sort((left, right) => size(left) - size(right));
+    .sort(
+      (left, right) =>
+        Number(isVendor(left)) - Number(isVendor(right)) ||
+        size(left) - size(right),
+    );
   let next = 0;
   return files.map((file) =>
     isSource(file) ? (sources[next++] ?? file) : file,

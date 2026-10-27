@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { getHeapStatistics } from "node:v8";
 import { z } from "zod";
 import type { JavaScriptArtifactFile } from "../../domain/javascript/javascriptArtifactFiles.js";
+import { javaScriptStaticObservationReserve } from "../../domain/javascript/javascriptAnalysisResourceControls.js";
 import type { JavaScriptStaticAnalysis } from "../../domain/javascript/javascriptStaticAnalysisTypes.js";
 import { estimateJavaScriptStaticApplicationProjection } from "../../domain/javascript/javascriptApplicationProjectionResources.js";
 import type { JavaScriptModuleSemanticIr } from "../../domain/javascript/javascriptModuleSemanticIr.js";
@@ -79,8 +80,8 @@ export class JavaScriptAnalysisWorker {
   #lastFailure: AnalysisError | undefined;
   #estimatedRetainedBytes = 0;
   #applicationProjectionFailure: AnalysisResourceConstraintError | undefined;
-  #parentCapacityExhausted = false;
   #retainedStaticBytes = 0;
+  #observedSources = 0;
   #sourcesRemaining: number | undefined;
   readonly #resultBudgetBytes: number;
   /** Null when the runtime enforces the V8 heap flags instead. */
@@ -173,7 +174,6 @@ export class JavaScriptAnalysisWorker {
     let projection: JavaScriptSemanticFileProjection | null = null;
     const id = randomUUID();
     this.#applicationProjectionFailure = undefined;
-    this.#parentCapacityExhausted = false;
     if (this.#sourcesRemaining !== undefined)
       this.#sourcesRemaining = Math.max(0, this.#sourcesRemaining - 1);
     let deadline: ProviderStartupDeadline | undefined;
@@ -254,24 +254,27 @@ export class JavaScriptAnalysisWorker {
               "JavaScript worker emitted a duplicate static checkpoint",
             );
           javascript = await this.#readCheckpoint(id, file.path, response);
-          if (this.#parentCapacityExhausted)
-            throw new AnalysisResourceConstraintError(
-              OPERATION,
-              "memory",
-              `The parent's result capacity was exhausted after retaining static facts for ${file.path}; remaining sources were not analyzed`,
-              {
-                ...this.#limits(),
-                parent_result_budget_bytes: this.#resultBudgetBytes,
-                parent_result_budget_exhausted: true,
-              },
-            );
+          // Result-capacity pressure degrades per file: this checkpoint is
+          // already retained (see #readCheckpoint), and the semantic offer
+          // below falls to zero when the parent's capacity is spent, so the
+          // child retains static facts alone instead of module facts. Remaining
+          // sources keep their own run: ending every later file to save memory
+          // the estimates claim is missing would be the all-or-nothing cliff
+          // this worker exists to avoid. Real parent memory pressure is
+          // enforced where it is actually measured, by the checkpoint decode
+          // guard inside #readCheckpoint.
+          const stickyProjectionFailure =
+            this.#applicationProjectionFailure !== undefined &&
+            this.#sourcesRemaining !== undefined &&
+            this.#sourcesRemaining > 0;
           offeredResultBudget =
-            semanticSkipped ||
-            (this.#applicationProjectionFailure !== undefined &&
-              this.#sourcesRemaining !== undefined &&
-              this.#sourcesRemaining > 0)
+            semanticSkipped || stickyProjectionFailure
               ? 0
               : this.#remainingResultBudget();
+          if (process.env.REA_DEBUG_ANALYSIS_BUDGET !== undefined)
+            process.stderr.write(
+              `[analysis-budget] ${file.path} offered=${String(offeredResultBudget)} remaining-total=${String(this.#remainingTotalResultBudget())} remaining-now=${String(this.#remainingResultBudget())} budget=${String(this.#resultBudgetBytes)} retained=${String(this.#estimatedRetainedBytes)} retained-static=${String(this.#retainedStaticBytes)} app-proj-failure=${String(this.#applicationProjectionFailure !== undefined ? 1 : 0)} sticky=${String(stickyProjectionFailure ? 1 : 0)} node-budget=${String(nodeBudget)} semantic-skipped=${String(semanticSkipped ? 1 : 0)}\n`,
+            );
           const admission = javaScriptWorkerAdmissionSchema.parse({
             id,
             semantic_result_budget_bytes: offeredResultBudget,
@@ -605,11 +608,13 @@ export class JavaScriptAnalysisWorker {
       );
     const value: unknown = JSON.parse(text);
     const facts = javaScriptWorkerStaticAnalysisSchema.parse(value);
-    const remaining = this.#remainingTotalResultBudget();
     const retainedBytes = bytes * 6;
-    this.#parentCapacityExhausted = retainedBytes > remaining;
+    // Retained unconditionally: the compact static observations are exactly
+    // what the capacity reserve exists to protect, and short of them every
+    // later source degrades per file instead of ending the run.
     this.#estimatedRetainedBytes += retainedBytes;
     this.#retainedStaticBytes += retainedBytes;
+    this.#observedSources += 1;
     const expandedBytes = estimateJavaScriptStaticApplicationProjection(
       facts,
       bytes,
@@ -663,15 +668,25 @@ export class JavaScriptAnalysisWorker {
   }
   #remainingResultBudget(): number {
     // Future sources need their compact observations before current modules
-    // consume capacity with expanded relationships. A final or sole source
-    // can use the unused reserve as well.
+    // consume capacity with expanded relationships. Size that reserve from
+    // the compact static retention this run has already observed per source
+    // (with a safety multiple for larger late sources) instead of a fixed
+    // fraction of the whole budget: a fixed fraction over-reserves whenever
+    // actual per-source static facts are small, and over-reserving reaches
+    // zero offers that silently strip semantic analysis from every remaining
+    // file. The application projections that fail this reserve are reported
+    // per file; retained and projected retention is accounted in
+    // #estimatedRetainedBytes either way.
     const staticReserve =
       this.#sourcesRemaining !== undefined && this.#sourcesRemaining > 0
-        ? Math.max(
-            0,
-            Math.floor((this.#resultBudgetBytes * 4) / 5) -
-              this.#retainedStaticBytes,
-          )
+        ? javaScriptStaticObservationReserve({
+            result_budget_bytes: this.#resultBudgetBytes,
+            retained_static_bytes: this.#retainedStaticBytes,
+            observed_sources: this.#observedSources,
+            ...(this.#sourcesRemaining === undefined
+              ? { sources_remaining: undefined }
+              : { sources_remaining: this.#sourcesRemaining }),
+          })
         : 0;
     return Math.max(0, this.#remainingTotalResultBudget() - staticReserve);
   }
