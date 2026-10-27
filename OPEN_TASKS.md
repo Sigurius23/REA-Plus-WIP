@@ -14,24 +14,28 @@ Open work on `main` following PR #1 and the field tests.
   as in the Environment note.
 - **Native DMG verification on localized macOS hosts:** Fixed and verified. Added locale-independent status line matching and target fallback inspection in `NativeDmgArtifactReader.ts`. All 30 tests in `nativeDmgArtifactReader.test.ts` pass.
 - **jscpd duplicate lines:** Reduced from 2.88% down to 2.50% duplicated lines. Beyond the shared `InlineReportService` sweep, the concentrated hotspots were extracted: `cli/coreBinaryCommands.ts` now uses shared option constants and one parameterized procedure-selector registration; `processTrace.fixture.ts` carries the trace capture/specification shared by the domain unit test and the MCP parity test; and the `webCaptureDiff` / `interfaceBuilderBundle` test suites use extracted capture helpers. 0.1 pts of headroom under the 2.6% threshold; consider lowering the threshold (the `.jscpd.json` comment calls for it) as remaining duplication is removed.
-- **Flaky boundary tests:** Done. Both `processCaptureProgress.test.ts` and `clientProfileLifecycle.test.ts` now use load-tolerant budgets (test orchestration only; the <\\_s cancellation-latency commitments themselves are untouched), and both pass under the v24.11.0 Node in isolation. The capability-skip path in `processCaptureProgress.test.ts` is mutation-backed: flipping `available: true` → `false` in `ProcessCaptureCapability.ts` flips the suite's assertions to the named-skip path as intended. A whole-suite re-run to confirm the budgets hold under full parallel load is still pending (host was busy during this pass). Runtime note: this host's default `node` is v22.17.0, which the CLI's own version gate refuses; tests that shell out to the CLI proxy fail with exit 1 unless vitest runs under the v24.11.0 Node in `/private/tmp/node-v24.11.0-darwin-arm64/bin`.
-- **Environment:** Node v24.11.0 is available locally in `/private/tmp/node-v24.11.0-darwin-arm64/bin`. Reverse engineering tools installed and verified: `ghidra` 12.1.4 (with OpenJDK 27), `radare2` 6.2.4, `binwalk` 3.1.0, `jadx` 1.5.6, and `apktool` 3.0.3.
+- **Flaky boundary tests:** Done. Both `processCaptureProgress.test.ts` and `clientProfileLifecycle.test.ts` use load-tolerant orchestration budgets without changing cancellation-latency commitments. The capability-skip path remains mutation-backed. Both suites passed in the full `check:pr` run on 2026-10-27 (item 1), completing the pending verification under suite load.
+- **Environment:** The 2026-10-27 gate used the supported Node v24.22.1 runtime at `/Users/sigur/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node` and installed npm 10.9.2. The exact pins (Node 24.18.0 / npm 11.16.0) were not available locally; the gate did not install a replacement toolchain. Previously recorded tool versions: `ghidra` 12.1.4 (with OpenJDK 27), `radare2` 6.2.4, `binwalk` 3.1.0, `jadx` 1.5.6, and `apktool` 3.0.3.
 - **Ghidra DEX support:** Done on `main`. Forced `DexLoader` import with the Dalvik language selected from the DEX header version; DEX string-pool definition runs as a packaged post-analysis script (`ReaGhidraPrepareDex.java`) so Dalvik method discovery keeps working; DEX byte-read and file-offset behavior is documented honestly in `docs/ghidra-dex.md`; `npm run verify:ghidra:dex` verifies the committed `tests/fixtures/dex/` fixture end to end (green on macOS arm64/ghidra 12.1.4).
-- **Flaky `ghidraLauncher.test.ts` and `processFinalization.test.ts`:** Addressed. The launcher test now matches the DEX-aware conflict message (plus a new DEX-negative case); the finalization acceptance tests give compiled-workflow startup a 15s load-tolerant budget (30s test timeout) while keeping the cancellation-latency (<8s) commitments themselves untouched. Both green in isolation; whole-suite re-run pending (host load >100 at the time).
+- **Flaky `ghidraLauncher.test.ts` and `processFinalization.test.ts`:** Addressed. The launcher test matches the DEX-aware conflict message (plus a DEX-negative case); finalization acceptance tests use a 15s compiled-workflow startup budget (30s test timeout) without changing cancellation-latency (<8s) commitments. Both passed in the full 2026-10-27 gate (item 1).
 
 ## Branch, gate and git
 
 1. **Gate verification (`npm run check:pr`):**
-   - Green end to end as of Oct 22, 2026 (exit 0): typecheck, lint, format
-     (`oxfmt`), knip, metadata, `docs:check`, jscpd (exactly at the 2.6%
-     threshold; further refactors wanted for headroom), `scan:todos`, and the
-     full test suite (897 files passed, 0 failed).
+   - **Green end to end on 2026-10-27 (exit 0)** against the current Android
+     and JavaScript follow-ups: typecheck, lint (824 warnings, 0 errors),
+     format (`oxfmt`), knip, metadata, `docs:check`, jscpd (**2.50%**, below
+     2.6%), `scan:todos`, and the full suite: **904 files / 8,408 tests passed;
+     16 files / 274 tests skipped; 0 failures**. The test phase took 1,264.69 s.
+     Optional provider skips are not real-provider verification. See
+     [gate report](field-tests/rea-check-pr-2026-10-27.md) and its raw log.
 2. **Branch state and push:**
    - `main` is **0 ahead / 0 behind** `origin/main`; nothing to push.
    - The working tree does hold **uncommitted** follow-ups (Android XAPK
      manifest validation, method-annotation snapshotting in the JADX bridge,
-     expanded tests, docs; see item 8) plus the Rize field-test artifacts.
-     Commit them after the gate, then re-check ahead/behind.
+     expanded tests, docs; see item 8), JavaScript budget/module-resolution
+     work, and the Rize field-test artifacts. The gate passed (item 1);
+     changes remain uncommitted. Re-check ahead/behind after committing.
 
 ## DEX support
 
@@ -98,7 +102,7 @@ Open work on `main` following PR #1 and the field tests.
 ## Flaky tests and gate robustness
 
 11. **Test timeouts under concurrent load:**
-    - Done on `main`: both suites' budgets and the capability-skip path are stabilized and mutation-checked as described in the status note above. Remaining follow-up: one whole-suite `npm run check:pr` re-run under the v24.11.0 Node to confirm the budgets hold under full parallel load.
+    - Done on `main`: both suites' budgets and the capability-skip path are stabilized and mutation-checked as described above. The full 2026-10-27 `check:pr` run passed, including these suites under full suite load (item 1).
 
 ## Consensus
 
@@ -126,13 +130,13 @@ Open work on `main` following PR #1 and the field tests.
 
 Details and Evidence-backed context: `field-tests/rize-macos-1.1.52.md` and
 `field-tests/whoop-android-5.473.0.md`. This is the single cross-test list.
-State of play: WHOOP items **6, 7, 9, 10** are done (see their own section
-below); item **8** is partially done (XAPK) with its residuals re-registered as
-26–28; Rize items **17–25** are all open. Items 17 and 18 have also now been
-observed in a second workflow (the WHOOP Android test) and are the
-highest-value fixes. Agreed order for implementation: **17 → 18** next
-(both offline-proceedable), then **21–22** (filtering/budget allocation) for
-large Electron investigations.
+State of play: WHOOP items **6, 7, 9, 10** are done; item **8** is partially
+done (XAPK). **17** is implemented, **18** is implemented for admitted imports
+with the Rize module-root residual tracked as **28**, and **22(a–b)** are done.
+**19–21, 22(c), 23–25** remain open; **26–29** retain the format, signature,
+module-root and measurement residuals. The agreed implementation order was
+**17 → 18**, then **21–22** for large Electron investigations. The full gate
+now passes for the current tree (item 1); it does not close live field-test gaps.
 
 17. **JavaScript constant/string search is not exposed (repeat, cross-workflow).**
     The Rize hosts, the embedded Amplitude API key and the `certificate.p12`
@@ -153,8 +157,8 @@ large Electron investigations.
     counts; bundler module attribution stays with
     `analyze_javascript_application`. Domain walker, service, contract,
     effects, availability, CLI/MCP registration, docs and boundary tests
-    landed together; the full `check:pr` gate re-run (incl. the suite) is the
-    remaining follow-up.
+    landed together; the full `check:pr` gate re-run passed on 2026-10-27
+    (item 1).
 
 18. **Dynamic IPC channels never resolve to names.**
     LANDED (parent-side): dynamic channel expressions are split into fixed
@@ -211,6 +215,32 @@ large Electron investigations.
     (b) per-file semantic budgets instead of one global cap, and (c) a
     compact per-file skip/block view (today the omissions are one giant
     comma-joined limitations string that is hostile to programmatic readers).
+    Status (2026-10-27): **(a) implemented** — `analysisOrder`
+    (`JavaScriptArtifactAnalysis.ts`) sorts sources size-ascending *within*
+    two admission groups, non-vendor first, so application sources reach the
+    semantic budget before vendor modules; other files keep their place.
+    Same-tree Rize re-run with the env-gated resolver debug line:
+    `semantic-files=312` (down from 1,693, which was vendor-weighted) with the
+    application sources now admitted first — the intended trade per (a). The
+    resolver now runs against IR-backed modules instead of never executing.
+    Follow-up (b) is **done** (2026-10-27): the run-wide kill-switch is gone —
+    semantic degradation is per file. The parent reserves an observed-cost
+    capacity for static-child results (`javaScriptStaticObservationReserve`)
+    and the worker projects module IR against per-file node budgets; a file
+    that exhausts becomes a per-file resource-constraint record
+    (`AnalysisResourceConstraintError` carrying the file path and budget
+    fields) instead of aborting every remaining source. The result-budget
+    throw, the dead marker field and the run-wide break rule were removed,
+    and the worker boundary suite pins semantics retention for 64 sequential
+    small sources. Full-Rize confirmation on the rebuilt dist: exit 0,
+    complete evidence, **zero interruption records**, `semantic-files=2,739`
+    (up from 1,693 pre-(a) / 312 under (a) alone), and IR for all 48 of 48
+    `src/main/modules/*` files including the previously skipped large
+    modules (toaster, blocker, windowManager, …). Verification evidence:
+    `/tmp/rize-22b-final.json` (not persisted into `field-tests/`). No
+    channels resolved for Rize yet: attempts fail closed at
+    `origin-null`/`provider-null` — bare specifiers bound through webpack's
+    `resolve.modules` (item 28), which item 22 does not address. (c) open.
 
 23. **`analysis_failure` remediation overpromises for budget-only causes.**
     All 25,383 failure records are pure result-budget constraints, and the
