@@ -1,0 +1,385 @@
+.class final Lz41/j$a;
+.super Ls83/i;
+.source "SourceFile"
+
+# interfaces
+.implements Lc93/m;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lz41/j;->d(Landroidx/compose/ui/Modifier;Lz41/g;ILz41/b;FLandroidx/compose/runtime/Composer;II)V
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = null
+.end annotation
+
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "Ls83/i;",
+        "Lc93/m;"
+    }
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000\u000c\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0002\u0010\u0002\u001a\u00020\u0001*\u00020\u0000H\n\u00a2\u0006\u0004\u0008\u0002\u0010\u0003"
+    }
+    d2 = {
+        "Lbc3/c0;",
+        "Ll83/a0;",
+        "<anonymous>",
+        "(Lbc3/c0;)V"
+    }
+    k = 0x3
+    mv = {
+        0x2,
+        0x3,
+        0x0
+    }
+.end annotation
+
+.annotation runtime Ls83/e;
+    c = "com.whoop.design.atomic.organism.amoeba.particles.ParticleViewKt$ParticleView$1$1"
+    f = "ParticleView.kt"
+    l = {
+        0x30
+    }
+    m = "invokeSuspend"
+    v = 0x2
+.end annotation
+
+
+# instance fields
+.field final synthetic E:Lp1/c1;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Lp1/c1;"
+        }
+    .end annotation
+.end field
+
+.field final synthetic F:Lp1/c1;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Lp1/c1;"
+        }
+    .end annotation
+.end field
+
+.field w:Ljava/lang/Object;
+
+.field x:I
+
+.field final synthetic y:Lp1/c1;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Lp1/c1;"
+        }
+    .end annotation
+.end field
+
+.field final synthetic z:Lz41/g;
+
+
+# direct methods
+.method public constructor <init>(Lp1/c1;Lz41/g;Lp1/c1;Lz41/b;Lp1/c1;Lq83/d;)V
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lp1/c1;",
+            "Lz41/g;",
+            "Lp1/c1;",
+            "Lz41/b;",
+            "Lp1/c1;",
+            "Lq83/d<",
+            "-",
+            "Lz41/j$a;",
+            ">;)V"
+        }
+    .end annotation
+
+    iput-object p1, p0, Lz41/j$a;->y:Lp1/c1;
+
+    iput-object p2, p0, Lz41/j$a;->z:Lz41/g;
+
+    iput-object p3, p0, Lz41/j$a;->E:Lp1/c1;
+
+    iput-object p5, p0, Lz41/j$a;->F:Lp1/c1;
+
+    const/4 p1, 0x2
+
+    invoke-direct {p0, p1, p6}, Ls83/i;-><init>(ILq83/d;)V
+
+    return-void
+.end method
+
+.method public static synthetic f(Lp1/c1;Lz41/e;Lp1/c1;Lp1/c1;J)Ll83/a0;
+    .locals 7
+
+    const/4 v3, 0x0
+
+    move-object v0, p0
+
+    move-object v1, p1
+
+    move-object v2, p2
+
+    move-object v4, p3
+
+    move-wide v5, p4
+
+    invoke-static/range {v0 .. v6}, Lz41/j$a;->h(Lp1/c1;Lz41/e;Lp1/c1;Lz41/b;Lp1/c1;J)Ll83/a0;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+.method private static final h(Lp1/c1;Lz41/e;Lp1/c1;Lz41/b;Lp1/c1;J)Ll83/a0;
+    .locals 13
+
+    invoke-interface {p0}, Lp1/t2;->getValue()Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Ljava/lang/Number;
+
+    invoke-virtual {v0}, Ljava/lang/Number;->longValue()J
+
+    move-result-wide v0
+
+    const-wide/16 v2, 0x0
+
+    cmp-long v0, v0, v2
+
+    if-lez v0, :cond_0
+
+    invoke-interface {p0}, Lp1/t2;->getValue()Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Ljava/lang/Number;
+
+    invoke-virtual {v0}, Ljava/lang/Number;->longValue()J
+
+    move-result-wide v0
+
+    sub-long v2, p5, v0
+
+    :cond_0
+    move-wide v9, v2
+
+    invoke-static/range {p5 .. p6}, Ljava/lang/Long;->valueOf(J)Ljava/lang/Long;
+
+    move-result-object v0
+
+    invoke-interface {p0, v0}, Lp1/c1;->setValue(Ljava/lang/Object;)V
+
+    invoke-virtual {p1}, Lz41/e;->c()J
+
+    move-result-wide v0
+
+    invoke-static {v0, v1}, Lz41/j;->h(J)J
+
+    move-result-wide v5
+
+    new-instance v4, Lz41/j$a$a;
+
+    const/4 v12, 0x0
+
+    move-object v7, p1
+
+    move-object/from16 v8, p3
+
+    move-object/from16 v11, p4
+
+    invoke-direct/range {v4 .. v12}, Lz41/j$a$a;-><init>(JLz41/e;Lz41/b;JLp1/c1;Lq83/d;)V
+
+    sget-object p0, Lq83/k;->w:Lq83/k;
+
+    invoke-static {p0, v4}, Lbc3/f0;->E(Lq83/j;Lc93/m;)Ljava/lang/Object;
+
+    move-result-object p0
+
+    invoke-interface {p2, p0}, Lp1/c1;->setValue(Ljava/lang/Object;)V
+
+    sget-object p0, Ll83/a0;->a:Ll83/a0;
+
+    return-object p0
+.end method
+
+
+# virtual methods
+.method public final create(Ljava/lang/Object;Lq83/d;)Lq83/d;
+    .locals 7
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Ljava/lang/Object;",
+            "Lq83/d<",
+            "*>;)",
+            "Lq83/d<",
+            "Ll83/a0;",
+            ">;"
+        }
+    .end annotation
+
+    new-instance v0, Lz41/j$a;
+
+    iget-object v1, p0, Lz41/j$a;->y:Lp1/c1;
+
+    iget-object v2, p0, Lz41/j$a;->z:Lz41/g;
+
+    iget-object v3, p0, Lz41/j$a;->E:Lp1/c1;
+
+    const/4 v4, 0x0
+
+    iget-object v5, p0, Lz41/j$a;->F:Lp1/c1;
+
+    move-object v6, p2
+
+    invoke-direct/range {v0 .. v6}, Lz41/j$a;-><init>(Lp1/c1;Lz41/g;Lp1/c1;Lz41/b;Lp1/c1;Lq83/d;)V
+
+    return-object v0
+.end method
+
+.method public final invoke(Lbc3/c0;Lq83/d;)Ljava/lang/Object;
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lbc3/c0;",
+            "Lq83/d<",
+            "-",
+            "Ll83/a0;",
+            ">;)",
+            "Ljava/lang/Object;"
+        }
+    .end annotation
+
+    .line 1
+    invoke-virtual {p0, p1, p2}, Lz41/j$a;->create(Ljava/lang/Object;Lq83/d;)Lq83/d;
+
+    move-result-object p1
+
+    check-cast p1, Lz41/j$a;
+
+    sget-object p2, Ll83/a0;->a:Ll83/a0;
+
+    invoke-virtual {p1, p2}, Lz41/j$a;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public bridge synthetic invoke(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 0
+
+    .line 2
+    check-cast p1, Lbc3/c0;
+
+    check-cast p2, Lq83/d;
+
+    invoke-virtual {p0, p1, p2}, Lz41/j$a;->invoke(Lbc3/c0;Lq83/d;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public final invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 11
+
+    sget-object v0, Lr83/a;->w:Lr83/a;
+
+    iget v1, p0, Lz41/j$a;->x:I
+
+    const/4 v2, 0x1
+
+    if-eqz v1, :cond_1
+
+    if-ne v1, v2, :cond_0
+
+    iget-object v1, p0, Lz41/j$a;->w:Ljava/lang/Object;
+
+    check-cast v1, Lz41/e;
+
+    invoke-static {p1}, Lts/o;->I(Ljava/lang/Object;)V
+
+    goto :goto_0
+
+    :cond_0
+    new-instance p1, Ljava/lang/IllegalStateException;
+
+    const-string v0, "call to \'resume\' before \'invoke\' with coroutine"
+
+    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw p1
+
+    :cond_1
+    invoke-static {p1}, Lts/o;->I(Ljava/lang/Object;)V
+
+    invoke-static {}, Landroid/content/res/Resources;->getSystem()Landroid/content/res/Resources;
+
+    move-result-object p1
+
+    invoke-virtual {p1}, Landroid/content/res/Resources;->getDisplayMetrics()Landroid/util/DisplayMetrics;
+
+    move-result-object p1
+
+    iget v8, p1, Landroid/util/DisplayMetrics;->density:F
+
+    iget-object p1, p0, Lz41/j$a;->y:Lp1/c1;
+
+    invoke-interface {p1}, Lp1/t2;->getValue()Ljava/lang/Object;
+
+    move-result-object p1
+
+    move-object v7, p1
+
+    check-cast v7, Ljava/util/List;
+
+    new-instance v3, Lz41/e;
+
+    iget-object v4, p0, Lz41/j$a;->z:Lz41/g;
+
+    const/4 v9, 0x2
+
+    const/4 v10, 0x0
+
+    const-wide/16 v5, 0x0
+
+    invoke-direct/range {v3 .. v10}, Lz41/e;-><init>(Lz41/g;JLjava/util/List;FILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+    move-object v1, v3
+
+    :cond_2
+    :goto_0
+    iget-object p1, p0, Lz41/j$a;->E:Lp1/c1;
+
+    iget-object v3, p0, Lz41/j$a;->y:Lp1/c1;
+
+    iget-object v4, p0, Lz41/j$a;->F:Lp1/c1;
+
+    new-instance v5, Lz41/i;
+
+    invoke-direct {v5, p1, v1, v3, v4}, Lz41/i;-><init>(Lp1/c1;Lz41/e;Lp1/c1;Lp1/c1;)V
+
+    iput-object v1, p0, Lz41/j$a;->w:Ljava/lang/Object;
+
+    iput v2, p0, Lz41/j$a;->x:I
+
+    invoke-static {v5, p0}, Lp1/x;->N(Lkotlin/jvm/functions/Function1;Lq83/d;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    if-ne p1, v0, :cond_2
+
+    return-object v0
+.end method

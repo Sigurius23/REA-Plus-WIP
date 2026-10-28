@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/strength_trainer_graph" app:startDestination="@id/strength_trainer"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <fragment android:label="StrengthTrainerFragment" android:name="com.whoop.weightlifting.StrengthTrainerFragment" android:id="@id/strength_trainer">
+        <deepLink app:uri="whoop://strength.builder?sharedWorkoutId={sharedWorkoutId}&amp;screen={destination}&amp;activityId={activityId}&amp;source={source}&amp;endWorkout={endWorkout}&amp;openTab={openTab}&amp;exerciseId={exerciseId}&amp;showCTA={showCTA}&amp;entryPointType={entryPointType}&amp;isExerciseDetailsV2ExperimentEnabled={isExerciseDetailsV2ExperimentEnabled}" />
+        <deepLink app:uri="https://app.whoop.com/workout/share?sharedWorkoutId={sharedWorkoutId}" />
+        <deepLink app:uri="https://app.qa.whoop.com/workout/share?sharedWorkoutId={sharedWorkoutId}" />
+        <deepLink app:uri="android-app://com.whoop/workout/template?templateId={templateId}&amp;isFromWhoopCoach={isFromWhoopCoach}&amp;activityId={activityId}&amp;entryPoint={entryPoint}&amp;openTab={openTab}" />
+        <argument android:name="source" android:defaultValue="" app:argType="string" />
+        <argument android:name="entryPoint" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="sharedWorkoutId" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="destination" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="activityId" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="endWorkout" android:defaultValue="false" app:argType="boolean" app:nullable="false" />
+        <argument android:name="exerciseId" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="showCTA" android:defaultValue="false" app:argType="boolean" app:nullable="false" />
+        <argument android:name="entryPointType" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="templateId" android:defaultValue="-1L" app:argType="long" />
+        <argument android:name="isFromWhoopCoach" android:defaultValue="false" app:argType="boolean" app:nullable="false" />
+        <argument android:name="isExerciseDetailsV2ExperimentEnabled" android:defaultValue="false" app:argType="boolean" app:nullable="false" />
+        <argument android:name="openTab" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+    </fragment>
+</navigation>

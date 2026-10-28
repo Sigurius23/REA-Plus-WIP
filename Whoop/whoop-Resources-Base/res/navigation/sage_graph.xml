@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/sage_graph"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <fragment android:label="sageFragment" android:name="com.whoop.sage.view.SageFragment" android:id="@id/sageFragment">
+        <deepLink app:uri="android-app://com.whoop/sage?date={date}&amp;source={source}" />
+        <argument android:name="date" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="source" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+    </fragment>
+    <fragment android:label="SageOnboardingFragment" android:name="com.whoop.sage.onboarding.view.SageOnboardingFragment" android:id="@id/sageOnboardingFragment">
+        <deepLink app:uri="android-app://com.whoop/sage/onboarding?skipToManualEntry={skipToManualEntry}&amp;source={source}" />
+        <argument android:name="skipToManualEntry" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="source" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+    </fragment>
+</navigation>

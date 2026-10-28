@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_gravity="center_vertical" android:orientation="vertical" android:id="@id/list_item_parent" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/Margin.Half" android:layout_marginBottom="@dimen/Margin.Half"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <com.whoop.ui.ProgressDialLayout android:layout_gravity="center_vertical" android:id="@id/item_dial" android:layout_width="58.0dp" android:layout_height="58.0dp" android:layout_marginLeft="@dimen/Margin.Standard" android:layout_marginTop="@dimen/Margin.Standard" android:layout_marginBottom="@dimen/Margin.Standard" app:progressDialLayoutColor="@color/Whoop.Blue" app:progressDialLayoutDrawEmptyArc="true" app:progressDialLayoutEmptyColor="@color/Whoop.Gray.Dark" app:progressDialLayoutGapLength="1.0" app:progressDialLayoutMeasureInside="false" app:progressDialLayoutThickness="2.0dp">
+            <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView android:layout_gravity="center" android:id="@id/item_image" android:layout_width="48.0dp" android:layout_height="48.0dp" android:layout_centerInParent="true" app:srcCompat="@drawable/ic_user_avatar_default" />
+                <FrameLayout android:id="@id/profile_image_foreground" android:visibility="gone" android:layout_width="20.0dp" android:layout_height="20.0dp" android:foreground="@drawable/ic_moon" android:layout_centerInParent="true" />
+                <ImageView android:layout_gravity="center" android:id="@id/item_image_hidden" android:visibility="gone" android:layout_width="36.0dp" android:layout_height="36.0dp" android:src="@drawable/ic_hidden" android:tint="@color/Whoop.White.HalfTransparent" android:layout_centerInParent="true" />
+            </RelativeLayout>
+        </com.whoop.ui.ProgressDialLayout>
+        <LinearLayout android:layout_gravity="center_vertical" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="@dimen/Margin.Standard">
+            <TableLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:shrinkColumns="0">
+                <TableRow>
+                    <TextView android:ellipsize="end" android:id="@id/item_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:maxLines="1" style="@style/Teams.UserName" />
+                    <TextView android:id="@id/item_data1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="@dimen/Margin.Double" style="@style/Teams.Data" />
+                    <ImageView android:layout_gravity="center" android:id="@id/non_compliance_icon" android:background="@drawable/ic_combined_shape" android:visibility="gone" android:layout_width="10.0dp" android:layout_height="10.0dp" android:layout_marginStart="8.0dp" />
+                </TableRow>
+            </TableLayout>
+            <TextView android:id="@id/wait_for_data" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/waiting_for_data" style="@style/Teams.Data" />
+            <TextView android:id="@id/item_activities" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/Teams.Data" />
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:id="@id/item_data2" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/Teams.Data" />
+                <TextView android:id="@id/item_data2_comma" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/community_comma_space_separator" style="@style/Teams.Data" />
+                <TextView android:id="@id/item_data_2b" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/Teams.Data" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <include layout="@layout/fragment_teams_board_non_compliance" />
+</LinearLayout>

@@ -1,0 +1,600 @@
+.class final Lbg2/g$e;
+.super Ls83/i;
+.source "SourceFile"
+
+# interfaces
+.implements Lc93/m;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lbg2/g;->m(Ljava/lang/String;)Lec3/l;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = null
+.end annotation
+
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "Ls83/i;",
+        "Lc93/m;"
+    }
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0002\u0010\u0003\u001a\u00020\u0002*\u0008\u0012\u0004\u0012\u00020\u00010\u0000H\n\u00a2\u0006\u0004\u0008\u0003\u0010\u0004"
+    }
+    d2 = {
+        "Lec3/m;",
+        "Lbg2/d;",
+        "Ll83/a0;",
+        "<anonymous>",
+        "(Lec3/m;)V"
+    }
+    k = 0x3
+    mv = {
+        0x2,
+        0x3,
+        0x0
+    }
+.end annotation
+
+.annotation runtime Ls83/e;
+    c = "com.whoop.sms.setup.domain.SmsSetupInteractor$submitCode$1"
+    f = "SmsSetupInteractor.kt"
+    l = {
+        0x36,
+        0x37,
+        0x3d,
+        0x44,
+        0x4c
+    }
+    m = "invokeSuspend"
+    v = 0x2
+.end annotation
+
+
+# instance fields
+.field final synthetic E:Lbg2/g;
+
+.field final synthetic F:Ljava/lang/String;
+
+.field w:Ljava/lang/Object;
+
+.field x:Ljava/lang/Object;
+
+.field y:I
+
+.field private synthetic z:Ljava/lang/Object;
+
+
+# direct methods
+.method public constructor <init>(Lbg2/g;Ljava/lang/String;Lq83/d;)V
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lbg2/g;",
+            "Ljava/lang/String;",
+            "Lq83/d<",
+            "-",
+            "Lbg2/g$e;",
+            ">;)V"
+        }
+    .end annotation
+
+    iput-object p1, p0, Lbg2/g$e;->E:Lbg2/g;
+
+    iput-object p2, p0, Lbg2/g$e;->F:Ljava/lang/String;
+
+    const/4 p1, 0x2
+
+    invoke-direct {p0, p1, p3}, Ls83/i;-><init>(ILq83/d;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final create(Ljava/lang/Object;Lq83/d;)Lq83/d;
+    .locals 3
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Ljava/lang/Object;",
+            "Lq83/d<",
+            "*>;)",
+            "Lq83/d<",
+            "Ll83/a0;",
+            ">;"
+        }
+    .end annotation
+
+    new-instance v0, Lbg2/g$e;
+
+    iget-object v1, p0, Lbg2/g$e;->E:Lbg2/g;
+
+    iget-object v2, p0, Lbg2/g$e;->F:Ljava/lang/String;
+
+    invoke-direct {v0, v1, v2, p2}, Lbg2/g$e;-><init>(Lbg2/g;Ljava/lang/String;Lq83/d;)V
+
+    iput-object p1, v0, Lbg2/g$e;->z:Ljava/lang/Object;
+
+    return-object v0
+.end method
+
+.method public final invoke(Lec3/m;Lq83/d;)Ljava/lang/Object;
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lec3/m;",
+            "Lq83/d<",
+            "-",
+            "Ll83/a0;",
+            ">;)",
+            "Ljava/lang/Object;"
+        }
+    .end annotation
+
+    .line 1
+    invoke-virtual {p0, p1, p2}, Lbg2/g$e;->create(Ljava/lang/Object;Lq83/d;)Lq83/d;
+
+    move-result-object p1
+
+    check-cast p1, Lbg2/g$e;
+
+    sget-object p2, Ll83/a0;->a:Ll83/a0;
+
+    invoke-virtual {p1, p2}, Lbg2/g$e;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public bridge synthetic invoke(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 0
+
+    .line 2
+    check-cast p1, Lec3/m;
+
+    check-cast p2, Lq83/d;
+
+    invoke-virtual {p0, p1, p2}, Lbg2/g$e;->invoke(Lec3/m;Lq83/d;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public final invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 34
+
+    move-object/from16 v5, p0
+
+    iget-object v0, v5, Lbg2/g$e;->z:Ljava/lang/Object;
+
+    move-object v8, v0
+
+    check-cast v8, Lec3/m;
+
+    sget-object v9, Lr83/a;->w:Lr83/a;
+
+    iget v0, v5, Lbg2/g$e;->y:I
+
+    const/4 v10, 0x5
+
+    const/4 v11, 0x4
+
+    const/4 v12, 0x3
+
+    const/4 v1, 0x2
+
+    const/4 v13, 0x1
+
+    const/4 v14, 0x0
+
+    if-eqz v0, :cond_4
+
+    if-eq v0, v13, :cond_3
+
+    if-eq v0, v1, :cond_2
+
+    if-eq v0, v12, :cond_1
+
+    if-eq v0, v11, :cond_1
+
+    if-ne v0, v10, :cond_0
+
+    goto :goto_0
+
+    :cond_0
+    new-instance v0, Ljava/lang/IllegalStateException;
+
+    const-string v1, "call to \'resume\' before \'invoke\' with coroutine"
+
+    invoke-direct {v0, v1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw v0
+
+    :cond_1
+    iget-object v0, v5, Lbg2/g$e;->x:Ljava/lang/Object;
+
+    check-cast v0, Lcom/whoop/sms/common/data/SmsVerifyResponse;
+
+    :goto_0
+    iget-object v0, v5, Lbg2/g$e;->w:Ljava/lang/Object;
+
+    check-cast v0, Lu02/a;
+
+    invoke-static/range {p1 .. p1}, Lts/o;->I(Ljava/lang/Object;)V
+
+    goto/16 :goto_7
+
+    :cond_2
+    invoke-static/range {p1 .. p1}, Lts/o;->I(Ljava/lang/Object;)V
+
+    move-object/from16 v0, p1
+
+    goto :goto_2
+
+    :cond_3
+    invoke-static/range {p1 .. p1}, Lts/o;->I(Ljava/lang/Object;)V
+
+    goto :goto_1
+
+    :cond_4
+    invoke-static/range {p1 .. p1}, Lts/o;->I(Ljava/lang/Object;)V
+
+    new-instance v15, Lbg2/d;
+
+    const v32, 0xffef
+
+    const/16 v33, 0x0
+
+    const/16 v16, 0x0
+
+    const/16 v17, 0x0
+
+    const/16 v18, 0x0
+
+    const/16 v19, 0x0
+
+    const/16 v20, 0x1
+
+    const/16 v21, 0x0
+
+    const/16 v22, 0x0
+
+    const/16 v23, 0x0
+
+    const/16 v24, 0x0
+
+    const/16 v25, 0x0
+
+    const/16 v26, 0x0
+
+    const/16 v27, 0x0
+
+    const/16 v28, 0x0
+
+    const/16 v29, 0x0
+
+    const/16 v30, 0x0
+
+    const/16 v31, 0x0
+
+    invoke-direct/range {v15 .. v33}, Lbg2/d;-><init>(Ljava/lang/String;ZZZZZZLjava/lang/String;Ljava/lang/String;ZZLjava/lang/String;Ljava/util/List;Ljava/lang/String;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+    iput-object v8, v5, Lbg2/g$e;->z:Ljava/lang/Object;
+
+    iput v13, v5, Lbg2/g$e;->y:I
+
+    invoke-interface {v8, v15, v5}, Lec3/m;->emit(Ljava/lang/Object;Lq83/d;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    if-ne v0, v9, :cond_5
+
+    goto/16 :goto_6
+
+    :cond_5
+    :goto_1
+    sget-object v0, Lu02/a;->a:Lu02/a$a;
+
+    iget-object v2, v5, Lbg2/g$e;->E:Lbg2/g;
+
+    invoke-static {v2}, Lbg2/g;->c(Lbg2/g;)Ltr2/n;
+
+    move-result-object v2
+
+    new-instance v4, Lbg2/g$e$a;
+
+    iget-object v3, v5, Lbg2/g$e;->E:Lbg2/g;
+
+    iget-object v6, v5, Lbg2/g$e;->F:Ljava/lang/String;
+
+    invoke-direct {v4, v3, v6, v14}, Lbg2/g$e$a;-><init>(Lbg2/g;Ljava/lang/String;Lq83/d;)V
+
+    iput-object v8, v5, Lbg2/g$e;->z:Ljava/lang/Object;
+
+    iput v1, v5, Lbg2/g$e;->y:I
+
+    move-object v1, v2
+
+    const/4 v2, 0x0
+
+    const/4 v3, 0x0
+
+    const/4 v6, 0x6
+
+    const/4 v7, 0x0
+
+    invoke-static/range {v0 .. v7}, Lu02/a$a;->b(Lu02/a$a;Ltr2/n;Lrr2/c;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lq83/d;ILjava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    if-ne v0, v9, :cond_6
+
+    goto/16 :goto_6
+
+    :cond_6
+    :goto_2
+    check-cast v0, Lu02/a;
+
+    instance-of v1, v0, Lu02/a$c;
+
+    if-eqz v1, :cond_b
+
+    check-cast v0, Lu02/a$c;
+
+    invoke-virtual {v0}, Lu02/a$c;->a()Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Lpg3/v0;
+
+    iget-object v0, v0, Lpg3/v0;->b:Ljava/lang/Object;
+
+    check-cast v0, Lcom/whoop/sms/common/data/SmsVerifyResponse;
+
+    const-string v1, ""
+
+    if-eqz v0, :cond_8
+
+    invoke-virtual {v0}, Lcom/whoop/sms/common/data/SmsVerifyResponse;->getVerified()Z
+
+    move-result v2
+
+    if-ne v2, v13, :cond_8
+
+    iget-object v2, v5, Lbg2/g$e;->E:Lbg2/g;
+
+    invoke-static {v2}, Lbg2/g;->a(Lbg2/g;)Lwf2/a;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Lwf2/a;->c()V
+
+    new-instance v15, Lbg2/d;
+
+    invoke-virtual {v0}, Lcom/whoop/sms/common/data/SmsVerifyResponse;->getPhoneNumber()Ljava/lang/String;
+
+    move-result-object v0
+
+    if-nez v0, :cond_7
+
+    move-object/from16 v24, v1
+
+    goto :goto_3
+
+    :cond_7
+    move-object/from16 v24, v0
+
+    :goto_3
+    const v32, 0xfedf
+
+    const/16 v33, 0x0
+
+    const/16 v16, 0x0
+
+    const/16 v17, 0x0
+
+    const/16 v18, 0x0
+
+    const/16 v19, 0x0
+
+    const/16 v20, 0x0
+
+    const/16 v21, 0x1
+
+    const/16 v22, 0x0
+
+    const/16 v23, 0x0
+
+    const/16 v25, 0x0
+
+    const/16 v26, 0x0
+
+    const/16 v27, 0x0
+
+    const/16 v28, 0x0
+
+    const/16 v29, 0x0
+
+    const/16 v30, 0x0
+
+    const/16 v31, 0x0
+
+    invoke-direct/range {v15 .. v33}, Lbg2/d;-><init>(Ljava/lang/String;ZZZZZZLjava/lang/String;Ljava/lang/String;ZZLjava/lang/String;Ljava/util/List;Ljava/lang/String;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+    iput-object v14, v5, Lbg2/g$e;->z:Ljava/lang/Object;
+
+    iput-object v14, v5, Lbg2/g$e;->w:Ljava/lang/Object;
+
+    iput-object v14, v5, Lbg2/g$e;->x:Ljava/lang/Object;
+
+    iput v12, v5, Lbg2/g$e;->y:I
+
+    invoke-interface {v8, v15, v5}, Lec3/m;->emit(Ljava/lang/Object;Lq83/d;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    if-ne v0, v9, :cond_c
+
+    goto/16 :goto_6
+
+    :cond_8
+    new-instance v15, Lbg2/d;
+
+    if-eqz v0, :cond_9
+
+    invoke-virtual {v0}, Lcom/whoop/sms/common/data/SmsVerifyResponse;->getError()Ljava/lang/String;
+
+    move-result-object v0
+
+    goto :goto_4
+
+    :cond_9
+    move-object v0, v14
+
+    :goto_4
+    if-nez v0, :cond_a
+
+    move-object/from16 v23, v1
+
+    goto :goto_5
+
+    :cond_a
+    move-object/from16 v23, v0
+
+    :goto_5
+    const v32, 0xff3f
+
+    const/16 v33, 0x0
+
+    const/16 v16, 0x0
+
+    const/16 v17, 0x0
+
+    const/16 v18, 0x0
+
+    const/16 v19, 0x0
+
+    const/16 v20, 0x0
+
+    const/16 v21, 0x0
+
+    const/16 v22, 0x1
+
+    const/16 v24, 0x0
+
+    const/16 v25, 0x0
+
+    const/16 v26, 0x0
+
+    const/16 v27, 0x0
+
+    const/16 v28, 0x0
+
+    const/16 v29, 0x0
+
+    const/16 v30, 0x0
+
+    const/16 v31, 0x0
+
+    invoke-direct/range {v15 .. v33}, Lbg2/d;-><init>(Ljava/lang/String;ZZZZZZLjava/lang/String;Ljava/lang/String;ZZLjava/lang/String;Ljava/util/List;Ljava/lang/String;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+    iput-object v14, v5, Lbg2/g$e;->z:Ljava/lang/Object;
+
+    iput-object v14, v5, Lbg2/g$e;->w:Ljava/lang/Object;
+
+    iput-object v14, v5, Lbg2/g$e;->x:Ljava/lang/Object;
+
+    iput v11, v5, Lbg2/g$e;->y:I
+
+    invoke-interface {v8, v15, v5}, Lec3/m;->emit(Ljava/lang/Object;Lq83/d;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    if-ne v0, v9, :cond_c
+
+    goto :goto_6
+
+    :cond_b
+    instance-of v0, v0, Lu02/a$b;
+
+    if-eqz v0, :cond_d
+
+    new-instance v15, Lbg2/d;
+
+    const v32, 0xffbf
+
+    const/16 v33, 0x0
+
+    const/16 v16, 0x0
+
+    const/16 v17, 0x0
+
+    const/16 v18, 0x0
+
+    const/16 v19, 0x0
+
+    const/16 v20, 0x0
+
+    const/16 v21, 0x0
+
+    const/16 v22, 0x1
+
+    const/16 v23, 0x0
+
+    const/16 v24, 0x0
+
+    const/16 v25, 0x0
+
+    const/16 v26, 0x0
+
+    const/16 v27, 0x0
+
+    const/16 v28, 0x0
+
+    const/16 v29, 0x0
+
+    const/16 v30, 0x0
+
+    const/16 v31, 0x0
+
+    invoke-direct/range {v15 .. v33}, Lbg2/d;-><init>(Ljava/lang/String;ZZZZZZLjava/lang/String;Ljava/lang/String;ZZLjava/lang/String;Ljava/util/List;Ljava/lang/String;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+    iput-object v14, v5, Lbg2/g$e;->z:Ljava/lang/Object;
+
+    iput-object v14, v5, Lbg2/g$e;->w:Ljava/lang/Object;
+
+    iput v10, v5, Lbg2/g$e;->y:I
+
+    invoke-interface {v8, v15, v5}, Lec3/m;->emit(Ljava/lang/Object;Lq83/d;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    if-ne v0, v9, :cond_c
+
+    :goto_6
+    return-object v9
+
+    :cond_c
+    :goto_7
+    sget-object v0, Ll83/a0;->a:Ll83/a0;
+
+    return-object v0
+
+    :cond_d
+    new-instance v0, Lkotlin/NoWhenBranchMatchedException;
+
+    invoke-direct {v0}, Lkotlin/NoWhenBranchMatchedException;-><init>()V
+
+    throw v0
+.end method

@@ -1,0 +1,112 @@
+.class public final Lhu2/a$o;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lhu2/a$c0;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lhu2/a;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = "o"
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000$\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0002\n\u0002\u0010\u0008\n\u0002\u0008\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0003\u0008\u00c7\u0002\u0018\u00002\u00020\u0001B\t\u0008\u0002\u00a2\u0006\u0004\u0008\u0002\u0010\u0003J\r\u0010\u0005\u001a\u00020\u0004\u00a2\u0006\u0004\u0008\u0005\u0010\u0006J\u001d\u0010\u000b\u001a\u00020\n2\u0006\u0010\u0008\u001a\u00020\u00072\u0006\u0010\t\u001a\u00020\u0004\u00a2\u0006\u0004\u0008\u000b\u0010\u000c\u00a8\u0006\r"
+    }
+    d2 = {
+        "Lhu2/a$o;",
+        "Lhu2/a$c0;",
+        "<init>",
+        "()V",
+        "",
+        "describeContents",
+        "()I",
+        "Landroid/os/Parcel;",
+        "dest",
+        "flags",
+        "Ll83/a0;",
+        "writeToParcel",
+        "(Landroid/os/Parcel;I)V",
+        "weightlifting_release"
+    }
+    k = 0x1
+    mv = {
+        0x2,
+        0x3,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+
+# static fields
+.field public static final CREATOR:Landroid/os/Parcelable$Creator;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Landroid/os/Parcelable$Creator<",
+            "Lhu2/a$o;",
+            ">;"
+        }
+    .end annotation
+.end field
+
+.field public static final w:Lhu2/a$o;
+
+
+# direct methods
+.method static constructor <clinit>()V
+    .locals 1
+
+    new-instance v0, Lhu2/a$o;
+
+    invoke-direct {v0}, Lhu2/a$o;-><init>()V
+
+    sput-object v0, Lhu2/a$o;->w:Lhu2/a$o;
+
+    new-instance v0, Lhu2/a$o$a;
+
+    invoke-direct {v0}, Lhu2/a$o$a;-><init>()V
+
+    sput-object v0, Lhu2/a$o;->CREATOR:Landroid/os/Parcelable$Creator;
+
+    return-void
+.end method
+
+.method private constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final describeContents()I
+    .locals 1
+
+    const/4 v0, 0x0
+
+    return v0
+.end method
+
+.method public final writeToParcel(Landroid/os/Parcel;I)V
+    .locals 0
+
+    const-string p2, "dest"
+
+    invoke-static {p1, p2}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    const/4 p2, 0x1
+
+    invoke-virtual {p1, p2}, Landroid/os/Parcel;->writeInt(I)V
+
+    return-void
+.end method

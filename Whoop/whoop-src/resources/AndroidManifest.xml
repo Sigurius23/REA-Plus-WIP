@@ -1,0 +1,1571 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:versionCode="618174"
+    android:versionName="5.473.0"
+    android:compileSdkVersion="36"
+    android:compileSdkVersionCodename="16"
+    android:requiredSplitTypes="base__abi,base__density"
+    android:splitTypes=""
+    package="com.whoop.android"
+    platformBuildVersionCode="36"
+    platformBuildVersionName="16">
+    <uses-sdk
+        android:minSdkVersion="28"
+        android:targetSdkVersion="36"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"/>
+    <uses-permission android:name="android.permission.REQUEST_COMPANION_RUN_IN_BACKGROUND"/>
+    <uses-permission android:name="android.permission.REQUEST_COMPANION_USE_DATA_IN_BACKGROUND"/>
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.software.companion_device_setup"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true"/>
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.BROWSABLE"/>
+            <data android:scheme="https"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <category android:name="android.intent.category.BROWSABLE"/>
+            <data android:scheme="http"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.OPEN_DOCUMENT"/>
+            <data android:mimeType="*/*"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT"/>
+            <data android:mimeType="*/*"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.PICK"/>
+            <data android:mimeType="*/*"/>
+        </intent>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE"/>
+        </intent>
+        <package android:name="com.google.android.apps.healthdata"/>
+        <intent>
+            <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND"/>
+            <data android:mimeType="image/png"/>
+        </intent>
+        <intent>
+            <action android:name="android.media.action.VIDEO_CAPTURE"/>
+        </intent>
+        <package android:name="com.android.chrome"/>
+        <package android:name="com.google.android.apps.maps"/>
+        <intent>
+            <action android:name="android.intent.action.SENDTO"/>
+            <data android:scheme="smsto"/>
+        </intent>
+    </queries>
+    <attribution
+        android:label="@string/attribution_gps_tracking"
+        android:tag="gpsTracking"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
+    <uses-permission android:name="android.permission.health.READ_DISTANCE"/>
+    <uses-permission android:name="android.permission.health.READ_ELEVATION_GAINED"/>
+    <uses-permission android:name="android.permission.health.READ_EXERCISE"/>
+    <uses-permission android:name="android.permission.health.WRITE_ACTIVE_CALORIES_BURNED"/>
+    <uses-permission android:name="android.permission.health.WRITE_EXERCISE"/>
+    <uses-permission android:name="android.permission.health.READ_BASAL_BODY_TEMPERATURE"/>
+    <uses-permission android:name="android.permission.health.READ_BASAL_METABOLIC_RATE"/>
+    <uses-permission android:name="android.permission.health.READ_BLOOD_GLUCOSE"/>
+    <uses-permission android:name="android.permission.health.READ_BLOOD_PRESSURE"/>
+    <uses-permission android:name="android.permission.health.READ_BODY_FAT"/>
+    <uses-permission android:name="android.permission.health.READ_BODY_TEMPERATURE"/>
+    <uses-permission android:name="android.permission.health.READ_CERVICAL_MUCUS"/>
+    <uses-permission android:name="android.permission.health.READ_HEIGHT"/>
+    <uses-permission android:name="android.permission.health.READ_LEAN_BODY_MASS"/>
+    <uses-permission android:name="android.permission.health.READ_MENSTRUATION"/>
+    <uses-permission android:name="android.permission.health.READ_WEIGHT"/>
+    <uses-permission android:name="android.permission.health.WRITE_WEIGHT"/>
+    <uses-permission android:name="android.permission.health.WRITE_LEAN_BODY_MASS"/>
+    <uses-permission android:name="android.permission.health.WRITE_SLEEP"/>
+    <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
+    <uses-permission android:name="android.permission.health.READ_OXYGEN_SATURATION"/>
+    <uses-permission android:name="android.permission.health.READ_RESPIRATORY_RATE"/>
+    <uses-permission android:name="android.permission.health.READ_RESTING_HEART_RATE"/>
+    <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
+    <uses-permission android:name="android.permission.health.WRITE_OXYGEN_SATURATION"/>
+    <uses-permission android:name="android.permission.health.WRITE_RESPIRATORY_RATE"/>
+    <uses-permission android:name="android.permission.health.WRITE_RESTING_HEART_RATE"/>
+    <uses-permission android:name="android.permission.health.READ_HYDRATION"/>
+    <uses-permission android:name="android.permission.health.READ_NUTRITION"/>
+    <uses-permission android:name="android.permission.health.READ_POWER"/>
+    <uses-permission android:name="android.permission.health.READ_SPEED"/>
+    <uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED"/>
+    <uses-permission android:name="android.permission.health.READ_VO2_MAX"/>
+    <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30"/>
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30"/>
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation"/>
+    <uses-permission android:name="android.permission.REQUEST_OBSERVE_COMPANION_DEVICE_PRESENCE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
+        android:maxSdkVersion="30"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-feature
+        android:glEsVersion="0x30000"
+        android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL"/>
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA"/>
+    <permission
+        android:name="com.whoop.android.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:protectionLevel="signature"/>
+    <uses-permission android:name="com.whoop.android.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <application
+        android:theme="@style/Theme.Whoop"
+        android:label="@string/appLabel"
+        android:icon="@mipmap/ic_launcher"
+        android:name="com.whoop.WhoopApplication"
+        android:allowBackup="false"
+        android:supportsRtl="true"
+        android:extractNativeLibs="false"
+        android:resizeableActivity="false"
+        android:networkSecurityConfig="@xml/certificates"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        android:requestLegacyExternalStorage="true">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB4U6ZBHYRr1qxb13A--KLZbXN3n3WvccM"/>
+        <meta-data
+            android:name="io.sentry.dsn"
+            android:value="https://789a1f6e65d5405988710240444d7c8f@o217231.ingest.sentry.io/5996087"/>
+        <meta-data
+            android:name="iterable_notification_channel_name"
+            android:resource="@string/iterable_channel_name"/>
+        <meta-data
+            android:name="iterable_notification_icon"
+            android:resource="@drawable/ic_ticker_status_whoop"/>
+        <meta-data
+            android:name="iterable_notification_color"
+            android:resource="@color/Whoop.Black"/>
+        <activity
+            android:theme="@style/Theme.App.Starting"
+            android:name="com.whoop.p069ui.home.redesign.view.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="userPortrait"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="amp-373aa4892af22745"/>
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="@string/url_web_host"/>
+                <data android:pathPattern="/navigation/mobile/v1/.*"/>
+            </intent-filter>
+            <intent-filter android:priority="2">
+                <action android:name="io.getstream.video.android.action.ONGOING_CALL"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/Theme.Whoop"
+            android:name="com.whoop.p069ui.main.LinkingActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="userPortrait"
+            android:noHistory="true">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/AthleteBio"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/BillingOptions"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/Coaching"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/whoop_coach"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/impacts"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/weekly-plan-home"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/weekly-plan-presets"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/weekly_plan_preset_detail"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/weekly_plan_challenge"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/weekly_plan_set_up"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/Community"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/customizeyourjournal"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/ExtendMembership"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/health_tab"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/GiftWHOOP"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/HarvardUpgradeFlow"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/HealthMonitor"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/healthspan"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/home"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/shop"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/JoinCommunity"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/legacy_pro_checkout"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/language_settings"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/MccSettings"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/menstrual_cycle_insights"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/mfa_setup"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/OverviewPillar"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/OverviewTrend"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/RecoveryPillar"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/RecoveryTrend"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/ReferAFriend"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/sage"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/heart_screener"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/SleepCoach"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/SleepDetails"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/SleepNeeded"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/SleepPillar"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPattern="/SleepPillar/.*"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/SleepTrend"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/StrainCoach"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/StrainPillar"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/StrainTrend"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/ViewAchievement"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/ViewCommunity"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/ViewLevel"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/ViewProfile"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/ViewSettings"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/ViewSettings"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/WHOOPLive"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/journalreproductivehealth"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/journal"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/MaxHRSettings"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/OnboardingTasklist"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/TeamDirectory"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/strava_integration"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/yearinreview"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/trends"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/restorative_sleep"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/sleep_efficiency"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/sleep_restorative_percent"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/sleep_debt"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/sleep_consistency"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/payment"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/StrengthTrainer"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/workout/share"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/extensions"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/family"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/integrations"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/tilt_mode"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/whoop_labs"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/whoop-labs"/>
+                <data
+                    android:scheme="http"
+                    android:host="@string/url_web_host"
+                    android:path="@string/url_invite_path"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="@string/url_invite_path"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPattern="/JoinCommunity/.*"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/stress_monitor"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPattern="/external_auth/.*"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/reset-password-v2"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/what_to_expect"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/WU"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/challenges"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/HrSettings"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/healthspan"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/hormonal_insights_onboarding"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/hormonal_insights_settings"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/pregnancy_insights"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/log_symptoms"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/upgrade"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/DATA_STREAK_EXPLAINER"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/feature_education"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/advanced_labs_waitlist"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/advanced_labs_home"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/advanced_labs_join"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/gifting"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/gifted"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/gift"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/advanced_labs_early_access"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/advanced_labs_purchase_add_ons"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/advanced_labs_update_tests"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/family_plan_hub"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/advanced_labs_upload"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/advanced_labs_schedule_test"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/advanced_labs_test_summary"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/advanced_labs_insights"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/advanced_labs_actions"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/advanced_labs_biomarker"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:path="/advanced_labs_start_test"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/LimitedTimeOffer"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/resume-from-link"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="@string/deeplink_scheme"
+                    android:host="strength.builder"/>
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="https"
+                    android:host="@string/url_web_host"
+                    android:pathPrefix="/external_auth"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="com.whoop.community.presentation.login.InviteCodeActivity"
+            android:exported="true"
+            android:screenOrientation="userPortrait"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="com.whoop.community.presentation.teams.TeamCreateActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="userPortrait"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="com.whoop.community.presentation.teams.TeamRemoveMembersActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="userPortrait"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name="com.whoop.p069ui.teams.TeamsShowInviteActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="userPortrait"/>
+        <activity
+            android:name="com.whoop.p069ui.drawer.strapsettings.connectstrap.BleChooseStrapActivity"
+            android:screenOrientation="userPortrait"/>
+        <activity
+            android:name="com.whoop.p069ui.drawer.strapsettings.connectstrap.BleConnectStrapActivity"
+            android:screenOrientation="userPortrait"/>
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="com.whoop.community.presentation.login.JoinTeamActivity"
+            android:exported="false"
+            android:screenOrientation="userPortrait"/>
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="com.whoop.community.presentation.teams.JoinTeamConfirmationActivity"
+            android:exported="false"
+            android:screenOrientation="userPortrait"/>
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="com.whoop.community.presentation.login.JoinTeamLandingActivity"
+            android:exported="false"
+            android:screenOrientation="userPortrait"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:theme="@style/Theme.Transparent"
+            android:name="com.whoop.settings.strap.EditDeviceNameActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:theme="@style/StripeTransparentTheme"
+            android:name="com.stripe.android.payments.StripeBrowserLauncherActivity"
+            android:exported="false"
+            android:launchMode="singleTask"/>
+        <receiver android:name="com.whoop.service.push.notifications.NotificationDismissedReceiver"/>
+        <receiver android:name="com.whoop.service.push.notifications.NotificationClickedReceiver"/>
+        <receiver android:name="com.whoop.referafriend.utils.SharingBroadcastReceiver"/>
+        <receiver
+            android:name="com.whoop.service.OnReboot"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.whoop.service.OnBluetoothConnect"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED"/>
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED"/>
+                <action android:name="android.bluetooth.adapter.action.CONNECTION_STATE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.whoop.service.TimeZoneReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.whoop.gps.collector.BackgroundLocationReceiver"
+            android:exported="false"/>
+        <service
+            android:name="com.whoop.service.push.PushService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.whoop.service.sync.WhoopSyncService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice"/>
+        <service
+            android:name="com.whoop.service.realtime.RealTimeActivityService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice|location"/>
+        <service
+            android:name="com.whoop.service.WhoopActionJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service
+            android:name="com.whoop.service.firmware.FirmwareUpdateService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice"/>
+        <service
+            android:name="com.whoop.firmwareUpdateService.strategy.NewDfuService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice"/>
+        <service
+            android:name="com.whoop.ble.scan.BleDeviceScannerService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice"/>
+        <service android:name="com.whoop.service.rearchitect.BleWhoopStrapService"/>
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true"/>
+        </service>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:authorities="com.whoop.android.logProvider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/log_provider_paths"/>
+        </provider>
+        <provider
+            android:name="com.whoop.util.GenericFileProvider"
+            android:exported="false"
+            android:authorities="com.whoop.android.provider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:exported="false"
+            android:authorities="com.whoop.android.androidx-startup">
+            <meta-data
+                android:name="com.whoop.initializer.SentryInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="com.whoop.initializer.FirebaseInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="io.getstream.chat.android.p226ui.initializer.ChatUIInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="com.mapbox.maps.loader.MapboxMapsInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="com.mapbox.common.MapboxSDKCommonInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="com.amplitude.android.engagement.AmplitudeEngagementInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="io.getstream.android.push.permissions.PushPermissionsInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="net.danlew.android.joda.JodaTimeInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="okhttp3.internal.platform.PlatformInitializer"
+                android:value="androidx.startup"/>
+            <meta-data
+                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+                android:value="androidx.startup"/>
+        </provider>
+        <service
+            android:name="com.whoop.cdm.WhoopCompanionDeviceService"
+            android:permission="android.permission.BIND_COMPANION_DEVICE_SERVICE"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.companion.CompanionDeviceService"/>
+            </intent-filter>
+        </service>
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="com.whoop.community.presentation.teams.TeamsShowInviteActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.whoop.whooplive.selfie.SelfieActivity"
+            android:screenOrientation="userPortrait"/>
+        <activity
+            android:name="com.whoop.realtime.presentation.RealTimeRecordActivity"
+            android:exported="false"
+            android:screenOrientation="userPortrait"/>
+        <activity
+            android:name="com.whoop.realtime.presentation.StartActivityActivity"
+            android:exported="false"
+            android:screenOrientation="userPortrait"/>
+        <activity
+            android:name="com.whoop.realtime.presentation.RealTimeFinishPromptActivity"
+            android:exported="false"
+            android:screenOrientation="userPortrait"/>
+        <service
+            android:name="com.whoop.realtime.service.RealTimeActivityService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice|location"/>
+        <service
+            android:name="com.whoop.weightlifting.feature.active.activeworkout.StrengthBuilderWorkoutService"
+            android:foregroundServiceType="connectedDevice"/>
+        <service
+            android:name="com.whoop.whooplabs.WhoopLabsService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice|dataSync"/>
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:enabled="@bool/enable_system_foreground_service_default"
+            android:exported="false"
+            android:directBootAware="false"
+            android:foregroundServiceType="shortService|connectedDevice|dataSync"/>
+        <service
+            android:name="com.whoop.trackactivity.service.TrackSessionService"
+            android:stopWithTask="false"
+            android:foregroundServiceType="connectedDevice|location"/>
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="com.whoop.healthconnect.HealthConnectRationaleActivity"
+            android:enabled="true"
+            android:exported="true"
+            android:screenOrientation="userPortrait"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
+            </intent-filter>
+        </activity>
+        <activity-alias
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="com.whoop.healthconnect.AndroidURationaleActivity"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE"
+            android:exported="true"
+            android:screenOrientation="userPortrait"
+            android:targetActivity="com.whoop.healthconnect.HealthConnectRationaleActivity"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
+            </intent-filter>
+        </activity-alias>
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true"/>
+        <activity
+            android:theme="@style/VideoPlayerTheme"
+            android:name="com.whoop.video.VideoActivity"
+            android:configChanges="layoutDirection|screenSize|screenLayout|orientation|keyboardHidden"/>
+        <receiver
+            android:label="@string/widget_label_recovery"
+            android:name="com.whoop.widget.network.SmallWidgetRecoveryProvider"
+            android:enabled="@bool/widget_enable"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_recovery"/>
+        </receiver>
+        <receiver
+            android:label="@string/widget_label_sleep"
+            android:name="com.whoop.widget.network.SmallWidgetSleepProvider"
+            android:enabled="@bool/widget_enable"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_sleep"/>
+        </receiver>
+        <receiver
+            android:label="@string/widget_label_strain"
+            android:name="com.whoop.widget.network.SmallWidgetStrainProvider"
+            android:enabled="@bool/widget_enable"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_strain"/>
+        </receiver>
+        <receiver
+            android:label="@string/widget_label_steps"
+            android:name="com.whoop.widget.network.SmallWidgetStepsProvider"
+            android:enabled="@bool/widget_enable"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_steps"/>
+        </receiver>
+        <receiver
+            android:label="@string/widget_label_overview"
+            android:name="com.whoop.widget.network.OverviewWidgetProvider"
+            android:enabled="@bool/widget_enable"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_overview"/>
+        </receiver>
+        <receiver
+            android:label="@string/widget_label_stress"
+            android:name="com.whoop.widget.network.SmallWidgetStressProvider"
+            android:enabled="false"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_stress"/>
+        </receiver>
+        <receiver
+            android:label="@string/widget_label_battery"
+            android:name="com.whoop.widget.network.SmallWidgetStrapBatteryProvider"
+            android:enabled="@bool/widget_enable"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_battery"/>
+        </receiver>
+        <receiver
+            android:label="@string/widget_label_healthspan"
+            android:name="com.whoop.widget.network.AmoebaWidgetProvider"
+            android:enabled="@bool/widget_enable"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_healthspan"/>
+        </receiver>
+        <activity
+            android:theme="@android:style/Theme.NoDisplay"
+            android:name="androidx.glance.appwidget.action.ActionTrampolineActivity"
+            android:enabled="true"
+            android:exported="false"
+            android:excludeFromRecents="true"/>
+        <activity
+            android:theme="@style/Widget.Glance.AppWidget.CallbackTrampoline"
+            android:name="androidx.glance.appwidget.action.InvisibleActionTrampolineActivity"
+            android:enabled="true"
+            android:exported="false"
+            android:taskAffinity="androidx.glance.appwidget.ListAdapterCallbackTrampoline"
+            android:launchMode="singleInstance"
+            android:noHistory="true"/>
+        <receiver
+            android:name="androidx.glance.appwidget.action.ActionCallbackBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+        <receiver
+            android:name="androidx.glance.appwidget.UnmanagedSessionReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+        <receiver
+            android:name="androidx.glance.appwidget.MyPackageReplacedReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="androidx.glance.appwidget.GlanceRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="true"/>
+        <activity
+            android:theme="@style/StreamUi.AttachmentGallery"
+            android:name="io.getstream.chat.android.p226ui.feature.gallery.AttachmentGalleryActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StreamUi.MediaActivity"
+            android:name="io.getstream.chat.android.p226ui.feature.gallery.AttachmentMediaActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StreamUi.AttachmentActivity"
+            android:name="io.getstream.chat.android.p226ui.feature.gallery.AttachmentActivity"
+            android:exported="false"/>
+        <activity
+            android:name="io.getstream.chat.android.p226ui.feature.channels.ChannelListActivity"
+            android:exported="false"/>
+        <activity
+            android:name="io.getstream.chat.android.p226ui.feature.messages.ChannelActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+        <provider
+            android:name="io.getstream.chat.android.p226ui.common.StreamFileProvider"
+            android:exported="false"
+            android:authorities="com.whoop.android.streamfileprovider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/stream_filepaths"/>
+        </provider>
+        <receiver
+            android:name="io.getstream.chat.android.client.receivers.NotificationMessageReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="io.getstream.chat.android.READ"/>
+                <action android:name="io.getstream.chat.android.REPLY"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:enabled="@bool/enable_system_job_service_default"
+            android:exported="true"
+            android:directBootAware="false"/>
+        <receiver
+            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:directBootAware="false"/>
+        <receiver
+            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+            android:enabled="false"
+            android:exported="false"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+            android:permission="android.permission.DUMP"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="live.hms.video.services.HMSScreenCaptureService"
+            android:exported="false"
+            android:foregroundServiceType="microphone|camera|mediaProjection"/>
+        <receiver
+            android:name="live.hms.video.services.LogAlarmManager"
+            android:enabled="true"
+            android:exported="false"/>
+        <service
+            android:name="androidx.room.MultiInstanceInvalidationService"
+            android:exported="false"
+            android:directBootAware="true"/>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:name="com.stripe.android.paymentsheet.PaymentSheetActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:name="com.stripe.android.paymentsheet.PaymentOptionsActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:name="com.stripe.android.customersheet.CustomerSheetActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:name="com.stripe.android.paymentsheet.addresselement.AddressElementActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:name="com.stripe.android.paymentsheet.addresselement.AutocompleteActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:name="com.stripe.android.paymentsheet.paymentdatacollection.bacs.BacsMandateConfirmationActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:name="com.stripe.android.paymentsheet.paymentdatacollection.polling.PollingActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:name="com.stripe.android.paymentsheet.p055ui.SepaMandateActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePayLauncherDefaultTheme"
+            android:name="com.stripe.android.paymentsheet.ExternalPaymentMethodProxyActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePayLauncherDefaultTheme"
+            android:name="com.stripe.android.paymentelement.confirmation.cpms.CustomPaymentMethodProxyActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:name="com.stripe.android.paymentsheet.paymentdatacollection.cvcrecollection.CvcRecollectionActivity"/>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:name="com.stripe.android.paymentelement.embedded.form.FormActivity"/>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:name="com.stripe.android.paymentelement.embedded.manage.ManageActivity"/>
+        <activity
+            android:theme="@style/StripeTransparentTheme"
+            android:name="com.stripe.android.attestation.AttestationActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:label="@string/stripe_link"
+            android:name="com.stripe.android.link.LinkActivity"
+            android:exported="false"
+            android:autoRemoveFromRecents="true"/>
+        <activity
+            android:theme="@style/StripeTransparentTheme"
+            android:name="com.stripe.android.link.LinkForegroundActivity"
+            android:launchMode="singleTop"
+            android:configChanges="smallestScreenSize|screenSize|screenLayout|orientation|keyboardHidden|keyboard"
+            android:autoRemoveFromRecents="true"/>
+        <activity
+            android:theme="@style/StripeTransparentTheme"
+            android:name="com.stripe.android.link.LinkRedirectHandlerActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:autoRemoveFromRecents="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="link-popup"
+                    android:host="complete"
+                    android:path="/com.whoop.android"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/StripePaymentSheetDefaultTheme"
+            android:name="com.stripe.android.shoppay.ShopPayActivity"/>
+        <activity
+            android:theme="@style/StripeDefaultTheme"
+            android:name="com.stripe.android.view.PaymentAuthWebViewActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripeTransparentTheme"
+            android:name="com.stripe.android.view.PaymentRelayActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripeTransparentTheme"
+            android:name="com.stripe.android.payments.StripeBrowserProxyReturnActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="stripesdk"
+                    android:host="payment_return_url"
+                    android:path="/com.whoop.android"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/StripeDefaultTheme"
+            android:name="com.stripe.android.payments.core.authentication.threeds2.Stripe3ds2TransactionActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripeGooglePayDefaultTheme"
+            android:name="com.stripe.android.googlepaylauncher.GooglePayLauncherActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripeGooglePayDefaultTheme"
+            android:name="com.stripe.android.googlepaylauncher.GooglePayPaymentMethodLauncherActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePayLauncherDefaultTheme"
+            android:name="com.stripe.android.payments.paymentlauncher.PaymentLauncherConfirmationActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripeTransparentTheme"
+            android:name="com.stripe.android.payments.bankaccount.p054ui.CollectBankAccountActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripeTransparentTheme"
+            android:name="com.stripe.android.challenge.passive.PassiveChallengeActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripeTransparentTheme"
+            android:name="com.stripe.android.challenge.passive.warmer.activity.PassiveChallengeWarmerActivity"
+            android:exported="false"/>
+        <activity
+            android:theme="@style/StripePaymentSheetBaseTheme"
+            android:name="com.stripe.android.challenge.confirmation.IntentConfirmationChallengeActivity"
+            android:exported="false"/>
+        <service
+            android:name="com.iterable.iterableapi.IterableFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter android:priority="-1">
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <receiver
+            android:name="com.iterable.iterableapi.IterablePushActionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.iterable.push.ACTION_PUSH_ACTION"/>
+            </intent-filter>
+        </receiver>
+        <activity
+            android:theme="@style/TrampolineActivity.Transparent"
+            android:name="com.iterable.iterableapi.IterableTrampolineActivity"
+            android:exported="false"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"/>
+        <uses-library
+            android:name="androidx.security"
+            android:required="false"/>
+        <receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+            </intent-filter>
+            <meta-data
+                android:name="com.google.android.gms.cloudmessaging.FINISHED_AFTER_HANDLED"
+                android:value="true"/>
+        </receiver>
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:exported="false"
+            android:directBootAware="true">
+            <intent-filter android:priority="-500">
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.google.firebase.components.ComponentDiscoveryService"
+            android:exported="false"
+            android:directBootAware="true">
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingKtxRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar"/>
+        </service>
+        <receiver
+            android:name="com.mapbox.common.location.LocationUpdatesReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.mapbox.common.location.LocationUpdatesReceiver.ACTION_PROCESS_LOCATION_UPDATES"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.mapbox.common.LifecycleService"
+            android:exported="false"/>
+        <service
+            android:name="androidx.health.platform.client.impl.sdkservice.HealthDataSdkService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="androidx.health.platform.client.ACTION_BIND_SDK_SERVICE"/>
+            </intent-filter>
+        </service>
+        <activity
+            android:name="com.stripe.android.financialconnections.lite.FinancialConnectionsSheetLiteRedirectActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="stripe"
+                    android:host="financial-connections-lite"
+                    android:pathPrefix="/com.whoop.android/auth_redirect"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/StripeBottomSheetActivityTheme"
+            android:name="com.stripe.android.financialconnections.lite.FinancialConnectionsSheetLiteActivity"/>
+        <activity
+            android:theme="@style/Stripe3DS2Theme"
+            android:name="com.stripe.android.stripe3ds2.views.ChallengeActivity"
+            android:exported="false"
+            android:configChanges="screenSize|orientation"/>
+        <activity
+            android:name="androidx.compose.p018ui.tooling.PreviewActivity"
+            android:exported="true"/>
+        <activity
+            android:label="@string/oss_license_title"
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"/>
+        <activity android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"/>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false"/>
+        <service
+            android:name="androidx.credentials.playservices.CredentialProviderMetadataHolder"
+            android:enabled="true"
+            android:exported="false">
+            <meta-data
+                android:name="androidx.credentials.CREDENTIAL_PROVIDER_KEY"
+                android:value="androidx.credentials.playservices.CredentialProviderPlayServicesImpl"/>
+        </service>
+        <activity
+            android:theme="@style/Theme.Hidden"
+            android:name="androidx.credentials.playservices.HiddenActivity"
+            android:enabled="true"
+            android:exported="false"
+            android:configChanges="screenSize|screenLayout|orientation|keyboardHidden"
+            android:fitsSystemWindows="true"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"/>
+        <service
+            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+            android:exported="true"
+            android:visibleToInstantApps="true"/>
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+            android:exported="false"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+        <receiver
+            android:name="io.getstream.video.android.core.notifications.internal.receivers.LeaveCallBroadcastReceiver"
+            android:exported="false">
+            <intent-filter android:priority="-1">
+                <action android:name="io.getstream.video.android.action.LEAVE_CALL"/>
+            </intent-filter>
+        </receiver>
+        <activity
+            android:name="io.getstream.video.android.core.notifications.internal.DismissNotificationActivity"
+            android:showOnLockScreen="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"/>
+        <service
+            android:name="io.getstream.video.android.core.notifications.internal.service.CallService"
+            android:foregroundServiceType="shortService|microphone|camera|phoneCall"/>
+        <provider
+            android:name="io.sentry.android.core.SentryPerformanceProvider"
+            android:exported="false"
+            android:authorities="com.whoop.android.SentryPerformanceProvider"
+            android:initOrder="200"/>
+        <service
+            android:name="androidx.core.widget.RemoteViewsCompatService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+        <uses-library
+            android:name="androidx.window.extensions"
+            android:required="false"/>
+        <uses-library
+            android:name="androidx.window.sidecar"
+            android:required="false"/>
+        <receiver
+            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+            android:permission="android.permission.DUMP"
+            android:enabled="true"
+            android:exported="true"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SKIP_FILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="no.nordicsemi.android.support.v18.scanner.ScannerService"
+            android:exported="false"/>
+        <receiver
+            android:name="no.nordicsemi.android.support.v18.scanner.PendingIntentReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="no.nordicsemi.android.support.v18.ACTION_FOUND"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+            android:exported="false">
+            <meta-data
+                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+                android:value="cct"/>
+        </service>
+        <service
+            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="false"/>
+        <receiver
+            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+            android:exported="false"/>
+        <meta-data
+            android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
+            android:value="GlideModule"/>
+        <provider
+            android:name="io.sentry.ndk.SentryNdkPreloadProvider"
+            android:exported="false"
+            android:authorities="com.whoop.android.SentryNdkPreloadProvider"
+            android:initOrder="2000000000"/>
+        <meta-data
+            android:name="aia-compat-api-min-version"
+            android:value="1"/>
+        <activity
+            android:theme="@style/Theme.PlayCore.Transparent"
+            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+            android:exported="false"
+            android:stateNotNeeded="true"/>
+        <meta-data
+            android:name="com.android.vending.splits.required"
+            android:value="true"/>
+        <meta-data
+            android:name="com.android.stamp.source"
+            android:value="https://play.google.com/store"/>
+        <meta-data
+            android:name="com.android.stamp.type"
+            android:value="STAMP_TYPE_DISTRIBUTION_APK"/>
+        <meta-data
+            android:name="com.android.vending.splits"
+            android:resource="@xml/splits0"/>
+        <meta-data
+            android:name="com.android.vending.derived.apk.id"
+            android:value="2"/>
+    </application>
+</manifest>

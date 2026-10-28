@@ -1,0 +1,163 @@
+package io.getstream.video.android.core.socket;
+
+import io.getstream.chat.android.client.extensions.AttachmentExtensionsKt;
+import java.util.List;
+import java.util.Map;
+import kotlinx.serialization.UnknownFieldException;
+import kotlinx.serialization.internal.GeneratedSerializer;
+import kotlinx.serialization.internal.IntSerializer;
+import kotlinx.serialization.internal.PluginGeneratedSerialDescriptor;
+import kotlinx.serialization.internal.StringSerializer;
+import l83.InterfaceC23457c;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+import wc3.InterfaceC37138c;
+import yc3.InterfaceC39443g;
+import zc3.InterfaceC40539b;
+import zc3.InterfaceC40540c;
+import zc3.InterfaceC40541d;
+import zc3.InterfaceC40542e;
+
+/* JADX INFO: loaded from: classes3.dex */
+@Metadata(m65680d1 = {"\u0000:\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0011\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\bÇ\u0002\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0003\u0010\u0004J\u001a\u0010\u0007\u001a\f\u0012\b\u0012\u0006\u0012\u0002\b\u00030\u00060\u0005HÖ\u0001¢\u0006\u0004\b\u0007\u0010\bJ\u0018\u0010\u000b\u001a\u00020\u00022\u0006\u0010\n\u001a\u00020\tHÖ\u0001¢\u0006\u0004\b\u000b\u0010\fJ \u0010\u0011\u001a\u00020\u00102\u0006\u0010\u000e\u001a\u00020\r2\u0006\u0010\u000f\u001a\u00020\u0002HÖ\u0001¢\u0006\u0004\b\u0011\u0010\u0012R\u0014\u0010\u0016\u001a\u00020\u00138VXÖ\u0005¢\u0006\u0006\u001a\u0004\b\u0014\u0010\u0015¨\u0006\u0017"}, m65681d2 = {"io/getstream/video/android/core/socket/ErrorResponse.$serializer", "Lkotlinx/serialization/internal/GeneratedSerializer;", "Lio/getstream/video/android/core/socket/ErrorResponse;", "<init>", "()V", "", "Lwc3/c;", "childSerializers", "()[Lwc3/c;", "Lzc3/d;", "decoder", "deserialize", "(Lzc3/d;)Lio/getstream/video/android/core/socket/ErrorResponse;", "Lzc3/e;", "encoder", "value", "Ll83/a0;", "serialize", "(Lzc3/e;Lio/getstream/video/android/core/socket/ErrorResponse;)V", "Lyc3/g;", "getDescriptor", "()Lyc3/g;", "descriptor", "stream-video-android-core_release"}, m65682k = 1, m65683mv = {1, 9, 0}, m65685xi = 48)
+@InterfaceC23457c
+public final class ErrorResponse$$serializer implements GeneratedSerializer<ErrorResponse> {
+    public static final ErrorResponse$$serializer INSTANCE;
+    private static final /* synthetic */ PluginGeneratedSerialDescriptor descriptor;
+
+    static {
+        ErrorResponse$$serializer errorResponse$$serializer = new ErrorResponse$$serializer();
+        INSTANCE = errorResponse$$serializer;
+        PluginGeneratedSerialDescriptor pluginGeneratedSerialDescriptor = new PluginGeneratedSerialDescriptor("io.getstream.video.android.core.socket.ErrorResponse", errorResponse$$serializer, 7);
+        pluginGeneratedSerialDescriptor.addElement("code", true);
+        pluginGeneratedSerialDescriptor.addElement("message", true);
+        pluginGeneratedSerialDescriptor.addElement("StatusCode", true);
+        pluginGeneratedSerialDescriptor.addElement("details", true);
+        pluginGeneratedSerialDescriptor.addElement("exceptionFields", true);
+        pluginGeneratedSerialDescriptor.addElement("more_info", true);
+        pluginGeneratedSerialDescriptor.addElement(AttachmentExtensionsKt.EXTRA_DURATION, true);
+        descriptor = pluginGeneratedSerialDescriptor;
+    }
+
+    private ErrorResponse$$serializer() {
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer
+    public InterfaceC37138c[] childSerializers() {
+        InterfaceC37138c[] interfaceC37138cArr = ErrorResponse.$childSerializers;
+        InterfaceC37138c interfaceC37138c = interfaceC37138cArr[3];
+        InterfaceC37138c interfaceC37138c2 = interfaceC37138cArr[4];
+        IntSerializer intSerializer = IntSerializer.INSTANCE;
+        StringSerializer stringSerializer = StringSerializer.INSTANCE;
+        return new InterfaceC37138c[]{intSerializer, stringSerializer, intSerializer, interfaceC37138c, interfaceC37138c2, stringSerializer, stringSerializer};
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer, wc3.InterfaceC37137b
+    public ErrorResponse deserialize(InterfaceC40541d decoder) {
+        int iDecodeIntElement;
+        int i13;
+        int i14;
+        String str;
+        List list;
+        Map map;
+        String str2;
+        String strDecodeStringElement;
+        AbstractC22676k.m65750j(decoder, "decoder");
+        InterfaceC39443g descriptor2 = getDescriptor();
+        InterfaceC40539b interfaceC40539bBeginStructure = decoder.beginStructure(descriptor2);
+        InterfaceC37138c[] interfaceC37138cArr = ErrorResponse.$childSerializers;
+        if (interfaceC40539bBeginStructure.decodeSequentially()) {
+            iDecodeIntElement = interfaceC40539bBeginStructure.decodeIntElement(descriptor2, 0);
+            String strDecodeStringElement2 = interfaceC40539bBeginStructure.decodeStringElement(descriptor2, 1);
+            int iDecodeIntElement2 = interfaceC40539bBeginStructure.decodeIntElement(descriptor2, 2);
+            List list2 = (List) interfaceC40539bBeginStructure.decodeSerializableElement(descriptor2, 3, interfaceC37138cArr[3], null);
+            Map map2 = (Map) interfaceC40539bBeginStructure.decodeSerializableElement(descriptor2, 4, interfaceC37138cArr[4], null);
+            String strDecodeStringElement3 = interfaceC40539bBeginStructure.decodeStringElement(descriptor2, 5);
+            map = map2;
+            strDecodeStringElement = interfaceC40539bBeginStructure.decodeStringElement(descriptor2, 6);
+            str2 = strDecodeStringElement3;
+            i13 = iDecodeIntElement2;
+            list = list2;
+            i14 = 127;
+            str = strDecodeStringElement2;
+        } else {
+            boolean z4 = true;
+            iDecodeIntElement = 0;
+            int i15 = 0;
+            String strDecodeStringElement4 = null;
+            List list3 = null;
+            Map map3 = null;
+            String strDecodeStringElement5 = null;
+            String strDecodeStringElement6 = null;
+            int iDecodeIntElement3 = 0;
+            while (z4) {
+                int iDecodeElementIndex = interfaceC40539bBeginStructure.decodeElementIndex(descriptor2);
+                switch (iDecodeElementIndex) {
+                    case -1:
+                        z4 = false;
+                        continue;
+                    case 0:
+                        iDecodeIntElement = interfaceC40539bBeginStructure.decodeIntElement(descriptor2, 0);
+                        i15 |= 1;
+                        continue;
+                    case 1:
+                        strDecodeStringElement4 = interfaceC40539bBeginStructure.decodeStringElement(descriptor2, 1);
+                        i15 |= 2;
+                        break;
+                    case 2:
+                        iDecodeIntElement3 = interfaceC40539bBeginStructure.decodeIntElement(descriptor2, 2);
+                        i15 |= 4;
+                        break;
+                    case 3:
+                        list3 = (List) interfaceC40539bBeginStructure.decodeSerializableElement(descriptor2, 3, interfaceC37138cArr[3], list3);
+                        i15 |= 8;
+                        break;
+                    case 4:
+                        map3 = (Map) interfaceC40539bBeginStructure.decodeSerializableElement(descriptor2, 4, interfaceC37138cArr[4], map3);
+                        i15 |= 16;
+                        break;
+                    case 5:
+                        strDecodeStringElement5 = interfaceC40539bBeginStructure.decodeStringElement(descriptor2, 5);
+                        i15 |= 32;
+                        break;
+                    case 6:
+                        strDecodeStringElement6 = interfaceC40539bBeginStructure.decodeStringElement(descriptor2, 6);
+                        i15 |= 64;
+                        break;
+                    default:
+                        throw new UnknownFieldException(iDecodeElementIndex);
+                }
+            }
+            i13 = iDecodeIntElement3;
+            i14 = i15;
+            str = strDecodeStringElement4;
+            list = list3;
+            map = map3;
+            str2 = strDecodeStringElement5;
+            strDecodeStringElement = strDecodeStringElement6;
+        }
+        int i16 = iDecodeIntElement;
+        interfaceC40539bBeginStructure.endStructure(descriptor2);
+        return new ErrorResponse(i14, i16, str, i13, list, map, str2, strDecodeStringElement, null);
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer, wc3.InterfaceC37145j, wc3.InterfaceC37137b
+    public InterfaceC39443g getDescriptor() {
+        return descriptor;
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer, wc3.InterfaceC37145j
+    public void serialize(InterfaceC40542e encoder, ErrorResponse value) {
+        AbstractC22676k.m65750j(encoder, "encoder");
+        AbstractC22676k.m65750j(value, "value");
+        InterfaceC39443g descriptor2 = getDescriptor();
+        InterfaceC40540c interfaceC40540cBeginStructure = encoder.beginStructure(descriptor2);
+        ErrorResponse.write$Self$stream_video_android_core_release(value, interfaceC40540cBeginStructure, descriptor2);
+        interfaceC40540cBeginStructure.endStructure(descriptor2);
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer
+    public InterfaceC37138c[] typeParametersSerializers() {
+        return GeneratedSerializer.DefaultImpls.typeParametersSerializers(this);
+    }
+}

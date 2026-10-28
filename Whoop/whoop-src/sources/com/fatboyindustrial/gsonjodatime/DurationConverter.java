@@ -1,0 +1,26 @@
+package com.fatboyindustrial.gsonjodatime;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import java.lang.reflect.Type;
+import org.joda.time.Duration;
+
+/* JADX INFO: loaded from: classes.dex */
+public class DurationConverter implements JsonSerializer<Duration>, JsonDeserializer<Duration> {
+    @Override // com.google.gson.JsonDeserializer
+    public final Duration deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) {
+        if (jsonElement.getAsString() == null || jsonElement.getAsString().isEmpty()) {
+            return null;
+        }
+        return Duration.parse(jsonElement.getAsString());
+    }
+
+    @Override // com.google.gson.JsonSerializer
+    public final JsonElement serialize(Duration duration, Type type, JsonSerializationContext jsonSerializationContext) {
+        return new JsonPrimitive(duration.toString());
+    }
+}

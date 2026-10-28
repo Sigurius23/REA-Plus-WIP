@@ -1,0 +1,17 @@
+{
+  "status": "static capture shortlist; runtime ordering and completeness unverified",
+  "source_root": "../whoop-src/sources",
+  "routes": [
+    {"method":"GET","path":"/configuration/v1/services/mobile/name/Android/properties/unauth","group":"core","shape":"array of {key:string,value:string}","source":"com/whoop/service/network/ConfigurationApi.java:14"},
+    {"method":"GET","path":"/configuration/v1/services/mobile/name/Android/properties","group":"core","shape":"array of {key:string,value:string}","source":"com/whoop/service/network/ConfigurationApi.java:11"},
+    {"method":"GET","path":"/feature-flags/flags/user","group":"core","shape":"array of strings","source":"com/whoop/service/network/FeatureFlagsApi.java:12"},
+    {"method":"GET","path":"/users-service/v2/bootstrap","group":"core","shape":"{account,user,profile,membership,bio_data}; account,user,account.user_id required by login converter","source":"com/whoop/domain/bootstrap/BootstrapApi.java:13; pd1/C29104a.java:374"},
+    {"method":"GET","path":"/app-configuration-service/v1/config","group":"core","shape":"{tabs:{default_tab_id,items},should_fetch_ai_context}; nullable sections","source":"com/whoop/appconfiguration/AppConfigurationApi.java:10"},
+    {"method":"GET","path":"/onboarding-service/v1/feature-education-state","group":"core","query_keys":["userId"],"shape":"object of boolean values","source":"com/whoop/data/onboarding/OnboardingStatusApi.java:27"},
+    {"method":"GET","path":"/entitlement-service/v1/entitlements","group":"core","shape":"{entitlements:{name:{entitled:boolean}},context:{membership_type:string|null}}","source":"com/whoop/entitlements/MemberEntitlementsApi.java:11"},
+    {"method":"GET","path":"/membership-service/v1/straps","group":"core","shape":"{last_seen_strap,ordered_strap,previous_straps}; strap:{generation,serial,first_seen}","source":"com/whoop/service/network/MembershipV2Api.java:26; e50/C12722a.java:50,117"},
+    {"method":"GET","path":"/onboarding-service/v1/app/destination","group":"conditional","query_keys":["flow"],"shape":"{screen,parameters,tab:{id}}","source":"com/whoop/activation/domain/ActivationAuthenticatedApi.java:70; caller f70/C14208u.java:149"},
+    {"method":"GET","path":"/onboarding-service/v1/join/post-signin-destination","group":"conditional","query_keys":["userid","flow"],"shape":"{screen,parameters,tab:{id}}","source":"com/whoop/activation/domain/ActivationAuthenticatedApi.java:88"},
+    {"method":"GET","path":"/feature-flags/flags/onboarding/{flagName}","group":"conditional","shape":"boolean","source":"com/whoop/service/network/FeatureFlagsApi.java:15"}
+  ]
+}

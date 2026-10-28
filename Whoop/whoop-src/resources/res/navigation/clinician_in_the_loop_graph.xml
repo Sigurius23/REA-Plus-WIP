@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/clinician_in_the_loop_graph"
+    app:startDestination="@+id/clinicianVideoSchedulingIntakeFragment">
+    <fragment
+        android:label="ClinicianVideoSchedulingIntakeFragment"
+        android:name="com.whoop.clinicianintheloop.view.ClinicianVideoSchedulingIntakeFragment"
+        android:id="@+id/clinicianVideoSchedulingIntakeFragment">
+        <argument
+            android:name="appointmentType"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="intakeType"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="appointmentId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+        <deepLink app:uri="android-app://com.whoop/clinicianVideoSchedulingIntake?appointmentType={appointmentType}&amp;intakeType={intakeType}&amp;appointmentId={appointmentId}"/>
+    </fragment>
+    <fragment
+        android:label="ClinicianVideoSchedulingFormFragment"
+        android:name="com.whoop.clinicianintheloop.view.ClinicianVideoSchedulingFormFragment"
+        android:id="@+id/clinicianVideoSchedulingFormFragment">
+        <deepLink app:uri="android-app://com.whoop/clinicianVideoSchedulingForm?usState={usState}&amp;intakeResponses={intakeResponses}&amp;rescheduleAppointmentId={rescheduleAppointmentId}"/>
+        <argument
+            android:name="usState"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="intakeResponses"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="rescheduleAppointmentId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+    <fragment
+        android:label="ClinicianSchedulingConfirmationFragment"
+        android:name="com.whoop.clinicianintheloop.view.ClinicianSchedulingConfirmationFragment"
+        android:id="@+id/clinicianSchedulingConfirmationFragment">
+        <deepLink app:uri="android-app://com.whoop/clinicianSchedulingConfirmation?appointmentId={appointmentId}"/>
+        <argument
+            android:name="appointmentId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+</navigation>

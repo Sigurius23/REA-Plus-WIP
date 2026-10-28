@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_team_card_parent"
+    android:tag="layout/view_create_team_and_invite_code_prompt_cardv1_0"
+    android:background="@color/whoop_white_opacity_10"
+    android:padding="@dimen/Margin.StandardAndHalf"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="@dimen/text_size_standard"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:id="@+id/text_team_headerV1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dont_see_community_empty"
+        android:textAllCaps="true"
+        android:fontFamily="@font/alphabetic_font_bold"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:letterSpacing="0.1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textSize="@dimen/text_size_slightly_small"
+        android:gravity="center"
+        android:id="@+id/text_team_sub_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/Margin.Standard"
+        android:text="@string/create_own_team_empty"
+        android:fontFamily="@font/alphabetic_font_regular"
+        app:layout_constraintEnd_toEndOf="@+id/text_team_headerV1"
+        app:layout_constraintStart_toStartOf="@+id/text_team_headerV1"
+        app:layout_constraintTop_toBottomOf="@+id/text_team_headerV1"/>
+    <include
+        android:id="@+id/create_invite_button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/Margin.Standard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_team_sub_header"
+        layout="@layout/view_create_team_and_invite_code_button_layout"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

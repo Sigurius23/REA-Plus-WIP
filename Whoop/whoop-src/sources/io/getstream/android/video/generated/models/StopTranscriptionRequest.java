@@ -1,0 +1,65 @@
+package io.getstream.android.video.generated.models;
+
+import p441qx.InterfaceC30731q;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+import p715kotlin.jvm.internal.DefaultConstructorMarker;
+import te0.AbstractC33745d;
+
+/* JADX INFO: loaded from: classes11.dex */
+@Metadata(m65680d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u000b\n\u0002\b\n\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000e\n\u0000\b\u0086\b\u0018\u00002\u00020\u0001B\u0011\u0012\n\b\u0003\u0010\u0002\u001a\u0004\u0018\u00010\u0003¢\u0006\u0002\u0010\u0004J\u0010\u0010\b\u001a\u0004\u0018\u00010\u0003HÆ\u0003¢\u0006\u0002\u0010\u0006J\u001a\u0010\t\u001a\u00020\u00002\n\b\u0003\u0010\u0002\u001a\u0004\u0018\u00010\u0003HÆ\u0001¢\u0006\u0002\u0010\nJ\u0013\u0010\u000b\u001a\u00020\u00032\b\u0010\f\u001a\u0004\u0018\u00010\u0001HÖ\u0003J\t\u0010\r\u001a\u00020\u000eHÖ\u0001J\t\u0010\u000f\u001a\u00020\u0010HÖ\u0001R\u0015\u0010\u0002\u001a\u0004\u0018\u00010\u0003¢\u0006\n\n\u0002\u0010\u0007\u001a\u0004\b\u0005\u0010\u0006¨\u0006\u0011"}, m65681d2 = {"Lio/getstream/android/video/generated/models/StopTranscriptionRequest;", "", "stopClosedCaptions", "", "(Ljava/lang/Boolean;)V", "getStopClosedCaptions", "()Ljava/lang/Boolean;", "Ljava/lang/Boolean;", "component1", "copy", "(Ljava/lang/Boolean;)Lio/getstream/android/video/generated/models/StopTranscriptionRequest;", "equals", "other", "hashCode", "", "toString", "", "stream-video-android-core_release"}, m65682k = 1, m65683mv = {1, 9, 0}, m65685xi = 48)
+public final /* data */ class StopTranscriptionRequest {
+    private final Boolean stopClosedCaptions;
+
+    /* JADX WARN: Multi-variable type inference failed */
+    public StopTranscriptionRequest() {
+        this(null, 1, 0 == true ? 1 : 0);
+    }
+
+    public static /* synthetic */ StopTranscriptionRequest copy$default(StopTranscriptionRequest stopTranscriptionRequest, Boolean bool, int i13, Object obj) {
+        if ((i13 & 1) != 0) {
+            bool = stopTranscriptionRequest.stopClosedCaptions;
+        }
+        return stopTranscriptionRequest.copy(bool);
+    }
+
+    /* JADX INFO: renamed from: component1, reason: from getter */
+    public final Boolean getStopClosedCaptions() {
+        return this.stopClosedCaptions;
+    }
+
+    public final StopTranscriptionRequest copy(@InterfaceC30731q(name = "stop_closed_captions") Boolean stopClosedCaptions) {
+        return new StopTranscriptionRequest(stopClosedCaptions);
+    }
+
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        return (other instanceof StopTranscriptionRequest) && AbstractC22676k.m65745e(this.stopClosedCaptions, ((StopTranscriptionRequest) other).stopClosedCaptions);
+    }
+
+    public final Boolean getStopClosedCaptions() {
+        return this.stopClosedCaptions;
+    }
+
+    public int hashCode() {
+        Boolean bool = this.stopClosedCaptions;
+        if (bool == null) {
+            return 0;
+        }
+        return bool.hashCode();
+    }
+
+    public String toString() {
+        return AbstractC33745d.m106651j("StopTranscriptionRequest(stopClosedCaptions=", this.stopClosedCaptions, ")");
+    }
+
+    public StopTranscriptionRequest(@InterfaceC30731q(name = "stop_closed_captions") Boolean bool) {
+        this.stopClosedCaptions = bool;
+    }
+
+    public /* synthetic */ StopTranscriptionRequest(Boolean bool, int i13, DefaultConstructorMarker defaultConstructorMarker) {
+        this((i13 & 1) != 0 ? null : bool);
+    }
+}

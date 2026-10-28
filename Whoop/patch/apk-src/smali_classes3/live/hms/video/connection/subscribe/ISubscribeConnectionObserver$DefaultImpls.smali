@@ -1,0 +1,46 @@
+.class public final Llive/hms/video/connection/subscribe/ISubscribeConnectionObserver$DefaultImpls;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Llive/hms/video/connection/subscribe/ISubscribeConnectionObserver;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = "DefaultImpls"
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    k = 0x3
+    mv = {
+        0x2,
+        0x0,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+
+# direct methods
+.method public static onDataChannel(Llive/hms/video/connection/subscribe/ISubscribeConnectionObserver;Lhms/webrtc/DataChannel;Lq83/d;)Ljava/lang/Object;
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Llive/hms/video/connection/subscribe/ISubscribeConnectionObserver;",
+            "Lhms/webrtc/DataChannel;",
+            "Lq83/d<",
+            "-",
+            "Ll83/a0;",
+            ">;)",
+            "Ljava/lang/Object;"
+        }
+    .end annotation
+
+    sget-object p0, Ll83/a0;->a:Ll83/a0;
+
+    return-object p0
+.end method

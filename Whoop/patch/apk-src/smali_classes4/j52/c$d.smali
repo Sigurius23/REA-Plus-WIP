@@ -1,0 +1,242 @@
+.class final Lj52/c$d;
+.super Ls83/i;
+.source "SourceFile"
+
+# interfaces
+.implements Lkotlin/jvm/functions/Function1;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lj52/c;->f(SLjava/util/List;Lq83/d;)Ljava/lang/Object;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = null
+.end annotation
+
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "Ls83/i;",
+        "Lkotlin/jvm/functions/Function1;"
+    }
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000\u0008\n\u0002\u0018\u0002\n\u0002\u0008\u0002\u0010\u0001\u001a\u00020\u0000H\n\u00a2\u0006\u0004\u0008\u0001\u0010\u0002"
+    }
+    d2 = {
+        "Ll83/a0;",
+        "<anonymous>",
+        "()V"
+    }
+    k = 0x3
+    mv = {
+        0x2,
+        0x3,
+        0x0
+    }
+.end annotation
+
+.annotation runtime Ls83/e;
+    c = "com.whoop.pulseinformationpacket.network.PipUploaderImpl$uploadByRevision$2"
+    f = "PipUploader.kt"
+    l = {
+        0x4e
+    }
+    m = "invokeSuspend"
+    v = 0x2
+.end annotation
+
+
+# instance fields
+.field final synthetic E:S
+
+.field w:I
+
+.field final synthetic x:Lud3/v0;
+
+.field final synthetic y:Loh2/d;
+
+.field final synthetic z:Lj52/c;
+
+
+# direct methods
+.method public constructor <init>(Lud3/v0;Loh2/d;Lj52/c;SLq83/d;)V
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lud3/v0;",
+            "Loh2/d;",
+            "Lj52/c;",
+            "S",
+            "Lq83/d<",
+            "-",
+            "Lj52/c$d;",
+            ">;)V"
+        }
+    .end annotation
+
+    iput-object p1, p0, Lj52/c$d;->x:Lud3/v0;
+
+    iput-object p2, p0, Lj52/c$d;->y:Loh2/d;
+
+    iput-object p3, p0, Lj52/c$d;->z:Lj52/c;
+
+    iput-short p4, p0, Lj52/c$d;->E:S
+
+    const/4 p1, 0x1
+
+    invoke-direct {p0, p1, p5}, Ls83/i;-><init>(ILq83/d;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final create(Lq83/d;)Lq83/d;
+    .locals 6
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lq83/d<",
+            "*>;)",
+            "Lq83/d<",
+            "Ll83/a0;",
+            ">;"
+        }
+    .end annotation
+
+    new-instance v0, Lj52/c$d;
+
+    iget-object v1, p0, Lj52/c$d;->x:Lud3/v0;
+
+    iget-object v2, p0, Lj52/c$d;->y:Loh2/d;
+
+    iget-object v3, p0, Lj52/c$d;->z:Lj52/c;
+
+    iget-short v4, p0, Lj52/c$d;->E:S
+
+    move-object v5, p1
+
+    invoke-direct/range {v0 .. v5}, Lj52/c$d;-><init>(Lud3/v0;Loh2/d;Lj52/c;SLq83/d;)V
+
+    return-object v0
+.end method
+
+.method public bridge synthetic invoke(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 0
+
+    .line 1
+    check-cast p1, Lq83/d;
+
+    invoke-virtual {p0, p1}, Lj52/c$d;->invoke(Lq83/d;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public final invoke(Lq83/d;)Ljava/lang/Object;
+    .locals 1
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lq83/d<",
+            "-",
+            "Ll83/a0;",
+            ">;)",
+            "Ljava/lang/Object;"
+        }
+    .end annotation
+
+    .line 2
+    invoke-virtual {p0, p1}, Lj52/c$d;->create(Lq83/d;)Lq83/d;
+
+    move-result-object p1
+
+    check-cast p1, Lj52/c$d;
+
+    sget-object v0, Ll83/a0;->a:Ll83/a0;
+
+    invoke-virtual {p1, v0}, Lj52/c$d;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public final invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 6
+
+    sget-object v0, Lr83/a;->w:Lr83/a;
+
+    iget v1, p0, Lj52/c$d;->w:I
+
+    const/4 v2, 0x1
+
+    if-eqz v1, :cond_1
+
+    if-ne v1, v2, :cond_0
+
+    invoke-static {p1}, Lts/o;->I(Ljava/lang/Object;)V
+
+    goto :goto_0
+
+    :cond_0
+    new-instance p1, Ljava/lang/IllegalStateException;
+
+    const-string v0, "call to \'resume\' before \'invoke\' with coroutine"
+
+    invoke-direct {p1, v0}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw p1
+
+    :cond_1
+    invoke-static {p1}, Lts/o;->I(Ljava/lang/Object;)V
+
+    iget-object p1, p0, Lj52/c$d;->x:Lud3/v0;
+
+    if-eqz p1, :cond_2
+
+    iget-object p1, p0, Lj52/c$d;->y:Loh2/d;
+
+    if-eqz p1, :cond_2
+
+    iget-object p1, p0, Lj52/c$d;->z:Lj52/c;
+
+    invoke-static {p1}, Lj52/c;->c(Lj52/c;)Lcom/whoop/pulseinformationpacket/network/PulseInformationMetricsApi;
+
+    move-result-object p1
+
+    iget-object v1, p0, Lj52/c$d;->x:Lud3/v0;
+
+    iget-object v3, p0, Lj52/c$d;->z:Lj52/c;
+
+    iget-object v4, p0, Lj52/c$d;->y:Loh2/d;
+
+    iget-short v5, p0, Lj52/c$d;->E:S
+
+    invoke-static {v3, v4, v5}, Lj52/c;->b(Lj52/c;Loh2/d;S)Ljava/util/Map;
+
+    move-result-object v3
+
+    iput v2, p0, Lj52/c$d;->w:I
+
+    invoke-interface {p1, v1, v3, p0}, Lcom/whoop/pulseinformationpacket/network/PulseInformationMetricsApi;->uploadPipRawData(Lud3/v0;Ljava/util/Map;Lq83/d;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    if-ne p1, v0, :cond_2
+
+    return-object v0
+
+    :cond_2
+    :goto_0
+    sget-object p1, Ll83/a0;->a:Ll83/a0;
+
+    return-object p1
+.end method

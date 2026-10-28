@@ -1,0 +1,195 @@
+.class final Lio/getstream/chat/android/client/internal/offline/repository/domain/message/internal/MessageMapperKt$toModel$1;
+.super Ls83/c;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lio/getstream/chat/android/client/internal/offline/repository/domain/message/internal/MessageMapperKt;->toModel(Lio/getstream/chat/android/client/internal/offline/repository/domain/message/internal/MessageEntity;Lc93/m;Lc93/m;Lc93/m;Lq83/d;)Ljava/lang/Object;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = null
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    k = 0x3
+    mv = {
+        0x2,
+        0x2,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+.annotation runtime Ls83/e;
+    c = "io.getstream.chat.android.client.internal.offline.repository.domain.message.internal.MessageMapperKt"
+    f = "MessageMapper.kt"
+    l = {
+        0x2a,
+        0x3f,
+        0x40,
+        0x41,
+        0x43,
+        0x45,
+        0x4c,
+        0x53
+    }
+    m = "toModel"
+.end annotation
+
+
+# instance fields
+.field I$0:I
+
+.field I$1:I
+
+.field I$2:I
+
+.field I$3:I
+
+.field I$4:I
+
+.field I$5:I
+
+.field L$0:Ljava/lang/Object;
+
+.field L$1:Ljava/lang/Object;
+
+.field L$10:Ljava/lang/Object;
+
+.field L$11:Ljava/lang/Object;
+
+.field L$12:Ljava/lang/Object;
+
+.field L$13:Ljava/lang/Object;
+
+.field L$14:Ljava/lang/Object;
+
+.field L$15:Ljava/lang/Object;
+
+.field L$16:Ljava/lang/Object;
+
+.field L$17:Ljava/lang/Object;
+
+.field L$18:Ljava/lang/Object;
+
+.field L$19:Ljava/lang/Object;
+
+.field L$2:Ljava/lang/Object;
+
+.field L$20:Ljava/lang/Object;
+
+.field L$21:Ljava/lang/Object;
+
+.field L$22:Ljava/lang/Object;
+
+.field L$23:Ljava/lang/Object;
+
+.field L$24:Ljava/lang/Object;
+
+.field L$25:Ljava/lang/Object;
+
+.field L$26:Ljava/lang/Object;
+
+.field L$27:Ljava/lang/Object;
+
+.field L$28:Ljava/lang/Object;
+
+.field L$29:Ljava/lang/Object;
+
+.field L$3:Ljava/lang/Object;
+
+.field L$30:Ljava/lang/Object;
+
+.field L$31:Ljava/lang/Object;
+
+.field L$32:Ljava/lang/Object;
+
+.field L$33:Ljava/lang/Object;
+
+.field L$34:Ljava/lang/Object;
+
+.field L$35:Ljava/lang/Object;
+
+.field L$36:Ljava/lang/Object;
+
+.field L$37:Ljava/lang/Object;
+
+.field L$38:Ljava/lang/Object;
+
+.field L$39:Ljava/lang/Object;
+
+.field L$4:Ljava/lang/Object;
+
+.field L$40:Ljava/lang/Object;
+
+.field L$5:Ljava/lang/Object;
+
+.field L$6:Ljava/lang/Object;
+
+.field L$7:Ljava/lang/Object;
+
+.field L$8:Ljava/lang/Object;
+
+.field L$9:Ljava/lang/Object;
+
+.field Z$0:Z
+
+.field Z$1:Z
+
+.field Z$2:Z
+
+.field Z$3:Z
+
+.field Z$4:Z
+
+.field Z$5:Z
+
+.field label:I
+
+.field synthetic result:Ljava/lang/Object;
+
+
+# direct methods
+.method public constructor <init>(Lq83/d;)V
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lq83/d<",
+            "-",
+            "Lio/getstream/chat/android/client/internal/offline/repository/domain/message/internal/MessageMapperKt$toModel$1;",
+            ">;)V"
+        }
+    .end annotation
+
+    invoke-direct {p0, p1}, Ls83/c;-><init>(Lq83/d;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 1
+
+    iput-object p1, p0, Lio/getstream/chat/android/client/internal/offline/repository/domain/message/internal/MessageMapperKt$toModel$1;->result:Ljava/lang/Object;
+
+    iget p1, p0, Lio/getstream/chat/android/client/internal/offline/repository/domain/message/internal/MessageMapperKt$toModel$1;->label:I
+
+    const/high16 v0, -0x80000000
+
+    or-int/2addr p1, v0
+
+    iput p1, p0, Lio/getstream/chat/android/client/internal/offline/repository/domain/message/internal/MessageMapperKt$toModel$1;->label:I
+
+    const/4 p1, 0x0
+
+    invoke-static {p1, p1, p1, p1, p0}, Lio/getstream/chat/android/client/internal/offline/repository/domain/message/internal/MessageMapperKt;->toModel(Lio/getstream/chat/android/client/internal/offline/repository/domain/message/internal/MessageEntity;Lc93/m;Lc93/m;Lc93/m;Lq83/d;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method

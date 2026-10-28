@@ -1,0 +1,64 @@
+.class public final synthetic Lio/getstream/chat/android/ui/common/feature/messages/list/f;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lo23/a;
+
+
+# instance fields
+.field public final synthetic w:I
+
+.field public final synthetic x:Lkotlin/jvm/functions/Function1;
+
+.field public final synthetic y:Lio/getstream/chat/android/ui/common/feature/messages/list/MessageListController;
+
+
+# direct methods
+.method public synthetic constructor <init>(Lkotlin/jvm/functions/Function1;Lio/getstream/chat/android/ui/common/feature/messages/list/MessageListController;I)V
+    .locals 0
+
+    iput p3, p0, Lio/getstream/chat/android/ui/common/feature/messages/list/f;->w:I
+
+    iput-object p1, p0, Lio/getstream/chat/android/ui/common/feature/messages/list/f;->x:Lkotlin/jvm/functions/Function1;
+
+    iput-object p2, p0, Lio/getstream/chat/android/ui/common/feature/messages/list/f;->y:Lio/getstream/chat/android/ui/common/feature/messages/list/MessageListController;
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final onResult(Ln23/h;)V
+    .locals 2
+
+    iget v0, p0, Lio/getstream/chat/android/ui/common/feature/messages/list/f;->w:I
+
+    packed-switch v0, :pswitch_data_0
+
+    iget-object v0, p0, Lio/getstream/chat/android/ui/common/feature/messages/list/f;->x:Lkotlin/jvm/functions/Function1;
+
+    iget-object v1, p0, Lio/getstream/chat/android/ui/common/feature/messages/list/f;->y:Lio/getstream/chat/android/ui/common/feature/messages/list/MessageListController;
+
+    invoke-static {v0, v1, p1}, Lio/getstream/chat/android/ui/common/feature/messages/list/MessageListController;->r(Lkotlin/jvm/functions/Function1;Lio/getstream/chat/android/ui/common/feature/messages/list/MessageListController;Ln23/h;)V
+
+    return-void
+
+    :pswitch_0
+    iget-object v0, p0, Lio/getstream/chat/android/ui/common/feature/messages/list/f;->x:Lkotlin/jvm/functions/Function1;
+
+    iget-object v1, p0, Lio/getstream/chat/android/ui/common/feature/messages/list/f;->y:Lio/getstream/chat/android/ui/common/feature/messages/list/MessageListController;
+
+    invoke-static {v0, v1, p1}, Lio/getstream/chat/android/ui/common/feature/messages/list/MessageListController;->t(Lkotlin/jvm/functions/Function1;Lio/getstream/chat/android/ui/common/feature/messages/list/MessageListController;Ln23/h;)V
+
+    return-void
+
+    nop
+
+    :pswitch_data_0
+    .packed-switch 0x0
+        :pswitch_0
+    .end packed-switch
+.end method

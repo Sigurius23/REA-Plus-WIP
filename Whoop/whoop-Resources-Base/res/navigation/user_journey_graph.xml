@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/user_journey_graph" app:startDestination="@id/user_journey_fragment"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <fragment android:label="UserJourneyFragment" android:name="com.whoop.user.journey.view.UserJourneyFragment" android:id="@id/user_journey_fragment">
+        <deepLink app:uri="android-app://com.whoop/userJourneyFragment?year={year}" />
+        <argument android:name="year" android:defaultValue="-1" app:argType="integer" />
+    </fragment>
+    <fragment android:label="YirRafFragment" android:name="com.whoop.user.journey.yearinreviewraf.YirRafFragment" android:id="@id/year_in_review_raf_fragment">
+        <deepLink app:uri="android-app://com.whoop/yearinreviewshare" />
+    </fragment>
+</navigation>

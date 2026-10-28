@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/advanced_labs_graph"
+    app:startDestination="@+id/advancedLabsFragment">
+    <fragment
+        android:label="ADVANCED_LABS_HOME"
+        android:name="com.whoop.advancedlabs.view.AdvancedLabsFragment"
+        android:id="@+id/advancedLabsFragment">
+        <deepLink app:uri="android-app://com.whoop/AdvancedLabsFragment?source={source}"/>
+        <argument
+            android:name="source"
+            android:defaultValue="none"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+    <fragment
+        android:label="BiomarkerSummaryFragment"
+        android:name="com.whoop.advancedlabs.biomarkersummary.view.BiomarkerSummaryFragment"
+        android:id="@+id/biomarkerSummaryFragment">
+        <deepLink app:uri="android-app://com.whoop/biomarkerSummaryFragment?statusType={statusType}"/>
+        <argument
+            android:name="statusType"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+    <fragment
+        android:label="BiomarkerDetailsFragment"
+        android:name="com.whoop.advancedlabs.biomarkerdetails.view.BiomarkerDetailsFragment"
+        android:id="@+id/biomarkerDetailsFragment">
+        <deepLink app:uri="android-app://com.whoop/biomarkerDetailsFragment?biomarkerId={biomarkerId}&amp;source={source}"/>
+        <argument
+            android:name="biomarkerId"
+            app:argType="string"/>
+        <argument
+            android:name="source"
+            android:defaultValue="unknown"
+            app:argType="string"/>
+    </fragment>
+    <fragment
+        android:label="TestResultsFragment"
+        android:name="com.whoop.advancedlabs.testresults.view.TestResultsFragment"
+        android:id="@+id/testResultsFragment">
+        <deepLink app:uri="android-app://com.whoop/testResultsFragment?testId={testId}"/>
+        <argument
+            android:name="testId"
+            app:argType="string"/>
+    </fragment>
+    <fragment
+        android:label="MultiConsentFragment"
+        android:name="com.whoop.advancedlabs.multiconsentscreen.view.MultiConsentFragment"
+        android:id="@+id/multiConsentFragment">
+        <deepLink app:uri="android-app://com.whoop/multiConsentFragment?consentAction={consentAction}&amp;testType={testType}"/>
+        <argument
+            android:name="consentAction"
+            app:argType="string"
+            app:nullable="false"/>
+        <argument
+            android:name="testType"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+    <fragment
+        android:label="SchedulingStepFragment"
+        android:name="com.whoop.advancedlabs.schedulingstep.view.SchedulingStepFragment"
+        android:id="@+id/schedulingStepFragment">
+        <deepLink app:uri="android-app://com.whoop/schedulingStepFragment?step={step}&amp;testType={testType}"/>
+        <argument
+            android:name="step"
+            app:argType="string"
+            app:nullable="false"/>
+        <argument
+            android:name="testType"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+    <fragment
+        android:label="SchedulePrimerFragment"
+        android:name="com.whoop.advancedlabs.scheduleprimer.view.SchedulePrimerFragment"
+        android:id="@+id/schedulePrimerFragment">
+        <deepLink app:uri="android-app://com.whoop/schedulePrimerFragment?source={source}"/>
+        <argument
+            android:name="source"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+    <fragment
+        android:label="AdvancedLabsTypeformWebviewFragment"
+        android:name="com.whoop.advancedlabs.typeformwebview.view.AdvancedLabsTypeformWebviewFragment"
+        android:id="@+id/advancedLabsTypeformWebviewFragment">
+        <deepLink app:uri="android-app://com.whoop/advancedLabsTypeformWebviewFragment?url={url}&amp;testTokenId={testTokenId}&amp;testType={testType}"/>
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="false"/>
+        <argument
+            android:name="testTokenId"
+            app:argType="string"
+            app:nullable="false"/>
+        <argument
+            android:name="testType"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+    <fragment
+        android:label="AllRecordingsFragment"
+        android:name="com.whoop.advancedlabs.allrecordings.view.AllRecordingsFragment"
+        android:id="@+id/allRecordingsFragment">
+        <deepLink app:uri="android-app://com.whoop/allRecordingsFragment?biomarkerName={biomarkerName}"/>
+        <argument
+            android:name="biomarkerName"
+            app:argType="string"/>
+    </fragment>
+    <fragment
+        android:label="ActionPlanFragment"
+        android:name="com.whoop.advancedlabs.actionplan.view.ActionPlanFragment"
+        android:id="@+id/actionPlanFragment">
+        <deepLink app:uri="android-app://com.whoop/actionPlanFragment?testId={testId}"/>
+        <argument
+            android:name="testId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+    <fragment
+        android:label="TestUploadFragment"
+        android:name="com.whoop.advancedlabs.testupload.view.TestUploadFragment"
+        android:id="@+id/testUploadFragment">
+        <deepLink app:uri="android-app://com.whoop/testUploadFragment"/>
+    </fragment>
+    <fragment
+        android:label="ClinicalInsightsFragment"
+        android:name="com.whoop.advancedlabs.clinicalinsights.view.ClinicalInsightsFragment"
+        android:id="@+id/clinicalInsightsFragment">
+        <deepLink app:uri="android-app://com.whoop/clinicalInsightsFragment?testId={testId}&amp;source={source}"/>
+        <argument
+            android:name="testId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="source"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+    <fragment
+        android:label="InsightsDeepDiveFragment"
+        android:name="com.whoop.advancedlabs.insightsdeepdive.view.InsightsDeepDiveFragment"
+        android:id="@+id/insightsDeepDiveFragment">
+        <deepLink app:uri="android-app://com.whoop/insightsDeepDiveFragment?insightsId={insightsId}&amp;source={source}"/>
+        <argument
+            android:name="insightsId"
+            app:argType="string"/>
+        <argument
+            android:name="source"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+    <fragment
+        android:label="RafReceiverFragment"
+        android:name="com.whoop.advancedlabs.rafReceiver.view.RafReceiverFragment"
+        android:id="@+id/rafReceiverFragment">
+        <deepLink app:uri="android-app://com.whoop/rafReceiverFragment?code={code}"/>
+        <argument
+            android:name="code"
+            app:argType="string"
+            app:nullable="false"/>
+    </fragment>
+    <fragment
+        android:label="EditBiomarkersFragment"
+        android:name="com.whoop.advancedlabs.editbiomarkers.view.EditBiomarkersFragment"
+        android:id="@+id/editBiomarkersFragment">
+        <deepLink app:uri="android-app://com.whoop/editBiomarkersFragment?test_id={test_id}&amp;is_ai_confirmation={is_ai_confirmation}"/>
+        <argument
+            android:name="test_id"
+            app:argType="string"/>
+        <argument
+            android:name="is_ai_confirmation"
+            android:defaultValue="false"
+            app:argType="boolean"
+            app:nullable="false"/>
+    </fragment>
+    <fragment
+        android:label="EditTestDetailsFragment"
+        android:name="com.whoop.advancedlabs.edittestdetails.view.EditTestDetailsFragment"
+        android:id="@+id/editTestDetailsFragment">
+        <deepLink app:uri="android-app://com.whoop/editTestDetailsFragment?testId={testId}"/>
+        <argument
+            android:name="testId"
+            app:argType="string"/>
+    </fragment>
+    <fragment
+        android:label="TestHistoryFragment"
+        android:name="com.whoop.advancedlabs.testhistory.view.TestHistoryFragment"
+        android:id="@+id/testHistoryFragment">
+        <deepLink app:uri="android-app://com.whoop/testHistoryFragment"/>
+    </fragment>
+    <fragment
+        android:label="SchedulingFormFragment"
+        android:name="com.whoop.advancedlabs.schedulingform.view.SchedulingFormFragment"
+        android:id="@+id/schedulingFormFragment">
+        <deepLink app:uri="android-app://com.whoop/schedulingFormFragment?episode_id={episode_id}&amp;biomarker_test_id={biomarker_test_id}&amp;test_type={test_type}"/>
+        <argument
+            android:name="episode_id"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="biomarker_test_id"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="test_type"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true"/>
+    </fragment>
+</navigation>

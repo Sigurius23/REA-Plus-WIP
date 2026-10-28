@@ -1,0 +1,68 @@
+package w41;
+
+import com.whoop.design.util.TextResource;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+import q63.AbstractC30007c;
+import r80.AbstractC31061c;
+import te0.AbstractC33745d;
+
+/* JADX INFO: renamed from: w41.r */
+/* JADX INFO: loaded from: classes8.dex */
+@Metadata(m65680d1 = {"\u0000(\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\u0018\u0002\n\u0002\b\u0005\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u000b\n\u0002\b\b\b\u0087\b\u0018\u00002\u00020\u0001B\u001f\u0012\u0006\u0010\u0003\u001a\u00020\u0002\u0012\u0006\u0010\u0004\u001a\u00020\u0002\u0012\u0006\u0010\u0005\u001a\u00020\u0002¢\u0006\u0004\b\u0006\u0010\u0007J\u0010\u0010\t\u001a\u00020\bHÖ\u0001¢\u0006\u0004\b\t\u0010\nJ\u0010\u0010\f\u001a\u00020\u000bHÖ\u0001¢\u0006\u0004\b\f\u0010\rJ\u001a\u0010\u0010\u001a\u00020\u000f2\b\u0010\u000e\u001a\u0004\u0018\u00010\u0001HÖ\u0003¢\u0006\u0004\b\u0010\u0010\u0011R\u0017\u0010\u0003\u001a\u00020\u00028\u0006¢\u0006\f\n\u0004\b\u0012\u0010\u0013\u001a\u0004\b\u0014\u0010\u0015R\u0017\u0010\u0004\u001a\u00020\u00028\u0006¢\u0006\f\n\u0004\b\u0016\u0010\u0013\u001a\u0004\b\u0016\u0010\u0015R\u0017\u0010\u0005\u001a\u00020\u00028\u0006¢\u0006\f\n\u0004\b\u0014\u0010\u0013\u001a\u0004\b\u0012\u0010\u0015¨\u0006\u0017"}, m65681d2 = {"Lw41/r;", "", "Lcom/whoop/design/util/TextResource;", "valueDisplay", "unitDisplay", "titleDisplay", "<init>", "(Lcom/whoop/design/util/TextResource;Lcom/whoop/design/util/TextResource;Lcom/whoop/design/util/TextResource;)V", "", "toString", "()Ljava/lang/String;", "", "hashCode", "()I", "other", "", "equals", "(Ljava/lang/Object;)Z", "a", "Lcom/whoop/design/util/TextResource;", "c", "()Lcom/whoop/design/util/TextResource;", "b", "design_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+public final /* data */ class C36818r {
+
+    /* JADX INFO: renamed from: a, reason: from kotlin metadata */
+    private final TextResource valueDisplay;
+
+    /* JADX INFO: renamed from: b, reason: from kotlin metadata */
+    private final TextResource unitDisplay;
+
+    /* JADX INFO: renamed from: c, reason: from kotlin metadata */
+    private final TextResource titleDisplay;
+
+    public C36818r(TextResource valueDisplay, TextResource unitDisplay, TextResource titleDisplay) {
+        AbstractC22676k.m65750j(valueDisplay, "valueDisplay");
+        AbstractC22676k.m65750j(unitDisplay, "unitDisplay");
+        AbstractC22676k.m65750j(titleDisplay, "titleDisplay");
+        this.valueDisplay = valueDisplay;
+        this.unitDisplay = unitDisplay;
+        this.titleDisplay = titleDisplay;
+    }
+
+    /* JADX INFO: renamed from: a, reason: from getter */
+    public final TextResource getTitleDisplay() {
+        return this.titleDisplay;
+    }
+
+    /* JADX INFO: renamed from: b, reason: from getter */
+    public final TextResource getUnitDisplay() {
+        return this.unitDisplay;
+    }
+
+    /* JADX INFO: renamed from: c, reason: from getter */
+    public final TextResource getValueDisplay() {
+        return this.valueDisplay;
+    }
+
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof C36818r)) {
+            return false;
+        }
+        C36818r c36818r = (C36818r) other;
+        return AbstractC22676k.m65745e(this.valueDisplay, c36818r.valueDisplay) && AbstractC22676k.m65745e(this.unitDisplay, c36818r.unitDisplay) && AbstractC22676k.m65745e(this.titleDisplay, c36818r.titleDisplay);
+    }
+
+    public int hashCode() {
+        return this.titleDisplay.hashCode() + AbstractC31061c.m95625a(this.valueDisplay.hashCode() * 31, this.unitDisplay, 31);
+    }
+
+    public String toString() {
+        TextResource textResource = this.valueDisplay;
+        TextResource textResource2 = this.unitDisplay;
+        return AbstractC30007c.m91841k(AbstractC33745d.m106658q("ActivityStats(valueDisplay=", textResource, ", unitDisplay=", textResource2, ", titleDisplay="), this.titleDisplay, ")");
+    }
+}

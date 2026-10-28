@@ -1,0 +1,25 @@
+package io.sentry.clientreport;
+
+/* JADX INFO: renamed from: io.sentry.clientreport.d */
+/* JADX INFO: loaded from: classes5.dex */
+public enum EnumC20296d {
+    QUEUE_OVERFLOW("queue_overflow"),
+    CACHE_OVERFLOW("cache_overflow"),
+    RATELIMIT_BACKOFF("ratelimit_backoff"),
+    NETWORK_ERROR("network_error"),
+    SEND_ERROR("send_error"),
+    SAMPLE_RATE("sample_rate"),
+    BEFORE_SEND("before_send"),
+    EVENT_PROCESSOR("event_processor"),
+    BACKPRESSURE("backpressure");
+
+    private final String reason;
+
+    EnumC20296d(String str) {
+        this.reason = str;
+    }
+
+    public String getReason() {
+        return this.reason;
+    }
+}

@@ -1,0 +1,127 @@
+package pd2;
+
+import com.whoop.navigation.C9598e;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+import te0.AbstractC33745d;
+
+/* JADX INFO: renamed from: pd2.b */
+/* JADX INFO: loaded from: classes10.dex */
+@Metadata(m65680d1 = {"\u0000\u0016\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0007\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\bv\u0018\u00002\u00020\u0001:\u0007\u0002\u0003\u0004\u0005\u0006\u0007\b\u0082\u0001\u0002\t\n¨\u0006\u000bÀ\u0006\u0003"}, m65681d2 = {"Lpd2/b;", "", "g", "b", "c", "a", "e", "d", "f", "Lpd2/b$c;", "Lpd2/b$g;", "shepherd_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+public interface InterfaceC29106b {
+
+    /* JADX INFO: renamed from: pd2.b$a */
+    @Metadata(m65680d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÇ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, m65681d2 = {"Lpd2/b$a;", "Lpd2/b$c;", "<init>", "()V", "shepherd_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final class a implements c {
+
+        /* JADX INFO: renamed from: a */
+        public static final a f117774a = new a();
+
+        private a() {
+        }
+    }
+
+    /* JADX INFO: renamed from: pd2.b$b */
+    @Metadata(m65680d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÇ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, m65681d2 = {"Lpd2/b$b;", "Lpd2/b$g;", "<init>", "()V", "shepherd_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final class b implements g {
+
+        /* JADX INFO: renamed from: a */
+        public static final b f117775a = new b();
+
+        private b() {
+        }
+    }
+
+    /* JADX INFO: renamed from: pd2.b$c */
+    @Metadata(m65680d1 = {"\u0000\u001a\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\bv\u0018\u00002\u00020\u0001\u0082\u0001\u0004\u0002\u0003\u0004\u0005¨\u0006\u0006À\u0006\u0003"}, m65681d2 = {"Lpd2/b$c;", "Lpd2/b;", "Lpd2/b$a;", "Lpd2/b$d;", "Lpd2/b$e;", "Lpd2/b$f;", "shepherd_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public interface c extends InterfaceC29106b {
+    }
+
+    /* JADX INFO: renamed from: pd2.b$d */
+    @Metadata(m65680d1 = {"\u0000.\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0006\b\u0087\b\u0018\u00002\u00020\u0001B\u000f\u0012\u0006\u0010\u0003\u001a\u00020\u0002¢\u0006\u0004\b\u0004\u0010\u0005J\u0010\u0010\u0007\u001a\u00020\u0006HÖ\u0001¢\u0006\u0004\b\u0007\u0010\bJ\u0010\u0010\n\u001a\u00020\tHÖ\u0001¢\u0006\u0004\b\n\u0010\u000bJ\u001a\u0010\u000f\u001a\u00020\u000e2\b\u0010\r\u001a\u0004\u0018\u00010\fHÖ\u0003¢\u0006\u0004\b\u000f\u0010\u0010R\u0017\u0010\u0003\u001a\u00020\u00028\u0006¢\u0006\f\n\u0004\b\u0011\u0010\u0012\u001a\u0004\b\u0011\u0010\u0013¨\u0006\u0014"}, m65681d2 = {"Lpd2/b$d;", "Lpd2/b$c;", "Lcom/whoop/navigation/e;", "navAction", "<init>", "(Lcom/whoop/navigation/e;)V", "", "toString", "()Ljava/lang/String;", "", "hashCode", "()I", "", "other", "", "equals", "(Ljava/lang/Object;)Z", "a", "Lcom/whoop/navigation/e;", "()Lcom/whoop/navigation/e;", "shepherd_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final /* data */ class d implements c {
+
+        /* JADX INFO: renamed from: b */
+        public static final int f117776b = C9598e.f28134d;
+
+        /* JADX INFO: renamed from: a, reason: from kotlin metadata */
+        private final C9598e navAction;
+
+        public d(C9598e navAction) {
+            AbstractC22676k.m65750j(navAction, "navAction");
+            this.navAction = navAction;
+        }
+
+        /* JADX INFO: renamed from: a, reason: from getter */
+        public final C9598e getNavAction() {
+            return this.navAction;
+        }
+
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            return (other instanceof d) && AbstractC22676k.m65745e(this.navAction, ((d) other).navAction);
+        }
+
+        public int hashCode() {
+            return this.navAction.hashCode();
+        }
+
+        public String toString() {
+            return AbstractC33745d.m106650i("NavigateToInAppBrowser(navAction=", this.navAction, ")");
+        }
+    }
+
+    /* JADX INFO: renamed from: pd2.b$e */
+    @Metadata(m65680d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÇ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, m65681d2 = {"Lpd2/b$e;", "Lpd2/b$c;", "<init>", "()V", "shepherd_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final class e implements c {
+
+        /* JADX INFO: renamed from: a */
+        public static final e f117778a = new e();
+
+        private e() {
+        }
+    }
+
+    /* JADX INFO: renamed from: pd2.b$f */
+    @Metadata(m65680d1 = {"\u0000.\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0006\b\u0087\b\u0018\u00002\u00020\u0001B\u000f\u0012\u0006\u0010\u0003\u001a\u00020\u0002¢\u0006\u0004\b\u0004\u0010\u0005J\u0010\u0010\u0007\u001a\u00020\u0006HÖ\u0001¢\u0006\u0004\b\u0007\u0010\bJ\u0010\u0010\n\u001a\u00020\tHÖ\u0001¢\u0006\u0004\b\n\u0010\u000bJ\u001a\u0010\u000f\u001a\u00020\u000e2\b\u0010\r\u001a\u0004\u0018\u00010\fHÖ\u0003¢\u0006\u0004\b\u000f\u0010\u0010R\u0017\u0010\u0003\u001a\u00020\u00028\u0006¢\u0006\f\n\u0004\b\u0011\u0010\u0012\u001a\u0004\b\u0011\u0010\u0013¨\u0006\u0014"}, m65681d2 = {"Lpd2/b$f;", "Lpd2/b$c;", "Lcom/whoop/navigation/e;", "navAction", "<init>", "(Lcom/whoop/navigation/e;)V", "", "toString", "()Ljava/lang/String;", "", "hashCode", "()I", "", "other", "", "equals", "(Ljava/lang/Object;)Z", "a", "Lcom/whoop/navigation/e;", "()Lcom/whoop/navigation/e;", "shepherd_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final /* data */ class f implements c {
+
+        /* JADX INFO: renamed from: b */
+        public static final int f117779b = C9598e.f28134d;
+
+        /* JADX INFO: renamed from: a, reason: from kotlin metadata */
+        private final C9598e navAction;
+
+        public f(C9598e navAction) {
+            AbstractC22676k.m65750j(navAction, "navAction");
+            this.navAction = navAction;
+        }
+
+        /* JADX INFO: renamed from: a, reason: from getter */
+        public final C9598e getNavAction() {
+            return this.navAction;
+        }
+
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            return (other instanceof f) && AbstractC22676k.m65745e(this.navAction, ((f) other).navAction);
+        }
+
+        public int hashCode() {
+            return this.navAction.hashCode();
+        }
+
+        public String toString() {
+            return AbstractC33745d.m106650i("NavigateToRegistration(navAction=", this.navAction, ")");
+        }
+    }
+
+    /* JADX INFO: renamed from: pd2.b$g */
+    @Metadata(m65680d1 = {"\u0000\u000e\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\bv\u0018\u00002\u00020\u0001\u0082\u0001\u0001\u0002¨\u0006\u0003À\u0006\u0003"}, m65681d2 = {"Lpd2/b$g;", "Lpd2/b;", "Lpd2/b$b;", "shepherd_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public interface g extends InterfaceC29106b {
+    }
+}

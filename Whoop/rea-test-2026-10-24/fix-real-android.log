@@ -1,0 +1,56 @@
+PASS real cold metadata, generic types, overloaded methods and original annotation values after code generation
+PASS CLI inspect_android_package
+PASS CLI search_android_classes
+PASS CLI search_android_strings
+PASS CLI inspect_android_class
+PASS CLI inspect_android_method
+PASS CLI trace_android_references
+PASS MCP/CLI parity inspect_android_package
+PASS MCP/CLI parity search_android_classes
+PASS MCP/CLI parity search_android_strings
+PASS MCP/CLI parity inspect_android_class
+PASS MCP/CLI parity inspect_android_method
+PASS MCP/CLI parity trace_android_references
+PASS real CLI SIGTERM cancellation and owned Java group cleanup
+PASS stdio Android readiness: unavailable
+PASS stdio Android readiness: unavailable
+PASS CLI applicable recovery: JRE without compiler
+PASS stdio Android readiness: unavailable
+PASS CLI applicable recovery: missing java
+PASS stdio Android readiness: unavailable
+PASS CLI applicable recovery: invalid engine archive with a working JDK
+PASS stdio Android readiness: ready
+PASS MCP selector correction: inspect_android_class
+PASS MCP selector correction: inspect_android_method
+PASS MCP selector correction: trace_android_references
+PASS MCP valid package after selector failures
+{
+  "lane": "real-android",
+  "platform": "darwin",
+  "fixture": {
+    "version": "6.0.18",
+    "sha256": "a9eecf37b26cd084855c530db81c2bb1b91f4c1b095a04f47aa7c20e2791f686"
+  },
+  "engine": {
+    "name": "jadx-headless-mcp",
+    "version": "0.7.1",
+    "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+    "worker_count": 1,
+    "heap_limit_mib": 4096
+  },
+  "operations": [
+    "inspect_android_package",
+    "search_android_classes",
+    "search_android_strings",
+    "inspect_android_class",
+    "inspect_android_method",
+    "trace_android_references"
+  ],
+  "cli_mcp_parity": true,
+  "original_apk_unchanged": true,
+  "apk_executed": false,
+  "cli_sigterm_cleanup": true,
+  "metadata_without_code_generation": true,
+  "stable_overload_selection": true
+}

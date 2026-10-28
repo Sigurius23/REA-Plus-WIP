@@ -1,0 +1,15 @@
+package live.hms.video.sdk.managers.local.muteonphonecall.helpers;
+
+import p715kotlin.Metadata;
+
+/* JADX INFO: loaded from: classes3.dex */
+@Metadata(m65680d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\u0010\u000b\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0004\b`\u0018\u00002\u00020\u0001J\u0011\u0010\u0003\u001a\u0004\u0018\u00010\u0002H&¢\u0006\u0004\b\u0003\u0010\u0004J\u0011\u0010\u0005\u001a\u0004\u0018\u00010\u0002H&¢\u0006\u0004\b\u0005\u0010\u0004J\u0017\u0010\b\u001a\u00020\u00072\u0006\u0010\u0006\u001a\u00020\u0002H&¢\u0006\u0004\b\b\u0010\tJ\u0017\u0010\n\u001a\u00020\u00072\u0006\u0010\u0006\u001a\u00020\u0002H&¢\u0006\u0004\b\n\u0010\t¨\u0006\u000b"}, m65681d2 = {"Llive/hms/video/sdk/managers/local/muteonphonecall/helpers/ILocalMediaControl;", "", "", "isLocalAudioEnabled", "()Ljava/lang/Boolean;", "isLocalVideoEnabled", "enabled", "Ll83/a0;", "setLocalAudioEnabled", "(Z)V", "setLocalVideoEnabled", "lib_release"}, m65682k = 1, m65683mv = {2, 0, 0}, m65685xi = 48)
+public interface ILocalMediaControl {
+    Boolean isLocalAudioEnabled();
+
+    Boolean isLocalVideoEnabled();
+
+    void setLocalAudioEnabled(boolean enabled);
+
+    void setLocalVideoEnabled(boolean enabled);
+}

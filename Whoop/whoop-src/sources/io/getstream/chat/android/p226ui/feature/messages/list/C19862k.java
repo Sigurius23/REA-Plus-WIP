@@ -1,0 +1,14 @@
+package io.getstream.chat.android.p226ui.feature.messages.list;
+
+import io.getstream.chat.android.p226ui.feature.gallery.AttachmentGalleryActivity;
+import io.getstream.chat.android.p226ui.feature.gallery.AttachmentGalleryResultItem;
+
+/* JADX INFO: renamed from: io.getstream.chat.android.ui.feature.messages.list.k */
+/* JADX INFO: loaded from: classes3.dex */
+public final /* synthetic */ class C19862k implements AttachmentGalleryActivity.AttachmentReplyOptionHandler {
+    @Override // io.getstream.chat.android.ui.feature.gallery.AttachmentGalleryActivity.AttachmentReplyOptionHandler
+    public final void onClick(AttachmentGalleryResultItem attachmentGalleryResultItem) {
+        MessageListView.m55350M0(attachmentGalleryResultItem);
+        throw null;
+    }
+}

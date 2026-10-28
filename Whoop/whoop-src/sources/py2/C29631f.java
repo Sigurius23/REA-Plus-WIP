@@ -1,0 +1,37 @@
+package py2;
+
+import com.whoop.whooplabs.data.domain.ProtocolStepConfigKt;
+import com.whoop.whooplabs.data.domain.ProtocolStepWithOptions;
+import com.whoop.whooplabs.data.room.entity.ProtocolStepResult;
+import com.whoop.whooplabs.data.room.entity.WhoopLabsStudy;
+import java.util.List;
+import oy2.C28483i;
+import oy2.C28489o;
+import oy2.InterfaceC28476b;
+import oy2.InterfaceC28487m;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+import q83.InterfaceC30057d;
+
+/* JADX INFO: renamed from: py2.f */
+/* JADX INFO: loaded from: classes11.dex */
+@Metadata(m65680d1 = {"\u0000*\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010!\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\b\u0007\u0018\u00002\u00020\u0001B\u0007¢\u0006\u0004\b\u0002\u0010\u0003J.\u0010\f\u001a\u00020\u000b2\u0006\u0010\u0005\u001a\u00020\u00042\u0006\u0010\u0007\u001a\u00020\u00062\f\u0010\n\u001a\b\u0012\u0004\u0012\u00020\t0\bH\u0096@¢\u0006\u0004\b\f\u0010\r¨\u0006\u000e"}, m65681d2 = {"Lpy2/f;", "Loy2/m;", "<init>", "()V", "Lcom/whoop/whooplabs/data/domain/ProtocolStepWithOptions;", "step", "Lcom/whoop/whooplabs/data/room/entity/WhoopLabsStudy;", "study", "", "Lcom/whoop/whooplabs/data/room/entity/ProtocolStepResult;", "results", "Loy2/b$f;", "a", "(Lcom/whoop/whooplabs/data/domain/ProtocolStepWithOptions;Lcom/whoop/whooplabs/data/room/entity/WhoopLabsStudy;Ljava/util/List;Lq83/d;)Ljava/lang/Object;", "whooplabs_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+public final class C29631f implements InterfaceC28487m {
+    @Override // oy2.InterfaceC28487m
+    /* JADX INFO: renamed from: a */
+    public Object mo86773a(ProtocolStepWithOptions protocolStepWithOptions, WhoopLabsStudy whoopLabsStudy, List<ProtocolStepResult> list, InterfaceC30057d<? super InterfaceC28476b.f> interfaceC30057d) {
+        ProtocolStepResult protocolStepResult = list.get(protocolStepWithOptions.getProtocolStep().getOrder());
+        C28489o c28489o = new C28489o(protocolStepWithOptions.getProtocolStep().getTitle(), protocolStepWithOptions.getProtocolStep().getSubtitle(), null, 4, null);
+        int id4 = protocolStepWithOptions.getProtocolStep().getId();
+        String text = protocolStepWithOptions.getProtocolStep().getText();
+        boolean inputRequired = protocolStepWithOptions.getProtocolStep().getInputRequired();
+        String cta = protocolStepWithOptions.getProtocolStep().getCta();
+        AbstractC22676k.m65747g(cta);
+        C28483i domainState = ProtocolStepConfigKt.toDomainState(protocolStepWithOptions.getInputConfig());
+        String textInput = protocolStepResult.getTextInput();
+        if (textInput == null) {
+            textInput = "";
+        }
+        return new InterfaceC28476b.h(c28489o, cta, null, false, false, null, id4, text, inputRequired, domainState, textInput, 60, null);
+    }
+}

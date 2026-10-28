@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:tag="layout/view_live_overlay_0" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="parent" style="@style/Performance_Displays_Container">
+        <ImageView android:layout_gravity="center_horizontal" android:background="@drawable/whoop_logo_snap" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="15.0dp" />
+        <RelativeLayout android:id="@id/dayStrainDisplay" android:tag="binding_1" style="@style/Video_Box_Container">
+            <include layout="@layout/view_live_video_display_day_strain" />
+            <ImageView android:id="@id/dayStrainDisplayRemoveIcon" style="@style/Display_Remove_Icon" />
+        </RelativeLayout>
+        <TextView android:id="@id/dayStrainDisplayAdd" android:visibility="gone" android:text="@string/whooplive_Strain.DayStrain" style="@style/Display_Box_Add" />
+        <RelativeLayout android:id="@id/caloriesDisplay" android:tag="binding_2" android:layout_marginTop="8.0dp" style="@style/Video_Box_Container">
+            <include layout="@layout/view_live_video_display_calories" />
+            <ImageView android:id="@id/caloriesDisplayRemoveIcon" style="@style/Display_Remove_Icon" />
+        </RelativeLayout>
+        <TextView android:id="@id/caloriesDisplayAdd" android:visibility="gone" android:text="@string/whooplive_calories" style="@style/Display_Box_Add" />
+        <TextView android:id="@id/liveHrDisplayAdd" android:visibility="gone" android:text="@string/whooplive_live_hr" style="@style/Display_Box_Add" />
+        <TextView android:id="@id/hrGraphDisplayAdd" android:visibility="gone" android:text="@string/whooplive_hr_graph" style="@style/Display_Box_Add" />
+    </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout android:clipChildren="false" android:layout_width="match_parent" android:layout_height="match_parent">
+        <RelativeLayout android:id="@id/hrGraphDisplayContainer" android:layout_width="match_parent" android:layout_height="0.0dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="@id/horizontal_guideline_graph">
+            <com.whoop.whooplive.live.views.WhoopGraphView android:id="@id/hrGraphDisplay" android:layout_marginTop="100.0dp" style="@style/Heart_Rate_Graph" />
+            <TextView android:id="@id/hrGraphDisplayRemoveIcon" android:background="@drawable/bg_display_box_60" android:text="@string/whooplive_hr_graph" android:layout_alignParentTop="true" android:layout_alignParentEnd="true" style="@style/HR_Display_Box_Text" />
+        </RelativeLayout>
+        <androidx.constraintlayout.widget.Guideline android:orientation="horizontal" android:id="@id/horizontal_guideline_graph" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.55" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/liveHrDisplay" android:clipChildren="false" android:layout_width="match_parent" android:layout_height="match_parent">
+        <com.whoop.ui.views.LiveHeartRateView android:id="@id/liveHeartRate" android:layout_width="wrap_content" android:layout_height="wrap_content" android:alpha="0.85" app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent" app:layout_constraintTop_toTopOf="@id/horizontal_guideline" app:liveHeartRateForLive="true" />
+        <ImageView android:id="@id/liveHrDisplayRemoveIcon" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10.0dp" android:layout_marginStart="40.0dp" app:layout_constraintLeft_toRightOf="@id/vertical_guideline" app:layout_constraintTop_toTopOf="@id/liveHeartRate" app:srcCompat="@drawable/ic_remove" />
+        <androidx.constraintlayout.widget.Guideline android:orientation="vertical" android:id="@id/vertical_guideline" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.5" />
+        <androidx.constraintlayout.widget.Guideline android:orientation="horizontal" android:id="@id/horizontal_guideline" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintGuide_percent="0.6" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

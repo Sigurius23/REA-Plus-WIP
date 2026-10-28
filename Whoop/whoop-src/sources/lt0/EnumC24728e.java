@@ -1,0 +1,145 @@
+package lt0;
+
+import ge3.AbstractC15751g;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.DefaultConstructorMarker;
+import t83.InterfaceC33616a;
+
+/* JADX INFO: renamed from: lt0.e */
+/* JADX INFO: loaded from: classes.dex */
+@Metadata(m65680d1 = {"\u0000\u001c\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0010\n\u0002\u0010\b\n\u0002\b\u0006\n\u0002\u0010\u0005\n\u0002\bY\b\u0086\u0081\u0002\u0018\u0000 \u000f2\u00020\u00012\b\u0012\u0004\u0012\u00020\u00000\u0002:\u0001\u0010B\u0011\b\u0002\u0012\u0006\u0010\u0004\u001a\u00020\u0003¢\u0006\u0004\b\u0005\u0010\u0006R\u001a\u0010\u0004\u001a\u00020\u00038\u0016X\u0096\u0004¢\u0006\f\n\u0004\b\u0004\u0010\u0007\u001a\u0004\b\b\u0010\tR\u001a\u0010\u000b\u001a\u00020\n8\u0016X\u0096\u0004¢\u0006\f\n\u0004\b\u000b\u0010\f\u001a\u0004\b\r\u0010\u000ej\u0002\b\u0011j\u0002\b\u0012j\u0002\b\u0013j\u0002\b\u0014j\u0002\b\u0015j\u0002\b\u0016j\u0002\b\u0017j\u0002\b\u0018j\u0002\b\u0019j\u0002\b\u001aj\u0002\b\u001bj\u0002\b\u001cj\u0002\b\u001dj\u0002\b\u001ej\u0002\b\u001fj\u0002\b j\u0002\b!j\u0002\b\"j\u0002\b#j\u0002\b$j\u0002\b%j\u0002\b&j\u0002\b'j\u0002\b(j\u0002\b)j\u0002\b*j\u0002\b+j\u0002\b,j\u0002\b-j\u0002\b.j\u0002\b/j\u0002\b0j\u0002\b1j\u0002\b2j\u0002\b3j\u0002\b4j\u0002\b5j\u0002\b6j\u0002\b7j\u0002\b8j\u0002\b9j\u0002\b:j\u0002\b;j\u0002\b<j\u0002\b=j\u0002\b>j\u0002\b?j\u0002\b@j\u0002\bAj\u0002\bBj\u0002\bCj\u0002\bDj\u0002\bEj\u0002\bFj\u0002\bGj\u0002\bHj\u0002\bIj\u0002\bJj\u0002\bKj\u0002\bLj\u0002\bMj\u0002\bNj\u0002\bOj\u0002\bPj\u0002\bQj\u0002\bRj\u0002\bSj\u0002\bTj\u0002\bUj\u0002\bVj\u0002\bWj\u0002\bXj\u0002\bYj\u0002\bZj\u0002\b[j\u0002\b\\j\u0002\b]j\u0002\b^j\u0002\b_j\u0002\b`j\u0002\baj\u0002\bb¨\u0006c"}, m65681d2 = {"Llt0/e;", "Llt0/a;", "", "", "value", "<init>", "(Ljava/lang/String;II)V", "I", "getValue", "()I", "", "byteValue", "B", "getByteValue", "()B", "Companion", "a", "LINK_VALID", "GET_MAX_PROTOCOL_VERSION", "TOGGLE_REALTIME_HR", "REPORT_VERSION_INFO", "TOGGLE_R7_DATA_COLLECTION", "SET_CLOCK_DEPRECATED", "GET_CLOCK_DEPRECATED", "TOGGLE_GENERIC_HR_PROFILE", "RUN_HAPTIC_PATTERN_MAVERICK", "ABORT_HISTORICAL_TRANSMITS", "SEND_HISTORICAL_DATA", "HISTORICAL_DATA_RESULT", "GET_BATTERY_LEVEL", "REBOOT_STRAP", "FORCE_TRIM", "POWER_CYCLE_STRAP", "SET_READ_POINTER", "GET_DATA_RANGE", "GET_HELLO_HARVARD", "START_FIRMWARE_LOAD", "LOAD_FIRMWARE_DATA", "PROCESS_FIRMWARE_IMAGE", "START_FIRMWARE_LOAD_NEW", "LOAD_FIRMWARE_DATA_NEW", "PROCESS_FIRMWARE_IMAGE_NEW", "VERIFY_FIRMWARE_IMAGE", "SET_LED_DRIVE", "GET_LED_DRIVE", "SET_TIA_GAIN", "GET_TIA_GAIN", "SET_BIAS_OFFSET", "GET_BIAS_OFFSET", "ENTER_BLE_DFU", "SET_DP_TYPE", "FORCE_DP_TYPE", "SEND_R10_R11_REALTIME", "SET_ALARM_TIME", "GET_ALARM_TIME", "RUN_ALARM", "DISABLE_ALARM", "GET_ADVERTISING_NAME_HARVARD", "SET_ADVERTISING_NAME_HARVARD", "RUN_HAPTICS_PATTERN", "GET_ALL_HAPTICS_PATTERN", "START_RAW_DATA", "STOP_RAW_DATA", "GET_BODY_LOCATION_AND_STATUS", "ENTER_HIGH_FREQ_SYNC", "EXIT_HIGH_FREQ_SYNC", "GET_EXTENDED_BATTERY_INFO", "TOGGLE_IMU_MODE_HISTORICAL", "TOGGLE_IMU_MODE", "TOGGLE_OPTICAL_MODE", "START_FF_KEY_EXCHANGE", "SEND_NEXT_FF", "SET_FF_VALUE", "GET_FF_VALUE", "STOP_HAPTICS", "SELECT_WRIST", "TOGGLE_LABRADOR_FILTERED", "TOGGLE_LABRADOR_RAW_SAVE", "TOGGLE_LABRADOR_DATA_GENERATION", "START_DEVICE_CONFIG_KEY_EXCHANGE", "SEND_NEXT_DEVICE_CONFIG", "SET_DEVICE_CONFIG_VALUE", "GET_DEVICE_CONFIG_VALUE", "SET_RESEARCH_PACKET", "GET_RESEARCH_PACKET", "GET_ADVERTISING_NAME", "SET_ADVERTISING_NAME", "GET_HELLO", "ENABLE_OPTICAL_DATA", "SET_CLOCK", "GET_CLOCK", "GET_BATTERY_PACK_INFO", "TOGGLE_PERSISTENT_R20", "TOGGLE_PERSISTENT_R21", "START_CERTIFICATE_TRANSFER", "LOAD_CERTIFICATE", "VERIFY_CERTIFICATE", "PROCESS_CERTIFICATE", "LOCK_DEVICE", "connectivity-core_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+public enum EnumC24728e implements InterfaceC24724a {
+    LINK_VALID(1),
+    GET_MAX_PROTOCOL_VERSION(2),
+    TOGGLE_REALTIME_HR(3),
+    REPORT_VERSION_INFO(7),
+    TOGGLE_R7_DATA_COLLECTION(16),
+    SET_CLOCK_DEPRECATED(10),
+    GET_CLOCK_DEPRECATED(11),
+    TOGGLE_GENERIC_HR_PROFILE(14),
+    RUN_HAPTIC_PATTERN_MAVERICK(19),
+    ABORT_HISTORICAL_TRANSMITS(20),
+    SEND_HISTORICAL_DATA(22),
+    HISTORICAL_DATA_RESULT(23),
+    GET_BATTERY_LEVEL(26),
+    REBOOT_STRAP(29),
+    FORCE_TRIM(25),
+    POWER_CYCLE_STRAP(32),
+    SET_READ_POINTER(33),
+    GET_DATA_RANGE(34),
+    GET_HELLO_HARVARD(35),
+    START_FIRMWARE_LOAD(36),
+    LOAD_FIRMWARE_DATA(37),
+    PROCESS_FIRMWARE_IMAGE(38),
+    START_FIRMWARE_LOAD_NEW(142),
+    LOAD_FIRMWARE_DATA_NEW(143),
+    PROCESS_FIRMWARE_IMAGE_NEW(144),
+    VERIFY_FIRMWARE_IMAGE(83),
+    SET_LED_DRIVE(39),
+    GET_LED_DRIVE(40),
+    SET_TIA_GAIN(41),
+    GET_TIA_GAIN(42),
+    SET_BIAS_OFFSET(43),
+    GET_BIAS_OFFSET(44),
+    ENTER_BLE_DFU(45),
+    SET_DP_TYPE(52),
+    FORCE_DP_TYPE(53),
+    SEND_R10_R11_REALTIME(63),
+    SET_ALARM_TIME(66),
+    GET_ALARM_TIME(67),
+    RUN_ALARM(68),
+    DISABLE_ALARM(69),
+    GET_ADVERTISING_NAME_HARVARD(76),
+    SET_ADVERTISING_NAME_HARVARD(77),
+    RUN_HAPTICS_PATTERN(79),
+    GET_ALL_HAPTICS_PATTERN(80),
+    START_RAW_DATA(81),
+    STOP_RAW_DATA(82),
+    GET_BODY_LOCATION_AND_STATUS(84),
+    ENTER_HIGH_FREQ_SYNC(96),
+    EXIT_HIGH_FREQ_SYNC(97),
+    GET_EXTENDED_BATTERY_INFO(98),
+    TOGGLE_IMU_MODE_HISTORICAL(105),
+    TOGGLE_IMU_MODE(106),
+    TOGGLE_OPTICAL_MODE(108),
+    START_FF_KEY_EXCHANGE(117),
+    SEND_NEXT_FF(118),
+    SET_FF_VALUE(120),
+    GET_FF_VALUE(128),
+    STOP_HAPTICS(122),
+    SELECT_WRIST(123),
+    TOGGLE_LABRADOR_FILTERED(139),
+    TOGGLE_LABRADOR_RAW_SAVE(125),
+    TOGGLE_LABRADOR_DATA_GENERATION(124),
+    START_DEVICE_CONFIG_KEY_EXCHANGE(115),
+    SEND_NEXT_DEVICE_CONFIG(116),
+    SET_DEVICE_CONFIG_VALUE(119),
+    GET_DEVICE_CONFIG_VALUE(121),
+    SET_RESEARCH_PACKET(131),
+    GET_RESEARCH_PACKET(132),
+    GET_ADVERTISING_NAME(141),
+    SET_ADVERTISING_NAME(140),
+    GET_HELLO(145),
+    ENABLE_OPTICAL_DATA(107),
+    SET_CLOCK(146),
+    GET_CLOCK(147),
+    GET_BATTERY_PACK_INFO(151),
+    TOGGLE_PERSISTENT_R20(153),
+    TOGGLE_PERSISTENT_R21(154),
+    START_CERTIFICATE_TRANSFER(155),
+    LOAD_CERTIFICATE(156),
+    VERIFY_CERTIFICATE(157),
+    PROCESS_CERTIFICATE(158),
+    LOCK_DEVICE(159);
+
+    private final byte byteValue = (byte) getValue();
+    private final int value;
+    private static final /* synthetic */ InterfaceC33616a $ENTRIES = AbstractC15751g.m44468u(values());
+
+    /* JADX INFO: renamed from: Companion, reason: from kotlin metadata */
+    public static final Companion INSTANCE = new Companion(null);
+
+    /* JADX INFO: renamed from: lt0.e$a, reason: from kotlin metadata */
+    @Metadata(m65680d1 = {"\u0000\u001a\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u0005\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\b\u0086\u0003\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003J\u0019\u0010\u0007\u001a\u0004\u0018\u00010\u00062\u0006\u0010\u0005\u001a\u00020\u0004H\u0000¢\u0006\u0004\b\u0007\u0010\b¨\u0006\t"}, m65681d2 = {"Llt0/e$a;", "", "<init>", "()V", "", "value", "Llt0/e;", "a", "(B)Llt0/e;", "connectivity-core_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final class Companion {
+        public /* synthetic */ Companion(DefaultConstructorMarker defaultConstructorMarker) {
+            this();
+        }
+
+        /* JADX INFO: renamed from: a */
+        public final EnumC24728e m72405a(byte value) {
+            for (EnumC24728e enumC24728e : EnumC24728e.values()) {
+                if (enumC24728e.getByteValue() == value) {
+                    return enumC24728e;
+                }
+            }
+            return null;
+        }
+
+        private Companion() {
+        }
+    }
+
+    EnumC24728e(int i13) {
+        this.value = i13;
+    }
+
+    public static InterfaceC33616a getEntries() {
+        return $ENTRIES;
+    }
+
+    @Override // lt0.InterfaceC24724a
+    public /* bridge */ String commandName() {
+        return super.commandName();
+    }
+
+    @Override // lt0.InterfaceC24724a
+    public byte getByteValue() {
+        return this.byteValue;
+    }
+
+    @Override // lt0.InterfaceC24724a
+    public int getValue() {
+        return this.value;
+    }
+}

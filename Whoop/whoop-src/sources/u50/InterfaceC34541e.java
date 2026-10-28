@@ -1,0 +1,96 @@
+package u50;
+
+import androidx.core.app.NotificationCompat;
+import com.whoop.navigation.C9598e;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+import te0.AbstractC33745d;
+
+/* JADX INFO: renamed from: u50.e */
+/* JADX INFO: loaded from: classes6.dex */
+@Metadata(m65680d1 = {"\u0000\"\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0005\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\bv\u0018\u00002\u00020\u0001:\u0005\u0002\u0003\u0004\u0005\u0006\u0082\u0001\u0005\u0007\b\t\n\u000b¨\u0006\fÀ\u0006\u0003"}, m65681d2 = {"Lu50/e;", "", "e", "d", "c", "b", "a", "Lu50/e$a;", "Lu50/e$b;", "Lu50/e$c;", "Lu50/e$d;", "Lu50/e$e;", "access_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+public interface InterfaceC34541e {
+
+    /* JADX INFO: renamed from: u50.e$a */
+    @Metadata(m65680d1 = {"\u0000.\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0006\b\u0087\b\u0018\u00002\u00020\u0001B\u0011\u0012\b\u0010\u0003\u001a\u0004\u0018\u00010\u0002¢\u0006\u0004\b\u0004\u0010\u0005J\u0010\u0010\u0007\u001a\u00020\u0006HÖ\u0001¢\u0006\u0004\b\u0007\u0010\bJ\u0010\u0010\n\u001a\u00020\tHÖ\u0001¢\u0006\u0004\b\n\u0010\u000bJ\u001a\u0010\u000f\u001a\u00020\u000e2\b\u0010\r\u001a\u0004\u0018\u00010\fHÖ\u0003¢\u0006\u0004\b\u000f\u0010\u0010R\u0019\u0010\u0003\u001a\u0004\u0018\u00010\u00028\u0006¢\u0006\f\n\u0004\b\u0011\u0010\u0012\u001a\u0004\b\u0011\u0010\u0013¨\u0006\u0014"}, m65681d2 = {"Lu50/e$a;", "Lu50/e;", "Lcom/whoop/navigation/e;", NotificationCompat.CATEGORY_NAVIGATION, "<init>", "(Lcom/whoop/navigation/e;)V", "", "toString", "()Ljava/lang/String;", "", "hashCode", "()I", "", "other", "", "equals", "(Ljava/lang/Object;)Z", "a", "Lcom/whoop/navigation/e;", "()Lcom/whoop/navigation/e;", "access_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final /* data */ class a implements InterfaceC34541e {
+
+        /* JADX INFO: renamed from: b */
+        public static final int f145232b = C9598e.f28134d;
+
+        /* JADX INFO: renamed from: a, reason: from kotlin metadata */
+        private final C9598e navigation;
+
+        public a(C9598e c9598e) {
+            this.navigation = c9598e;
+        }
+
+        /* JADX INFO: renamed from: a, reason: from getter */
+        public final C9598e getNavigation() {
+            return this.navigation;
+        }
+
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            return (other instanceof a) && AbstractC22676k.m65745e(this.navigation, ((a) other).navigation);
+        }
+
+        public int hashCode() {
+            C9598e c9598e = this.navigation;
+            if (c9598e == null) {
+                return 0;
+            }
+            return c9598e.hashCode();
+        }
+
+        public String toString() {
+            return AbstractC33745d.m106650i("Connected(navigation=", this.navigation, ")");
+        }
+    }
+
+    /* JADX INFO: renamed from: u50.e$b */
+    @Metadata(m65680d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÇ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, m65681d2 = {"Lu50/e$b;", "Lu50/e;", "<init>", "()V", "access_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final class b implements InterfaceC34541e {
+
+        /* JADX INFO: renamed from: a */
+        public static final b f145234a = new b();
+
+        private b() {
+        }
+    }
+
+    /* JADX INFO: renamed from: u50.e$c */
+    @Metadata(m65680d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÇ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, m65681d2 = {"Lu50/e$c;", "Lu50/e;", "<init>", "()V", "access_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final class c implements InterfaceC34541e {
+
+        /* JADX INFO: renamed from: a */
+        public static final c f145235a = new c();
+
+        private c() {
+        }
+    }
+
+    /* JADX INFO: renamed from: u50.e$d */
+    @Metadata(m65680d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÇ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, m65681d2 = {"Lu50/e$d;", "Lu50/e;", "<init>", "()V", "access_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final class d implements InterfaceC34541e {
+
+        /* JADX INFO: renamed from: a */
+        public static final d f145236a = new d();
+
+        private d() {
+        }
+    }
+
+    /* JADX INFO: renamed from: u50.e$e */
+    @Metadata(m65680d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÇ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, m65681d2 = {"Lu50/e$e;", "Lu50/e;", "<init>", "()V", "access_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final class e implements InterfaceC34541e {
+
+        /* JADX INFO: renamed from: a */
+        public static final e f145237a = new e();
+
+        private e() {
+        }
+    }
+}

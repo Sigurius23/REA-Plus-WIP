@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/custom_mention_item_layout_0"
+    android:paddingTop="@dimen/Margin.Standard"
+    android:paddingBottom="@dimen/Margin.Standard"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:paddingStart="@dimen/Margin.Double"
+    android:paddingEnd="@dimen/Margin.Double">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/mention_user_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:textColor="@color/mention_name_color"
+        android:gravity="start"
+        android:id="@+id/mention_name"
+        android:layout_marginStart="@dimen/Margin.Standard"
+        app:layout_constraintBottom_toTopOf="@+id/mention_username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mention_user_avatar"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/MentionTextStyle"/>
+    <TextView
+        android:id="@+id/mention_username"
+        android:layout_marginStart="@dimen/Margin.Standard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mention_user_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/mention_name"
+        style="@style/MentionUsernameTextStyle"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

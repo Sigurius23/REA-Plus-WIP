@@ -1,0 +1,750 @@
+.class public final Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# annotations
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u00008\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0008\n\u0002\u0008\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u001d\n\u0002\u0010\u000b\n\u0002\u0008\u0003\n\u0002\u0010\u000e\n\u0000\u0008\u0080\u0008\u0018\u00002\u00020\u0001BY\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\u000c\u0010\u0004\u001a\u0008\u0012\u0004\u0012\u00020\u00060\u0005\u0012\u0008\u0010\u0007\u001a\u0004\u0018\u00010\u0008\u0012\u0008\u0010\t\u001a\u0004\u0018\u00010\u0008\u0012\u0008\u0010\n\u001a\u0004\u0018\u00010\u000b\u0012\u0008\u0010\u000c\u001a\u0004\u0018\u00010\u000b\u0012\u0008\u0010\r\u001a\u0004\u0018\u00010\u000b\u0012\u0008\u0010\u000e\u001a\u0004\u0018\u00010\u000b\u00a2\u0006\u0004\u0008\u000f\u0010\u0010J\t\u0010\u001e\u001a\u00020\u0003H\u00c6\u0003J\u000f\u0010\u001f\u001a\u0008\u0012\u0004\u0012\u00020\u00060\u0005H\u00c6\u0003J\u0010\u0010 \u001a\u0004\u0018\u00010\u0008H\u00c6\u0003\u00a2\u0006\u0002\u0010\u0016J\u0010\u0010!\u001a\u0004\u0018\u00010\u0008H\u00c6\u0003\u00a2\u0006\u0002\u0010\u0016J\u000b\u0010\"\u001a\u0004\u0018\u00010\u000bH\u00c6\u0003J\u000b\u0010#\u001a\u0004\u0018\u00010\u000bH\u00c6\u0003J\u000b\u0010$\u001a\u0004\u0018\u00010\u000bH\u00c6\u0003J\u000b\u0010%\u001a\u0004\u0018\u00010\u000bH\u00c6\u0003Jp\u0010&\u001a\u00020\u00002\u0008\u0008\u0002\u0010\u0002\u001a\u00020\u00032\u000e\u0008\u0002\u0010\u0004\u001a\u0008\u0012\u0004\u0012\u00020\u00060\u00052\n\u0008\u0002\u0010\u0007\u001a\u0004\u0018\u00010\u00082\n\u0008\u0002\u0010\t\u001a\u0004\u0018\u00010\u00082\n\u0008\u0002\u0010\n\u001a\u0004\u0018\u00010\u000b2\n\u0008\u0002\u0010\u000c\u001a\u0004\u0018\u00010\u000b2\n\u0008\u0002\u0010\r\u001a\u0004\u0018\u00010\u000b2\n\u0008\u0002\u0010\u000e\u001a\u0004\u0018\u00010\u000bH\u00c6\u0001\u00a2\u0006\u0002\u0010\'J\u0013\u0010(\u001a\u00020)2\u0008\u0010*\u001a\u0004\u0018\u00010\u0001H\u00d6\u0003J\t\u0010+\u001a\u00020\u0008H\u00d6\u0001J\t\u0010,\u001a\u00020-H\u00d6\u0001R\u0011\u0010\u0002\u001a\u00020\u0003\u00a2\u0006\u0008\n\u0000\u001a\u0004\u0008\u0011\u0010\u0012R\u0017\u0010\u0004\u001a\u0008\u0012\u0004\u0012\u00020\u00060\u0005\u00a2\u0006\u0008\n\u0000\u001a\u0004\u0008\u0013\u0010\u0014R\u0015\u0010\u0007\u001a\u0004\u0018\u00010\u0008\u00a2\u0006\n\n\u0002\u0010\u0017\u001a\u0004\u0008\u0015\u0010\u0016R\u0015\u0010\t\u001a\u0004\u0018\u00010\u0008\u00a2\u0006\n\n\u0002\u0010\u0017\u001a\u0004\u0008\u0018\u0010\u0016R\u0013\u0010\n\u001a\u0004\u0018\u00010\u000b\u00a2\u0006\u0008\n\u0000\u001a\u0004\u0008\u0019\u0010\u001aR\u0013\u0010\u000c\u001a\u0004\u0018\u00010\u000b\u00a2\u0006\u0008\n\u0000\u001a\u0004\u0008\u001b\u0010\u001aR\u0013\u0010\r\u001a\u0004\u0018\u00010\u000b\u00a2\u0006\u0008\n\u0000\u001a\u0004\u0008\u001c\u0010\u001aR\u0013\u0010\u000e\u001a\u0004\u0018\u00010\u000b\u00a2\u0006\u0008\n\u0000\u001a\u0004\u0008\u001d\u0010\u001a\u00a8\u0006."
+    }
+    d2 = {
+        "Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;",
+        "",
+        "filter",
+        "Lio/getstream/chat/android/models/FilterObject;",
+        "sort",
+        "Lio/getstream/chat/android/models/querysort/QuerySorter;",
+        "Lio/getstream/chat/android/models/BannedUsersSort;",
+        "offset",
+        "",
+        "limit",
+        "createdAtAfter",
+        "Ljava/util/Date;",
+        "createdAtAfterOrEqual",
+        "createdAtBefore",
+        "createdAtBeforeOrEqual",
+        "<init>",
+        "(Lio/getstream/chat/android/models/FilterObject;Lio/getstream/chat/android/models/querysort/QuerySorter;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;)V",
+        "getFilter",
+        "()Lio/getstream/chat/android/models/FilterObject;",
+        "getSort",
+        "()Lio/getstream/chat/android/models/querysort/QuerySorter;",
+        "getOffset",
+        "()Ljava/lang/Integer;",
+        "Ljava/lang/Integer;",
+        "getLimit",
+        "getCreatedAtAfter",
+        "()Ljava/util/Date;",
+        "getCreatedAtAfterOrEqual",
+        "getCreatedAtBefore",
+        "getCreatedAtBeforeOrEqual",
+        "component1",
+        "component2",
+        "component3",
+        "component4",
+        "component5",
+        "component6",
+        "component7",
+        "component8",
+        "copy",
+        "(Lio/getstream/chat/android/models/FilterObject;Lio/getstream/chat/android/models/querysort/QuerySorter;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;)Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;",
+        "equals",
+        "",
+        "other",
+        "hashCode",
+        "toString",
+        "",
+        "stream-chat-android-client_release"
+    }
+    k = 0x1
+    mv = {
+        0x2,
+        0x2,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+
+# instance fields
+.field private final createdAtAfter:Ljava/util/Date;
+
+.field private final createdAtAfterOrEqual:Ljava/util/Date;
+
+.field private final createdAtBefore:Ljava/util/Date;
+
+.field private final createdAtBeforeOrEqual:Ljava/util/Date;
+
+.field private final filter:Lio/getstream/chat/android/models/FilterObject;
+
+.field private final limit:Ljava/lang/Integer;
+
+.field private final offset:Ljava/lang/Integer;
+
+.field private final sort:Lio/getstream/chat/android/models/querysort/QuerySorter;
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "Lio/getstream/chat/android/models/querysort/QuerySorter<",
+            "Lio/getstream/chat/android/models/BannedUsersSort;",
+            ">;"
+        }
+    .end annotation
+.end field
+
+
+# direct methods
+.method public constructor <init>(Lio/getstream/chat/android/models/FilterObject;Lio/getstream/chat/android/models/querysort/QuerySorter;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;)V
+    .locals 1
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lio/getstream/chat/android/models/FilterObject;",
+            "Lio/getstream/chat/android/models/querysort/QuerySorter<",
+            "Lio/getstream/chat/android/models/BannedUsersSort;",
+            ">;",
+            "Ljava/lang/Integer;",
+            "Ljava/lang/Integer;",
+            "Ljava/util/Date;",
+            "Ljava/util/Date;",
+            "Ljava/util/Date;",
+            "Ljava/util/Date;",
+            ")V"
+        }
+    .end annotation
+
+    const-string v0, "filter"
+
+    invoke-static {p1, v0}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    const-string v0, "sort"
+
+    invoke-static {p2, v0}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    iput-object p1, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->filter:Lio/getstream/chat/android/models/FilterObject;
+
+    iput-object p2, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->sort:Lio/getstream/chat/android/models/querysort/QuerySorter;
+
+    iput-object p3, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->offset:Ljava/lang/Integer;
+
+    iput-object p4, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->limit:Ljava/lang/Integer;
+
+    iput-object p5, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfter:Ljava/util/Date;
+
+    iput-object p6, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfterOrEqual:Ljava/util/Date;
+
+    iput-object p7, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBefore:Ljava/util/Date;
+
+    iput-object p8, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBeforeOrEqual:Ljava/util/Date;
+
+    return-void
+.end method
+
+.method public static synthetic copy$default(Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;Lio/getstream/chat/android/models/FilterObject;Lio/getstream/chat/android/models/querysort/QuerySorter;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;ILjava/lang/Object;)Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;
+    .locals 0
+
+    and-int/lit8 p10, p9, 0x1
+
+    if-eqz p10, :cond_0
+
+    iget-object p1, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->filter:Lio/getstream/chat/android/models/FilterObject;
+
+    :cond_0
+    and-int/lit8 p10, p9, 0x2
+
+    if-eqz p10, :cond_1
+
+    iget-object p2, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->sort:Lio/getstream/chat/android/models/querysort/QuerySorter;
+
+    :cond_1
+    and-int/lit8 p10, p9, 0x4
+
+    if-eqz p10, :cond_2
+
+    iget-object p3, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->offset:Ljava/lang/Integer;
+
+    :cond_2
+    and-int/lit8 p10, p9, 0x8
+
+    if-eqz p10, :cond_3
+
+    iget-object p4, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->limit:Ljava/lang/Integer;
+
+    :cond_3
+    and-int/lit8 p10, p9, 0x10
+
+    if-eqz p10, :cond_4
+
+    iget-object p5, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfter:Ljava/util/Date;
+
+    :cond_4
+    and-int/lit8 p10, p9, 0x20
+
+    if-eqz p10, :cond_5
+
+    iget-object p6, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfterOrEqual:Ljava/util/Date;
+
+    :cond_5
+    and-int/lit8 p10, p9, 0x40
+
+    if-eqz p10, :cond_6
+
+    iget-object p7, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBefore:Ljava/util/Date;
+
+    :cond_6
+    and-int/lit16 p9, p9, 0x80
+
+    if-eqz p9, :cond_7
+
+    iget-object p8, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBeforeOrEqual:Ljava/util/Date;
+
+    :cond_7
+    move-object p9, p7
+
+    move-object p10, p8
+
+    move-object p7, p5
+
+    move-object p8, p6
+
+    move-object p5, p3
+
+    move-object p6, p4
+
+    move-object p3, p1
+
+    move-object p4, p2
+
+    move-object p2, p0
+
+    invoke-virtual/range {p2 .. p10}, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->copy(Lio/getstream/chat/android/models/FilterObject;Lio/getstream/chat/android/models/querysort/QuerySorter;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;)Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+
+# virtual methods
+.method public final component1()Lio/getstream/chat/android/models/FilterObject;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->filter:Lio/getstream/chat/android/models/FilterObject;
+
+    return-object v0
+.end method
+
+.method public final component2()Lio/getstream/chat/android/models/querysort/QuerySorter;
+    .locals 1
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Lio/getstream/chat/android/models/querysort/QuerySorter<",
+            "Lio/getstream/chat/android/models/BannedUsersSort;",
+            ">;"
+        }
+    .end annotation
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->sort:Lio/getstream/chat/android/models/querysort/QuerySorter;
+
+    return-object v0
+.end method
+
+.method public final component3()Ljava/lang/Integer;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->offset:Ljava/lang/Integer;
+
+    return-object v0
+.end method
+
+.method public final component4()Ljava/lang/Integer;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->limit:Ljava/lang/Integer;
+
+    return-object v0
+.end method
+
+.method public final component5()Ljava/util/Date;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfter:Ljava/util/Date;
+
+    return-object v0
+.end method
+
+.method public final component6()Ljava/util/Date;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfterOrEqual:Ljava/util/Date;
+
+    return-object v0
+.end method
+
+.method public final component7()Ljava/util/Date;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBefore:Ljava/util/Date;
+
+    return-object v0
+.end method
+
+.method public final component8()Ljava/util/Date;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBeforeOrEqual:Ljava/util/Date;
+
+    return-object v0
+.end method
+
+.method public final copy(Lio/getstream/chat/android/models/FilterObject;Lio/getstream/chat/android/models/querysort/QuerySorter;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;)Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;
+    .locals 10
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lio/getstream/chat/android/models/FilterObject;",
+            "Lio/getstream/chat/android/models/querysort/QuerySorter<",
+            "Lio/getstream/chat/android/models/BannedUsersSort;",
+            ">;",
+            "Ljava/lang/Integer;",
+            "Ljava/lang/Integer;",
+            "Ljava/util/Date;",
+            "Ljava/util/Date;",
+            "Ljava/util/Date;",
+            "Ljava/util/Date;",
+            ")",
+            "Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;"
+        }
+    .end annotation
+
+    const-string v0, "filter"
+
+    invoke-static {p1, v0}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    const-string v0, "sort"
+
+    invoke-static {p2, v0}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    new-instance v1, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;
+
+    move-object v2, p1
+
+    move-object v3, p2
+
+    move-object v4, p3
+
+    move-object v5, p4
+
+    move-object v6, p5
+
+    move-object/from16 v7, p6
+
+    move-object/from16 v8, p7
+
+    move-object/from16 v9, p8
+
+    invoke-direct/range {v1 .. v9}, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;-><init>(Lio/getstream/chat/android/models/FilterObject;Lio/getstream/chat/android/models/querysort/QuerySorter;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;Ljava/util/Date;)V
+
+    return-object v1
+.end method
+
+.method public final equals(Ljava/lang/Object;)Z
+    .locals 4
+
+    const/4 v0, 0x1
+
+    if-ne p0, p1, :cond_0
+
+    return v0
+
+    :cond_0
+    instance-of v1, p1, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;
+
+    const/4 v2, 0x0
+
+    if-nez v1, :cond_1
+
+    return v2
+
+    :cond_1
+    check-cast p1, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;
+
+    iget-object v1, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->filter:Lio/getstream/chat/android/models/FilterObject;
+
+    iget-object v3, p1, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->filter:Lio/getstream/chat/android/models/FilterObject;
+
+    invoke-static {v1, v3}, Lkotlin/jvm/internal/k;->e(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_2
+
+    return v2
+
+    :cond_2
+    iget-object v1, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->sort:Lio/getstream/chat/android/models/querysort/QuerySorter;
+
+    iget-object v3, p1, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->sort:Lio/getstream/chat/android/models/querysort/QuerySorter;
+
+    invoke-static {v1, v3}, Lkotlin/jvm/internal/k;->e(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_3
+
+    return v2
+
+    :cond_3
+    iget-object v1, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->offset:Ljava/lang/Integer;
+
+    iget-object v3, p1, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->offset:Ljava/lang/Integer;
+
+    invoke-static {v1, v3}, Lkotlin/jvm/internal/k;->e(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_4
+
+    return v2
+
+    :cond_4
+    iget-object v1, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->limit:Ljava/lang/Integer;
+
+    iget-object v3, p1, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->limit:Ljava/lang/Integer;
+
+    invoke-static {v1, v3}, Lkotlin/jvm/internal/k;->e(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_5
+
+    return v2
+
+    :cond_5
+    iget-object v1, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfter:Ljava/util/Date;
+
+    iget-object v3, p1, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfter:Ljava/util/Date;
+
+    invoke-static {v1, v3}, Lkotlin/jvm/internal/k;->e(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_6
+
+    return v2
+
+    :cond_6
+    iget-object v1, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfterOrEqual:Ljava/util/Date;
+
+    iget-object v3, p1, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfterOrEqual:Ljava/util/Date;
+
+    invoke-static {v1, v3}, Lkotlin/jvm/internal/k;->e(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_7
+
+    return v2
+
+    :cond_7
+    iget-object v1, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBefore:Ljava/util/Date;
+
+    iget-object v3, p1, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBefore:Ljava/util/Date;
+
+    invoke-static {v1, v3}, Lkotlin/jvm/internal/k;->e(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result v1
+
+    if-nez v1, :cond_8
+
+    return v2
+
+    :cond_8
+    iget-object v1, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBeforeOrEqual:Ljava/util/Date;
+
+    iget-object p1, p1, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBeforeOrEqual:Ljava/util/Date;
+
+    invoke-static {v1, p1}, Lkotlin/jvm/internal/k;->e(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result p1
+
+    if-nez p1, :cond_9
+
+    return v2
+
+    :cond_9
+    return v0
+.end method
+
+.method public final getCreatedAtAfter()Ljava/util/Date;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfter:Ljava/util/Date;
+
+    return-object v0
+.end method
+
+.method public final getCreatedAtAfterOrEqual()Ljava/util/Date;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfterOrEqual:Ljava/util/Date;
+
+    return-object v0
+.end method
+
+.method public final getCreatedAtBefore()Ljava/util/Date;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBefore:Ljava/util/Date;
+
+    return-object v0
+.end method
+
+.method public final getCreatedAtBeforeOrEqual()Ljava/util/Date;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBeforeOrEqual:Ljava/util/Date;
+
+    return-object v0
+.end method
+
+.method public final getFilter()Lio/getstream/chat/android/models/FilterObject;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->filter:Lio/getstream/chat/android/models/FilterObject;
+
+    return-object v0
+.end method
+
+.method public final getLimit()Ljava/lang/Integer;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->limit:Ljava/lang/Integer;
+
+    return-object v0
+.end method
+
+.method public final getOffset()Ljava/lang/Integer;
+    .locals 1
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->offset:Ljava/lang/Integer;
+
+    return-object v0
+.end method
+
+.method public final getSort()Lio/getstream/chat/android/models/querysort/QuerySorter;
+    .locals 1
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Lio/getstream/chat/android/models/querysort/QuerySorter<",
+            "Lio/getstream/chat/android/models/BannedUsersSort;",
+            ">;"
+        }
+    .end annotation
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->sort:Lio/getstream/chat/android/models/querysort/QuerySorter;
+
+    return-object v0
+.end method
+
+.method public final hashCode()I
+    .locals 3
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->filter:Lio/getstream/chat/android/models/FilterObject;
+
+    invoke-virtual {v0}, Ljava/lang/Object;->hashCode()I
+
+    move-result v0
+
+    mul-int/lit8 v0, v0, 0x1f
+
+    iget-object v1, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->sort:Lio/getstream/chat/android/models/querysort/QuerySorter;
+
+    invoke-virtual {v1}, Ljava/lang/Object;->hashCode()I
+
+    move-result v1
+
+    add-int/2addr v1, v0
+
+    mul-int/lit8 v1, v1, 0x1f
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->offset:Ljava/lang/Integer;
+
+    const/4 v2, 0x0
+
+    if-nez v0, :cond_0
+
+    move v0, v2
+
+    goto :goto_0
+
+    :cond_0
+    invoke-virtual {v0}, Ljava/lang/Object;->hashCode()I
+
+    move-result v0
+
+    :goto_0
+    add-int/2addr v1, v0
+
+    mul-int/lit8 v1, v1, 0x1f
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->limit:Ljava/lang/Integer;
+
+    if-nez v0, :cond_1
+
+    move v0, v2
+
+    goto :goto_1
+
+    :cond_1
+    invoke-virtual {v0}, Ljava/lang/Object;->hashCode()I
+
+    move-result v0
+
+    :goto_1
+    add-int/2addr v1, v0
+
+    mul-int/lit8 v1, v1, 0x1f
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfter:Ljava/util/Date;
+
+    if-nez v0, :cond_2
+
+    move v0, v2
+
+    goto :goto_2
+
+    :cond_2
+    invoke-virtual {v0}, Ljava/util/Date;->hashCode()I
+
+    move-result v0
+
+    :goto_2
+    add-int/2addr v1, v0
+
+    mul-int/lit8 v1, v1, 0x1f
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfterOrEqual:Ljava/util/Date;
+
+    if-nez v0, :cond_3
+
+    move v0, v2
+
+    goto :goto_3
+
+    :cond_3
+    invoke-virtual {v0}, Ljava/util/Date;->hashCode()I
+
+    move-result v0
+
+    :goto_3
+    add-int/2addr v1, v0
+
+    mul-int/lit8 v1, v1, 0x1f
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBefore:Ljava/util/Date;
+
+    if-nez v0, :cond_4
+
+    move v0, v2
+
+    goto :goto_4
+
+    :cond_4
+    invoke-virtual {v0}, Ljava/util/Date;->hashCode()I
+
+    move-result v0
+
+    :goto_4
+    add-int/2addr v1, v0
+
+    mul-int/lit8 v1, v1, 0x1f
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBeforeOrEqual:Ljava/util/Date;
+
+    if-nez v0, :cond_5
+
+    goto :goto_5
+
+    :cond_5
+    invoke-virtual {v0}, Ljava/util/Date;->hashCode()I
+
+    move-result v2
+
+    :goto_5
+    add-int/2addr v1, v2
+
+    return v1
+.end method
+
+.method public final toString()Ljava/lang/String;
+    .locals 10
+
+    iget-object v0, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->filter:Lio/getstream/chat/android/models/FilterObject;
+
+    iget-object v1, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->sort:Lio/getstream/chat/android/models/querysort/QuerySorter;
+
+    iget-object v2, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->offset:Ljava/lang/Integer;
+
+    iget-object v3, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->limit:Ljava/lang/Integer;
+
+    iget-object v4, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfter:Ljava/util/Date;
+
+    iget-object v5, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtAfterOrEqual:Ljava/util/Date;
+
+    iget-object v6, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBefore:Ljava/util/Date;
+
+    iget-object v7, p0, Lio/getstream/chat/android/client/api2/optimisation/hash/QueryBanedUsersHash;->createdAtBeforeOrEqual:Ljava/util/Date;
+
+    new-instance v8, Ljava/lang/StringBuilder;
+
+    const-string v9, "QueryBanedUsersHash(filter="
+
+    invoke-direct {v8, v9}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+
+    invoke-virtual {v8, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v0, ", sort="
+
+    invoke-virtual {v8, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v0, ", offset="
+
+    invoke-virtual {v8, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v0, ", limit="
+
+    const-string v1, ", createdAtAfter="
+
+    invoke-static {v8, v2, v0, v3, v1}, Lr80/c;->A(Ljava/lang/StringBuilder;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;)V
+
+    const-string v0, ", createdAtAfterOrEqual="
+
+    const-string v1, ", createdAtBefore="
+
+    invoke-static {v8, v4, v0, v5, v1}, Lhc3/i;->n(Ljava/lang/StringBuilder;Ljava/util/Date;Ljava/lang/String;Ljava/util/Date;Ljava/lang/String;)V
+
+    invoke-virtual {v8, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v0, ", createdAtBeforeOrEqual="
+
+    invoke-virtual {v8, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const-string v0, ")"
+
+    invoke-virtual {v8, v0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v8}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    return-object v0
+.end method

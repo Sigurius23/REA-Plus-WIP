@@ -1,0 +1,47 @@
+package wc2;
+
+import j02.AbstractC21155m0;
+import j02.C21147i0;
+import j02.InterfaceC21149j0;
+import j02.InterfaceC21151k0;
+import p000.AbstractC11266d;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+import p715kotlin.jvm.internal.DefaultConstructorMarker;
+
+/* JADX INFO: renamed from: wc2.a */
+/* JADX INFO: loaded from: classes4.dex */
+@Metadata(m65680d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0005\b\u0007\u0018\u00002\u00020\u0001B\u0011\u0012\b\b\u0002\u0010\u0003\u001a\u00020\u0002¢\u0006\u0004\b\u0004\u0010\u0005J\u0017\u0010\t\u001a\u00020\b2\u0006\u0010\u0007\u001a\u00020\u0006H\u0016¢\u0006\u0004\b\t\u0010\nR\u0014\u0010\u0003\u001a\u00020\u00028\u0002X\u0082\u0004¢\u0006\u0006\n\u0004\b\u000b\u0010\f¨\u0006\r"}, m65681d2 = {"Lwc2/a;", "Lj02/k0;", "Lj02/i0;", "navDeepLinkRequestHelper", "<init>", "(Lj02/i0;)V", "Lj02/m0;", "navigationScreen", "Lj02/j0;", "provideNavigationData", "(Lj02/m0;)Lj02/j0;", "a", "Lj02/i0;", "settings_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+public final class C37135a implements InterfaceC21151k0 {
+
+    /* JADX INFO: renamed from: b */
+    public static final int f158875b = C21147i0.f80230a;
+
+    /* JADX INFO: renamed from: a, reason: from kotlin metadata */
+    private final C21147i0 navDeepLinkRequestHelper;
+
+    public C37135a(C21147i0 navDeepLinkRequestHelper) {
+        AbstractC22676k.m65750j(navDeepLinkRequestHelper, "navDeepLinkRequestHelper");
+        this.navDeepLinkRequestHelper = navDeepLinkRequestHelper;
+    }
+
+    @Override // j02.InterfaceC21151k0
+    public InterfaceC21149j0 provideNavigationData(AbstractC21155m0 navigationScreen) {
+        String subscriptionType;
+        AbstractC22676k.m65750j(navigationScreen, "navigationScreen");
+        boolean z4 = navigationScreen instanceof AbstractC21155m0.h3;
+        if (!z4 && !(navigationScreen instanceof AbstractC21155m0.c0)) {
+            return InterfaceC21149j0.d.f80241a;
+        }
+        if (z4) {
+            subscriptionType = ((AbstractC21155m0.h3) navigationScreen).getSubscriptionType();
+        } else {
+            subscriptionType = navigationScreen instanceof AbstractC21155m0.c0 ? ((AbstractC21155m0.c0) navigationScreen).getSubscriptionType() : "";
+        }
+        return new InterfaceC21149j0.c(this.navDeepLinkRequestHelper.m58994a(AbstractC11266d.m30461o("android-app://com.whoop/switchPlanModal?subscriptionType=", subscriptionType)), null, null, 6, null);
+    }
+
+    public /* synthetic */ C37135a(C21147i0 c21147i0, int i13, DefaultConstructorMarker defaultConstructorMarker) {
+        this((i13 & 1) != 0 ? new C21147i0() : c21147i0);
+    }
+}

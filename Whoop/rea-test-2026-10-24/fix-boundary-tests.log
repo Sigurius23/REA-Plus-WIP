@@ -1,0 +1,80 @@
+Focused tests: tests/boundary/process/androidXapkBundle.test.ts, tests/boundary/process/jadxIntegration.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 156e637b4ef0654b
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing 6c894a74f2d4e22f
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+compile: npm notice
+compile: npm notice New major version of npm available! 10.9.2 -> 12.2.1
+compile: npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+compile: npm notice To update run: npm install -g npm@12.2.1
+compile: npm notice
+artifacts:skills: cache miss, executing d7fbf071054e6328
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    1 cached, 3 total
+  Time:    6.726s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |process-boundary| tests/boundary/process/jadxIntegration.test.ts (42 tests) 27353ms
+   ✓ reuses immutable engine state while keeping each Evidence observation separate 2239ms
+   ✓ bounds output per operation without repeating prerequisite probes for a retained session 844ms
+   ✓ retire sessions when APK bytes, engine bytes or JVM options change 1275ms
+   ✓ retires an idle engine and starts a fresh one for a later request 823ms
+   ✓ completes large class inventories with exact case-sensitive search semantics 579ms
+   ✓ searches string constants with an exact query echo and complete coverage 548ms
+   ✓ reports an empty string-constant result without implying absence 566ms
+   ✓ carries partial coverage when a scan budget truncated the result 596ms
+   ✓ rejects a different string-constant query echo 558ms
+   ✓ rejects incoherent string-constant coverage reporting 642ms
+   ✓ lists class names JADX gives to several classes once and reports them 570ms
+   ✓ close cancels active and queued work and prevents later acquisition 504ms
+   ✓ does not carry a factory instance's cleanup failure into another instance 1065ms
+   ✓ retains APK identity, original input, raw producer data and normalized observations 567ms
+   ✓ fetches all class pages rather than silently retaining the first upstream page 548ms
+   ✓ exposes overload candidates and executes only an explicitly selected ambiguous method 805ms
+   ✓ projects declared annotations and encoded static field inits as parsed dex data 566ms
+   ✓ rejects malformed-values projection output instead of presenting invalid encoded values 549ms
+   ✓ rejects malformed-boolean projection output instead of presenting invalid encoded values 572ms
+   ✓ rejects producer failure wrong-apk rather than claiming complete analysis 551ms
+   ✓ rejects producer failure empty-page rather than claiming complete analysis 554ms
+   ✓ rejects producer failure summary-error rather than claiming complete analysis 564ms
+   ✓ rejects producer failure wrong-method rather than claiming complete analysis 571ms
+   ✓ rejects producer failure body-error rather than claiming complete analysis 561ms
+   ✓ rejects producer failure partial-xrefs rather than claiming complete analysis 549ms
+   ✓ rejects fuzzy class resolution and unsupported upstream versions 1659ms
+   ✓ retains truncated source coverage instead of presenting it as successful complete Java 556ms
+   ✓ retains smali source coverage instead of presenting it as successful complete Java 565ms
+   ✓ cancels active and queued requests, cleans ownership and never launches a queued cancelled request 510ms
+   ✓ preserves the actual failed provider constraint for tool-error 565ms
+   ✓ preserves the actual failed provider constraint for frame-overflow 617ms
+   ✓ retains an uncertain workspace and blocks later launches after cleanup cannot be verified 505ms
+   ✓ retries shutdown cleanup after ownership verification recovers 619ms
+   ✓ retries idle retirement before acquiring another engine 904ms
+   ✓ retries target-change retirement before acquiring another engine 892ms
+   ✓ retains the execution failure while cleanup is pending and resumes after cleanup recovers 898ms
+   ✓ does not attribute upstream smali containing all overloads to the selected method 584ms
+   ✓ reports missing native/abstract method source without claiming an empty implementation 557ms
+ ✓ |process-boundary| tests/boundary/process/androidXapkBundle.test.ts (14 tests) 113ms
+
+ Test Files  2 passed (2)
+      Tests  56 passed (56)
+   Start at  23:22:34
+   Duration  28.12s (tests 98%, transform 1%, import 1%)
+

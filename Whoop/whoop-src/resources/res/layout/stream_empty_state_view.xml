@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:tag="layout/stream_empty_state_view_0"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/stream_empty_state"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="@dimen/Margin.Triple"
+        android:src="@drawable/ic_stream_empty_state"
+        app:layout_constraintBottom_toTopOf="@+id/stream_no_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"/>
+    <TextView
+        android:id="@+id/stream_no_message"
+        android:layout_width="wrap_content"
+        android:text="@string/no_messages_yet"
+        app:layout_constraintBottom_toTopOf="@+id/stream_be_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stream_empty_state"
+        style="@style/Headline3"/>
+    <TextView
+        android:textColor="@color/white_30"
+        android:id="@+id/stream_be_first"
+        android:layout_width="wrap_content"
+        android:text="@string/be_the_first"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stream_no_message"
+        style="@style/Headline3"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

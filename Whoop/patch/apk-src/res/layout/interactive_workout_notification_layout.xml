@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/contentview_notification" android:layout_width="match_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="fill_horizontal" android:layout_gravity="center_vertical" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="@dimen/margin_mini">
+        <include layout="@layout/notif_title_view" />
+        <TextView android:gravity="end" android:layout_gravity="center_vertical" android:id="@id/workout_notif_heartrate_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:drawablePadding="@dimen/padding_mini" style="@style/WhoopFont_n6" />
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:id="@id/workout_notif_setInfo" android:layout_width="match_parent" android:layout_height="match_parent" android:divider="@color/weightlifting_brand_primary">
+        <TextView android:gravity="center" android:id="@id/workout_notif_time" android:layout_width="wrap_content" android:layout_height="match_parent" style="@style/WhoopFont_n4" />
+        <LinearLayout android:gravity="center" android:layout_gravity="center_vertical" android:orientation="horizontal" android:id="@id/workout_notif_setState_info" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_margin="@dimen/margin_mini" android:layout_weight="2.0">
+            <LinearLayout android:gravity="start" android:layout_gravity="center_vertical" android:orientation="vertical" android:id="@id/workout_notif_setDisplay" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginHorizontal="@dimen/margin_mini">
+                <TextView android:textStyle="bold" android:id="@id/workout_notif_text_sets" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/WhoopFont_n6" />
+                <TextView android:id="@id/workout_notif_label_sets" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/WhoopFont_headline_h6" />
+            </LinearLayout>
+            <LinearLayout android:gravity="start" android:layout_gravity="center_vertical" android:orientation="vertical" android:id="@id/workout_notif_repDisplay" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginHorizontal="@dimen/margin_mini">
+                <TextView android:id="@id/workout_notif_text_volume" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/WhoopFont_n6" />
+                <TextView android:id="@id/workout_notif_label_volume" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/WhoopFont_headline_h6" />
+            </LinearLayout>
+            <LinearLayout android:gravity="start" android:orientation="vertical" android:id="@id/workout_notif_weightDisplay" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginHorizontal="@dimen/margin_mini">
+                <TextView android:id="@id/workout_notif_text_weight" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/WhoopFont_n6" />
+                <TextView android:id="@id/workout_notif_label_weight" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/WhoopFont_headline_h6" />
+            </LinearLayout>
+        </LinearLayout>
+        <include android:padding="@dimen/buttonPadding_medium" android:layout_width="@dimen/buttonSize_medium" android:layout_height="@dimen/buttonSize_medium" layout="@layout/notif_action_button" />
+    </LinearLayout>
+</LinearLayout>

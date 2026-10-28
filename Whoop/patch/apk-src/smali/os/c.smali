@@ -1,0 +1,85 @@
+.class public abstract Los/c;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+
+# static fields
+.field public static final a:Lcom/google/crypto/tink/internal/f0;
+
+.field public static final b:Lcom/google/crypto/tink/internal/f0;
+
+.field public static final c:Lcom/google/crypto/tink/internal/o;
+
+.field public static final d:Lcom/google/crypto/tink/internal/p;
+
+.field public static final e:Lcom/google/crypto/tink/internal/s;
+
+
+# direct methods
+.method static constructor <clinit>()V
+    .locals 5
+
+    new-instance v0, Los/a;
+
+    const/4 v1, 0x6
+
+    invoke-direct {v0, v1}, Los/a;-><init>(I)V
+
+    new-instance v1, Lcom/google/crypto/tink/internal/f0;
+
+    const-class v2, Lns/n;
+
+    const-class v3, Lfs/d;
+
+    invoke-direct {v1, v2, v3, v0}, Lcom/google/crypto/tink/internal/f0;-><init>(Ljava/lang/Class;Ljava/lang/Class;Lcom/google/crypto/tink/internal/g0;)V
+
+    sput-object v1, Los/c;->a:Lcom/google/crypto/tink/internal/f0;
+
+    new-instance v0, Los/a;
+
+    const/4 v1, 0x7
+
+    invoke-direct {v0, v1}, Los/a;-><init>(I)V
+
+    new-instance v1, Lcom/google/crypto/tink/internal/f0;
+
+    const-class v2, Lns/p;
+
+    const-class v4, Lfs/e;
+
+    invoke-direct {v1, v2, v4, v0}, Lcom/google/crypto/tink/internal/f0;-><init>(Ljava/lang/Class;Ljava/lang/Class;Lcom/google/crypto/tink/internal/g0;)V
+
+    sput-object v1, Los/c;->b:Lcom/google/crypto/tink/internal/f0;
+
+    invoke-static {}, Lvs/h3;->I()Lcom/google/crypto/tink/shaded/protobuf/v0;
+
+    const-string v0, "type.googleapis.com/google.crypto.tink.HpkePrivateKey"
+
+    invoke-static {v3, v0}, Lcom/google/crypto/tink/internal/p;->a(Ljava/lang/Class;Ljava/lang/String;)Lcom/google/crypto/tink/internal/o;
+
+    move-result-object v0
+
+    sput-object v0, Los/c;->c:Lcom/google/crypto/tink/internal/o;
+
+    invoke-static {}, Lvs/j3;->J()Lcom/google/crypto/tink/shaded/protobuf/v0;
+
+    new-instance v0, Lcom/google/crypto/tink/internal/p;
+
+    const-string v1, "type.googleapis.com/google.crypto.tink.HpkePublicKey"
+
+    sget-object v2, Lvs/l3;->E:Lvs/l3;
+
+    invoke-direct {v0, v1, v4, v2}, Lcom/google/crypto/tink/internal/p;-><init>(Ljava/lang/String;Ljava/lang/Class;Lvs/l3;)V
+
+    sput-object v0, Los/c;->d:Lcom/google/crypto/tink/internal/p;
+
+    new-instance v0, Lcom/google/crypto/tink/internal/s;
+
+    const/16 v1, 0xb
+
+    invoke-direct {v0, v1}, Lcom/google/crypto/tink/internal/s;-><init>(I)V
+
+    sput-object v0, Los/c;->e:Lcom/google/crypto/tink/internal/s;
+
+    return-void
+.end method

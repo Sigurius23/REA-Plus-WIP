@@ -1,0 +1,350 @@
+.class public final synthetic Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lkotlinx/serialization/internal/GeneratedSerializer;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x1019
+    name = "$serializer"
+.end annotation
+
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "Ljava/lang/Object;",
+        "Lkotlinx/serialization/internal/GeneratedSerializer<",
+        "Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;",
+        ">;"
+    }
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000:\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0003\n\u0002\u0010\u0011\n\u0002\u0018\u0002\n\u0002\u0008\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0005\u0008\u00c7\u0002\u0018\u00002\u0008\u0012\u0004\u0012\u00020\u00020\u0001B\t\u0008\u0002\u00a2\u0006\u0004\u0008\u0003\u0010\u0004J\u001d\u0010\t\u001a\u00020\u00082\u0006\u0010\u0006\u001a\u00020\u00052\u0006\u0010\u0007\u001a\u00020\u0002\u00a2\u0006\u0004\u0008\t\u0010\nJ\u0015\u0010\r\u001a\u00020\u00022\u0006\u0010\u000c\u001a\u00020\u000b\u00a2\u0006\u0004\u0008\r\u0010\u000eJ\u0017\u0010\u0011\u001a\u000c\u0012\u0008\u0012\u0006\u0012\u0002\u0008\u00030\u00100\u000f\u00a2\u0006\u0004\u0008\u0011\u0010\u0012R\u0017\u0010\u0014\u001a\u00020\u00138\u0006\u00a2\u0006\u000c\n\u0004\u0008\u0014\u0010\u0015\u001a\u0004\u0008\u0016\u0010\u0017\u00a8\u0006\u0018"
+    }
+    d2 = {
+        "com/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto.$serializer",
+        "Lkotlinx/serialization/internal/GeneratedSerializer;",
+        "Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;",
+        "<init>",
+        "()V",
+        "Lzc3/e;",
+        "encoder",
+        "value",
+        "Ll83/a0;",
+        "serialize",
+        "(Lzc3/e;Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;)V",
+        "Lzc3/d;",
+        "decoder",
+        "deserialize",
+        "(Lzc3/d;)Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;",
+        "",
+        "Lwc3/c;",
+        "childSerializers",
+        "()[Lwc3/c;",
+        "Lyc3/g;",
+        "descriptor",
+        "Lyc3/g;",
+        "getDescriptor",
+        "()Lyc3/g;",
+        "sleep-coach_release"
+    }
+    k = 0x1
+    mv = {
+        0x2,
+        0x3,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+.annotation runtime Ll83/c;
+.end annotation
+
+
+# static fields
+.field public static final $stable:I
+
+.field public static final INSTANCE:Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;
+
+.field private static final descriptor:Lyc3/g;
+
+
+# direct methods
+.method static constructor <clinit>()V
+    .locals 4
+
+    new-instance v0, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;
+
+    invoke-direct {v0}, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;-><init>()V
+
+    sput-object v0, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;->INSTANCE:Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;
+
+    const/16 v1, 0x8
+
+    sput v1, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;->$stable:I
+
+    new-instance v1, Lkotlinx/serialization/internal/PluginGeneratedSerialDescriptor;
+
+    const-string v2, "com.whoop.sleep.coach.data.network.model.sleepScheduleComponent.AlarmToWakeTimeDescriptionDto"
+
+    const/4 v3, 0x2
+
+    invoke-direct {v1, v2, v0, v3}, Lkotlinx/serialization/internal/PluginGeneratedSerialDescriptor;-><init>(Ljava/lang/String;Lkotlinx/serialization/internal/GeneratedSerializer;I)V
+
+    const-string v0, "SLEEP_GOAL"
+
+    const/4 v2, 0x1
+
+    invoke-virtual {v1, v0, v2}, Lkotlinx/serialization/internal/PluginGeneratedSerialDescriptor;->addElement(Ljava/lang/String;Z)V
+
+    const-string v0, "IN_THE_GREEN"
+
+    invoke-virtual {v1, v0, v2}, Lkotlinx/serialization/internal/PluginGeneratedSerialDescriptor;->addElement(Ljava/lang/String;Z)V
+
+    sput-object v1, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;->descriptor:Lyc3/g;
+
+    return-void
+.end method
+
+.method private constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final childSerializers()[Lwc3/c;
+    .locals 4
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()[",
+            "Lwc3/c;"
+        }
+    .end annotation
+
+    sget-object v0, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto$$serializer;->INSTANCE:Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto$$serializer;
+
+    invoke-static {v0}, Lxc3/a;->d(Lwc3/c;)Lwc3/c;
+
+    move-result-object v1
+
+    invoke-static {v0}, Lxc3/a;->d(Lwc3/c;)Lwc3/c;
+
+    move-result-object v0
+
+    const/4 v2, 0x2
+
+    new-array v2, v2, [Lwc3/c;
+
+    const/4 v3, 0x0
+
+    aput-object v1, v2, v3
+
+    const/4 v1, 0x1
+
+    aput-object v0, v2, v1
+
+    return-object v2
+.end method
+
+.method public final deserialize(Lzc3/d;)Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;
+    .locals 10
+
+    const-string v0, "decoder"
+
+    invoke-static {p1, v0}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    .line 1
+    sget-object v0, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;->descriptor:Lyc3/g;
+
+    invoke-interface {p1, v0}, Lzc3/d;->beginStructure(Lyc3/g;)Lzc3/b;
+
+    move-result-object p1
+
+    invoke-interface {p1}, Lzc3/b;->decodeSequentially()Z
+
+    move-result v1
+
+    const/4 v2, 0x1
+
+    const/4 v3, 0x0
+
+    const/4 v4, 0x0
+
+    if-eqz v1, :cond_0
+
+    sget-object v1, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto$$serializer;->INSTANCE:Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto$$serializer;
+
+    invoke-interface {p1, v0, v3, v1, v4}, Lzc3/b;->decodeNullableSerializableElement(Lyc3/g;ILwc3/b;Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto;
+
+    invoke-interface {p1, v0, v2, v1, v4}, Lzc3/b;->decodeNullableSerializableElement(Lyc3/g;ILwc3/b;Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto;
+
+    const/4 v2, 0x3
+
+    goto :goto_1
+
+    :cond_0
+    move v7, v2
+
+    move v5, v3
+
+    move-object v1, v4
+
+    move-object v6, v1
+
+    :goto_0
+    if-eqz v7, :cond_4
+
+    invoke-interface {p1, v0}, Lzc3/b;->decodeElementIndex(Lyc3/g;)I
+
+    move-result v8
+
+    const/4 v9, -0x1
+
+    if-eq v8, v9, :cond_3
+
+    if-eqz v8, :cond_2
+
+    if-ne v8, v2, :cond_1
+
+    sget-object v8, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto$$serializer;->INSTANCE:Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto$$serializer;
+
+    invoke-interface {p1, v0, v2, v8, v1}, Lzc3/b;->decodeNullableSerializableElement(Lyc3/g;ILwc3/b;Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v1
+
+    check-cast v1, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto;
+
+    or-int/lit8 v5, v5, 0x2
+
+    goto :goto_0
+
+    :cond_1
+    new-instance p1, Lkotlinx/serialization/UnknownFieldException;
+
+    invoke-direct {p1, v8}, Lkotlinx/serialization/UnknownFieldException;-><init>(I)V
+
+    throw p1
+
+    :cond_2
+    sget-object v8, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto$$serializer;->INSTANCE:Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto$$serializer;
+
+    invoke-interface {p1, v0, v3, v8, v6}, Lzc3/b;->decodeNullableSerializableElement(Lyc3/g;ILwc3/b;Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v6
+
+    check-cast v6, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto;
+
+    or-int/lit8 v5, v5, 0x1
+
+    goto :goto_0
+
+    :cond_3
+    move v7, v3
+
+    goto :goto_0
+
+    :cond_4
+    move v2, v5
+
+    move-object v3, v6
+
+    :goto_1
+    invoke-interface {p1, v0}, Lzc3/b;->endStructure(Lyc3/g;)V
+
+    new-instance p1, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;
+
+    invoke-direct {p1, v2, v3, v1, v4}, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;-><init>(ILcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto;Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeTemplateDto;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+
+    return-object p1
+.end method
+
+.method public bridge synthetic deserialize(Lzc3/d;)Ljava/lang/Object;
+    .locals 0
+
+    .line 2
+    invoke-virtual {p0, p1}, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;->deserialize(Lzc3/d;)Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public final getDescriptor()Lyc3/g;
+    .locals 1
+
+    sget-object v0, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;->descriptor:Lyc3/g;
+
+    return-object v0
+.end method
+
+.method public final serialize(Lzc3/e;Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;)V
+    .locals 1
+
+    const-string v0, "encoder"
+
+    invoke-static {p1, v0}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    const-string v0, "value"
+
+    invoke-static {p2, v0}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    .line 1
+    sget-object v0, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;->descriptor:Lyc3/g;
+
+    invoke-interface {p1, v0}, Lzc3/e;->beginStructure(Lyc3/g;)Lzc3/c;
+
+    move-result-object p1
+
+    invoke-static {p2, p1, v0}, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;->write$Self$sleep_coach_release(Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;Lzc3/c;Lyc3/g;)V
+
+    invoke-interface {p1, v0}, Lzc3/c;->endStructure(Lyc3/g;)V
+
+    return-void
+.end method
+
+.method public bridge synthetic serialize(Lzc3/e;Ljava/lang/Object;)V
+    .locals 0
+
+    .line 2
+    check-cast p2, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;
+
+    invoke-virtual {p0, p1, p2}, Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto$$serializer;->serialize(Lzc3/e;Lcom/whoop/sleep/coach/data/network/model/sleepScheduleComponent/AlarmToWakeTimeDescriptionDto;)V
+
+    return-void
+.end method
+
+.method public bridge typeParametersSerializers()[Lwc3/c;
+    .locals 1
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()[",
+            "Lwc3/c;"
+        }
+    .end annotation
+
+    invoke-super {p0}, Lkotlinx/serialization/internal/GeneratedSerializer;->typeParametersSerializers()[Lwc3/c;
+
+    move-result-object v0
+
+    return-object v0
+.end method

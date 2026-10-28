@@ -1,0 +1,47 @@
+Focused tests: tests/boundary/process/androidAnalysisMcp.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 156e637b4ef0654b
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs 6c894a74f2d4e22f
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+compile: npm notice
+compile: npm notice New major version of npm available! 10.9.2 -> 12.2.1
+compile: npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+compile: npm notice To update run: npm install -g npm@12.2.1
+compile: npm notice
+artifacts:skills: cache hit, replaying logs d7fbf071054e6328
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    3 cached, 3 total
+  Time:    42ms >>> FULL TURBO
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |process-boundary| tests/boundary/process/androidAnalysisMcp.test.ts (7 tests) 6933ms
+   ✓ publishes and executes all APK contracts with inline Evidence and no active binary 4195ms
+   ✓ retains Android partial observations for failed upstream reply through MCP 567ms
+   ✓ retains Android partial observations for transport error after successful replies through MCP 509ms
+   ✓ retains Android partial observations for empty handshake identity mismatch through MCP 561ms
+   ✓ retains partial JADX replies when owned cleanup also fails 581ms
+   ✓ cleans an active engine when the MCP client disconnects 474ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  23:23:07
+   Duration  11.17s (tests 63%, transform 28%, import 10%)
+

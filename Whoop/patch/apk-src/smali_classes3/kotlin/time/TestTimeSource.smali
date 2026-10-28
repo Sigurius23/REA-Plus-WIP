@@ -1,0 +1,213 @@
+.class public final Lkotlin/time/TestTimeSource;
+.super Lkotlin/time/AbstractLongTimeSource;
+.source "SourceFile"
+
+
+# annotations
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000\"\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0008\u0003\n\u0002\u0010\t\n\u0002\u0008\u0007\u0008\u0007\u0018\u00002\u00020\u0001B\u0007\u00a2\u0006\u0004\u0008\u0002\u0010\u0003J\u0017\u0010\t\u001a\u00020\u00062\u0006\u0010\u0005\u001a\u00020\u0004H\u0002\u00a2\u0006\u0004\u0008\u0007\u0010\u0008J\u000f\u0010\u000b\u001a\u00020\nH\u0014\u00a2\u0006\u0004\u0008\u000b\u0010\u000cJ\u0018\u0010\u000e\u001a\u00020\u00062\u0006\u0010\u0005\u001a\u00020\u0004H\u0086\u0002\u00a2\u0006\u0004\u0008\r\u0010\u0008R\u0016\u0010\u000f\u001a\u00020\n8\u0002@\u0002X\u0082\u000e\u00a2\u0006\u0006\n\u0004\u0008\u000f\u0010\u0010\u00a8\u0006\u0011"
+    }
+    d2 = {
+        "Lkotlin/time/TestTimeSource;",
+        "Lkotlin/time/AbstractLongTimeSource;",
+        "<init>",
+        "()V",
+        "Lkotlin/time/Duration;",
+        "duration",
+        "Ll83/a0;",
+        "overflow-LRDsOJo",
+        "(J)V",
+        "overflow",
+        "",
+        "read",
+        "()J",
+        "plusAssign-LRDsOJo",
+        "plusAssign",
+        "reading",
+        "J",
+        "kotlin-stdlib"
+    }
+    k = 0x1
+    mv = {
+        0x2,
+        0x3,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+
+# instance fields
+.field private reading:J
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 1
+
+    sget-object v0, Lkotlin/time/DurationUnit;->NANOSECONDS:Lkotlin/time/DurationUnit;
+
+    invoke-direct {p0, v0}, Lkotlin/time/AbstractLongTimeSource;-><init>(Lkotlin/time/DurationUnit;)V
+
+    invoke-virtual {p0}, Lkotlin/time/AbstractLongTimeSource;->markNow()Lkotlin/time/ComparableTimeMark;
+
+    return-void
+.end method
+
+.method private final overflow-LRDsOJo(J)V
+    .locals 4
+
+    new-instance v0, Ljava/lang/IllegalStateException;
+
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    const-string v2, "TestTimeSource will overflow if its reading "
+
+    invoke-direct {v1, v2}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+
+    iget-wide v2, p0, Lkotlin/time/TestTimeSource;->reading:J
+
+    invoke-virtual {v1, v2, v3}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    invoke-virtual {p0}, Lkotlin/time/AbstractLongTimeSource;->getUnit()Lkotlin/time/DurationUnit;
+
+    move-result-object v2
+
+    invoke-static {v2}, Lkotlin/time/DurationUnitKt__DurationUnitKt;->shortName(Lkotlin/time/DurationUnit;)Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v2, " is advanced by "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-static {p1, p2}, Lkotlin/time/Duration;->toString-impl(J)Ljava/lang/String;
+
+    move-result-object p1
+
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    const/16 p1, 0x2e
+
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(C)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object p1
+
+    invoke-direct {v0, p1}, Ljava/lang/IllegalStateException;-><init>(Ljava/lang/String;)V
+
+    throw v0
+.end method
+
+
+# virtual methods
+.method public final plusAssign-LRDsOJo(J)V
+    .locals 8
+
+    invoke-virtual {p0}, Lkotlin/time/AbstractLongTimeSource;->getUnit()Lkotlin/time/DurationUnit;
+
+    move-result-object v0
+
+    invoke-static {p1, p2, v0}, Lkotlin/time/Duration;->toLong-impl(JLkotlin/time/DurationUnit;)J
+
+    move-result-wide v0
+
+    const-wide/16 v2, 0x1
+
+    sub-long v4, v0, v2
+
+    or-long/2addr v4, v2
+
+    const-wide v6, 0x7fffffffffffffffL
+
+    cmp-long v4, v4, v6
+
+    if-nez v4, :cond_1
+
+    const/4 v0, 0x2
+
+    invoke-static {p1, p2, v0}, Lkotlin/time/Duration;->div-UwyO8pc(JI)J
+
+    move-result-wide v0
+
+    invoke-virtual {p0}, Lkotlin/time/AbstractLongTimeSource;->getUnit()Lkotlin/time/DurationUnit;
+
+    move-result-object v4
+
+    invoke-static {v0, v1, v4}, Lkotlin/time/Duration;->toLong-impl(JLkotlin/time/DurationUnit;)J
+
+    move-result-wide v4
+
+    sub-long/2addr v4, v2
+
+    or-long/2addr v2, v4
+
+    cmp-long v2, v2, v6
+
+    if-nez v2, :cond_0
+
+    invoke-direct {p0, p1, p2}, Lkotlin/time/TestTimeSource;->overflow-LRDsOJo(J)V
+
+    return-void
+
+    :cond_0
+    iget-wide v2, p0, Lkotlin/time/TestTimeSource;->reading:J
+
+    :try_start_0
+    invoke-virtual {p0, v0, v1}, Lkotlin/time/TestTimeSource;->plusAssign-LRDsOJo(J)V
+
+    invoke-static {p1, p2, v0, v1}, Lkotlin/time/Duration;->minus-LRDsOJo(JJ)J
+
+    move-result-wide p1
+
+    invoke-virtual {p0, p1, p2}, Lkotlin/time/TestTimeSource;->plusAssign-LRDsOJo(J)V
+    :try_end_0
+    .catch Ljava/lang/IllegalStateException; {:try_start_0 .. :try_end_0} :catch_0
+
+    return-void
+
+    :catch_0
+    move-exception p1
+
+    iput-wide v2, p0, Lkotlin/time/TestTimeSource;->reading:J
+
+    throw p1
+
+    :cond_1
+    iget-wide v2, p0, Lkotlin/time/TestTimeSource;->reading:J
+
+    add-long v4, v2, v0
+
+    xor-long/2addr v0, v2
+
+    const-wide/16 v6, 0x0
+
+    cmp-long v0, v0, v6
+
+    if-ltz v0, :cond_2
+
+    xor-long v0, v2, v4
+
+    cmp-long v0, v0, v6
+
+    if-gez v0, :cond_2
+
+    invoke-direct {p0, p1, p2}, Lkotlin/time/TestTimeSource;->overflow-LRDsOJo(J)V
+
+    :cond_2
+    iput-wide v4, p0, Lkotlin/time/TestTimeSource;->reading:J
+
+    return-void
+.end method
+
+.method public read()J
+    .locals 2
+
+    iget-wide v0, p0, Lkotlin/time/TestTimeSource;->reading:J
+
+    return-wide v0
+.end method

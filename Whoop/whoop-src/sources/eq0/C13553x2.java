@@ -1,0 +1,84 @@
+package eq0;
+
+import android.util.SparseIntArray;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
+import androidx.databinding.AbstractC1168a0;
+import androidx.databinding.C1191u;
+import androidx.databinding.InterfaceC1176f;
+import androidx.recyclerview.widget.RecyclerView;
+import xp0.AbstractC38499a0;
+
+/* JADX INFO: renamed from: eq0.x2 */
+/* JADX INFO: loaded from: classes7.dex */
+public class C13553x2 extends AbstractC13549w2 {
+
+    /* JADX INFO: renamed from: g */
+    private static final C1191u f47758g = null;
+
+    /* JADX INFO: renamed from: h */
+    private static final SparseIntArray f47759h;
+
+    /* JADX INFO: renamed from: f */
+    private long f47760f;
+
+    static {
+        SparseIntArray sparseIntArray = new SparseIntArray();
+        f47759h = sparseIntArray;
+        sparseIntArray.put(AbstractC38499a0.f165063F4, 1);
+        sparseIntArray.put(AbstractC38499a0.f165111K7, 2);
+        sparseIntArray.put(AbstractC38499a0.f165081H4, 3);
+        sparseIntArray.put(AbstractC38499a0.f165072G4, 4);
+    }
+
+    public C13553x2(InterfaceC1176f interfaceC1176f, View view) {
+        this(interfaceC1176f, view, AbstractC1168a0.mapBindings(interfaceC1176f, view, 5, f47758g, f47759h));
+    }
+
+    @Override // androidx.databinding.AbstractC1168a0
+    public void executeBindings() {
+        synchronized (this) {
+            this.f47760f = 0L;
+        }
+    }
+
+    @Override // androidx.databinding.AbstractC1168a0
+    public boolean hasPendingBindings() {
+        synchronized (this) {
+            try {
+                return this.f47760f != 0;
+            } catch (Throwable th3) {
+                throw th3;
+            }
+        }
+    }
+
+    @Override // androidx.databinding.AbstractC1168a0
+    public void invalidateAll() {
+        synchronized (this) {
+            this.f47760f = 1L;
+        }
+        requestRebind();
+    }
+
+    @Override // androidx.databinding.AbstractC1168a0
+    public boolean onFieldChange(int i13, Object obj, int i14) {
+        return false;
+    }
+
+    @Override // androidx.databinding.AbstractC1168a0
+    public boolean setVariable(int i13, Object obj) {
+        return true;
+    }
+
+    private C13553x2(InterfaceC1176f interfaceC1176f, View view, Object[] objArr) {
+        super(interfaceC1176f, view, 0, (TextView) objArr[1], (ConstraintLayout) objArr[0], (RecyclerView) objArr[4], (NestedScrollView) objArr[3], (LinearLayout) objArr[2]);
+        this.f47760f = -1L;
+        this.f47735b.setTag(null);
+        setRootTag(view);
+        invalidateAll();
+    }
+}

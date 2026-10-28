@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/training_activity_settings_graph"
+    app:startDestination="@+id/activitySettingsFragment">
+    <fragment
+        android:label="ActivitySettingsFragment"
+        android:name="com.whoop.training.p068ui.activitysettings.ActivitySettingsFragment"
+        android:id="@+id/activitySettingsFragment">
+        <action
+            android:id="@+id/training_action_activitysettingsfragment_to_training_hrsettingsfragment"
+            app:destination="@+id/trainingHrSettingsFragment"
+            app:enterAnim="@anim/slide_right_in"
+            app:exitAnim="@anim/zoom_out_enter"
+            app:popEnterAnim="@anim/zoom_in_exit"
+            app:popExitAnim="@anim/zoom_out"/>
+    </fragment>
+    <fragment
+        android:label="HrSettingsFragment"
+        android:name="com.whoop.training.hrsettings.view.fragment.HrSettingsFragment"
+        android:id="@+id/trainingHrSettingsFragment">
+        <deepLink app:uri="android-app://com.whoop/hrSettingsFragment"/>
+        <deepLink app:uri="android-app://com.whoop/trainingMaxHr"/>
+    </fragment>
+    <fragment
+        android:label="LocationSettingsFragment"
+        android:name="com.whoop.training.locationsettings.view.LocationSettingsFragment"
+        android:id="@+id/locationSettingsFragment">
+        <deepLink app:uri="android-app://com.whoop/locationSettingsFragment"/>
+    </fragment>
+</navigation>

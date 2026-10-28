@@ -1,0 +1,45 @@
+package org.webrtc;
+
+/* JADX INFO: loaded from: classes3.dex */
+class NativeAndroidVideoTrackSource {
+    private final long nativeAndroidVideoTrackSource;
+
+    public NativeAndroidVideoTrackSource(long j7) {
+        this.nativeAndroidVideoTrackSource = j7;
+    }
+
+    @CalledByNative
+    public static VideoProcessor.FrameAdaptationParameters createFrameAdaptationParameters(int i13, int i14, int i15, int i16, int i17, int i18, long j7, boolean z4) {
+        return new VideoProcessor.FrameAdaptationParameters(i13, i14, i15, i16, i17, i18, j7, z4);
+    }
+
+    private static native VideoProcessor.FrameAdaptationParameters nativeAdaptFrame(long j7, int i13, int i14, int i15, long j13);
+
+    private static native void nativeAdaptOutputFormat(long j7, int i13, int i14, Integer num, int i15, int i16, Integer num2, Integer num3);
+
+    private static native void nativeOnFrameCaptured(long j7, int i13, long j13, VideoFrame.Buffer buffer);
+
+    private static native void nativeSetIsScreencast(long j7, boolean z4);
+
+    private static native void nativeSetState(long j7, boolean z4);
+
+    public VideoProcessor.FrameAdaptationParameters adaptFrame(VideoFrame videoFrame) {
+        return nativeAdaptFrame(this.nativeAndroidVideoTrackSource, videoFrame.getBuffer().getWidth(), videoFrame.getBuffer().getHeight(), videoFrame.getRotation(), videoFrame.getTimestampNs());
+    }
+
+    public void adaptOutputFormat(VideoSource.AspectRatio aspectRatio, Integer num, VideoSource.AspectRatio aspectRatio2, Integer num2, Integer num3) {
+        nativeAdaptOutputFormat(this.nativeAndroidVideoTrackSource, aspectRatio.width, aspectRatio.height, num, aspectRatio2.width, aspectRatio2.height, num2, num3);
+    }
+
+    public void onFrameCaptured(VideoFrame videoFrame) {
+        nativeOnFrameCaptured(this.nativeAndroidVideoTrackSource, videoFrame.getRotation(), videoFrame.getTimestampNs(), videoFrame.getBuffer());
+    }
+
+    public void setIsScreencast(boolean z4) {
+        nativeSetIsScreencast(this.nativeAndroidVideoTrackSource, z4);
+    }
+
+    public void setState(boolean z4) {
+        nativeSetState(this.nativeAndroidVideoTrackSource, z4);
+    }
+}

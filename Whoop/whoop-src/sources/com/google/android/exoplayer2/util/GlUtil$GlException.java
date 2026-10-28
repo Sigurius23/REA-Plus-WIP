@@ -1,0 +1,5 @@
+package com.google.android.exoplayer2.util;
+
+/* JADX INFO: loaded from: classes6.dex */
+public final class GlUtil$GlException extends RuntimeException {
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/stream_ui_message_composer_trailing_content_horizontal_padding"
+        android:paddingVertical="@dimen/stream_ui_message_composer_trailing_content_vertical_padding">
+        <ImageView
+            android:layout_gravity="bottom"
+            android:id="@+id/sendMessageButton"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/stream_ui_message_composer_trailing_content_button_send_message_padding"
+            android:layout_width="@dimen/stream_ui_message_composer_trailing_content_button_send_message_width"
+            android:layout_height="@dimen/stream_ui_message_composer_trailing_content_button_send_message_height"
+            android:src="@drawable/stream_ui_ic_send_message"/>
+        <ImageView
+            android:layout_gravity="bottom"
+            android:id="@+id/recordAudioButton"
+            android:tag="record_audio"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/stream_ui_message_composer_trailing_content_button_record_audio_padding"
+            android:layout_width="@dimen/stream_ui_message_composer_trailing_content_button_record_audio_width"
+            android:layout_height="@dimen/stream_ui_message_composer_trailing_content_button_record_audio_height"
+            android:src="@drawable/stream_ui_ic_mic"/>
+        <TextView
+            android:layout_gravity="bottom"
+            android:id="@+id/cooldownBadgeTextView"
+            android:focusable="true"
+            android:visibility="gone"
+            android:clickable="true"
+            android:layout_margin="@dimen/stream_ui_spacing_tiny"
+            style="@style/StreamUiCooldownBadgeStyle"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</merge>

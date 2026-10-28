@@ -1,0 +1,60 @@
+package live.hms.video.sdk.managers;
+
+import java.util.ArrayList;
+import java.util.List;
+import live.hms.video.error.HMSException;
+import live.hms.video.sdk.SDKStore;
+import live.hms.video.sdk.models.HMSNotifications;
+import live.hms.video.sdk.models.HMSRoom;
+import live.hms.video.sdk.models.HMSRtmpStreamingState;
+import live.hms.video.sdk.models.SDKUpdate;
+import live.hms.video.sdk.models.enums.HMSRoomUpdate;
+import live.hms.video.sdk.models.enums.HMSStreamingState;
+import live.hms.video.sdk.peerlist.models.BeamStreamingStates;
+import m83.C25271y;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+
+/* JADX INFO: loaded from: classes3.dex */
+@Metadata(m65680d1 = {"\u0000\"\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0005\n\u0002\u0010 \n\u0002\u0018\u0002\n\u0002\b\u0002\b\u0000\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\u000f\u0012\u0006\u0010\u0003\u001a\u00020\u0004¢\u0006\u0004\b\u0005\u0010\u0006J\u0016\u0010\t\u001a\b\u0012\u0004\u0012\u00020\u000b0\n2\u0006\u0010\f\u001a\u00020\u0002H\u0016R\u0014\u0010\u0003\u001a\u00020\u0004X\u0096\u0004¢\u0006\b\n\u0000\u001a\u0004\b\u0007\u0010\b¨\u0006\r"}, m65681d2 = {"Llive/hms/video/sdk/managers/RtmpUpdateManager;", "Llive/hms/video/sdk/managers/IManager;", "Llive/hms/video/sdk/models/HMSNotifications$RtmpUpdateNotification;", "store", "Llive/hms/video/sdk/SDKStore;", "<init>", "(Llive/hms/video/sdk/SDKStore;)V", "getStore", "()Llive/hms/video/sdk/SDKStore;", "manage", "", "Llive/hms/video/sdk/models/SDKUpdate;", "params", "lib_release"}, m65682k = 1, m65683mv = {2, 0, 0}, m65685xi = 48)
+public final class RtmpUpdateManager implements IManager<HMSNotifications.RtmpUpdateNotification> {
+    private final SDKStore store;
+
+    public RtmpUpdateManager(SDKStore store) {
+        AbstractC22676k.m65750j(store, "store");
+        this.store = store;
+    }
+
+    @Override // live.hms.video.sdk.managers.IManager
+    public SDKStore getStore() {
+        return this.store;
+    }
+
+    @Override // live.hms.video.sdk.managers.IManager
+    public List<SDKUpdate> manage(HMSNotifications.RtmpUpdateNotification params) {
+        HMSStreamingState hMSStreamingState;
+        AbstractC22676k.m65750j(params, "params");
+        HMSRoom hMSRoom = getStore().get_room();
+        if (hMSRoom == null) {
+            return C25271y.f99162w;
+        }
+        ArrayList arrayList = new ArrayList();
+        HMSStreamingState state = hMSRoom.getRtmpHMSRtmpStreamingState().getState();
+        BeamStreamingStates state2 = params.getState();
+        if (state != (state2 != null ? state2.toHMSStreamingState() : null)) {
+            BeamStreamingStates state3 = params.getState();
+            boolean z4 = (state3 != null ? state3.toHMSStreamingState() : null) == HMSStreamingState.STARTED;
+            HMSNotifications.ServerError error = params.getError();
+            HMSException hmsException = error != null ? error.toHmsException() : null;
+            Long startedAt = params.getStartedAt();
+            Long stoppedAt = params.getStoppedAt();
+            BeamStreamingStates state4 = params.getState();
+            if (state4 == null || (hMSStreamingState = state4.toHMSStreamingState()) == null) {
+                hMSStreamingState = HMSStreamingState.NONE;
+            }
+            hMSRoom.setRtmpHMSRtmpStreamingState$lib_release(new HMSRtmpStreamingState(z4, hmsException, startedAt, stoppedAt, hMSStreamingState));
+            arrayList.add(new SDKUpdate.Room(HMSRoomUpdate.RTMP_STREAMING_STATE_UPDATED));
+        }
+        return arrayList;
+    }
+}

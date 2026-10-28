@@ -1,0 +1,27 @@
+package m32;
+
+import android.content.Context;
+import p479s4.AbstractC32122c;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+
+/* JADX INFO: renamed from: m32.b */
+/* JADX INFO: loaded from: classes4.dex */
+@Metadata(m65680d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0006\u0018\u00002\u00020\u0001B\u000f\u0012\u0006\u0010\u0003\u001a\u00020\u0002¢\u0006\u0004\b\u0004\u0010\u0005J\u0017\u0010\t\u001a\u00020\b2\u0006\u0010\u0007\u001a\u00020\u0006H\u0016¢\u0006\u0004\b\t\u0010\nR\u001c\u0010\r\u001a\n \u000b*\u0004\u0018\u00010\u00020\u00028\u0002X\u0082\u0004¢\u0006\u0006\n\u0004\b\t\u0010\f¨\u0006\u000e"}, m65681d2 = {"Lm32/b;", "Lm32/a;", "Landroid/content/Context;", "context", "<init>", "(Landroid/content/Context;)V", "", "permission", "", "a", "(Ljava/lang/String;)Z", "kotlin.jvm.PlatformType", "Landroid/content/Context;", "applicationContext", "essentials_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+public final class C25006b implements InterfaceC25005a {
+
+    /* JADX INFO: renamed from: a, reason: from kotlin metadata */
+    private final Context applicationContext;
+
+    public C25006b(Context context) {
+        AbstractC22676k.m65750j(context, "context");
+        this.applicationContext = context.getApplicationContext();
+    }
+
+    @Override // m32.InterfaceC25005a
+    /* JADX INFO: renamed from: a */
+    public boolean mo73346a(String permission) {
+        AbstractC22676k.m65750j(permission, "permission");
+        return AbstractC32122c.checkSelfPermission(this.applicationContext, permission) == 0;
+    }
+}

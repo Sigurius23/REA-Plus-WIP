@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/memberdataexport_nav_graph" app:startDestination="@id/memberdataexport_mdeFragment"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <fragment android:label="DataExportFragment" android:name="com.whoop.memberdataexport.ui.MemberDataExportFragment" android:id="@id/memberdataexport_mdeFragment">
+        <deepLink app:uri="whoop://com.whoop/memberdataexport_mdeFragment" />
+        <action android:id="@id/memberdataexport_action_memberdataexport_mdefragment_to_memberdataexport_submitmdefragment" app:destination="@id/memberdataexport_submitMdeFragment" />
+    </fragment>
+    <fragment android:label="SubmitMemberDataExportFragment" android:name="com.whoop.memberdataexport.ui.SubmitMemberDataExportFragment" android:id="@id/memberdataexport_submitMdeFragment">
+        <argument android:name="email" app:argType="string" />
+        <argument android:name="submissionLoadingDisplay" app:argType="string" />
+        <argument android:name="submissionSuccessDisplay" app:argType="string" />
+        <action android:id="@id/memberdataexport_action_memberdataexport_submitmdefragment_to_memberdataexport_submissioncompletefragment" app:destination="@id/memberdataexport_submissionCompleteFragment" />
+    </fragment>
+    <fragment android:label="SubmitMemberDataExportFragment" android:name="com.whoop.memberdataexport.ui.SubmissionCompleteFragment" android:id="@id/memberdataexport_submissionCompleteFragment">
+        <argument android:name="title" app:argType="string" />
+        <argument android:name="headline" app:argType="string" />
+        <argument android:name="body" app:argType="string" />
+        <argument android:name="helpText" app:argType="string" />
+        <argument android:name="helpLink" app:argType="string" />
+    </fragment>
+</navigation>

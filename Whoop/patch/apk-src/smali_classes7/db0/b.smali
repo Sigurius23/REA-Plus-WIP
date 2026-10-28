@@ -1,0 +1,74 @@
+.class public final synthetic Ldb0/b;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lkotlin/jvm/functions/Function1;
+
+
+# instance fields
+.field public final synthetic w:I
+
+.field public final synthetic x:Lcom/whoop/advancedlabs/biomarkerdetails/view/BiomarkerDetailsFragment;
+
+
+# direct methods
+.method public synthetic constructor <init>(Lcom/whoop/advancedlabs/biomarkerdetails/view/BiomarkerDetailsFragment;I)V
+    .locals 0
+
+    iput p2, p0, Ldb0/b;->w:I
+
+    iput-object p1, p0, Ldb0/b;->x:Lcom/whoop/advancedlabs/biomarkerdetails/view/BiomarkerDetailsFragment;
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final invoke(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 1
+
+    iget v0, p0, Ldb0/b;->w:I
+
+    packed-switch v0, :pswitch_data_0
+
+    iget-object v0, p0, Ldb0/b;->x:Lcom/whoop/advancedlabs/biomarkerdetails/view/BiomarkerDetailsFragment;
+
+    check-cast p1, Lkd0/a$c;
+
+    invoke-static {v0, p1}, Lcom/whoop/advancedlabs/biomarkerdetails/view/BiomarkerDetailsFragment;->F(Lcom/whoop/advancedlabs/biomarkerdetails/view/BiomarkerDetailsFragment;Lkd0/a$c;)Ll83/a0;
+
+    move-result-object p1
+
+    return-object p1
+
+    :pswitch_0
+    iget-object v0, p0, Ldb0/b;->x:Lcom/whoop/advancedlabs/biomarkerdetails/view/BiomarkerDetailsFragment;
+
+    check-cast p1, Lcom/whoop/whoopaction/domain/models/Action;
+
+    invoke-static {v0, p1}, Lcom/whoop/advancedlabs/biomarkerdetails/view/BiomarkerDetailsFragment;->E(Lcom/whoop/advancedlabs/biomarkerdetails/view/BiomarkerDetailsFragment;Lcom/whoop/whoopaction/domain/models/Action;)Ll83/a0;
+
+    move-result-object p1
+
+    return-object p1
+
+    :pswitch_1
+    iget-object v0, p0, Ldb0/b;->x:Lcom/whoop/advancedlabs/biomarkerdetails/view/BiomarkerDetailsFragment;
+
+    check-cast p1, Lbb0/b;
+
+    invoke-static {v0, p1}, Lcom/whoop/advancedlabs/biomarkerdetails/view/BiomarkerDetailsFragment;->B(Lcom/whoop/advancedlabs/biomarkerdetails/view/BiomarkerDetailsFragment;Lbb0/b;)Ll83/a0;
+
+    move-result-object p1
+
+    return-object p1
+
+    :pswitch_data_0
+    .packed-switch 0x0
+        :pswitch_1
+        :pswitch_0
+    .end packed-switch
+.end method

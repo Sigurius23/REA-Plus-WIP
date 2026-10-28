@@ -1,0 +1,94 @@
+.class public final synthetic Lc30/e;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements La40/e;
+.implements Lkotlin/jvm/internal/f;
+
+
+# instance fields
+.field public final synthetic w:Lc93/a;
+
+
+# direct methods
+.method public constructor <init>(Lc93/a;)V
+    .locals 1
+
+    const-string v0, "function"
+
+    invoke-static {p1, v0}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    iput-object p1, p0, Lc30/e;->w:Lc93/a;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final synthetic a()V
+    .locals 1
+
+    iget-object v0, p0, Lc30/e;->w:Lc93/a;
+
+    invoke-interface {v0}, Lc93/a;->invoke()Ljava/lang/Object;
+
+    return-void
+.end method
+
+.method public final equals(Ljava/lang/Object;)Z
+    .locals 2
+
+    instance-of v0, p1, La40/e;
+
+    const/4 v1, 0x0
+
+    if-eqz v0, :cond_0
+
+    instance-of v0, p1, Lkotlin/jvm/internal/f;
+
+    if-eqz v0, :cond_0
+
+    invoke-interface {p0}, Lkotlin/jvm/internal/f;->getFunctionDelegate()Ll83/e;
+
+    move-result-object v0
+
+    check-cast p1, Lkotlin/jvm/internal/f;
+
+    invoke-interface {p1}, Lkotlin/jvm/internal/f;->getFunctionDelegate()Ll83/e;
+
+    move-result-object p1
+
+    invoke-static {v0, p1}, Lkotlin/jvm/internal/k;->e(Ljava/lang/Object;Ljava/lang/Object;)Z
+
+    move-result p1
+
+    return p1
+
+    :cond_0
+    return v1
+.end method
+
+.method public final getFunctionDelegate()Ll83/e;
+    .locals 1
+
+    iget-object v0, p0, Lc30/e;->w:Lc93/a;
+
+    return-object v0
+.end method
+
+.method public final hashCode()I
+    .locals 1
+
+    invoke-interface {p0}, Lkotlin/jvm/internal/f;->getFunctionDelegate()Ll83/e;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Ljava/lang/Object;->hashCode()I
+
+    move-result v0
+
+    return v0
+.end method

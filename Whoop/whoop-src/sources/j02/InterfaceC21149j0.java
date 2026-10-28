@@ -1,0 +1,109 @@
+package j02;
+
+import p114eb.C12969k0;
+import p114eb.C12997x0;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+import p715kotlin.jvm.internal.DefaultConstructorMarker;
+
+/* JADX INFO: renamed from: j02.j0 */
+/* JADX INFO: loaded from: classes4.dex */
+@Metadata(m65680d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\bv\u0018\u00002\u00020\u0001:\u0004\u0002\u0003\u0004\u0005\u0082\u0001\u0004\u0006\u0007\b\t¨\u0006\nÀ\u0006\u0003"}, m65681d2 = {"Lj02/j0;", "", "c", "b", "d", "a", "Lj02/j0$a;", "Lj02/j0$b;", "Lj02/j0$c;", "Lj02/j0$d;", "navigation_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+public interface InterfaceC21149j0 {
+
+    /* JADX INFO: renamed from: j02.j0$a */
+    /* JADX INFO: loaded from: classes9.dex */
+    @Metadata(m65680d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÇ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, m65681d2 = {"Lj02/j0$a;", "Lj02/j0;", "<init>", "()V", "navigation_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final class a implements InterfaceC21149j0 {
+
+        /* JADX INFO: renamed from: a */
+        public static final a f80236a = new a();
+
+        private a() {
+        }
+    }
+
+    /* JADX INFO: renamed from: j02.j0$b */
+    @Metadata(m65680d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÇ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, m65681d2 = {"Lj02/j0$b;", "Lj02/j0;", "<init>", "()V", "navigation_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final class b implements InterfaceC21149j0 {
+
+        /* JADX INFO: renamed from: a */
+        public static final b f80237a = new b();
+
+        private b() {
+        }
+    }
+
+    /* JADX INFO: renamed from: j02.j0$d */
+    @Metadata(m65680d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\bÇ\u0002\u0018\u00002\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, m65681d2 = {"Lj02/j0$d;", "Lj02/j0;", "<init>", "()V", "navigation_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final class d implements InterfaceC21149j0 {
+
+        /* JADX INFO: renamed from: a */
+        public static final d f80241a = new d();
+
+        private d() {
+        }
+    }
+
+    /* JADX INFO: renamed from: j02.j0$c */
+    @Metadata(m65680d1 = {"\u0000:\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u000b\n\u0002\b\f\b\u0087\b\u0018\u00002\u00020\u0001B%\u0012\u0006\u0010\u0003\u001a\u00020\u0002\u0012\n\b\u0002\u0010\u0005\u001a\u0004\u0018\u00010\u0004\u0012\b\b\u0002\u0010\u0007\u001a\u00020\u0006¢\u0006\u0004\b\b\u0010\tJ\u0010\u0010\u000b\u001a\u00020\nHÖ\u0001¢\u0006\u0004\b\u000b\u0010\fJ\u0010\u0010\u000e\u001a\u00020\rHÖ\u0001¢\u0006\u0004\b\u000e\u0010\u000fJ\u001a\u0010\u0013\u001a\u00020\u00122\b\u0010\u0011\u001a\u0004\u0018\u00010\u0010HÖ\u0003¢\u0006\u0004\b\u0013\u0010\u0014R\u0017\u0010\u0003\u001a\u00020\u00028\u0006¢\u0006\f\n\u0004\b\u0015\u0010\u0016\u001a\u0004\b\u0015\u0010\u0017R\u0019\u0010\u0005\u001a\u0004\u0018\u00010\u00048\u0006¢\u0006\f\n\u0004\b\u0018\u0010\u0019\u001a\u0004\b\u0018\u0010\u001aR\u0017\u0010\u0007\u001a\u00020\u00068\u0006¢\u0006\f\n\u0004\b\u001b\u0010\u001c\u001a\u0004\b\u001b\u0010\u001d¨\u0006\u001e"}, m65681d2 = {"Lj02/j0$c;", "Lj02/j0;", "Leb/k0;", "link", "Leb/x0;", "options", "Lj02/p0;", "result", "<init>", "(Leb/k0;Leb/x0;Lj02/p0;)V", "", "toString", "()Ljava/lang/String;", "", "hashCode", "()I", "", "other", "", "equals", "(Ljava/lang/Object;)Z", "a", "Leb/k0;", "()Leb/k0;", "b", "Leb/x0;", "()Leb/x0;", "c", "Lj02/p0;", "()Lj02/p0;", "navigation_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+    public static final /* data */ class c implements InterfaceC21149j0 {
+
+        /* JADX INFO: renamed from: a, reason: from kotlin metadata */
+        private final C12969k0 link;
+
+        /* JADX INFO: renamed from: b, reason: from kotlin metadata */
+        private final C12997x0 options;
+
+        /* JADX INFO: renamed from: c, reason: from kotlin metadata */
+        private final AbstractC21161p0 result;
+
+        public c(C12969k0 link, C12997x0 c12997x0, AbstractC21161p0 result) {
+            AbstractC22676k.m65750j(link, "link");
+            AbstractC22676k.m65750j(result, "result");
+            this.link = link;
+            this.options = c12997x0;
+            this.result = result;
+        }
+
+        /* JADX INFO: renamed from: a, reason: from getter */
+        public final C12969k0 getLink() {
+            return this.link;
+        }
+
+        /* JADX INFO: renamed from: b, reason: from getter */
+        public final C12997x0 getOptions() {
+            return this.options;
+        }
+
+        /* JADX INFO: renamed from: c, reason: from getter */
+        public final AbstractC21161p0 getResult() {
+            return this.result;
+        }
+
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            if (!(other instanceof c)) {
+                return false;
+            }
+            c cVar = (c) other;
+            return AbstractC22676k.m65745e(this.link, cVar.link) && AbstractC22676k.m65745e(this.options, cVar.options) && AbstractC22676k.m65745e(this.result, cVar.result);
+        }
+
+        public int hashCode() {
+            int iHashCode = this.link.hashCode() * 31;
+            C12997x0 c12997x0 = this.options;
+            return this.result.hashCode() + ((iHashCode + (c12997x0 == null ? 0 : c12997x0.hashCode())) * 31);
+        }
+
+        public String toString() {
+            return "Route(link=" + this.link + ", options=" + this.options + ", result=" + this.result + ")";
+        }
+
+        public /* synthetic */ c(C12969k0 c12969k0, C12997x0 c12997x0, AbstractC21161p0 abstractC21161p0, int i13, DefaultConstructorMarker defaultConstructorMarker) {
+            this(c12969k0, (i13 & 2) != 0 ? null : c12997x0, (i13 & 4) != 0 ? AbstractC21161p0.d.f80690a : abstractC21161p0);
+        }
+    }
+}

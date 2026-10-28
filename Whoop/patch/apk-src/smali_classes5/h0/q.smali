@@ -1,0 +1,6 @@
+.class public final Lh0/q;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lh0/s;

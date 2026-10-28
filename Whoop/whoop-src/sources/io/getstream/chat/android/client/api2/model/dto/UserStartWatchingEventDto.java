@@ -1,0 +1,180 @@
+package io.getstream.chat.android.client.api2.model.dto;
+
+import c13.AbstractC3855a;
+import com.whoop.service.network.model.UserState;
+import d13.AbstractC11478a;
+import io.getstream.chat.android.client.api2.model.dto.utils.internal.ExactDate;
+import live.hms.video.utils.HMSFieldTrials;
+import p000.AbstractC11266d;
+import p441qx.InterfaceC30737t;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+import p715kotlin.jvm.internal.DefaultConstructorMarker;
+
+/* JADX INFO: loaded from: classes5.dex */
+@InterfaceC30737t(generateAdapter = HMSFieldTrials.DisableVideoAutoSubscribe)
+@Metadata(m65680d1 = {"\u00006\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0016\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0003\b\u0081\b\u0018\u00002\u00020\u0001BA\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\u0006\u0010\u0004\u001a\u00020\u0005\u0012\u0006\u0010\u0006\u001a\u00020\u0003\u0012\b\b\u0002\u0010\u0007\u001a\u00020\b\u0012\u0006\u0010\t\u001a\u00020\u0003\u0012\u0006\u0010\n\u001a\u00020\u0003\u0012\u0006\u0010\u000b\u001a\u00020\f¢\u0006\u0004\b\r\u0010\u000eJ\t\u0010\u001a\u001a\u00020\u0003HÆ\u0003J\t\u0010\u001b\u001a\u00020\u0005HÆ\u0003J\t\u0010\u001c\u001a\u00020\u0003HÆ\u0003J\t\u0010\u001d\u001a\u00020\bHÆ\u0003J\t\u0010\u001e\u001a\u00020\u0003HÆ\u0003J\t\u0010\u001f\u001a\u00020\u0003HÆ\u0003J\t\u0010 \u001a\u00020\fHÆ\u0003JO\u0010!\u001a\u00020\u00002\b\b\u0002\u0010\u0002\u001a\u00020\u00032\b\b\u0002\u0010\u0004\u001a\u00020\u00052\b\b\u0002\u0010\u0006\u001a\u00020\u00032\b\b\u0002\u0010\u0007\u001a\u00020\b2\b\b\u0002\u0010\t\u001a\u00020\u00032\b\b\u0002\u0010\n\u001a\u00020\u00032\b\b\u0002\u0010\u000b\u001a\u00020\fHÆ\u0001J\u0013\u0010\"\u001a\u00020#2\b\u0010$\u001a\u0004\u0018\u00010%HÖ\u0003J\t\u0010&\u001a\u00020\bHÖ\u0001J\t\u0010'\u001a\u00020\u0003HÖ\u0001R\u0011\u0010\u0002\u001a\u00020\u0003¢\u0006\b\n\u0000\u001a\u0004\b\u000f\u0010\u0010R\u0011\u0010\u0004\u001a\u00020\u0005¢\u0006\b\n\u0000\u001a\u0004\b\u0011\u0010\u0012R\u0011\u0010\u0006\u001a\u00020\u0003¢\u0006\b\n\u0000\u001a\u0004\b\u0013\u0010\u0010R\u0011\u0010\u0007\u001a\u00020\b¢\u0006\b\n\u0000\u001a\u0004\b\u0014\u0010\u0015R\u0011\u0010\t\u001a\u00020\u0003¢\u0006\b\n\u0000\u001a\u0004\b\u0016\u0010\u0010R\u0011\u0010\n\u001a\u00020\u0003¢\u0006\b\n\u0000\u001a\u0004\b\u0017\u0010\u0010R\u0011\u0010\u000b\u001a\u00020\f¢\u0006\b\n\u0000\u001a\u0004\b\u0018\u0010\u0019¨\u0006("}, m65681d2 = {"Lio/getstream/chat/android/client/api2/model/dto/UserStartWatchingEventDto;", "Lio/getstream/chat/android/client/api2/model/dto/ChatEventDto;", "type", "", "created_at", "Lio/getstream/chat/android/client/api2/model/dto/utils/internal/ExactDate;", "cid", "watcher_count", "", "channel_type", "channel_id", UserState.Sources.USER, "Lio/getstream/chat/android/client/api2/model/dto/DownstreamUserDto;", "<init>", "(Ljava/lang/String;Lio/getstream/chat/android/client/api2/model/dto/utils/internal/ExactDate;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Lio/getstream/chat/android/client/api2/model/dto/DownstreamUserDto;)V", "getType", "()Ljava/lang/String;", "getCreated_at", "()Lio/getstream/chat/android/client/api2/model/dto/utils/internal/ExactDate;", "getCid", "getWatcher_count", "()I", "getChannel_type", "getChannel_id", "getUser", "()Lio/getstream/chat/android/client/api2/model/dto/DownstreamUserDto;", "component1", "component2", "component3", "component4", "component5", "component6", "component7", "copy", "equals", "", "other", "", "hashCode", "toString", "stream-chat-android-client_release"}, m65682k = 1, m65683mv = {2, 2, 0}, m65685xi = 48)
+public final /* data */ class UserStartWatchingEventDto extends ChatEventDto {
+    private final String channel_id;
+    private final String channel_type;
+    private final String cid;
+    private final ExactDate created_at;
+    private final String type;
+    private final DownstreamUserDto user;
+    private final int watcher_count;
+
+    public /* synthetic */ UserStartWatchingEventDto(String str, ExactDate exactDate, String str2, int i13, String str3, String str4, DownstreamUserDto downstreamUserDto, int i14, DefaultConstructorMarker defaultConstructorMarker) {
+        this(str, exactDate, str2, (i14 & 8) != 0 ? 0 : i13, str3, str4, downstreamUserDto);
+    }
+
+    public static /* synthetic */ UserStartWatchingEventDto copy$default(UserStartWatchingEventDto userStartWatchingEventDto, String str, ExactDate exactDate, String str2, int i13, String str3, String str4, DownstreamUserDto downstreamUserDto, int i14, Object obj) {
+        if ((i14 & 1) != 0) {
+            str = userStartWatchingEventDto.type;
+        }
+        if ((i14 & 2) != 0) {
+            exactDate = userStartWatchingEventDto.created_at;
+        }
+        if ((i14 & 4) != 0) {
+            str2 = userStartWatchingEventDto.cid;
+        }
+        if ((i14 & 8) != 0) {
+            i13 = userStartWatchingEventDto.watcher_count;
+        }
+        if ((i14 & 16) != 0) {
+            str3 = userStartWatchingEventDto.channel_type;
+        }
+        if ((i14 & 32) != 0) {
+            str4 = userStartWatchingEventDto.channel_id;
+        }
+        if ((i14 & 64) != 0) {
+            downstreamUserDto = userStartWatchingEventDto.user;
+        }
+        String str5 = str4;
+        DownstreamUserDto downstreamUserDto2 = downstreamUserDto;
+        String str6 = str3;
+        String str7 = str2;
+        return userStartWatchingEventDto.copy(str, exactDate, str7, i13, str6, str5, downstreamUserDto2);
+    }
+
+    /* JADX INFO: renamed from: component1, reason: from getter */
+    public final String getType() {
+        return this.type;
+    }
+
+    /* JADX INFO: renamed from: component2, reason: from getter */
+    public final ExactDate getCreated_at() {
+        return this.created_at;
+    }
+
+    /* JADX INFO: renamed from: component3, reason: from getter */
+    public final String getCid() {
+        return this.cid;
+    }
+
+    /* JADX INFO: renamed from: component4, reason: from getter */
+    public final int getWatcher_count() {
+        return this.watcher_count;
+    }
+
+    /* JADX INFO: renamed from: component5, reason: from getter */
+    public final String getChannel_type() {
+        return this.channel_type;
+    }
+
+    /* JADX INFO: renamed from: component6, reason: from getter */
+    public final String getChannel_id() {
+        return this.channel_id;
+    }
+
+    /* JADX INFO: renamed from: component7, reason: from getter */
+    public final DownstreamUserDto getUser() {
+        return this.user;
+    }
+
+    public final UserStartWatchingEventDto copy(String type, ExactDate created_at, String cid, int watcher_count, String channel_type, String channel_id, DownstreamUserDto user) {
+        AbstractC22676k.m65750j(type, "type");
+        AbstractC22676k.m65750j(created_at, "created_at");
+        AbstractC22676k.m65750j(cid, "cid");
+        AbstractC22676k.m65750j(channel_type, "channel_type");
+        AbstractC22676k.m65750j(channel_id, "channel_id");
+        AbstractC22676k.m65750j(user, "user");
+        return new UserStartWatchingEventDto(type, created_at, cid, watcher_count, channel_type, channel_id, user);
+    }
+
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof UserStartWatchingEventDto)) {
+            return false;
+        }
+        UserStartWatchingEventDto userStartWatchingEventDto = (UserStartWatchingEventDto) other;
+        return AbstractC22676k.m65745e(this.type, userStartWatchingEventDto.type) && AbstractC22676k.m65745e(this.created_at, userStartWatchingEventDto.created_at) && AbstractC22676k.m65745e(this.cid, userStartWatchingEventDto.cid) && this.watcher_count == userStartWatchingEventDto.watcher_count && AbstractC22676k.m65745e(this.channel_type, userStartWatchingEventDto.channel_type) && AbstractC22676k.m65745e(this.channel_id, userStartWatchingEventDto.channel_id) && AbstractC22676k.m65745e(this.user, userStartWatchingEventDto.user);
+    }
+
+    public final String getChannel_id() {
+        return this.channel_id;
+    }
+
+    public final String getChannel_type() {
+        return this.channel_type;
+    }
+
+    public final String getCid() {
+        return this.cid;
+    }
+
+    public final ExactDate getCreated_at() {
+        return this.created_at;
+    }
+
+    public final String getType() {
+        return this.type;
+    }
+
+    public final DownstreamUserDto getUser() {
+        return this.user;
+    }
+
+    public final int getWatcher_count() {
+        return this.watcher_count;
+    }
+
+    public int hashCode() {
+        return this.user.hashCode() + AbstractC11266d.m30450d(AbstractC11266d.m30450d(AbstractC11266d.m30448b(this.watcher_count, AbstractC11266d.m30450d(AbstractC3855a.m11820d(this.created_at, this.type.hashCode() * 31, 31), 31, this.cid), 31), 31, this.channel_type), 31, this.channel_id);
+    }
+
+    public String toString() {
+        String str = this.type;
+        ExactDate exactDate = this.created_at;
+        String str2 = this.cid;
+        int i13 = this.watcher_count;
+        String str3 = this.channel_type;
+        String str4 = this.channel_id;
+        DownstreamUserDto downstreamUserDto = this.user;
+        StringBuilder sbM30861m = AbstractC11478a.m30861m("UserStartWatchingEventDto(type=", str, ", created_at=", exactDate, ", cid=");
+        AbstractC11266d.m30470x(i13, str2, ", watcher_count=", ", channel_type=", sbM30861m);
+        AbstractC11266d.m30444B(sbM30861m, str3, ", channel_id=", str4, ", user=");
+        sbM30861m.append(downstreamUserDto);
+        sbM30861m.append(")");
+        return sbM30861m.toString();
+    }
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public UserStartWatchingEventDto(String type, ExactDate created_at, String cid, int i13, String channel_type, String channel_id, DownstreamUserDto user) {
+        super(null);
+        AbstractC22676k.m65750j(type, "type");
+        AbstractC22676k.m65750j(created_at, "created_at");
+        AbstractC22676k.m65750j(cid, "cid");
+        AbstractC22676k.m65750j(channel_type, "channel_type");
+        AbstractC22676k.m65750j(channel_id, "channel_id");
+        AbstractC22676k.m65750j(user, "user");
+        this.type = type;
+        this.created_at = created_at;
+        this.cid = cid;
+        this.watcher_count = i13;
+        this.channel_type = channel_type;
+        this.channel_id = channel_id;
+        this.user = user;
+    }
+}

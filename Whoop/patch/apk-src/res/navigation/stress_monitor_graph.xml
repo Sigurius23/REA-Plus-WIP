@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/stress_monitor_graph" app:startDestination="@id/stressMonitorFragment"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include app:graph="@navigation/stress_session_graph" />
+    <fragment android:name="com.whoop.stress.view.StressMonitorFragment" android:id="@id/stressMonitorFragment">
+        <action android:id="@id/action_stress_monitor_to_session" app:destination="@id/stress_session_graph" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out">
+            <argument android:name="sessionType" app:argType="string" />
+        </action>
+        <argument android:name="source" android:defaultValue="Unknown" app:argType="string" />
+        <argument android:name="date" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <deepLink app:uri="android-app://com.whoop/stress-monitor/{source}?date={date}" />
+        <argument android:name="sourceId" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+    </fragment>
+</navigation>

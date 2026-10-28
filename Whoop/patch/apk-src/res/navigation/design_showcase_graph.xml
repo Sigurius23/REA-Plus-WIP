@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/design_showcase_graph" app:startDestination="@id/designShowcaseMenuFragment"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <fragment android:label="Design Showcase" android:name="com.whoop.design.showcase.menu.view.fragment.DesignShowcaseMenuFragment" android:id="@id/designShowcaseMenuFragment">
+        <argument android:name="menuType" android:defaultValue="ROOT" app:argType="com.whoop.design.showcase.navigation.DesignShowcaseMenuType" />
+        <action android:id="@id/action_design_showcase_menu_to_menu" app:destination="@id/designShowcaseMenuFragment">
+            <argument android:name="menuType" android:defaultValue="ROOT" app:argType="com.whoop.design.showcase.navigation.DesignShowcaseMenuType" />
+        </action>
+        <action android:id="@id/action_design_showcase_menu_to_gallery" app:destination="@id/designShowcaseGallery">
+            <argument android:name="galleryType" android:defaultValue="PARTICLE_COLOR" app:argType="com.whoop.design.showcase.navigation.DesignShowcaseGalleryType" />
+        </action>
+        <action android:id="@id/action_design_showcase_menu_to_legacy_gallery" app:destination="@id/designShowcaseLegacyGallery" />
+        <action android:id="@id/action_design_showcase_menu_to_atomic_gallery" app:destination="@id/designShowcaseAtomicGallery">
+            <argument android:name="atomicType" android:defaultValue="NAVIGATION_BAR" app:argType="com.whoop.design.showcase.navigation.DesignShowcaseAtomicType" />
+        </action>
+    </fragment>
+    <fragment android:label="Design Showcase Gallery" android:name="com.whoop.design.showcase.gallery.view.fragment.DesignShowcaseGalleryFragment" android:id="@id/designShowcaseGallery">
+        <argument android:name="galleryType" android:defaultValue="PARTICLE_COLOR" app:argType="com.whoop.design.showcase.navigation.DesignShowcaseGalleryType" />
+    </fragment>
+    <fragment android:label="Design Showcase Legacy Gallery" android:name="com.whoop.design.showcase.gallery.view.fragment.DesignShowcaseLegacyGalleryFragment" android:id="@id/designShowcaseLegacyGallery" />
+    <fragment android:label="Design Showcase Navigation Bar" android:name="com.whoop.design.showcase.gallery.view.fragment.AtomicGalleryFragment" android:id="@id/designShowcaseAtomicGallery">
+        <argument android:name="atomicType" android:defaultValue="NAVIGATION_BAR" app:argType="com.whoop.design.showcase.navigation.DesignShowcaseAtomicType" />
+    </fragment>
+</navigation>

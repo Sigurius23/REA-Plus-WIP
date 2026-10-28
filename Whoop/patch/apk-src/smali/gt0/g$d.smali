@@ -1,0 +1,52 @@
+.class public final Lgt0/g$d;
+.super Lgt0/g;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lgt0/g;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = "d"
+.end annotation
+
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0004\u0018\u00002\u00020\u0001B\u000f\u0012\u0006\u0010\u0003\u001a\u00020\u0002\u00a2\u0006\u0004\u0008\u0004\u0010\u0005\u00a8\u0006\u0006"
+    }
+    d2 = {
+        "Lgt0/g$d;",
+        "Lgt0/g;",
+        "Lcom/whoop/connectivityCore/firmware/models/WhoopFwDevice;",
+        "device",
+        "<init>",
+        "(Lcom/whoop/connectivityCore/firmware/models/WhoopFwDevice;)V",
+        "connectivity-core_release"
+    }
+    k = 0x1
+    mv = {
+        0x2,
+        0x3,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+
+# direct methods
+.method public constructor <init>(Lcom/whoop/connectivityCore/firmware/models/WhoopFwDevice;)V
+    .locals 1
+
+    const-string v0, "device"
+
+    invoke-static {p1, v0}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    const/4 v0, 0x0
+
+    invoke-direct {p0, p1, v0}, Lgt0/g;-><init>(Lcom/whoop/connectivityCore/firmware/models/WhoopFwDevice;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+    return-void
+.end method

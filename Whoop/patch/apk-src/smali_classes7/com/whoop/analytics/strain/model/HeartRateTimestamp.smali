@@ -1,0 +1,323 @@
+.class public final Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+.super Ljava/lang/Object;
+.source "SourceFile"
+
+# interfaces
+.implements Lcom/whoop/analytics/strain/model/HeartRateTimestampIF;
+
+
+# annotations
+.annotation system Ldalvik/annotation/MemberClasses;
+    value = {
+        Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;,
+        Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Json;
+    }
+.end annotation
+
+.annotation build Ledu/umd/cs/findbugs/annotations/SuppressFBWarnings;
+.end annotation
+
+
+# instance fields
+.field private final heartRate:D
+
+.field private final time:J
+
+
+# direct methods
+.method private constructor <init>(JD)V
+    .locals 0
+
+    .line 2
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 3
+    iput-wide p1, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->time:J
+
+    .line 4
+    iput-wide p3, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->heartRate:D
+
+    return-void
+.end method
+
+.method public synthetic constructor <init>(JDLcom/whoop/analytics/strain/model/HeartRateTimestamp$1;)V
+    .locals 0
+
+    .line 1
+    invoke-direct {p0, p1, p2, p3, p4}, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;-><init>(JD)V
+
+    return-void
+.end method
+
+.method public static builder()Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;
+    .locals 2
+
+    new-instance v0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;
+
+    const/4 v1, 0x0
+
+    invoke-direct {v0, v1}, Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;-><init>(Lcom/whoop/analytics/strain/model/HeartRateTimestamp$1;)V
+
+    return-object v0
+.end method
+
+.method public static copyOf(Lcom/whoop/analytics/strain/model/HeartRateTimestampIF;)Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+    .locals 1
+
+    instance-of v0, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+
+    if-eqz v0, :cond_0
+
+    check-cast p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+
+    return-object p0
+
+    :cond_0
+    invoke-static {}, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->builder()Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;
+
+    move-result-object v0
+
+    invoke-virtual {v0, p0}, Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;->from(Lcom/whoop/analytics/strain/model/HeartRateTimestampIF;)Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;
+
+    move-result-object p0
+
+    invoke-virtual {p0}, Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;->build()Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+.method private equalTo(Lcom/whoop/analytics/strain/model/HeartRateTimestamp;)Z
+    .locals 4
+
+    iget-wide v0, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->time:J
+
+    iget-wide v2, p1, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->time:J
+
+    cmp-long v0, v0, v2
+
+    if-nez v0, :cond_0
+
+    iget-wide v0, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->heartRate:D
+
+    invoke-static {v0, v1}, Ljava/lang/Double;->doubleToLongBits(D)J
+
+    move-result-wide v0
+
+    iget-wide v2, p1, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->heartRate:D
+
+    invoke-static {v2, v3}, Ljava/lang/Double;->doubleToLongBits(D)J
+
+    move-result-wide v2
+
+    cmp-long p1, v0, v2
+
+    if-nez p1, :cond_0
+
+    const/4 p1, 0x1
+
+    return p1
+
+    :cond_0
+    const/4 p1, 0x0
+
+    return p1
+.end method
+
+.method public static fromJson(Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Json;)Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+    .locals 3
+    .annotation runtime Lcom/fasterxml/jackson/annotation/JsonCreator;
+        mode = .enum Lcom/fasterxml/jackson/annotation/JsonCreator$Mode;->DELEGATING:Lcom/fasterxml/jackson/annotation/JsonCreator$Mode;
+    .end annotation
+
+    .annotation runtime Ljava/lang/Deprecated;
+    .end annotation
+
+    invoke-static {}, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->builder()Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;
+
+    move-result-object v0
+
+    iget-boolean v1, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Json;->timeIsSet:Z
+
+    if-eqz v1, :cond_0
+
+    iget-wide v1, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Json;->time:J
+
+    invoke-virtual {v0, v1, v2}, Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;->setTime(J)Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;
+
+    :cond_0
+    iget-boolean v1, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Json;->heartRateIsSet:Z
+
+    if-eqz v1, :cond_1
+
+    iget-wide v1, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Json;->heartRate:D
+
+    invoke-virtual {v0, v1, v2}, Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;->setHeartRate(D)Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;
+
+    :cond_1
+    invoke-virtual {v0}, Lcom/whoop/analytics/strain/model/HeartRateTimestamp$Builder;->build()Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+
+# virtual methods
+.method public equals(Ljava/lang/Object;)Z
+    .locals 2
+
+    const/4 v0, 0x1
+
+    if-ne p0, p1, :cond_0
+
+    return v0
+
+    :cond_0
+    instance-of v1, p1, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+
+    if-eqz v1, :cond_1
+
+    check-cast p1, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+
+    invoke-direct {p0, p1}, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->equalTo(Lcom/whoop/analytics/strain/model/HeartRateTimestamp;)Z
+
+    move-result p1
+
+    if-eqz p1, :cond_1
+
+    return v0
+
+    :cond_1
+    const/4 p1, 0x0
+
+    return p1
+.end method
+
+.method public getHeartRate()D
+    .locals 2
+    .annotation runtime Lcom/fasterxml/jackson/annotation/JsonProperty;
+        value = "heart_rate"
+    .end annotation
+
+    iget-wide v0, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->heartRate:D
+
+    return-wide v0
+.end method
+
+.method public getTime()J
+    .locals 2
+    .annotation runtime Lcom/fasterxml/jackson/annotation/JsonProperty;
+    .end annotation
+
+    iget-wide v0, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->time:J
+
+    return-wide v0
+.end method
+
+.method public hashCode()I
+    .locals 4
+
+    iget-wide v0, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->time:J
+
+    invoke-static {v0, v1}, Ljava/lang/Long;->hashCode(J)I
+
+    move-result v0
+
+    const v1, 0x2b5a5
+
+    add-int/2addr v0, v1
+
+    shl-int/lit8 v1, v0, 0x5
+
+    iget-wide v2, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->heartRate:D
+
+    invoke-static {v2, v3}, Ljava/lang/Double;->hashCode(D)I
+
+    move-result v2
+
+    add-int/2addr v2, v1
+
+    add-int/2addr v2, v0
+
+    return v2
+.end method
+
+.method public toString()Ljava/lang/String;
+    .locals 4
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    const-string v1, "HeartRateTimestamp{time="
+
+    invoke-direct {v0, v1}, Ljava/lang/StringBuilder;-><init>(Ljava/lang/String;)V
+
+    iget-wide v1, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->time:J
+
+    invoke-virtual {v0, v1, v2}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
+
+    const-string v1, ", heartRate="
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    iget-wide v1, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->heartRate:D
+
+    const-string v3, "}"
+
+    invoke-static {v1, v2, v3, v0}, Lq63/c;->f(DLjava/lang/String;Ljava/lang/StringBuilder;)Ljava/lang/String;
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public final withHeartRate(D)Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+    .locals 4
+
+    iget-wide v0, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->heartRate:D
+
+    invoke-static {v0, v1}, Ljava/lang/Double;->doubleToLongBits(D)J
+
+    move-result-wide v0
+
+    invoke-static {p1, p2}, Ljava/lang/Double;->doubleToLongBits(D)J
+
+    move-result-wide v2
+
+    cmp-long v0, v0, v2
+
+    if-nez v0, :cond_0
+
+    return-object p0
+
+    :cond_0
+    new-instance v0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+
+    iget-wide v1, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->time:J
+
+    invoke-direct {v0, v1, v2, p1, p2}, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;-><init>(JD)V
+
+    return-object v0
+.end method
+
+.method public final withTime(J)Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+    .locals 3
+
+    iget-wide v0, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->time:J
+
+    cmp-long v0, v0, p1
+
+    if-nez v0, :cond_0
+
+    return-object p0
+
+    :cond_0
+    new-instance v0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;
+
+    iget-wide v1, p0, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;->heartRate:D
+
+    invoke-direct {v0, p1, p2, v1, v2}, Lcom/whoop/analytics/strain/model/HeartRateTimestamp;-><init>(JD)V
+
+    return-object v0
+.end method

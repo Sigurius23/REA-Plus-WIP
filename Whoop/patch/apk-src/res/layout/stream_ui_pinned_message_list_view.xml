@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.recyclerview.widget.RecyclerView android:orientation="vertical" android:id="@id/pinnedMessageListRecyclerView" android:layout_width="match_parent" android:layout_height="match_parent" app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:id="@id/emptyContainer" android:layout_width="match_parent" android:layout_height="match_parent" android:paddingHorizontal="@dimen/stream_ui_spacing_medium">
+        <ImageView android:id="@id/emptyImage" android:layout_width="112.0dp" android:layout_height="112.0dp" android:src="@drawable/stream_ui_ic_pinned_messages_empty" />
+        <TextView android:textAppearance="@style/StreamUiTextAppearance.HeadlineBold" android:ellipsize="end" android:gravity="center" android:id="@id/emptyTitleTextView" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24.0dp" android:text="@string/stream_ui_pinned_message_list_empty_title" android:maxLines="1" android:textDirection="locale" />
+        <TextView android:textAppearance="@style/StreamUiTextAppearance.Headline" android:textColor="@color/stream_ui_text_color_secondary" android:ellipsize="end" android:gravity="center" android:id="@id/emptyDescriptionTextView" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/stream_ui_spacing_small" android:textDirection="locale" android:paddingHorizontal="@dimen/stream_ui_spacing_medium" />
+    </LinearLayout>
+    <ProgressBar android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+</merge>

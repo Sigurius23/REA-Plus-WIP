@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:background="@color/stream_ui_literal_black" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@id/header" android:layout_width="0.0dp" android:layout_height="56.0dp" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" style="?streamUiMediaActivityHeader">
+        <ImageView android:id="@id/headerLeftActionButton" android:background="?selectableItemBackgroundBorderless" android:padding="4.0dp" android:layout_marginStart="8.0dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" style="?streamUiMediaActivityHeaderLeftActionButtonStyle" />
+        <TextView android:ellipsize="end" android:gravity="start" android:id="@id/headerTitleTextView" android:layout_width="0.0dp" android:layout_height="wrap_content" android:lines="1" android:textDirection="locale" android:layout_marginStart="24.0dp" android:layout_marginEnd="16.0dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toEndOf="@id/headerLeftActionButton" app:layout_constraintTop_toTopOf="parent" style="?streamUiMediaActivityHeaderTitleStyle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout android:id="@id/contentContainer" android:background="@color/stream_ui_literal_black" android:layout_width="0.0dp" android:layout_height="0.0dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@id/header">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+            <io.getstream.chat.android.ui.widgets.internal.StreamPlayerView android:id="@id/playerView" android:layout_width="match_parent" android:layout_height="0.0dp" android:layout_weight="1.0" />
+            <androidx.media3.ui.LegacyPlayerControlView android:id="@id/controls" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        </LinearLayout>
+        <ImageView android:layout_gravity="center" android:id="@id/audioImageView" style="?streamUiMediaActivityIconStyle" />
+        <ProgressBar android:layout_gravity="center" android:id="@id/progressBar" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" style="?streamUiMediaActivityProgressBarStyle" />
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,69 @@
+.class public abstract Leq0/p;
+.super Landroidx/databinding/a0;
+.source "SourceFile"
+
+
+# instance fields
+.field public final a:Lcom/google/android/material/imageview/ShapeableImageView;
+
+.field public final b:Lcom/google/android/material/imageview/ShapeableImageView;
+
+.field public final c:Lcom/google/android/material/imageview/ShapeableImageView;
+
+.field public final d:Lcom/google/android/material/imageview/ShapeableImageView;
+
+.field public final e:Lcom/google/android/material/imageview/ShapeableImageView;
+
+.field public final f:Landroid/widget/TextView;
+
+
+# direct methods
+.method public constructor <init>(Ljava/lang/Object;Landroid/view/View;ILcom/google/android/material/imageview/ShapeableImageView;Lcom/google/android/material/imageview/ShapeableImageView;Lcom/google/android/material/imageview/ShapeableImageView;Lcom/google/android/material/imageview/ShapeableImageView;Lcom/google/android/material/imageview/ShapeableImageView;Landroid/widget/TextView;)V
+    .locals 0
+
+    invoke-direct {p0, p2, p3, p1}, Landroidx/databinding/a0;-><init>(Landroid/view/View;ILjava/lang/Object;)V
+
+    iput-object p4, p0, Leq0/p;->a:Lcom/google/android/material/imageview/ShapeableImageView;
+
+    iput-object p5, p0, Leq0/p;->b:Lcom/google/android/material/imageview/ShapeableImageView;
+
+    iput-object p6, p0, Leq0/p;->c:Lcom/google/android/material/imageview/ShapeableImageView;
+
+    iput-object p7, p0, Leq0/p;->d:Lcom/google/android/material/imageview/ShapeableImageView;
+
+    iput-object p8, p0, Leq0/p;->e:Lcom/google/android/material/imageview/ShapeableImageView;
+
+    iput-object p9, p0, Leq0/p;->f:Landroid/widget/TextView;
+
+    return-void
+.end method
+
+.method public static c(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Z)Leq0/p;
+    .locals 1
+
+    sget-object v0, Landroidx/databinding/g;->a:Landroidx/databinding/DataBinderMapperImpl;
+
+    const/4 v0, 0x0
+
+    invoke-static {p0, p1, p2, v0}, Leq0/p;->d(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;ZLjava/lang/Object;)Leq0/p;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+.method public static d(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;ZLjava/lang/Object;)Leq0/p;
+    .locals 1
+    .annotation runtime Ljava/lang/Deprecated;
+    .end annotation
+
+    sget v0, Lxp0/b0;->l:I
+
+    invoke-static {p0, v0, p1, p2, p3}, Landroidx/databinding/a0;->inflateInternal(Landroid/view/LayoutInflater;ILandroid/view/ViewGroup;ZLjava/lang/Object;)Landroidx/databinding/a0;
+
+    move-result-object p0
+
+    check-cast p0, Leq0/p;
+
+    return-object p0
+.end method

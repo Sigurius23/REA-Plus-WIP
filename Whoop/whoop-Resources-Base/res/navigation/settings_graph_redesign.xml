@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/settings_graph" app:startDestination="@id/settingsLandingFragment"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include app:graph="@navigation/design_showcase_graph" />
+    <include app:graph="@navigation/training_activity_settings_graph" />
+    <include app:graph="@navigation/onboarding_stories_graph" />
+    <include app:graph="@navigation/new_journal_nav_graph" />
+    <include app:graph="@navigation/memberdataexport_nav_graph" />
+    <include app:graph="@navigation/sleep_coach_graph" />
+    <include app:graph="@navigation/change_password_graph" />
+    <fragment android:label="SettingsLandingFragment" android:name="com.whoop.settings.SettingsLandingFragment" android:id="@id/settingsLandingFragment">
+        <deepLink app:uri="android-app://com.whoop/settings/settingsFragment?shouldShowReferIntent={shouldShowReferIntent}" />
+        <argument android:name="shouldShowReferIntent" android:defaultValue="false" app:argType="boolean" />
+        <action android:id="@id/action_settingsLanding_to_strapSettings" app:destination="@id/newStrapSettings" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_settingsLanding_to_newStrapSettings" app:destination="@id/newStrapSettings" app:enterAnim="@anim/slide_in_from_bottom" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/slide_up_out" />
+        <action android:id="@id/action_settingsLandingFragment_to_myAccountFragment" app:destination="@id/myAccountFragment" app:enterAnim="@anim/slide_in_from_bottom" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/slide_up_out" />
+        <action android:id="@id/action_settingsLandingFragment_to_aboutFragment" app:destination="@id/aboutFragment" app:enterAnim="@anim/slide_in_from_bottom" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/slide_up_out" />
+        <action android:id="@id/action_settingsLanding_to_debugSettings" app:destination="@id/debugFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_settingsLandingFragment_to_tutorialsFragment" app:destination="@id/tutorialsFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_settingsLandingFragment_to_stealthModeFragment" app:destination="@id/stealthModeFragment" app:enterAnim="@anim/slide_in_from_bottom" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/slide_up_out" />
+        <action android:id="@id/action_settingsLandingFragment_to_settingsNotificationFragment" app:destination="@id/settingsNotificationFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_settingsLandingFragment_to_dataExportGraph" app:destination="@id/memberdataexport_nav_graph" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_settingsLandingFragment_to_privacyConsentFragment" app:destination="@id/privacyConsentFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_settingsLandingFragment_to_activityDetectionFragment" app:destination="@id/activityDetectionFragment" app:enterAnim="@anim/slide_right_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_settingsLandingFragment_to_activitySettingsFragment" app:destination="@id/training_activity_settings_graph" app:enterAnim="@anim/slide_in_from_bottom" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/slide_up_out" />
+        <action android:id="@id/action_settingsLanding_to_whatToExpectFragment" app:destination="@id/what_to_expect" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_settingsLandingFragment_to_whoopLabsNavigationFragment" app:destination="@id/whoopLabsFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_settingsLanding_to_coachSettingsFragment" app:destination="@id/whoopCoachSettingsFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_settingsLanding_to_integrationsFragment" app:destination="@id/integrationsFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_settingsLanding_to_extensionsFragment" app:destination="@id/ExtensionsFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+    </fragment>
+    <fragment android:label="New Strap Settings" android:name="com.whoop.settings.strap.StrapSettingsFragment" android:id="@id/newStrapSettings">
+        <deepLink app:uri="whoop://com.whoop/settings/newStrapSettings" />
+        <action android:id="@id/action_strapSettings_to_newAdvancedStrapSettings" app:destination="@id/newAdvancedStrapSettings" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_strapSettings_to_editDeviceName" app:destination="@id/editDeviceName" app:enterAnim="@anim/slide_up_in" app:exitAnim="@anim/slide_down_custom" app:popEnterAnim="@anim/slide_up_in" app:popExitAnim="@anim/slide_down_custom" />
+        <action android:id="@id/action_strapSettings_to_education" app:destination="@id/native_education_redesign" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_strapSettings_to_pairingFragment" app:destination="@id/pairingFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+    </fragment>
+    <fragment android:label="New Advanced Strap Settings" android:name="com.whoop.ui.drawer.strapsettings.advancedsettings.AdvancedStrapFragment" android:id="@id/newAdvancedStrapSettings" />
+    <fragment android:label="Feature Flag Settings" android:name="com.whoop.ui.drawer.debug.DebugFeatureFlagSettingsFragment" android:id="@id/featureSettings" />
+    <fragment android:label="AI Chat Talk Text Card Debug" android:name="com.whoop.settings.debug.AiChatTalkTextCardDebugFragment" android:id="@id/aiChatTalkTextCardDebugFragment" />
+    <fragment android:label="Q&amp;A Form Widget Debug" android:name="com.whoop.settings.debug.QnaFormDebugFragment" android:id="@id/qnaFormDebugFragment" />
+    <fragment android:label="AI Chat Journal-Entry Widget Debug" android:name="com.whoop.settings.debug.AiChatJournalEntryWidgetDebugFragment" android:id="@id/aiChatJournalEntryWidgetDebugFragment" />
+    <fragment android:label="Local Service Overrides" android:name="com.whoop.debug.localservice.DebugLocalServiceFragment" android:id="@id/localServiceOverrides">
+        <deepLink app:uri="android-app://com.whoop/debug/localServiceOverrides" />
+    </fragment>
+    <fragment android:label="Whoop Strap Test" android:name="com.whoop.ui.debug.WhoopStrapTestFragment" android:id="@id/testItems" />
+    <fragment android:label="Payment Method Management" android:name="com.whoop.payments.feature.paymentmethodmanagement.view.PaymentMethodManagementFragment" android:id="@id/paymentmethodmanagementFragment">
+        <deepLink app:uri="android-app://com.whoop/paymentMethodManagement?source={source}" />
+        <argument android:name="source" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+    </fragment>
+    <fragment android:label="MyAccountFragment" android:name="com.whoop.settings.myaccount.MyAccountFragment" android:id="@id/myAccountFragment">
+        <deepLink app:uri="android-app://com.whoop/settings/myAccountFragment" />
+        <deepLink app:uri="android-app://com.whoop/settings/myAccountFragment?openFamilyPlan={openFamilyPlan}" />
+        <deepLink app:uri="android-app://com.whoop/settings/myAccountFragment?source={source}" />
+        <deepLink app:uri="android-app://com.whoop/settings/myAccountFragment?openFamilyPlan={openFamilyPlan}&amp;source={source}" />
+        <argument android:name="openFamilyPlan" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="source" app:argType="string" app:nullable="true" />
+    </fragment>
+    <fragment android:label="AboutFragment" android:name="com.whoop.settings.about.AboutFragment" android:id="@id/aboutFragment">
+        <deepLink app:uri="android-app://com.whoop/settings/about" />
+        <action android:id="@id/action_aboutFragment_to_openSourceLicensesActivity" app:destination="@id/openSourceLicensesActivity" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_aboutFragment_to_RegulatoryLabelsFragment" app:destination="@id/regulatoryLabelsFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+    </fragment>
+    <fragment android:label="Debug Fragment" android:name="com.whoop.settings.DebugFragment" android:id="@id/debugFragment">
+        <action android:id="@id/action_debug_to_featureFlagSettings" app:destination="@id/featureSettings" />
+        <action android:id="@id/action_debug_to_whoopStrapTest" app:destination="@id/testItems" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_debug_to_console" app:destination="@id/mainConsole" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_debug_to_pushes" app:destination="@id/pushDebugFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_debug_to_iterable" app:destination="@id/debugIterablesFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_debug_to_iterable_tool" app:destination="@id/debugIterableToolFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_debug_to_design_showcase" app:destination="@id/design_showcase_graph" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out">
+            <argument android:name="menuType" android:defaultValue="ROOT" app:argType="com.whoop.design.showcase.navigation.DesignShowcaseMenuType" />
+        </action>
+        <action android:id="@id/action_debug_to_debug_onboarding_stories" app:destination="@id/debugOnboardingStoriesFragment" app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left" />
+        <action android:id="@id/action_debug_to_feature_education_debug" app:destination="@id/featureEducationDebugFragment" app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left" />
+        <action android:id="@id/action_debug_to_onboarding_status_debug" app:destination="@id/onboardingStatusDebugFragment" app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left" />
+        <action android:id="@id/action_debug_to_wake_up_autopop_height_tester" app:destination="@id/wakeUpAutopopHeightTesterFragment" app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left" />
+        <action android:id="@id/action_debug_to_aiTalkTextCardDebug" app:destination="@id/aiChatTalkTextCardDebugFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_debug_to_qnaFormDebug" app:destination="@id/qnaFormDebugFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_debug_to_aiChatJournalEntryWidgetDebug" app:destination="@id/aiChatJournalEntryWidgetDebugFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+        <action android:id="@id/action_debug_to_whoopHalBotFragment" app:destination="@id/whoopBotFragment" app:enterAnim="@anim/zoom_in" app:exitAnim="@anim/zoom_out_enter" app:popEnterAnim="@anim/zoom_in_exit" app:popExitAnim="@anim/zoom_out" />
+    </fragment>
+    <fragment android:label="Push Debug" android:name="com.whoop.ui.debug.PushDebugFragment" android:id="@id/pushDebugFragment" />
+    <fragment android:label="DebugIterablesFragment" android:name="com.whoop.ui.debug.DebugIterablesFragment" android:id="@id/debugIterablesFragment" />
+    <fragment android:label="IterableToolDebugFragment" android:name="com.whoop.ui.debug.IterableToolDebugFragment" android:id="@id/debugIterableToolFragment" />
+    <fragment android:label="Main Console" android:name="com.whoop.ui.debug.MainConsoleFragment" android:id="@id/mainConsole" />
+    <fragment android:label="TutorialsFragment" android:name="com.whoop.settings.TutorialsFragment" android:id="@id/tutorialsFragment">
+        <deepLink app:uri="android-app://com.whoop/settings/tutorials" />
+    </fragment>
+    <fragment android:label="Strava Revamp" android:name="com.whoop.strava.view.StravaFragment" android:id="@id/stravaRevampSettingsFragment">
+        <deepLink app:uri="android-app://com.whoop/settings/strava" />
+        <deepLink app:uri="android-app://com.whoop/strava/navigation?code={code}&amp;scope={scope}&amp;state={state}" />
+        <argument android:name="code" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="scope" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="state" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+    </fragment>
+    <fragment android:label="ActivityDetectionFragment" android:name="com.whoop.training.activitydetection.ActivityDetectionFragment" android:id="@id/activityDetectionFragment">
+        <deepLink app:uri="android-app://com.whoop/activityDetectionFragment" />
+    </fragment>
+    <fragment android:label="PrivacyConsentFragment" android:name="com.whoop.privacyconsent.view.PrivacyConsentFragment" android:id="@id/privacyConsentFragment">
+        <argument android:name="mode" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <deepLink app:uri="whoop://com.whoop/privacyConsentFragment?mode={mode}" />
+    </fragment>
+    <fragment android:label="Health Connect" android:name="com.whoop.healthconnect.view.HealthConnectFragment" android:id="@id/healthConnectFragment">
+        <deepLink app:uri="android-app://com.whoop/settings/integrations/healthConnect" />
+    </fragment>
+    <fragment android:label="GiftWhoopFragment" android:name="com.whoop.settings.GiftWhoopFragment" android:id="@id/giftWhoopFragment">
+        <deepLink app:uri="whoop://com.whoop/raf-gift-fragment" />
+    </fragment>
+    <fragment android:label="OnboardingStoriesDebugFragment" android:name="com.whoop.stories.OnboardingStoriesDebugFragment" android:id="@id/debugOnboardingStoriesFragment">
+        <action android:id="@id/action_debug_onboarding_to_onboarding" app:destination="@id/onboarding_stories_graph" app:enterAnim="@anim/slide_in_right" app:exitAnim="@anim/slide_out_left">
+            <argument android:name="onboardingStoryType" app:argType="string" />
+        </action>
+    </fragment>
+    <fragment android:label="FeatureEducationDebugFragment" android:name="com.whoop.education.FeatureEducationDebugFragment" android:id="@id/featureEducationDebugFragment" />
+    <fragment android:label="OnboardingStatusDebugFragment" android:name="com.whoop.settings.OnboardingStatusDebugFragment" android:id="@id/onboardingStatusDebugFragment" />
+    <fragment android:label="WakeUpAutopopHeightTesterFragment" android:name="com.whoop.settings.WakeUpAutopopHeightTesterFragment" android:id="@id/wakeUpAutopopHeightTesterFragment" />
+    <fragment android:label="HelpCenterFragment" android:name="com.whoop.helpcenter.view.fragment.HelpCenterFragment" android:id="@id/help_center">
+        <deepLink app:uri="whoop://com.whoop/help_center" />
+    </fragment>
+    <fragment android:label="pregnancySettingsFragment" android:name="com.whoop.pregnancy.view.PregnancySettingsFragment" android:id="@id/pregnancySettingsFragment">
+        <deepLink app:uri="android-app://com.whoop/pregnancySettingsFragment?pregnancyScreen={pregnancyScreen}&amp;source={source}" />
+        <argument android:name="pregnancyScreen" android:defaultValue="" app:argType="string" app:nullable="true" />
+        <argument android:name="source" android:defaultValue="" app:argType="string" app:nullable="true" />
+    </fragment>
+    <fragment android:label="StealthModeFragment" android:name="com.whoop.stealthmode.view.StealthModeFragment" android:id="@id/stealthModeFragment">
+        <deepLink app:uri="android-app://com.whoop/stealth-mode" />
+    </fragment>
+    <fragment android:label="shepherdSettingsFragment" android:name="com.whoop.shepherd.fragment.ShepherdNotificationHistoryFragment" android:id="@id/shepherdNotificationHistoryFragment">
+        <deepLink app:uri="android-app://com.whoop/settings/shepherdNotificationHistoryFragment" />
+    </fragment>
+    <fragment android:label="LabradorDeviceLocationFragment" android:name="com.whoop.labrador.fragment.LabradorDeviceLocationFragment" android:id="@id/labradorDeviceLocationFragment">
+        <deepLink app:uri="android-app://com.whoop/labradorDeviceLocationFragment" />
+    </fragment>
+    <fragment android:label="RegulatoryLabelsFragment" android:name="com.whoop.settings.regulatorylabels.SettingsRegulatoryLabelsFragment" android:id="@id/regulatoryLabelsFragment">
+        <deepLink app:uri="android-app://com.whoop/settings/regulatorylabels" />
+    </fragment>
+    <activity android:label="Open source licenses" android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity" android:id="@id/openSourceLicensesActivity">
+        <deepLink app:uri="android-app://com.whoop/settings/opensourcelicenses" />
+    </activity>
+    <activity android:label="EditDeviceNameActivity" android:name="com.whoop.settings.strap.EditDeviceNameActivity" android:id="@id/editDeviceName" />
+    <fragment android:label="CoachSettingsFragment" android:name="com.whoop.bot.settings.CoachSettingsFragment" android:id="@id/whoopCoachSettingsFragment">
+        <deepLink app:uri="android-app://com.whoop/ai-coach-settings" />
+    </fragment>
+    <fragment android:label="Integrations" android:name="com.whoop.integrations.view.IntegrationsFragment" android:id="@id/integrationsFragment">
+        <deepLink app:uri="android-app://com.whoop/settings/integrations?integrationId={integrationId}&amp;source={source}" />
+        <argument android:name="integrationId" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="source" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+    </fragment>
+    <fragment android:label="MembershipManagementFragment" android:name="com.whoop.membership.management.MembershipManagementFragment" android:id="@id/MembershipManagementFragment">
+        <deepLink app:uri="android-app://com.whoop/membershipManagement?startDestination={startDestination}&amp;payload={payload}&amp;openFamilyPlan={openFamilyPlan}" />
+        <argument android:name="startDestination" android:defaultValue="MEMBERSHIP_AND_BILLING" app:argType="string" app:nullable="true" />
+        <argument android:name="payload" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="openFamilyPlan" android:defaultValue="false" app:argType="boolean" />
+    </fragment>
+    <fragment android:label="FamilyPlanFragment" android:name="com.whoop.membership.familyPlan.FamilyPlanHubFragment" android:id="@id/FamilyPlanHubFragment">
+        <deepLink app:uri="android-app://com.whoop/familyPlan?startDestination={startDestination}" />
+        <argument android:name="startDestination" android:defaultValue="FAMILY_PLAN_HUB" app:argType="string" app:nullable="true" />
+    </fragment>
+    <fragment android:label="ExtensionsFragment" android:name="com.whoop.membership.extensions.view.MembershipExtensionsFragment" android:id="@id/ExtensionsFragment">
+        <deepLink app:uri="android-app://com.whoop/extensions?promoCode={promoCode}&amp;isOnTrial={isOnTrial}&amp;isReactivationUpsell={isReactivationUpsell}&amp;isFromLto={isFromLto}&amp;path={path}&amp;sku={sku}&amp;newTier={newTier}" />
+        <argument android:name="promoCode" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="isOnTrial" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="isReactivationUpsell" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="isFromLto" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="path" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="sku" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="newTier" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+    </fragment>
+    <dialog android:label="SwitchPlanModal" android:name="com.whoop.settings.switchPlan.SwitchPlanDialogFragment" android:id="@id/switchPlanDialogFragment">
+        <deepLink app:uri="android-app://com.whoop/switchPlanModal?subscriptionType={subscriptionType}" />
+        <argument android:name="subscriptionType" app:argType="string" app:nullable="false" />
+    </dialog>
+    <fragment android:label="LanguagePrefsFragment" android:name="com.whoop.settings.language.LanguagePrefsFragment" android:id="@id/chooseLanguage">
+        <deepLink app:uri="android-app://com.whoop/settings/chooseLanguage" />
+    </fragment>
+    <fragment android:label="EditEmailFragment" android:name="com.whoop.settings.email.EditEmailFragment" android:id="@id/editEmailFragment">
+        <deepLink app:uri="android-app://com.whoop/settings/editemail" />
+    </fragment>
+</navigation>

@@ -1,0 +1,31 @@
+.class public final Lg53/w;
+.super Lg53/x;
+.source "SourceFile"
+
+
+# static fields
+.field public static final a:Lg53/w;
+
+
+# direct methods
+.method static constructor <clinit>()V
+    .locals 1
+
+    new-instance v0, Lg53/w;
+
+    invoke-direct {v0}, Ljava/lang/Object;-><init>()V
+
+    sput-object v0, Lg53/w;->a:Lg53/w;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final toString()Ljava/lang/String;
+    .locals 1
+
+    const-string v0, "WebSocketEventLost"
+
+    return-object v0
+.end method

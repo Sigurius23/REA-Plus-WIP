@@ -1,0 +1,55 @@
+.class public final Lwc/o0;
+.super Ls83/c;
+.source "SourceFile"
+
+
+# instance fields
+.field public final synthetic E:Lwc/p0;
+
+.field public F:I
+
+.field public w:Lgf/b;
+
+.field public x:Lwc/q0;
+
+.field public y:Led/a;
+
+.field public synthetic z:Ljava/lang/Object;
+
+
+# direct methods
+.method public constructor <init>(Lwc/p0;Ls83/c;)V
+    .locals 0
+
+    iput-object p1, p0, Lwc/o0;->E:Lwc/p0;
+
+    invoke-direct {p0, p2}, Ls83/c;-><init>(Lq83/d;)V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public final invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;
+    .locals 1
+
+    iput-object p1, p0, Lwc/o0;->z:Ljava/lang/Object;
+
+    iget p1, p0, Lwc/o0;->F:I
+
+    const/high16 v0, -0x80000000
+
+    or-int/2addr p1, v0
+
+    iput p1, p0, Lwc/o0;->F:I
+
+    iget-object p1, p0, Lwc/o0;->E:Lwc/p0;
+
+    const/4 v0, 0x0
+
+    invoke-virtual {p1, v0, p0}, Lwc/p0;->b(Lgf/b;Ls83/c;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    return-object p1
+.end method

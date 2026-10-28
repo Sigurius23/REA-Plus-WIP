@@ -1,0 +1,23 @@
+.class final Lcom/fatboyindustrial/gsonjodatime/Converters$9;
+.super Lcom/google/gson/reflect/TypeToken;
+.source "SourceFile"
+
+
+# annotations
+.annotation system Ldalvik/annotation/Signature;
+    value = {
+        "Lcom/google/gson/reflect/TypeToken<",
+        "Lorg/joda/time/Instant;",
+        ">;"
+    }
+.end annotation
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 0
+
+    invoke-direct {p0}, Lcom/google/gson/reflect/TypeToken;-><init>()V
+
+    return-void
+.end method

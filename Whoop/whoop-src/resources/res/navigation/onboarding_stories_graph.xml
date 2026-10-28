@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/onboarding_stories_graph"
+    app:startDestination="@+id/onboarding_story_fragment">
+    <fragment
+        android:label="OnboardingStoryFragment"
+        android:name="com.whoop.stories.OnboardingStoryFragment"
+        android:id="@+id/onboarding_story_fragment">
+        <deepLink app:uri="android-app://com.whoop/onboardingStoriesFragment/{onboardingStoryType}?entryPoint={entryPoint}&amp;cycleId={cycleId}"/>
+        <argument
+            android:name="onboardingStoryType"
+            app:argType="string"/>
+        <argument
+            android:name="entryPoint"
+            android:defaultValue=""
+            app:argType="string"/>
+        <argument
+            android:name="cycleId"
+            android:defaultValue="0L"
+            app:argType="long"/>
+    </fragment>
+</navigation>

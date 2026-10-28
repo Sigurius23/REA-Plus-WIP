@@ -1,0 +1,506 @@
+.class public final Lqa2/b;
+.super Landroidx/fragment/app/m0;
+.source "SourceFile"
+
+
+# annotations
+.annotation runtime Lkotlin/Metadata;
+    d1 = {
+        "\u0000N\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0008\u0002\n\u0002\u0018\u0002\n\u0002\u0008\u0005\n\u0002\u0018\u0002\n\u0002\u0008\u0004\n\u0002\u0018\u0002\n\u0002\u0008\u0004\n\u0002\u0018\u0002\n\u0002\u0008\u0004\n\u0002\u0018\u0002\n\u0002\u0008\u0002\u0008\u0007\u0018\u00002\u00020\u0001B\u0007\u00a2\u0006\u0004\u0008\u0002\u0010\u0003J+\u0010\u000b\u001a\u00020\n2\u0006\u0010\u0005\u001a\u00020\u00042\u0008\u0010\u0007\u001a\u0004\u0018\u00010\u00062\u0008\u0010\t\u001a\u0004\u0018\u00010\u0008H\u0016\u00a2\u0006\u0004\u0008\u000b\u0010\u000cR\u001b\u0010\u0012\u001a\u00020\r8BX\u0082\u0084\u0002\u00a2\u0006\u000c\n\u0004\u0008\u000e\u0010\u000f\u001a\u0004\u0008\u0010\u0010\u0011R\u001b\u0010\u0017\u001a\u00020\u00138BX\u0082\u0084\u0002\u00a2\u0006\u000c\n\u0004\u0008\u0014\u0010\u000f\u001a\u0004\u0008\u0015\u0010\u0016R\u001b\u0010\u001c\u001a\u00020\u00188FX\u0086\u0084\u0002\u00a2\u0006\u000c\n\u0004\u0008\u0019\u0010\u000f\u001a\u0004\u0008\u001a\u0010\u001bR\u001b\u0010!\u001a\u00020\u001d8FX\u0086\u0084\u0002\u00a2\u0006\u000c\n\u0004\u0008\u001e\u0010\u000f\u001a\u0004\u0008\u001f\u0010 \u00a8\u0006$\u00b2\u0006\u000c\u0010#\u001a\u00020\"8\nX\u008a\u0084\u0002"
+    }
+    d2 = {
+        "Lqa2/b;",
+        "Landroidx/fragment/app/m0;",
+        "<init>",
+        "()V",
+        "Landroid/view/LayoutInflater;",
+        "inflater",
+        "Landroid/view/ViewGroup;",
+        "container",
+        "Landroid/os/Bundle;",
+        "savedInstanceState",
+        "Landroidx/compose/ui/platform/ComposeView;",
+        "onCreateView",
+        "(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroidx/compose/ui/platform/ComposeView;",
+        "Lor2/y;",
+        "w",
+        "Ll83/h;",
+        "getExternalLinkNavigator",
+        "()Lor2/y;",
+        "externalLinkNavigator",
+        "Lta2/b;",
+        "x",
+        "D",
+        "()Lta2/b;",
+        "navRouter",
+        "Lxa2/a;",
+        "y",
+        "E",
+        "()Lxa2/a;",
+        "viewModel",
+        "Lra2/b;",
+        "z",
+        "C",
+        "()Lra2/b;",
+        "analytics",
+        "Lua2/a;",
+        "viewState",
+        "settings_release"
+    }
+    k = 0x1
+    mv = {
+        0x2,
+        0x3,
+        0x0
+    }
+    xi = 0x30
+.end annotation
+
+
+# instance fields
+.field private final w:Ll83/h;
+
+.field private final x:Ll83/h;
+
+.field private final y:Ll83/h;
+
+.field private final z:Ll83/h;
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 5
+
+    invoke-direct {p0}, Landroidx/fragment/app/m0;-><init>()V
+
+    sget-object v0, Ll83/i;->w:Ll83/i;
+
+    new-instance v1, Lqa2/b$b;
+
+    const/4 v2, 0x0
+
+    invoke-direct {v1, p0, v2, v2}, Lqa2/b$b;-><init>(Landroid/content/ComponentCallbacks;Lvf3/a;Lc93/a;)V
+
+    invoke-static {v0, v1}, Lq83/g;->G(Ll83/i;Lc93/a;)Ll83/h;
+
+    move-result-object v1
+
+    iput-object v1, p0, Lqa2/b;->w:Ll83/h;
+
+    new-instance v1, Lq80/h;
+
+    const/4 v3, 0x2
+
+    invoke-direct {v1, p0, v3}, Lq80/h;-><init>(Ljava/lang/Object;I)V
+
+    new-instance v3, Lqa2/b$c;
+
+    invoke-direct {v3, p0, v2, v1}, Lqa2/b$c;-><init>(Landroid/content/ComponentCallbacks;Lvf3/a;Lc93/a;)V
+
+    invoke-static {v0, v3}, Lq83/g;->G(Ll83/i;Lc93/a;)Ll83/h;
+
+    move-result-object v1
+
+    iput-object v1, p0, Lqa2/b;->x:Ll83/h;
+
+    new-instance v1, Lqa2/b$e;
+
+    invoke-direct {v1, p0}, Lqa2/b$e;-><init>(Landroid/content/ComponentCallbacks;)V
+
+    sget-object v3, Ll83/i;->y:Ll83/i;
+
+    new-instance v4, Lqa2/b$f;
+
+    invoke-direct {v4, p0, v2, v1, v2}, Lqa2/b$f;-><init>(Landroid/content/ComponentCallbacks;Lvf3/a;Lc93/a;Lc93/a;)V
+
+    invoke-static {v3, v4}, Lq83/g;->G(Ll83/i;Lc93/a;)Ll83/h;
+
+    move-result-object v1
+
+    iput-object v1, p0, Lqa2/b;->y:Ll83/h;
+
+    new-instance v1, Lqa2/b$d;
+
+    invoke-direct {v1, p0, v2, v2}, Lqa2/b$d;-><init>(Landroid/content/ComponentCallbacks;Lvf3/a;Lc93/a;)V
+
+    invoke-static {v0, v1}, Lq83/g;->G(Ll83/i;Lc93/a;)Ll83/h;
+
+    move-result-object v0
+
+    iput-object v0, p0, Lqa2/b;->z:Ll83/h;
+
+    return-void
+.end method
+
+.method public static synthetic A(Lqa2/b;Lta2/a;)Ll83/a0;
+    .locals 0
+
+    invoke-static {p0, p1}, Lqa2/b;->J(Lqa2/b;Lta2/a;)Ll83/a0;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+.method public static synthetic B(Lqa2/b;Lra2/a;)Ll83/a0;
+    .locals 0
+
+    invoke-static {p0, p1}, Lqa2/b;->I(Lqa2/b;Lra2/a;)Ll83/a0;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+.method private final D()Lta2/b;
+    .locals 1
+
+    iget-object v0, p0, Lqa2/b;->x:Ll83/h;
+
+    invoke-interface {v0}, Ll83/h;->getValue()Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Lta2/b;
+
+    return-object v0
+.end method
+
+.method private static final F(Lqa2/b;)Luf3/a;
+    .locals 1
+
+    invoke-virtual {p0}, Landroidx/fragment/app/m0;->requireActivity()Landroidx/fragment/app/r0;
+
+    move-result-object v0
+
+    invoke-direct {p0}, Lqa2/b;->getExternalLinkNavigator()Lor2/y;
+
+    move-result-object p0
+
+    filled-new-array {v0, p0}, [Ljava/lang/Object;
+
+    move-result-object p0
+
+    invoke-static {p0}, Lge3/g;->K([Ljava/lang/Object;)Luf3/a;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+.method private static final G(Lqa2/b;Landroidx/compose/runtime/Composer;I)Ll83/a0;
+    .locals 10
+
+    and-int/lit8 v0, p2, 0x3
+
+    const/4 v1, 0x2
+
+    const/4 v2, 0x1
+
+    if-eq v0, v1, :cond_0
+
+    move v0, v2
+
+    goto :goto_0
+
+    :cond_0
+    const/4 v0, 0x0
+
+    :goto_0
+    and-int/2addr p2, v2
+
+    move-object v6, p1
+
+    check-cast v6, Lp1/q;
+
+    invoke-virtual {v6, p2, v0}, Lp1/q;->U(IZ)Z
+
+    move-result p1
+
+    sget-object p2, Ll83/a0;->a:Ll83/a0;
+
+    if-eqz p1, :cond_7
+
+    invoke-virtual {v6, p0}, Lp1/q;->i(Ljava/lang/Object;)Z
+
+    move-result p1
+
+    invoke-virtual {v6}, Lp1/q;->R()Ljava/lang/Object;
+
+    move-result-object v0
+
+    const/4 v1, 0x0
+
+    sget-object v9, Lp1/l;->a:Lp1/v0;
+
+    if-nez p1, :cond_1
+
+    if-ne v0, v9, :cond_2
+
+    :cond_1
+    new-instance v0, Lqa2/b$a;
+
+    invoke-direct {v0, p0, v1}, Lqa2/b$a;-><init>(Lqa2/b;Lq83/d;)V
+
+    invoke-virtual {v6, v0}, Lp1/q;->p0(Ljava/lang/Object;)V
+
+    :cond_2
+    check-cast v0, Lc93/m;
+
+    invoke-static {v6, v0, p2}, Lp1/x;->g(Landroidx/compose/runtime/Composer;Lc93/m;Ljava/lang/Object;)V
+
+    invoke-virtual {p0}, Lqa2/b;->E()Lxa2/a;
+
+    move-result-object p1
+
+    invoke-virtual {p1}, Lxa2/a;->n()Lec3/t1;
+
+    move-result-object v3
+
+    new-instance v4, Lua2/a;
+
+    invoke-direct {v4, v1, v2, v1}, Lua2/a;-><init>(Lkc2/i;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+
+    sget p1, Lcom/whoop/design/util/TextResource;->$stable:I
+
+    shl-int/lit8 v7, p1, 0x3
+
+    const/4 v8, 0x2
+
+    const/4 v5, 0x0
+
+    invoke-static/range {v3 .. v8}, Lp1/x;->n(Lec3/l;Ljava/lang/Object;Lq83/j;Landroidx/compose/runtime/Composer;II)Lp1/c1;
+
+    move-result-object v0
+
+    invoke-static {v0}, Lqa2/b;->H(Lp1/t2;)Lua2/a;
+
+    move-result-object v3
+
+    invoke-virtual {v6, p0}, Lp1/q;->i(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    invoke-virtual {v6}, Lp1/q;->R()Ljava/lang/Object;
+
+    move-result-object v1
+
+    if-nez v0, :cond_3
+
+    if-ne v1, v9, :cond_4
+
+    :cond_3
+    new-instance v1, Lqa2/a;
+
+    const/4 v0, 0x0
+
+    invoke-direct {v1, p0, v0}, Lqa2/a;-><init>(Lqa2/b;I)V
+
+    invoke-virtual {v6, v1}, Lp1/q;->p0(Ljava/lang/Object;)V
+
+    :cond_4
+    move-object v4, v1
+
+    check-cast v4, Lkotlin/jvm/functions/Function1;
+
+    invoke-virtual {v6, p0}, Lp1/q;->i(Ljava/lang/Object;)Z
+
+    move-result v0
+
+    invoke-virtual {v6}, Lp1/q;->R()Ljava/lang/Object;
+
+    move-result-object v1
+
+    if-nez v0, :cond_5
+
+    if-ne v1, v9, :cond_6
+
+    :cond_5
+    new-instance v1, Lqa2/a;
+
+    const/4 v0, 0x1
+
+    invoke-direct {v1, p0, v0}, Lqa2/a;-><init>(Lqa2/b;I)V
+
+    invoke-virtual {v6, v1}, Lp1/q;->p0(Ljava/lang/Object;)V
+
+    :cond_6
+    move-object v5, v1
+
+    check-cast v5, Lkotlin/jvm/functions/Function1;
+
+    const/4 v8, 0x0
+
+    move v7, p1
+
+    invoke-static/range {v3 .. v8}, Lwa2/a;->g(Lua2/a;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+
+    return-object p2
+
+    :cond_7
+    invoke-virtual {v6}, Lp1/q;->X()V
+
+    return-object p2
+.end method
+
+.method private static final H(Lp1/t2;)Lua2/a;
+    .locals 0
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Lp1/t2;",
+            ")",
+            "Lua2/a;"
+        }
+    .end annotation
+
+    invoke-interface {p0}, Lp1/t2;->getValue()Ljava/lang/Object;
+
+    move-result-object p0
+
+    check-cast p0, Lua2/a;
+
+    return-object p0
+.end method
+
+.method private static final I(Lqa2/b;Lra2/a;)Ll83/a0;
+    .locals 1
+
+    const-string v0, "event"
+
+    invoke-static {p1, v0}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    invoke-virtual {p0}, Lqa2/b;->C()Lra2/b;
+
+    move-result-object p0
+
+    invoke-virtual {p0, p1}, Lra2/b;->a(Lra2/a;)V
+
+    sget-object p0, Ll83/a0;->a:Ll83/a0;
+
+    return-object p0
+.end method
+
+.method private static final J(Lqa2/b;Lta2/a;)Ll83/a0;
+    .locals 1
+
+    const-string v0, "event"
+
+    invoke-static {p1, v0}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    invoke-direct {p0}, Lqa2/b;->D()Lta2/b;
+
+    move-result-object p0
+
+    invoke-virtual {p0, p1}, Lta2/b;->a(Lta2/a;)V
+
+    sget-object p0, Ll83/a0;->a:Ll83/a0;
+
+    return-object p0
+.end method
+
+.method private final getExternalLinkNavigator()Lor2/y;
+    .locals 1
+
+    iget-object v0, p0, Lqa2/b;->w:Ll83/h;
+
+    invoke-interface {v0}, Ll83/h;->getValue()Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Lor2/y;
+
+    return-object v0
+.end method
+
+.method public static synthetic y(Lqa2/b;Landroidx/compose/runtime/Composer;I)Ll83/a0;
+    .locals 0
+
+    invoke-static {p0, p1, p2}, Lqa2/b;->G(Lqa2/b;Landroidx/compose/runtime/Composer;I)Ll83/a0;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+.method public static synthetic z(Lqa2/b;)Luf3/a;
+    .locals 0
+
+    invoke-static {p0}, Lqa2/b;->F(Lqa2/b;)Luf3/a;
+
+    move-result-object p0
+
+    return-object p0
+.end method
+
+
+# virtual methods
+.method public final C()Lra2/b;
+    .locals 1
+
+    iget-object v0, p0, Lqa2/b;->z:Ll83/h;
+
+    invoke-interface {v0}, Ll83/h;->getValue()Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Lra2/b;
+
+    return-object v0
+.end method
+
+.method public final E()Lxa2/a;
+    .locals 1
+
+    iget-object v0, p0, Lqa2/b;->y:Ll83/h;
+
+    invoke-interface {v0}, Ll83/h;->getValue()Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Lxa2/a;
+
+    return-object v0
+.end method
+
+.method public bridge synthetic onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroid/view/View;
+    .locals 0
+
+    .line 1
+    invoke-virtual {p0, p1, p2, p3}, Lqa2/b;->onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroidx/compose/ui/platform/ComposeView;
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method public onCreateView(Landroid/view/LayoutInflater;Landroid/view/ViewGroup;Landroid/os/Bundle;)Landroidx/compose/ui/platform/ComposeView;
+    .locals 1
+
+    const-string p2, "inflater"
+
+    invoke-static {p1, p2}, Lkotlin/jvm/internal/k;->j(Ljava/lang/Object;Ljava/lang/String;)V
+
+    .line 2
+    new-instance p1, Loe2/c;
+
+    const/16 p2, 0x17
+
+    invoke-direct {p1, p0, p2}, Loe2/c;-><init>(Ljava/lang/Object;I)V
+
+    .line 3
+    new-instance p2, Lx1/b;
+
+    const/4 p3, 0x1
+
+    const v0, -0x121821ac
+
+    invoke-direct {p2, p1, p3, v0}, Lx1/b;-><init>(Ljava/lang/Object;ZI)V
+
+    .line 4
+    invoke-static {p0, p2}, Lkd1/b0;->c(Landroidx/fragment/app/m0;Lc93/m;)Landroidx/compose/ui/platform/ComposeView;
+
+    move-result-object p1
+
+    return-object p1
+.end method

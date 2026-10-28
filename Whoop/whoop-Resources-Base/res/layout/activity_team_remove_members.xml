@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:tag="layout/activity_team_remove_members_0" android:background="@color/Whoop.White" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <include layout="@layout/toolbar" />
+    <FrameLayout android:background="@drawable/bg_gray_bottomline" android:layout_width="match_parent" android:layout_height="72.0dp">
+        <EditText android:textColor="@color/Whoop.Black" android:textColorHint="@color/Whoop.Gray" android:layout_gravity="center_vertical" android:id="@id/searchInput" android:background="@drawable/bg_edittext_round_white" android:layout_width="match_parent" android:layout_height="38.0dp" android:hint="@string/team_addmembers_search_hint" android:paddingStart="@dimen/Margin.Double" android:layout_marginStart="@dimen/Margin.Double" android:layout_marginEnd="@dimen/Margin.Double" style="@style/Teams.Data" />
+        <ImageView android:layout_gravity="end|center" android:id="@id/searchFocusIcon" android:layout_width="24.0dp" android:layout_height="24.0dp" android:src="@drawable/ic_search" android:tint="@color/Whoop.Black" android:layout_marginEnd="@dimen/Margin.Triple" />
+    </FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView android:id="@id/recyclerView" android:layout_width="match_parent" android:layout_height="0.0dp" android:layout_weight="1.0" android:animateLayoutChanges="false" android:layout_marginHorizontal="@dimen/Margin.Double" app:layoutManager="LinearLayoutManager" />
+    <LinearLayout android:orientation="vertical" android:id="@id/loadingLayout" android:visibility="gone" android:layout_width="match_parent" android:layout_height="0.0dp" android:layout_weight="1.0">
+        <com.whoop.ui.ThrobberView android:layout_gravity="center_horizontal" android:id="@id/throbberView" android:layout_width="48.0dp" android:layout_height="49.0dp" android:layout_marginTop="@null" />
+    </LinearLayout>
+</LinearLayout>

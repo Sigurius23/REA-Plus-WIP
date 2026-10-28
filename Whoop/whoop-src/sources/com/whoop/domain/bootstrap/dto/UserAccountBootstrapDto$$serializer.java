@@ -1,0 +1,161 @@
+package com.whoop.domain.bootstrap.dto;
+
+import androidx.core.app.NotificationCompat;
+import kotlinx.serialization.UnknownFieldException;
+import kotlinx.serialization.internal.BooleanSerializer;
+import kotlinx.serialization.internal.GeneratedSerializer;
+import kotlinx.serialization.internal.IntSerializer;
+import kotlinx.serialization.internal.PluginGeneratedSerialDescriptor;
+import kotlinx.serialization.internal.StringSerializer;
+import l83.InterfaceC23457c;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+import wc3.InterfaceC37138c;
+import xc3.AbstractC38195a;
+import yc3.InterfaceC39443g;
+import zc3.InterfaceC40539b;
+import zc3.InterfaceC40540c;
+import zc3.InterfaceC40541d;
+import zc3.InterfaceC40542e;
+
+/* JADX INFO: loaded from: classes8.dex */
+@Metadata(m65680d1 = {"\u0000:\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u0011\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0005\bÇ\u0002\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0003\u0010\u0004J\u001d\u0010\t\u001a\u00020\b2\u0006\u0010\u0006\u001a\u00020\u00052\u0006\u0010\u0007\u001a\u00020\u0002¢\u0006\u0004\b\t\u0010\nJ\u0015\u0010\r\u001a\u00020\u00022\u0006\u0010\f\u001a\u00020\u000b¢\u0006\u0004\b\r\u0010\u000eJ\u0017\u0010\u0011\u001a\f\u0012\b\u0012\u0006\u0012\u0002\b\u00030\u00100\u000f¢\u0006\u0004\b\u0011\u0010\u0012R\u0017\u0010\u0014\u001a\u00020\u00138\u0006¢\u0006\f\n\u0004\b\u0014\u0010\u0015\u001a\u0004\b\u0016\u0010\u0017¨\u0006\u0018"}, m65681d2 = {"com/whoop/domain/bootstrap/dto/UserAccountBootstrapDto.$serializer", "Lkotlinx/serialization/internal/GeneratedSerializer;", "Lcom/whoop/domain/bootstrap/dto/UserAccountBootstrapDto;", "<init>", "()V", "Lzc3/e;", "encoder", "value", "Ll83/a0;", "serialize", "(Lzc3/e;Lcom/whoop/domain/bootstrap/dto/UserAccountBootstrapDto;)V", "Lzc3/d;", "decoder", "deserialize", "(Lzc3/d;)Lcom/whoop/domain/bootstrap/dto/UserAccountBootstrapDto;", "", "Lwc3/c;", "childSerializers", "()[Lwc3/c;", "Lyc3/g;", "descriptor", "Lyc3/g;", "getDescriptor", "()Lyc3/g;", "core_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+@InterfaceC23457c
+public final /* synthetic */ class UserAccountBootstrapDto$$serializer implements GeneratedSerializer<UserAccountBootstrapDto> {
+    public static final UserAccountBootstrapDto$$serializer INSTANCE;
+    private static final InterfaceC39443g descriptor;
+
+    static {
+        UserAccountBootstrapDto$$serializer userAccountBootstrapDto$$serializer = new UserAccountBootstrapDto$$serializer();
+        INSTANCE = userAccountBootstrapDto$$serializer;
+        PluginGeneratedSerialDescriptor pluginGeneratedSerialDescriptor = new PluginGeneratedSerialDescriptor("com.whoop.domain.bootstrap.dto.UserAccountBootstrapDto", userAccountBootstrapDto$$serializer, 7);
+        pluginGeneratedSerialDescriptor.addElement("username", false);
+        pluginGeneratedSerialDescriptor.addElement(NotificationCompat.CATEGORY_EMAIL, false);
+        pluginGeneratedSerialDescriptor.addElement("canUploadData", false);
+        pluginGeneratedSerialDescriptor.addElement("deidentified", false);
+        pluginGeneratedSerialDescriptor.addElement("concealed", false);
+        pluginGeneratedSerialDescriptor.addElement("userId", false);
+        pluginGeneratedSerialDescriptor.addElement("createdAt", false);
+        descriptor = pluginGeneratedSerialDescriptor;
+    }
+
+    private UserAccountBootstrapDto$$serializer() {
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer
+    public final InterfaceC37138c[] childSerializers() {
+        InterfaceC37138c interfaceC37138cM122336d = AbstractC38195a.m122336d(IntSerializer.INSTANCE);
+        StringSerializer stringSerializer = StringSerializer.INSTANCE;
+        BooleanSerializer booleanSerializer = BooleanSerializer.INSTANCE;
+        return new InterfaceC37138c[]{stringSerializer, stringSerializer, booleanSerializer, booleanSerializer, booleanSerializer, interfaceC37138cM122336d, stringSerializer};
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer, wc3.InterfaceC37137b
+    public final UserAccountBootstrapDto deserialize(InterfaceC40541d decoder) {
+        boolean z4;
+        boolean z13;
+        boolean z14;
+        int i13;
+        String str;
+        String str2;
+        Integer num;
+        String strDecodeStringElement;
+        AbstractC22676k.m65750j(decoder, "decoder");
+        InterfaceC39443g interfaceC39443g = descriptor;
+        InterfaceC40539b interfaceC40539bBeginStructure = decoder.beginStructure(interfaceC39443g);
+        if (interfaceC40539bBeginStructure.decodeSequentially()) {
+            String strDecodeStringElement2 = interfaceC40539bBeginStructure.decodeStringElement(interfaceC39443g, 0);
+            String strDecodeStringElement3 = interfaceC40539bBeginStructure.decodeStringElement(interfaceC39443g, 1);
+            boolean zDecodeBooleanElement = interfaceC40539bBeginStructure.decodeBooleanElement(interfaceC39443g, 2);
+            boolean zDecodeBooleanElement2 = interfaceC40539bBeginStructure.decodeBooleanElement(interfaceC39443g, 3);
+            boolean zDecodeBooleanElement3 = interfaceC40539bBeginStructure.decodeBooleanElement(interfaceC39443g, 4);
+            Integer num2 = (Integer) interfaceC40539bBeginStructure.decodeNullableSerializableElement(interfaceC39443g, 5, IntSerializer.INSTANCE, null);
+            str = strDecodeStringElement2;
+            strDecodeStringElement = interfaceC40539bBeginStructure.decodeStringElement(interfaceC39443g, 6);
+            num = num2;
+            z4 = zDecodeBooleanElement2;
+            z13 = zDecodeBooleanElement3;
+            z14 = zDecodeBooleanElement;
+            str2 = strDecodeStringElement3;
+            i13 = 127;
+        } else {
+            boolean z15 = true;
+            boolean zDecodeBooleanElement4 = false;
+            boolean zDecodeBooleanElement5 = false;
+            int i14 = 0;
+            String strDecodeStringElement4 = null;
+            String strDecodeStringElement5 = null;
+            Integer num3 = null;
+            String strDecodeStringElement6 = null;
+            boolean zDecodeBooleanElement6 = false;
+            while (z15) {
+                int iDecodeElementIndex = interfaceC40539bBeginStructure.decodeElementIndex(interfaceC39443g);
+                switch (iDecodeElementIndex) {
+                    case -1:
+                        z15 = false;
+                        continue;
+                    case 0:
+                        strDecodeStringElement4 = interfaceC40539bBeginStructure.decodeStringElement(interfaceC39443g, 0);
+                        i14 |= 1;
+                        continue;
+                    case 1:
+                        strDecodeStringElement5 = interfaceC40539bBeginStructure.decodeStringElement(interfaceC39443g, 1);
+                        i14 |= 2;
+                        break;
+                    case 2:
+                        zDecodeBooleanElement5 = interfaceC40539bBeginStructure.decodeBooleanElement(interfaceC39443g, 2);
+                        i14 |= 4;
+                        break;
+                    case 3:
+                        zDecodeBooleanElement4 = interfaceC40539bBeginStructure.decodeBooleanElement(interfaceC39443g, 3);
+                        i14 |= 8;
+                        break;
+                    case 4:
+                        zDecodeBooleanElement6 = interfaceC40539bBeginStructure.decodeBooleanElement(interfaceC39443g, 4);
+                        i14 |= 16;
+                        break;
+                    case 5:
+                        num3 = (Integer) interfaceC40539bBeginStructure.decodeNullableSerializableElement(interfaceC39443g, 5, IntSerializer.INSTANCE, num3);
+                        i14 |= 32;
+                        break;
+                    case 6:
+                        strDecodeStringElement6 = interfaceC40539bBeginStructure.decodeStringElement(interfaceC39443g, 6);
+                        i14 |= 64;
+                        break;
+                    default:
+                        throw new UnknownFieldException(iDecodeElementIndex);
+                }
+            }
+            z4 = zDecodeBooleanElement4;
+            z13 = zDecodeBooleanElement6;
+            z14 = zDecodeBooleanElement5;
+            i13 = i14;
+            str = strDecodeStringElement4;
+            str2 = strDecodeStringElement5;
+            num = num3;
+            strDecodeStringElement = strDecodeStringElement6;
+        }
+        interfaceC40539bBeginStructure.endStructure(interfaceC39443g);
+        return new UserAccountBootstrapDto(i13, str, str2, z14, z4, z13, num, strDecodeStringElement, null);
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer, wc3.InterfaceC37145j, wc3.InterfaceC37137b
+    public final InterfaceC39443g getDescriptor() {
+        return descriptor;
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer, wc3.InterfaceC37145j
+    public final void serialize(InterfaceC40542e encoder, UserAccountBootstrapDto value) {
+        AbstractC22676k.m65750j(encoder, "encoder");
+        AbstractC22676k.m65750j(value, "value");
+        InterfaceC39443g interfaceC39443g = descriptor;
+        InterfaceC40540c interfaceC40540cBeginStructure = encoder.beginStructure(interfaceC39443g);
+        UserAccountBootstrapDto.write$Self$core_release(value, interfaceC40540cBeginStructure, interfaceC39443g);
+        interfaceC40540cBeginStructure.endStructure(interfaceC39443g);
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer
+    public /* bridge */ InterfaceC37138c[] typeParametersSerializers() {
+        return super.typeParametersSerializers();
+    }
+}

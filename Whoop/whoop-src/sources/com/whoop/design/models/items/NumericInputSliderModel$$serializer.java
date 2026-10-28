@@ -1,0 +1,217 @@
+package com.whoop.design.models.items;
+
+import com.whoop.design.models.binding.LenientAggregateBindingsSerializer;
+import java.util.Map;
+import kotlinx.serialization.UnknownFieldException;
+import kotlinx.serialization.internal.FloatSerializer;
+import kotlinx.serialization.internal.GeneratedSerializer;
+import kotlinx.serialization.internal.IntSerializer;
+import kotlinx.serialization.internal.PluginGeneratedSerialDescriptor;
+import l83.InterfaceC23457c;
+import l83.InterfaceC23462h;
+import no.nordicsemi.android.dfu.DfuBaseService;
+import p715kotlin.Metadata;
+import p715kotlin.jvm.internal.AbstractC22676k;
+import p745y81.EnumC39333f;
+import wc3.InterfaceC37137b;
+import wc3.InterfaceC37138c;
+import xc3.AbstractC38195a;
+import yc3.InterfaceC39443g;
+import zc3.InterfaceC40539b;
+import zc3.InterfaceC40540c;
+import zc3.InterfaceC40541d;
+import zc3.InterfaceC40542e;
+
+/* JADX INFO: loaded from: classes8.dex */
+@Metadata(m65680d1 = {"\u0000:\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u0011\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0005\bÇ\u0002\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\t\b\u0002¢\u0006\u0004\b\u0003\u0010\u0004J\u001d\u0010\t\u001a\u00020\b2\u0006\u0010\u0006\u001a\u00020\u00052\u0006\u0010\u0007\u001a\u00020\u0002¢\u0006\u0004\b\t\u0010\nJ\u0015\u0010\r\u001a\u00020\u00022\u0006\u0010\f\u001a\u00020\u000b¢\u0006\u0004\b\r\u0010\u000eJ\u0017\u0010\u0011\u001a\f\u0012\b\u0012\u0006\u0012\u0002\b\u00030\u00100\u000f¢\u0006\u0004\b\u0011\u0010\u0012R\u0017\u0010\u0014\u001a\u00020\u00138\u0006¢\u0006\f\n\u0004\b\u0014\u0010\u0015\u001a\u0004\b\u0016\u0010\u0017¨\u0006\u0018"}, m65681d2 = {"com/whoop/design/models/items/NumericInputSliderModel.$serializer", "Lkotlinx/serialization/internal/GeneratedSerializer;", "Lcom/whoop/design/models/items/NumericInputSliderModel;", "<init>", "()V", "Lzc3/e;", "encoder", "value", "Ll83/a0;", "serialize", "(Lzc3/e;Lcom/whoop/design/models/items/NumericInputSliderModel;)V", "Lzc3/d;", "decoder", "deserialize", "(Lzc3/d;)Lcom/whoop/design/models/items/NumericInputSliderModel;", "", "Lwc3/c;", "childSerializers", "()[Lwc3/c;", "Lyc3/g;", "descriptor", "Lyc3/g;", "getDescriptor", "()Lyc3/g;", "design-models_release"}, m65682k = 1, m65683mv = {2, 3, 0}, m65685xi = 48)
+@InterfaceC23457c
+public final /* synthetic */ class NumericInputSliderModel$$serializer implements GeneratedSerializer<NumericInputSliderModel> {
+    public static final int $stable;
+    public static final NumericInputSliderModel$$serializer INSTANCE;
+    private static final InterfaceC39443g descriptor;
+
+    static {
+        NumericInputSliderModel$$serializer numericInputSliderModel$$serializer = new NumericInputSliderModel$$serializer();
+        INSTANCE = numericInputSliderModel$$serializer;
+        $stable = 8;
+        PluginGeneratedSerialDescriptor pluginGeneratedSerialDescriptor = new PluginGeneratedSerialDescriptor("com.whoop.design.models.items.NumericInputSliderModel", numericInputSliderModel$$serializer, 11);
+        pluginGeneratedSerialDescriptor.addElement("upperBound", false);
+        pluginGeneratedSerialDescriptor.addElement("lowerBound", false);
+        pluginGeneratedSerialDescriptor.addElement("stepSize", false);
+        pluginGeneratedSerialDescriptor.addElement("barThickness", true);
+        pluginGeneratedSerialDescriptor.addElement("barColor", true);
+        pluginGeneratedSerialDescriptor.addElement("sliderValue", false);
+        pluginGeneratedSerialDescriptor.addElement("startLabel", false);
+        pluginGeneratedSerialDescriptor.addElement("endLabel", false);
+        pluginGeneratedSerialDescriptor.addElement("picker", false);
+        pluginGeneratedSerialDescriptor.addElement("bindings", true);
+        pluginGeneratedSerialDescriptor.addElement("aggregateBindings", true);
+        descriptor = pluginGeneratedSerialDescriptor;
+    }
+
+    private NumericInputSliderModel$$serializer() {
+    }
+
+    /* JADX WARN: Multi-variable type inference failed */
+    @Override // kotlinx.serialization.internal.GeneratedSerializer
+    public final InterfaceC37138c[] childSerializers() {
+        InterfaceC23462h[] interfaceC23462hArr = NumericInputSliderModel.$childSerializers;
+        FloatSerializer floatSerializer = FloatSerializer.INSTANCE;
+        IntSerializer intSerializer = IntSerializer.INSTANCE;
+        return new InterfaceC37138c[]{floatSerializer, floatSerializer, intSerializer, intSerializer, interfaceC23462hArr[4].getValue(), floatSerializer, AbstractC38195a.m122336d(NumericInputSliderModel$StartLabel$$serializer.INSTANCE), AbstractC38195a.m122336d(NumericInputSliderModel$EndLabel$$serializer.INSTANCE), AbstractC38195a.m122336d(MultiWheelPickerModel$$serializer.INSTANCE), AbstractC38195a.m122336d((InterfaceC37138c) interfaceC23462hArr[9].getValue()), AbstractC38195a.m122336d(LenientAggregateBindingsSerializer.INSTANCE)};
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer, wc3.InterfaceC37137b
+    public final NumericInputSliderModel deserialize(InterfaceC40541d decoder) {
+        float fDecodeFloatElement;
+        Map map;
+        Map map2;
+        NumericInputSliderModel.EndLabel endLabel;
+        NumericInputSliderModel.StartLabel startLabel;
+        MultiWheelPickerModel multiWheelPickerModel;
+        EnumC39333f enumC39333f;
+        int i13;
+        float f13;
+        int i14;
+        int i15;
+        float f14;
+        AbstractC22676k.m65750j(decoder, "decoder");
+        InterfaceC39443g interfaceC39443g = descriptor;
+        InterfaceC40539b interfaceC40539bBeginStructure = decoder.beginStructure(interfaceC39443g);
+        InterfaceC23462h[] interfaceC23462hArr = NumericInputSliderModel.$childSerializers;
+        int i16 = 10;
+        int i17 = 0;
+        if (interfaceC40539bBeginStructure.decodeSequentially()) {
+            fDecodeFloatElement = interfaceC40539bBeginStructure.decodeFloatElement(interfaceC39443g, 0);
+            float fDecodeFloatElement2 = interfaceC40539bBeginStructure.decodeFloatElement(interfaceC39443g, 1);
+            int iDecodeIntElement = interfaceC40539bBeginStructure.decodeIntElement(interfaceC39443g, 2);
+            int iDecodeIntElement2 = interfaceC40539bBeginStructure.decodeIntElement(interfaceC39443g, 3);
+            EnumC39333f enumC39333f2 = (EnumC39333f) interfaceC40539bBeginStructure.decodeSerializableElement(interfaceC39443g, 4, (InterfaceC37137b) interfaceC23462hArr[4].getValue(), null);
+            float fDecodeFloatElement3 = interfaceC40539bBeginStructure.decodeFloatElement(interfaceC39443g, 5);
+            NumericInputSliderModel.StartLabel startLabel2 = (NumericInputSliderModel.StartLabel) interfaceC40539bBeginStructure.decodeNullableSerializableElement(interfaceC39443g, 6, NumericInputSliderModel$StartLabel$$serializer.INSTANCE, null);
+            NumericInputSliderModel.EndLabel endLabel2 = (NumericInputSliderModel.EndLabel) interfaceC40539bBeginStructure.decodeNullableSerializableElement(interfaceC39443g, 7, NumericInputSliderModel$EndLabel$$serializer.INSTANCE, null);
+            MultiWheelPickerModel multiWheelPickerModel2 = (MultiWheelPickerModel) interfaceC40539bBeginStructure.decodeNullableSerializableElement(interfaceC39443g, 8, MultiWheelPickerModel$$serializer.INSTANCE, null);
+            map2 = (Map) interfaceC40539bBeginStructure.decodeNullableSerializableElement(interfaceC39443g, 9, (InterfaceC37137b) interfaceC23462hArr[9].getValue(), null);
+            map = (Map) interfaceC40539bBeginStructure.decodeNullableSerializableElement(interfaceC39443g, 10, LenientAggregateBindingsSerializer.INSTANCE, null);
+            endLabel = endLabel2;
+            startLabel = startLabel2;
+            f13 = fDecodeFloatElement3;
+            i14 = iDecodeIntElement2;
+            multiWheelPickerModel = multiWheelPickerModel2;
+            i15 = iDecodeIntElement;
+            i13 = 2047;
+            enumC39333f = enumC39333f2;
+            f14 = fDecodeFloatElement2;
+        } else {
+            fDecodeFloatElement = 0.0f;
+            float fDecodeFloatElement4 = 0.0f;
+            boolean z4 = true;
+            int iDecodeIntElement3 = 0;
+            int iDecodeIntElement4 = 0;
+            Map map3 = null;
+            Map map4 = null;
+            NumericInputSliderModel.EndLabel endLabel3 = null;
+            NumericInputSliderModel.StartLabel startLabel3 = null;
+            MultiWheelPickerModel multiWheelPickerModel3 = null;
+            EnumC39333f enumC39333f3 = null;
+            float fDecodeFloatElement5 = 0.0f;
+            while (z4) {
+                int iDecodeElementIndex = interfaceC40539bBeginStructure.decodeElementIndex(interfaceC39443g);
+                switch (iDecodeElementIndex) {
+                    case -1:
+                        z4 = false;
+                        i16 = 10;
+                        break;
+                    case 0:
+                        i17 |= 1;
+                        fDecodeFloatElement = interfaceC40539bBeginStructure.decodeFloatElement(interfaceC39443g, 0);
+                        i16 = 10;
+                        break;
+                    case 1:
+                        fDecodeFloatElement4 = interfaceC40539bBeginStructure.decodeFloatElement(interfaceC39443g, 1);
+                        i17 |= 2;
+                        i16 = 10;
+                        break;
+                    case 2:
+                        iDecodeIntElement4 = interfaceC40539bBeginStructure.decodeIntElement(interfaceC39443g, 2);
+                        i17 |= 4;
+                        i16 = 10;
+                        break;
+                    case 3:
+                        iDecodeIntElement3 = interfaceC40539bBeginStructure.decodeIntElement(interfaceC39443g, 3);
+                        i17 |= 8;
+                        i16 = 10;
+                        break;
+                    case 4:
+                        enumC39333f3 = (EnumC39333f) interfaceC40539bBeginStructure.decodeSerializableElement(interfaceC39443g, 4, (InterfaceC37137b) interfaceC23462hArr[4].getValue(), enumC39333f3);
+                        i17 |= 16;
+                        i16 = 10;
+                        break;
+                    case 5:
+                        fDecodeFloatElement5 = interfaceC40539bBeginStructure.decodeFloatElement(interfaceC39443g, 5);
+                        i17 |= 32;
+                        i16 = 10;
+                        break;
+                    case 6:
+                        startLabel3 = (NumericInputSliderModel.StartLabel) interfaceC40539bBeginStructure.decodeNullableSerializableElement(interfaceC39443g, 6, NumericInputSliderModel$StartLabel$$serializer.INSTANCE, startLabel3);
+                        i17 |= 64;
+                        i16 = 10;
+                        break;
+                    case 7:
+                        endLabel3 = (NumericInputSliderModel.EndLabel) interfaceC40539bBeginStructure.decodeNullableSerializableElement(interfaceC39443g, 7, NumericInputSliderModel$EndLabel$$serializer.INSTANCE, endLabel3);
+                        i17 |= 128;
+                        i16 = 10;
+                        break;
+                    case 8:
+                        multiWheelPickerModel3 = (MultiWheelPickerModel) interfaceC40539bBeginStructure.decodeNullableSerializableElement(interfaceC39443g, 8, MultiWheelPickerModel$$serializer.INSTANCE, multiWheelPickerModel3);
+                        i17 |= 256;
+                        break;
+                    case 9:
+                        map4 = (Map) interfaceC40539bBeginStructure.decodeNullableSerializableElement(interfaceC39443g, 9, (InterfaceC37137b) interfaceC23462hArr[9].getValue(), map4);
+                        i17 |= 512;
+                        break;
+                    case 10:
+                        map3 = (Map) interfaceC40539bBeginStructure.decodeNullableSerializableElement(interfaceC39443g, i16, LenientAggregateBindingsSerializer.INSTANCE, map3);
+                        i17 |= DfuBaseService.ERROR_REMOTE_TYPE_SECURE_EXTENDED;
+                        break;
+                    default:
+                        throw new UnknownFieldException(iDecodeElementIndex);
+                }
+            }
+            map = map3;
+            map2 = map4;
+            endLabel = endLabel3;
+            startLabel = startLabel3;
+            multiWheelPickerModel = multiWheelPickerModel3;
+            enumC39333f = enumC39333f3;
+            i13 = i17;
+            f13 = fDecodeFloatElement5;
+            i14 = iDecodeIntElement3;
+            i15 = iDecodeIntElement4;
+            f14 = fDecodeFloatElement4;
+        }
+        float f15 = fDecodeFloatElement;
+        interfaceC40539bBeginStructure.endStructure(interfaceC39443g);
+        return new NumericInputSliderModel(i13, f15, f14, i15, i14, enumC39333f, f13, startLabel, endLabel, multiWheelPickerModel, map2, map, null);
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer, wc3.InterfaceC37145j, wc3.InterfaceC37137b
+    public final InterfaceC39443g getDescriptor() {
+        return descriptor;
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer, wc3.InterfaceC37145j
+    public final void serialize(InterfaceC40542e encoder, NumericInputSliderModel value) {
+        AbstractC22676k.m65750j(encoder, "encoder");
+        AbstractC22676k.m65750j(value, "value");
+        InterfaceC39443g interfaceC39443g = descriptor;
+        InterfaceC40540c interfaceC40540cBeginStructure = encoder.beginStructure(interfaceC39443g);
+        NumericInputSliderModel.write$Self$design_models_release(value, interfaceC40540cBeginStructure, interfaceC39443g);
+        interfaceC40540cBeginStructure.endStructure(interfaceC39443g);
+    }
+
+    @Override // kotlinx.serialization.internal.GeneratedSerializer
+    public /* bridge */ InterfaceC37138c[] typeParametersSerializers() {
+        return super.typeParametersSerializers();
+    }
+}

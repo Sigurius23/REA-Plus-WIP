@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation android:id="@id/new_journal_nav_graph" app:startDestination="@id/journalSurveyAnswerFragment"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <fragment android:label="JournalSurveyAnswerFragment" android:name="com.whoop.journal.view.fragment.JournalSurveyAnswerFragment" android:id="@id/journalSurveyAnswerFragment">
+        <deepLink app:uri="android-app://com.whoop.journal.view.fragment/{cycleId}/{previousCycleStartTime}/{previousCycleEndTIme}?todayCycleStartTime={todayCycleStartTime}&amp;today={todayCycleEndTime}&amp;fromSettings={fromSettings}&amp;source={source}&amp;newHome={newHome}&amp;fromFab={fromFab}&amp;showCustomize={showCustomize}&amp;requestDate={requestDate}&amp;label={label}" />
+        <argument android:name="cycleId" app:argType="long" />
+        <argument android:name="previousCycleStartTime" app:argType="long" />
+        <argument android:name="previousCycleEndTIme" app:argType="long" />
+        <argument android:name="isFromJournalIntro" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="showCustomize" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="isAutoPop" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="todayCycleStartTime" android:defaultValue="-1L" app:argType="long" />
+        <argument android:name="todayCycleEndTime" android:defaultValue="-1L" app:argType="long" />
+        <argument android:name="fromSettings" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="source" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+        <argument android:name="newHome" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="fromFab" android:defaultValue="false" app:argType="boolean" />
+        <argument android:name="requestDate" android:defaultValue="" app:argType="string" />
+        <argument android:name="label" android:defaultValue="@null" app:argType="string" app:nullable="true" />
+    </fragment>
+</navigation>

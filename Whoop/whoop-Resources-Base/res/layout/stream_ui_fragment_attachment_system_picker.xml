@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <HorizontalScrollView android:id="@id/scrollView" android:scrollbars="none" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout android:id="@id/flow" android:padding="16.0dp" android:layout_width="wrap_content" android:layout_height="wrap_content" app:flow_horizontalGap="12.0dp" app:flow_verticalGap="12.0dp" app:flow_wrapMode="aligned">
+            <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <androidx.cardview.widget.CardView android:id="@id/button_files" android:layout_width="48.0dp" android:layout_height="48.0dp" android:layout_margin="20.0dp" app:cardCornerRadius="30.0dp" app:cardElevation="4.0dp">
+                    <ImageView android:layout_gravity="center" android:padding="12.0dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/stream_ui_attachment_permission_file" android:contentDescription="@string/stream_ui_message_composer_attachment_picker_files" app:tint="@color/stream_gray_dark" />
+                </androidx.cardview.widget.CardView>
+                <TextView android:layout_gravity="center" android:id="@id/text_files" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dp" android:text="@string/stream_ui_message_composer_attachment_picker_files" />
+            </LinearLayout>
+            <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <androidx.cardview.widget.CardView android:id="@id/button_media" android:layout_width="48.0dp" android:layout_height="48.0dp" android:layout_margin="20.0dp" app:cardCornerRadius="30.0dp" app:cardElevation="4.0dp">
+                    <ImageView android:layout_gravity="center" android:padding="12.0dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/stream_ui_icon_picture_placeholder" android:contentDescription="@string/stream_ui_message_composer_capture_media_take_photo" app:tint="@color/stream_gray_dark" />
+                </androidx.cardview.widget.CardView>
+                <TextView android:layout_gravity="center" android:id="@id/text_media" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dp" android:text="@string/stream_ui_message_composer_attachment_picker_media" />
+            </LinearLayout>
+            <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <androidx.cardview.widget.CardView android:id="@id/button_capture" android:layout_width="48.0dp" android:layout_height="48.0dp" android:layout_margin="20.0dp" app:cardCornerRadius="30.0dp" app:cardElevation="4.0dp">
+                    <ImageView android:layout_gravity="center" android:padding="12.0dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/stream_ui_attachment_permission_camera" android:contentDescription="@string/stream_ui_message_composer_attachment_picker_capture" app:tint="@color/stream_gray_dark" />
+                </androidx.cardview.widget.CardView>
+                <TextView android:layout_gravity="center" android:id="@id/text_capture" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dp" android:text="@string/stream_ui_message_composer_attachment_picker_capture" />
+            </LinearLayout>
+            <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <androidx.cardview.widget.CardView android:id="@id/button_polls" android:layout_width="48.0dp" android:layout_height="48.0dp" android:layout_margin="20.0dp" app:cardCornerRadius="30.0dp" app:cardElevation="4.0dp">
+                    <ImageView android:layout_gravity="center" android:padding="12.0dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/stream_ui_attachment_poll" android:contentDescription="@string/stream_ui_message_composer_attachment_picker_poll" app:tint="@color/stream_gray_dark" />
+                </androidx.cardview.widget.CardView>
+                <TextView android:layout_gravity="center" android:id="@id/text_poll" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8.0dp" android:text="@string/stream_ui_message_composer_attachment_picker_poll" />
+            </LinearLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
