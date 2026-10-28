@@ -25,7 +25,7 @@ export const JADX_PROVIDER_IDENTITY = Object.freeze({
 /** Audited engine coverage, kept outside portable Android semantics. */
 export const JADX_LIMITATIONS = [
   "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
-  "Method signatures use provider display types; exact DEX descriptors and instruction offsets are unavailable. Overload indices are local to this engine and artifact.",
+  "Method signatures use provider display types; exact DEX descriptors are unavailable. Overload indices are local to this engine and artifact. Only raw DEX string matches report instruction locations; source positions and other operation offsets remain unknown.",
   "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
-  "Manifest summary fields are extracted by the upstream engine; decoded XML is retained for verification. APK signatures, split-APK resources, native libraries and Android runtime capture are not verified by this provider.",
+  "Manifest summary fields are extracted by the upstream engine; decoded XML is retained for verification. The JADX declaration facet does not verify APK signatures; an explicitly requested android-apksig facet records its separate verifier identity. Split resources, native libraries and Android runtime capture are not verified by JADX.",
 ] as const;

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { artifactIntegrityPolicySchema } from "../../domain/artifactIntegrityPolicy.js";
 import { javaScriptAnalysisResourceControlsSchema } from "../../domain/javascript/javascriptAnalysisResourceControls.js";
+import { javascriptAnalysisPathScopeSchema } from "../../domain/javascript/javascriptAnalysisPathScope.js";
 
 /** Local ASAR/directory reconstruction request. */
 export const javascriptArtifactReconstructionInputSchema = z.strictObject({
@@ -8,6 +9,7 @@ export const javascriptArtifactReconstructionInputSchema = z.strictObject({
   format: z.enum(["auto", "asar", "directory"]).default("auto"),
   integrity_policy: artifactIntegrityPolicySchema,
   ...javaScriptAnalysisResourceControlsSchema.shape,
+  ...javascriptAnalysisPathScopeSchema.shape,
 });
 
 /** Parsed local reconstruction request. */

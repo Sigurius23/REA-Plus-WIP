@@ -52,6 +52,12 @@ export type ElectronContextBridgeApiKey =
 
 /** One contextBridge API declaration without executing its API object. */
 export type ElectronContextBridgeFinding = ElectronContextBridgeApiKey & {
+  readonly helper_candidates?: {
+    readonly helper_path: string;
+    readonly helper_sha256: string;
+    readonly members: readonly string[];
+    readonly limitation: string;
+  };
   readonly world: "main" | "isolated";
   readonly world_id: ElectronStaticValue | null;
   readonly api_status: "object-literal" | "dynamic" | "missing";
@@ -131,7 +137,13 @@ export type ElectronIpcFinding = ElectronIpcDescriptor &
    * source literal but was proven to equal an imported string constant.
    */
   {
-    readonly channel_origin?: "imported-constant";
+    readonly channel_origin?: "imported-constant" | "helper-argument";
+    readonly helper_source?: {
+      readonly path: string;
+      readonly sha256: string;
+      readonly location: JavaScriptSourceRange;
+      readonly expression: string;
+    };
   };
 
 /** Static check involving an IPC sender, frame, process, URL, or origin. */

@@ -37,6 +37,11 @@ export interface LocatedJavaScriptFinding<Value> {
 
 /** Mutable collections used during one inert AST traversal. */
 export interface JavaScriptAnalysisAccumulator {
+  readonly shippedMaterialCandidates?: {
+    literal_length: number;
+    value_sha256: string;
+    location: import("./javascriptStaticAnalysisTypes.js").JavaScriptSourceRange;
+  }[];
   readonly references: LocatedJavaScriptFinding<JavaScriptStaticReference>[];
   readonly endpoints: LocatedJavaScriptFinding<JavaScriptStaticEndpoint>[];
   readonly storage: LocatedJavaScriptFinding<JavaScriptStaticStorage>[];
@@ -86,6 +91,7 @@ export interface JavaScriptReferenceInput {
 
 /** Candidate route or network endpoint literal. */
 export interface JavaScriptEndpointInput {
+  readonly template_parts?: readonly import("./javascriptEndpointTemplates.js").JavaScriptEndpointTemplatePart[];
   readonly node: t.Node;
   readonly kind: JavaScriptStaticEndpoint["kind"];
   readonly value: string;
@@ -105,7 +111,9 @@ export interface LocatedJavaScriptFindingInput<
 /** Create isolated mutable state for one source analysis. */
 export const createJavaScriptAnalysisAccumulator = (
   sourceLength: number,
+  scanShippedMaterial = false,
 ): JavaScriptAnalysisAccumulator => ({
+  ...(scanShippedMaterial ? { shippedMaterialCandidates: [] } : {}),
   references: [],
   endpoints: [],
   storage: [],

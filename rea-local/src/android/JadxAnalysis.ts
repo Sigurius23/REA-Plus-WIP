@@ -309,6 +309,7 @@ const searchStrings = async (
 ): Promise<JsonValue> => {
   const raw = await tools.json("search_string_constants", {
     query: request.input.query,
+    scan_mode: request.input.scan_mode ?? "decompiled",
     ...(request.input.class_limit === undefined
       ? {}
       : { class_limit: request.input.class_limit }),
@@ -321,23 +322,34 @@ const searchStrings = async (
       { cause: parsed.error },
     );
   const scan = parsed.data;
+  if (scan.scan_mode !== (request.input.scan_mode ?? "decompiled"))
+    throw new AnalysisOutputError(
+      request.operation,
+      "JADX searched a different string-scan representation",
+    );
   if (scan.query !== request.input.query)
     throw new AnalysisOutputError(
       request.operation,
       "JADX searched a different query",
     );
-  if ((scan.coverage === "partial") !== scan.truncated)
+  if (
+    (scan.coverage === "partial") !==
+    (scan.truncated || scan.skipped_methods > 0)
+  )
     throw new AnalysisOutputError(
       request.operation,
-      "JADX coverage and truncation disagree",
+      "JADX coverage and scan omissions disagree",
     );
   return androidResultSchemas.search_android_strings.parse({
     engine,
     query: scan.query,
+    scan_mode: scan.scan_mode,
     total_classes: scan.total_classes,
     scanned_classes: scan.scanned_classes,
     scanned_methods: scan.scanned_methods,
     skipped_methods: scan.skipped_methods,
+    method_cap_skipped_methods: scan.method_cap_skipped_methods,
+    method_cap_skipped_classes: scan.method_cap_skipped_classes,
     matches: scan.items,
     coverage: scan.coverage,
   });

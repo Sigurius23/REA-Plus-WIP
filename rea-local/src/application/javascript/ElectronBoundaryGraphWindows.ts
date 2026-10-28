@@ -13,7 +13,10 @@ import {
   type JavaScriptArtifactGraphContext,
   type JavaScriptArtifactGraphCoverage,
 } from "./JavaScriptArtifactGraphContext.js";
-import { astObservationEvidence } from "./JavaScriptArtifactGraphEvidence.js";
+import {
+  astObservationEvidence,
+  staticInferenceEvidence,
+} from "./JavaScriptArtifactGraphEvidence.js";
 import {
   addElectronAstEdge,
   addElectronInferenceEdge,
@@ -190,8 +193,13 @@ const addContextBridge = (
           api_status: value.api_status,
           members: value.members,
           unknown_members: value.unknown_members,
+          ...(value.helper_candidates === undefined
+            ? {}
+            : { helper_candidates: value.helper_candidates }),
         },
-        evidence: astObservationEvidence({
+        evidence: (value.helper_candidates === undefined
+          ? astObservationEvidence
+          : staticInferenceEvidence)({
           sha256: file.sha256,
           path: file.path,
           range: value.location,

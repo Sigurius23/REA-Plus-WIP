@@ -1,3 +1,5 @@
+import type { JavaScriptPathScopeSummary } from "./javascriptAnalysisPathScope.js";
+
 /** Relevant file categories projected from the complete artifact inventory. */
 export type JavaScriptArtifactFileKind =
   | "package-json"
@@ -38,4 +40,6 @@ export interface JavaScriptArtifactFileSet {
   readonly containers: readonly JavaScriptArtifactContainer[];
   readonly text_bytes_read: number;
   readonly invalid_utf8_files: number;
+  /** Honest path-scope accounting for the file selection. */
+  readonly paths_scope: JavaScriptPathScopeSummary;
 }

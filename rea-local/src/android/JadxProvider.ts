@@ -1,6 +1,17 @@
+import {
+  composeAndroidAppBundle,
+  resolveAndroidBundletoolJar,
+} from "./AndroidBundletool.js";
+import { OwnedCommandFailure } from "../process/OwnedCommand.js";
+import type { ProviderProcessSupervisor } from "../process/ProviderProcess.js";
 import { z } from "zod";
 import { chmod, copyFile } from "node:fs/promises";
-import { join } from "node:path";
+import { resolveAndroidPackageSetTarget } from "../application/android/AndroidPackageSetTarget.js";
+import {
+  resolveApkSignatureJar,
+  type ApkSignatureContext,
+} from "./ApkSignatureVerification.js";
+import { basename, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AndroidAnalysisPort } from "../application/android/AndroidAnalysisPort.js";
 import type { ExecutionOptions } from "../application/AnalysisProvider.js";
@@ -67,7 +78,12 @@ const executionError = (context: {
   if (signal?.aborted === true)
     return new AnalysisCancelledError(request.operation);
   if (timeout.aborted)
-    return new AnalysisTimeoutError(request.operation, OPERATION_TIMEOUT_MS);
+    return new AnalysisTimeoutError(
+      request.operation,
+      request.operation === "search_android_strings"
+        ? (request.input.analysis_timeout_ms ?? OPERATION_TIMEOUT_MS)
+        : OPERATION_TIMEOUT_MS,
+    );
   if (cause instanceof AnalysisError) return cause;
   const protocolFailure = session?.transport.failureReason();
   if (protocolFailure !== undefined && protocolFailure !== null)
@@ -152,6 +168,7 @@ const hashAndroidSource = async (
 };
 
 interface PendingCleanup {
+  auxiliaryOwner?: ProviderProcessSupervisor;
   session: JadxSession | undefined;
   root: PrivateRuntimeRoot | undefined;
   readonly previousError: AnalysisError | undefined;
@@ -166,6 +183,13 @@ const cleanup = async (
       previousError === undefined ? null : projectAnalysisError(previousError),
   };
   try {
+    if (resources.auxiliaryOwner !== undefined) {
+      const stopped = await resources.auxiliaryOwner.stop();
+      if (stopped.status === "incomplete")
+        throw new Error("Bundletool process cleanup remains incomplete");
+      resources.auxiliaryOwner.dispose();
+      delete resources.auxiliaryOwner;
+    }
     await session?.close();
     resources.session = undefined;
   } catch (cause) {
@@ -211,6 +235,8 @@ const cleanup = async (
 };
 
 interface RetainedSession {
+  readonly admission: import("../domain/jsonValue.js").JsonValue;
+  readonly signatures: ApkSignatureContext | undefined;
   readonly key: string;
   readonly root: PrivateRuntimeRoot;
   readonly session: JadxSession;
@@ -323,7 +349,11 @@ export class JadxProvider implements AndroidAnalysisPort {
     request: AndroidRequest,
     options?: ExecutionOptions,
   ): Promise<Outcome> {
-    const timeout = AbortSignal.timeout(OPERATION_TIMEOUT_MS);
+    const timeout = AbortSignal.timeout(
+      request.operation === "search_android_strings"
+        ? (request.input.analysis_timeout_ms ?? OPERATION_TIMEOUT_MS)
+        : OPERATION_TIMEOUT_MS,
+    );
     const signal =
       options?.signal === undefined
         ? timeout
@@ -331,12 +361,38 @@ export class JadxProvider implements AndroidAnalysisPort {
     let root: PrivateRuntimeRoot | undefined;
     let session: JadxSession | undefined;
     try {
-      if (target.format !== "apk" && target.format !== "xapk")
+      if (!["apk", "xapk", "apks", "apk-set", "aab"].includes(target.format))
         throw new AnalysisCapabilityUnavailableError(
           "jadx",
           request.operation,
           `Target ${target.path} is ${target.format}; provide one standalone APK or XAPK container.`,
         );
+      if (
+        (target.format === "apk" || target.format === "aab") &&
+        (request.input.apk_members !== undefined ||
+          request.input.base_apk !== undefined)
+      )
+        throw new AnalysisInputError(request.operation, undefined, [
+          {
+            path: ["apk_members"],
+            reason: "invalid_value",
+            message:
+              "Explicit member selection applies only to .apks archives and loose APK sets.",
+          },
+        ]);
+      if (
+        target.format === "aab" &&
+        request.operation === "inspect_android_package" &&
+        request.input.verify_signatures === true
+      )
+        throw new AnalysisInputError(request.operation, undefined, [
+          {
+            path: ["verify_signatures"],
+            reason: "invalid_value",
+            message:
+              "APK signature verification cannot authenticate an AAB or the temporary APK generated from it. Select an original APK, XAPK or APK set.",
+          },
+        ]);
       const configuration = await resolveJadxConfigurationInputs(
         this.environment,
         request.operation,
@@ -355,7 +411,17 @@ export class JadxProvider implements AndroidAnalysisPort {
       );
       let targetHash: string;
       try {
-        targetHash = (await hashStableFile(target.path, signal)).sha256;
+        targetHash =
+          target.format === "apk-set"
+            ? ((
+                await resolveAndroidPackageSetTarget(
+                  target.path,
+                  request.operation,
+                  request.input.apk_members,
+                  signal,
+                )
+              )?.sha256 ?? "")
+            : (await hashStableFile(target.path, signal)).sha256;
       } catch (cause: unknown) {
         if (signal.aborted) throw cause;
         if (cause instanceof RegularFileChangedError)
@@ -364,7 +430,28 @@ export class JadxProvider implements AndroidAnalysisPort {
       }
       if (targetHash !== target.sha256)
         throw androidTargetChanged(request.operation, target.path);
+      const bundletool =
+        target.format === "aab"
+          ? await resolveAndroidBundletoolJar(
+              this.environment,
+              request.operation,
+              signal,
+            )
+          : undefined;
+      const signatureJar =
+        request.operation === "inspect_android_package" &&
+        request.input.verify_signatures === true
+          ? await resolveApkSignatureJar(
+              this.environment,
+              request.operation,
+              signal,
+            )
+          : undefined;
       const key = JSON.stringify({
+        signatureJar,
+        bundletool,
+        apkMembers: request.input.apk_members,
+        baseApk: request.input.base_apk,
         path: target.path,
         sha256: target.sha256,
         jar: configuration.jar,
@@ -401,8 +488,31 @@ export class JadxProvider implements AndroidAnalysisPort {
           signal,
         );
         let mergeLimitations: readonly string[] = [];
+        let verificationMembers: ApkSignatureContext["members"] = [];
+        let memberDigests: readonly {
+          readonly name: string;
+          readonly sha256: string;
+          readonly bytes: number;
+        }[] = [];
         let snapshot: string;
-        if (target.format === "xapk") {
+        if (target.format === "aab" && bundletool !== undefined) {
+          const bundle = await composeAndroidAppBundle(
+            target,
+            bundletool,
+            configuration,
+            this.environment,
+            root.path,
+            request.operation,
+            signal,
+          );
+          snapshot = bundle.path;
+          memberDigests = bundle.memberDigests;
+          mergeLimitations = bundle.limitations;
+        } else if (
+          target.format === "xapk" ||
+          target.format === "apks" ||
+          target.format === "apk-set"
+        ) {
           // jadx only admits one APK, so XAPK admission composes the merged
           // analysis image inside this session's private runtime root; the
           // container digest keeps the session key distinct from plain APKs.
@@ -411,8 +521,23 @@ export class JadxProvider implements AndroidAnalysisPort {
             root.path,
             request.operation,
             signal,
+            signatureJar !== undefined,
+            {
+              format: target.format,
+              ...(request.input.apk_members === undefined
+                ? {}
+                : { apk_members: request.input.apk_members }),
+              ...(request.input.base_apk === undefined
+                ? {}
+                : { base_apk: request.input.base_apk }),
+              ...(target.format === "apk-set"
+                ? { directory_members: target.apkSetMembers }
+                : {}),
+            },
           );
+          verificationMembers = bundle.verificationMembers;
           snapshot = bundle.path;
+          memberDigests = bundle.memberDigests;
           mergeLimitations = bundle.limitations;
         } else {
           snapshot = await snapshotAndroidTarget(
@@ -423,6 +548,28 @@ export class JadxProvider implements AndroidAnalysisPort {
             signal,
           );
         }
+        if (target.format === "apk")
+          verificationMembers = [
+            {
+              name: basename(target.path),
+              path: snapshot,
+              sha256: target.sha256,
+            },
+          ];
+        const signatures =
+          signatureJar === undefined
+            ? undefined
+            : {
+                jar: await snapshotAndroidEngine(
+                  signatureJar.path,
+                  signatureJar.sha256,
+                  root.path,
+                  request.operation,
+                  signal,
+                  "apksig.jar",
+                ),
+                members: verificationMembers,
+              };
         const bridge = join(root.path, "ReaJadxBridge.java");
         await copyFile(BRIDGE_SOURCE, bridge);
         await chmod(bridge, 0o400);
@@ -461,6 +608,19 @@ export class JadxProvider implements AndroidAnalysisPort {
           jarHash: engine.sha256,
           bridgeHash,
           mergeLimitations,
+          signatures,
+          admission: {
+            source_format: target.format,
+            source_sha256: target.sha256,
+            digest_basis:
+              target.format === "apk-set"
+                ? "canonical-json-selected-apk-members"
+                : "source-file-bytes",
+            members:
+              target.format === "apk-set"
+                ? target.apkSetMembers.map((member) => ({ ...member }))
+                : memberDigests.map((member) => ({ ...member })),
+          },
         };
       }
       root = retained.root;
@@ -475,6 +635,10 @@ export class JadxProvider implements AndroidAnalysisPort {
           bridgeHash: retained.bridgeHash,
           signal,
           limitations: retained.mergeLimitations,
+          admission: retained.admission,
+          ...(retained.signatures === undefined
+            ? {}
+            : { signatures: retained.signatures }),
         }),
       );
       signal.throwIfAborted();
@@ -495,7 +659,15 @@ export class JadxProvider implements AndroidAnalysisPort {
       root ??= this.#retained?.root;
       session ??= this.#retained?.session;
       this.#retained = undefined;
-      this.#pendingCleanup = { session, root, previousError };
+      this.#pendingCleanup = {
+        session,
+        root,
+        previousError,
+        ...(cause instanceof OwnedCommandFailure &&
+        cause.cleanupOwner !== undefined
+          ? { auxiliaryOwner: cause.cleanupOwner }
+          : {}),
+      };
       const retired = await this.#retire();
       return retired.ok ? err(previousError) : retired;
     }

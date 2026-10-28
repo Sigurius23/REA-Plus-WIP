@@ -206,10 +206,16 @@ export const projectBinaryLayoutView = (
       ...shared,
     });
   }
-  if (view.collection === "modules")
+  if (
+    view.collection === "modules" ||
+    view.collection === "file_statuses" ||
+    view.collection === "endpoints" ||
+    view.collection === "shipped_material" ||
+    view.collection === "context_bridges"
+  )
     return err(
       layoutIncompatible(
-        "modules collection applies to analyze_javascript_application Evidence.",
+        "modules and file_statuses collections apply to analyze_javascript_application Evidence.",
       ),
     );
   const rows =

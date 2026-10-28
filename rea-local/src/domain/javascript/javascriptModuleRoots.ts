@@ -8,6 +8,7 @@ import {
   normalizeJoinedLogicalPath,
 } from "../artifactIdentity.js";
 import type { JavaScriptArtifactFile } from "./javascriptArtifactFiles.js";
+import { childNodes } from "./javascriptSemanticTraversal.js";
 
 /**
  * Application module directories admitted from bundler configuration, in
@@ -108,29 +109,28 @@ const collectResolveModules = (
 ): readonly string[] => {
   const extracted: string[] = [];
   let visited = 0;
-  const walk = (node: t.Node | null): void => {
-    if (node === null || node === undefined) return;
+  const pending: t.Node[] = [...statements].reverse();
+  while (pending.length > 0) {
+    const node = pending.pop();
+    if (node === undefined) break;
     visited += 1;
+    if (visited > WALK_NODE_LIMIT) break;
     if (t.isObjectExpression(node)) {
       const resolveValue = staticObjectProperty(node, "resolve");
       if (resolveValue !== null && t.isObjectExpression(resolveValue)) {
         const modulesValue = staticObjectProperty(resolveValue, "modules");
         if (modulesValue !== null && t.isArrayExpression(modulesValue)) {
           admitRoots(modulesValue, configPath, extracted, limitations);
-          return;
+          continue;
         }
       }
-      for (const property of node.properties) walk(property);
-      return;
     }
-    for (const key of t.VISITOR_KEYS[node.type] ?? []) {
-      const value: unknown = Reflect.get(node, key);
-      if (Array.isArray(value)) {
-        for (const item of value) if (t.isNode(item)) walk(item);
-      } else if (t.isNode(value)) walk(value);
+    const children = childNodes(node);
+    for (let index = children.length - 1; index >= 0; index -= 1) {
+      const child = children[index];
+      if (child !== undefined) pending.push(child);
     }
-  };
-  for (const statement of statements) walk(statement);
+  }
   const exceeded = visited > WALK_NODE_LIMIT;
   if (exceeded)
     limitations.push(

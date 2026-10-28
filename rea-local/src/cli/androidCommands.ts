@@ -32,20 +32,55 @@ export const registerAndroidCommands = (
         return result.ok ? result.value : projectAnalysisError(result.error);
       }),
     );
+  const selectionOptions = {
+    apkMembers: z
+      .array(z.string().min(1))
+      .optional()
+      .describe(
+        "Exact .apks or loose-set APK members; repeat for each selected split",
+      ),
+    baseApk: z
+      .string()
+      .min(1)
+      .optional()
+      .describe("Base APK among selected members"),
+  };
+  const selection = (options: {
+    apkMembers?: string[] | undefined;
+    baseApk?: string | undefined;
+  }) => ({
+    ...(options.apkMembers === undefined
+      ? {}
+      : { apk_members: options.apkMembers }),
+    ...(options.baseApk === undefined ? {} : { base_apk: options.baseApk }),
+  });
   const path = z
     .string()
-    .describe("Local standalone APK or XAPK container path");
+    .describe(
+      "Local APK, XAPK, selected .apks, loose APK directory or AAB path",
+    );
   const className = z.string().describe("Exact fully qualified class name");
   cli.command(CLI_COMMANDS.inspectAndroidPackage, {
     description:
       "Inspect APK declarations and decoded manifest without executing it",
     args: z.object({ path }),
-    run: ({ args }) =>
-      execute(
-        CLI_COMMANDS.inspectAndroidPackage,
-        "inspect_android_package",
-        args,
-      ),
+    options: z.object({
+      ...selectionOptions,
+      verifySignatures: z
+        .boolean()
+        .optional()
+        .describe(
+          "Verify original APK signatures with configured REA_APKSIG_JAR",
+        ),
+    }),
+    run: ({ args, options }) =>
+      execute(CLI_COMMANDS.inspectAndroidPackage, "inspect_android_package", {
+        ...args,
+        ...selection(options),
+        ...(options.verifySignatures === undefined
+          ? {}
+          : { verify_signatures: options.verifySignatures }),
+      }),
   });
   cli.command(CLI_COMMANDS.searchAndroidClasses, {
     description: "Search APK class names; empty query inventories all classes",
@@ -57,12 +92,12 @@ export const registerAndroidCommands = (
           "Case-sensitive class-name substring; empty lists all classes",
         ),
     }),
-    run: ({ args }) =>
-      execute(
-        CLI_COMMANDS.searchAndroidClasses,
-        "search_android_classes",
-        args,
-      ),
+    options: z.object(selectionOptions),
+    run: ({ args, options }) =>
+      execute(CLI_COMMANDS.searchAndroidClasses, "search_android_classes", {
+        ...args,
+        ...selection(options),
+      }),
   });
   cli.command(CLI_COMMANDS.searchAndroidStrings, {
     description: "Search APK string constants by case-sensitive substring",
@@ -74,20 +109,43 @@ export const registerAndroidCommands = (
         .describe("Case-sensitive substring to find in dex string constants"),
     }),
     options: z.object({
+      ...selectionOptions,
+      scanMode: z
+        .enum(["decompiled", "dex"])
+        .optional()
+        .describe(
+          "Search decompiled bodies (default, class cap 8192) or raw DEX const-string instructions",
+        ),
+      analysisTimeoutMs: z
+        .number()
+        .int()
+        .positive()
+        .max(2147483647)
+        .optional()
+        .describe(
+          "Total string-search deadline in milliseconds; default 120000",
+        ),
       classLimit: z
         .number()
         .int()
         .positive()
-        .max(8192)
+        .max(2147483647)
         .optional()
         .describe(
-          "Class identities to scan (default 256, cap 8192); raise to cover a whole small APK",
+          "Class identities to scan (default 256; decompiled mode cap 8192)",
         ),
     }),
     run: ({ args, options }) =>
       execute(CLI_COMMANDS.searchAndroidStrings, "search_android_strings", {
+        ...selection(options),
         path: args.path,
         query: args.query,
+        ...(options.scanMode === undefined
+          ? {}
+          : { scan_mode: options.scanMode }),
+        ...(options.analysisTimeoutMs === undefined
+          ? {}
+          : { analysis_timeout_ms: options.analysisTimeoutMs }),
         ...(options.classLimit === undefined
           ? {}
           : { class_limit: options.classLimit }),
@@ -96,8 +154,10 @@ export const registerAndroidCommands = (
   cli.command(CLI_COMMANDS.inspectAndroidClass, {
     description: "Inspect one exact APK class's member inventory",
     args: z.object({ path, className }),
-    run: ({ args }) =>
+    options: z.object(selectionOptions),
+    run: ({ args, options }) =>
       execute(CLI_COMMANDS.inspectAndroidClass, "inspect_android_class", {
+        ...selection(options),
         path: args.path,
         class_name: args.className,
       }),
@@ -110,6 +170,7 @@ export const registerAndroidCommands = (
       methodName: z.string().describe("Exact declared method name"),
     }),
     options: z.object({
+      ...selectionOptions,
       overloadIndex: z
         .number()
         .int()
@@ -121,6 +182,7 @@ export const registerAndroidCommands = (
     }),
     run: ({ args, options }) =>
       execute(CLI_COMMANDS.inspectAndroidMethod, "inspect_android_method", {
+        ...selection(options),
         path: args.path,
         class_name: args.className,
         method_name: args.methodName,
@@ -133,6 +195,7 @@ export const registerAndroidCommands = (
     description: "Trace incoming APK class or unique-method references",
     args: z.object({ path, className }),
     options: z.object({
+      ...selectionOptions,
       methodName: z
         .string()
         .optional()
@@ -140,6 +203,7 @@ export const registerAndroidCommands = (
     }),
     run: ({ args, options }) =>
       execute(CLI_COMMANDS.traceAndroidReferences, "trace_android_references", {
+        ...selection(options),
         path: args.path,
         class_name: args.className,
         ...(options.methodName === undefined

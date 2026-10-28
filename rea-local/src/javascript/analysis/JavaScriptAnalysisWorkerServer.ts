@@ -25,6 +25,7 @@ export interface JavaScriptSourceWorkerAnalyzer {
     file: JavaScriptArtifactFile,
     nodeBudget: number,
     callbacks: {
+      readonly scanShippedMaterial?: boolean;
       readonly phase: (
         phase: "parse" | "static" | "semantic" | "projection",
       ) => Promise<void>;
@@ -109,6 +110,7 @@ const analyzeJob = async (
       },
       request.node_budget,
       {
+        scanShippedMaterial: request.scan_shipped_material === true,
         phase: async (phase) => send({ kind: "phase", id: request.id, phase }),
         checkpoint: async (facts) => {
           const value = javaScriptWorkerStaticAnalysisSchema.parse(facts);

@@ -1,4 +1,5 @@
 import { mkdir, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { join } from "node:path";
 
 import { expect } from "vitest";
@@ -11,6 +12,81 @@ import { createEvidence } from "../../../src/domain/evidence.js";
 import { ghidraFunctionDossier } from "../../../src/domain/ghidraValues.fixture.js";
 import { createEvidenceBundle } from "../../../src/domain/evidenceBundle.js";
 import { inspectEvidenceBundle } from "../../../src/application/investigation/InspectEvidenceBundle.js";
+
+cliTest(
+  "pages real producer file-status failures without repeating analysis",
+  async ({ cli }) => {
+    const root = await createTestTempDirectory("rea-file-status-cli-");
+    await writeFile(join(root, "healthy.js"), "1");
+    const blockedSource = "export const skipped = 1;\n";
+    await writeFile(join(root, "blocked.js"), blockedSource);
+    const environment = {
+      HOME: root,
+      XDG_CONFIG_HOME: root,
+      XDG_CACHE_HOME: root,
+    };
+    const analyzed = await cli.run({
+      arguments: [
+        "analyze-javascript-application",
+        root,
+        "--max-semantic-source-bytes",
+        "1",
+        "--json",
+      ],
+      environment,
+    });
+    expect(analyzed.exitCode).toBe(0);
+    await writeFile(
+      join(root, "blocked.js"),
+      "The source changed after analysis",
+    );
+    const input = join(root, "view.json");
+    await writeFile(
+      input,
+      JSON.stringify({
+        source: { kind: "inline", evidence: analyzed.json },
+        view: {
+          kind: "page",
+          collection: "file_statuses",
+          offset: 0,
+          limit: 1,
+        },
+      }),
+    );
+    const page = await cli.run({
+      arguments: ["inspect-analysis-view", input, "--json"],
+      environment,
+    });
+    expect(page.exitCode).toBe(0);
+    expect(page.json).toMatchObject({
+      operation: "inspect_analysis_view",
+      normalized_result: {
+        coverage: { total: 1, exhausted: true },
+        file_status_summary: {
+          files: 2,
+          files_with_issues: 1,
+          files_without_retention_metadata: 0,
+        },
+        items: [
+          {
+            path: "blocked.js",
+            sha256: createHash("sha256").update(blockedSource).digest("hex"),
+            parse_status: "complete",
+            module_ir_status: "not-retained",
+            semantic_graph_status: "not-retained",
+            issues: [
+              expect.objectContaining({
+                operation: "analyze-javascript-source",
+                code: "resource_constraint",
+              }),
+            ],
+          },
+        ],
+      },
+    });
+    expect(JSON.stringify(page.json)).not.toContain("export const skipped");
+  },
+);
 
 cliTest(
   "discovers native records from a complete portable bundle using the shared workflow",

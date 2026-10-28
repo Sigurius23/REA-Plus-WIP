@@ -8,6 +8,10 @@ import {
 /** Stands for one expression's text in a rendered endpoint template. */
 export const ENDPOINT_PLACEHOLDER = "{}";
 
+export type JavaScriptEndpointTemplatePart =
+  | { readonly text: string }
+  | { readonly expression: string };
+
 type Piece = { readonly text: string } | { readonly expression: t.Node };
 
 const exactText = (node: t.Node): string | undefined => {
@@ -95,10 +99,31 @@ export const endpointTemplate = (node: t.Node): string | undefined => {
     : undefined;
 };
 
+/** Preserve each placeholder's exact source expression for explicit caller substitution. */
+export const endpointTemplateParts = (
+  node: t.Node,
+  source: string,
+): readonly JavaScriptEndpointTemplatePart[] | undefined => {
+  const parts = pieces(node);
+  if (parts === undefined || !parts.some((part) => "expression" in part))
+    return undefined;
+  return parts.map((part) =>
+    "text" in part
+      ? part
+      : {
+          expression: source.slice(
+            part.expression.start ?? 0,
+            part.expression.end ?? 0,
+          ),
+        },
+  );
+};
+
 interface Scope {
   readonly node: t.Node;
   readonly function: boolean;
   readonly values: Map<string, string | undefined>;
+  readonly expressions: Map<string, t.Node | undefined>;
 }
 
 /**
@@ -150,15 +175,37 @@ export class EndpointBindings {
     return undefined;
   }
 
-  #push(node: t.Node, isFunction: boolean): void {
-    this.#scopes.push({ node, function: isFunction, values: new Map() });
+  /** Original template for a tracked local alias; no source is re-read. */
+  expression(node: t.Node): t.Node | undefined {
+    if (!t.isIdentifier(node)) return node;
+    for (let index = this.#scopes.length - 1; index >= 0; index -= 1) {
+      const scope = this.#scopes[index];
+      if (scope?.values.has(node.name) === true)
+        return scope.expressions.get(node.name);
+    }
+    return undefined;
   }
 
-  #declare(name: string, value: string | undefined, hoisted: boolean): void {
+  #push(node: t.Node, isFunction: boolean): void {
+    this.#scopes.push({
+      node,
+      function: isFunction,
+      values: new Map(),
+      expressions: new Map(),
+    });
+  }
+
+  #declare(
+    name: string,
+    value: string | undefined,
+    hoisted: boolean,
+    expression?: t.Node,
+  ): void {
     const scope = hoisted
       ? this.#scopes.findLast((candidate) => candidate.function)
       : this.#scopes.at(-1);
     scope?.values.set(name, value);
+    scope?.expressions.set(name, expression);
   }
 
   #declareAll(pattern: t.Node, hoisted: boolean): void {
@@ -172,7 +219,12 @@ export class EndpointBindings {
       this.#declareAll(node.id, hoisted);
       return;
     }
-    this.#declare(node.id.name, this.resolve(node.init), hoisted);
+    this.#declare(
+      node.id.name,
+      this.resolve(node.init),
+      hoisted,
+      this.expression(node.init),
+    );
   }
 
   #assignment(node: t.AssignmentExpression): void {
@@ -182,6 +234,10 @@ export class EndpointBindings {
     if (scope === undefined) return;
     // `url += "?page=2"` and `url = `${url}?${query}`` keep the known prefix.
     if (node.operator === "+=" || this.#extends(name, node.right)) return;
+    scope.expressions.set(
+      name,
+      node.operator === "=" ? this.expression(node.right) : undefined,
+    );
     scope.values.set(
       name,
       node.operator === "=" ? this.resolve(node.right) : undefined,

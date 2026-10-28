@@ -21,6 +21,8 @@ import { createJavaScriptSourceAnalysis } from "../../artifacts/javascript/JavaS
 import { JAVASCRIPT_ANALYSIS_RESOURCE_DEFAULTS } from "../../domain/javascript/javascriptAnalysisResourceControls.js";
 import { createOwnedJavaScriptApplicationEvidenceCooperatively } from "./JavaScriptApplicationEvidence.js";
 import { readJavaScriptArtifactFiles } from "../../artifacts/javascript/JavaScriptArtifactFiles.js";
+import { createJavaScriptAnalysisPathScope } from "../../domain/javascript/javascriptAnalysisPathScope.js";
+import type { JavaScriptPathScopeSummary } from "../../domain/javascript/javascriptAnalysisPathScope.js";
 import { buildImmutableJavaScriptArtifactGraphSteps } from "./JavaScriptArtifactGraphBuilder.js";
 import {
   javascriptArtifactReconstructionInputSchema,
@@ -28,6 +30,7 @@ import {
 } from "./JavaScriptArtifactReconstructionInput.js";
 import { scanCanonicalArtifactInventoryInScope } from "../../artifacts/inventory/scanCanonical.js";
 import { summarizeElectronBoundaries } from "./ElectronBoundaryAnalysis.js";
+import { resolveElectronHelperArgumentsSteps } from "./ElectronHelperArgumentResolution.js";
 import { resolveElectronIpcChannelsViaImports } from "./ElectronIpcChannelResolution.js";
 import { discoverJavaScriptModuleRoots } from "../../domain/javascript/javascriptModuleRoots.js";
 import { createJavaScriptSemanticGraphProjection } from "./JavaScriptSemanticGraphBuilder.js";
@@ -58,6 +61,7 @@ export interface JavaScriptArtifactReconstructionResult {
     readonly findings: number;
     readonly modules: number;
     readonly parse_failures: number;
+    readonly paths_scope: JavaScriptPathScopeSummary;
   };
   readonly limitations: readonly string[];
 }
@@ -116,11 +120,13 @@ export const reconstructJavaScriptArtifact = async (
         "read_javascript_artifacts",
         "Reading inventoried JavaScript application sources",
       );
+      const pathScope = createJavaScriptAnalysisPathScope(input);
       const files = await readJavaScriptArtifactFiles(
         reader,
         snapshot,
         scope,
         signal,
+        pathScope,
       );
       // Release acquisition before analysis consumes these owned file facts.
       const earlyCleanup = await scope.release(readerOwner);
@@ -147,6 +153,7 @@ export const reconstructJavaScriptArtifact = async (
             input.analysis_timeout_ms ??
             JAVASCRIPT_ANALYSIS_RESOURCE_DEFAULTS.timeoutMs,
           maxSemanticSourceBytes: input.max_semantic_source_bytes,
+          scanShippedMaterial: input.scan_shipped_material,
         },
         files.files.filter(
           (file) => file.kind === "javascript" && file.text.included,
@@ -184,6 +191,11 @@ export const reconstructJavaScriptArtifact = async (
           cleanupFailure = cause;
         }
       }
+      const interruption = cleanupFailure ?? outcome.interruption;
+      if (interruption !== null && interruption !== undefined) {
+        effectiveSignal = undefined;
+        effectiveProgress = undefined;
+      }
       // Imported-constant IPC channels resolve before any consumer builds
       // relationships or counts, so the summary and graph report one state.
       // Webpack-style extra module directories are admitted for the bare
@@ -193,18 +205,23 @@ export const reconstructJavaScriptArtifact = async (
         outcome.analysis,
         moduleRoots.roots,
       );
+      const helperAnalysis =
+        interruption == null
+          ? await completeJavaScriptAnalysisSteps(
+              resolveElectronHelperArgumentsSteps(
+                channelResolution.analysis,
+                moduleRoots.roots,
+              ),
+              effectiveSignal,
+            )
+          : channelResolution.analysis;
       const analysis = {
-        ...channelResolution.analysis,
+        ...helperAnalysis,
         limitations: [
           ...moduleRoots.limitations,
-          ...channelResolution.analysis.limitations,
+          ...helperAnalysis.limitations,
         ],
       };
-      const interruption = cleanupFailure ?? outcome.interruption;
-      if (interruption !== null && interruption !== undefined) {
-        effectiveSignal = undefined;
-        effectiveProgress = undefined;
-      }
       await checkpointJavaScriptAnalysis(effectiveSignal);
       abortIfNeeded(effectiveSignal);
       await reportPhase(
@@ -215,6 +232,7 @@ export const reconstructJavaScriptArtifact = async (
         snapshot,
         files,
         analysis,
+        input.scan_shipped_material ?? false,
       );
       await reportPhase(
         "seal_javascript_application_graph",
@@ -263,6 +281,7 @@ export const reconstructJavaScriptArtifact = async (
           findings: analysis.findings,
           modules: analysis.modules,
           parse_failures: analysis.parse_failures,
+          paths_scope: files.paths_scope,
         },
         limitations: analysis.limitations,
       };

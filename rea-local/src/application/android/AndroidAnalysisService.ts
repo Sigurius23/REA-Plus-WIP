@@ -1,3 +1,6 @@
+import { resolveAndroidPackageSetTarget } from "./AndroidPackageSetTarget.js";
+import { AnalysisError as ExpectedAnalysisError } from "../../domain/analysisErrorBase.js";
+import { BinaryTargetError } from "../../domain/configurationErrors.js";
 import type { AndroidAnalysisPort } from "./AndroidAnalysisPort.js";
 import type { ExecutionOptions } from "../AnalysisProvider.js";
 import { parseBinaryTarget } from "../BinaryTargetResolver.js";
@@ -29,10 +32,32 @@ export class AndroidAnalysisService {
     const request = androidRequestSchema.safeParse({ operation, input });
     if (!request.success)
       return err(new AnalysisInputError(operation, { cause: request.error }));
-    const target = await parseBinaryTarget(
-      request.data.input.path,
-      options?.signal === undefined ? {} : { signal: options.signal },
-    );
+    let directory;
+    try {
+      directory = await resolveAndroidPackageSetTarget(
+        request.data.input.path,
+        operation,
+        request.data.input.apk_members,
+        options?.signal,
+      );
+    } catch (cause: unknown) {
+      return err(
+        cause instanceof ExpectedAnalysisError
+          ? cause
+          : new BinaryTargetError(
+              request.data.input.path,
+              "Android target could not be read",
+              { cause },
+            ),
+      );
+    }
+    const target =
+      directory === null
+        ? await parseBinaryTarget(
+            request.data.input.path,
+            options?.signal === undefined ? {} : { signal: options.signal },
+          )
+        : ok(directory);
     if (!target.ok) return target;
     const executed = await this.provider.execute(
       target.value,

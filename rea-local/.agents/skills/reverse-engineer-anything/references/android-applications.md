@@ -13,7 +13,17 @@ bundles can use one unambiguous package filename or `base.apk`. Conflicting or
 missing declarations are rejected. REA+ composes one analysis image from the base
 module plus every split's DEX entries, so class coverage spans all modules, but
 split resources and signatures are not merged — check the evidence limitations.
-Loose split-APK sets (directories or `.apks` bundles) are not supported yet.
+Loose directories of regular top-level APKs and `.apks` archives are admitted.
+Use exact `apk_members` plus `base_apk` for one archive variant when device
+alternatives exist; never combine all alternatives or infer device compatibility.
+A directory digest commits to sorted selected names, byte counts and hashes.
+AAB inputs require an explicitly configured `REA_BUNDLETOOL_JAR`; their universal
+analysis APK covers fused modules only and does not authenticate the source.
+For original APK cryptographic verification, configure `REA_APKSIG_JAR` and pass
+`verify_signatures: true` to `inspect_android_package`. Report the separate
+verifier digest, per-member status and signer consistency. Defaults remain
+`not_performed`; generated AAB packaging and composed APKs do not establish
+original signatures, publisher trust or installability.
 Use
 `search_android_classes` to find candidates, `inspect_android_class` for one
 class's members, `inspect_android_method` for decompilation, and
@@ -43,8 +53,9 @@ For the bytecode itself, extract a `classesN.dex` member and open it with the
 the `aa` analysis level by default, name methods from their class and
 signature, report Dalvik registers rather than stack locals, and expose
 addresses that are offsets in that one DEX file. They are not comparable with
-Ghidra's DEX addresses or another `classesN.dex` of the same APK. A DEX inside
-an APK has to be extracted first. Ghidra DEX additionally decompiles to C-like
+Ghidra's DEX addresses or another `classesN.dex` of the same APK. A DEX inside an APK can be selected explicitly as
+`/path/app.apk#classesN.dex`; the resulting target preserves container/member
+provenance and its own address semantics. Ghidra DEX additionally decompiles to C-like
 pseudocode and reports function bodies as address ranges; it imports the
 snapshot with Ghidra's `DexLoader` and rejects other binary formats under that
 profile.
@@ -54,3 +65,14 @@ policy enforcement. Incoming references are recovered static relationships;
 reflection, dynamic loading, and unresolved calls remain unknown. Preserve
 artifact digests, locations, diagnostics, and incomplete coverage. For archive
 members rather than code analysis, use `open_binary` and `inspect_artifact`.
+
+Use `search_android_strings` for method constants. Default `scan_mode:
+"decompiled"` uses Java/smali bodies (`class_limit` default 256, cap 8192;
+4096 methods per class). Explicit `scan_mode: "dex"` reads original const-string
+and const-string/jumbo instructions without those decompiler caps; its class
+limit defaults to 256 and accepts up to 2147483647. DEX matches retain input
+member and instruction locations, including a byte offset inside that DEX input;
+unknown locations stay null. `analysis_timeout_ms` can extend the 120000 ms total
+deadline. Distinguish unreadable `skipped_methods` from
+`method_cap_skipped_methods`/`method_cap_skipped_classes`. Either makes coverage
+partial. Neither mode covers the entire DEX string pool, annotations or resources.

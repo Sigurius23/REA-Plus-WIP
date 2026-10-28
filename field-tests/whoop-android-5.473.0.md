@@ -219,3 +219,26 @@ not recorded here.
   strap unlock and membership checks.
 - Mapping UUID families to device generations, and the unidentified
   codenames (Kenmore, Copley).
+
+## Re-test note (2026-10-27, raw DEX search and package follow-ups)
+
+REA+ now supports explicit APK-set / universal AAB admission and optional
+original-APK apksig verification, each with the scope documented in
+[the combined offline report](rea-offline-backlog-2026-10-27.md). The initial
+`not_performed` signature description above records the original run; the new
+flag defaults off. A separate real fixture lane validates its crypto facet,
+and the original WHOOP XAPK now also passes opt-in CLI verification for all
+three original members with the certificate hash recorded above. See the
+[compact WHOOP verification](whoop-signatures-2026-10-27.json). The recorded
+scheme booleans are apksig verification decisions under each manifest's minimum
+SDK, not a proof that unverified schemes are absent.
+
+On the original WHOOP base APK, public MCP raw DEX string searches examined
+83,390 provider class identities / 510,417 methods in 17,702 ms cold and 709 ms
+warm at a 4 GiB JVM heap, with zero method-cap omissions and three unreadable
+methods on each run. Coverage is **partial**, original bytes were unchanged,
+and no app was executed. Decompiled searches timed out at both 120 s and the
+explicit 600 s deadline; those failures do not establish stable completed
+decompiler/cache counts. [Retained raw Evidence](whoop-dex-scan-2026-10-27.json)
+and [timeout observations](whoop-decompiled-scan-2026-10-27.json) preserve this
+distinction. Neither mode inventories every DEX string-pool or resource entry.

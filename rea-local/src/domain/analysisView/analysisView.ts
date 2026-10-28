@@ -66,11 +66,46 @@ const itemViewSchema = z.discriminatedUnion("collection", [
   moduleItemViewSchema,
   sectionOrSymbolItemViewSchema,
 ]);
-const pageViewSchema = z.strictObject({
-  kind: z.literal("page"),
-  collection: z.enum(["sections", "symbols", "modules"]),
+const pageBounds = {
   offset: z.number().int().nonnegative(),
   limit: z.number().int().positive(),
+};
+const pageViewSchema = z.discriminatedUnion("collection", [
+  z.strictObject({
+    kind: z.literal("page"),
+    collection: z.enum([
+      "sections",
+      "symbols",
+      "modules",
+      "shipped_material",
+      "context_bridges",
+    ]),
+    ...pageBounds,
+  }),
+  z.strictObject({
+    kind: z.literal("page"),
+    collection: z.literal("endpoints"),
+    bindings: z
+      .record(z.string(), z.string())
+      .default({})
+      .describe(
+        "Exact source-expression text to caller-supplied substitution. No ambient environment is read.",
+      ),
+    ...pageBounds,
+  }),
+  z.strictObject({
+    kind: z.literal("page"),
+    collection: z.literal("file_statuses"),
+    filter: z.enum(["all", "with-issues"]).default("with-issues"),
+    ...pageBounds,
+  }),
+]);
+
+const fileStatusSummarySchema = z.strictObject({
+  files: z.number().int().nonnegative(),
+  files_with_issues: z.number().int().nonnegative(),
+  files_without_retention_metadata: z.number().int().nonnegative(),
+  parent_limitation_count: z.number().int().nonnegative(),
 });
 
 /** Bounded native function facets of already authenticated analyze_function Evidence. */
@@ -171,6 +206,13 @@ const javascriptSummarySchema = z.strictObject({
   format: z.enum(["asar", "directory"]),
   root_artifact_sha256: digestSchema,
   statistics: jsonObjectSchema,
+  module_counts: z.strictObject({
+    bundler_module_registrations: z.number().int().nonnegative(),
+    javascript_assets: z.number().int().nonnegative(),
+    javascript_modules: z.number().int().nonnegative(),
+    source_modules: z.number().int().nonnegative(),
+    module_page_entries: z.number().int().nonnegative(),
+  }),
   electron: jsonObjectSchema,
   coverage: jsonObjectSchema,
   limitation_count: z.number().int().nonnegative(),
@@ -215,6 +257,7 @@ export const analysisViewResultSchema = z.discriminatedUnion("kind", [
     kind: z.literal("page"),
     view: pageViewSchema,
     items: z.array(jsonValueSchema),
+    file_status_summary: fileStatusSummarySchema.optional(),
     ...viewResultBase,
   }),
   z.strictObject({

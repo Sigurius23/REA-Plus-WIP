@@ -10,6 +10,7 @@ export const estimateJavaScriptStaticApplicationProjection = (
   // Allow for identifiers, locations, authority, coverage and schema copies,
   // independently of the producer's compact checkpoint representation.
   const findings =
+    (facts.shipped_material_candidates?.length ?? 0) +
     facts.references.length +
     facts.endpoints.length +
     facts.storage.length +

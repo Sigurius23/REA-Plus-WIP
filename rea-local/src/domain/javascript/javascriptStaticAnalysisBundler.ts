@@ -296,3 +296,35 @@ const bundlerModuleCacheStatus = (
   )
     ? "observed"
     : "not-observed";
+
+/** Retain one standalone table only after its runtime dispatch has been identified lexically. */
+export const registerStandaloneBundlerTable = (
+  source: string,
+  table: t.ObjectExpression,
+  runtime: string,
+  requireName: string,
+  accumulator: AnalysisAccumulator,
+  entries: readonly string[],
+  unknownEntries: number,
+): void => {
+  const recovered = recoverBundlerModules(source, table, runtime, accumulator);
+  const registration: JavaScriptBundlerRegistration = {
+    bundler: "commonjs-bootstrap",
+    runtime,
+    chunk_keys: [],
+    unknown_chunk_keys: 0,
+    runtime_require_name: requireName,
+    runtime_module_cache_status: bundlerModuleCacheStatus(source),
+    entry_module_keys: [...entries],
+    unknown_entry_module_keys: unknownEntries,
+    async_chunk_keys: recovered.asyncChunkKeys,
+    unknown_async_chunk_keys: recovered.unknownAsyncChunkKeys,
+    modules: recovered.modules,
+    location: range(table),
+  };
+  addFindingOnce(
+    accumulator,
+    `registration\0${registrationKey(registration)}`,
+    () => accumulator.registrations.push(registration),
+  );
+};

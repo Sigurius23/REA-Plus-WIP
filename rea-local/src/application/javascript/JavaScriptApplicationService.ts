@@ -59,6 +59,9 @@ export const analyzeJavaScriptApplicationValidated = async (
         input_path: input.input_path,
         format: input.format,
         integrity_policy: input.integrity_policy,
+        ...(input.scan_shipped_material === undefined
+          ? {}
+          : { scan_shipped_material: input.scan_shipped_material }),
         ...(input.max_heap_mb === undefined
           ? {}
           : { max_heap_mb: input.max_heap_mb }),
@@ -68,6 +71,12 @@ export const analyzeJavaScriptApplicationValidated = async (
         ...(input.max_semantic_source_bytes === undefined
           ? {}
           : { max_semantic_source_bytes: input.max_semantic_source_bytes }),
+        ...(input.paths_include === undefined
+          ? {}
+          : { paths_include: input.paths_include }),
+        ...(input.paths_exclude === undefined
+          ? {}
+          : { paths_exclude: input.paths_exclude }),
       },
       scope,
       options.signal,

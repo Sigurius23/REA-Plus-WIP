@@ -154,4 +154,27 @@ describe("discovery of extra module directories from bundler configs", () => {
     expect(roots).toEqual([]);
     expect(limitations).toEqual([]);
   });
+
+  it("walks deep configuration expressions without using the JavaScript call stack", () => {
+    const { roots } = discoverJavaScriptModuleRoots([
+      jsFile(
+        "webpack.config.js",
+        `const noise = ${"0+".repeat(6000)}0; module.exports = {resolve:{modules:['./src']}};`,
+      ),
+    ]);
+    expect(roots).toEqual(["src"]);
+  });
+
+  it("drops collected candidates when the actual AST walk budget is exceeded", () => {
+    const result = discoverJavaScriptModuleRoots([
+      jsFile(
+        "webpack.config.js",
+        `module.exports = {resolve:{modules:['./src']}};${"0;".repeat(50_001)}`,
+      ),
+    ]);
+    expect(result.roots).toEqual([]);
+    expect(result.limitations).toEqual([
+      "The webpack/rspack configuration webpack.config.js exceeds the AST walk budget; its resolve.modules records are not admitted and any collected candidates are dropped.",
+    ]);
+  });
 });

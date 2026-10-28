@@ -1385,3 +1385,29 @@ It requires WABT configuration and makes no host tool installation.
 Source-owned provider tests separately exercise cancellation, deadline propagation,
 malformed producer output and cleanup uncertainty; shared owned-command tests
 exercise actual subprocess timeout and cancellation.
+
+### Android package admission, cryptographic verification and scan measurements
+
+`npm run verify:android:packages` builds source-owned Java/DEX/manifest fixtures
+and tests real CLI/MCP APK signatures (v1/v2/v3), tampering, selected `.apks`
+variants, loose APK sets, AAB universal conversion and a 4101-method class against
+the decompiled mode's 4096-method cap. Raw DEX mode examines all 4101 methods;
+an independent DEX-byte check verifies its reported const-string location.
+A 75000-string fixture separately verifies const-string/jumbo and its location.
+It requires an existing full `JAVA_HOME`,
+`REA_JADX_MCP_JAR`, `REA_BUNDLETOOL_JAR`, `REA_ANDROID_BUILD_TOOLS` and
+`REA_ANDROID_PLATFORM_JAR`. It installs nothing. Temporary fixture keys, APKs,
+AABs and tool scratch directories are retired after the lane. These checks do not
+establish device installation, publisher identity or complete dynamic-feature
+coverage. The verifier validates the actual SDK-advertised input schema.
+
+For an owned production APK, run
+`npm run verify:android:string-measurement -- /absolute/path/app.apk`.
+`REA_ANDROID_MEASUREMENT_CLASS_LIMIT` defaults to 8192,
+`REA_ANDROID_MEASUREMENT_TIMEOUT_MS` to 600000 and
+`REA_ANDROID_MEASUREMENT_REPEATS` to 2. The tool uses one MCP connection and
+records each result/error, elapsed time and the source digest before/after.
+`REA_ANDROID_MEASUREMENT_MODE` selects `decompiled` (default) or `dex`.
+Set `REA_JADX_HEAP_MIB` explicitly when characterizing heap pressure; OS resource
+measurements are separate from the configured heap and coverage. A timed-out
+run is a measurement of the limit, not a completed search or stable skip count.

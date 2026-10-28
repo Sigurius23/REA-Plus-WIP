@@ -8,6 +8,35 @@ import { z } from "zod";
 
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
+const assertCompactFileStatus = async (client: Client, evidenceId: string) => {
+  const source = { kind: "retained-evidence", evidence_id: evidenceId };
+  const response = await client.callTool({
+    name: "inspect_analysis_view",
+    arguments: {
+      source,
+      view: { kind: "page", collection: "file_statuses", offset: 0, limit: 10 },
+    },
+  });
+  expect(response.isError).not.toBe(true);
+  expect(response.structuredContent).toMatchObject({
+    normalized_result: {
+      items: expect.arrayContaining([
+        expect.objectContaining({
+          path: "main.js",
+          issues: expect.arrayContaining([
+            expect.objectContaining({
+              operation: "project-javascript-application",
+              code: "resource_constraint",
+            }),
+          ]),
+        }),
+      ]),
+    },
+  });
+  expect(JSON.stringify(response)).not.toContain("binding3999");
+  return source;
+};
+
 it("retains every static finding through public module views when application expansion exceeds memory, then accepts more work", async () => {
   const root = await createTestTempDirectory("rea-js-resource-boundary-");
   const nextRoot = await createTestTempDirectory("rea-js-resource-recovery-");
@@ -50,10 +79,10 @@ it("retains every static finding through public module views when application ex
       })
       .parse(response.structuredContent).normalized_result;
     expect(summary.summary.coverage.application.status).toBe("partial");
-    const retained = {
-      kind: "retained-evidence",
-      evidence_id: summary.parent_evidence_id,
-    };
+    const retained = await assertCompactFileStatus(
+      client,
+      summary.parent_evidence_id,
+    );
     const pageResponse = await client.callTool({
       name: "inspect_analysis_view",
       arguments: {

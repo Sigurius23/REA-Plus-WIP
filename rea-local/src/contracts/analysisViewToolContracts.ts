@@ -15,10 +15,26 @@ export const ANALYSIS_VIEW_TOOL_CONTRACTS = [
     ...toolContractMetadata("inspect_analysis_view"),
     kind: "application",
     description:
-      "Inspect selected views of completed binary-layout, JavaScript application or native analyze_function Evidence without repeating analysis. Use an exact same-session retained evidence_id or portable inline Evidence. Select a summary, layout mitigations/linkage facet, one section/symbol/module, or a stable page. Module pages include assets, bundled and source modules; use node_id for ambiguous or unavailable paths. Native views select procedure, pseudocode, assembly, basic blocks, comments, callers/callees, references, unresolved calls, referenced strings/names, native API and high-pcode. Use nonnegative offset and a positive caller-selected limit (defaults 0 and 64); pseudocode uses UTF-16 code units, other native pages use rows. Returns artifact identity, parent Evidence ID, a distinct view digest, coverage, limitations and unknowns. Actual serialized size determines MCP transport admission; choose a smaller page or export the complete retained Evidence if needed.",
+      "Inspect selected views of completed binary-layout, JavaScript application or native analyze_function Evidence without repeating analysis. Use an exact same-session retained evidence_id or portable inline Evidence. Select a summary, layout mitigations/linkage facet, one section/symbol/module, or a stable page. Module pages include assets, bundled and source modules; use node_id for ambiguous or unavailable paths. JavaScript file_statuses pages expose compact per-file text, parse, module-IR and semantic-projection status, recorded failures and limits; filter with-issues (default) or all. Missing historical metadata stays not-recorded. JavaScript context_bridges pages distinguish helper member candidates from observed members; endpoints pages preserve templates and accept an explicit expression-to-string bindings map; shipped_material pages inspect opt-in scan candidates without copying raw keys. Native views select procedure, pseudocode, assembly, basic blocks, comments, callers/callees, references, unresolved calls, referenced strings/names, native API and high-pcode. Use nonnegative offset and a positive caller-selected limit (defaults 0 and 64 for native views); pseudocode uses UTF-16 code units, other native pages use rows. Returns artifact identity, parent Evidence ID, a distinct view digest, coverage, limitations and unknowns. Actual serialized size determines MCP transport admission; choose a smaller page or export the complete retained Evidence if needed.",
     inputSchema: inspectAnalysisViewInputSchema,
     outputSchema: evidenceResultOf(analysisViewResultSchema),
     examples: [
+      {
+        title: "Page JavaScript files with recorded analysis issues",
+        input: {
+          source: {
+            kind: "retained-evidence",
+            evidence_id: RETAINED_EXAMPLE_ID,
+          },
+          view: {
+            kind: "page",
+            collection: "file_statuses",
+            filter: "with-issues",
+            offset: 0,
+            limit: 16,
+          },
+        },
+      },
       {
         title: "Summarize retained JavaScript application Evidence",
         input: {

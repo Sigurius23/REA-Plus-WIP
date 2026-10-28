@@ -91,7 +91,7 @@ export const collectSemanticModuleLink = (
         kind: "export",
         specifier: null,
         importedName: null,
-        localName: defaultDeclarationName(node.declaration),
+        localName: defaultDeclarationName(node.declaration, state),
         exportedName: "default",
         callableId: semanticCallableIdForNode(node.declaration),
         location: range(node),
@@ -704,11 +704,26 @@ const declarationNames = (declaration: t.Declaration): string[] => {
 
 const defaultDeclarationName = (
   declaration: t.ExportDefaultDeclaration["declaration"],
-): string | null =>
-  (t.isFunctionDeclaration(declaration) || t.isClassDeclaration(declaration)) &&
-  t.isIdentifier(declaration.id)
+  state: JavaScriptSemanticAnalysisState,
+): string | null => {
+  if (t.isIdentifier(declaration)) {
+    const binding = resolveSemanticBindingState(
+      state,
+      declaration,
+      declaration.name,
+    );
+    return binding?.definitions.length === 1 &&
+      binding.initializers.length === 1 &&
+      !state.conditionalInitializers.has(binding.initializers[0]!.node)
+      ? declaration.name
+      : null;
+  }
+  return (t.isFunctionDeclaration(declaration) ||
+    t.isClassDeclaration(declaration)) &&
+    t.isIdentifier(declaration.id)
     ? declaration.id.name
     : null;
+};
 
 const commonJsExportName = (
   node: t.Node,

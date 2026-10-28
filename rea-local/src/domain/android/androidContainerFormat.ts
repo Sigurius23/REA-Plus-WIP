@@ -1,5 +1,11 @@
-/** Input formats the Android provider admits: one APK, or a whole XAPK bundle. */
-export const APK_CONTAINER_FORMATS = ["apk", "xapk"] as const;
+/** Input formats admitted by the Android package analysis workflow. */
+export const APK_CONTAINER_FORMATS = [
+  "apk",
+  "xapk",
+  "apks",
+  "apk-set",
+  "aab",
+] as const;
 
 export type AndroidContainerFormat = (typeof APK_CONTAINER_FORMATS)[number];
 
@@ -11,7 +17,14 @@ export type AndroidContainerFormat = (typeof APK_CONTAINER_FORMATS)[number];
 export const admittedAndroidContainerFormat = (
   format: string,
 ): AndroidContainerFormat => {
-  if (format === "apk" || format === "xapk") return format;
+  if (
+    format === "apk" ||
+    format === "xapk" ||
+    format === "apks" ||
+    format === "apk-set" ||
+    format === "aab"
+  )
+    return format;
   throw new TypeError(
     `Android admission recorded an unexpected container format: ${format}`,
   );

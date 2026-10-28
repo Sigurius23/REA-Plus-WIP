@@ -102,6 +102,11 @@ export interface AnalyzedJavaScriptArtifactFile<
   readonly semantic: {
     readonly ir: SemanticIr;
   } | null;
+  /** Actual worker projection outcome, distinct from retained module IR. */
+  readonly semantic_projection?: {
+    readonly status: "retained" | "partial" | "not-retained";
+    readonly node_budget: number;
+  };
   /** Operational incompleteness, distinct from a malformed source file. */
   readonly analysis_failure?: {
     readonly reason: string;

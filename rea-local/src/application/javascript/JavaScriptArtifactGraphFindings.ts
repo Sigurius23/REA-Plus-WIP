@@ -183,6 +183,9 @@ const addEndpoint = (
           input.value.value.length <= label.length ? input.value.value : label,
         properties: {
           endpoint_kind: input.value.kind,
+          ...(input.value.template_parts === undefined
+            ? {}
+            : { template_parts: input.value.template_parts }),
           value: input.value.value,
           mechanism: input.value.mechanism,
         },

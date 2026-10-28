@@ -37,6 +37,7 @@ const analyze: JavaScriptSourceWorkerAnalyzer = async (
       file.text.value,
       parsed,
       receivers,
+      { scanShippedMaterial: callbacks.scanShippedMaterial === true },
     ),
   );
   const resultBudgetBytes = await callbacks.checkpoint(facts);

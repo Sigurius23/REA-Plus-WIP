@@ -397,7 +397,16 @@ interface ExtractionInventory {
   readonly integrityContradictions: readonly IntegrityContradiction[];
 }
 
-const ZIP_FORMATS = ["ipa", "apk", "xapk", "msix", "appx", "zip"] as const;
+const ZIP_FORMATS = [
+  "ipa",
+  "apk",
+  "xapk",
+  "apks",
+  "aab",
+  "msix",
+  "appx",
+  "zip",
+] as const;
 
 const isZipFormat = (
   format: BinaryTarget["format"],

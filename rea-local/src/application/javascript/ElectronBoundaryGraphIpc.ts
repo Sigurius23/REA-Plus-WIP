@@ -10,7 +10,10 @@ import {
   type JavaScriptArtifactGraphContext,
   type JavaScriptArtifactGraphCoverage,
 } from "./JavaScriptArtifactGraphContext.js";
-import { astObservationEvidence } from "./JavaScriptArtifactGraphEvidence.js";
+import {
+  staticInferenceEvidence,
+  astObservationEvidence,
+} from "./JavaScriptArtifactGraphEvidence.js";
 import {
   collectElectronIpcRecords,
   unambiguousElectronIpcPairings,
@@ -123,11 +126,18 @@ const addChannelNode = (
       : `literal:${finding.channel}`;
   return context.accumulator.addNode({
     kind: "ipc-channel",
-    identity: electronObservationIdentity(
-      context,
-      "electron-ipc-channel",
-      identityKey,
-    ),
+    identity:
+      finding.helper_source === undefined
+        ? electronObservationIdentity(
+            context,
+            "electron-ipc-channel",
+            identityKey,
+          )
+        : artifactLocalIdentity(
+            file.sha256,
+            "electron-derived-ipc-channel",
+            identityKey,
+          ),
     observations: [
       {
         label: finding.channel ?? finding.channel_expression,
@@ -137,9 +147,14 @@ const addChannelNode = (
           mode: finding.mode,
           channel: finding.channel,
           channel_expression: finding.channel_expression,
+          ...(finding.helper_source === undefined
+            ? {}
+            : { helper_source: finding.helper_source }),
           resolution: ipcResolutionLabel(finding),
         },
-        evidence: astObservationEvidence({
+        evidence: (finding.helper_source === undefined
+          ? astObservationEvidence
+          : staticInferenceEvidence)({
           sha256: file.sha256,
           path: file.path,
           range: finding.location,
@@ -177,10 +192,15 @@ const addHandlerNode = (input: IpcHandlerInput): ApplicationNode => {
           mode: finding.mode,
           channel: finding.channel,
           channel_expression: finding.channel_expression,
+          ...(finding.helper_source === undefined
+            ? {}
+            : { helper_source: finding.helper_source }),
           handler_kind: finding.handler_kind,
           handler_location: finding.handler_location,
         },
-        evidence: astObservationEvidence({
+        evidence: (finding.helper_source === undefined
+          ? astObservationEvidence
+          : staticInferenceEvidence)({
           sha256: file.sha256,
           path: file.path,
           range: handlerRange,
@@ -337,7 +357,7 @@ const rangeMagnitude = (
 /** How a finding's channel was established: never guesses beyond syntax. */
 const ipcResolutionLabel = (
   finding: ElectronIpcFinding,
-): "literal" | "imported-constant" | "dynamic" =>
+): "literal" | "imported-constant" | "helper-argument" | "dynamic" =>
   finding.channel_origin ?? (finding.channel === null ? "dynamic" : "literal");
 
 const coverageFor = (

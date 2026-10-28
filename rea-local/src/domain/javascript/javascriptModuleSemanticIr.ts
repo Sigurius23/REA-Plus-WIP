@@ -24,7 +24,12 @@ export const projectJavaScriptModuleSemantics = (
   return {
     scopes,
     bindings: ir.bindings.filter(
-      ({ name, scopeId }) => scopeId === programScopeId && localNames.has(name),
+      ({ name, scopeId, provenance }) =>
+        scopeId === programScopeId &&
+        // Keep exact module provenance so consumers resolving imported
+        // constants through alias chains see the full origin, e.g. channels
+        // destructured from a namespace import (`const { X } = namespace`).
+        (localNames.has(name) || provenance.status === "module"),
     ),
     callables: ir.callables.filter(({ callableId }) =>
       callableIds.has(callableId),

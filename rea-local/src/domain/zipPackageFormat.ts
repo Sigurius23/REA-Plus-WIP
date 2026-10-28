@@ -4,6 +4,8 @@ export const ZIP_PACKAGE_FORMATS = [
   "ipa",
   "apk",
   "xapk",
+  "apks",
+  "aab",
   "msix",
   "appx",
   "hap",
@@ -49,6 +51,8 @@ export const zipPackageFormatForPath = (
   // An XAPK bundles a base APK with split APKs; admitting it as an APK would
   // hide the merge step the Android provider performs on its members.
   if (lower.endsWith(".xapk")) return "xapk";
+  if (lower.endsWith(".apks")) return "apks";
+  if (lower.endsWith(".aab")) return "aab";
   if (lower.endsWith(".msix") || lower.endsWith(".msixbundle")) return "msix";
   if (lower.endsWith(".appx") || lower.endsWith(".appxbundle")) return "appx";
   if (lower.endsWith(".hap")) return "hap";

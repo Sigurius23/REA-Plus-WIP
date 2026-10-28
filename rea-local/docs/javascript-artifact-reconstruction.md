@@ -144,12 +144,49 @@ coverage, the observed limits and an `analyze-javascript-source` unknown scope
 with the specific failure, including captured diagnostics when available.
 Resource failures do not increment syntax parse failures.
 
+Inspect per-file skips and blocks without copying full module facts or the
+parent's limitations into every response:
+
+```json
+{
+  "source": { "kind": "retained-evidence", "evidence_id": "ev_..." },
+  "view": {
+    "kind": "page",
+    "collection": "file_statuses",
+    "filter": "with-issues",
+    "offset": 0,
+    "limit": 16
+  }
+}
+```
+
+Pass this to `inspect_analysis_view` on the same MCP connection. For CLI use,
+save the request with `source: {"kind":"inline","evidence":...}` containing
+the complete portable Evidence, then run `rea inspect-analysis-view view.json
+--json`. `with-issues` is the default; `all` includes files with no recorded
+issue. Rows retain the exact path, SHA-256, asset node ID and inventory
+observation ID, text/parse status, module-IR retention/coverage and semantic
+graph projection status. A retained module IR can coexist with a partial
+semantic graph projection. Operational issues retain their phase, error code,
+message, limits and source observation IDs; captured output and raw analysis
+payloads remain in the parent. Byte-identical paths sharing one asset node
+still have separate rows and path-specific failures. Rows sort by Unicode
+code-point path order, then observation ID; page coverage counts the filtered
+rows, not all inventoried files.
+
+`file_status_summary` reports observed files, files with issues, missing
+retention metadata and the number of distinct parent limitations. Older
+Evidence can expose its existing failure records without re-analysis; missing
+retention fields remain `not-recorded`. An empty issue page does not imply
+complete analysis. Parent coverage remains explicit in the view's unknowns,
+and full facts/limitations remain available in the authenticated parent record.
+
 Sources share the parent's result capacity and the semantic graph's node
-budget, first come first served, and every source but the last leaves most of
-the capacity in reserve for the static facts of sources still to come.
-JavaScript sources are therefore analyzed smallest first, in the places
-JavaScript holds in the inventory; other files keep their place. Large bundles
-come last and cannot use up the capacity before smaller sources are reached.
+budget. The parent reserves capacity for remaining static facts using the
+observed per-source cost. Application sources are admitted before vendor
+modules; sources sort smallest first within each group, in the places
+JavaScript holds in the inventory. Other files keep their place. Large bundles
+follow smaller sources within their group.
 Results keep the inventory order. On the 12 chunks of a production Next.js
 app, inventory order left three sources without a semantic graph and this
 order left one.
@@ -162,13 +199,29 @@ source's size. On the 12 Next.js chunks of a production web app, a 1,000,000
 byte limit skipped the 4.5 MB `_app` chunk and cut the run from 2 min 50 s to
 53 s while keeping that chunk's endpoints.
 
+Large vendor trees can also be left out before anything is read.
+`paths_include` (CLI `--paths-include`, repeatable) admits only paths that
+match at least one artifact-relative glob pattern, and `paths_exclude` (CLI
+`--paths-exclude`, repeatable) skips matching paths even when included;
+excludes win. Patterns are anchored to the whole logical path: `**` spans
+segments (a leading `**/` also matches zero segments), `*` and `?` stay
+within one segment, so `node_modules` alone matches only a file of exactly
+that name — write `node_modules/**` for the subtree. Excluded files are not
+read, analyzed or graphed, and the result `statistics.paths_scope` reports
+the pattern lists verbatim plus considered, selected and excluded file
+counts, so a scoped run's coverage stays explicit. Without either option
+every relevant file is analyzed as before and the counts report zero
+exclusions.
+
 Static observations also need memory when expanded into nodes, relationships
 and Evidence. If that expansion does not fit, the file node retains
 `static_analysis` and any admitted `semantic_module_analysis` observations,
 including their exact values and source locations. Use the public modules item
 view to read them. The graph marks those unexpanded relationships as unknown.
-If cumulative result capacity is exhausted, analysis stops; inventoried but
-unexamined files remain present with explicit unknown scopes.
+Per-file resource failures do not stop subsequent source analysis. Whole-run
+interruptions still preserve inventoried but unexamined files with explicit
+unknown scopes; the file-status view distinguishes recorded failures from
+missing historical metadata.
 
 A timeout stops the remaining analysis and returns typed failure details with
 completed partial Evidence. MCP failure details return
@@ -221,6 +274,63 @@ inline Evidence is still parsed and authenticated.
 See [MCP tool results](mcp-contracts.md#tool-results) for larger client buffers
 and `REA_MCP_MAX_RESPONSE_BYTES`. Follow-up results remain complete and can also
 exceed the transport budget.
+
+## Inspect helper candidates, endpoint substitutions and shipped material
+
+Use `inspect_analysis_view` with the same retained or inline Evidence source
+and a paged `context_bridges` collection to inspect bridge properties and
+`helper_candidates`. Same-module helpers and imported exported helpers are
+identified by lexical binding and artifact module resolution. Literal argument
+objects yield candidate member names; those names are separate from observed
+`members`, because helper selection and runtime exposure remain unverified.
+The summary view reports `context_bridge_member_candidates` alongside the
+original observed-member count.
+
+Narrow parameter flows into Electron IPC calls also retain caller and helper
+paths, digests and source ranges. Direct parameter arguments and import-bound
+`lodash/mapValues` value callbacks can produce `helper-argument` channel
+inferences. They can participate in static pairing; they do not prove the helper,
+callback, preload or IPC operation executed. Shadowed, reassigned, ambiguous,
+spread and unresolved inputs remain unknown. Standalone webpack-compatible
+CommonJS tables are identified through bound
+`table[index](module, module.exports, require)` dispatch and reported as
+`commonjs-bootstrap`, without asserting the original packager identity.
+
+A paged `endpoints` view accepts an explicit `bindings` map keyed by each
+placeholder's exact recorded source expression:
+
+```json
+{
+  "kind": "page",
+  "collection": "endpoints",
+  "offset": 0,
+  "limit": 16,
+  "bindings": { "process.env.API_URL": "https://api.example.invalid" }
+}
+```
+
+The original `template` and `template_parts` stay intact. `materialized_value`
+is derived only when every expression has a supplied value. REA+ does not read
+the ambient environment or evaluate expressions. Missing bindings and historical
+templates without expression metadata remain explicit unknowns.
+
+For opt-in shipped-material candidates, analyze with
+`scan_shipped_material: true` (CLI `--scan-shipped-material`), then page
+`shipped_material`. The scan reports inventoried key/certificate filename
+extensions and JavaScript hexadecimal literals of 32/40/64/128 characters.
+It records source locations, digests and lengths without copying candidate key
+values into the scan. Literal inspection runs inside the resource-limited
+source worker; unavailable files and graph-budget omissions are counted.
+Filename rules obey the same path scope. Candidates may be checksums, fixtures
+or public identifiers; secrecy, private-key presence and usability stay unknown.
+The scan summary states its rules and scope; no scan or an empty page does not
+establish absence of shipped material.
+
+`statistics.modules` retains its legacy meaning: the sum of recovered bundler
+module registrations. Zero means no such metadata was recovered. Summary
+`module_counts` distinguishes `bundler_module_registrations`, JavaScript assets,
+JavaScript modules, source modules and the exact number of entries in the
+`modules` page; these are different counts.
 
 ## What is reconstructed
 
@@ -381,7 +491,8 @@ specifiers also admit webpack/rspack `resolve.modules` extra module directories,
 read string-literal-only from inventoried configuration files, as a
 lower-precedence candidate class after `node_modules`; a package there is never
 shadowed. Resolved channels gain `channel_origin: "imported-constant"` and pair
-like literal channels. Everything unresolvable — local constants, shadowed
+like literal channels. The helper-argument pass described above separately
+admits narrow caller-to-parameter flows. Other unresolvable expressions — local constants, shadowed
 bindings, multi-hop member paths, re-export chains, constants outside the
 artifact, non-literal `resolve.modules` records, or specs resolved through no
 admitted directory — stays dynamic, and configuration code is never executed.

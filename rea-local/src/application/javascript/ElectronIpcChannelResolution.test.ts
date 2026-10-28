@@ -102,6 +102,35 @@ describe("Electron IPC channel resolution through imported constants", () => {
     expect(resolved.limitations).toHaveLength(1);
   });
 
+  it("resolves channels destructured from a namespace import", () => {
+    const analysis = analysisOf(
+      {
+        path: "app/src/main/utils/ipcMessages.js",
+        text: `export const MAXIMIZE_WINDOW = "maximizeWindow";`,
+      },
+      {
+        path: "app/src/main/modules/windowManager.js",
+        text: `
+          import { ipcMain } from "electron";
+          import * as ipcMessages from "../utils/ipcMessages";
+          const { MAXIMIZE_WINDOW } = ipcMessages;
+          ipcMain.on(MAXIMIZE_WINDOW, () => {});
+        `,
+      },
+    );
+
+    const { analysis: resolved, resolved_channel_operations } =
+      resolveElectronIpcChannelsViaImports(analysis);
+
+    expect(resolved_channel_operations).toBe(1);
+    const finding = resolved.files.flatMap(
+      ({ javascript }) => javascript?.electron.ipc ?? [],
+    )[0];
+    expect(finding).toEqual(
+      expect.objectContaining({ channel: "maximizeWindow" }),
+    );
+  });
+
   it("keeps channels dynamic for local constants, shadows, and unresolvable imports", () => {
     const analysis = analysisOf(
       {

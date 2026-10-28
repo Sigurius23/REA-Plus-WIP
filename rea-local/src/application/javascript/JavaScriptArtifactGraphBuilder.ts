@@ -1,3 +1,4 @@
+import { addJavaScriptShippedMaterialSteps } from "./JavaScriptShippedMaterial.js";
 import { ELECTRON_IDENTITY_LIMITATION } from "../../domain/javascript/javascriptElectronMemberWrites.js";
 import type { ArtifactInventorySnapshot } from "../../domain/artifactInventorySnapshot.js";
 import {
@@ -50,10 +51,16 @@ export const buildJavaScriptArtifactGraph = (
   snapshot: ArtifactInventorySnapshot,
   fileSet: JavaScriptArtifactFileSet,
   analysis: JavaScriptModuleArtifactAnalysis,
+  scanShippedMaterial = false,
 ): JavaScriptApplicationGraph =>
   createJavaScriptApplicationGraph(
     completeSynchronously(
-      buildJavaScriptArtifactGraphInputSteps(snapshot, fileSet, analysis),
+      buildJavaScriptArtifactGraphInputSteps(
+        snapshot,
+        fileSet,
+        analysis,
+        scanShippedMaterial,
+      ),
     ),
   );
 
@@ -66,11 +73,13 @@ export function* buildImmutableJavaScriptArtifactGraphSteps(
   snapshot: ArtifactInventorySnapshot,
   fileSet: JavaScriptArtifactFileSet,
   analysis: JavaScriptModuleArtifactAnalysis,
+  scanShippedMaterial = false,
 ): Generator<void, JavaScriptApplicationGraph> {
   const input = yield* buildJavaScriptArtifactGraphInputSteps(
     snapshot,
     fileSet,
     analysis,
+    scanShippedMaterial,
   );
   // The input was built here and is not retained, so it can be transferred.
   return yield* sealTransferredJavaScriptApplicationGraphSteps(input);
@@ -87,6 +96,7 @@ function* buildJavaScriptArtifactGraphInputSteps(
   snapshot: ArtifactInventorySnapshot,
   fileSet: JavaScriptArtifactFileSet,
   analysis: JavaScriptModuleArtifactAnalysis,
+  scanShippedMaterial = false,
 ): Generator<void, unknown> {
   const accumulator = new JavaScriptArtifactGraphAccumulator();
   const root = createJavaScriptArtifactRootNode(accumulator, snapshot);
@@ -106,6 +116,7 @@ function* buildJavaScriptArtifactGraphInputSteps(
   };
   addJavaScriptArtifactContainers(context);
   yield;
+  if (scanShippedMaterial) yield* addJavaScriptShippedMaterialSteps(context);
   addJavaScriptArtifactFiles(context);
   yield;
   // Raw observations remain on the file nodes. Only admitted expansions feed

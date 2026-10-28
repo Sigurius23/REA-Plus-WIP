@@ -12,6 +12,8 @@ import {
   completeWithinViewCoverage as completeCoverage,
   pageViewCoverage as pageCoverage,
 } from "./analysisViewCoverage.js";
+import { javascriptEndpointItems } from "./javascriptEndpointView.js";
+import { projectJavaScriptFileStatusPage } from "./javascriptFileStatusView.js";
 import type {
   AnalysisViewParent,
   AnalysisViewRequest,
@@ -241,8 +243,80 @@ export const projectJavaScriptApplicationView = (
   analysis: JavaScriptApplicationAnalysisResult,
   view: AnalysisViewRequest,
 ): Result<UnsignedAnalysisView, AnalysisError> => {
+  if (view.kind === "page" && view.collection === "file_statuses")
+    return ok(projectJavaScriptFileStatusPage(parent, analysis, view));
   const shared = parentFields(parent, analysis);
   const modules = moduleEntries(analysis.graph.nodes);
+  if (view.kind === "page" && view.collection === "context_bridges") {
+    const rows = analysis.graph.nodes
+      .filter((node) => node.kind === "context-bridge-api")
+      .flatMap((node) =>
+        node.observations.map((observation) => ({
+          node_id: node.node_id,
+          observation_id: observation.observation_id,
+          properties: observation.properties,
+          evidence: observation.evidence,
+        })),
+      );
+    const items = rows.slice(view.offset, view.offset + view.limit);
+    return ok({
+      kind: "page",
+      view,
+      items,
+      ...shared,
+      coverage: pageCoverage(view.offset, items.length, rows.length),
+    });
+  }
+  if (view.kind === "page" && view.collection === "shipped_material") {
+    const all = analysis.graph.nodes.flatMap((node) =>
+      node.observations
+        .filter(
+          (observation) =>
+            observation.evidence.extractor.operation ===
+            "scan-shipped-material",
+        )
+        .map((observation) => ({
+          node_id: node.node_id,
+          observation_id: observation.observation_id,
+          properties: observation.properties,
+          evidence: observation.evidence,
+        })),
+    );
+    const items = all.slice(view.offset, view.offset + view.limit);
+    return ok({
+      kind: "page",
+      view,
+      items,
+      ...shared,
+      coverage: pageCoverage(view.offset, items.length, all.length),
+      limitations: [
+        ...shared.limitations,
+        ...(all.length === 0
+          ? [
+              "No shipped-material scan is recorded; rerun analysis with scan_shipped_material=true. An empty page does not establish absence of material.",
+            ]
+          : []),
+      ],
+    });
+  }
+  if (view.kind === "page" && view.collection === "endpoints") {
+    const endpoints = javascriptEndpointItems(
+      analysis.graph.nodes,
+      view.bindings,
+    );
+    const items = endpoints.slice(view.offset, view.offset + view.limit);
+    return ok({
+      kind: "page",
+      view,
+      items,
+      ...shared,
+      limitations: [
+        ...shared.limitations,
+        "Materialized values use only the explicit caller map; runtime values and reachability remain unverified. Historical templates without expression metadata cannot be materialized.",
+      ],
+      coverage: pageCoverage(view.offset, items.length, endpoints.length),
+    });
+  }
   if (view.kind === "native")
     return err(
       jsIncompatible("Native views require analyze_function Evidence."),
@@ -256,7 +330,41 @@ export const projectJavaScriptApplicationView = (
         format: analysis.format,
         root_artifact_sha256: analysis.root_artifact_sha256,
         statistics: jsonObjectSchema.parse(analysis.statistics),
-        electron: jsonObjectSchema.parse(analysis.summary),
+        module_counts: {
+          bundler_module_registrations: analysis.statistics.modules,
+          javascript_assets: modules.filter(
+            ({ node }) => node.kind === "javascript-asset",
+          ).length,
+          javascript_modules: modules.filter(
+            ({ node }) => node.kind === "javascript-module",
+          ).length,
+          source_modules: modules.filter(
+            ({ node }) => node.kind === "source-module",
+          ).length,
+          module_page_entries: modules.length,
+        },
+        electron: jsonObjectSchema.parse({
+          ...analysis.summary,
+          context_bridge_member_candidates: analysis.graph.nodes
+            .filter((node) => node.kind === "context-bridge-api")
+            .reduce(
+              (count, node) =>
+                count +
+                node.observations.reduce((subtotal, observation) => {
+                  const value = observation.properties.helper_candidates;
+                  return (
+                    subtotal +
+                    (typeof value === "object" &&
+                    value !== null &&
+                    !Array.isArray(value) &&
+                    Array.isArray(value.members)
+                      ? value.members.length
+                      : 0)
+                  );
+                }, 0),
+              0,
+            ),
+        }),
         coverage: jsonObjectSchema.parse({
           application: analysis.graph.coverage,
           semantic: {

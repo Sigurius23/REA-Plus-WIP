@@ -30,7 +30,19 @@ it("analyzes JavaScript smallest first in place and reports inventory order", as
   const order: string[] = [];
   const { analysis, interruption } =
     await analyzeAndAdoptJavaScriptArtifactFiles(
-      { files, containers: [], text_bytes_read: 0, invalid_utf8_files: 0 },
+      {
+        files,
+        containers: [],
+        text_bytes_read: 0,
+        invalid_utf8_files: 0,
+        paths_scope: {
+          paths_include: [],
+          paths_exclude: [],
+          considered_files: files.length,
+          selected_files: files.length,
+          excluded_files: 0,
+        },
+      },
       {
         analyze: async (file) => {
           analyzed.push(file.path);

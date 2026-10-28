@@ -66,6 +66,7 @@ the pinned JADX 0.7.1 JAR; see the real verification lane below.
 
 ```sh
 rea inspect-android-package /path/Example.apk
+rea search-android-strings /path/Example.apk endpoint --class-limit 8192
 rea search-android-classes /path/Example.apk MainActivity
 rea inspect-android-class /path/Example.apk example.MainActivity
 rea inspect-android-method /path/Example.apk example.MainActivity onCreate
@@ -75,7 +76,7 @@ rea trace-android-references /path/Example.apk example.MainActivity --method-nam
 ```
 
 Equivalent MCP methods are `inspect_android_package`, `search_android_classes`,
-`inspect_android_class`, `inspect_android_method` and `trace_android_references`.
+`search_android_strings`, `inspect_android_class`, `inspect_android_method` and `trace_android_references`.
 Every request includes `path`. Class/method operations use `class_name`,
 `method_name` and optional `overload_index` as applicable. For example:
 
@@ -177,12 +178,105 @@ split DEX entries. The retained session still numbers the _composed_ input,
 while Evidence subject fields keep the original container path and its SHA-256.
 Inventory and extraction treat `.xapk` like any other ZIP package family.
 
+## Select an APK set or convert an AAB
+
+All Android operations also accept a loose directory of regular top-level APKs
+or a `.apks` archive. A set needs one unambiguous base APK. For archives with
+nested or device-specific alternatives, select one exact variant explicitly:
+
+```sh
+rea inspect-android-package /path/app.apks \
+  --apk-members splits/base-master.apk \
+  --apk-members splits/feature-master.apk \
+  --base-apk splits/base-master.apk
+rea search-android-classes /path/owned-split-directory MainActivity
+```
+
+MCP uses `apk_members` and `base_apk` with the same meanings. REA+ does not
+select a device, infer ABI compatibility, or combine alternative install sets.
+The base contributes its entries and splits contribute code, under the same
+resource/native-library limitations as XAPK composition. Raw admission metadata
+retains selected member names, sizes and digests. A directory subject uses
+`format: "apk-set"`; its SHA-256 commits to canonical JSON containing the sorted
+selected APK names, sizes and SHA-256 values, rather than to a single file.
+Changes after admission are rejected before the analysis image is used.
+
+For `.aab`, configure an existing Google bundletool-all JAR:
+
+```sh
+export REA_BUNDLETOOL_JAR=/absolute/path/bundletool-all.jar
+rea inspect-android-package /path/app.aab
+```
+
+REA+ snapshots the source and tool, checks declared ZIP expansion against its
+4 GiB analysis-image capacity, then asks bundletool for a universal analysis APK.
+Tool configuration, temporary signing material and scratch files stay in the
+owned runtime directory. No host SDK configuration is changed. The Evidence
+subject remains the original AAB; limitations record the bundletool digest and
+universal scope. Only fused modules are represented; non-fused, on-demand and
+device-specific coverage remains unknown. Generated signing does not authenticate
+the original AAB or its publisher. See Google's [bundletool guide](https://developer.android.com/tools/bundletool).
+
+## Verify original APK signatures
+
+Signature verification is an explicit cryptographic facet, separate from JADX's
+manifest and decompiler observations. Configure the existing Android SDK Build
+Tools `lib/apksigner.jar`, then request it:
+
+```sh
+export REA_APKSIG_JAR=/absolute/path/build-tools/lib/apksigner.jar
+rea inspect-android-package /path/app.apk --verify-signatures
+```
+
+MCP uses `verify_signatures: true`. The result records the independent
+`android-apksig` verifier JAR digest, each original APK's digest, verified
+v1/v2/v3/v3.1 schemes, signer-certificate SHA-256 values, errors and warnings.
+XAPK and selected APK sets verify each original member before its staged copy
+is retired; the composed analysis image is never presented as the signed input.
+`signer_consistency` separately identifies different signer sets across members.
+An invalid signature is returned as an invalid verification result, while missing
+tools or an unparseable verifier reply remain operational failures. Without the
+flag, the field remains `not_performed`. AAB signing is a different format and
+is rejected by this APK-specific option. Publisher identity, certificate trust,
+revocation, v4 sidecars and device installability are not established. See
+[Android's signing verifier documentation](https://developer.android.com/tools/apksigner).
+
+## Search method string constants
+
+```sh
+rea search-android-strings /path/app.apk unlock \
+  --class-limit 8192 --analysis-timeout-ms 600000
+rea search-android-strings /path/app.apk unlock \
+  --scan-mode dex --class-limit 2147483647 --analysis-timeout-ms 600000
+```
+
+The default `scan_mode` is `decompiled`: Java/smali method bodies use a default
+class limit of 256, capped at the engine's 8,192-class scan boundary, and a
+4,096-method per-class cap. `scan_mode: "dex"` reads original DEX `const-string`
+and `const-string/jumbo` instructions without Java code generation or those
+decompiler caps. Its class limit still defaults to 256; callers can explicitly
+select up to 2,147,483,647 classes (the provider's integer representation).
+The default total deadline is 120,000 ms; `analysis_timeout_ms` (CLI
+`--analysis-timeout-ms`) can explicitly allow longer searches, including
+acquisition, loading and decompilation. The observed JVM heap remains separate.
+`skipped_methods` counts methods unreadable in the selected mode;
+`method_cap_skipped_methods` and `method_cap_skipped_classes` separately count
+omissions at the decompiled mode's per-class cap. Unreadable methods, unvisited
+classes and result limits make coverage partial. DEX matches retain the input
+member name, provider method-local instruction offset and byte offset inside
+that uncompressed DEX input; unavailable locations remain null. These are not
+ZIP offsets or addresses in another provider. Decompiled matches have no DEX
+location. No empty result proves absence: neither mode searches every
+string-pool, annotation or resource entry. For complete DEX string-pool
+inspection, select `app.apk#classesN.dex` with the radare2 or Ghidra workflows
+above and retain their own address/coverage semantics.
+
 ## Interpret the result
 
 - Package inspection retains decoded manifest XML, summary declarations,
   permissions and class/resource counts. Summary fields are extracted by the
   upstream engine and should be checked against the retained XML when needed.
-  Signature verification is explicitly `not_performed`.
+  Signature verification is `not_performed` unless explicitly requested.
 - Class search consumes all pages and checks their counts. An empty `query`
   inventories all class names; class names are decompiler representations.
 - Class inventories read parsed metadata without generating source and return
@@ -219,14 +313,11 @@ and each upstream request and reply collected before the failure. Failed replies
 remain available even when their payload cannot be interpreted. Cancellation
 also stops target hashing before provider admission.
 
-These operations do not execute the APK or provide Android App Bundle
-(`.aab`)/split-APK _bundle_ handling (directory or `.apks` sets of separate
-split files), signature validation, full resource-table semantics,
-native-library analysis or Android runtime capture. XAPK containers are the
-supported multi-APK input, with the merge scope documented above. An `.aab`
-suffix is a ZIP archive, not an APK, so
-Android tools and the application graph do not treat it as a standalone APK.
-Existing artifact inventory/extraction tools can supply archive evidence.
+These operations never execute the APK. Selected APK sets and AAB universal
+conversion have the admission scopes above; full split-resource semantics,
+native-library analysis and Android runtime capture remain separate workflows.
+Existing inventory/extraction tools can inspect the original `.apk`, `.xapk`,
+`.apks` or `.aab` archive without claiming decompiler or signature coverage.
 Inventory records an APK root only for ZIP bytes whose name ends in `.apk`.
 The projection adds a limitation when no root `AndroidManifest.xml` was
 observed, because such a ZIP may not be an APK. Nested members take a ZIP or

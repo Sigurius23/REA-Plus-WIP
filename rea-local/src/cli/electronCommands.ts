@@ -279,6 +279,15 @@ const registerJavaScriptApplicationCommand = (
                 : {
                     max_semantic_source_bytes: options.maxSemanticSourceBytes,
                   }),
+              ...(options.scanShippedMaterial === undefined
+                ? {}
+                : { scan_shipped_material: options.scanShippedMaterial }),
+              ...(options.pathsInclude === undefined
+                ? {}
+                : { paths_include: options.pathsInclude }),
+              ...(options.pathsExclude === undefined
+                ? {}
+                : { paths_exclude: options.pathsExclude }),
             },
             signal,
           ),

@@ -39,6 +39,7 @@ export type JavaScriptStaticReference = JavaScriptStaticReferenceState &
 
 /** A route or network endpoint literal observed in syntax. */
 export interface JavaScriptStaticEndpoint {
+  readonly template_parts?: readonly import("./javascriptEndpointTemplates.js").JavaScriptEndpointTemplatePart[];
   readonly kind: "route" | "network";
   readonly value: string;
   readonly mechanism: string;
@@ -80,7 +81,7 @@ export interface JavaScriptBundlerModule extends JavaScriptBundlerModuleState {
 
 /** One statically recognized bundler chunk or module registration. */
 export interface JavaScriptBundlerRegistration {
-  readonly bundler: "webpack" | "rspack" | "esbuild";
+  readonly bundler: "webpack" | "rspack" | "esbuild" | "commonjs-bootstrap";
   readonly runtime: string;
   readonly chunk_keys: readonly string[];
   readonly unknown_chunk_keys: number;
@@ -108,6 +109,11 @@ export interface JavaScriptRolePath {
 
 /** Deterministic AST-only analysis of one JavaScript source file. */
 export interface JavaScriptStaticAnalysis {
+  readonly shipped_material_candidates?: readonly {
+    readonly literal_length: number;
+    readonly value_sha256: string;
+    readonly location: JavaScriptSourceRange;
+  }[];
   readonly parse_status: "complete" | "partial" | "failed";
   readonly parse_error_count: number;
   readonly visited_ast_nodes: number;

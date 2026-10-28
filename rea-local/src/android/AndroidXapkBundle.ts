@@ -1,3 +1,4 @@
+import { hashStableFile } from "../filesystem/StableFileHash.js";
 import { createHash } from "node:crypto";
 import {
   chmod,
@@ -10,7 +11,11 @@ import {
 import { dirname, join } from "node:path";
 import type { Readable } from "node:stream";
 
-import type { ArtifactEntry } from "../artifacts/ArtifactReader.js";
+import { DirectoryArtifactReader } from "../artifacts/DirectoryArtifactReader.js";
+import type {
+  ArtifactReader,
+  ArtifactEntry,
+} from "../artifacts/ArtifactReader.js";
 import { ArtifactReaderFailure } from "../artifacts/ArtifactReader.js";
 import { ZipArtifactReader } from "../artifacts/ZipArtifactReader.js";
 import {
@@ -45,6 +50,16 @@ export interface AndroidXapkBundleSnapshot {
   readonly sha256: string;
   readonly members: readonly string[];
   readonly mergedMembers: readonly string[];
+  readonly memberDigests: readonly {
+    readonly name: string;
+    readonly sha256: string;
+    readonly bytes: number;
+  }[];
+  readonly verificationMembers: readonly {
+    readonly name: string;
+    readonly path: string;
+    readonly sha256: string;
+  }[];
   readonly limitations: readonly string[];
 }
 
@@ -54,13 +69,24 @@ interface XapkMember {
   readonly destination: string;
 }
 
+export interface AndroidApkBundleSelection {
+  readonly format: "xapk" | "apks" | "apk-set";
+  readonly base_apk?: string;
+  readonly apk_members?: readonly string[];
+  readonly directory_members?: readonly {
+    readonly name: string;
+    readonly sha256: string;
+    readonly bytes: number;
+  }[];
+}
 interface XapkCompositionPlan {
+  readonly expectedDigests?: ReadonlyMap<string, string>;
   readonly members: readonly XapkMember[];
   readonly baseName: string;
 }
 
 /**
- * Compose one merged analysis APK for jadx from an admitted XAPK container.
+ * Compose one merged analysis APK for jadx from an XAPK or selected APK set.
  *
  * jadx consumes standalone APK files only, so admission builds the image the
  * engine will actually load: each APK member is staged out of the container as
@@ -81,20 +107,41 @@ export const composeAndroidXapkBundle = async (
   root: string,
   operation: AndroidOperation,
   signal: AbortSignal,
+  retainVerificationMembers = false,
+  selection: AndroidApkBundleSelection = { format: "xapk" },
 ): Promise<AndroidXapkBundleSnapshot> => {
-  const reader = new ZipArtifactReader(
-    target.path,
-    "xapk",
-    undefined,
-    undefined,
-  );
+  const reader =
+    selection.format === "apk-set"
+      ? new DirectoryArtifactReader(target.path)
+      : new ZipArtifactReader(
+          target.path,
+          selection.format,
+          undefined,
+          undefined,
+        );
   try {
-    const plan = await planXapkComposition(
-      reader,
-      target.path,
-      operation,
-      signal,
-    );
+    if (
+      selection.format === "xapk" &&
+      (selection.base_apk !== undefined || selection.apk_members !== undefined)
+    )
+      throw new AnalysisInputError(operation, undefined, [
+        {
+          path: ["apk_members"],
+          reason: "invalid_value",
+          message:
+            "XAPK member selection is owned by its manifest; explicit APK variant selection applies to .apks archives and loose sets.",
+        },
+      ]);
+    const plan =
+      selection.format === "xapk"
+        ? await planXapkComposition(reader, target.path, operation, signal)
+        : await planApkSetComposition(
+            reader,
+            target.path,
+            operation,
+            signal,
+            selection,
+          );
     signal.throwIfAborted();
     return await composeMergedImage(
       reader,
@@ -103,6 +150,7 @@ export const composeAndroidXapkBundle = async (
       root,
       operation,
       signal,
+      retainVerificationMembers,
     );
   } catch (cause: unknown) {
     throw await translatedBundleFailure(cause, target.path, operation, signal);
@@ -113,7 +161,7 @@ export const composeAndroidXapkBundle = async (
 
 /** Require an admitted XAPK shape before any composed bytes are written. */
 const planXapkComposition = async (
-  reader: ZipArtifactReader,
+  reader: ArtifactReader,
   containerPath: string,
   operation: AndroidOperation,
   signal: AbortSignal,
@@ -159,6 +207,94 @@ const planXapkComposition = async (
   };
 };
 
+/** Select one caller-owned APK variant; never combine bundletool device alternatives implicitly. */
+const planApkSetComposition = async (
+  reader: ArtifactReader,
+  path: string,
+  operation: AndroidOperation,
+  signal: AbortSignal,
+  selection: AndroidApkBundleSelection,
+): Promise<XapkCompositionPlan> => {
+  const candidates: XapkMember[] = [];
+  for await (const entry of reader instanceof DirectoryArtifactReader
+    ? reader.entries(signal, () => false)
+    : reader.entries(signal)) {
+    signal.throwIfAborted();
+    if (
+      selection.directory_members !== undefined &&
+      !selection.directory_members.some((member) => member.name === entry.path)
+    )
+      continue;
+    if (
+      entry.kind !== "file" ||
+      entry.encrypted ||
+      !entry.path.toLowerCase().endsWith(".apk")
+    )
+      continue;
+    if (
+      selection.apk_members !== undefined &&
+      !selection.apk_members.includes(entry.path)
+    )
+      continue;
+    candidates.push({ entry, destination: entry.path });
+  }
+  const fail = (message: string): never => {
+    throw new AnalysisInputError(operation, undefined, [
+      { path: ["apk_members"], reason: "invalid_value", message },
+    ]);
+  };
+  if (
+    selection.apk_members !== undefined &&
+    (new Set(selection.apk_members).size !== selection.apk_members.length ||
+      selection.apk_members.some(
+        (name) => !candidates.some(({ destination }) => name === destination),
+      ))
+  )
+    fail(
+      "Selected APK members must be unique readable APK entries in the admitted set.",
+    );
+  if (
+    selection.apk_members === undefined &&
+    candidates.some(({ destination }) => destination.includes("/"))
+  )
+    fail(
+      "This .apks archive contains nested/device-specific alternatives. Supply apk_members and base_apk for one exact variant; REA+ does not select a device or combine all variants.",
+    );
+  const baseCandidates =
+    selection.base_apk === undefined
+      ? candidates.filter(({ destination }) =>
+          /(?:^|\/)(?:base|base-master|universal)\.apk$/iu.test(destination),
+        )
+      : candidates.filter(
+          ({ destination }) => destination === selection.base_apk,
+        );
+  const baseName =
+    baseCandidates.length === 1
+      ? baseCandidates[0]!.destination
+      : candidates.length === 1 && selection.base_apk === undefined
+        ? candidates[0]!.destination
+        : undefined;
+  if (baseName === undefined)
+    fail(
+      "Select an unambiguous base APK with base_apk; empty sets and ambiguous variants are not admitted.",
+    );
+  enforceDeclaredContainerSize(candidates, path, operation);
+  return {
+    baseName: baseName!,
+    members: candidates.sort((a, b) => compareMemberOrder(a, b, baseName!)),
+    ...(selection.directory_members === undefined
+      ? {}
+      : {
+          expectedDigests: new Map(
+            selection.directory_members.map((member) => [
+              member.name,
+              member.sha256,
+            ]),
+          ),
+        }),
+  };
+};
+
 /**
  * Map one container entry to a composed-image member, or explain why it is
  * ignored. Only APK files adjacent to the manifest are admitted; nested trees
@@ -201,7 +337,7 @@ const enforceDeclaredContainerSize = (
     {
       path: ["path"],
       reason: "invalid_value",
-      message: `XAPK members of ${containerPath} declare a combined ${declared} bytes, beyond the ${MAXIMUM_COMPOSED_BYTES}-byte composed image admission cap.`,
+      message: `APK bundle members of ${containerPath} declare a combined ${declared} bytes, beyond the ${MAXIMUM_COMPOSED_BYTES}-byte composed image admission cap.`,
     },
   ]);
 };
@@ -230,16 +366,20 @@ const compareMemberOrder = (
 };
 
 const composeMergedImage = async (
-  container: ZipArtifactReader,
+  container: ArtifactReader,
   containerPath: string,
-  { members, baseName }: XapkCompositionPlan,
+  { members, baseName, expectedDigests }: XapkCompositionPlan,
   root: string,
   operation: AndroidOperation,
   signal: AbortSignal,
+  retainVerificationMembers = false,
 ): Promise<AndroidXapkBundleSnapshot> => {
   const destination = join(root, "bundle.apk");
   const writer = await ComposedImageWriter.create(destination);
   const mergedMembers: string[] = [];
+  const memberDigests: { name: string; sha256: string; bytes: number }[] = [];
+  const verificationMembers: { name: string; path: string; sha256: string }[] =
+    [];
   const composedNames = new Set<string>();
   let dexEntryCount = 0;
   try {
@@ -254,6 +394,26 @@ const composeMergedImage = async (
         operation,
         signal,
       );
+      const memberIdentity = await hashStableFile(stagedPath, signal);
+      memberDigests.push({ name: member.destination, ...memberIdentity });
+      const expectedDigest = expectedDigests?.get(member.destination);
+      if (
+        expectedDigest !== undefined &&
+        (await hashStableFile(stagedPath, signal)).sha256 !== expectedDigest
+      )
+        throw memberIntegrityFailure(
+          containerPath,
+          member.destination,
+          "changed after loose-set admission",
+        );
+      if (retainVerificationMembers) {
+        await chmod(stagedPath, 0o400);
+        verificationMembers.push({
+          name: member.destination,
+          path: stagedPath,
+          sha256: memberIdentity.sha256,
+        });
+      }
       const memberReader = new ZipArtifactReader(
         stagedPath,
         "apk",
@@ -274,7 +434,8 @@ const composeMergedImage = async (
           mergedMembers.push(member.destination);
       } finally {
         await memberReader.close().catch(() => undefined);
-        await rm(stagedPath, { force: true }).catch(() => undefined);
+        if (!retainVerificationMembers)
+          await rm(stagedPath, { force: true }).catch(() => undefined);
       }
     }
     dexEntryCount = [...composedNames].filter((name) =>
@@ -285,7 +446,7 @@ const composeMergedImage = async (
         {
           path: ["path"],
           reason: "invalid_value",
-          message: `XAPK members of ${containerPath} admit no Java entries; jadx reads only *.dex code entries.`,
+          message: `APK bundle members of ${containerPath} admit no Java entries; jadx reads only *.dex code entries.`,
         },
       ]);
     signal.throwIfAborted();
@@ -298,6 +459,8 @@ const composeMergedImage = async (
       sha256,
       members: members.map(({ destination: name }) => name),
       mergedMembers,
+      memberDigests,
+      verificationMembers,
       limitations: composedImageLimitations(mergedMembers, dexEntryCount),
     };
   } catch (cause: unknown) {
@@ -311,7 +474,7 @@ const composeMergedImage = async (
 
 /** Extract one member APK into an exclusively owned regular staging file. */
 const stageMemberApk = async (
-  container: ZipArtifactReader,
+  container: ArtifactReader,
   containerPath: string,
   member: XapkMember,
   stagedPath: string,
@@ -462,7 +625,7 @@ const composedImageLimitations = (
       ? `${mergedMembers[0]} only`
       : `${mergedMembers.length} members (${mergedMembers.join(", ")})`;
   return [
-    `Composed XAPK analysis merged JAVA code of ${scope} (${dexEntryCount} DEX entries) into one analysis image; split resources, native libraries and member signatures were not merged, and the image is not the signed install package.`,
+    `Composed APK bundle analysis merged JAVA code of ${scope} (${dexEntryCount} DEX entries) into one analysis image; split resources, native libraries and member signatures were not merged, and the image is not the signed install package.`,
   ];
 };
 

@@ -25,6 +25,7 @@ export interface JavaScriptSourceAnalysisFailure {
 
 /** Operational choices for source analysis, independent of transport framing. */
 export interface JavaScriptSourceAnalysisLimits {
+  readonly scanShippedMaterial?: boolean | undefined;
   readonly heapMb: number;
   readonly timeoutMs: number;
   /** Larger sources keep static facts only; semantic analysis is skipped. */

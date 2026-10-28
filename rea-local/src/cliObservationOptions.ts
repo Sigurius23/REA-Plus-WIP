@@ -60,11 +60,25 @@ export const electronPageInspectionOptions = z.object({
 });
 
 export const javascriptApplicationOptions = z.object({
+  scanShippedMaterial:
+    javaScriptAnalysisResourceControlsSchema.shape.scan_shipped_material,
   maxHeapMb: javaScriptAnalysisResourceControlsSchema.shape.max_heap_mb,
   analysisTimeoutMs:
     javaScriptAnalysisResourceControlsSchema.shape.analysis_timeout_ms,
   maxSemanticSourceBytes:
     javaScriptAnalysisResourceControlsSchema.shape.max_semantic_source_bytes,
+  pathsInclude: z
+    .array(z.string().min(1))
+    .optional()
+    .describe(
+      "Artifact-relative glob paths that must match to be analyzed; repeat for more. Without it every path is analyzed. '*' and '?' match within one segment, '**' crosses segments",
+    ),
+  pathsExclude: z
+    .array(z.string().min(1))
+    .optional()
+    .describe(
+      "Artifact-relative glob paths that are skipped even when included; repeat for more",
+    ),
   artifactFormat: z
     .enum(["auto", "asar", "directory"])
     .default("auto")

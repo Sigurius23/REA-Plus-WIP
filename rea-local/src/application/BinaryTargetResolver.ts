@@ -267,6 +267,7 @@ const detectArtifactFormat = async (
   | Exclude<
       BinaryTarget["format"],
       | "analysis-database"
+      | "apk-set"
       | "mach-o"
       | "elf"
       | "pe"

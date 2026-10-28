@@ -105,7 +105,7 @@ register("get_class_summary", () =>
     ...(mode === "summary-error" ? { error: "summary timed out" } : {}),
   }),
 );
-register("search_string_constants", ({ query }) => {
+register("search_string_constants", ({ query, scan_mode = "decompiled" }) => {
   if (mode === "string-tool-error")
     return { ...text("string scan aborted"), isError: true };
   if (mode === "wrong-string-query") query = "not-what-you-asked";
@@ -117,20 +117,34 @@ register("search_string_constants", ({ query }) => {
       overload_index: 0,
       overload_count: 1,
       value: "https://api.example.com/v1/fixture",
-      representation: "java",
+      representation: scan_mode === "dex" ? "dex" : "java",
       fell_back: false,
+      dex_location:
+        scan_mode === "dex"
+          ? {
+              input_file: "classes.dex",
+              method_instruction_offset: 0,
+              input_file_offset: 256,
+            }
+          : null,
     },
   ].filter((match) => match.value.includes(query));
   const truncated = mode === "partial-scan";
+  const skipped = mode === "skipped-scan" ? 1 : 0;
   return json({
     query,
+    scan_mode,
     total_classes: classes.length,
     scanned_classes: items.length === 0 ? 0 : 2,
     scanned_methods: items.length === 0 ? 0 : 3,
-    skipped_methods: 0,
+    skipped_methods: skipped,
+    method_cap_skipped_methods: 0,
+    method_cap_skipped_classes: 0,
     truncated,
     coverage:
-      mode === "coverage-disagree" || truncated ? "partial" : "complete",
+      mode === "coverage-disagree" || truncated || skipped > 0
+        ? "partial"
+        : "complete",
     items,
   });
 });

@@ -1,3 +1,4 @@
+import { inspectStandaloneBundlerTablesSteps } from "./javascriptWebpackBootstrap.js";
 import * as t from "@babel/types";
 import {
   ELECTRON_IDENTITY_LIMITATION,
@@ -15,6 +16,8 @@ import {
   failedJavaScriptStaticAnalysis,
   registrationKey,
   sortedUnique,
+  range,
+  sha256Text,
   stringValue,
 } from "./javascriptStaticAnalysisHelpers.js";
 import {
@@ -79,8 +82,13 @@ export function* analyzeParsedJavaScriptStaticSourceSteps(
   source: string,
   file: ParsedJavaScriptSource,
   openReceiverFacts?: ReadonlyMap<number, JavaScriptOpenReceiverFact>,
+  options: { readonly scanShippedMaterial?: boolean } = {},
 ): Generator<void, JavaScriptStaticAnalysis> {
-  const accumulator = createJavaScriptAnalysisAccumulator(source.length);
+  const accumulator = createJavaScriptAnalysisAccumulator(
+    source.length,
+    options.scanShippedMaterial ?? false,
+  );
+  yield* inspectStandaloneBundlerTablesSteps(source, file, accumulator);
   const electronBindings =
     yield* classifyParsedJavaScriptElectronBindingsSteps(file);
   const clientRoots = yield* classifyParsedJavaScriptRpcClientRootsSteps(file);
@@ -105,6 +113,24 @@ function* traverseStaticSourceSteps(
       findings.accumulator.visitedNodes += 1;
       findings.endpointBindings?.enter(node, parent);
       inspectNode(node, findings);
+      if (findings.accumulator.shippedMaterialCandidates !== undefined) {
+        const literal = t.isStringLiteral(node)
+          ? node.value
+          : t.isTemplateLiteral(node) && node.expressions.length === 0
+            ? node.quasis[0]?.value.cooked
+            : undefined;
+        if (
+          typeof literal === "string" &&
+          /^(?:[a-f\d]{32}|[a-f\d]{40}|[a-f\d]{64}|[a-f\d]{128})$/iu.test(
+            literal,
+          )
+        )
+          findings.accumulator.shippedMaterialCandidates.push({
+            literal_length: literal.length,
+            value_sha256: sha256Text(literal),
+            location: range(node),
+          });
+      }
       return undefined;
     },
     exit: (node) => findings.endpointBindings?.exit(node),
@@ -137,6 +163,9 @@ const finalizeStaticAnalysis = (
     "JavaScript syntax was parsed as data and was never evaluated.",
   ];
   return {
+    ...(accumulator.shippedMaterialCandidates === undefined
+      ? {}
+      : { shipped_material_candidates: accumulator.shippedMaterialCandidates }),
     parse_status:
       parserErrors > 0 || accumulator.unknownFindings > 0
         ? "partial"

@@ -346,3 +346,116 @@ const existsOnDisk = async (path: string): Promise<boolean> => {
   const bytes = await readFile(path).catch(() => undefined);
   return bytes !== undefined && bytes.length > 0;
 };
+
+it("admits explicit nested .apks variants and retains original members only for requested signature checks", async () => {
+  const root = await createTestTempDirectory("rea-apks-selection-");
+  const base = await buildApk([
+    ["AndroidManifest.xml", MANIFEST_BYTES],
+    ["classes.dex", DEX_BYTES],
+  ]);
+  const split = await buildApk([["classes.dex", DEX_BYTES]]);
+  const path = await writeFixture(
+    root,
+    "selected.apks",
+    await buildXapk([
+      ["splits/base-master.apk", base],
+      ["splits/feature-master.apk", split],
+      ["standalones/other.apk", base],
+    ]),
+  );
+  const sha256 = createHash("sha256")
+    .update(await readFile(path))
+    .digest("hex");
+  const signal = new AbortController().signal;
+  await expect(
+    composeAndroidXapkBundle(
+      { path, sha256 },
+      root,
+      "search_android_classes",
+      signal,
+      false,
+      { format: "apks" },
+    ),
+  ).rejects.toMatchObject({
+    issues: [
+      expect.objectContaining({
+        message: expect.stringContaining("nested/device-specific"),
+      }),
+    ],
+  });
+  const result = await composeAndroidXapkBundle(
+    { path, sha256 },
+    root,
+    "search_android_classes",
+    signal,
+    true,
+    {
+      format: "apks",
+      apk_members: ["splits/base-master.apk", "splits/feature-master.apk"],
+      base_apk: "splits/base-master.apk",
+    },
+  );
+  expect(result.members).toEqual([
+    "splits/base-master.apk",
+    "splits/feature-master.apk",
+  ]);
+  expect(result.verificationMembers).toHaveLength(2);
+  for (const member of result.verificationMembers)
+    expect(
+      createHash("sha256")
+        .update(await readFile(member.path))
+        .digest("hex"),
+    ).toBe(member.sha256);
+  expect(
+    await entryBytes(result.path, "splits/splits/feature-master/classes.dex"),
+  ).toEqual(Buffer.from(DEX_BYTES));
+});
+
+it("binds loose-set names and bytes to admission and rejects a member changed before composition", async () => {
+  const root = await createTestTempDirectory("rea-apk-directory-");
+  const input = join(root, "input");
+  const output = join(root, "output");
+  await mkdir(input);
+  await mkdir(output);
+  const base = await buildApk([
+    ["AndroidManifest.xml", MANIFEST_BYTES],
+    ["classes.dex", DEX_BYTES],
+  ]);
+  await writeFile(join(input, "base.apk"), base);
+  const { resolveAndroidPackageSetTarget } =
+    await import("../../../src/application/android/AndroidPackageSetTarget.js");
+  const signal = new AbortController().signal;
+  const target = await resolveAndroidPackageSetTarget(
+    input,
+    "inspect_android_package",
+    undefined,
+    signal,
+  );
+  if (target === null) throw new Error("Expected package set");
+  expect(target.apkSetMembers).toMatchObject([
+    { name: "base.apk", bytes: base.length },
+  ]);
+  await writeFile(
+    join(input, "base.apk"),
+    await buildApk([
+      ["AndroidManifest.xml", MANIFEST_BYTES],
+      ["classes.dex", Uint8Array.from([...DEX_BYTES, 1])],
+    ]),
+  );
+  await expect(
+    composeAndroidXapkBundle(
+      target,
+      output,
+      "inspect_android_package",
+      signal,
+      false,
+      { format: "apk-set", directory_members: target.apkSetMembers },
+    ),
+  ).rejects.toMatchObject({
+    issues: [
+      expect.objectContaining({
+        message: expect.stringContaining("changed after loose-set admission"),
+      }),
+    ],
+  });
+});

@@ -12,7 +12,7 @@ export const ANDROID_TOOL_CONTRACTS = [
     name: "inspect_android_package",
     ...toolContractMetadata("inspect_android_package"),
     description:
-      "Inspect a local APK's package, SDK and permission declarations, decoded manifest and class/resource counts. Does not execute the APK or verify signatures. Requires a caller-supplied JADX MCP JAR and JDK; uses one worker in an isolated temporary workspace.",
+      "Inspect local Android package declarations, manifest and class/resource counts. Admits APK, XAPK, explicitly selected .apks/loose APK sets and AAB (configured bundletool, universal fused scope). Optional verify_signatures uses separately configured Android apksig on original APK bytes. Requires a caller-supplied JADX MCP JAR and JDK; no app execution.",
     kind: "android-provider",
     inputSchema: androidInputSchemas.inspect_android_package,
     outputSchema: evidenceResultOf(
@@ -41,7 +41,7 @@ export const ANDROID_TOOL_CONTRACTS = [
     name: "search_android_strings",
     ...toolContractMetadata("search_android_strings"),
     description:
-      "Search dex string constants in an explicit local APK by case-sensitive substring, harvested from each scanned method's decompiled Java or smali body. Reports per-class scan budgets, skipped method bodies and whether a coverage budget truncated the scan; an empty result does not prove absence. Requires a caller-supplied JADX MCP JAR and JDK; no APK execution.",
+      "Search method string constants in a local Android package by case-sensitive substring. Default scan_mode decompiled reads Java/smali bodies; explicit dex reads original const-string/jumbo instructions and reports DEX locations without decompiler cache/method caps. Reports unreadable methods and budget omissions as partial coverage; neither mode covers every string-pool or resource entry. Requires a caller-supplied JADX MCP JAR and JDK; no APK execution.",
     kind: "android-provider",
     inputSchema: androidInputSchemas.search_android_strings,
     outputSchema: evidenceResultOf(androidResultSchemas.search_android_strings),

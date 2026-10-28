@@ -21,8 +21,9 @@ export const snapshotAndroidTarget = async (
   root: string,
   operation: AndroidOperation,
   signal?: AbortSignal,
+  name: "target.apk" | "target.aab" = "target.apk",
 ): Promise<string> => {
-  const snapshot = join(root, "target.apk");
+  const snapshot = join(root, name);
   try {
     await copyAndroidSnapshot(path, snapshot, sha256, signal);
     signal?.throwIfAborted();
@@ -47,8 +48,9 @@ export const snapshotAndroidEngine = async (
   root: string,
   operation: AndroidOperation,
   signal?: AbortSignal,
+  name: "engine.jar" | "apksig.jar" | "bundletool.jar" = "engine.jar",
 ): Promise<{ path: string; sha256: string }> => {
-  const path = join(root, "engine.jar");
+  const path = join(root, name);
   try {
     const observed = await copyAndroidSnapshot(source, path, sha256, signal);
     signal?.throwIfAborted();

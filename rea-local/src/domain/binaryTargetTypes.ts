@@ -115,6 +115,16 @@ export type BinaryTarget =
     })
   | (BinaryTargetIdentity &
       NonExecutableMetadata & {
+        readonly kind: "artifact";
+        readonly format: "apk-set";
+        readonly apkSetMembers: readonly {
+          readonly name: string;
+          readonly sha256: string;
+          readonly bytes: number;
+        }[];
+      })
+  | (BinaryTargetIdentity &
+      NonExecutableMetadata & {
         readonly kind: "database";
         readonly format: "analysis-database";
       })
@@ -126,6 +136,8 @@ export type BinaryTarget =
           | "ipa"
           | "apk"
           | "xapk"
+          | "apks"
+          | "aab"
           | "msix"
           | "appx"
           | "hap"

@@ -25,6 +25,10 @@ import type {
   JavaScriptArtifactContainer,
   JavaScriptArtifactFileSet,
 } from "../../domain/javascript/javascriptArtifactFiles.js";
+import {
+  UNFILTERED_JAVASCRIPT_PATH_SCOPE,
+  type JavaScriptAnalysisPathScope,
+} from "../../domain/javascript/javascriptAnalysisPathScope.js";
 
 interface ExpectedFile {
   readonly path: string;
@@ -37,6 +41,18 @@ interface ExpectedFile {
 interface ExpectedContainer {
   readonly hash_status: ArtifactOccurrence["hash_status"];
   readonly inventory: JavaScriptArtifactContainer | null;
+}
+
+/** Relevant-entry accounting before and after the path scope. */
+interface ExpectedInventory {
+  readonly files: ReadonlyMap<string, ExpectedFile>;
+  readonly containers: ReadonlyMap<string, ExpectedContainer>;
+
+  /** Relevant entries that stayed admitted; the unfiltered count equals the map size. */
+  readonly consideredFiles: number;
+
+  /** Relevant entries the path scope rejected. */
+  readonly excludedFiles: number;
 }
 
 interface ReadContext {
@@ -57,12 +73,17 @@ interface ReadTextInput {
   readonly expected: ExpectedFile;
 }
 
-/** Read all relevant textual entries through an already-inventoried reader. */
+/**
+ * Read the path-scope's admitted relevant textual entries through an
+ * already-inventoried reader. Without a scope every relevant entry is read,
+ * and the scope accounting still report zero exclusions.
+ */
 export const readJavaScriptArtifactFiles = async (
   reader: ArtifactReader,
   snapshot: ArtifactInventorySnapshot,
   resources: ArtifactResourceScope,
   signal?: AbortSignal,
+  pathScope: JavaScriptAnalysisPathScope = UNFILTERED_JAVASCRIPT_PATH_SCOPE,
 ): Promise<JavaScriptArtifactFileSet> => {
   if (reader instanceof AsarArtifactReader) {
     const root = snapshot.nodes.find(
@@ -79,7 +100,7 @@ export const readJavaScriptArtifactFiles = async (
       signal,
     );
   }
-  const inventory = expectedInventory(snapshot);
+  const inventory = expectedInventory(snapshot, pathScope);
   const expected = inventory.files;
   const context: ReadContext = {
     resources,
@@ -104,6 +125,13 @@ export const readJavaScriptArtifactFiles = async (
     ),
     text_bytes_read: context.textBytes,
     invalid_utf8_files: context.invalidUtf8,
+    paths_scope: {
+      paths_include: [...pathScope.paths_include],
+      paths_exclude: [...pathScope.paths_exclude],
+      considered_files: inventory.consideredFiles + inventory.excludedFiles,
+      selected_files: inventory.files.size,
+      excluded_files: inventory.excludedFiles,
+    },
   };
 };
 
@@ -308,13 +336,13 @@ const verifyEntryBytes = async (
 
 const expectedInventory = (
   snapshot: ArtifactInventorySnapshot,
-): {
-  readonly files: ReadonlyMap<string, ExpectedFile>;
-  readonly containers: ReadonlyMap<string, ExpectedContainer>;
-} => {
+  pathScope: JavaScriptAnalysisPathScope,
+): ExpectedInventory => {
   const nodes = new Map(snapshot.nodes.map((node) => [node.artifact_id, node]));
   const files = new Map<string, ExpectedFile>();
   const containers = new Map<string, ExpectedContainer>();
+  let considered = 0;
+  let excluded = 0;
   for (const occurrence of snapshot.occurrences) {
     if (occurrence.logical_path === ".") continue;
     const isNestedAsar =
@@ -350,6 +378,11 @@ const expectedInventory = (
       });
     const kind = relevantKind(occurrence.logical_path);
     if (kind === undefined) continue;
+    if (!pathScope.considersPath(occurrence.logical_path)) {
+      excluded += 1;
+      continue;
+    }
+    considered += 1;
     files.set(occurrence.logical_path, {
       path: occurrence.logical_path,
       sha256: node.sha256,
@@ -358,7 +391,12 @@ const expectedInventory = (
       kind,
     });
   }
-  return { files, containers };
+  return {
+    files,
+    containers,
+    consideredFiles: considered,
+    excludedFiles: excluded,
+  };
 };
 
 const readAll = async (

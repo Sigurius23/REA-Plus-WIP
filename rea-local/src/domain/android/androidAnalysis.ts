@@ -1,9 +1,31 @@
 import { z } from "zod";
+import { apkSignatureVerificationSchema } from "./apkSignatureVerification.js";
 import { localPathStringSchema } from "../localPath.js";
 
+// Segment alternatives reject empty/dot/dot-dot paths without look-around,
+// keeping the advertised pattern portable to RE2/Rust schema consumers.
+const memberPath = z
+  .string()
+  .min(1)
+  .regex(
+    /^(?:(?:[^.\/\\\x00][^\/\\\x00]*|\.[^.\/\\\x00][^\/\\\x00]*|\.\.[^\/\\\x00]+)\/)*[^\/\\\x00]+\.[aA][pP][kK]$/u,
+    "Expected an artifact-relative APK member path without traversal",
+  );
 const target = {
+  apk_members: z
+    .array(memberPath)
+    .min(1)
+    .optional()
+    .describe(
+      "Explicit APK variant selection for an .apks archive or loose set; paths are preserved, never device-selected.",
+    ),
+  base_apk: memberPath
+    .optional()
+    .describe(
+      "Base APK member among the selected .apks/loose-set members; otherwise only an unambiguous base.apk, base-master.apk or universal.apk is accepted.",
+    ),
   path: localPathStringSchema.describe(
-    "Local APK path; the target is never executed",
+    "Local APK, XAPK, selected .apks, loose APK directory or AAB path; the target is never executed",
   ),
 };
 const classTarget = {
@@ -13,29 +35,73 @@ const classTarget = {
 
 /** Caller intent for static Android inspection, independent of its engine. */
 export const androidInputSchemas = {
-  inspect_android_package: z.strictObject(target),
+  inspect_android_package: z.strictObject({
+    ...target,
+    verify_signatures: z
+      .boolean()
+      .optional()
+      .describe(
+        "Verify original APK signatures using an explicitly configured REA_APKSIG_JAR; XAPK members are checked separately.",
+      ),
+  }),
   search_android_classes: z.strictObject({
     ...target,
     query: z
       .string()
       .describe("Case-sensitive class-name substring; empty lists all classes"),
   }),
-  search_android_strings: z.strictObject({
-    ...target,
-    query: z
-      .string()
-      .min(1)
-      .describe("Case-sensitive substring to find in dex string constants"),
-    class_limit: z
-      .number()
-      .int()
-      .positive()
-      .max(8192)
-      .optional()
-      .describe(
-        "Class identities to scan (default 256, cap 8192); raise to cover a whole small APK",
-      ),
-  }),
+  search_android_strings: z.union([
+    z.strictObject({
+      ...target,
+      analysis_timeout_ms: z
+        .number()
+        .int()
+        .min(1)
+        .max(2147483647)
+        .optional()
+        .describe(
+          "Total Android string-search deadline in milliseconds, including acquisition and decompilation; defaults to 120000.",
+        ),
+      query: z
+        .string()
+        .min(1)
+        .describe("Case-sensitive substring to find in dex string constants"),
+      scan_mode: z.literal("decompiled").optional(),
+      class_limit: z
+        .number()
+        .int()
+        .positive()
+        .max(8192)
+        .optional()
+        .describe("Method-body scan classes: default 256, cap 8192."),
+    }),
+    z.strictObject({
+      ...target,
+      analysis_timeout_ms: z
+        .number()
+        .int()
+        .min(1)
+        .max(2147483647)
+        .optional()
+        .describe(
+          "Total Android string-search deadline in milliseconds, including acquisition and decompilation; defaults to 120000.",
+        ),
+      query: z
+        .string()
+        .min(1)
+        .describe("Case-sensitive substring to find in dex string constants"),
+      scan_mode: z.literal("dex"),
+      class_limit: z
+        .number()
+        .int()
+        .positive()
+        .max(2147483647)
+        .optional()
+        .describe(
+          "Raw DEX instruction-scan classes: default 256; no decompiler cache cap.",
+        ),
+    }),
+  ]),
   inspect_android_class: z.strictObject(classTarget),
   inspect_android_method: z.strictObject({
     ...classTarget,
@@ -241,7 +307,10 @@ export const androidResultSchemas = {
     manifest: textCoverage,
     class_count: z.number().int().nonnegative(),
     resource_count: z.number().int().nonnegative(),
-    signature_verification: z.literal("not_performed"),
+    signature_verification: z.union([
+      z.literal("not_performed"),
+      apkSignatureVerificationSchema,
+    ]),
   }),
   search_android_classes: z.strictObject({
     ...common,
@@ -258,15 +327,24 @@ export const androidResultSchemas = {
   search_android_strings: z.strictObject({
     ...common,
     query: z.string(),
+    scan_mode: z.enum(["decompiled", "dex"]),
     total_classes: z.number().int().nonnegative(),
     scanned_classes: z.number().int().nonnegative(),
     scanned_methods: z.number().int().nonnegative(),
+    method_cap_skipped_methods: z
+      .number()
+      .int()
+      .nonnegative()
+      .describe(
+        "Methods omitted by the per-class method budget, separately from engine failures and unvisited classes.",
+      ),
+    method_cap_skipped_classes: z.number().int().nonnegative(),
     skipped_methods: z
       .number()
       .int()
       .nonnegative()
       .describe(
-        "Method bodies the engine could not produce; they are skipped, not denied",
+        "Methods the engine could not read in the selected mode; each omission makes coverage partial",
       ),
     matches: z.array(
       z.strictObject({
@@ -275,14 +353,25 @@ export const androidResultSchemas = {
         overload_index: z.number().int().nonnegative(),
         overload_count: z.number().int().positive(),
         value: z.string(),
-        representation: z.enum(["java", "smali"]),
+        representation: z.enum(["java", "smali", "dex"]),
         fell_back: z.boolean(),
+        dex_location: z
+          .strictObject({
+            input_file: z.string().nullable(),
+            method_instruction_offset: z
+              .number()
+              .int()
+              .nonnegative()
+              .nullable(),
+            input_file_offset: z.number().int().nonnegative().nullable(),
+          })
+          .nullable(),
       }),
     ),
     coverage: z
       .enum(["complete", "partial"])
       .describe(
-        "partial when a scan budget stopped the search; a complete empty result still does not prove absence, because only scanned method bodies in decompiled or smali form are searched",
+        "partial when a scan budget stopped the search or any method was unreadable; a complete empty result still does not prove absence, because the selected mode examines method bodies or raw const-string instructions, not every string-pool, annotation or resource entry",
       ),
   }),
   inspect_android_class: z.strictObject({

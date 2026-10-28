@@ -1,3 +1,8 @@
+import {
+  verifyApkSignatures,
+  type ApkSignatureContext,
+} from "./ApkSignatureVerification.js";
+import { androidResultSchemas } from "../domain/android/androidAnalysis.js";
 import { Client } from "@modelcontextprotocol/client";
 import {
   createAnalysisExecution,
@@ -72,6 +77,8 @@ export class JadxSession {
     readonly signal: AbortSignal;
     /** Admission-scope notes appended to the producer's own limitations. */
     readonly limitations?: readonly string[];
+    readonly signatures?: ApkSignatureContext;
+    readonly admission?: JsonValue;
   }): Promise<AnalysisExecution> {
     const { request, target, snapshot, jarHash, signal } = context;
     this.#partialContext = {
@@ -144,13 +151,26 @@ export class JadxSession {
         heap_limit_mib:
           Math.floor(runtime.max_heap_bytes / (1024 * 1024)) || null,
       } as const;
-      const result = await analyzeJadxRequest(tools, request, loaded, engine);
+      const analyzed = await analyzeJadxRequest(tools, request, loaded, engine);
+      const result =
+        context.signatures === undefined
+          ? analyzed
+          : androidResultSchemas.inspect_android_package.parse({
+              ...androidResultSchemas.inspect_android_package.parse(analyzed),
+              signature_verification: await verifyApkSignatures(
+                tools,
+                context.signatures,
+              ),
+            });
       return createAnalysisExecution(result, JADX_PROVIDER_IDENTITY, {
         rawResult: {
           server,
           bridge_sha256: context.bridgeHash,
           jar_sha256: jarHash,
           loaded,
+          ...(context.admission === undefined
+            ? {}
+            : { admission: context.admission }),
           calls: this.#observedCalls,
         },
         subject: target,
@@ -217,7 +237,13 @@ export class JadxSession {
       signal.throwIfAborted();
       const response = await this.#client.callTool(
         { name, arguments: input },
-        { timeout: 120_000, signal },
+        {
+          timeout:
+            request.operation === "search_android_strings"
+              ? (request.input.analysis_timeout_ms ?? 120_000)
+              : 120_000,
+          signal,
+        },
       );
       const observedResponse = jsonValueSchema.parse(response);
       const call = { operation: name, input, response: observedResponse };

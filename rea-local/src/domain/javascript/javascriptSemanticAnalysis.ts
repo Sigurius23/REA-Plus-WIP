@@ -1169,3 +1169,35 @@ const addAssignment = (
   binding.definitions.push({ kind: "assignment", location: range(identifier) });
   binding.initializers.push({ node: initializer, projection: [] });
 };
+
+/** Lexical identity for narrow syntax consumers, without running the general value/flow collectors. */
+export interface JavaScriptLexicalBindingIndex {
+  readonly initializerIsUnconditional: (node: t.Node) => boolean;
+  readonly resolve: (
+    node: t.Identifier,
+  ) => JavaScriptSemanticBindingState | undefined;
+  readonly origin: (node: t.Identifier) => JavaScriptModuleOrigin | undefined;
+}
+
+/** Reuse the owning declaration/scope rules for helper and bundle analysis. */
+export function* createJavaScriptLexicalBindingIndexSteps(
+  file: ParsedJavaScriptSource,
+): Generator<void, JavaScriptLexicalBindingIndex> {
+  const state = createState(file.program);
+  yield* collectDefinitionsSteps(file.program, state);
+  const resolve = (node: t.Identifier) =>
+    semanticResolutionBlocked(state, node, node.name)
+      ? undefined
+      : resolveSemanticBindingState(state, node, node.name);
+  return {
+    resolve,
+    initializerIsUnconditional: (node) =>
+      !state.conditionalInitializers.has(node),
+    origin: (node) => {
+      const binding = resolve(node);
+      return binding === undefined || binding.definitions.length !== 1
+        ? undefined
+        : bindingOrigin(binding, state);
+    },
+  };
+}

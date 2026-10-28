@@ -55,6 +55,8 @@ const artifactFormatSchema = z.enum([
   "ipa",
   "apk",
   "xapk",
+  "apks",
+  "aab",
   "msix",
   "appx",
   "hap",

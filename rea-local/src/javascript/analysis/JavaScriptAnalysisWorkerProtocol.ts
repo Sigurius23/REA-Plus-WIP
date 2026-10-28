@@ -14,6 +14,7 @@ export const JAVASCRIPT_ANALYSIS_WORKER_DEFAULTS = {
 /** Caller-selected artifact identity, separate from the decoded source-text digest. */
 export const javaScriptWorkerRequestSchema = z.strictObject({
   id: z.uuid(),
+  scan_shipped_material: z.boolean().optional(),
   node_budget: z.number().int().min(0).max(20_000),
   text_sha256: digestSchema,
   file: z.strictObject({

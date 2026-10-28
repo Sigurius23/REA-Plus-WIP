@@ -87,6 +87,12 @@ export const javaScriptAnalysisCoverageLimits = (
 
 /** Optional operational choices; omission keeps them out of Evidence parameters. */
 export const javaScriptAnalysisResourceControlsSchema = z.strictObject({
+  scan_shipped_material: z
+    .boolean()
+    .optional()
+    .describe(
+      "Opt-in filename/JavaScript-literal candidate scan. It does not prove secrecy, key validity or private-key presence.",
+    ),
   max_heap_mb: z
     .number()
     .int()

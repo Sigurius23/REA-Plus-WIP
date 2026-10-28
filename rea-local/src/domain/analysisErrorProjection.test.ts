@@ -602,3 +602,24 @@ describe("analysis error projection: evidence files", () => {
     },
   );
 });
+
+it("names result capacity without promising that an unchanged retry or worker heap increase fixes it", () => {
+  const projected = projectAnalysisError(
+    new AnalysisResourceConstraintError(
+      "analyze_javascript_application",
+      "memory",
+      "Expanded relationships exceed capacity",
+      {
+        parent_result_budget_bytes: 1024,
+        application_projection_required_bytes: 2048,
+      },
+    ),
+  );
+  expect(projected.retryable).toBe(false);
+  expect(projected.remediation.action).toContain("parent_result_budget_bytes");
+  expect(projected.remediation.action).toContain("unchanged limits");
+  expect(projected.remediation.action).toContain(
+    "not the parent result budget",
+  );
+  expect(projected.remediation.action).not.toContain("sufficient memory");
+});

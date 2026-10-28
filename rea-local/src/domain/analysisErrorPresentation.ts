@@ -4,6 +4,7 @@ import {
   AnalysisInputError,
   AnalysisUnsupportedTargetError,
   AnalysisResourceConstraintError,
+  AnalysisTimeoutError,
 } from "./analysisErrorCore.js";
 import { ArtifactOperationError } from "./artifactOperationError.js";
 import {
@@ -49,8 +50,13 @@ export const analysisErrorRemediationAction = (
           ? "Review the reported worker CPU limits and observed signal. Retry with sufficient CPU time or a smaller artifact; REA+ retains tighter inherited limits."
           : error.resource === "file-size"
             ? "Review the reported worker file-size limits and write failure. Retry with a sufficient file-size allowance for the evidence reply; REA+ retains tighter inherited limits."
-            : "Review the reported worker memory limits and available host memory. Retry with sufficient memory or a smaller artifact; REA+ retains tighter inherited limits.")
+            : memoryConstraintRemediation(error))
     );
+  if (
+    error instanceof AnalysisTimeoutError &&
+    error.operation === "search_android_strings"
+  )
+    return "Increase analysis_timeout_ms or reduce class_limit before retrying this Android string search. An unchanged deadline may reproduce the timeout; completed provider replies remain in partial_observation.";
   if (error instanceof HopperTimeoutError)
     return error.operation === undefined
       ? "Inspect Hopper for a loader or license dialog and review details.launcher. Correct the loader configuration or complete Hopper setup, then open the target again."
@@ -88,6 +94,17 @@ export const analysisErrorRemediationAction = (
   if (error instanceof UnknownRegistryError && error.reason === "not-found")
     return "Check that the unknown_id belongs to this session, then retry.";
   return analysisErrorUserMessage(error);
+};
+
+const memoryConstraintRemediation = (
+  error: AnalysisResourceConstraintError,
+): string => {
+  const budgets = Object.keys(error.reportedLimits ?? {}).filter((key) =>
+    /(?:budget_bytes|node_budget)$/u.test(key),
+  );
+  if (budgets.length > 0)
+    return `The reported ${budgets.join(", ")} capacity must increase, or the selected analysis scope must decrease. These are reported capacity fields, not necessarily caller options. Retrying the same artifact with unchanged limits is expected to reproduce this failure; increasing max_heap_mb only changes the worker heap, not the parent result budget.`;
+  return "Review the reported worker memory limits and available host memory. Change the applicable limit or reduce the analysis scope before retrying; unchanged limits may reproduce the failure. REA+ retains tighter inherited limits.";
 };
 
 export const analysisErrorCategory = (

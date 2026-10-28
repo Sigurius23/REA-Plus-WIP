@@ -154,11 +154,8 @@ export const analyzeAndAdoptJavaScriptArtifactFiles = async (
         await completeJavaScriptAnalysisSteps(steps, signal);
         continue;
       }
-      const result = await worker.analyze(
-        file,
-        projection.remainingFileNodeBudget(),
-        signal,
-      );
+      const nodeBudget = projection.remainingFileNodeBudget();
+      const result = await worker.analyze(file, nodeBudget, signal);
       const facts = result.ok ? result.value : result.error;
       const applicationProjectionFailure = facts.applicationProjectionFailure;
       if (facts.projection !== null)
@@ -182,6 +179,15 @@ export const analyzeAndAdoptJavaScriptArtifactFiles = async (
         file,
         javascript: facts.javascript,
         semantic: facts.module === null ? null : { ir: facts.module },
+        semantic_projection: {
+          status:
+            facts.projection === null
+              ? "not-retained"
+              : facts.projection.truncated
+                ? "partial"
+                : "retained",
+          node_budget: nodeBudget,
+        },
         ...(failure === undefined ? {} : { analysis_failure: failure }),
         ...(applicationProjectionFailure === undefined
           ? {}

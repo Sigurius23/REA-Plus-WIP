@@ -265,6 +265,33 @@ it("rejects a different string-constant query echo", async () => {
   await provider.close();
 });
 
+it("retains raw DEX locations and marks unreadable methods as partial coverage", async () => {
+  const { service, apk, provider } = await setup("skipped-scan");
+  const outcome = await service.execute("search_android_strings", {
+    path: apk,
+    query: "api.example.com",
+    scan_mode: "dex",
+    class_limit: 2147483647,
+  });
+  if (!outcome.ok) throw outcome.error;
+  expect(outcome.value.normalized_result).toMatchObject({
+    scan_mode: "dex",
+    skipped_methods: 1,
+    coverage: "partial",
+    matches: [
+      {
+        representation: "dex",
+        dex_location: {
+          input_file: "classes.dex",
+          method_instruction_offset: 0,
+          input_file_offset: 256,
+        },
+      },
+    ],
+  });
+  await provider.close();
+});
+
 it("rejects incoherent string-constant coverage reporting", async () => {
   const { service, apk, provider } = await setup("coverage-disagree");
   const outcome = await service.execute("search_android_strings", {

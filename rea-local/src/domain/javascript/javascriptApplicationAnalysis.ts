@@ -16,6 +16,10 @@ import { integrityContradictionSchema } from "../artifactGraph.js";
 import { artifactIntegrityPolicySchema } from "../artifactIntegrityPolicy.js";
 import { localPathStringSchema } from "../localPath.js";
 import { javaScriptAnalysisResourceControlsSchema } from "./javascriptAnalysisResourceControls.js";
+import {
+  javascriptAnalysisPathScopeSchema,
+  javaScriptPathScopeSummarySchema,
+} from "./javascriptAnalysisPathScope.js";
 
 const countSchema = z.number().int().min(0);
 
@@ -25,6 +29,7 @@ export const analyzeJavaScriptApplicationInputSchema = z.strictObject({
   format: z.enum(["auto", "asar", "directory"]).default("auto"),
   integrity_policy: artifactIntegrityPolicySchema,
   ...javaScriptAnalysisResourceControlsSchema.shape,
+  ...javascriptAnalysisPathScopeSchema.shape,
 });
 
 /** Compact counts for the high-level Electron architecture/security surface. */
@@ -52,7 +57,7 @@ const electronBoundarySummarySchema = z.strictObject({
   resolved_native_addon_bindings: countSchema,
 });
 
-const reconstructionStatisticsSchema = z.strictObject({
+const reconstructionStatisticsFields = {
   relevant_files: countSchema,
   nested_asar_containers: countSchema,
   text_bytes_read: countSchema,
@@ -60,9 +65,20 @@ const reconstructionStatisticsSchema = z.strictObject({
   parsed_javascript_files: countSchema,
   visited_ast_nodes: countSchema,
   findings: countSchema,
-  modules: countSchema,
+  modules: countSchema.describe(
+    "Legacy name: recovered bundled module registrations, summed across bundler tables. This is not the number of application graph module or asset nodes; zero means no registrations were recovered.",
+  ),
   parse_failures: countSchema,
-});
+} as const;
+
+// Preserve omission in historical Evidence without an undefined-valued JSON field.
+const reconstructionStatisticsSchema = z.union([
+  z.strictObject({
+    ...reconstructionStatisticsFields,
+    paths_scope: javaScriptPathScopeSummarySchema,
+  }),
+  z.strictObject(reconstructionStatisticsFields),
+]);
 
 const applicationAnalysisResultShape = z.strictObject({
   input_path: z.string().min(1),

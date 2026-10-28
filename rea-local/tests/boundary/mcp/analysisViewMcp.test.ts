@@ -26,6 +26,7 @@ import {
 } from "../../fixtures/analysisView.js";
 import { createTestBinarySession } from "../../fixtures/binarySession.js";
 import { BINARY_LAYOUT_TEST_PROVIDER } from "../../fixtures/binaryDiagnostics/layout.js";
+import { javascriptFileStatusAnalysis } from "../../fixtures/javascriptFileStatusView.js";
 
 const connect = async (binaryLayout?: BinaryLayoutService) => {
   const session = createTestBinarySession(() => {
@@ -47,6 +48,129 @@ const connect = async (binaryLayout?: BinaryLayoutService) => {
   await client.connect(clientTransport);
   return { client, session };
 };
+
+it("advertises and pages retained per-file issues with compact source-bound metadata", async () => {
+  const { client, session } = await connect();
+  const parent = analysisViewJavaScriptEvidence(javascriptFileStatusAnalysis());
+  const retained = session.recordEvidence(parent);
+  if (!retained.ok) throw retained.error;
+  const advertised = (await client.listTools()).tools.find(
+    (tool) => tool.name === "inspect_analysis_view",
+  );
+  if (advertised?.outputSchema === undefined)
+    throw new Error("Missing view schema");
+  const ajv = new Ajv2020({ strict: false, validateFormats: false });
+  const inputSchema: Record<string, unknown> = advertised.inputSchema;
+  const outputSchema: Record<string, unknown> = advertised.outputSchema;
+  const arguments_ = {
+    source: { kind: "retained-evidence", evidence_id: parent.evidence_id },
+    view: { kind: "page", collection: "file_statuses", offset: 0, limit: 1 },
+  };
+  expect(
+    ajv.validate(inputSchema, arguments_),
+    JSON.stringify(ajv.errors),
+  ).toBe(true);
+  expect(
+    ajv.validate(inputSchema, {
+      ...arguments_,
+      view: { ...arguments_.view, collection: "modules", filter: "all" },
+    }),
+  ).toBe(false);
+  const response = await client.callTool({
+    name: "inspect_analysis_view",
+    arguments: arguments_,
+  });
+  expect(response.isError).not.toBe(true);
+  expect(
+    ajv.validate(outputSchema, response.structuredContent),
+    JSON.stringify(ajv.errors),
+  ).toBe(true);
+  const evidence = toolContract("inspect_analysis_view").outputSchema.parse(
+    response.structuredContent,
+  );
+  expect(evidence.normalized_result).toMatchObject({
+    kind: "page",
+    parent_evidence_id: parent.evidence_id,
+    file_status_summary: {
+      files: 7,
+      files_with_issues: 3,
+      files_without_retention_metadata: 2,
+    },
+    coverage: { total: 3, examined: 1, next_offset: 1 },
+    items: [{ path: "blocked.js", issues: [{ code: "resource_constraint" }] }],
+  });
+  expect(JSON.stringify(response)).not.toContain("PRIVATE_");
+  expect(session.evidenceById(evidence.evidence_id)).toEqual(
+    parseEvidence(evidence),
+  );
+  await client.ping();
+});
+
+it("publishes and serves the endpoint, bridge and material page contracts on one MCP connection", async () => {
+  const { client, session } = await connect();
+  const parent = analysisViewJavaScriptEvidence(javascriptFileStatusAnalysis());
+  expect(session.recordEvidence(parent).ok).toBe(true);
+  const advertised = (await client.listTools()).tools.find(
+    (tool) => tool.name === "inspect_analysis_view",
+  );
+  if (advertised?.outputSchema === undefined)
+    throw new Error("Missing view contracts");
+  const ajv = new Ajv2020({ strict: false, validateFormats: false });
+  const inputSchema: Record<string, unknown> = advertised.inputSchema;
+  const outputSchema: Record<string, unknown> = advertised.outputSchema;
+  for (const collection of [
+    "endpoints",
+    "context_bridges",
+    "shipped_material",
+  ]) {
+    const arguments_ = {
+      source: { kind: "retained-evidence", evidence_id: parent.evidence_id },
+      view: {
+        kind: "page",
+        collection,
+        offset: 0,
+        limit: 4,
+        ...(collection === "endpoints"
+          ? { bindings: { "process.env.API": "https://fixture.invalid" } }
+          : {}),
+      },
+    };
+    expect(
+      ajv.validate(inputSchema, arguments_),
+      JSON.stringify(ajv.errors),
+    ).toBe(true);
+    const response = await client.callTool({
+      name: "inspect_analysis_view",
+      arguments: arguments_,
+    });
+    expect(response.isError).not.toBe(true);
+    expect(
+      ajv.validate(outputSchema, response.structuredContent),
+      JSON.stringify(ajv.errors),
+    ).toBe(true);
+    const parsed = toolContract("inspect_analysis_view").outputSchema.parse(
+      response.structuredContent,
+    );
+    expect(parsed.normalized_result).toMatchObject({
+      kind: "page",
+      view: { collection },
+      parent_evidence_id: parent.evidence_id,
+    });
+  }
+  expect(
+    ajv.validate(inputSchema, {
+      source: { kind: "retained-evidence", evidence_id: parent.evidence_id },
+      view: {
+        kind: "page",
+        collection: "context_bridges",
+        bindings: {},
+        offset: 0,
+        limit: 4,
+      },
+    }),
+  ).toBe(false);
+  await client.ping();
+});
 
 it("discovers an oversized native dossier by exact metadata and reads its retained view", async () => {
   const { client, session } = await connect();

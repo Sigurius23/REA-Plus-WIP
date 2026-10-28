@@ -1,4 +1,5 @@
 import * as t from "@babel/types";
+import { endpointTemplateParts } from "./javascriptEndpointTemplates.js";
 
 import { sanitizeEndpointCandidate } from "../browserObservation.js";
 import {
@@ -197,6 +198,7 @@ const inspectEndpointCall = (
       node,
       kind: "network",
       value: endpoint,
+      ...endpointParts(node, endpoint, context),
       mechanism: `call:${name}`,
     });
 };
@@ -302,6 +304,28 @@ export const addReference = (
   });
 };
 
+const endpointParts = (
+  node: JavaScriptCallLike,
+  value: string,
+  context: FindingContext,
+): Pick<EndpointInput, "template_parts"> => {
+  if (sanitizeEndpointCandidate(value) !== value) return {};
+  for (const argument of node.arguments) {
+    if (
+      !t.isNode(argument) ||
+      context.endpointBindings?.resolve(argument) !== value
+    )
+      continue;
+    const expression = context.endpointBindings.expression(argument);
+    const parts =
+      expression === undefined
+        ? undefined
+        : endpointTemplateParts(expression, context.source);
+    if (parts !== undefined) return { template_parts: parts };
+  }
+  return {};
+};
+
 const addEndpoint = (context: FindingContext, input: EndpointInput): void =>
   addLocatedFinding(context, {
     collection: context.accumulator.endpoints,
@@ -310,6 +334,9 @@ const addEndpoint = (context: FindingContext, input: EndpointInput): void =>
     value: {
       kind: input.kind,
       value: sanitizeEndpointCandidate(input.value),
+      ...(input.template_parts === undefined
+        ? {}
+        : { template_parts: input.template_parts }),
       mechanism: input.mechanism,
       module_key: null,
       location: range(input.node),

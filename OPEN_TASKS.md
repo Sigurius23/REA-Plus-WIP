@@ -22,20 +22,21 @@ Open work on `main` following PR #1 and the field tests.
 ## Branch, gate and git
 
 1. **Gate verification (`npm run check:pr`):**
-   - **Green end to end on 2026-10-27 (exit 0)** against the current Android
-     and JavaScript follow-ups: typecheck, lint (824 warnings, 0 errors),
-     format (`oxfmt`), knip, metadata, `docs:check`, jscpd (**2.50%**, below
-     2.6%), `scan:todos`, and the full suite: **904 files / 8,408 tests passed;
-     16 files / 274 tests skipped; 0 failures**. The test phase took 1,264.69 s.
-     Optional provider skips are not real-provider verification. See
-     [gate report](field-tests/rea-check-pr-2026-10-27.md) and its raw log.
+   - The earlier 2026-10-27 gate passed 904 files / 8,408 tests, with 16 files /
+     274 tests skipped. See [earlier gate report](field-tests/rea-check-pr-2026-10-27.md).
+   - **Final reviewed offline-backlog gate passed on 2026-10-28 (exit 0):**
+     **912 files / 8,442 tests passed; 16 files / 274 tests skipped; zero
+     failures**. The test phase took 1,065.46 s. Types, lint (852 warnings,
+     zero errors), formatting, unused code, metadata, documentation, jscpd
+     (**2.50%**) and tech-debt scanning passed. Provider skips do not establish
+     real-provider coverage. See
+     [offline verification](field-tests/rea-offline-backlog-2026-10-27.md).
 2. **Branch state and push:**
-   - `main` is **0 ahead / 0 behind** `origin/main`; nothing to push.
-   - The working tree does hold **uncommitted** follow-ups (Android XAPK
-     manifest validation, method-annotation snapshotting in the JADX bridge,
-     expanded tests, docs; see item 8), JavaScript budget/module-resolution
-     work, and the Rize field-test artifacts. The gate passed (item 1);
-     changes remain uncommitted. Re-check ahead/behind after committing.
+   - With the offline-backlog commit, `main` is **10 ahead / 0 behind** the
+     locally recorded `origin/main`; the remote was not refreshed.
+   - Relevant source, tests, documentation and compact verification records are
+     committed. Private target inputs, large generated Evidence and unrelated
+     local work stay outside the commit. No push was performed for this batch.
 
 ## DEX support
 
@@ -57,45 +58,24 @@ Open work on `main` following PR #1 and the field tests.
    - Page past the first 2,000 strings (`strings_offset`, `strings_limit`), and expose `res/xml` files such as the network security config (`include_xml_resources`).
 7. **`inspect-android-class` / `inspect-android-method`:** (done in `eb83e19`)
    - Show annotation values (e.g., Retrofit API paths) and static field initial values via JADX bridge without runtime class loading.
-8. **Android package formats and validation:** (done in `7795b12`)
-   - XAPK: done. `.xapk` containers are admitted by all five Android
-     operations (`APK_CONTAINER_FORMATS`); `AndroidXapkBundle.ts` validates the
-     top-level `manifest.json` + `base.apk` shape, composes a stored-entry
-     4 GiB-capped `bundle.apk` (base entries verbatim, split `*.dex` entries
-     merged under `splits/<member>/<name>` colliding aliases), retires staged
-     members, and records the merge scope in Evidence limitations. Round-trip
-     tests: `tests/boundary/process/androidXapkBundle.test.ts`. A `.aab` and
-     loose split-APK sets (directories, `.apks`) remain unsupported forms.
-   - Split-APK bundles: documented-only for now. ADB `pull_adb_package` already
-     pulls the complete split set digested per file; a directory/`.apks`
-     admission flow would be the natural follow-up once a caller owns one.
-   - APK signature verification: not implemented, deliberately. v1/v2/v3
-     schemes mean real crypto (message digests, RSA/ECDSA, byte-range offsets
-     over signed regions up through the APK Signing Block) whose honest home is
-     a dedicated adapter with its own Evidence authority, not jadx's; today
-     `inspect_android_package` reports signing as `not_performed` and the
-     signature blocks stay visible to inventory/extraction. Recommend building
-     it only when a caller task actually needs tamper/lift detection.
-     (Re-registered as item 27 in the gap registry.)
-   - **Uncommitted follow-ups present in the working tree (2026-10-26), to be
-     committed after the gate:** strict/checked XAPK manifest handling
-     (new `AndroidXapkManifest.ts`: 1 MiB-bounded manifest JSON, zod schema,
-     base-name resolution from the *declared* entry — never renaming a base to
-     `base.apk`), round-trip test expansion in
-     `tests/boundary/process/androidXapkBundle.test.ts`, method-annotation
-     snapshotting in `ReaJadxBridge.java` (attributes are captured pre-codegen,
-     since code generation clears attributes and replaces annotation literals
-     with derived field references — this also tightens item 7's behavior),
-     plus matching `docs/android-analysis.md` and fixture updates.
-9. **Android string constants and bytecode searching:** (done in `1c1333e`)
-   - `search-android-strings` / `search_android_strings`: scans string constants across decompiled method bodies (Java/smali), supporting `class_limit` (up to 8,192 classes), reporting `matches`, `scanned_classes`, `scanned_methods`, `skipped_methods`, and `coverage`.
-   - Scan-inspect ordering defect resolved: method bodies and `static_inits` stay byte-identical before and after whole-APK scans.
-   - Known boundaries documented:
-     1. Large-APK memory behavior (>8,192 classes or memory pressure near 4 GiB heap) remains unmeasured in production.
-     2. APKs exceeding 8,192 classes hit third-party JAR LRU cache eviction if rescanned.
-     3. Per-class method-cap skips are reflected in partial coverage, while `skipped_methods` counts engine decompile failures.
-     4. Verified on macOS arm64; Windows lifecycle verifier remains unexercised locally.
-     5. Engine scan-skip counts show small non-deterministic variance (12-23 across runs) on malformed/unparseable method bodies.
+8. **Android package formats and validation:** done.
+   - XAPK admission and composition landed in `7795b12`; strict bounded manifest
+     validation, declared base-name resolution and pre-codegen annotation
+     snapshots landed in `2eef296`. The declared base is never renamed.
+   - APK-set directories, explicit `.apks` variant selection and universal AAB
+     conversion are now implemented; see item 26 for their admitted scope.
+   - Optional verification of original APK signatures has its own apksig
+     authority; see item 27. Composition does not authenticate an install image.
+9. **Android string constants and bytecode searching:** done, with measured limits.
+   - The original decompiled-body operation remains available. Explicit
+     `scan_mode: "dex"` now reads original const-string/jumbo instructions,
+     preserving member/instruction locations without Java code generation or
+     the decompiled mode's class/cache and per-class method caps.
+   - Dedicated method-cap counters, caller-selected total deadlines and partial
+     coverage for unreadable methods are implemented. See item 29 and the
+     [offline verification](field-tests/rea-offline-backlog-2026-10-27.md).
+   - Windows lifecycle verification remains unexercised locally. Neither mode
+     is a complete DEX string-pool, annotation or resource inventory.
 10. **`inspect-jvm-artifact` duplicate entry handling:**
     - Done: Archive inventory now keeps the first record of a repeated name.
 
@@ -118,9 +98,9 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Environment
 
-15. **Reverse engineering tools:**
-    - Installing `radare2`, `binwalk`, `apktool`, and `jadx` via Homebrew (`brew install`).
-    - Verify presence of `d8` (available at `/opt/homebrew/bin/d8`) and `javac` (`/usr/bin/javac`).
+15. **Reverse engineering tools:** done on this host.
+    Existing radare2, binwalk, apktool, jadx, d8 and a full JDK were verified in
+    the field-test work. No additional host toolchain installation was needed.
 
 ## Paused
 
@@ -130,13 +110,12 @@ Open work on `main` following PR #1 and the field tests.
 
 Details and Evidence-backed context: `field-tests/rize-macos-1.1.52.md` and
 `field-tests/whoop-android-5.473.0.md`. This is the single cross-test list.
-State of play: WHOOP items **6, 7, 9, 10** are done; item **8** is partially
-done (XAPK). **17** is implemented, **18** is implemented for admitted imports
-with the Rize module-root residual tracked as **28**, and **22(a–b)** are done.
-**19–21, 22(c), 23–25** remain open; **26–29** retain the format, signature,
-module-root and measurement residuals. The agreed implementation order was
-**17 → 18**, then **21–22** for large Electron investigations. The full gate
-now passes for the current tree (item 1); it does not close live field-test gaps.
+State of play (2026-10-28): **17–29 are implemented and offline-verified**
+within the limits recorded below. Item 22(a–c), scope filters and the remaining
+helper/format/signature/measurement work are included in the final gate and
+commit batch. Device/live-traffic work (12, 14), optional Consensus research
+(13) and paused emulation (16) retain their separate status. See the
+[combined verification report](field-tests/rea-offline-backlog-2026-10-27.md).
 
 17. **JavaScript constant/string search is not exposed (repeat, cross-workflow).**
     The Rize hosts, the embedded Amplitude API key and the `certificate.p12`
@@ -185,20 +164,21 @@ now passes for the current tree (item 1); it does not close live field-test gaps
     `resolve.modules` support exists anywhere in the codebase. Remaining
     as item 28 below.
 
-19. **`contextBridge.exposeInMainWorld` through a helper is blind.**
-    Rize exposes all 17 bridges via one helper (`src/utils/createPreload.js`),
-    so `context_bridge_apis` counted 17 but `exposed_api_members` counted 0:
-    passed member arrays flow through a local function, not a literal at the
-    call site. Propose: resolve same-module helper indirection for the
-    `exposeInMainWorld` namespace + member arguments (or at minimum report the
-    helper and its member candidates explicitly instead of a bare 0).
+19. **Bridge helper discovery:** done at candidate authority.
+    Same-module and imported exported helpers retain namespace/member candidates
+    with caller/helper path, digest and ranges. Object-alias contents remain
+    unknown because lexical initialization does not prove their state after
+    member writes. Actual exposed `members` remain
+    unverified; lexical shadows, reassigned helpers and missing arguments do not
+    acquire observed-exposure authority. The paged `context_bridges` view and
+    summary expose the distinction. Final scoped Rize: **58 member candidates**;
+    `exposed_api_members` remains 0.
 
-20. **Endpoint templates are dead ends without a materializer.**
-    REA+ correctly kept `{}/auth/magic-link/request`-style templates when hosts
-    are runtime-interpolated, but nothing can substitute the build-time env
-    values back in. Propose: an optional caller-supplied constant/env map
-    consumed by views and traces (`materialized_value` alongside the preserved
-    template; template authority stays intact).
+20. **Endpoint template materialization:** done.
+    The paged `endpoints` view accepts an explicit caller `bindings` map keyed
+    by the preserved source expression. It returns `materialized_value` beside
+    the original template, retained parts and unresolved expressions. No ambient
+    environment, expression execution or guessed historical metadata is used.
 
 21. **No scope/include filters on `analyze-javascript-application`.**
     The full 20,561-file tree (12k vendor `node_modules` modules, 3.6k source
@@ -206,6 +186,19 @@ now passes for the current tree (item 1); it does not close live field-test gaps
     Propose: path include/exclude options (`node_modules` off by default for
     same-protocol Electron targets, with an explicit flag to include), and
     coverage recording everything excluded so Evidence stays honest.
+    Status (2026-10-27): **implemented on `main`** —
+    `paths_include` / `paths_exclude` accept artifact-relative glob patterns
+    (anchored full path; `**` spans segments with `**/` also matching zero
+    segments; `*`/`?` stay within one segment; excludes win over includes).
+    Scoping happens at the artifact-read stage, so excluded files are never
+    read or analyzed, and the result `statistics.paths_scope` records the
+    pattern lists verbatim plus considered/selected/excluded counts —
+    coverage stays explicit without the limitations string. Defaults are
+    deliberately unchanged (every file analyzed, zero-exclusion counts
+    reported): after 22(a)/(b) application sources reach the budget first,
+    so the registry's "node_modules off by default" flip is no longer the
+    structural fix it was; revisit only on new field evidence. The option surface, contracts and CLI/MCP checks are included in the
+    final combined gate (item 1).
 
 22. **Result-budget mechanics are all-or-nothing per important files.**
     The parent reserved its remaining budget for static observations, so
@@ -240,62 +233,67 @@ now passes for the current tree (item 1); it does not close live field-test gaps
     `/tmp/rize-22b-final.json` (not persisted into `field-tests/`). No
     channels resolved for Rize yet: attempts fail closed at
     `origin-null`/`provider-null` — bare specifiers bound through webpack's
-    `resolve.modules` (item 28), which item 22 does not address. (c) open.
+    `resolve.modules` (item 28), which item 22 does not address.
+    Follow-up **(c) is implemented and verified** (2026-10-27):
+    `inspect_analysis_view` / `rea inspect-analysis-view` now support a paged
+    `file_statuses` collection, with `filter: "with-issues"` (default) or
+    `"all"`. Rows preserve path/digest/node/observation identity, text and parse
+    status, module-IR retention/coverage, semantic-projection status and
+    structured source-bound errors/limits. Byte-identical aliases remain
+    separate rows. Parent diagnostics and large limitations are referenced,
+    not repeated; older missing metadata remains `not-recorded`.
+    **69 related tests passed**, including real CLI production/inspection,
+    retained MCP pages, SDK-advertised schema validation and memory-limited
+    recovery. Type/lint/format/unused-code/metadata/architecture checks,
+    documentation checks and jscpd (2.50%) passed. That focused run did not rerun
+    the full suite. The final combined gate (recorded 2026-10-28, item 1) now
+    covers these changes too. See [verification](field-tests/rea-file-status-2026-10-27.md).
 
-23. **`analysis_failure` remediation overpromises for budget-only causes.**
-    All 25,383 failure records are pure result-budget constraints, and the
-    remediation text says "Retry with sufficient memory or a smaller
-    artifact", which is misleading: a **retry with unchanged limits is
-    expected to reproduce the failure**, and the record currently reports
-    `retryable: false` for budget causes. Corrected position (2026-10-26,
-    after code review): do **not** blanket-mark budget failures retryable.
-    Instead: (a) make the remediation text truthful — state which knob would
-    have to change (budget/limit name only) and that an unchanged retry
-    fails identically; (b) keep `retryable` false for unchanged limits, and
-    derive it truthfully only where the failure actually depends on a caller
-    knob, or drop the field pending a real retry-semantics review.
+23. **Budget-failure remediation:** done.
+    Resource diagnostics name the recorded budget fields, explain that capacity
+    must change or scope shrink, and state that unchanged limits reproduce the
+    failure. `retryable` remains false. Worker heap changes are distinguished
+    from parent result/node budgets; no blanket retryability was added.
 
-24. **`summary.statistics.modules` names a different thing than graph
-    modules.**
-    Corrected by code check (`JavaScriptArtifactAnalysis.ts:211`): the counter
-    sums `bundler_registrations[].modules` — i.e. **bundled module
-    registrations** recovered from bundler metadata, not graph
-    `javascript-module`/`source-module` nodes; Rize's 0 means no bundler
-    registration metadata was recovered, which isn't by itself a counting
-    bug. The gap is naming/documentation: rename the field (e.g.
-    `bundler_module_registrations`) or document it at the summary schema, and
-    make the summary distinguish 'no bundler metadata recovered' from module
-    counts. Recheck the module-page view against the same distinction.
+24. **Module-count semantics:** done.
+    The legacy `statistics.modules` field is explicitly documented as the sum
+    of recovered bundler module registrations. Summary `module_counts`
+    separately reports `bundler_module_registrations`, JavaScript assets,
+    JavaScript modules, source modules and module-page entries. The page counts
+    graph module nodes; absent bundler metadata does not imply absent modules.
 
-25. **Optional: a secrets/declared-material scan for JS/Electron Evidence.**
-    The Rize finding that a CI code-signing certificate shipped in the bundle
-    was found by hand. A declarative "shipped-material" check (binary blobs,
-    key/cert file extensions, hex-length API keys) flagged inside the Evidence
-    would turn this observation class into a tool result rather than luck.
-    This is a feature request, not a defect: keep it opt-in to avoid
-    noise/false positives.
+25. **Opt-in shipped-material candidates:** done.
+    `scan_shipped_material` / `--scan-shipped-material` records inventory
+    key/certificate extensions and 32/40/64/128-character hexadecimal literals.
+    Literal discovery runs in the isolated parser worker; graph expansion obeys
+    per-file budgets. Results preserve locations/digests and unknown secrecy,
+    without copying literal values or declaring them secrets. The paged
+    `shipped_material` view reports omitted/unavailable scope. Final scoped Rize:
+    **18 emitted candidates** (1 extension, 17 hex), **10 literal candidates not
+    projected**; scan coverage remains partial.
 
-## WHOOP-test gaps still open (re-registered from that field test)
+## WHOOP-test format, signature and scan follow-ups
 
-WHOOP items 6, 7, 9 and 10 above are done, and the binwalk gap from its "How
-REA+ did" table is resolved by the installed toolchain. These residuals from
-item 8 remain open as REA+ gaps:
+26. **APK-set and AAB admission:** done within explicit scope.
+    Android operations admit selected `.apks` variants and loose regular
+    top-level APK directories. Directory identity commits to sorted member
+    names, sizes and SHA-256 values; changed members are rejected. Alternatives
+    require caller selection, never inferred device compatibility. AAB uses a
+    caller-configured, snapshotted bundletool JAR in an owned temporary runtime;
+    universal output covers fused modules only. Original subject identity,
+    member digests and merge limitations survive admission. Real CLI/MCP
+    APK-set and AAB fixtures passed; on-device installation and non-fused feature
+    coverage remain unverified.
 
-26. **Split-APK bundle forms are still unsupported (documented-only).**
-    `.aab` and loose split sets (directories, `.apks`) remain unadmitted by
-    all five Android operations, even though `pull_adb_package` already pulls
-    the complete split set digested per file. An admission flow plus merge-
-    scope Evidence should match the XAPK treatment in item 8. Same format-
-    coverage gap class, different container.
-
-27. **APK signature verification is a standing `not_performed` hole.**
-    Item 8's deliberate deferral, kept visible here so it does not get lost:
-    `inspect_android_package` reports signing as `not_performed`, and every
-    test since (WHOOP) has had to fall back to `apksigtool` by hand. A
-    dedicated adapter with its own Evidence authority is required — v1/v2/v3
-    mean message digests, RSA/ECDSA, and byte-range offsets over signed
-    regions up through the APK Signing Block. Position unchanged: build it
-    only when a caller task actually needs tamper/lift detection.
+27. **Optional APK signatures:** done.
+    `inspect_android_package` accepts `verify_signatures: true` with a separately
+    configured Android apksig JAR. It verifies each original APK's bytes,
+    records verifier/member digests, v1/v2/v3/v3.1 results, certificate hashes,
+    errors/warnings and cross-member signer consistency. Defaults stay
+    `not_performed`; composed analysis images and generated AAB APKs do not
+    authenticate their sources. Real signed, tampered and split fixtures passed.
+    Publisher trust/revocation, v4 sidecars, AAB signing and installability remain
+    outside this APK-specific facet.
 
 28. **Bare specifiers through an application module root are unresolvable.**
     New (2026-10-26) follow-up from the Rize gap-18 re-test: webpack's
@@ -309,14 +307,56 @@ item 8 remain open as REA+ gaps:
     unresolved outcomes honest as `external` with the reason. This unblocks
     item 18's pairing for these apps; without it the 58 `ipcMain` handlers
     stay `0 paired`.
+    Status (2026-10-27): **implemented on `main`** (commit `25cf8f7d8`) —
+    `javascriptModuleRoots.ts` reads string-literal-only extra module
+    directories from inventoried webpack/rspack/jest configurations,
+    configuration code is never executed, and the directories are admitted
+    as a lower-precedence candidate class after `node_modules`, strictly
+    inside the artifact, never shadowing a real package; unresolvable
+    outcomes stay `external` with the reason.
+    Status (2026-10-27, second pass): **Rize re-test confirms the chain** —
+    combined with imported-constant channel resolution, full-Rize runs show
+    `literal_channels` 0 → **52** and `dynamic_channel_operations`
+    109 → **97**, then **57** once the module-IR projection also retains
+    namespace-import destructurings (`const { X } = namespace`); 104
+    `imported-constant` occurrences, every recovered channel a real Rize IPC
+    name, no fabricated values. Pairing stays 0 paired with
+    `unpaired_literal` 0 and `ambiguous` 0: all 52 literals are main-side
+    listeners, while every renderer transmission stays dynamic — 32+16
+    minified roots in `.webpack/renderer/*` bundles (`t`/`r`, webpack module
+    tables unprojected) plus 4 callback-parameter sites
+    (`mapValues(on, ipcMessage => ipcRenderer.on(ipcMessage, …))`), both
+    outside the resolver's fail-closed imported-constant scope. Sequential
+    follow-ups that would finally move `paired_renderer_transmissions`:
+    baked webpack chunk module-table resolution, and interprocedural
+    argument flow into preloaded bridge calls; each recorded here rather
+    than opening a new item. See `field-tests/rize-macos-1.1.52.md`,
+    "Re-test note (2026-10-27, item 28 module-roots + imported-constant
+    chains)".
 
-29. **`search-android-strings` boundaries are standing measurement gaps.**
-    From the done item 9: large-APK memory behavior (>8,192 classes or memory
-    pressure near a 4 GiB heap) is unmeasured in production; APKs over 8,192
-    classes hit third-party JAR LRU cache eviction on rescans;
-    `skipped_methods` counts only engine decompile failures while per-class
-    method-cap skips show as partial coverage without a dedicated field; and
-    engine scan-skip counts vary non-deterministically (12–23) on malformed
-    bodies. Also, the scan runs over *decompiled* method bodies: bytecode-
-    level (smali/binary) constant search still exists only in radare2/Ghidra,
-    so note it has the same shape as Rize item 17.
+    Final follow-up (2026-10-27): **done for admitted static flows**.
+    Bound CommonJS bootstrap tables, namespace-import destructuring and narrow
+    helper argument flows now retain the missing renderer facts. Bootstrap
+    syntax is labelled `commonjs-bootstrap`, without claiming the original
+    packager. Helper channels carry `helper-argument` inference plus original
+    helper/caller locations. Final Rize CLI re-test excluded `node_modules/**`
+    and `**/*.map`: **52 paired renderer transmissions**, **0 ambiguous**,
+    **0 unpaired literal**, **39 dynamic operations**. The explicit scope
+    selected 415 of 20,561 files; this is not a full-vendor or runtime claim.
+
+29. **Android scan measurement and raw-bytecode path:** done, with limitations.
+    Real public MCP fixtures verify all 4,101 methods in raw DEX mode versus
+    4,096 scanned / 5 cap omissions in decompiled mode. An independent byte
+    oracle verifies ordinary const-string and const-string/jumbo offsets.
+    Whole WHOOP base APK (SHA-256 `db865d60…e699d`), 4 GiB JVM heap: two raw
+    scans examined **83,390 class identities / 510,417 methods**, in
+    **17,702 ms cold / 709 ms warm**. Both reported **3 unreadable methods**,
+    **0 method-cap omissions**, and **partial coverage**. Source bytes were
+    unchanged. `/usr/bin/time -l` reported maximum RSS of **3,638,460,416 bytes**, distinct from
+    the configured heap. The inventory/load count (47,244 top-level classes)
+    differs from the scan's inner-class-inclusive identities by design.
+    Decompiled scans timed out at 120 s and twice at the explicit 600 s limit;
+    no completed decompiler skip-count/cache-stability claim follows. Raw mode
+    avoids that source-generation/cache path, but still does not inventory
+    every string-pool, annotation or resource entry. Details and compact real
+    evidence: [offline verification](field-tests/rea-offline-backlog-2026-10-27.md).

@@ -190,7 +190,7 @@ const moduleKinds = (
 };
 
 const resolveChannel = (
-  finding: ElectronIpcFinding,
+  finding: Pick<ElectronIpcFinding, "channel" | "channel_expression">,
   ir: JavaScriptModuleSemanticIr,
   moduleKinds: ReadonlyMap<string, "import" | "require">,
   constants: ReadonlyMap<string, ReadonlyMap<string, string>>,
@@ -199,7 +199,8 @@ const resolveChannel = (
   moduleRoots: readonly string[],
 ): string | null => {
   // The caller filters, but this function owns its own fail-closed narrowing.
-  if (finding.channel !== null) return null;
+  if (finding.channel !== null || finding.channel_expression === null)
+    return null;
   const parts = electronIpcChannelParts(finding.channel_expression);
   const debug = process.env.REA_DEBUG_CHANNEL_RESOLUTION !== undefined;
   const fail = (reason: string): null => {
@@ -274,4 +275,27 @@ const importedOrigin = (
   if (binding.provenance.status !== "module") return null;
   if (binding.provenance.origins.length !== 1) return null;
   return binding.provenance.origins[0] ?? null;
+};
+
+/** Reuse the imported-constant proof for caller arguments to a statically identified helper. */
+export const electronImportedStringResolver = (
+  analysis: JavaScriptModuleArtifactAnalysis,
+  moduleRoots: readonly string[],
+) => {
+  const constants = constantTable(analysis);
+  const files = new Map(analysis.files.map(({ file }) => [file.path, file]));
+  return (
+    file: JavaScriptArtifactFile,
+    ir: JavaScriptModuleSemanticIr,
+    expression: string,
+  ): string | null =>
+    resolveChannel(
+      { channel: null, channel_expression: expression },
+      ir,
+      moduleKinds(ir),
+      constants,
+      file,
+      files,
+      moduleRoots,
+    );
 };

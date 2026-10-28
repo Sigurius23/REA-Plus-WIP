@@ -27,6 +27,7 @@ import {
 } from "./JavaScriptArtifactGraphEvidence.js";
 import { resolveArtifactPathByContext } from "./JavaScriptArtifactPathResolution.js";
 import { compareUnicodeCodePoints } from "../../domain/unicodeCodePointOrder.js";
+import { semanticResourceLimitCoverage } from "../../domain/javascript/javascriptSemanticCoverage.js";
 
 interface PackageRoleInput {
   readonly packageNode: ApplicationNode;
@@ -127,12 +128,7 @@ export const addJavaScriptArtifactFiles = (
   for (const analyzed of context.analysis.files) {
     const { file } = analyzed;
     const jsonValue = jsonModulesByPath.get(file.path);
-    const target = createFileTarget(
-      context,
-      file,
-      analyzed.javascript,
-      jsonValue,
-    );
+    const target = createFileTarget(context, analyzed, jsonValue);
     if (
       analyzed.application_projection_failure !== undefined &&
       analyzed.javascript !== null
@@ -369,10 +365,10 @@ const dependencyManifest = (path: string): boolean =>
 
 const createFileTarget = (
   context: JavaScriptArtifactGraphContext,
-  file: JavaScriptArtifactFile,
-  javascript: JavaScriptModuleArtifactAnalysis["files"][number]["javascript"],
+  analyzed: JavaScriptModuleArtifactAnalysis["files"][number],
   json: JavaScriptModuleArtifactAnalysis["json_modules"][number] | undefined,
 ): ApplicationNode => {
+  const { file, javascript, semantic, semantic_projection } = analyzed;
   const kind = artifactFileNodeKind(file.kind);
   return context.accumulator.addNode({
     kind,
@@ -392,6 +388,24 @@ const createFileTarget = (
           file_kind: file.kind,
           text_status: file.text.included ? "included" : file.text.reason,
           parse_status: javascript?.parse_status ?? null,
+          ...(file.kind !== "javascript"
+            ? {}
+            : {
+                module_ir_status:
+                  semantic === null ? "not-retained" : "retained",
+                module_ir_coverage:
+                  semantic === null
+                    ? null
+                    : {
+                        status: semantic.ir.coverage.status,
+                        limits: semanticResourceLimitCoverage(
+                          semantic.ir.coverage.resourceLimits ?? [],
+                        ),
+                      },
+                semantic_graph_status: semantic_projection?.status ?? null,
+                semantic_graph_node_budget:
+                  semantic_projection?.node_budget ?? null,
+              }),
           json_parse_status: json?.status ?? null,
           json_top_level_keys: json?.top_level_keys ?? [],
           omitted_json_top_level_keys: json?.omitted_top_level_keys ?? 0,

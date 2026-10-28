@@ -29,8 +29,8 @@ mean the source is malformed. Inspect those limits before retrying a source.
 When expanded relationships exceed the parent's available memory, inspect the
 file's modules item view for retained `static_analysis` and
 `semantic_module_analysis`. Their facts remain available even when graph links
-are unknown. Cumulative result exhaustion can stop analysis before every file
-is examined; the inventory and remaining unknown scopes distinguish that case.
+are unknown. Per-file resource failures do not stop subsequent source analysis;
+whole-run interruptions retain unexamined files as explicit unknown scopes.
 Timeout or cancellation after source analysis begins retains partial Evidence
 in the same session. A returned `error.details.partial_observation` reference
 can be supplied directly to `inspect_analysis_view`. If the SDK cancels locally, retrieve its recorded ID from
@@ -53,6 +53,15 @@ Pages return only node IDs, paths and roles; choose a useful page size and follo
   "view": { "kind": "page", "collection": "modules", "offset": 0, "limit": 16 }
 }
 ```
+
+For per-file skips, parse failures and resource blocks, use the same source
+with `"view": {"kind":"page","collection":"file_statuses","filter":"with-issues","offset":0,"limit":16}`.
+Use `filter: "all"` to include files without recorded issues. The compact rows
+separate module-IR retention from semantic graph projection, preserve file and
+observation identities, and show recorded error phases and limits. Missing
+historical status fields remain `not-recorded`; no source is re-analyzed and
+an empty issue page does not prove complete analysis. The parent retains raw
+facts, diagnostics and full limitations.
 
 Select the relevant page entry by its exact `node_id` and recorded role:
 
@@ -158,3 +167,15 @@ analysis or select a provider; findings remain inline. Native observation
 arrays still take full Evidence. `close_binary` clears retained references;
 export a bundle before closing, or supply portable inline Evidence in another
 connection. A missing reference includes its ID and recovery guidance.
+
+When advertised, page `context_bridges` to distinguish observed members from
+helper member candidates, `endpoints` to inspect original templates and optional
+caller-supplied expression `bindings`, or `shipped_material` for an opt-in
+`scan_shipped_material` investigation. Never infer runtime exposure from helper
+candidates or secrecy from a filename/hexadecimal literal. Missing historical
+placeholder metadata cannot be reconstructed by substituting guesses.
+`helper-argument` IPC relationships are static inferences with caller/helper
+provenance; a static pairing does not establish execution. `commonjs-bootstrap`
+tables preserve recovered module identities without asserting packager origin.
+The legacy `statistics.modules` counts bundled registrations; the summary's
+`module_counts` reports graph categories separately.

@@ -72,10 +72,13 @@ export const jadxMethodSchema = z.object({
 });
 export const jadxStringConstantsSchema = z.object({
   query: z.string(),
+  scan_mode: z.enum(["decompiled", "dex"]),
   total_classes: count,
   scanned_classes: count,
   scanned_methods: count,
   skipped_methods: count,
+  method_cap_skipped_methods: count,
+  method_cap_skipped_classes: count,
   truncated: z.boolean(),
   coverage: z.enum(["complete", "partial"]),
   items: z.array(
@@ -85,8 +88,15 @@ export const jadxStringConstantsSchema = z.object({
       overload_index: count,
       overload_count: count,
       value: z.string(),
-      representation: z.enum(["java", "smali"]),
+      representation: z.enum(["java", "smali", "dex"]),
       fell_back: z.boolean(),
+      dex_location: z
+        .object({
+          input_file: z.string().nullable(),
+          method_instruction_offset: count.nullable(),
+          input_file_offset: count.nullable(),
+        })
+        .nullable(),
     }),
   ),
 });

@@ -5,6 +5,8 @@ import io.modelcontextprotocol.kotlin.sdk.server.*;
 import io.modelcontextprotocol.kotlin.sdk.types.*;
 import jadx.api.*;
 import jadx.api.plugins.input.data.IFieldRef;
+import jadx.api.plugins.input.data.ICodeReader;
+import jadx.api.plugins.input.insns.Opcode;
 import jadx.api.plugins.input.data.IMethodRef;
 import jadx.api.plugins.input.data.annotations.EncodedType;
 import jadx.api.plugins.input.data.annotations.EncodedValue;
@@ -62,7 +64,7 @@ class ReaJadxBridge {
   private Map<String, List<ClassSnapshot>> classes = Map.of();
 
   private record MethodSnapshot(String name, String shortId, Map<String, Object> summary,
-      List<Object> annotations, boolean valuesTruncated) {}
+      List<Object> annotations, boolean valuesTruncated, ICodeReader codeReader, String inputFile) {}
   private record ClassSnapshot(JavaClass node, List<MethodSnapshot> methods, Map<String, Object> summary,
       List<Object> classAnnotations, List<Object> staticInits, boolean valuesTruncated) {}
 
@@ -140,7 +142,7 @@ class ReaJadxBridge {
             return new MethodSnapshot(name, method.getMethodInfo().getShortId(), Map.of(
                 "name", name, "signature", signature,
                 "is_constructor", method.isConstructor(), "def_pos", 0),
-                annotations, truncation.hit);
+                annotations, truncation.hit, method.getCodeReader(), method.getInputFileName());
           }).toList();
           List<Map<String, Object>> fields = node.getFields().stream()
               .sorted(Comparator.comparing(FieldNode::getAlias))
@@ -249,32 +251,64 @@ class ReaJadxBridge {
       String body,
       String kind,
       boolean fellBack,
-      String query) {
+      String query,
+      int resultLimit) {
     String representation = kind.equals("smali") ? "smali" : "java";
     Matcher matches = representation.equals("smali")
         ? SMALI_STRING.matcher(body) : JAVA_STRING.matcher(body);
     while (matches.find()) {
       String value = unescape(matches.group(1));
-      if (value.contains(query)) items.add(object(
-          "class_name", cls.node().getFullName(),
+      if (value.contains(query)) { items.add(object(
+          "class_name", cls.summary().get("full_name"),
           "method_name", snapshot.name(),
           "overload_index", overloadIndex,
           "overload_count", overloadCountOf(cls, snapshot.name()),
           "value", value,
           "representation", representation,
-          "fell_back", fellBack));
+          "fell_back", fellBack, "dex_location", null));
+        if (items.size() >= resultLimit) throw new ScanLimitReached();
+      }
     }
   }
 
+  /** Stop visiting the current body as soon as the caller's retained-match capacity is reached. */
+  private static final class ScanLimitReached extends RuntimeException {}
+
+  private void harvestDexStringConstants(List<Map<String, Object>> items, ClassSnapshot cls,
+      MethodSnapshot snapshot, int overloadIndex, String query, int resultLimit) {
+    ICodeReader source = snapshot.codeReader();
+    if (source == null) return; // Abstract/native methods have no instruction stream.
+    if (!(source instanceof jadx.plugins.input.dex.sections.DexCodeReader)) throw new IllegalArgumentException("Raw DEX scan requires a DEX instruction reader");
+    source.copy().visitInstructions(instruction -> {
+      instruction.decode();
+      if (instruction.getOpcode() != Opcode.CONST_STRING) return;
+      String value = instruction.getIndexAsString();
+      if (value == null || !value.contains(query)) return;
+      int methodOffset = instruction.getOffset();
+      int fileOffset = instruction.getFileOffset();
+      items.add(object("class_name", cls.summary().get("full_name"),
+          "method_name", snapshot.name(), "overload_index", overloadIndex,
+          "overload_count", overloadCountOf(cls, snapshot.name()), "value", value,
+          "representation", "dex", "fell_back", false,
+          "dex_location", object("input_file", snapshot.inputFile(),
+              "method_instruction_offset", methodOffset < 0 ? null : methodOffset,
+              "input_file_offset", fileOffset < 0 ? null : fileOffset)));
+      if (items.size() >= resultLimit) throw new ScanLimitReached();
+    });
+  }
+
   /**
-   * Case-sensitive substring scan over harvested string constants. Method
-   * bodies come from the same decompile-or-smali path as get_method_body, so a
-   * body that cannot be produced is skipped and reported, not denied.
+   * Case-sensitive substring scan over decompiled bodies or original DEX
+   * const-string instructions. Unreadable methods are counted as omissions.
    */
   private Map<String, Object> searchStringConstants(JsonObject args) {
     Map<String, List<ClassSnapshot>> index = index();
     String query = string(args, "query");
-    int classLimit = Math.min(integer(args, "class_limit", SCAN_CLASS_DEFAULT), SCAN_CLASS_LIMIT);
+    String scanMode = optionalString(args, "scan_mode");
+    if (scanMode == null) scanMode = "decompiled";
+    if (!scanMode.equals("decompiled") && !scanMode.equals("dex")) throw new InputFailure("scan_mode", "Choose decompiled or dex");
+    boolean dex = scanMode.equals("dex");
+    int classLimit = Math.min(integer(args, "class_limit", SCAN_CLASS_DEFAULT), dex ? Integer.MAX_VALUE : SCAN_CLASS_LIMIT);
     int resultLimit = Math.min(integer(args, "results_limit", SCAN_RESULT_DEFAULT), SCAN_RESULT_LIMIT);
     JadxSession current = session();
     int totalClasses = 0;
@@ -283,6 +317,8 @@ class ReaJadxBridge {
     int scannedClasses = 0;
     int scannedMethods = 0;
     int skippedMethods = 0;
+    int methodCapSkippedMethods = 0;
+    int methodCapSkippedClasses = 0;
     boolean truncated = false;
     scan: for (List<ClassSnapshot> group : index.values()) {
       for (ClassSnapshot cls : group) {
@@ -298,7 +334,9 @@ class ReaJadxBridge {
             truncated = true;
             break scan;
           }
-          if (methodsScanned >= SCAN_METHOD_LIMIT) {
+          if (!dex && methodsScanned >= SCAN_METHOD_LIMIT) {
+            methodCapSkippedMethods += cls.methods().size() - methodsScanned;
+            methodCapSkippedClasses++;
             truncated = true;
             break;
           }
@@ -306,10 +344,16 @@ class ReaJadxBridge {
           scannedMethods++;
           int overloadsOfName = overloadsSeen.merge(snapshot.name(), 1, Integer::sum) - 1;
           try {
-            JadxSession.SmartCode code = current.getMethodBodySmart(
-                method(cls, snapshot), current.getMaxSourceBytes(), true);
-            harvestStringConstants(items, cls, snapshot, overloadsOfName,
-                code.getText(), code.getKind(), code.getFellBack(), query);
+            if (dex) harvestDexStringConstants(items, cls, snapshot, overloadsOfName, query, resultLimit);
+            else {
+              JadxSession.SmartCode code = current.getMethodBodySmart(
+                  method(cls, snapshot), current.getMaxSourceBytes(), true);
+              harvestStringConstants(items, cls, snapshot, overloadsOfName,
+                  code.getText(), code.getKind(), code.getFellBack(), query, resultLimit);
+            }
+          } catch (ScanLimitReached limit) {
+            truncated = true;
+            break scan;
           } catch (Throwable failure) {
             // Decompile, smali and source-generation failures skip one method;
             // the scan itself stays alive and reports the skip count.
@@ -320,12 +364,15 @@ class ReaJadxBridge {
     }
     Map<String, Object> result = new LinkedHashMap<>();
     result.put("query", query);
+    result.put("scan_mode", scanMode);
     result.put("total_classes", totalClasses);
     result.put("scanned_classes", scannedClasses);
     result.put("scanned_methods", scannedMethods);
     result.put("skipped_methods", skippedMethods);
+    result.put("method_cap_skipped_methods", methodCapSkippedMethods);
+    result.put("method_cap_skipped_classes", methodCapSkippedClasses);
     result.put("truncated", truncated);
-    result.put("coverage", truncated ? "partial" : "complete");
+    result.put("coverage", truncated || skippedMethods > 0 ? "partial" : "complete");
     result.put("items", items);
     return result;
   }
@@ -476,7 +523,37 @@ class ReaJadxBridge {
     return items;
   }
 
+  /** Android apksig has its own verifier identity; JADX is only the owned JVM transport. */
+  private static Map<String, Object> verifyApkSignature(JsonObject args) {
+    try (var loader = new java.net.URLClassLoader(
+        new java.net.URL[] {new java.io.File(string(args, "verifier_jar")).toURI().toURL()},
+        ClassLoader.getPlatformClassLoader())) {
+      Class<?> builderClass = Class.forName("com.android.apksig.ApkVerifier$Builder", true, loader);
+      Object builder = builderClass.getConstructor(java.io.File.class).newInstance(new java.io.File(string(args, "path")));
+      Object verifier = builderClass.getMethod("build").invoke(builder);
+      Object result = verifier.getClass().getMethod("verify").invoke(verifier);
+      Class<?> resultClass = result.getClass();
+      Map<String, Object> schemes = new LinkedHashMap<>();
+      for (String scheme : List.of("V1", "V2", "V3", "V31"))
+        schemes.put(scheme.toLowerCase(Locale.ROOT), resultClass.getMethod("isVerifiedUsing" + scheme + "Scheme").invoke(result));
+      List<String> certificates = new ArrayList<>();
+      for (Object value : (List<?>) resultClass.getMethod("getSignerCertificates").invoke(result)) {
+        var cert = (java.security.cert.X509Certificate) value;
+        certificates.add(HexFormat.of().formatHex(java.security.MessageDigest.getInstance("SHA-256").digest(cert.getEncoded())));
+      }
+      List<String> errors = new ArrayList<>();
+      for (Object error : (List<?>) resultClass.getMethod("getAllErrors").invoke(result)) errors.add(error.toString());
+      List<String> warnings = new ArrayList<>();
+      for (Object warning : (List<?>) resultClass.getMethod("getWarnings").invoke(result)) warnings.add(warning.toString());
+      return Map.of("verified", resultClass.getMethod("isVerified").invoke(result), "schemes", schemes,
+          "signer_certificates_sha256", certificates, "errors", errors, "warnings", warnings);
+    } catch (Exception error) {
+      throw new IllegalArgumentException("Android apksig could not verify the selected APK: " + error, error);
+    }
+  }
+
   private CallToolResult handle(String name, JsonObject args) {
+    if (name.equals("rea_verify_apk_signature")) return json(verifyApkSignature(args));
     if (name.equals("rea_jvm_status")) return json(Map.of(
         "engine_reported_version", BuildInfo.VERSION,
         "max_heap_bytes", Runtime.getRuntime().maxMemory(),
@@ -595,6 +672,7 @@ class ReaJadxBridge {
       catch (IllegalArgumentException error) { return text(error.getMessage(), true); }
     });
     Map<String, kotlinx.serialization.json.JsonElement> searchSchema = new LinkedHashMap<>();
+    searchSchema.put("scan_mode", kotlinx.serialization.json.JsonElementKt.JsonPrimitive("string"));
     searchSchema.put("query", kotlinx.serialization.json.JsonElementKt.JsonPrimitive("string"));
     searchSchema.put("class_limit", kotlinx.serialization.json.JsonElementKt.JsonPrimitive("integer"));
     searchSchema.put("results_limit", kotlinx.serialization.json.JsonElementKt.JsonPrimitive("integer"));
@@ -606,6 +684,17 @@ class ReaJadxBridge {
       try { return bridge.handle("search_string_constants", request.getArguments()); }
       catch (InputFailure error) { return text(JSON.toJson(Map.of(
           "kind", "invalid-input", "field", error.field, "message", error.getMessage())), true); }
+      catch (IllegalArgumentException error) { return text(error.getMessage(), true); }
+    });
+    Map<String, kotlinx.serialization.json.JsonElement> signatureSchema = new LinkedHashMap<>();
+    signatureSchema.put("path", kotlinx.serialization.json.JsonElementKt.JsonPrimitive("string"));
+    signatureSchema.put("verifier_jar", kotlinx.serialization.json.JsonElementKt.JsonPrimitive("string"));
+    Tool signatureTool = new Tool("rea_verify_apk_signature",
+        new ToolSchema(null, new JsonObject(signatureSchema), List.of("path", "verifier_jar"), null),
+        "Verify an owned immutable APK with the caller-configured Android apksig library; no APK code is executed.",
+        null, null, null, null, null, null);
+    server.addTool(signatureTool, (connection, request, continuation) -> {
+      try { return bridge.handle("rea_verify_apk_signature", request.getArguments()); }
       catch (IllegalArgumentException error) { return text(error.getMessage(), true); }
     });
     CountDownLatch done = new CountDownLatch(1);

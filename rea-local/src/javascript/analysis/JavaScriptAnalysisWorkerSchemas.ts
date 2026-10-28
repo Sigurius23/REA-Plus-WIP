@@ -264,10 +264,27 @@ export const javaScriptWorkerStaticAnalysisSchema = z
           .transform(withRuntime),
       ]),
     ),
+    shipped_material_candidates: z
+      .array(
+        z.strictObject({
+          literal_length: count,
+          value_sha256: digestSchema,
+          location: range,
+        }),
+      )
+      .optional(),
     endpoints: z.array(
       z.strictObject({
         ...findingContext,
         kind: z.enum(["route", "network"]),
+        template_parts: z
+          .array(
+            z.union([
+              z.strictObject({ text: z.string() }),
+              z.strictObject({ expression: z.string() }),
+            ]),
+          )
+          .optional(),
         value: z.string(),
         mechanism: z.string(),
       }),
@@ -288,7 +305,7 @@ export const javaScriptWorkerStaticAnalysisSchema = z
     ),
     bundler_registrations: z.array(
       z.strictObject({
-        bundler: z.enum(["webpack", "rspack", "esbuild"]),
+        bundler: z.enum(["webpack", "rspack", "esbuild", "commonjs-bootstrap"]),
         runtime: z.string(),
         chunk_keys: strings,
         unknown_chunk_keys: count,
@@ -328,9 +345,18 @@ export const javaScriptWorkerStaticAnalysisSchema = z
     electron,
     limitations: strings,
   })
-  .transform((analysis) => ({
+  .transform(({ shipped_material_candidates, ...analysis }) => ({
     ...analysis,
-    endpoints: analysis.endpoints.map(withRuntime),
+    ...(shipped_material_candidates === undefined
+      ? {}
+      : { shipped_material_candidates }),
+    endpoints: analysis.endpoints.map((entry) => {
+      const { template_parts, ...rest } = withRuntime(entry);
+      return {
+        ...rest,
+        ...(template_parts === undefined ? {} : { template_parts }),
+      };
+    }),
     storage: analysis.storage.map(withRuntime),
     role_paths: analysis.role_paths.map(withRuntime),
     electron: {

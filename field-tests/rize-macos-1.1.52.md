@@ -278,6 +278,45 @@ The size and digest were independently checked on 2026-10-27 without copying
 or re-running the analysis. Nothing else in this document was re-verified in
 this pass.
 
+## Re-test note (2026-10-27, item 28 module-roots + imported-constant chains)
+
+Same app, same command, rebuilding from the committed tree at `a61c32678`
+(detached worktree, so the run measures only committed code), then the same
+run again from the working tree after the namespace-destructuring fix:
+
+- Item 28's module-root admission resolved the *import chain* (`origin-null`
+  while the project means `imported-constant`): channels such as
+  `openWidgetMenu`, `setOffline`, `getDeviceId`, `setOnline`, `shrinkWidget`,
+  `signOut`, `sendTestNotification`, `getVersion`, `openWindowsMenu`,
+  `checkConnection`, `completePreflight`, `getAuthCredentials` appear as
+  literals with an `imported-constant` origin marker on both IPC findings and
+  graph records. **`literal_channels`: 0 → 52**, **`dynamic_channel_operations`:
+  109 → 97**.
+- The working tree adds namespace-import destructuring to the module-IR
+  projection (`const { MAXIMIZE_WINDOW } = ipcMessages` bindings keep their
+  module provenance; previously dropped, `origin-null` for ~40 main-side
+  sites): **`literal_channels` 52**, **`dynamic_channel_operations` 97 → 57**
+  on the second run; 104 finding-level `imported-constant` occurrences
+  (48 `ipcMain.on` + 4 `ipcMain.once`), every resolved channel name is a
+  real Rize IPC name, no fabricated values.
+- Pairing stays **0 paired** with `unpaired_literal` 0 and `ambiguous` 0:
+  all 52 recovered literals are main-side listeners. Every one of the 38
+  renderer transmissions still carries a dynamic channel, all 52 renderer
+  dynamic findings project exactly 3 expressions — `t` ×32 and `r` ×16
+  (minified roots inside `.webpack/renderer/*` bundles) and `ipcMessage` ×4
+  (the `mapValues(on, ipcMessage => ipcRenderer.on(ipcMessage, …))`
+  callback-parameter pattern in `src/utils/createPreload.js`). Both shapes
+  are outside the resolver's fail-closed scope: webpack module tables are
+  unprojected, and a callback parameter is not an imported constant. Pairing
+  therefore needs one of: baked webpack chunk module-table resolution, or
+  interprocedural argument flow into the preloaded bridges — each is a
+  distinct follow-up, recorded in item 28's successor note.
+
+Verification evidence: `/tmp/rize-g28-fixed.json` (project working tree,
+644,152,898 bytes) and the committed-tree pass sequence before it. Exit 0 in
+all runs, complete Evidence, zero integrity contradictions. Nothing else in
+this document was re-verified in this pass.
+
 ## Artifacts
 
 - `field-tests/rize-macos-1.1.52/evidence.json` — full REA+ Evidence (539 MB).
@@ -287,3 +326,24 @@ this pass.
 Reproduce with:
 `node rea-local/scripts/rea.mjs analyze-javascript-application
 "/Applications/Rize.app/Contents/Resources/app" --json`
+
+## Re-test note (2026-10-28, offline backlog completion)
+
+The final compiled CLI retest explicitly excluded `node_modules/**` and
+`**/*.map`, selecting 415 of 20,561 files. Evidence
+`ev_73c06cfb7cca9d3fc8d7631ef051e2823ecb9870b9ef834f751333a9977b2dae`
+reports **52 paired renderer transmissions**, zero ambiguous/unpaired literal
+transmissions, and 39 dynamic operations. This supersedes the earlier zero-pair
+results for the admitted static flows. Bound CommonJS module tables and narrow
+helper argument flows retain the missing renderer facts; runtime use remains
+unknown.
+
+The helper pass reports 58 candidate member occurrences across 38 observations;
+source and bundles can duplicate a candidate. Actual observed exposed members
+remain zero. The opt-in material scan emitted one filename-extension and 17
+hex-literal candidates; 10 literal candidates were not expanded under per-file
+budgets, so scan coverage remains partial. No value was classified as a secret.
+
+See [combined verification](rea-offline-backlog-2026-10-27.md) and
+[compact final summary](rize-offline-summary-2026-10-27.json). The ~200 MB full
+Evidence stayed at `/tmp/rea-backlog-rize-final-reviewed.json`, outside the commit.

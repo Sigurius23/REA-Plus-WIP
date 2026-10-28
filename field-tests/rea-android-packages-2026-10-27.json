@@ -1,0 +1,282 @@
+{
+  "status": "passed",
+  "tool_sha256": {
+    "jadx": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+    "apksig": "3716d9311e55d2b0918a2fd9d54ba9e406c5f6abeea700b287f11259bc163dec",
+    "bundletool": "a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29"
+  },
+  "reports": [
+    {
+      "case": "signed-apk-cli",
+      "signature": {
+        "authority": "android-apksig",
+        "status": "verified",
+        "verifier_jar_sha256": "3716d9311e55d2b0918a2fd9d54ba9e406c5f6abeea700b287f11259bc163dec",
+        "members": [
+          {
+            "name": "base.apk",
+            "sha256": "4c744b8a0cdfca45d46b247ab7fceda6c10b25b00ad1ee1407fe2ccd6218260c",
+            "verified": true,
+            "schemes": {
+              "v1": true,
+              "v2": true,
+              "v3": true,
+              "v31": false
+            },
+            "signer_certificates_sha256": [
+              "796a7db387e3724c8c6dc8207c79953fd9b8c26ae250a9b2fe938f90074afb13"
+            ],
+            "errors": [],
+            "warnings": []
+          }
+        ],
+        "signer_consistency": "same-signers",
+        "limitations": [
+          "Verifies original APK member bytes under each manifest's minimum-SDK policy. It does not verify the composed analysis image, publisher identity, certificate trust/revocation, app-store provenance or device installability. APK v4 sidecar signatures are not supplied."
+        ]
+      }
+    },
+    {
+      "case": "tampered-apk-cli",
+      "signature": {
+        "authority": "android-apksig",
+        "status": "invalid",
+        "verifier_jar_sha256": "3716d9311e55d2b0918a2fd9d54ba9e406c5f6abeea700b287f11259bc163dec",
+        "members": [
+          {
+            "name": "tampered.apk",
+            "sha256": "a6047a1de8f6fe4e4295d06de888150680a461c4a2c0307e2c6761e912344f88",
+            "verified": false,
+            "schemes": {
+              "v1": false,
+              "v2": false,
+              "v3": false,
+              "v31": false
+            },
+            "signer_certificates_sha256": [],
+            "errors": [
+              "JAR signature META-INF/FIXTURE.SF indicates the APK is signed using APK Signature Scheme v2 but no such signature was found. Signature stripped?",
+              "JAR signature META-INF/FIXTURE.SF indicates the APK is signed using APK Signature Scheme v3 but no such signature was found. Signature stripped?"
+            ],
+            "warnings": []
+          }
+        ],
+        "signer_consistency": "unknown",
+        "limitations": [
+          "Verifies original APK member bytes under each manifest's minimum-SDK policy. It does not verify the composed analysis image, publisher identity, certificate trust/revocation, app-store provenance or device installability. APK v4 sidecar signatures are not supplied."
+        ]
+      }
+    },
+    {
+      "case": "selected-apks-mcp",
+      "signature": {
+        "authority": "android-apksig",
+        "status": "verified",
+        "verifier_jar_sha256": "3716d9311e55d2b0918a2fd9d54ba9e406c5f6abeea700b287f11259bc163dec",
+        "members": [
+          {
+            "name": "splits/base-master.apk",
+            "sha256": "4c744b8a0cdfca45d46b247ab7fceda6c10b25b00ad1ee1407fe2ccd6218260c",
+            "verified": true,
+            "schemes": {
+              "v1": true,
+              "v2": true,
+              "v3": true,
+              "v31": false
+            },
+            "signer_certificates_sha256": [
+              "796a7db387e3724c8c6dc8207c79953fd9b8c26ae250a9b2fe938f90074afb13"
+            ],
+            "errors": [],
+            "warnings": []
+          },
+          {
+            "name": "splits/config.en.apk",
+            "sha256": "c6273ccfe651a71f51ce2818abbf97dc3dda302f4021e253bf021ce8fb4be06a",
+            "verified": true,
+            "schemes": {
+              "v1": true,
+              "v2": true,
+              "v3": true,
+              "v31": false
+            },
+            "signer_certificates_sha256": [
+              "796a7db387e3724c8c6dc8207c79953fd9b8c26ae250a9b2fe938f90074afb13"
+            ],
+            "errors": [],
+            "warnings": []
+          }
+        ],
+        "signer_consistency": "same-signers",
+        "limitations": [
+          "Verifies original APK member bytes under each manifest's minimum-SDK policy. It does not verify the composed analysis image, publisher identity, certificate trust/revocation, app-store provenance or device installability. APK v4 sidecar signatures are not supplied."
+        ]
+      }
+    },
+    {
+      "case": "loose-set-mcp",
+      "signature": {
+        "authority": "android-apksig",
+        "status": "verified",
+        "verifier_jar_sha256": "3716d9311e55d2b0918a2fd9d54ba9e406c5f6abeea700b287f11259bc163dec",
+        "members": [
+          {
+            "name": "base.apk",
+            "sha256": "4c744b8a0cdfca45d46b247ab7fceda6c10b25b00ad1ee1407fe2ccd6218260c",
+            "verified": true,
+            "schemes": {
+              "v1": true,
+              "v2": true,
+              "v3": true,
+              "v31": false
+            },
+            "signer_certificates_sha256": [
+              "796a7db387e3724c8c6dc8207c79953fd9b8c26ae250a9b2fe938f90074afb13"
+            ],
+            "errors": [],
+            "warnings": []
+          },
+          {
+            "name": "config.en.apk",
+            "sha256": "c6273ccfe651a71f51ce2818abbf97dc3dda302f4021e253bf021ce8fb4be06a",
+            "verified": true,
+            "schemes": {
+              "v1": true,
+              "v2": true,
+              "v3": true,
+              "v31": false
+            },
+            "signer_certificates_sha256": [
+              "796a7db387e3724c8c6dc8207c79953fd9b8c26ae250a9b2fe938f90074afb13"
+            ],
+            "errors": [],
+            "warnings": []
+          }
+        ],
+        "signer_consistency": "same-signers",
+        "limitations": [
+          "Verifies original APK member bytes under each manifest's minimum-SDK policy. It does not verify the composed analysis image, publisher identity, certificate trust/revocation, app-store provenance or device installability. APK v4 sidecar signatures are not supplied."
+        ]
+      }
+    },
+    {
+      "case": "aab-mcp",
+      "subject": {
+        "name": "fixture.aab",
+        "digest": {
+          "sha256": "60e2c4dcfbc9db8087b25bbc3ec317077c22886f0c0bfce7fd69a1c79f9612c2"
+        },
+        "format": "aab",
+        "architecture": null,
+        "local_path": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-android-package-verification-gczKCX/fixture.aab"
+      },
+      "limitations": [
+        "Static decompiler observations do not establish runtime behavior; the APK is never executed.",
+        "Method signatures use provider display types; exact DEX descriptors are unavailable. Overload indices are local to this engine and artifact. Only raw DEX string matches report instruction locations; source positions and other operation offsets remain unknown.",
+        "Class inventories use parsed metadata before code generation, including synthetic members that may be omitted from decompiled source. Source positions remain unknown.",
+        "Manifest summary fields are extracted by the upstream engine; decoded XML is retained for verification. The JADX declaration facet does not verify APK signatures; an explicitly requested android-apksig facet records its separate verifier identity. Split resources, native libraries and Android runtime capture are not verified by JADX.",
+        "Composed APK bundle analysis merged JAVA code of universal.apk only (1 DEX entries) into one analysis image; split resources, native libraries and member signatures were not merged, and the image is not the signed install package.",
+        "AAB source SHA-256 60e2c4dcfbc9db8087b25bbc3ec317077c22886f0c0bfce7fd69a1c79f9612c2 was converted by bundletool JAR SHA-256 a099cfa1543f55593bc2ed16a70a7c67fe54b1747bb7301f37fdfd6d91028e29 in universal mode. Only fused modules are represented; non-fused/on-demand/device-specific coverage is unknown. Generated signing is temporary analysis packaging and does not authenticate the original AAB or publisher."
+      ]
+    },
+    {
+      "case": "real-method-cap-mcp",
+      "result": {
+        "engine": {
+          "name": "jadx-headless-mcp",
+          "version": "0.7.1",
+          "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+          "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+          "worker_count": 1,
+          "heap_limit_mib": 2048
+        },
+        "query": "not-a-fixture-match",
+        "scan_mode": "decompiled",
+        "total_classes": 2,
+        "scanned_classes": 2,
+        "scanned_methods": 4096,
+        "method_cap_skipped_methods": 5,
+        "method_cap_skipped_classes": 1,
+        "skipped_methods": 0,
+        "matches": [],
+        "coverage": "partial"
+      }
+    },
+    {
+      "case": "raw-dex-mcp",
+      "result": {
+        "engine": {
+          "name": "jadx-headless-mcp",
+          "version": "0.7.1",
+          "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+          "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+          "worker_count": 1,
+          "heap_limit_mib": 2048
+        },
+        "query": "fixture-4099",
+        "scan_mode": "dex",
+        "total_classes": 2,
+        "scanned_classes": 2,
+        "scanned_methods": 4101,
+        "method_cap_skipped_methods": 0,
+        "method_cap_skipped_classes": 0,
+        "skipped_methods": 0,
+        "matches": [
+          {
+            "class_name": "org.rea.packagefixture.Cap",
+            "method_name": "m4099",
+            "overload_index": 0,
+            "overload_count": 1,
+            "value": "fixture-4099",
+            "representation": "dex",
+            "fell_back": false,
+            "dex_location": {
+              "input_file": "classes.dex",
+              "method_instruction_offset": 0,
+              "input_file_offset": 148528
+            }
+          }
+        ],
+        "coverage": "complete"
+      }
+    },
+    {
+      "case": "raw-dex-jumbo-mcp",
+      "result": {
+        "engine": {
+          "name": "jadx-headless-mcp",
+          "version": "0.7.1",
+          "artifact_sha256": "6e5eacf500b64292bfb73c49797c1958f6ee44646e43e868039ae7feb573ff75",
+          "source_revision": "5844800a486d2248fa949b74c9896285f5b54de2",
+          "worker_count": 1,
+          "heap_limit_mib": 2048
+        },
+        "query": "zzzz-fixture-jumbo",
+        "scan_mode": "dex",
+        "total_classes": 7,
+        "scanned_classes": 7,
+        "scanned_methods": 157,
+        "method_cap_skipped_methods": 0,
+        "method_cap_skipped_classes": 0,
+        "skipped_methods": 0,
+        "matches": [
+          {
+            "class_name": "org.rea.packagefixture.JumboProbe",
+            "method_name": "sentinel",
+            "overload_index": 0,
+            "overload_count": 1,
+            "value": "zzzz-fixture-jumbo",
+            "representation": "dex",
+            "fell_back": false,
+            "dex_location": {
+              "input_file": "classes.dex",
+              "method_instruction_offset": 0,
+              "input_file_offset": 1222748
+            }
+          }
+        ],
+        "coverage": "complete"
+      }
+    }
+  ]
+}

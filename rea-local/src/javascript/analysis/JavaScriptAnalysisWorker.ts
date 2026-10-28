@@ -217,6 +217,9 @@ export class JavaScriptAnalysisWorker {
       const request = javaScriptWorkerRequestSchema.parse({
         id,
         node_budget: nodeBudget,
+        ...(this.limits.scanShippedMaterial === true
+          ? { scan_shipped_material: true }
+          : {}),
         text_sha256: createHash("sha256").update(file.text.value).digest("hex"),
         file: metadata,
       });
