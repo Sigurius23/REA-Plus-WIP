@@ -4,6 +4,14 @@ import { BinaryLayoutService } from "../application/binaryDiagnostics/BinaryLayo
 import { PwntoolsLayoutProvider } from "../native/pwntools/PwntoolsLayoutProvider.js";
 import { PeResourcesService } from "../application/binaryDiagnostics/PeResourcesService.js";
 import { PeResourcesProvider } from "../native/pe/PeResourcesProvider.js";
+import { FunctionEmulationService } from "../application/binaryDiagnostics/FunctionEmulationService.js";
+import { UnicornFunctionProvider } from "../native/emulation/UnicornFunctionProvider.js";
+
+/** Compose explicit-state emulation without dependency acquisition or target execution. */
+export const createFunctionEmulationService = (
+  environment: Readonly<NodeJS.ProcessEnv> = process.env,
+): FunctionEmulationService =>
+  new FunctionEmulationService(new UnicornFunctionProvider(environment));
 
 /** Portable PE inspection with no engine, installation or target acquisition. */
 export const createPeResourcesService = (): PeResourcesService =>

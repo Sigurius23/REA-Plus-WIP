@@ -27,6 +27,25 @@ read a single object.
 
 ## Native targets
 
+For “what does this function produce for these inputs?”, use
+`emulate_function` with explicit original file ranges mapped at selected
+addresses, canonical register bit patterns and fully initialized memory. It
+requires caller-supplied `REA_UNICORN_PYTHON` (Unicorn 2.1.2/Capstone 5.0.6),
+with no target process or disassembler session. CLI accepts the same JSON through
+`rea emulate-function request.json --json`.
+
+Use static evidence to select ranges and interpret arguments; do not silently
+invent a stack, object, relocated pointer, import stub or Swift/Objective-C
+runtime. Provide any needed stack/constants explicitly. The outer return stops
+before caller transfer, and external calls stop before invocation. Compare
+`registers_before` with requested values, inspect the stop reason and selected
+memory differences, and retain all assumptions. Instruction coverage describes
+one concrete path, including potentially partial faulting instructions.
+Derived `controlled-replay` Evidence is distinct from installed-app observation.
+Prefer source-built known-result checks before drawing conclusions from a new
+instruction/runtime shape. See [function emulation](https://github.com/morluto/rea/blob/main/docs/function-emulation.md)
+for register names, page-permission constraints, budgets and verified hosts.
+
 After `open_binary`, use focused search, procedure, or function tools directly.
 Use `binary_overview` when target metadata or inventory context helps answer the
 question. Prefer literal search, names, decompilation, callers, callees, and

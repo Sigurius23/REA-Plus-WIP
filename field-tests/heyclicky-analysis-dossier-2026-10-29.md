@@ -1,4 +1,4 @@
-# HeyClicky feature and design analysis dossier — updated 2026-10-30
+# HeyClicky feature and design analysis dossier — updated 2026-10-31
 
 **Analysis remains incomplete.** The original request is to understand
 HeyClicky's features, inner workings and notch design. Tool regressions,
@@ -141,5 +141,19 @@ application-data reads during those stages. The separate CUA pass selected the
 running app and read its UI under explicit authorization; a fresh launch was
 not proven and app-initiated network activity was not captured. No prompts or
 jobs were submitted, preferences changed, or account/permission operations
-performed. Incidental account identity was not exported. No commit or push was
-made; fixes and reports remain local.
+performed. Incidental account identity was not exported. Those earlier fixes and reports were subsequently published in `57bc7264a`.
+The item 16 follow-up below remains local and uncommitted.
+
+
+## Function-emulation follow-up — 2026-10-31
+
+[Item 16 verification](function-emulation-2026-10-31.md) now exercises selected
+original arm64 code through REA+ itself. The previously mapped main-window
+eligibility routine reaches its return boundary with false. Whole key-window
+and sizing experiments stop at missing runtime globals; explicitly assuming an
+ivar-offset value exposes an outside-code callee stop. No Swift/Objective-C
+runtime or call stub is synthesized. These are derived conditional model
+results, not installed UI observations or a completion of the feature checklist.
+The new small Evidence bundles and twelve complete static observations are
+retained in the repository alongside the receipt. No additional UI or service
+interaction occurred.

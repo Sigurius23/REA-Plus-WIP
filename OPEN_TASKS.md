@@ -4,6 +4,16 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Function emulation (2026-10-31):** Item **16 is implemented and verified**
+  for its initial bounded arm64/x86-64 profile. Public `emulate_function` and
+  `rea emulate-function` preserve explicit code/register/memory inputs and
+  conditional Evidence, with instruction/time/coverage bounds and named stops.
+  **42 source-built scenarios / 57 MCP invocations**, four exact CLI/MCP
+  comparisons, cancellation/cleanup checks and an actual installed-package
+  emulation pass. HeyClicky's main-window routine reaches its return boundary
+  with false; other trials expose missing runtime memory or an outside-code
+  callee rather than completing those functions. Full app analysis stays open.
+  See the [verification report](field-tests/function-emulation-2026-10-31.md).
 - **HeyClicky feature follow-up (2026-10-30):** Item **37 is fixed and verified**.
   REA+ now recovers the Swift enum dispatch itself: all 30 notch-sizing cases,
   a 15,380-byte owning body and complete case code in pseudocode. Two positive
@@ -63,7 +73,13 @@ Open work on `main` following PR #1 and the field tests.
      also passed with unchanged test budgets; see
      [HeyClicky fix verification](field-tests/heyclicky-fixes-2026-10-28.md).
 2. **Branch state and push:**
-   - **Publication batch (2026-10-31):** this commit contains the HeyClicky
+   - **Item 16 publication batch (2026-10-31):** the bounded function-emulation
+     implementation, tests, documentation and durable small Evidence bundles
+     are included together. The user requested publication to the existing
+     `origin/main` on `Sigurius23/REA-Plus-WIP`. The required pre-push
+     `check:fast` passed; full `check:pr` remains a separate optional follow-up.
+     Earlier verification receipts describe their original uncommitted session.
+   - **Publication batch (2026-10-31):** published commit `57bc7264a` contains the HeyClicky
      fixes for items 30–37, their tests, workflow improvements and investigation
      reports. The refreshed `origin/main` matched the prior local HEAD
      (`895057282e98`) before publication; destination is
@@ -75,12 +91,13 @@ Open work on `main` following PR #1 and the field tests.
    - The two existing local Rize Evidence JSONs remain untracked by design:
      `field-tests/rize-macos-1.1.52/evidence.json` and `summary-view.json`.
      Historical reports' “no commit or push” statements describe their original
-     verification sessions. The full `check:pr` gate still predates items 36–37;
-     their focused and real-provider verification is recorded below.
+     verification sessions. The full `check:pr` gate still predates items
+     36–37 and 16's new implementation; their focused and real-provider
+     verification is recorded below.
 
    **Remaining work:** item 12 (Consensus HAR), optional item 13 (Consensus
    telemetry/anonymous MCP research), item 14 (WHOOP device/live evidence; see
-   `Whoop/WHOOP_TASKS.md`) and paused item 16 (function emulation). HeyClicky's
+   `Whoop/WHOOP_TASKS.md`). Item 16's initial profile is done. HeyClicky's
    tool gaps 30–37 are fixed, while its broader feature/design investigation
    remains incomplete; the [dossier's feature checklist](field-tests/heyclicky-analysis-dossier-2026-10-29.md#feature-checklist)
    records the remaining tracing and runtime questions. Rize's admitted offline
@@ -151,9 +168,48 @@ Open work on `main` following PR #1 and the field tests.
     Existing radare2, binwalk, apktool, jadx, d8 and a full JDK were verified in
     the field-test work. No additional host toolchain installation was needed.
 
-## Paused
+## Function emulation
 
-16. Function emulation.
+16. **Concrete function emulation:** initial profile done (2026-10-31).
+    `emulate_function` / `rea emulate-function` accepts an original artifact,
+    arm64/x86-64 entry, explicit file-offset code mappings, canonical initial
+    registers including 128-bit SIMD, initialized memory and selected memory
+    observations. Results preserve source/engine hashes, effective registers,
+    selected before/after memory, instruction-entry coverage and stop reason as
+    derived `controlled-replay` Evidence. No loader, relocation, ABI stack,
+    Swift/Objective-C runtime, TLS or imported-call stub is synthesized.
+
+    Instruction, time and unique-coverage limits stop explicitly. External
+    calls and the outer return stop before execution; missing/protected memory
+    and unsupported CPU/runtime context remain named boundaries. Native page
+    permissions protect code/read-only data, with shared-page write conflicts
+    rejected. Owned process cancellation, one-engine capacity, retained cleanup
+    leases and preservation of completed observations are verified. Python
+    launcher and live framework image identity remain distinct on macOS.
+
+    **Verification:** two source-built Mach-O binaries exercise 42 arm64/x86-64
+    scenarios through 57 real MCP invocations (45 successful replies including
+    retained-bundle operations, 12 expected input/configuration/capacity or
+    cancellation outcomes). Four source CLI/MCP comparisons match Evidence
+    exactly. **79 source/contract tests**, static checks, documentation,
+    duplication (**2.48%**), package verification and `npm pack --dry-run` pass.
+    A real installed package reproduces source CLI Evidence with the exact
+    shipped helper. Final owned-process lineages are verified empty.
+
+    **HeyClicky:** fresh bounded Ghidra views establish original function ranges
+    and file-byte equivalence. The main-window eligibility routine produces
+    false at its return boundary. Whole key-window and notch-sizing experiments
+    stop at missing runtime globals. Supplying one explicitly assumed global
+    value exposes an outside-code callee stop; no runtime stub or complete
+    focus/layout result is claimed. Complete small Evidence bundles and static
+    records are retained in `field-tests/`, not solely under temporary paths.
+
+    **Limits:** real-engine verification ran on macOS arm64; Linux-host behavior
+    remains unverified and Windows is outside this initial process profile.
+    OS/runtime emulation, general loader/ABI reconstruction, x87/MMX/AVX and
+    full-app semantics remain outside this version. The full repository
+    `check:pr` suite was not rerun. See the [guide](rea-local/docs/function-emulation.md)
+    and [verification](field-tests/function-emulation-2026-10-31.md).
 
 ## REA+ gap registry (2026-10-26)
 
@@ -162,8 +218,8 @@ Details and Evidence-backed context: `field-tests/rize-macos-1.1.52.md` and
 State of play (2026-10-28): **17–29 are implemented and offline-verified**
 within the limits recorded below. Item 22(a–c), scope filters and the remaining
 helper/format/signature/measurement work are included in the final gate and
-commit batch. Device/live-traffic work (12, 14), optional Consensus research
-(13) and paused emulation (16) retain their separate status. See the
+commit batch. Device/live-traffic work (12, 14) and optional Consensus research (13) retain
+their separate status. Item 16 is now implemented as the bounded profile above. See the
 [combined verification report](field-tests/rea-offline-backlog-2026-10-27.md).
 
 17. **JavaScript constant/string search is not exposed (repeat, cross-workflow).**

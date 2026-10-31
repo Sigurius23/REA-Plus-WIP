@@ -443,6 +443,18 @@ Chrome CI include this verifier. See [module relationships](website-module-trace
 
 ## Real-toolchain verification lanes
 
+`npm run verify:function-emulation` uses caller-supplied
+`REA_UNICORN_PYTHON` (Unicorn 2.1.2 and Capstone 5.0.6) and installed macOS
+clang. It compiles arm64 and x86-64 C/assembly fixtures, selects their original
+ranges with an independent Mach-O oracle, and checks source-known results
+through actual CLI/MCP tools with schemas and exact Evidence parity. It also
+checks execution limits, unsupported instructions, external calls, explicit
+memory/permission boundaries, cancellation/capacity and unavailable engines.
+Controlled root/process cleanup refusals verify retained real-engine observations
+and cleanup retries; these injections are separate from real OS failures.
+Fixtures are emulated and never launched as host executables. See
+[function emulation](function-emulation.md) for the model and host limits.
+
 Each real-toolchain command must require only the host tools needed to prove
 its stated claim. Use a host-native fixture for host/provider acceptance, and
 place optional cross-target formats or platform-specific runners in separate

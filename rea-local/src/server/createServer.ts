@@ -48,6 +48,9 @@ import { registerBinaryDiffTools } from "./registerBinaryDiffTools.js";
 import { registerLibraryIdentificationTools } from "./registerLibraryIdentificationTools.js";
 import { snapshotEnvironment } from "../process/snapshotEnvironment.js";
 import { createPeResourcesService } from "../composition/binaryDiagnostics.js";
+import { createFunctionEmulationService } from "../composition/binaryDiagnostics.js";
+import type { FunctionEmulationService } from "../application/binaryDiagnostics/FunctionEmulationService.js";
+import { registerFunctionEmulationTool } from "./registerFunctionEmulationTool.js";
 import { registerPeResourcesTool } from "./registerPeResourcesTool.js";
 import type { EvmInterfaceService } from "../application/evm/EvmInterfaceService.js";
 import { createEvmInterfaceService } from "../composition/evm.js";
@@ -166,6 +169,7 @@ export interface CreateServerOptions {
   readonly evmInterface?: EvmInterfaceService;
   readonly logger?: Logger;
   readonly binaryLayout?: BinaryLayoutService;
+  readonly functionEmulation?: FunctionEmulationService;
   readonly recordedCrash?: RecordedCrashService;
   readonly firmwareAnalysis?: FirmwareAnalysisPort;
   readonly javascriptRecovery?: JavaScriptRecoveryPort;
@@ -216,6 +220,10 @@ const installSessionToolAvailability = (
         isAbsolute(environment.REA_BROWSER_EXECUTABLE ?? ""),
       recordedCrashEnabled: options.recordedCrash !== undefined || pwntools,
       binaryLayoutEnabled: options.binaryLayout !== undefined || pwntools,
+      functionEmulationEnabled:
+        options.functionEmulation !== undefined ||
+        ((linux || process.platform === "darwin") &&
+          isAbsolute(environment.REA_UNICORN_PYTHON ?? "")),
       firmwareInspectionEnabled:
         options.firmwareAnalysis !== undefined ||
         (linux && isAbsolute(environment.REA_BINWALK_COMMAND ?? "")),
@@ -293,6 +301,8 @@ export const createServer = (
   const javascriptRecovery =
     options.javascriptRecovery ?? createJavaScriptRecoveryProvider(environment);
   const artifactResources = new ArtifactResourceScope();
+  const functionEmulation =
+    options.functionEmulation ?? createFunctionEmulationService(environment);
   const firmwareAnalysis = new FirmwareAnalysisService(
     options.firmwareAnalysis ?? createFirmwareAnalysisProvider(environment),
   );
@@ -303,6 +313,7 @@ export const createServer = (
     evmInterface,
     webSourceLocation,
     javascriptRecovery,
+    functionEmulation,
   };
   const startedAt = new Date().toISOString();
   const logger = options.logger ?? silentLogger;
@@ -342,6 +353,7 @@ export const createServer = (
       javascriptRecovery.close?.() ?? Promise.resolve(),
       artifactResources.close(),
       firmwareAnalysis.close(),
+      functionEmulation.close(),
       options.browserScenarioCapture?.close?.() ?? Promise.resolve(),
     ])
       .then((results) => {
@@ -687,6 +699,13 @@ const registerConfiguredAnalysisTools = (
   registerRecordedCrashTools(
     server,
     options.recordedCrash ?? createRecordedCrashService(environment),
+    toolLogger,
+    recordEvidence,
+    withAdmittedAnalysis,
+  );
+  registerFunctionEmulationTool(
+    server,
+    options.functionEmulation ?? createFunctionEmulationService(environment),
     toolLogger,
     recordEvidence,
     withAdmittedAnalysis,

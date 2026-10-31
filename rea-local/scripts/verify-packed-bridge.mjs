@@ -12,6 +12,7 @@ export async function verifyPackedBridge({ workspace, tarball, packedFiles }) {
     packedHopperBridge,
     packedGhidraBridge,
     "package/bridge/ghidra/ReaGhidraSwiftEnumSwitches.java",
+    "package/bridge/unicorn/emulate.py",
   ]) {
     if (!packedFiles.includes(path)) throw new Error(`package omitted ${path}`);
   }
@@ -22,5 +23,10 @@ export async function verifyPackedBridge({ workspace, tarball, packedFiles }) {
     "-c",
     "import ast, pathlib, sys; p = pathlib.Path(sys.argv[1]); ast.parse(p.read_text(encoding='utf-8'), filename=str(p))",
     join(workspace, packedHopperBridge),
+  ]);
+  await exec("python3", [
+    "-c",
+    "import ast, pathlib, sys; p = pathlib.Path(sys.argv[1]); ast.parse(p.read_text(encoding='utf-8'), filename=str(p))",
+    join(workspace, "package/bridge/unicorn/emulate.py"),
   ]);
 }

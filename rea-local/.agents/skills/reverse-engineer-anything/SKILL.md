@@ -2,7 +2,7 @@
 name: reverse-engineer-anything
 description: Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA+. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip REA+ for ordinary source-repository architecture analysis.
 metadata:
-  version: "38"
+  version: "39"
 ---
 
 # REA+
@@ -187,6 +187,11 @@ explicit path or endpoint and do not need it.
 - Native executable, library, or analysis database: `open_binary`, then
   use focused analysis tools directly; call `binary_overview` when metadata or
   inventory context is useful and available from the selected provider.
+- Concrete function output for explicit inputs: `emulate_function` when
+  advertised, with caller-selected code/file ranges, register values and fully
+  initialized memory. It is independent of an active disassembler target.
+  Results are conditional emulator evidence; missing runtime state and external
+  calls remain explicit stops. See the native reference before using it.
 
 For an existing IDA MCP configuration, use `open_binary` with the original
 input binary and `provider_id: "ida"`; do not pass an `.idb` or `.i64` database.

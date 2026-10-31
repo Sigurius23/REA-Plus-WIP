@@ -353,6 +353,19 @@ delivery for responses that fit that buffer and Node's single-string limit.
 It does not change the client's buffer, analysis coverage, or retained content.
 Ordinary responses keep their existing complete result contract.
 
+## Concrete native function experiments
+
+`emulate_function` is target-free and accepts explicit original artifact/code
+ranges, canonical initial registers and fully initialized memory. Its complete
+Evidence records a concrete model run with `confidence: "derived"` and
+`authority: "controlled-replay"`, preserving original file/engine identity,
+input assumptions, selected memory changes, instruction-entry coverage and stop
+reason. It neither invokes the target as a host process nor supplies an implicit
+OS, Swift/Objective-C runtime, ABI stack or external-call stub. A boundary stop
+retains partial state; it does not establish the function's return value.
+See [function emulation](function-emulation.md) for the initial CPU/host profile,
+caller-supplied dependencies, budgets and public CLI/MCP verification.
+
 ## Retained application Evidence inputs
 
 `analyze_javascript_application` and `inspect_binary_layout` accept `detail`:

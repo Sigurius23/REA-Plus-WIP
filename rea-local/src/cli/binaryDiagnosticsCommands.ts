@@ -4,6 +4,7 @@ import {
   createRecordedCrashService,
   createBinaryLayoutService,
   createPeResourcesService,
+  createFunctionEmulationService,
 } from "../composition/binaryDiagnostics.js";
 import { CLI_COMMANDS } from "../cliCommandNames.js";
 import { logCliCommand } from "../cliLogging.js";
@@ -12,6 +13,7 @@ import type { Logger } from "pino";
 import type { CliInstance } from "./types.js";
 import { withCommandCancellation } from "./commandCancellation.js";
 import { inspectPeResourcesInputSchema } from "../domain/native/peResources.js";
+import { parseCliJsonInput, resolveCliJsonPaths } from "../cliJsonInput.js";
 
 /** Inspect operator-selected files through the same shared workflow as MCP. */
 export const registerBinaryDiagnosticsCommands = (
@@ -19,6 +21,29 @@ export const registerBinaryDiagnosticsCommands = (
   logger: Logger,
   environment: Readonly<NodeJS.ProcessEnv>,
 ): void => {
+  const emulation = createFunctionEmulationService(environment);
+  cli.command(CLI_COMMANDS.emulateFunction, {
+    description:
+      "Evaluate explicit function state in a bounded emulator; accepts inline JSON or a JSON request file",
+    args: z.object({
+      inputJson: z.string().describe("Emulation request JSON or file path"),
+    }),
+    run: ({ args }) =>
+      withCommandCancellation((signal) =>
+        logCliCommand(logger, CLI_COMMANDS.emulateFunction, async () => {
+          const input = await parseCliJsonInput(
+            args.inputJson,
+            "emulate_function",
+          );
+          if (!input.ok) return input.error;
+          const result = await emulation.emulate(
+            resolveCliJsonPaths(input.value, [["path"]]),
+            { signal },
+          );
+          return result.ok ? result.value : projectAnalysisError(result.error);
+        }),
+      ),
+  });
   const pe = createPeResourcesService();
   cli.command(CLI_COMMANDS.inspectPeResources, {
     description:

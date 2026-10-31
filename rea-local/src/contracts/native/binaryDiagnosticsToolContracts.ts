@@ -17,6 +17,10 @@ import {
   inspectPeResourcesInputSchema,
   peResourcesSchema,
 } from "../../domain/native/peResources.js";
+import {
+  emulateFunctionInputSchema,
+  functionEmulationSchema,
+} from "../../domain/native/functionEmulation.js";
 
 /** Caller-selected delivery of completed binary layout Evidence. */
 export const inspectBinaryLayoutRequestSchema =
@@ -24,6 +28,27 @@ export const inspectBinaryLayoutRequestSchema =
 
 /** Offline binary diagnostics are independent of macOS process/UI providers. */
 export const BINARY_DIAGNOSTICS_TOOL_CONTRACTS = [
+  {
+    name: "emulate_function",
+    ...toolContractMetadata("emulate_function"),
+    kind: "native-provider",
+    description:
+      "Evaluate one concrete function state in a bounded CPU emulator, without launching the selected artifact or invoking host OS services. Supply an absolute original artifact path, arm64/x86_64 entry address, explicit file-offset code mappings, initial canonical registers, fully initialized memory and selected memory observations. Returns effective initial/final registers including SIMD bit patterns, selected memory changes, instruction-entry coverage and an explicit stop reason. Stops before external calls or the outer return and at missing/protected memory, unsupported runtime instructions and instruction/time/coverage limits. No automatic loader, relocation, ABI stack, runtime, TLS, imported-call stubs or argument inference; unspecified registers are modeled as zero with effective values recorded. Evidence is derived conditional replay and preserves artifact/engine hashes and assumptions, not observed app behavior. Initial macOS/Linux profile requires caller-supplied REA_UNICORN_PYTHON with Unicorn 2.1.2 and Capstone 5.0.6; no installation is performed.",
+    inputSchema: emulateFunctionInputSchema,
+    outputSchema: evidenceResultOf(functionEmulationSchema),
+    examples: [
+      {
+        title: "Evaluate an explicitly mapped arm64 function",
+        input: {
+          path: "/artifacts/program",
+          architecture: "arm64",
+          entry_address: "0x1000",
+          code_regions: [{ address: "0x1000", file_offset: 4096, size: 16 }],
+          initial_registers: { x0: "0x2", x1: "0x3" },
+        },
+      },
+    ],
+  },
   {
     name: "inspect_pe_resources",
     ...toolContractMetadata("inspect_pe_resources"),

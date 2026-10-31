@@ -96,6 +96,11 @@ export const TOOL_EFFECTS: Readonly<Record<string, ToolEffects>> = {
     launchesProcess: true,
   }),
   inspect_pe_resources: evidence,
+  emulate_function: effects({
+    mutatesSession: true,
+    writesFilesystem: true,
+    launchesProcess: true,
+  }),
   inspect_coverage_log: evidence,
   inspect_minidump: evidence,
   scan_byte_patterns: evidence,
