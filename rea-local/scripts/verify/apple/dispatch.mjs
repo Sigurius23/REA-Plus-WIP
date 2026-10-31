@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
+import { Ajv2020 } from "ajv/dist/2020.js";
 import { parseBinaryTarget } from "../../../dist/application/BinaryTargetResolver.js";
 import { inspectAppleDispatchMetadata } from "../../../dist/native/AppleDispatchMetadata.js";
 import {
@@ -147,7 +148,34 @@ const checkObjc = (metadata, mode) => {
     );
 };
 
+const checkExternalSwift = (metadata) => {
+  const external = metadata.relative_pointers.find(
+    (item) =>
+      item.external_reference?.symbol === "_$ss25ExpressibleByArrayLiteralMp",
+  );
+  assert.ok(external);
+  assert.notEqual(external.field.address, external.indirect_slot?.address);
+  assert.equal(typeof external.indirect_slot?.file_offset, "number");
+  assert.deepEqual(external.target, { address: null, file_offset: null });
+  assert.equal(
+    external.external_reference.library?.endsWith("libswiftCore.dylib"),
+    true,
+  );
+  assert.equal(external.external_reference.weak, false);
+  assert.equal(external.external_reference.addend, "0");
+  assert.equal(external.decode.status, "unsupported");
+  const conformance = metadata.swift_conformances.find(
+    (item) => item.type_name === "ReaArrayFixture",
+  );
+  assert.ok(conformance);
+  assert.equal(conformance.protocol_name, null);
+  assert.deepEqual(conformance.protocol_reference, external.external_reference);
+  assert.equal(conformance.decode.status, "partial");
+  assert.equal(typeof conformance.location.file_offset, "number");
+};
+
 const checkSwift = (metadata, mode) => {
+  checkExternalSwift(metadata);
   if (
     !metadata.swift_dispatch_slots.some(
       (slot) =>
@@ -180,6 +208,32 @@ const checkSwift = (metadata, mode) => {
     throw new Error(
       `Swift metadata fixture drifted (${mode.mode}): ${JSON.stringify(metadata)}`,
     );
+};
+
+const checkSelectedSwiftFacet = (metadata, facet) => {
+  if (facet === "swift-conformances") checkExternalSwift(metadata);
+  const selected = facet === "swift-vtables" ? "class_vtable" : "witness_table";
+  assert.equal(metadata.objc_classes.length, 0);
+  assert.ok(
+    metadata.swift_dispatch_slots.some((slot) => slot.table_kind === selected),
+  );
+  assert.ok(
+    metadata.swift_dispatch_slots.every((slot) => slot.table_kind === selected),
+  );
+  assert.equal(
+    metadata.coverage.find(
+      ({ facet }) => facet === "objc_class_method_ivar_metadata",
+    )?.status,
+    "not_requested",
+  );
+  const other =
+    facet === "swift-vtables"
+      ? "swift_conformances_static_witness_slots"
+      : "swift_class_vtable_descriptors";
+  assert.equal(
+    metadata.coverage.find(({ facet }) => facet === other)?.status,
+    "not_requested",
+  );
 };
 
 const root = await mkdtemp(join(tmpdir(), "rea-dispatch-"));
@@ -249,6 +303,80 @@ try {
         await exec("/usr/bin/strip", ["-x", swiftPath]);
       const { target, metadata } = await inspect(swiftPath);
       checkSwift(metadata, mode);
+      if (mode.mode === "chained" && variant === "stripped") {
+        await withArtifactMcp(swiftPath, async (client) => {
+          const { tools } = await client.listTools();
+          const advertised = tools.find(
+            ({ name }) => name === "inspect_native_dispatch_metadata",
+          );
+          assert.ok(advertised);
+          const ajv = new Ajv2020({ strict: false, validateFormats: false });
+          assert.equal(ajv.validateSchema(advertised.inputSchema), true);
+          assert.equal(ajv.validateSchema(advertised.outputSchema), true);
+          // The SDK shares enum definitions through local $refs. Verify the
+          // advertised semantics instead of assuming an inline enum layout.
+          const validateInput = ajv.compile(advertised.inputSchema);
+          assert.equal(validateInput({}), true);
+          for (const facet of [
+            "all",
+            "objc",
+            "swift-conformances",
+            "swift-vtables",
+          ])
+            assert.equal(
+              validateInput({ facet }),
+              true,
+              JSON.stringify(validateInput.errors),
+            );
+          for (const facet of ["swift-witnesses", "", 0, null])
+            assert.equal(validateInput({ facet }), false);
+          assert.equal(
+            validateInput({ facet: "swift-vtables", unexpected: true }),
+            false,
+          );
+          assert.equal(
+            validateInput({ facet: "swift-vtables", max_records: 0 }),
+            false,
+          );
+          assert.equal(
+            validateInput({ facet: "swift-vtables", max_records: 20001 }),
+            false,
+          );
+          assert.equal(
+            validateInput({ facet: "swift-vtables", max_records: 20000 }),
+            true,
+          );
+          for (const facet of ["swift-conformances", "swift-vtables"]) {
+            assert.equal(ajv.validate(advertised.inputSchema, { facet }), true);
+            const cli = await artifactCliEvidence(
+              "inspect-native-dispatch-metadata",
+              swiftPath,
+              ["--facet", facet],
+            );
+            const cliResult = nativeDispatchMetadataResultSchema.parse(
+              cli.normalized_result,
+            );
+            assert.equal(cli.parameters.facet, facet);
+            assert.equal(cliResult.target_sha256, target.sha256);
+            checkSelectedSwiftFacet(cliResult.result, facet);
+            const response = await client.callTool({
+              name: "inspect_native_dispatch_metadata",
+              arguments: { facet },
+            });
+            assert.notEqual(response.isError, true, JSON.stringify(response));
+            assert.equal(
+              ajv.validate(advertised.outputSchema, response.structuredContent),
+              true,
+              JSON.stringify(ajv.errors),
+            );
+            const mcpResult = nativeDispatchMetadataResultSchema.parse(
+              response.structuredContent.normalized_result,
+            );
+            checkSelectedSwiftFacet(mcpResult.result, facet);
+            assert.deepEqual(mcpResult, cliResult);
+          }
+        });
+      }
       results.push({
         variant: `swift-${mode.mode}-${variant}`,
         target_sha256: target.sha256,

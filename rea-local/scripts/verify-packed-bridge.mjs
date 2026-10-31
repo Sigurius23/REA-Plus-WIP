@@ -8,7 +8,11 @@ const packedGhidraBridge = "package/bridge/ghidra/ReaGhidraBridge.java";
 
 /** Check shipped bridge files; real-provider lanes verify runtime behavior. */
 export async function verifyPackedBridge({ workspace, tarball, packedFiles }) {
-  for (const path of [packedHopperBridge, packedGhidraBridge]) {
+  for (const path of [
+    packedHopperBridge,
+    packedGhidraBridge,
+    "package/bridge/ghidra/ReaGhidraSwiftEnumSwitches.java",
+  ]) {
     if (!packedFiles.includes(path)) throw new Error(`package omitted ${path}`);
   }
   await exec("tar", ["-xf", tarball, "-C", workspace]);

@@ -14,6 +14,7 @@ import {
   AnalysisCapabilityUnavailableError,
 } from "../../domain/analysisErrorCore.js";
 import { EnhancedTools } from "../EnhancedTools.js";
+import { nativeDispatchMetadataResultSchema } from "../../domain/native/objcSwiftMetadata.js";
 import {
   nativeInvestigationGraphSchema,
   nativeInvestigationTraceSchema,
@@ -326,6 +327,26 @@ describe("bounded native UI tracing", () => {
       ok: true,
       value: { target_sha256: target },
     });
+  });
+
+  it("preserves a Swift-only selection through the symbol-only fallback", async () => {
+    const result = await new EnhancedTools(testAnalysis()).execute(
+      "inspect_native_dispatch_metadata",
+      { max_records: 10, facet: "swift-vtables" },
+    );
+    if (!result.ok) throw result.error;
+    expect(result.value).toMatchObject({
+      target_sha256: target,
+      result: { objc_classes: [], swift_symbols: [] },
+    });
+    const metadata = nativeDispatchMetadataResultSchema.parse(
+      result.value,
+    ).result;
+    expect(
+      metadata.coverage.find(
+        ({ facet }) => facet === "swift_class_vtable_descriptors",
+      ),
+    ).toMatchObject({ status: "unsupported" });
   });
 });
 

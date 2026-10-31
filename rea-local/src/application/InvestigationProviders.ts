@@ -18,6 +18,8 @@ export const workflowAnalysisProfile = (
 ): AnalysisProfileCommitment =>
   createAnalysisProfile(REA_WORKFLOW_PROVIDER, {
     upstream_analysis_profile: upstream,
+    // Older composed snapshots did not retain contributing provider limitations.
+    workflow_evidence_revision: 1,
     ...(operation === "binary_overview" || operation === "batch_decompile"
       ? { workflow_revision: 2 }
       : {}),

@@ -34,6 +34,10 @@ type FileStatus = {
   sha256: string | null;
   text_status: string | null;
   parse_status: string | null;
+  syntax_parse_status: string;
+  parse_error_count: number | null;
+  static_facts_status: string;
+  unresolved_static_occurrences: number | null;
   module_ir_status: string;
   module_ir_coverage: string | null;
   semantic_graph_status: string;
@@ -46,6 +50,10 @@ const object = (value: JsonValue | undefined): JsonObject | undefined =>
     : undefined;
 const text = (value: JsonValue | undefined): string | null =>
   typeof value === "string" ? value : null;
+const count = (value: JsonValue | undefined): number | null =>
+  typeof value === "number" && Number.isSafeInteger(value) && value >= 0
+    ? value
+    : null;
 const retention = (value: JsonValue | undefined): string =>
   value === "retained" || value === "not-retained" || value === "partial"
     ? value
@@ -101,6 +109,48 @@ const fileIssues = (
   return result;
 };
 
+type AddStatusIssue = (
+  operation: string,
+  message: string,
+  limits?: Issue["limits"],
+) => void;
+
+const addSyntaxAndStaticIssues = (
+  row: FileStatus,
+  add: AddStatusIssue,
+): void => {
+  if (
+    row.syntax_parse_status === "partial" ||
+    row.syntax_parse_status === "failed"
+  )
+    add(
+      "parse-javascript",
+      `Recorded syntax parse status is ${row.syntax_parse_status}.`,
+    );
+  if (
+    row.static_facts_status === "partial" ||
+    (row.static_facts_status === "failed" &&
+      row.syntax_parse_status !== "failed")
+  )
+    add(
+      "analyze-static-facts",
+      `Recorded static-fact coverage is ${row.static_facts_status}.${
+        row.unresolved_static_occurrences === null
+          ? " The unresolved-occurrence count is unknown."
+          : ` ${String(row.unresolved_static_occurrences)} unresolved discovery occurrences were recorded.`
+      }`,
+    );
+  if (
+    row.syntax_parse_status === "not-recorded" &&
+    (row.parse_status === "partial" || row.parse_status === "failed") &&
+    !row.issues.some((issue) => issue.operation === "parse-javascript")
+  )
+    add(
+      "analyze-static-facts",
+      `Legacy aggregate parse_status is ${row.parse_status}; syntax and static-fact causes were not recorded separately.`,
+    );
+};
+
 const addStatusIssues = (row: FileStatus, properties: JsonObject): void => {
   const add = (
     operation: string,
@@ -119,11 +169,7 @@ const addStatusIssues = (row: FileStatus, properties: JsonObject): void => {
   };
   if (row.text_status !== null && row.text_status !== "included")
     add("read-javascript-text", row.text_status);
-  if (row.parse_status === "partial" || row.parse_status === "failed")
-    add(
-      "parse-javascript",
-      `Recorded syntax parse status is ${row.parse_status}.`,
-    );
+  addSyntaxAndStaticIssues(row, add);
   if (row.module_ir_status === "not-retained" && row.issues.length === 0)
     add(
       "retain-module-ir",
@@ -193,6 +239,14 @@ const fileRows = (
         sha256: digest,
         text_status: text(properties.text_status),
         parse_status: text(properties.parse_status),
+        syntax_parse_status:
+          text(properties.syntax_parse_status) ?? "not-recorded",
+        parse_error_count: count(properties.parse_error_count),
+        static_facts_status:
+          text(properties.static_facts_status) ?? "not-recorded",
+        unresolved_static_occurrences: count(
+          properties.unresolved_static_occurrences,
+        ),
         module_ir_status: retention(properties.module_ir_status),
         module_ir_coverage: text(object(properties.module_ir_coverage)?.status),
         semantic_graph_status: retention(properties.semantic_graph_status),
@@ -230,6 +284,11 @@ export const projectJavaScriptFileStatusPage = (
     ...analysis.graph.limitations,
     ...analysis.semantic_graph.limitations,
   ]);
+  const missingStaticMetadata = rows.filter(
+    (row) =>
+      row.syntax_parse_status === "not-recorded" ||
+      row.static_facts_status === "not-recorded",
+  ).length;
   return {
     kind: "page",
     view,
@@ -238,6 +297,7 @@ export const projectJavaScriptFileStatusPage = (
       files: rows.length,
       files_with_issues: withIssues.length,
       files_without_retention_metadata: missingMetadata,
+      files_without_static_coverage_metadata: missingStaticMetadata,
       parent_limitation_count: parentLimitations.size,
     },
     coverage: pageViewCoverage(view.offset, page.length, selected.length),
@@ -252,6 +312,7 @@ export const projectJavaScriptFileStatusPage = (
       "This page projects recorded JavaScript file observations; no source was read or analyzed again.",
       "Parent limitations, raw static/semantic facts and captured diagnostics remain in the parent Evidence; they are not repeated in this compact view.",
       "The with-issues filter selects recorded failures or incomplete file coverage; an empty page does not establish complete analysis.",
+      "parse_status is a legacy aggregate. Only explicit syntax_parse_status establishes the syntax outcome; absent syntax/static-fact metadata remains not-recorded.",
     ],
     unknowns: [
       ...(rows.length === 0
@@ -261,6 +322,7 @@ export const projectJavaScriptFileStatusPage = (
         : []),
       `Parent application coverage is ${analysis.graph.coverage.status}; semantic coverage is ${analysis.semantic_graph.coverage.status}.`,
       `${String(missingMetadata)} files lack module-IR or semantic-projection retention metadata; their missing statuses are not recorded, not successful.`,
+      `${String(missingStaticMetadata)} files lack separate syntax or static-fact coverage metadata; legacy aggregate status does not identify a syntax failure.`,
     ],
   };
 };

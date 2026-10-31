@@ -129,11 +129,29 @@ it("preserves graph commitments and export shapes when consuming file-local IR",
     const decodedModules = new Map<string, JavaScriptModuleSemanticIr>();
     const decodedStatic = new Map<string, JavaScriptStaticAnalysis>();
     let rejectedInvalidTransfer = false;
+    let checkedHistoricalCheckpoint = false;
     for (const [index, analyzed] of full.files.entries()) {
       if (analyzed.javascript !== null) {
         const raw: unknown = JSON.parse(JSON.stringify(analyzed.javascript));
         const decodedFacts = javaScriptWorkerStaticAnalysisSchema.parse(raw);
         expect(decodedFacts).toEqual(analyzed.javascript);
+        if (!checkedHistoricalCheckpoint) {
+          const {
+            syntax_parse_status: _syntax,
+            static_facts_status: _facts,
+            unresolved_static_occurrences: _occurrences,
+            ...historical
+          } = decodedFacts;
+          const decodedHistorical =
+            javaScriptWorkerStaticAnalysisSchema.parse(historical);
+          expect(decodedHistorical).toEqual(historical);
+          expect(decodedHistorical).not.toHaveProperty("syntax_parse_status");
+          expect(decodedHistorical).not.toHaveProperty("static_facts_status");
+          expect(decodedHistorical).not.toHaveProperty(
+            "unresolved_static_occurrences",
+          );
+          checkedHistoricalCheckpoint = true;
+        }
         decodedStatic.set(analyzed.file.path, decodedFacts);
       }
       if (analyzed.semantic === null) continue;

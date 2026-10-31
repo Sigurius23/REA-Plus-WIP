@@ -54,6 +54,7 @@ const jumpTableDataSourceSchema = z
       "ghidra-dispatch-block-data-reference",
       "ghidra-aarch64-byte-table",
       "ghidra-aarch64-halfword-table",
+      "rea-swift-enum-signed-word-table",
     ]),
     entry_size_bytes: z.number().int().min(1).nullable(),
     entry_count: z.number().int().min(0).nullable(),

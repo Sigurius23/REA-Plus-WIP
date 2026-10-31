@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { nativeValueTraceInputSchema } from "../domain/native/nativeValueTrace.js";
+import { nativeDispatchFacetSchema } from "../domain/native/objcSwiftMetadata.js";
 const traceLiteralInputSchema = z.strictObject({
   query: z.string().min(1),
   case_sensitive: z.boolean().default(false),
@@ -9,7 +10,20 @@ const traceLiteralInputSchema = z.strictObject({
 export const enhancedInputSchemas = {
   trace_native_values: nativeValueTraceInputSchema,
   inspect_native_dispatch_metadata: z.strictObject({
-    max_records: z.number().int().min(1).max(20_000).default(5_000),
+    max_records: z
+      .number()
+      .int()
+      .min(1)
+      .max(20_000)
+      .default(5_000)
+      .describe(
+        "Aggregate decode-admission budget across the selected metadata families and their relative-pointer records.",
+      ),
+    facet: nativeDispatchFacetSchema
+      .default("all")
+      .describe(
+        "Inspect one metadata family without spending its budget on earlier families. Unselected families are not_requested; unsupported provider facets remain explicit.",
+      ),
   }),
   get_objc_classes: z.strictObject({ pattern: z.string().default("") }),
   get_objc_protocols: z.strictObject({}),

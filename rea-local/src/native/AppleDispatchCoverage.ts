@@ -1,4 +1,7 @@
-import type { ObjcSwiftMetadata } from "../domain/native/objcSwiftMetadata.js";
+import type {
+  NativeDispatchFacet,
+  ObjcSwiftMetadata,
+} from "../domain/native/objcSwiftMetadata.js";
 import type { PointerFixups } from "./AppleMachoFixups.js";
 import type { DecodeIssue } from "./AppleDispatchDecodeFacts.js";
 import type { FacetDecodeFacts } from "./AppleDispatchDecodeFacts.js";
@@ -22,17 +25,24 @@ const describeFixups = (fixups: PointerFixups): string => {
 /** Append the per-facet coverage of one Apple dispatch metadata decode. */
 export const pushDispatchCoverage = (input: {
   readonly result: ObjcSwiftMetadata;
+  readonly facet: NativeDispatchFacet;
   readonly failures: readonly string[];
   readonly categoryIssues: readonly DecodeIssue[];
   readonly examined: number;
   readonly categoriesExamined: number;
-  readonly truncated: boolean;
+  readonly truncated: {
+    readonly objc: boolean;
+    readonly objcCategories: boolean;
+    readonly swift: boolean;
+    readonly vtables: boolean;
+  };
   readonly fixups: PointerFixups;
   readonly vtables: FacetDecodeFacts;
   readonly swift: FacetDecodeFacts;
 }): void => {
   const {
     result,
+    facet,
     failures,
     categoryIssues,
     examined,
@@ -42,23 +52,34 @@ export const pushDispatchCoverage = (input: {
     vtables,
     swift,
   } = input;
-  result.coverage.push({
-    facet: "objc_class_method_ivar_metadata",
-    status: failures.length > 0 || truncated ? "partial" : "complete",
-    reason:
-      [...failures, ...(truncated ? ["max_records_reached"] : [])].join("; ") ||
-      null,
-    examined,
-    decoded: result.objc_classes.length,
-  });
+  const objcRequested = facet === "all" || facet === "objc";
+  const swiftRequested = facet === "all" || facet === "swift-conformances";
+  const vtablesRequested = facet === "all" || facet === "swift-vtables";
+  const anyTruncated = Object.values(truncated).some(Boolean);
+  result.coverage.push(
+    objcRequested
+      ? {
+          facet: "objc_class_method_ivar_metadata",
+          status:
+            failures.length > 0 || truncated.objc ? "partial" : "complete",
+          reason:
+            [
+              ...failures,
+              ...(truncated.objc ? ["max_records_reached"] : []),
+            ].join("; ") || null,
+          examined,
+          decoded: result.objc_classes.length,
+        }
+      : notRequested("objc_class_method_ivar_metadata"),
+  );
   result.coverage.push({
     facet: "binary_relative_pointers",
     status:
-      truncated ||
+      anyTruncated ||
       result.relative_pointers.some((item) => item.decode.status !== "decoded")
         ? "partial"
         : "complete",
-    reason: truncated
+    reason: anyTruncated
       ? "max_records_reached"
       : result.relative_pointers.some(
             (item) => item.decode.status !== "decoded",
@@ -74,23 +95,30 @@ export const pushDispatchCoverage = (input: {
     ({ code, location, message }) =>
       `${code}${location === undefined ? "" : ` at ${location}`}: ${message}`,
   );
-  result.coverage.push({
-    facet: "objc_properties_categories",
-    status:
-      truncated ||
-      categoryFailures.length > 0 ||
-      result.objc_categories.some(({ decode }) => decode.status !== "decoded")
-        ? "partial"
-        : "complete",
-    reason:
-      [...categoryFailures, ...(truncated ? ["max_records_reached"] : [])].join(
-        "; ",
-      ) || null,
-    examined: categoriesExamined,
-    decoded: result.objc_categories.filter(
-      ({ decode }) => decode.status === "decoded",
-    ).length,
-  });
+  result.coverage.push(
+    objcRequested
+      ? {
+          facet: "objc_properties_categories",
+          status:
+            truncated.objcCategories ||
+            categoryFailures.length > 0 ||
+            result.objc_categories.some(
+              ({ decode }) => decode.status !== "decoded",
+            )
+              ? "partial"
+              : "complete",
+          reason:
+            [
+              ...categoryFailures,
+              ...(truncated.objcCategories ? ["max_records_reached"] : []),
+            ].join("; ") || null,
+          examined: categoriesExamined,
+          decoded: result.objc_categories.filter(
+            ({ decode }) => decode.status === "decoded",
+          ).length,
+        }
+      : notRequested("objc_properties_categories"),
+  );
   const fixupReason = [
     describeFixups(fixups),
     ...fixups.issues.map(
@@ -112,71 +140,93 @@ export const pushDispatchCoverage = (input: {
     examined: fixups.examined,
     decoded: fixups.issues.length > 0 ? 0 : fixups.examined,
   });
-  result.coverage.push({
-    facet: "swift_generic_resilient_witnesses_overrides_async_coroutines",
-    status: "unsupported",
-    reason:
-      "This reader admits simple Swift conformance/static witness records and non-generic, non-resilient class vtables; generic/resilient tables and other Swift metadata families are not decoded",
-    examined: 0,
-    decoded: 0,
-  });
-  result.coverage.push({
-    facet: "swift_conformances_static_witness_slots",
-    status:
-      swift.exhaustive &&
-      !truncated &&
-      !result.swift_conformances.some(
-        ({ decode }) => decode.status !== "decoded",
-      ) &&
-      !result.swift_dispatch_slots.some(
-        ({ table_kind, decode }) =>
-          table_kind === "witness_table" && decode.status !== "decoded",
-      )
-        ? "complete"
-        : "partial",
-    reason:
-      [
-        ...swift.issues.map(formatIssue),
-        ...(truncated ? ["max_records_reached"] : []),
-        ...(result.swift_conformances.some(
-          ({ decode }) => decode.status !== "decoded",
-        ) ||
-        result.swift_dispatch_slots.some(
-          ({ table_kind, decode }) =>
-            table_kind === "witness_table" && decode.status !== "decoded",
-        )
-          ? ["swift_records_unresolved"]
-          : []),
-      ].join("; ") || null,
-    examined: swift.examined,
-    decoded: swift.decoded,
-  });
-  result.coverage.push({
-    facet: "swift_class_vtable_descriptors",
-    status:
-      vtables.exhaustive &&
-      !truncated &&
-      !result.swift_dispatch_slots.some(
-        ({ table_kind, decode }) =>
-          table_kind === "class_vtable" && decode.status !== "decoded",
-      )
-        ? "complete"
-        : "partial",
-    reason:
-      [
-        ...vtables.issues.map(formatIssue),
-        ...(truncated ? ["max_records_reached"] : []),
-        ...(result.swift_dispatch_slots.some(
-          ({ table_kind, decode }) =>
-            table_kind === "class_vtable" && decode.status !== "decoded",
-        )
-          ? ["vtable_implementations_unresolved"]
-          : []),
-      ].join("; ") || null,
-    examined: vtables.examined,
-    decoded: vtables.decoded,
-  });
+  result.coverage.push(
+    facet !== "objc"
+      ? {
+          facet: "swift_generic_resilient_witnesses_overrides_async_coroutines",
+          status: "unsupported",
+          reason:
+            "This reader admits simple Swift conformance/static witness records and non-generic, non-resilient class vtables; generic/resilient tables and other Swift metadata families are not decoded",
+          examined: 0,
+          decoded: 0,
+        }
+      : notRequested(
+          "swift_generic_resilient_witnesses_overrides_async_coroutines",
+        ),
+  );
+  result.coverage.push(
+    swiftRequested
+      ? {
+          facet: "swift_conformances_static_witness_slots",
+          status:
+            swift.exhaustive &&
+            !truncated.swift &&
+            !result.swift_conformances.some(
+              ({ decode }) => decode.status !== "decoded",
+            ) &&
+            !result.swift_dispatch_slots.some(
+              ({ table_kind, decode }) =>
+                table_kind === "witness_table" && decode.status !== "decoded",
+            )
+              ? "complete"
+              : "partial",
+          reason:
+            [
+              ...swift.issues.map(formatIssue),
+              ...(truncated.swift ? ["max_records_reached"] : []),
+              ...(result.swift_conformances.some(
+                ({ decode }) => decode.status !== "decoded",
+              ) ||
+              result.swift_dispatch_slots.some(
+                ({ table_kind, decode }) =>
+                  table_kind === "witness_table" && decode.status !== "decoded",
+              )
+                ? ["swift_records_unresolved"]
+                : []),
+            ].join("; ") || null,
+          examined: swift.examined,
+          decoded: swift.decoded,
+        }
+      : notRequested("swift_conformances_static_witness_slots"),
+  );
+  result.coverage.push(
+    vtablesRequested
+      ? {
+          facet: "swift_class_vtable_descriptors",
+          status:
+            vtables.exhaustive &&
+            !truncated.vtables &&
+            !result.swift_dispatch_slots.some(
+              ({ table_kind, decode }) =>
+                table_kind === "class_vtable" && decode.status !== "decoded",
+            )
+              ? "complete"
+              : "partial",
+          reason:
+            [
+              ...vtables.issues.map(formatIssue),
+              ...(truncated.vtables ? ["max_records_reached"] : []),
+              ...(result.swift_dispatch_slots.some(
+                ({ table_kind, decode }) =>
+                  table_kind === "class_vtable" && decode.status !== "decoded",
+              )
+                ? ["vtable_implementations_unresolved"]
+                : []),
+            ].join("; ") || null,
+          examined: vtables.examined,
+          decoded: vtables.decoded,
+        }
+      : notRequested("swift_class_vtable_descriptors"),
+  );
 };
 
 const formatIssue = ({ code, location, message }: DecodeIssue): string =>
   `${code}${location === undefined ? "" : ` at ${location}`}: ${message}`;
+
+const notRequested = (facet: string) => ({
+  facet,
+  status: "not_requested" as const,
+  reason: null,
+  examined: 0,
+  decoded: 0,
+});

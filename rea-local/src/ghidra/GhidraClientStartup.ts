@@ -27,6 +27,7 @@ export interface GhidraStartupHandshakeOptions {
     options?: Pick<GhidraSessionErrorOptions, "timeoutMs" | "remoteCode">,
   ) => GhidraSessionError;
   readonly startupTimeoutMs: number;
+  readonly analysisTimeoutSeconds?: number;
 }
 
 /** Ping and validate the bridge after its socket is attached. */
@@ -48,7 +49,11 @@ export async function completeGhidraStartupHandshake(
     return err(failure);
   }
   const parsed = options.parseSessionInfo(ping.value);
-  if (!parsed.ok || parsed.value.analysis_timed_out) {
+  if (
+    !parsed.ok ||
+    (parsed.value.analysis_timed_out &&
+      options.analysisTimeoutSeconds === undefined)
+  ) {
     const failure = parsed.ok
       ? options.failure(
           "analysis_timeout",

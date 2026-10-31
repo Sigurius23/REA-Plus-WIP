@@ -89,6 +89,21 @@ complete observation.
   vtable descriptors. Records include exact virtual addresses/file offsets and
   artifact evidence. Vtable indexes are metadata word offsets; witness indexes
   start after the conformance header. Names unavailable in metadata remain null.
+  External Swift protocol/type descriptors retain their dyld symbol, library,
+  weak binding and decimal addend separately from decoded names. Relative-pointer
+  records retain the indirect slot; their final target stays null and external
+  layout decoding is unsupported. Local type names and conformance locations
+  remain available without claiming to decode another image's metadata.
+  Select `facet: "objc"`, `"swift-conformances"` or `"swift-vtables"` to direct
+  the aggregate `max_records` decode-admission budget to that family; the
+  default `"all"` preserves the combined pass. CLI callers use `--facet`.
+  Relative-pointer records consume the same budget, which is not multiplied
+  by the number of selected families. Unselected families report
+  `not_requested`; one family's exhaustion does not retroactively truncate an
+  earlier completed family. A symbol-only provider reports a requested binary
+  Swift family as unsupported rather than substituting unrelated symbol data.
+  Selection does not expand the 64 MiB input-snapshot budget or establish
+  completeness for unsupported Swift layouts.
   Pointers are decoded through the image's fixups:
   - `LC_DYLD_CHAINED_FIXUPS` rebases and binds, including the authenticated
     arm64e formats;
@@ -302,6 +317,21 @@ forms from unsigned bounds, register definitions, table loads, branch bases,
 scaled ADD/BR instructions and the recovered target set. It reads exactly the
 proven count and preserves unknowns for other forms. Real ELF and host ARM64
 Mach-O fixtures check each case against source-owned return values.
+
+For supported AArch64 Mach-O Swift code, a separate pass can recover an
+unguarded `LDRSW` table using a verified multi-payload enum ABI bound. It follows
+the metadata accessor and unchanged runtime-tag value, validates the table and
+destinations, and restores the owning body before queries. Its mappings identify
+Swift ABI tags and reflection names, with distinct analysis provenance; they do
+not establish which application states are reachable. See
+[Swift enum dispatch recovery](ghidra-provider.md#swift-enum-dispatch-recovery)
+for supported forms, budgets and assumptions.
+
+If a complete function result exceeds MCP's inline receive budget, keep the
+session open and use its retained Evidence reference or `export_evidence_bundle`
+to an explicit local path before closing. A transport constraint can follow a
+completed analysis; do not replace that retained result with manual or external
+findings. Focused native API/pseudocode operations can answer smaller questions.
 
 ## Native desktop observation
 

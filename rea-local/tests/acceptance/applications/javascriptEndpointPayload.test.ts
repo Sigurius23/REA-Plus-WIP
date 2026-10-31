@@ -1,7 +1,7 @@
 import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { createHash } from "node:crypto";
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { expect } from "vitest";
 
@@ -11,6 +11,7 @@ import { applicationVersionComparisonResultSchema } from "../../../src/domain/ja
 import { applicationFeatureTraceResultSchema } from "../../../src/domain/javascript/javascriptFeatureTraceSchemas.js";
 import { javaScriptSemanticTraceResultSchema } from "../../../src/domain/javascript/javascriptSemanticTraceSchemas.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
+import { connectLocalToolsMcp } from "../../fixtures/localToolsMcp.js";
 import { cliTest } from "../../support/cli/cliFixture.js";
 
 cliTest(
@@ -142,6 +143,223 @@ cliTest(
     }
   },
   120_000,
+);
+
+cliTest(
+  "keeps browser storage, sender checks and page roles distinct from network and Electron authority",
+  async ({ cli }) => {
+    const root = await createTestTempDirectory("rea-endpoint-receivers-");
+    const app = join(root, "app");
+    await mkdir(app);
+    await writeFile(
+      join(app, "main.js"),
+      `
+    import axios from 'axios';
+    chrome.storage.local.get('https://example.invalid/stored-key');
+    const local = chrome.storage.local;
+    local.get('/users');
+    const {session} = browser.storage;
+    session.get('profileId');
+    fetch('/known');
+    axios.get('/imported');
+    api.get('users');
+    chrome.runtime.onMessage.addListener((message, sender) => sender.id === 'extension-id');
+    function unrelated(event) { return event.sender.id === 'generic'; }
+  `,
+    );
+    await writeFile(
+      join(app, "popup.html"),
+      '<script src="./main.js"></script>',
+    );
+    const response = await cli.run({
+      arguments: ["analyze-javascript-application", app, "--json"],
+      timeoutMs: 60_000,
+    });
+    expect(response.exitCode).toBe(0);
+    const evidence = toolContract(
+      "analyze_javascript_application",
+    ).outputSchema.parse(response.json);
+    const result = javascriptApplicationAnalysisResultSchema.parse(
+      evidence.normalized_result,
+    );
+    expect(
+      result.graph.nodes.filter((node) => node.kind === "web-document"),
+    ).toHaveLength(1);
+    expect(
+      result.graph.nodes.filter((node) => node.kind === "electron-renderer"),
+    ).toEqual([]);
+    expect(result.summary.sender_validation_observations).toBe(0);
+    expect(
+      result.graph.nodes
+        .flatMap((node) => node.observations)
+        .filter((o) => o.properties.fact_kind === "sender-validation-candidate")
+        .map((o) => o.properties),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          transport: "browser-extension",
+          expected: expect.objectContaining({ value: "extension-id" }),
+          enforcement: "unknown",
+        }),
+        expect.objectContaining({
+          transport: "unknown",
+          expected: expect.objectContaining({ value: "generic" }),
+          enforcement: "unknown",
+        }),
+      ]),
+    );
+    const endpoints = result.graph.nodes
+      .filter((node) => node.kind === "endpoint")
+      .flatMap((node) => node.observations);
+    expect(endpoints.map((o) => o.properties.value).sort()).toEqual([
+      "/imported",
+      "/known",
+      "users",
+    ]);
+    expect(endpoints.find((o) => o.properties.value === "users")).toMatchObject(
+      {
+        properties: { network_receiver: { status: "unknown", identity: null } },
+        evidence: { state: "inferred", confidence: "low" },
+      },
+    );
+    const storage = result.graph.nodes
+      .filter((node) => node.kind === "storage")
+      .flatMap((node) => node.observations.map((o) => o.properties));
+    expect(storage).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          storage_kind: "extension-storage",
+          area: "local",
+          name: "https://example.invalid/stored-key",
+          api: "chrome.storage.local",
+        }),
+        expect.objectContaining({
+          storage_kind: "extension-storage",
+          area: "local",
+          name: "/users",
+        }),
+        expect.objectContaining({
+          storage_kind: "extension-storage",
+          area: "session",
+          name: "profileId",
+        }),
+      ]),
+    );
+    const input = join(root, "view.json");
+    await writeFile(
+      input,
+      JSON.stringify({
+        source: { kind: "inline", evidence },
+        view: { kind: "page", collection: "endpoints", offset: 0, limit: 16 },
+      }),
+    );
+    const viewResponse = await cli.run({
+      arguments: ["inspect-analysis-view", input, "--json"],
+      timeoutMs: 60_000,
+    });
+    expect(viewResponse.exitCode).toBe(0);
+    const view = toolContract("inspect_analysis_view").outputSchema.parse(
+      viewResponse.json,
+    );
+    expect(view.normalized_result).toMatchObject({
+      items: expect.arrayContaining([
+        expect.objectContaining({
+          template: "users",
+          network_receiver: { status: "unknown", identity: null },
+        }),
+        expect.objectContaining({
+          template: "/known",
+          network_receiver: { status: "recognized-network", identity: "fetch" },
+        }),
+        expect.objectContaining({
+          template: "/imported",
+          network_receiver: { status: "recognized-network", identity: "axios" },
+        }),
+      ]),
+    });
+  },
+  120_000,
+);
+
+cliTest.for(["CLI", "stdio MCP"] as const)(
+  "keeps chained call receiver ownership exact through %s",
+  async (surface, { cli }) => {
+    const root = await createTestTempDirectory("rea-receiver-call-identity-");
+    await writeFile(
+      join(root, "app.js"),
+      `
+      import axios from 'axios';
+      const local = chrome.storage.local;
+      local.get('alpha').then(value => value);
+      const {session} = browser.storage;
+      session?.get('beta')?.then(value => value).catch(() => {});
+      chrome.storage.local.get('gamma').get('/outer-storage');
+      new Map().get('map-key')?.get('/outer-keyed');
+      axios.get('/inner-network').get('/outer-network');
+      `,
+    );
+    let document: unknown;
+    if (surface === "CLI") {
+      const response = await cli.run({
+        arguments: ["analyze-javascript-application", root, "--json"],
+      });
+      expect(response.exitCode, response.stderr).toBe(0);
+      document = response.json;
+    } else {
+      const { call } = await connectLocalToolsMcp();
+      const response = await call("analyze_javascript_application", {
+        input_path: root,
+      });
+      expect(response.isError, JSON.stringify(response)).not.toBe(true);
+      document = response.structuredContent;
+    }
+    const evidence = toolContract(
+      "analyze_javascript_application",
+    ).outputSchema.parse(document);
+    const { graph } = javascriptApplicationAnalysisResultSchema.parse(
+      evidence.normalized_result,
+    );
+    const storage = graph.nodes
+      .filter(({ kind }) => kind === "storage")
+      .flatMap(({ observations }) =>
+        observations.map(({ properties }) => properties),
+      );
+    expect(storage).toHaveLength(3);
+    expect(storage.map(({ name }) => name).sort()).toEqual([
+      "alpha",
+      "beta",
+      "gamma",
+    ]);
+    expect(
+      storage.every(
+        ({ mechanism }) =>
+          typeof mechanism === "string" && mechanism.endsWith(".get"),
+      ),
+    ).toBe(true);
+    const endpoints = graph.nodes
+      .filter(({ kind }) => kind === "endpoint")
+      .flatMap(({ observations }) => observations);
+    expect(endpoints.map(({ properties }) => properties.value).sort()).toEqual([
+      "/inner-network",
+      "/outer-keyed",
+      "/outer-network",
+      "/outer-storage",
+    ]);
+    expect(
+      endpoints.find(({ properties }) => properties.value === "/inner-network"),
+    ).toMatchObject({
+      properties: {
+        network_receiver: { status: "recognized-network", identity: "axios" },
+      },
+    });
+    for (const observation of endpoints.filter(
+      ({ properties }) => properties.value !== "/inner-network",
+    ))
+      expect(observation).toMatchObject({
+        properties: { network_receiver: { status: "unknown", identity: null } },
+        evidence: { state: "inferred", confidence: "low" },
+      });
+  },
 );
 
 interface EndpointWorkflowInput {

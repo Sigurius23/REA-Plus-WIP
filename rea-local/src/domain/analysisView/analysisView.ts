@@ -105,6 +105,11 @@ const fileStatusSummarySchema = z.strictObject({
   files: z.number().int().nonnegative(),
   files_with_issues: z.number().int().nonnegative(),
   files_without_retention_metadata: z.number().int().nonnegative(),
+  files_without_static_coverage_metadata: z
+    .number()
+    .int()
+    .nonnegative()
+    .optional(),
   parent_limitation_count: z.number().int().nonnegative(),
 });
 

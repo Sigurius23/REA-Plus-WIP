@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   nativeDispatchMetadataResultSchema,
   inspectNativeDispatchMetadata,
+  type NativeDispatchFacet,
 } from "../../domain/native/objcSwiftMetadata.js";
 import { AnalysisOutputError } from "../../domain/analysisErrorCore.js";
 import { jsonValueSchema } from "../../domain/jsonValue.js";
@@ -13,10 +14,11 @@ export const inspectNativeDispatch = async (
   analysis: AnalysisOperationPort,
   maxRecords: number,
   signal?: AbortSignal,
+  facet: NativeDispatchFacet = "all",
 ): EnhancedResult => {
   const binaryMetadata = await analysis.execute(
     "inspect_native_dispatch_metadata",
-    { max_records: maxRecords },
+    { max_records: maxRecords, facet },
     signal === undefined ? {} : { signal },
   );
   if (binaryMetadata.ok)
@@ -61,6 +63,7 @@ export const inspectNativeDispatch = async (
             name: "value" in entry ? entry.value : entry.name,
           })),
           maxRecords,
+          facet,
         ),
       }),
     ),

@@ -8,6 +8,7 @@ import {
 } from "../../domain/javascript/javascriptApplicationEvidenceSchemas.js";
 import type { ApplicationNode } from "../../domain/javascript/javascriptApplicationGraphSchemas.js";
 import type { JavaScriptSourceRange } from "../../domain/javascript/javascriptStaticAnalysisTypes.js";
+import { hasCompleteJavaScriptStaticCoverage } from "../../domain/javascript/javascriptStaticAnalysisCoverage.js";
 import type { JavaScriptModuleArtifactAnalysis } from "./JavaScriptArtifactAnalysisTypes.js";
 import type {
   JavaScriptArtifactFile,
@@ -66,6 +67,7 @@ export interface AstEdgeInput {
 
 /** Inferred static relationship edge values. */
 export interface InferenceEdgeInput extends AstEdgeInput {
+  readonly confidence?: "high" | "medium" | "low";
   readonly relation:
     | "imports"
     | "loads"
@@ -162,6 +164,9 @@ export const addStaticInferenceEdge = (
       range: input.range,
       operation: "map-static-relationship",
       coverage: input.coverage,
+      ...(input.confidence === undefined
+        ? {}
+        : { confidence: input.confidence }),
     }),
   });
 };
@@ -219,7 +224,7 @@ export const javascriptAnalysisCoverage = (
     JavaScriptModuleArtifactAnalysis["files"][number]["javascript"]
   >,
 ): JavaScriptArtifactGraphCoverage =>
-  analysis.parse_status === "complete"
+  hasCompleteJavaScriptStaticCoverage(analysis)
     ? completeApplicationCoverage()
     : partialApplicationCoverage([], null);
 

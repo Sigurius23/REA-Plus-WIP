@@ -1,5 +1,6 @@
 import { inspectStandaloneBundlerTablesSteps } from "./javascriptWebpackBootstrap.js";
 import * as t from "@babel/types";
+import type { JavaScriptCallReceiverFacts } from "./javascriptCallReceiverFacts.js";
 import {
   ELECTRON_IDENTITY_LIMITATION,
   ELECTRON_MODULE,
@@ -11,6 +12,7 @@ import {
 } from "./javascriptSemanticTraversal.js";
 
 import { inspectElectronStaticNode } from "./electronStaticAnalysis.js";
+import { inspectJavaScriptSenderValidationNode } from "./javascriptSenderValidations.js";
 import {
   detectVendors,
   failedJavaScriptStaticAnalysis,
@@ -42,8 +44,8 @@ import type { JavaScriptStaticAnalysis } from "./javascriptStaticAnalysisTypes.j
 import {
   classifyParsedJavaScriptElectronBindingsSteps,
   classifyParsedJavaScriptRpcClientRootsSteps,
-  classifyParsedJavaScriptOpenReceivers,
-  type JavaScriptOpenReceiverFact,
+  classifyParsedJavaScriptCallReceivers,
+  classifyParsedJavaScriptSenderOriginsSteps,
 } from "./javascriptSemanticAnalysis.js";
 import {
   parseJavaScriptSource,
@@ -63,7 +65,7 @@ export const analyzeJavaScriptStaticSource = (
     : analyzeParsedJavaScriptStaticSource(
         source,
         file,
-        classifyParsedJavaScriptOpenReceivers(file),
+        classifyParsedJavaScriptCallReceivers(file),
       );
 };
 
@@ -71,17 +73,17 @@ export const analyzeJavaScriptStaticSource = (
 export const analyzeParsedJavaScriptStaticSource = (
   source: string,
   file: ParsedJavaScriptSource,
-  openReceiverFacts?: ReadonlyMap<number, JavaScriptOpenReceiverFact>,
+  callReceiverFacts?: JavaScriptCallReceiverFacts,
 ): JavaScriptStaticAnalysis =>
   completeSemanticSteps(
-    analyzeParsedJavaScriptStaticSourceSteps(source, file, openReceiverFacts),
+    analyzeParsedJavaScriptStaticSourceSteps(source, file, callReceiverFacts),
   );
 
 /** Static analysis that yields during its source traversal; results are unchanged. */
 export function* analyzeParsedJavaScriptStaticSourceSteps(
   source: string,
   file: ParsedJavaScriptSource,
-  openReceiverFacts?: ReadonlyMap<number, JavaScriptOpenReceiverFact>,
+  callReceiverFacts?: JavaScriptCallReceiverFacts,
   options: { readonly scanShippedMaterial?: boolean } = {},
 ): Generator<void, JavaScriptStaticAnalysis> {
   const accumulator = createJavaScriptAnalysisAccumulator(
@@ -91,12 +93,17 @@ export function* analyzeParsedJavaScriptStaticSourceSteps(
   yield* inspectStandaloneBundlerTablesSteps(source, file, accumulator);
   const electronBindings =
     yield* classifyParsedJavaScriptElectronBindingsSteps(file);
+  const senderOrigins = yield* classifyParsedJavaScriptSenderOriginsSteps(
+    file,
+    electronBindings,
+  );
   const clientRoots = yield* classifyParsedJavaScriptRpcClientRootsSteps(file);
   yield* traverseStaticSourceSteps(file, {
     source,
     accumulator,
-    ...(openReceiverFacts === undefined ? {} : { openReceiverFacts }),
+    ...(callReceiverFacts === undefined ? {} : { callReceiverFacts }),
     electronBindings,
+    senderOrigins,
     endpointBindings: new EndpointBindings(),
     rpcScan: createJavaScriptRpcScan(source, clientRoots),
   });
@@ -166,6 +173,16 @@ const finalizeStaticAnalysis = (
     ...(accumulator.shippedMaterialCandidates === undefined
       ? {}
       : { shipped_material_candidates: accumulator.shippedMaterialCandidates }),
+    sender_validations: finalizeLocatedFindings(
+      accumulator.genericSenderValidations,
+      accumulator.moduleRangeIndex,
+    ),
+    syntax_parse_status: parserErrors > 0 ? "partial" : "complete",
+    static_facts_status:
+      parserErrors > 0 || accumulator.unknownFindings > 0
+        ? "partial"
+        : "complete",
+    unresolved_static_occurrences: accumulator.unknownFindings,
     parse_status:
       parserErrors > 0 || accumulator.unknownFindings > 0
         ? "partial"
@@ -229,6 +246,7 @@ const inspectNode = (
   findings: JavaScriptFindingContext,
 ): void => {
   const { source, accumulator } = findings;
+  inspectJavaScriptSenderValidationNode(node, findings);
   inspectElectronStaticNode(node, findings);
   if (t.isCallExpression(node)) {
     inspectBundlerRegistration(source, node, accumulator);

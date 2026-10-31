@@ -1,0 +1,989 @@
+{
+  "schema": "rea-heyclicky-drawing-engine-followup/1",
+  "recorded_at": "2026-10-29T15:17:23.442986+00:00",
+  "target": {
+    "app": "/Applications/HeyClicky.app",
+    "version": "1.1.1",
+    "build": "66",
+    "engine_declared_version": "1.6"
+  },
+  "scope": {
+    "target_or_shipped_code_executed": false,
+    "services_contacted": false,
+    "user_data_read": false,
+    "production_edits": false,
+    "investigation": "direct source path tracing plus retained REA module identities; no new broad scan",
+    "three_parts_scope": "identity and inert AST parsed; exhaustive composition/mesh semantics not claimed"
+  },
+  "sources": [
+    {
+      "resource_path": "clicky-draw-engine.js",
+      "path": "/Applications/HeyClicky.app/Contents/Resources/clicky-draw-engine.js",
+      "bytes": 256034,
+      "sha256": "f2161b9c4def6092f5f866d5135ef3fea23a25e01787c22844b0002cebd8b966",
+      "matches_before_manifest": true
+    },
+    {
+      "resource_path": "clicky-draw-pieces.js",
+      "path": "/Applications/HeyClicky.app/Contents/Resources/clicky-draw-pieces.js",
+      "bytes": 65245,
+      "sha256": "13872a70cddfb18368a1f3f789be76dca127608b91eea1928e24fb145cae96b8",
+      "matches_before_manifest": true
+    },
+    {
+      "resource_path": "clicky-draw-native.js",
+      "path": "/Applications/HeyClicky.app/Contents/Resources/clicky-draw-native.js",
+      "bytes": 49523,
+      "sha256": "599407179fac65b5bae9d360b93b7a292bd869ede5c14d63cd09cbc5680bae95",
+      "matches_before_manifest": true
+    },
+    {
+      "resource_path": "clicky-three-parts.js",
+      "path": "/Applications/HeyClicky.app/Contents/Resources/clicky-three-parts.js",
+      "bytes": 40732,
+      "sha256": "0db80e7902cfffa7b543a18d129a61a0a23119f674a0c45591f608c5da1a0410",
+      "matches_before_manifest": true
+    }
+  ],
+  "retained_evidence": {
+    "parent_evidence_id": "ev_f006528bb14010cea6d5143aaf3a4b61451e491605b7394eba6d9c54076937dc",
+    "raw_parent": {
+      "path": "/private/tmp/rea-heyclicky-retest-2026-10-29-js-nv6c54ep/full-analysis.json",
+      "bytes": 130419391,
+      "sha256": "e3fa27a8f0c3893988eb4569ebc82738f809b97a09358ec7be8a9382f11d4383"
+    },
+    "selected_module_nodes": [
+      {
+        "node_id": "jag_node_0f31cdeafb1a2939e7745971d20622554eb4f315486f3ba0b33cad498d2488ee",
+        "kind": "javascript-module",
+        "identity": {
+          "strategy": "artifact-local-key",
+          "stability": "artifact-version",
+          "artifact_sha256": "0db80e7902cfffa7b543a18d129a61a0a23119f674a0c45591f608c5da1a0410",
+          "namespace": "source-module",
+          "key": "e00c545b13c33378cd9d88f791d92c74076b7a75ade17241ffb4f12e275f7a61:clicky-three-parts.js"
+        },
+        "observations": [
+          {
+            "label": "clicky-three-parts.js",
+            "source_map_reference": null,
+            "properties": {
+              "semantic_role": "source-module",
+              "path": "clicky-three-parts.js",
+              "container_sha256": "e00c545b13c33378cd9d88f791d92c74076b7a75ade17241ffb4f12e275f7a61",
+              "logical_module_key": "clicky-three-parts.js",
+              "module_format": "unknown",
+              "import_relationships": 0,
+              "export_relationships": 0,
+              "export_names": [],
+              "omitted_export_names": 0
+            },
+            "evidence": {
+              "authority": "ast-static-analysis",
+              "state": "observed",
+              "confidence": "exact",
+              "artifact": {
+                "available": true,
+                "artifact_id": "art_0db80e7902cfffa7b543a18d129a61a0a23119f674a0c45591f608c5da1a0410",
+                "sha256": "0db80e7902cfffa7b543a18d129a61a0a23119f674a0c45591f608c5da1a0410"
+              },
+              "location": {
+                "available": true,
+                "value": {
+                  "kind": "source-range",
+                  "source": "clicky-three-parts.js",
+                  "start": {
+                    "line": 1,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 659,
+                    "column": 0
+                  }
+                }
+              },
+              "extractor": {
+                "name": "rea-javascript-artifact-reconstruction",
+                "version": "1",
+                "operation": "recover-source-module",
+                "executable_sha256": null
+              },
+              "coverage": {
+                "status": "complete",
+                "truncated": false,
+                "omitted_count": 0,
+                "limits": []
+              },
+              "limitations": [
+                "Cross-function mutation and dynamic property resolution remain unknown.",
+                "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+                "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+                "Return sites include only direct callable returns; nested callable returns remain separate.",
+                "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+              ],
+              "evidence_ids": []
+            },
+            "observation_id": "jag_observation_3f5fb125a808944fec874addb5c0ba63e81160874b565bb8decbfb6545454448",
+            "identifier_strategy": {
+              "strategy": "semantic-content-sha256",
+              "stability": "observation-exact"
+            }
+          }
+        ]
+      },
+      {
+        "node_id": "jag_node_1854e5eb9642cd461b100276cee8ddd93feefed02da1cc2f9948f08b91057877",
+        "kind": "javascript-module",
+        "identity": {
+          "strategy": "artifact-local-key",
+          "stability": "artifact-version",
+          "artifact_sha256": "13872a70cddfb18368a1f3f789be76dca127608b91eea1928e24fb145cae96b8",
+          "namespace": "source-module",
+          "key": "e00c545b13c33378cd9d88f791d92c74076b7a75ade17241ffb4f12e275f7a61:clicky-draw-pieces.js"
+        },
+        "observations": [
+          {
+            "label": "clicky-draw-pieces.js",
+            "source_map_reference": null,
+            "properties": {
+              "semantic_role": "source-module",
+              "path": "clicky-draw-pieces.js",
+              "container_sha256": "e00c545b13c33378cd9d88f791d92c74076b7a75ade17241ffb4f12e275f7a61",
+              "logical_module_key": "clicky-draw-pieces.js",
+              "module_format": "unknown",
+              "import_relationships": 0,
+              "export_relationships": 0,
+              "export_names": [],
+              "omitted_export_names": 0
+            },
+            "evidence": {
+              "authority": "ast-static-analysis",
+              "state": "observed",
+              "confidence": "exact",
+              "artifact": {
+                "available": true,
+                "artifact_id": "art_13872a70cddfb18368a1f3f789be76dca127608b91eea1928e24fb145cae96b8",
+                "sha256": "13872a70cddfb18368a1f3f789be76dca127608b91eea1928e24fb145cae96b8"
+              },
+              "location": {
+                "available": true,
+                "value": {
+                  "kind": "source-range",
+                  "source": "clicky-draw-pieces.js",
+                  "start": {
+                    "line": 1,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 842,
+                    "column": 0
+                  }
+                }
+              },
+              "extractor": {
+                "name": "rea-javascript-artifact-reconstruction",
+                "version": "1",
+                "operation": "recover-source-module",
+                "executable_sha256": null
+              },
+              "coverage": {
+                "status": "complete",
+                "truncated": false,
+                "omitted_count": 0,
+                "limits": []
+              },
+              "limitations": [
+                "Cross-function mutation and dynamic property resolution remain unknown.",
+                "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+                "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+                "Return sites include only direct callable returns; nested callable returns remain separate.",
+                "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+              ],
+              "evidence_ids": []
+            },
+            "observation_id": "jag_observation_44e30cb0e72c06080d13c76c7799820e8842e53d144e93788deb280ec2028bda",
+            "identifier_strategy": {
+              "strategy": "semantic-content-sha256",
+              "stability": "observation-exact"
+            }
+          }
+        ]
+      },
+      {
+        "node_id": "jag_node_e22356ca78ef7fccc982a4005839b5d759340aadadeff799ef1d0d96e2c9515b",
+        "kind": "javascript-module",
+        "identity": {
+          "strategy": "artifact-local-key",
+          "stability": "artifact-version",
+          "artifact_sha256": "f2161b9c4def6092f5f866d5135ef3fea23a25e01787c22844b0002cebd8b966",
+          "namespace": "source-module",
+          "key": "e00c545b13c33378cd9d88f791d92c74076b7a75ade17241ffb4f12e275f7a61:clicky-draw-engine.js"
+        },
+        "observations": [
+          {
+            "label": "clicky-draw-engine.js",
+            "source_map_reference": null,
+            "properties": {
+              "semantic_role": "source-module",
+              "path": "clicky-draw-engine.js",
+              "container_sha256": "e00c545b13c33378cd9d88f791d92c74076b7a75ade17241ffb4f12e275f7a61",
+              "logical_module_key": "clicky-draw-engine.js",
+              "module_format": "unknown",
+              "import_relationships": 0,
+              "export_relationships": 0,
+              "export_names": [],
+              "omitted_export_names": 0
+            },
+            "evidence": {
+              "authority": "ast-static-analysis",
+              "state": "observed",
+              "confidence": "exact",
+              "artifact": {
+                "available": true,
+                "artifact_id": "art_f2161b9c4def6092f5f866d5135ef3fea23a25e01787c22844b0002cebd8b966",
+                "sha256": "f2161b9c4def6092f5f866d5135ef3fea23a25e01787c22844b0002cebd8b966"
+              },
+              "location": {
+                "available": true,
+                "value": {
+                  "kind": "source-range",
+                  "source": "clicky-draw-engine.js",
+                  "start": {
+                    "line": 1,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 3261,
+                    "column": 0
+                  }
+                }
+              },
+              "extractor": {
+                "name": "rea-javascript-artifact-reconstruction",
+                "version": "1",
+                "operation": "recover-source-module",
+                "executable_sha256": null
+              },
+              "coverage": {
+                "status": "complete",
+                "truncated": false,
+                "omitted_count": 0,
+                "limits": []
+              },
+              "limitations": [
+                "Cross-function mutation and dynamic property resolution remain unknown.",
+                "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+                "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+                "Return sites include only direct callable returns; nested callable returns remain separate.",
+                "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+              ],
+              "evidence_ids": []
+            },
+            "observation_id": "jag_observation_8d4e949532dd09bc756c0e34e2d5f6908a708aa2fd17f53b04b6df507648cba6",
+            "identifier_strategy": {
+              "strategy": "semantic-content-sha256",
+              "stability": "observation-exact"
+            }
+          }
+        ]
+      },
+      {
+        "node_id": "jag_node_ff603cb01577fb6ae326ac1af9fe24460b7f6766984f63216622f50d17bcfde0",
+        "kind": "javascript-module",
+        "identity": {
+          "strategy": "artifact-local-key",
+          "stability": "artifact-version",
+          "artifact_sha256": "599407179fac65b5bae9d360b93b7a292bd869ede5c14d63cd09cbc5680bae95",
+          "namespace": "source-module",
+          "key": "e00c545b13c33378cd9d88f791d92c74076b7a75ade17241ffb4f12e275f7a61:clicky-draw-native.js"
+        },
+        "observations": [
+          {
+            "label": "clicky-draw-native.js",
+            "source_map_reference": null,
+            "properties": {
+              "semantic_role": "source-module",
+              "path": "clicky-draw-native.js",
+              "container_sha256": "e00c545b13c33378cd9d88f791d92c74076b7a75ade17241ffb4f12e275f7a61",
+              "logical_module_key": "clicky-draw-native.js",
+              "module_format": "unknown",
+              "import_relationships": 0,
+              "export_relationships": 0,
+              "export_names": [],
+              "omitted_export_names": 0
+            },
+            "evidence": {
+              "authority": "ast-static-analysis",
+              "state": "observed",
+              "confidence": "exact",
+              "artifact": {
+                "available": true,
+                "artifact_id": "art_599407179fac65b5bae9d360b93b7a292bd869ede5c14d63cd09cbc5680bae95",
+                "sha256": "599407179fac65b5bae9d360b93b7a292bd869ede5c14d63cd09cbc5680bae95"
+              },
+              "location": {
+                "available": true,
+                "value": {
+                  "kind": "source-range",
+                  "source": "clicky-draw-native.js",
+                  "start": {
+                    "line": 1,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 883,
+                    "column": 0
+                  }
+                }
+              },
+              "extractor": {
+                "name": "rea-javascript-artifact-reconstruction",
+                "version": "1",
+                "operation": "recover-source-module",
+                "executable_sha256": null
+              },
+              "coverage": {
+                "status": "complete",
+                "truncated": false,
+                "omitted_count": 0,
+                "limits": []
+              },
+              "limitations": [
+                "Cross-function mutation and dynamic property resolution remain unknown.",
+                "Local call, argument, return, and closure relations are static candidates and do not prove runtime invocation.",
+                "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+                "Return sites include only direct callable returns; nested callable returns remain separate.",
+                "Values and aliases were recovered from inert syntax only; no JavaScript was executed."
+              ],
+              "evidence_ids": []
+            },
+            "observation_id": "jag_observation_f4af7c0d0280b740436bd3dd16203c3bb2c5c9b0ab82ea8bbf760506c48aaf2f",
+            "identifier_strategy": {
+              "strategy": "semantic-content-sha256",
+              "stability": "observation-exact"
+            }
+          }
+        ]
+      }
+    ],
+    "selection_file": {
+      "path": "/private/tmp/rea-heyclicky-browser-followup-2026-10-29-q_zemiyl/drawing-retained-source-module-nodes.json",
+      "bytes": 13092,
+      "sha256": "d349f3ceb8114f174c175c155c97fa04ec46eb67d820033bcf4fc10780ae6ac0"
+    },
+    "limitations": [
+      "Parent full semantic graph partial at100000 total/20000 per-file node ceilings.",
+      "Complete retained module identity/IR does not prove runtime execution or every interpretation."
+    ]
+  },
+  "direct_inert_ast_outline": {
+    "producer": "direct Babel AST parse only; no shipped source executed",
+    "sources": [
+      {
+        "path": "clicky-draw-engine.js",
+        "bytes": 256034,
+        "sha256": "f2161b9c4def6092f5f866d5135ef3fea23a25e01787c22844b0002cebd8b966",
+        "parse_errors": 0
+      },
+      {
+        "path": "clicky-draw-pieces.js",
+        "bytes": 65245,
+        "sha256": "13872a70cddfb18368a1f3f789be76dca127608b91eea1928e24fb145cae96b8",
+        "parse_errors": 0
+      },
+      {
+        "path": "clicky-three-parts.js",
+        "bytes": 40732,
+        "sha256": "0db80e7902cfffa7b543a18d129a61a0a23119f674a0c45591f608c5da1a0410",
+        "parse_errors": 0
+      }
+    ],
+    "landmarks": [
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "rng",
+        "start_line": 75,
+        "end_line": 75
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "catmull",
+        "start_line": 79,
+        "end_line": 94
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "densify",
+        "start_line": 95,
+        "end_line": 102
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "dashes",
+        "start_line": 104,
+        "end_line": 113
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "handSegments",
+        "start_line": 118,
+        "end_line": 130
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "ellipsePts",
+        "start_line": 131,
+        "end_line": 140
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "outline",
+        "start_line": 142,
+        "end_line": 160
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "evenOutline",
+        "start_line": 162,
+        "end_line": 175
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "makeRunner",
+        "start_line": 189,
+        "end_line": 1120
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "statementEnds",
+        "start_line": 194,
+        "end_line": 214
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "statementScanner",
+        "start_line": 217,
+        "end_line": 227
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "makeApi",
+        "start_line": 258,
+        "end_line": 1015
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "transform",
+        "start_line": 1023,
+        "end_line": 1044
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "runCode",
+        "start_line": 1049,
+        "end_line": 1070
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "Session",
+        "start_line": 1075,
+        "end_line": 1104
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "runCode",
+        "start_line": 1123,
+        "end_line": 1123
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "workerMain",
+        "start_line": 1126,
+        "end_line": 1143
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "WorkerRunner",
+        "start_line": 1146,
+        "end_line": 1171
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "natural",
+        "start_line": 1206,
+        "end_line": 1206
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "naturalAlone",
+        "start_line": 1207,
+        "end_line": 1235
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "Layout",
+        "start_line": 1264,
+        "end_line": 1396
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "layoutMarks",
+        "start_line": 1398,
+        "end_line": 1406
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "Pacer",
+        "start_line": 1413,
+        "end_line": 1488
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "Stream",
+        "start_line": 1491,
+        "end_line": 1672
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "surfaceFor",
+        "start_line": 1676,
+        "end_line": 2383
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "stroke",
+        "start_line": 1709,
+        "end_line": 1729
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "wash",
+        "start_line": 1742,
+        "end_line": 1751
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "paint",
+        "start_line": 1963,
+        "end_line": 2173
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "frame",
+        "start_line": 2282,
+        "end_line": 2294
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "Editor",
+        "start_line": 2703,
+        "end_line": 3139
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "render",
+        "start_line": 3162,
+        "end_line": 3179
+      },
+      {
+        "source": "clicky-draw-engine.js",
+        "name": "live",
+        "start_line": 3203,
+        "end_line": 3256
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "label",
+        "start_line": 135,
+        "end_line": 151
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "__nameMark",
+        "start_line": 154,
+        "end_line": 176
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "point",
+        "start_line": 180,
+        "end_line": 184
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "__pointer",
+        "start_line": 188,
+        "end_line": 199
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "frame",
+        "start_line": 210,
+        "end_line": 217
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "__ringRadius",
+        "start_line": 222,
+        "end_line": 227
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "ring",
+        "start_line": 231,
+        "end_line": 237
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "photo",
+        "start_line": 318,
+        "end_line": 356
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "typeText",
+        "start_line": 454,
+        "end_line": 454
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "copyText",
+        "start_line": 456,
+        "end_line": 456
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "openPage",
+        "start_line": 460,
+        "end_line": 460
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "button",
+        "start_line": 481,
+        "end_line": 503
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "handOff",
+        "start_line": 506,
+        "end_line": 506
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "__win",
+        "start_line": 758,
+        "end_line": 779
+      },
+      {
+        "source": "clicky-draw-pieces.js",
+        "name": "paper",
+        "start_line": 822,
+        "end_line": 841
+      }
+    ]
+  },
+  "direct_inspector_source": {
+    "path": "/private/tmp/rea-heyclicky-browser-followup-2026-10-29-q_zemiyl/engine-static-outline.mjs",
+    "bytes": 2026,
+    "sha256": "c819803eb0a84ab3f5676449dcd0f198e97d144e8f599f5f4469f9018191a2c7"
+  },
+  "direct_inspector_output": {
+    "path": "/private/tmp/rea-heyclicky-browser-followup-2026-10-29-q_zemiyl/engine-static-outline.json",
+    "bytes": 6649,
+    "sha256": "68b4d065a86efe59f977b63b0b691248a290eb491ebfe50db3521d2618497277"
+  },
+  "findings": [
+    {
+      "id": "E1",
+      "question": "How is a drawing program parsed and run?",
+      "status": "answered-statically",
+      "authority": "direct-shipped-source-inspection",
+      "answer": "This is JavaScript producing plain marks, not a separate declarative DSL. A lexical heuristic finds statement boundaries while skipping quoted strings/comments and tracking bracket depth; a cached scanner revisits only the last boundary on append. Top-level const/let are rewritten to var for persistent streamed scope. Session uses a generator with direct eval; runCode uses Function with(api). Syntax/runtime fallback retains earlier marks and reports errors. No shipped code was executed in this analysis.",
+      "locations": [
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 187,
+          "end_line": 227
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 1020,
+          "end_line": 1119
+        }
+      ],
+      "runtime_observed": false,
+      "remaining_unknowns": []
+    },
+    {
+      "id": "E2",
+      "question": "How do drawing calls become geometry and behavior records?",
+      "status": "answered-statically",
+      "authority": "direct-shipped-source-inspection",
+      "answer": "makeApi pushes plain do-tagged marks with default step/turn and narration ownership. say records text at the current mark index. Primitive geometry includes line/curve/circle/ellipse/rect/poly/path/text/arrow/highlight/dot/image/window and molecule. Pieces compose these marks; host actions such as type/copy/open/button/handoff are invisible dots with roles and payloads, later collected by adapter analyseNow.",
+      "locations": [
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 258,
+          "end_line": 302
+        },
+        {
+          "source": "clicky-draw-pieces.js",
+          "start_line": 454,
+          "end_line": 506
+        },
+        {
+          "source": "clicky-draw-native.js",
+          "start_line": 579,
+          "end_line": 621
+        }
+      ],
+      "runtime_observed": false,
+      "remaining_unknowns": []
+    },
+    {
+      "id": "E3",
+      "question": "How is the hand-drawn look constructed?",
+      "status": "answered-statically",
+      "authority": "direct-shipped-source-inspection",
+      "answer": "Deterministic seeded noise, densification, Catmull-Rom curves, bowed hand segments and perturbed ellipse samples produce centerlines. Tapered or even-width round-capped outlines become filled SVG paths. A white pathLength1 dash mask reveals strokes over time. Fill filters and glow metadata are separate. Fonts default to Patrick Hand, UI labels use system-ui, and card-mode text can use Barlow.",
+      "locations": [
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 27,
+          "end_line": 175
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 1676,
+          "end_line": 1750
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 1963,
+          "end_line": 2053
+        }
+      ],
+      "runtime_observed": false,
+      "remaining_unknowns": []
+    },
+    {
+      "id": "E4",
+      "question": "How are labels and overlapping containers placed?",
+      "status": "answered-statically",
+      "authority": "direct-shipped-source-inspection",
+      "answer": "Pieces try nearby label positions, reject overlap with prior pills/marks, and score remaining candidates by host busyFor plus distance/order cost. Layout approximates shape/text bounds, samples intersections on a14x14 grid and nudges colliding labelled containers by bounded candidate offsets; unresolved overlaps become warnings. Painter measured text/shape bounds provide a second placement pass. It is heuristic layout, not a proof of no overlap.",
+      "locations": [
+        {
+          "source": "clicky-draw-pieces.js",
+          "start_line": 135,
+          "end_line": 175
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 1264,
+          "end_line": 1405
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 1753,
+          "end_line": 1769
+        }
+      ],
+      "runtime_observed": false,
+      "remaining_unknowns": []
+    },
+    {
+      "id": "E5",
+      "question": "How are speech and strokes scheduled?",
+      "status": "answered-statically",
+      "authority": "direct-shipped-source-inspection",
+      "answer": "Stream ingests new marks/narration, applies Layout, computes natural durations and feeds Pacer. A say line owns following strokes. External speech calls provide starts/ends; Pacer fits the group into the line after lead and before tail, bounds stroke pace and interstroke spread, and releases due marks to onDraw. Native adapter overrides pen and pacing defaults.",
+      "locations": [
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 1186,
+          "end_line": 1234
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 1408,
+          "end_line": 1487
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 1490,
+          "end_line": 1629
+        },
+        {
+          "source": "clicky-draw-native.js",
+          "start_line": 347,
+          "end_line": 360
+        },
+        {
+          "source": "clicky-draw-native.js",
+          "start_line": 637,
+          "end_line": 715
+        }
+      ],
+      "runtime_observed": false,
+      "remaining_unknowns": []
+    },
+    {
+      "id": "E6",
+      "question": "How do timed edits reach the adapter?",
+      "status": "answered-statically",
+      "authority": "direct-shipped-source-inspection",
+      "answer": "Editor resolves part IDs and mN mark/range IDs, uses attribution to associate source statements with marks, applies edits serially and preserves DOM nodes/masks by mark. Erase reverses paint order; native __clickyMotion receives one declared property transition rather than per-frame JS mutations when present. The adapter converts motion callbacks and synthetic DOM changes to __drainRender operations.",
+      "locations": [
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 2265,
+          "end_line": 2349
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 2703,
+          "end_line": 2792
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 2950,
+          "end_line": 3018
+        },
+        {
+          "source": "clicky-draw-native.js",
+          "start_line": 289,
+          "end_line": 339
+        }
+      ],
+      "runtime_observed": false,
+      "remaining_unknowns": []
+    },
+    {
+      "id": "E7",
+      "question": "What do ring, frame, paper and button concretely do?",
+      "status": "answered-statically",
+      "authority": "direct-shipped-source-inspection",
+      "answer": "Ring expands a target box by4 screen points, chooses pill/small-round/bounded rounded-box radius and emits a bowed even-width line plus a collision-placed label. Frame emits tint/dashed outline with optional native marquee metadata. Paper emits a native window mark when hostDrawsWindows is true, else SVG sheet/chrome marks, then heading/subtitle and returns content bounds. Button emits a role/button dot with JSON action and optional fallback gel drawing.",
+      "locations": [
+        {
+          "source": "clicky-draw-pieces.js",
+          "start_line": 41,
+          "end_line": 54
+        },
+        {
+          "source": "clicky-draw-pieces.js",
+          "start_line": 188,
+          "end_line": 236
+        },
+        {
+          "source": "clicky-draw-pieces.js",
+          "start_line": 481,
+          "end_line": 502
+        },
+        {
+          "source": "clicky-draw-pieces.js",
+          "start_line": 746,
+          "end_line": 841
+        }
+      ],
+      "runtime_observed": false,
+      "remaining_unknowns": []
+    },
+    {
+      "id": "E8",
+      "question": "How are figures and3D motion represented?",
+      "status": "partial",
+      "authority": "direct-shipped-source-inspection",
+      "answer": "Figure parts are normalized to canonical JSON recipes and part3d marks carrying stage/part identity, shape, pose, material and parent. Copy/around/mirror placements are expanded; optional __shape3d starts host shape construction. Painter emits scene3d/part3d/label3d/tick3d/motion/camera tags with data payloads. The adapter later emits packed per-part Float32 poses. Native meshes/material/shaders and exact rendering remain outside this source pass.",
+      "locations": [
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 580,
+          "end_line": 617
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 702,
+          "end_line": 772
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 2144,
+          "end_line": 2168
+        },
+        {
+          "source": "clicky-draw-native.js",
+          "start_line": 835,
+          "end_line": 865
+        }
+      ],
+      "runtime_observed": false,
+      "remaining_unknowns": [
+        "Native recipe consumption,3D kernel/material/shader code and exhaustive clicky-three.js/clicky-three-parts.js semantics not traced."
+      ]
+    },
+    {
+      "id": "E9",
+      "question": "What limits or sandbox decisions are visible?",
+      "status": "partial",
+      "authority": "direct-shipped-source-inspection",
+      "answer": "Runner admits at most2000 marks and40 distinct sink warnings. push checks a deadline only if one was supplied. WorkerRunner defaults to1500ms outer termination and sends an80% cooperative budget, but only opts.sandbox worker selects it. Stream otherwise constructs a synchronous Session without budgetMs, and the native adapter live options omit sandbox. These JS checks alone do not establish preemption of non-emitting loops or native isolation.",
+      "locations": [
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 187,
+          "end_line": 190
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 258,
+          "end_line": 269
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 1075,
+          "end_line": 1099
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 1125,
+          "end_line": 1183
+        },
+        {
+          "source": "clicky-draw-engine.js",
+          "start_line": 1607,
+          "end_line": 1611
+        },
+        {
+          "source": "clicky-draw-native.js",
+          "start_line": 637,
+          "end_line": 652
+        }
+      ],
+      "runtime_observed": false,
+      "remaining_unknowns": [
+        "Native JavaScriptCore execution-time limits, globals exposure and host implementation are not yet traced; no sandbox-vulnerability claim is made."
+      ]
+    }
+  ],
+  "remaining_questions": [
+    "Native JavaScriptCore context construction, execution-time cap and permitted globals.",
+    "Actual __drainRender paint-op, HOST callbacks and speech-time producer call sites.",
+    "Exact native geometry, text measurement and font/pixel rendering behavior.",
+    "Native3D mesh/material/shader implementation and exhaustive3D part-helper semantics.",
+    "Authorized runtime corroboration of end-user drawing/speech/actions."
+  ],
+  "new_demonstrated_rea_product_defects": [],
+  "verification": {
+    "all_source_hashes_match_prior_before_manifest": true,
+    "direct_ast_parse_error_counts": [
+      0,
+      0,
+      0
+    ],
+    "reported_ranges_checked_in_source": true,
+    "no_shipped_code_executed": true
+  }
+}

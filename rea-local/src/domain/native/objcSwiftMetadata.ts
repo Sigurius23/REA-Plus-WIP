@@ -5,6 +5,15 @@ import {
   compositeKey,
 } from "../unicodeCodePointOrder.js";
 
+/** Native metadata family to inspect within the caller's aggregate record budget. */
+export const nativeDispatchFacetSchema = z.enum([
+  "all",
+  "objc",
+  "swift-conformances",
+  "swift-vtables",
+]);
+export type NativeDispatchFacet = z.infer<typeof nativeDispatchFacetSchema>;
+
 /** Objective-C method type. */
 export const objcMethodTypeSchema = z.enum([
   "instance",
@@ -182,10 +191,20 @@ export const objcCategorySchema = z.strictObject({
   evidence: z.array(nativeMetadataEvidenceSchema).min(1),
 });
 
+/** A dyld bind identity; this is not a decoded, file-backed metadata address. */
+export const nativeExternalReferenceSchema = z.strictObject({
+  symbol: z.string().min(1),
+  library: z.string().nullable(),
+  weak: z.boolean(),
+  addend: z.string().regex(/^-?[0-9]+$/u),
+});
+
 /** Swift protocol conformance and its associated witness-table location. */
 export const swiftConformanceSchema = z.strictObject({
-  type_name: z.string().min(1),
-  protocol_name: z.string().min(1),
+  type_name: z.string().min(1).nullable(),
+  protocol_name: z.string().min(1).nullable(),
+  type_reference: nativeExternalReferenceSchema.nullable().optional(),
+  protocol_reference: nativeExternalReferenceSchema.nullable().optional(),
   module: z.string().nullable(),
   witness_table: nativeMetadataLocationSchema,
   location: nativeMetadataLocationSchema,
@@ -211,6 +230,8 @@ export const swiftDispatchSlotSchema = z.strictObject({
 export const relativePointerSchema = z.strictObject({
   field: nativeMetadataLocationSchema,
   target: nativeMetadataLocationSchema,
+  indirect_slot: nativeMetadataLocationSchema.nullable().optional(),
+  external_reference: nativeExternalReferenceSchema.nullable().optional(),
   displacement: z.number().int(),
   indirectable: z.boolean(),
   indirect: z.boolean().nullable(),
@@ -329,7 +350,50 @@ export const nativeDispatchMetadataResultSchema = z.strictObject({
 export const inspectNativeDispatchMetadata = (
   names: readonly { readonly address: string; readonly name: string }[],
   maxRecords = 5_000,
+  facet: NativeDispatchFacet = "all",
 ): ObjcSwiftMetadata => {
+  if (facet === "swift-conformances" || facet === "swift-vtables")
+    return objcSwiftMetadataSchema.parse({
+      db_save_result: null,
+      coverage: [
+        {
+          facet: "objc_class_symbols",
+          status: "not_requested",
+          reason: null,
+          examined: 0,
+          decoded: 0,
+        },
+        {
+          facet: "swift_conformances_static_witness_slots",
+          status:
+            facet === "swift-conformances" ? "unsupported" : "not_requested",
+          reason:
+            facet === "swift-conformances"
+              ? "provider_name_inventory_does_not_decode_swift_conformances_or_witness_tables"
+              : null,
+          examined: 0,
+          decoded: 0,
+        },
+        {
+          facet: "swift_class_vtable_descriptors",
+          status: facet === "swift-vtables" ? "unsupported" : "not_requested",
+          reason:
+            facet === "swift-vtables"
+              ? "provider_name_inventory_does_not_decode_swift_class_vtables"
+              : null,
+          examined: 0,
+          decoded: 0,
+        },
+        {
+          facet: "relative_pointers",
+          status: "unsupported",
+          reason:
+            "provider_name_inventory_does_not_decode_binary_relative_pointers",
+          examined: 0,
+          decoded: 0,
+        },
+      ],
+    });
   const symbolEvidence = (name: string, address: string) => [
     {
       kind: "symbol" as const,
@@ -343,7 +407,15 @@ export const inspectNativeDispatchMetadata = (
   const implementations = new Map<string, ObjcDispatchImplementation>();
   const swiftSymbols: SwiftSymbol[] = [];
 
-  const examinedNames = names.slice(0, maxRecords);
+  const selectedNames =
+    facet === "objc"
+      ? names.filter(({ name }) =>
+          /(?:OBJC_CLASS_|OBJC_METACLASS_)\$_|^[+-]\[[^\s\]]+\s+[^\]]+\]$/u.test(
+            name,
+          ),
+        )
+      : names;
+  const examinedNames = selectedNames.slice(0, maxRecords);
   for (const entry of examinedNames) {
     const classMatch = /(?:OBJC_CLASS_|OBJC_METACLASS_)\$_([^\s]+)/u.exec(
       entry.name,
@@ -366,7 +438,7 @@ export const inspectNativeDispatchMetadata = (
       classNames.add(methodMatch[2]);
     }
 
-    if (/^(?:_?\$s|_Tt)/u.test(entry.name))
+    if (facet === "all" && /^(?:_?\$s|_Tt)/u.test(entry.name))
       swiftSymbols.push({
         mangled_name: entry.name,
         address: entry.address,
@@ -416,7 +488,7 @@ export const inspectNativeDispatchMetadata = (
         facet: "objc_class_symbols",
         status: "partial",
         reason:
-          names.length > examinedNames.length
+          selectedNames.length > examinedNames.length
             ? "record_limit_reached_and_symbol_names_are_not_runtime_class_metadata"
             : "symbol_names_do_not_recover_all_runtime_class_metadata",
         examined: examinedNames.length,
@@ -426,7 +498,7 @@ export const inspectNativeDispatchMetadata = (
         facet: "objc_dispatch_implementations",
         status: decodedImplementations.length > 0 ? "partial" : "unsupported",
         reason:
-          names.length > examinedNames.length
+          selectedNames.length > examinedNames.length
             ? "record_limit_reached_and_only_symbolized_methods_are_resolved"
             : decodedImplementations.length > 0
               ? "only_symbolized_methods_are_resolved"
@@ -443,18 +515,27 @@ export const inspectNativeDispatchMetadata = (
       },
       {
         facet: "swift_declarations",
-        status: swift ? "partial" : "unsupported",
+        status:
+          facet === "objc"
+            ? "not_requested"
+            : swift
+              ? "partial"
+              : "unsupported",
         reason: swift
           ? "symbols_are_not_demangled_declarations"
-          : "no_swift_symbols_observed",
+          : facet === "objc"
+            ? null
+            : "no_swift_symbols_observed",
         examined: swiftSymbols.length,
         decoded: 0,
       },
       {
         facet: "swift_dispatch_tables",
-        status: "unsupported",
+        status: facet === "objc" ? "not_requested" : "unsupported",
         reason:
-          "provider_name_inventory_does_not_decode_witness_or_class_vtables",
+          facet === "objc"
+            ? null
+            : "provider_name_inventory_does_not_decode_witness_or_class_vtables",
         examined: 0,
         decoded: 0,
       },

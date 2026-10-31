@@ -1,5 +1,6 @@
 import { addJavaScriptShippedMaterialSteps } from "./JavaScriptShippedMaterial.js";
 import { ELECTRON_IDENTITY_LIMITATION } from "../../domain/javascript/javascriptElectronMemberWrites.js";
+import { hasCompleteJavaScriptStaticCoverage } from "../../domain/javascript/javascriptStaticAnalysisCoverage.js";
 import type { ArtifactInventorySnapshot } from "../../domain/artifactInventorySnapshot.js";
 import {
   createJavaScriptApplicationGraph,
@@ -176,7 +177,7 @@ const graphCoverage = (context: JavaScriptArtifactGraphContext) => {
     context.analysis.source_maps.some(({ status }) => status === "invalid");
   const partialJavaScript = context.analysis.files.some(
     ({ javascript }) =>
-      javascript !== null && javascript.parse_status === "partial",
+      javascript !== null && !hasCompleteJavaScriptStaticCoverage(javascript),
   );
   const unknownGap =
     context.analysis.files.some(
@@ -289,7 +290,9 @@ const graphLimitations = (
       : []),
     ...(context.analysis.files.some(
       ({ javascript }) =>
-        (javascript?.electron.sender_validations.length ?? 0) > 0,
+        (javascript?.electron.sender_validations.length ?? 0) +
+          (javascript?.sender_validations?.length ?? 0) >
+        0,
     )
       ? [
           "Sender, frame, URL, and origin checks are observations only; REA+ does not claim that they enforce a complete authorization policy.",

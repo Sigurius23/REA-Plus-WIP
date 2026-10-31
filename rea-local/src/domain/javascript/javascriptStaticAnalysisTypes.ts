@@ -39,6 +39,8 @@ export type JavaScriptStaticReference = JavaScriptStaticReferenceState &
 
 /** A route or network endpoint literal observed in syntax. */
 export interface JavaScriptStaticEndpoint {
+  /** Absent in historical records; an unknown receiver is only a candidate. */
+  readonly network_receiver?: import("./javascriptEndpointReceiver.js").JavaScriptEndpointReceiver;
   readonly template_parts?: readonly import("./javascriptEndpointTemplates.js").JavaScriptEndpointTemplatePart[];
   readonly kind: "route" | "network";
   readonly value: string;
@@ -56,7 +58,10 @@ export interface JavaScriptStaticStorage {
     | "session-storage"
     | "indexed-db"
     | "cache-storage"
+    | "extension-storage"
     | "sqlite";
+  readonly area?: "local" | "session" | "sync" | "managed";
+  readonly api?: string;
   readonly name: string | null;
   readonly mechanism: string;
   readonly module_key: string | null;
@@ -109,12 +114,21 @@ export interface JavaScriptRolePath {
 
 /** Deterministic AST-only analysis of one JavaScript source file. */
 export interface JavaScriptStaticAnalysis {
+  /** Generic checks; Electron checks retain their dedicated proven-origin facet. */
+  readonly sender_validations?: readonly JavaScriptSenderValidationFinding[];
   readonly shipped_material_candidates?: readonly {
     readonly literal_length: number;
     readonly value_sha256: string;
     readonly location: JavaScriptSourceRange;
   }[];
+  /** Legacy aggregate of parsing and static-fact completeness; not syntax alone. */
   readonly parse_status: "complete" | "partial" | "failed";
+  /** Actual parser outcome; absent in historical analysis. */
+  readonly syntax_parse_status?: "complete" | "partial" | "failed";
+  /** Coverage of admitted static facts, including syntax gaps and unresolved values. */
+  readonly static_facts_status?: "complete" | "partial" | "failed";
+  /** Discovery occurrences before deduplication, not distinct facts or semantic-IR unknowns. */
+  readonly unresolved_static_occurrences?: number | null;
   readonly parse_error_count: number;
   readonly visited_ast_nodes: number;
   readonly references: readonly JavaScriptStaticReference[];
@@ -129,6 +143,24 @@ export interface JavaScriptStaticAnalysis {
   readonly vendors: readonly string[];
   readonly electron: ElectronStaticFindings;
   readonly limitations: readonly string[];
+}
+
+/** Sender-like syntax does not itself establish the messaging transport. */
+export interface JavaScriptSenderValidationFinding {
+  readonly subject:
+    | "sender-url"
+    | "sender-origin"
+    | "sender-frame"
+    | "sender-id"
+    | "frame-id"
+    | "process-id";
+  readonly transport?: "electron" | "browser-extension" | "unknown";
+  readonly mechanism: string;
+  readonly expected: import("./electronStaticAnalysisTypes.js").ElectronStaticValue;
+  readonly enforcement: "unknown";
+  readonly module_key: string | null;
+  readonly module_runtime?: string;
+  readonly location: JavaScriptSourceRange;
 }
 
 /** Hard bounds applied to one AST-only JavaScript analysis. */

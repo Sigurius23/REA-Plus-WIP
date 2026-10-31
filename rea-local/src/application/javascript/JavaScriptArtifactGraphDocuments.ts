@@ -1,8 +1,7 @@
 import {
   addArtifactContainsEdge,
   addStaticInferenceEdge,
-  createElectronRoleNode,
-  linkElectronRoleToAsset,
+  artifactLocalIdentity,
   type JavaScriptArtifactGraphContext,
 } from "./JavaScriptArtifactGraphContext.js";
 import {
@@ -10,9 +9,11 @@ import {
   staticInferenceEvidence,
 } from "./JavaScriptArtifactGraphEvidence.js";
 import { completeApplicationCoverage } from "../../domain/javascript/javascriptApplicationEvidenceSchemas.js";
+import type { ApplicationNode } from "../../domain/javascript/javascriptApplicationGraphSchemas.js";
+import type { JavaScriptArtifactFile } from "../../domain/javascript/javascriptArtifactFiles.js";
 import { resolveArtifactPathByContext } from "./JavaScriptArtifactPathResolution.js";
 
-/** Project HTML renderer entrypoints and their local script assets. */
+/** Project static HTML documents and their script references without runtime-family claims. */
 export const addJavaScriptHtmlRoles = (
   context: JavaScriptArtifactGraphContext,
 ): void => {
@@ -27,30 +28,7 @@ export const addJavaScriptHtmlRoles = (
   for (const [htmlPath, scripts] of byHtml) {
     const html = context.filesByPath.get(htmlPath);
     if (html === undefined) continue;
-    const roleResolution = {
-      declared_path: html.path,
-      resolution_context: "html-reference" as const,
-      resolved_path: html.path,
-      resolution_status: "resolved" as const,
-      limitations: [],
-    };
-    const role = createElectronRoleNode(context, {
-      kind: "electron-renderer",
-      anchor: html,
-      resolution: roleResolution,
-      mechanism: "html-script-entrypoint",
-    });
-    addArtifactContainsEdge(context, {
-      source: context.root,
-      target: role,
-      file: html,
-      operation: "discover-html-renderer",
-    });
-    linkElectronRoleToAsset(context, {
-      role,
-      anchor: html,
-      resolution: roleResolution,
-    });
+    const document = addHtmlDocument(context, html);
     for (const script of scripts) {
       const resolution = resolveArtifactPathByContext({
         declaredPath: script.script_path,
@@ -62,8 +40,8 @@ export const addJavaScriptHtmlRoles = (
       const resolvedPath = resolution.resolved_path;
       if (resolvedPath === null) {
         context.accumulator.addNode({
-          kind: role.kind,
-          identity: role.identity,
+          kind: document.kind,
+          identity: document.identity,
           observations: [
             {
               label: script.script_path,
@@ -89,7 +67,7 @@ export const addJavaScriptHtmlRoles = (
       const resolved = context.fileNodes.get(resolvedPath);
       if (resolved === undefined) continue;
       addStaticInferenceEdge(context, {
-        source: role,
+        source: document,
         target: resolved,
         file: html,
         range: script.location,
@@ -106,6 +84,62 @@ export const addJavaScriptHtmlRoles = (
       });
     }
   }
+};
+
+/** Associate a static document with its exact inventoried HTML source. */
+const addHtmlDocument = (
+  context: JavaScriptArtifactGraphContext,
+  html: JavaScriptArtifactFile,
+): ApplicationNode => {
+  const resolution = {
+    declared_path: html.path,
+    resolution_context: "html-reference" as const,
+    resolved_path: html.path,
+    resolution_status: "resolved" as const,
+    limitations: [],
+  };
+  const document = context.accumulator.addNode({
+    kind: "web-document",
+    identity: artifactLocalIdentity(html.sha256, "html-document", html.path),
+    observations: [
+      {
+        label: html.path,
+        properties: {
+          path: html.path,
+          ...resolution,
+          mechanism: "html-script-entrypoint",
+        },
+        evidence: artifactObservationEvidence({
+          sha256: html.sha256,
+          path: html.path,
+          operation: "discover-html-document",
+          coverage: completeApplicationCoverage(),
+        }),
+      },
+    ],
+  });
+  addArtifactContainsEdge(context, {
+    source: context.root,
+    target: document,
+    file: html,
+    operation: "discover-html-document",
+  });
+  const asset =
+    context.assetNodes.get(html.path) ?? context.fileNodes.get(html.path);
+  if (asset !== undefined)
+    context.accumulator.addEdge({
+      source_node_id: document.node_id,
+      target_node_id: asset.node_id,
+      relation: "maps_to",
+      properties: resolution,
+      evidence: artifactObservationEvidence({
+        sha256: html.sha256,
+        path: html.path,
+        operation: "associate-html-document-source",
+        coverage: completeApplicationCoverage(),
+      }),
+    });
+  return document;
 };
 
 /** Project original source names and optional content digests from approved maps. */

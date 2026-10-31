@@ -348,3 +348,38 @@ describe("Ghidra MCP evidence parity", () => {
     }
   }, 30_000);
 });
+
+it("retains measured bounded-analysis limitations in direct and composed MCP Evidence", async () => {
+  const harness = await connectGhidraMcp(
+    "bounded-analysis-evidence",
+    undefined,
+    { analysisTimeoutSeconds: 1, analysisTimedOut: true },
+  );
+  try {
+    for (const [name, arguments_] of [
+      ["binary_overview", {}],
+      ["list_procedures", {}],
+      ["procedure_pseudo_code", { procedure: "fixture_main" }],
+    ] as const) {
+      const reply = await harness.mcp.callTool({ name, arguments: arguments_ });
+      expect(reply.isError).not.toBe(true);
+      const evidence = sessionEvidence(
+        harness.session,
+        reply.structuredContent,
+      );
+      expect(evidence.limitations).toEqual(
+        expect.arrayContaining([
+          expect.stringContaining(
+            "analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1",
+          ),
+          expect.stringContaining("stable partial Program"),
+        ]),
+      );
+      expect(JSON.stringify(evidence.analysis_profile)).toContain(
+        "bounded-autoanalysis-v1",
+      );
+    }
+  } finally {
+    await harness.close();
+  }
+});

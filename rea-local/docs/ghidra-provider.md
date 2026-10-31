@@ -23,17 +23,17 @@ not equivalence with another engine's pseudocode or analysis database.
 
 ## Admitted inventory semantics
 
-| Concern          | Ghidra contract                                                                                                                                                                                                                                                                                 |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Program identity | One `analyzeHeadless` import produces exactly one Program; `list_documents` therefore returns exactly one name.                                                                                                                                                                                 |
-| Addresses        | Default memory uses lowercase `0x` hexadecimal. Non-default and external spaces use `<percent-encoded-space>:0x<hex>` and remain round-trippable. The handshake commits image base and default address-space name.                                                                              |
-| Symbols          | `list_names` includes address-bearing memory and external symbols, including dynamic symbols, while excluding variable and no-address namespace records. Each item reports primary, dynamic, external, symbol type, and source facts.                                                           |
-| Procedures       | Both non-external and external functions are listed. A local thunk remains distinct from its resolved target; exact and qualified name lookup fails on ambiguity rather than guessing.                                                                                                          |
-| Strings          | Only Ghidra-defined string `Data` is observed. Items report charset, byte length, and whether a required null terminator is missing. The API cannot distinguish a present terminator from fixed/Pascal layouts when no terminator is missing, so that state is named `present_or_not_required`. |
-| Memory           | Memory-block end addresses are exclusive. Read/write/execute, initialization, overlay, address space, and image base are direct Ghidra observations.                                                                                                                                            |
-| Inventory        | Procedure, symbol, and string listings plus searches return the complete matching collection in one response; callers do not provide offsets or result-count limits.                                                                                                                            |
-| Search           | Literal and Java-regex searches return every match in the immutable provider-defined inventory; string search does not cover every text sequence in artifact bytes. Search waits for a reply or caller cancellation; there are no caller-supplied offsets or result-count limits.               |
-| Analysis state   | The socket is exposed only after default auto-analysis completes. Established operations wait for their reply or caller cancellation; there is no fixed response-size ceiling.                                                                                                                  |
+| Concern          | Ghidra contract                                                                                                                                                                                                                                                                                                                                                 |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Program identity | One `analyzeHeadless` import produces exactly one Program; `list_documents` therefore returns exactly one name.                                                                                                                                                                                                                                                 |
+| Addresses        | Default memory uses lowercase `0x` hexadecimal. Non-default and external spaces use `<percent-encoded-space>:0x<hex>` and remain round-trippable. The handshake commits image base and default address-space name.                                                                                                                                              |
+| Symbols          | `list_names` includes address-bearing memory and external symbols, including dynamic symbols, while excluding variable and no-address namespace records. Each item reports primary, dynamic, external, symbol type, and source facts.                                                                                                                           |
+| Procedures       | Both non-external and external functions are listed. A local thunk remains distinct from its resolved target; exact and qualified name lookup fails on ambiguity rather than guessing.                                                                                                                                                                          |
+| Strings          | Only Ghidra-defined string `Data` is observed. Items report charset, byte length, and whether a required null terminator is missing. The API cannot distinguish a present terminator from fixed/Pascal layouts when no terminator is missing, so that state is named `present_or_not_required`.                                                                 |
+| Memory           | Memory-block end addresses are exclusive. Read/write/execute, initialization, overlay, address space, and image base are direct Ghidra observations.                                                                                                                                                                                                            |
+| Inventory        | Procedure, symbol, and string listings plus searches return the complete matching collection in one response; callers do not provide offsets or result-count limits.                                                                                                                                                                                            |
+| Search           | Literal and Java-regex searches return every match in the immutable provider-defined inventory; string search does not cover every text sequence in artifact bytes. Search waits for a reply or caller cancellation; there are no caller-supplied offsets or result-count limits.                                                                               |
+| Analysis state   | The default profile serves completed auto-analysis. Explicit `REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS` admits a stable partial Program after bounded auto-analysis, with exact policy/budget handshake and actual state in provider/composed Evidence. Established operations wait for their reply or caller cancellation; there is no fixed response-size ceiling. |
 
 String-search completeness applies only to Ghidra-defined string `Data`. Packed
 or undefined literals, including Rust strings, may be absent; an empty result
@@ -75,6 +75,42 @@ entries. If a recovered caller reveals a decoded return, its propagated no-retur
 flag and affected callers are repaired in the same pass. Unknown imports and
 genuine no-return imports keep their flags. Analysis profiles version this repair
 so snapshots produced before it are not reused. Windows P0 does not run it.
+
+### Swift enum dispatch recovery
+
+On non-Windows hosts, AArch64 little-endian Mach-O imports also run a
+source-immutable Swift enum switch pass before serving queries. It supports
+signed 32-bit `LDRSW` relative tables whose index comes unchanged from the exact
+`libswiftCore.dylib` import `swift_getEnumCaseMultiPayload`. The bound comes from
+the matching non-generic enum descriptor and reflection field count. A verified
+cached singleton accessor joins that descriptor to the call's metadata argument;
+its cache address must match the descriptor's initialization-cache reference.
+Enum names or the distance to neighboring code cannot establish the bound.
+
+Reaching definitions must agree on every incoming path. Modified indices,
+ambiguous metadata, escaped frame storage, unsupported accessor layouts, invalid
+destinations and short initialized table extents remain unrecovered. The pass
+tracks frame escape along CFG predecessors regardless of physical block order.
+It also requires an explicit 32-bit zero-extending write before using a returned
+32-bit tag as a 64-bit index; wide copies alone do not prove the upper bits.
+The pass
+uses budgets of 4,096 cases, 100,000 CFG/reaching-definition work units per candidate
+function and 256 nested queries; these are recovery budgets, not Swift format
+limits. It assumes the normal AArch64 ABI and private, non-escaped frame storage.
+
+Verified destinations receive computed-flow references and are disassembled into
+the existing function body without stealing independent function entries. The
+ephemeral database receives a generated Ghidra switch override before any
+observation. Ghidra can call this a “manually overridden” switch in pseudocode;
+REA+ identifies it as derived analysis metadata. The native API reports
+`rea-swift-enum-signed-word-table` provenance, the descriptor/accessor/call/table
+addresses, ABI case tags and optional reflection names. No default is invented
+for values outside the valid enum. This recovers control flow, not state
+reachability, original source declarations or every Swift calling convention.
+
+The analysis profile commits `swift_enum_switch_recovery:
+"abi-signed-word-cfg-v1"` for supported targets. Earlier snapshots cannot replay
+as this recovery. Windows P0 retains its no-database-mutation boundary.
 
 `npm run verify:ghidra` compiles the versioned C oracle into debug and stripped
 host-native targets (x86-64/AArch64 ELF on Linux or Mach-O on macOS), plus a native

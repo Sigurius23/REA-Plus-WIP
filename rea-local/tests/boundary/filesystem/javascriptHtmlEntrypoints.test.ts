@@ -44,6 +44,117 @@ it.each(cases)(
     expect(loads.map(({ properties }) => properties.resolved_path)).toEqual(
       expected,
     );
+    expect(
+      result.graph.nodes.some(({ kind }) => kind === "electron-renderer"),
+    ).toBe(false);
+    for (const edge of loads)
+      expect(
+        result.graph.nodes.find(
+          ({ node_id }) => node_id === edge.source_node_id,
+        )?.kind,
+      ).toBe("web-document");
+  },
+);
+
+it.each([false, true])(
+  "keeps HTML document provenance separate from explicit Electron roles (Electron: %s)",
+  async (electron) => {
+    const root = await createTestTempDirectory("rea-html-document-authority-");
+    const html = [
+      '<script src="./actual.js"></script>',
+      '<script src="missing.js"></script>',
+      '<script src="https://cdn.example.test/remote.js"></script>',
+    ].join("\n");
+    await Promise.all([
+      writeFile(join(root, "index.html"), html),
+      writeFile(
+        join(root, "actual.js"),
+        "throw new Error('must remain inert');",
+      ),
+      ...(electron
+        ? [
+            writeFile(
+              join(root, "main.cjs"),
+              'const { BrowserWindow } = require("electron"); const window = new BrowserWindow(); window.loadFile("index.html");',
+            ),
+          ]
+        : []),
+    ]);
+    const { graph } = await reconstructJavaScriptArtifact({ input_path: root });
+    const documents = graph.nodes.filter(({ kind }) => kind === "web-document");
+    expect(documents).toHaveLength(1);
+    const document = documents[0];
+    if (document === undefined) throw new Error("Expected an HTML document");
+    expect(document.observations).toContainEqual(
+      expect.objectContaining({
+        properties: expect.objectContaining({
+          path: "index.html",
+          resolved_path: "index.html",
+          mechanism: "html-script-entrypoint",
+        }),
+        evidence: expect.objectContaining({
+          authority: "artifact-bytes",
+          state: "observed",
+          artifact: expect.objectContaining({
+            available: true,
+            sha256: createHash("sha256").update(html).digest("hex"),
+          }),
+        }),
+      }),
+    );
+    const sourceLink = graph.edges.find(
+      ({ source_node_id, relation }) =>
+        source_node_id === document.node_id && relation === "maps_to",
+    );
+    const source = graph.nodes.find(
+      ({ node_id }) => node_id === sourceLink?.target_node_id,
+    );
+    expect(source?.observations).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          properties: expect.objectContaining({ path: "index.html" }),
+        }),
+      ]),
+    );
+    expect(
+      graph.edges.filter(
+        ({ source_node_id, relation }) =>
+          source_node_id === document.node_id && relation === "loads",
+      ),
+    ).toEqual([
+      expect.objectContaining({
+        properties: expect.objectContaining({
+          script_path: "./actual.js",
+          resolved_path: "actual.js",
+        }),
+      }),
+    ]);
+    for (const [script, status] of [
+      ["missing.js", "not-found"],
+      ["https://cdn.example.test/remote.js", "external"],
+    ])
+      expect(document.observations).toContainEqual(
+        expect.objectContaining({
+          properties: expect.objectContaining({
+            script_path: script,
+            resolution_status: status,
+            resolved_path: null,
+          }),
+          evidence: expect.objectContaining({
+            authority: "static-relationship-inference",
+            limitations: expect.arrayContaining([expect.any(String)]),
+          }),
+        }),
+      );
+    const renderers = graph.nodes.filter(
+      ({ kind }) => kind === "electron-renderer",
+    );
+    expect(renderers).toHaveLength(electron ? 1 : 0);
+    expect(
+      renderers.flatMap(({ observations }) =>
+        observations.map(({ properties }) => properties.mechanism),
+      ),
+    ).not.toContain("html-script-entrypoint");
   },
 );
 

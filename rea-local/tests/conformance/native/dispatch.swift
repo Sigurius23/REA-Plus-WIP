@@ -10,3 +10,9 @@ public class ReaVtableFixture {
   public init() {}
   public func fixtureValue() -> Int { 23 }
 }
+
+// The protocol descriptor lives in libswiftCore, never in this image.
+public struct ReaArrayFixture: ExpressibleByArrayLiteral {
+  public typealias ArrayLiteralElement = Int
+  public init(arrayLiteral elements: Int...) {}
+}

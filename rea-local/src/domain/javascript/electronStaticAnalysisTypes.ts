@@ -1,4 +1,5 @@
 import type {
+  JavaScriptSenderValidationFinding,
   JavaScriptSourceRange,
   JavaScriptStaticPathContext,
 } from "./javascriptStaticAnalysisTypes.js";
@@ -146,22 +147,9 @@ export type ElectronIpcFinding = ElectronIpcDescriptor &
     };
   };
 
-/** Static check involving an IPC sender, frame, process, URL, or origin. */
-export interface ElectronSenderValidationFinding {
-  readonly subject:
-    | "sender-url"
-    | "sender-origin"
-    | "sender-frame"
-    | "sender-id"
-    | "frame-id"
-    | "process-id";
-  readonly mechanism: string;
-  readonly expected: ElectronStaticValue;
-  readonly enforcement: "unknown";
-  readonly module_key: string | null;
-  /** Recovered factory runtime; absent in older or unbundled findings. */
-  readonly module_runtime?: string;
-  readonly location: JavaScriptSourceRange;
+/** A sender check whose callback parameter has a proven Electron origin. */
+export interface ElectronSenderValidationFinding extends JavaScriptSenderValidationFinding {
+  readonly transport?: "electron";
 }
 
 interface ElectronUtilityProcessFindingState {

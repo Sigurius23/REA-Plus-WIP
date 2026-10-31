@@ -1,4 +1,5 @@
 import type { ObjcSwiftMetadata } from "../domain/native/objcSwiftMetadata.js";
+import type { DecodedPointer } from "./AppleMachoFixups.js";
 import type { Segment, Section } from "./AppleMachoSelection.js";
 import { issue, type FacetDecodeFacts } from "./AppleDispatchDecodeFacts.js";
 
@@ -28,7 +29,7 @@ export interface DispatchRecordBudget {
 /** Byte readers for Swift relative-pointer and conformance decode facets. */
 export interface SwiftDispatchReaders {
   u32(address: bigint): number;
-  pointer(address: bigint): bigint;
+  pointer(address: bigint): DecodedPointer;
   string(address: bigint): string;
   location(address: bigint): ResolvedMetadataLocation;
   evidence(address: bigint, description: string): BinaryMetadataEvidence;
@@ -38,7 +39,28 @@ export interface SwiftDispatchReaders {
 const hex = (value: bigint) => `0x${value.toString(16)}`;
 const decoded = { status: "decoded" as const, reason: null };
 
-/** Create a Swift ABI signed-relative pointer decoder that records relative_pointers. */
+type ExternalReference = {
+  symbol: string;
+  library: string | null;
+  weak: boolean;
+  addend: string;
+};
+type RelativeTarget =
+  | { kind: "local"; address: bigint }
+  | { kind: "external"; reference: ExternalReference }
+  | { kind: "unsupported"; reason: string };
+type RelativeMode = "direct" | "indirectable" | "indirect";
+
+const requireLocal = (target: RelativeTarget): bigint => {
+  if (target.kind === "local") return target.address;
+  throw new RangeError(
+    target.kind === "external"
+      ? `External Swift metadata layout is unsupported: ${target.reference.symbol}`
+      : target.reason,
+  );
+};
+
+/** Preserve relative displacement, indirect slot and dyld identity separately. */
 export const createSwiftRelativeReader = (input: {
   bytes: Buffer;
   readers: SwiftDispatchReaders;
@@ -46,40 +68,85 @@ export const createSwiftRelativeReader = (input: {
   result: ObjcSwiftMetadata;
 }) => {
   const { bytes, readers: read, budget, result } = input;
-  return (field: bigint, indirectable = false): bigint => {
+  const resolve = (
+    field: bigint,
+    mode: RelativeMode = "direct",
+  ): RelativeTarget => {
     const displacement = bytes.readInt32LE(read.offset(field, 4));
-    const indirect = indirectable && (displacement & 1) !== 0;
-    let target =
+    const indirectable = mode === "indirectable";
+    const indirect =
+      mode === "indirect" || (indirectable && (displacement & 1) !== 0);
+    const relativeAddress =
       displacement === 0
         ? 0n
         : field + BigInt(indirectable ? displacement & ~1 : displacement);
+    let target: RelativeTarget = { kind: "local", address: relativeAddress };
+    let slot: ResolvedMetadataLocation | null = null;
+    let finalAddress: bigint | null = relativeAddress;
     let fileOffset: number | null = null;
+    let external: ExternalReference | null = null;
     let reason: string | null = null;
     try {
-      if (indirect && target !== 0n) target = read.pointer(target);
-      if (target !== 0n) fileOffset = read.offset(target);
+      if (indirect && relativeAddress !== 0n) {
+        finalAddress = null;
+        slot = read.location(relativeAddress);
+        const pointer = read.pointer(relativeAddress);
+        if (pointer.kind === "rebase") {
+          finalAddress = pointer.target;
+          target = { kind: "local", address: pointer.target };
+        } else {
+          finalAddress = null;
+          if (pointer.kind === "bind") {
+            external = {
+              symbol: pointer.symbol,
+              library: pointer.library,
+              weak: pointer.weak,
+              addend: pointer.addend.toString(),
+            };
+            target = { kind: "external", reference: external };
+            reason = "External Swift metadata layout is unsupported";
+          } else {
+            reason = pointer.reason;
+            target = { kind: "unsupported", reason };
+          }
+        }
+      }
+      if (finalAddress !== null && finalAddress !== 0n)
+        fileOffset = read.offset(finalAddress);
     } catch (cause) {
       reason = cause instanceof Error ? cause.message : String(cause);
+      target = { kind: "unsupported", reason };
     }
     if (budget.admit())
       result.relative_pointers.push({
         field: read.location(field),
         target: {
-          address: target === 0n ? null : hex(target),
+          address:
+            finalAddress === null || finalAddress === 0n
+              ? null
+              : hex(finalAddress),
           file_offset: fileOffset,
         },
+        indirect_slot: slot,
+        external_reference: external,
         displacement,
         indirectable,
         indirect,
-        decode: reason === null ? decoded : { status: "partial", reason },
+        decode:
+          reason === null
+            ? decoded
+            : {
+                status: target.kind === "external" ? "unsupported" : "partial",
+                reason,
+              },
         evidence: read.evidence(
           field,
           "Swift ABI signed-relative metadata pointer",
         ),
       });
-    if (reason !== null) throw new RangeError(reason);
     return target;
   };
+  return { resolve, local: (field: bigint) => requireLocal(resolve(field)) };
 };
 
 /** Decode `__swift5_proto` conformances and static witness slots into `result`. */
@@ -87,7 +154,7 @@ export const decodeSwiftDispatchFacets = (input: {
   sections: readonly Section[];
   segments: readonly Segment[];
   readers: SwiftDispatchReaders;
-  relative: (field: bigint, indirectable?: boolean) => bigint;
+  relative: ReturnType<typeof createSwiftRelativeReader>;
   budget: DispatchRecordBudget;
   result: ObjcSwiftMetadata;
 }): FacetDecodeFacts => {
@@ -106,33 +173,54 @@ export const decodeSwiftDispatchFacets = (input: {
       swiftExamined++;
       const field = section.address + BigInt(index * 4);
       try {
-        const descriptor = relative(field);
+        const descriptor = relative.local(field);
         const flags = read.u32(descriptor + 12n);
-        const protocol = relative(descriptor, true);
-        if ((read.u32(protocol) & 31) !== 3)
+        const protocolTarget = relative.resolve(descriptor, "indirectable");
+        const protocol =
+          protocolTarget.kind === "external"
+            ? null
+            : requireLocal(protocolTarget);
+        if (protocol === 0n)
+          throw new TypeError("Missing Swift protocol descriptor");
+        if (protocol !== null && (read.u32(protocol) & 31) !== 3)
           throw new TypeError("Unsupported Swift protocol descriptor kind");
-        const protocolName = read.string(relative(protocol + 8n));
+        const protocolName =
+          protocol === null ? null : read.string(relative.local(protocol + 8n));
         const typeKind = (flags >>> 3) & 7;
         if (typeKind !== 0 && typeKind !== 1)
           throw new TypeError(
             "Unsupported Swift conformance type-reference kind",
           );
-        let type = relative(descriptor + 4n);
-        if (typeKind === 1) type = read.pointer(type);
-        if (![16, 17, 18].includes(read.u32(type) & 31))
+        const typeTarget = relative.resolve(
+          descriptor + 4n,
+          typeKind === 1 ? "indirect" : "direct",
+        );
+        const type =
+          typeTarget.kind === "external" ? null : requireLocal(typeTarget);
+        if (type === 0n) throw new TypeError("Missing Swift type descriptor");
+        if (type !== null && ![16, 17, 18].includes(read.u32(type) & 31))
           throw new TypeError("Unsupported Swift type descriptor kind");
-        const typeName = read.string(relative(type + 8n));
-        const witness = relative(descriptor + 8n);
+        const typeName =
+          type === null ? null : read.string(relative.local(type + 8n));
+        const witness = relative.local(descriptor + 8n);
         const staticWitness =
+          protocol !== null &&
+          type !== null &&
           witness !== 0n &&
           (flags & ~0x38) === 0 &&
           (read.u32(type) & 0x80) === 0;
-        let witnessReason: string | null = staticWitness
-          ? null
-          : "Conditional, generic, resilient or missing static witness table is not decoded";
-        if (staticWitness && read.pointer(witness) !== descriptor)
-          witnessReason =
-            "Witness-table conformance header is unresolved or encoded";
+        let witnessReason: string | null =
+          protocol === null || type === null
+            ? "External Swift metadata layout is unsupported; local names and bind identities are retained separately"
+            : staticWitness
+              ? null
+              : "Conditional, generic, resilient or missing static witness table is not decoded";
+        if (staticWitness) {
+          const header = read.pointer(witness);
+          if (header.kind !== "rebase" || header.target !== descriptor)
+            witnessReason =
+              "Witness-table conformance header is unresolved or encoded";
+        }
         const conformanceDecode =
           witnessReason === null
             ? { status: "decoded" as const, reason: null }
@@ -140,6 +228,12 @@ export const decodeSwiftDispatchFacets = (input: {
         result.swift_conformances.push({
           type_name: typeName,
           protocol_name: protocolName,
+          type_reference:
+            typeTarget.kind === "external" ? typeTarget.reference : null,
+          protocol_reference:
+            protocolTarget.kind === "external"
+              ? protocolTarget.reference
+              : null,
           module: null,
           witness_table:
             witness === 0n
@@ -149,7 +243,7 @@ export const decodeSwiftDispatchFacets = (input: {
           decode: conformanceDecode,
           evidence: read.evidence(
             descriptor,
-            "Swift protocol conformance descriptor and directly encoded type/protocol names",
+            "Swift protocol conformance descriptor, local names and external bind identities",
           ),
         });
         if (conformanceDecode.status === "decoded") decodedRecords++;
@@ -165,6 +259,7 @@ export const decodeSwiftDispatchFacets = (input: {
           );
           continue;
         }
+        if (protocol === null) continue;
         const count = read.u32(protocol + 16n);
         const signatureCount = read.u32(protocol + 12n);
         if (count > 20_000 || signatureCount > 20_000)
@@ -172,7 +267,11 @@ export const decodeSwiftDispatchFacets = (input: {
         for (let slot = 0; slot < count; slot++) {
           if (!budget.admit()) break;
           const entry = witness + BigInt((slot + 1) * 8);
-          const implementation = read.pointer(entry);
+          const implementationPointer = read.pointer(entry);
+          const implementation =
+            implementationPointer.kind === "rebase"
+              ? implementationPointer.target
+              : null;
           const requirementFlags = read.u32(
             protocol + 24n + BigInt(signatureCount * 12 + slot * 8),
           );
@@ -181,6 +280,7 @@ export const decodeSwiftDispatchFacets = (input: {
             kind >= 1 && kind <= 4 && (requirementFlags & 0x20) === 0;
           const executable =
             synchronousFunction &&
+            implementation !== null &&
             segments.some(
               (segment) =>
                 segment.executable &&
@@ -200,7 +300,10 @@ export const decodeSwiftDispatchFacets = (input: {
             slot_index: slot + 1,
             requirement: null,
             implementation: null,
-            implementation_address: executable ? hex(implementation) : null,
+            implementation_address:
+              executable && implementation !== null
+                ? hex(implementation)
+                : null,
             thunk_address: null,
             location: read.location(entry),
             decode: slotDecode,

@@ -114,3 +114,53 @@ describe("Ghidra mutation handshake", () => {
     }
   });
 });
+
+describe("Ghidra bounded analysis commitment", () => {
+  it("rejects a budget whose millisecond conversion overflows even when expected identity matches", () => {
+    expect(
+      parseGhidraSessionInfo(
+        { ...session(), analysis_timeout_seconds: 2_147_484 },
+        { ...expected, analysisTimeoutSeconds: 2_147_484 },
+      ).ok,
+    ).toBe(false);
+  });
+  it("requires exact policy metadata independently of completion or timeout", () => {
+    const bounded = {
+      ...session(),
+      analysis_complete: false,
+      analysis_timed_out: true,
+      analysis_timeout_seconds: 60,
+    };
+    expect(
+      parseGhidraSessionInfo(bounded, {
+        ...expected,
+        analysisTimeoutSeconds: 60,
+      }).ok,
+    ).toBe(true);
+    expect(parseGhidraSessionInfo(bounded, expected).ok).toBe(false);
+    expect(
+      parseGhidraSessionInfo(bounded, {
+        ...expected,
+        analysisTimeoutSeconds: 61,
+      }).ok,
+    ).toBe(false);
+    expect(
+      parseGhidraSessionInfo(session(), {
+        ...expected,
+        analysisTimeoutSeconds: 60,
+      }).ok,
+    ).toBe(false);
+    expect(
+      parseGhidraSessionInfo(
+        { ...bounded, analysis_timeout_seconds: 0 },
+        { ...expected, analysisTimeoutSeconds: 0 },
+      ).ok,
+    ).toBe(false);
+    expect(
+      parseGhidraSessionInfo(
+        { ...bounded, analysis_complete: true },
+        { ...expected, analysisTimeoutSeconds: 60 },
+      ).ok,
+    ).toBe(false);
+  });
+});

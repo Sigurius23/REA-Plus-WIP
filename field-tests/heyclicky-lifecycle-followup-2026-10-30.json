@@ -1,0 +1,368 @@
+{
+  "schema": "heyclicky-lifecycle-followup/v1",
+  "recorded_at": "2026-10-30T09:24:14.664362+00:00",
+  "scope": {
+    "read_only_saved_public_evidence": true,
+    "new_provider_or_target_execution": false,
+    "user_application_data_read": false,
+    "report_persisted_in_repository": true,
+    "production_code_edits": false,
+    "note": "Read-only saved-evidence investigation; the only repository writes were these two report artifacts."
+  },
+  "source_identity_checks": [
+    {
+      "path": "/Applications/HeyClicky.app/Contents/MacOS/HeyClicky",
+      "bytes": 115396000,
+      "sha256": "764a68a80f53de64a0e48a509d5a98737994f93e0888605e2de85b4028f3cb17",
+      "matched_expected": true
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-retest-2026-10-29-a1uqjww5/HeyClicky-arm64",
+      "bytes": 55971232,
+      "sha256": "bb98afe140170240037589647cbfe00099079655e9223ec87f7f702db3fb7911",
+      "matched_expected": true
+    }
+  ],
+  "analysis_profile_digest": "9d767b19f3309990487caf9039fe04860ed266f921d78225574c5e75ceb24c77",
+  "coverage_limits": [
+    "Original closure autoanalysis was incomplete/timed out at explicit60seconds.",
+    "Original closure has46saved replies44success2errors but no saved final close/session outcome or token-verified cleanup receipt. This later read-only review cannot repair that historical absence.",
+    "Pseudocode has Swift calling-convention/global/value-flow warnings; imported call identities and named writes are firmer than reconstructed arguments.",
+    "No feature row can close end to end from this subset alone."
+  ],
+  "claims": [
+    {
+      "id": "lifecycle-entry-chain",
+      "authority": "saved-public-pseudocode",
+      "calls": [
+        7,
+        8,
+        9,
+        14,
+        15,
+        16
+      ],
+      "facts": [
+        "applicationDidFinishLaunching: bridges its notification and calls0x1025926e8.",
+        "applicationWillTerminate: bridges its notification and calls0x102595d20, which loads/retains CompanionAppDelegate._companionManager and delegates to0x101d50474.",
+        "application:openURLs: bridges the supplied NSArray to a Swift URL array and calls0x102596118. The body tests isEmpty and forwards nonempty input to0x101f7c938."
+      ],
+      "unknowns": [
+        "The launch body has calling-convention/value-flow warnings and a nonsensical decompiled param_1-bit test despite the notification thunk; do not assign that branch a semantic mode name.",
+        "Launch calls and _preSignInIntroWindowManager assignment are visible, but most called predicate/init bodies remain opaque. It does not prove startup initialization or onboarding policies end to end."
+      ]
+    },
+    {
+      "id": "termination-cancellation",
+      "authority": "saved-public-pseudocode",
+      "calls": [
+        15,
+        25
+      ],
+      "facts": [
+        "The termination delegate tests optional task handles and explicitly invokes Swift Task.cancel for transientHideTask, streamedCursorBubbleTask, codexHUDFocusResetTask, codexSessionWarmupTask, codexAgentReadyTask, discoveryChannelSaveTask, currentResponseTask, permissionTransientCardTask and permissionCelebrationTask.",
+        "It explicitly invokes Combine AnyCancellable.cancel for shortcutTransitionCancellable, alwaysOnVoiceModeToggleCancellable, controlDoubleTapCancellable, guidedClickLeftMouseDownCancellable, voiceStateCancellable, audioPowerCancellable, primaryAuthenticationStateCancellable and remoteTasksAccountCancellable.",
+        "It stores zero into codexAgentReadyTask, discoveryChannelSaveTask, currentResponseTask, accessibilityCheckTimer, permissionPromptHandoffTimer, permissionTransientCardTask and permissionCelebrationTask; clears pending permission state and streamed-cursor identifier through helpers."
+      ],
+      "unknowns": [
+        "Additional calls touch globalPushToTalkShortcutMonitor, buddyDictationManager, overlayWindowManager, permission timers and native runtime owners, but the called helper implementations are not present in these selected captures.",
+        "This is code-level cancellation/ownership evidence, not proof of successful runtime cleanup, flush, process exit or failure recovery."
+      ]
+    },
+    {
+      "id": "url-router",
+      "authority": "saved-public-pseudocode",
+      "calls": [
+        9,
+        16,
+        26
+      ],
+      "facts": [
+        "0x101f7c938 loops through the supplied URL sequence, copies each URL and calls0x101f7cc5c.",
+        "It loads the manager's supabaseAuthManager, calls0x102bc3178, conditionally calls0x101ccc510, then conditionally calls0x101f7aa48(URL,0). If the gate is false or the handler returns false it calls0x101b23048(URL)."
+      ],
+      "unknowns": [
+        "The helper names, accepted schemes/hosts, auth-state meanings, validation and side effects are unresolved. A Supabase-related gate exists in the source path, but its predicate semantics cannot be safely named.",
+        "No URL was opened/replayed."
+      ]
+    },
+    {
+      "id": "voice-controller-initial-state",
+      "authority": "saved-public-pseudocode-initializer",
+      "calls": [
+        10,
+        17
+      ],
+      "facts": [
+        "Allocator0x102056788 calls initializer0x102163c5c.",
+        "The initializer sets empty conversationHistory and pending user/assistant transcripts, clears active text/voice response flags and task handles, and initializes activeTextTurnAttachedFilePaths to an empty array.",
+        "Named fields responseDoneWatchdogSeconds, idleTeardownSeconds and oneBrainMouthIdleTeardownSeconds receive12,300 and1200 respectively; currentBeginPushToTalkGeneration, realtimeVoiceTurnGeneration and VAD sequence counters start at zero.",
+        "Active-document context/reference/PID, annotation submission and frontmost-app/browser-host fields are initialized here, tying them to this controller's state ownership."
+      ],
+      "unknowns": [
+        "Initialization proves these state fields and constants; it does not establish when timers are scheduled/enforced, how audio is captured/transcribed, microphone permissions, transport, VAD/barge-in decisions, tool dispatch or completed turn persistence."
+      ]
+    },
+    {
+      "id": "voice-client-initial-state",
+      "authority": "saved-public-pseudocode-initializer",
+      "calls": [
+        11,
+        18
+      ],
+      "facts": [
+        "Allocator0x102af7074 calls initializer0x102b16b60, which performs its Objective-C superclass init and callback/observer setup.",
+        "webSocketSession, webSocketTask, microphoneCapture and duplexAudioEngine handles initialize to nil/zero; isSocketOpen and isEchoCancellationActive initialize false.",
+        "Named pendingAudioAppendChunkSoftCap is initialized to600; pending chunks, captured/sent audio counters, response counters, tool continuation and interview replay state initialize empty/zero.",
+        "After superclass init it stores a weak-self callback (DAT_102b3995c) into a referenced callback slot and stores a returned notification helper result into microphoneSelectionChangeObserver."
+      ],
+      "unknowns": [
+        "These bodies do not establish a live socket endpoint or model, actual microphone/duplex behavior, backpressure enforcement or media format.",
+        "Callback and notification helper semantic bodies remain unresolved."
+      ]
+    },
+    {
+      "id": "auth-initial-state",
+      "authority": "saved-public-pseudocode-initializer",
+      "calls": [
+        12,
+        19
+      ],
+      "facts": [
+        "Allocator0x102bc3284 calls initializer0x102bca654.",
+        "It initializes isAuthenticated false, optional user ID/email/display name/avatar/signup date empty, accessToken/refreshToken empty, refresh task/identifier absent and failure state absent.",
+        "Named accessTokenRefreshRetryCooldown receives raw64bit0x403e000000000000 (30.0 if interpreted as IEEE754 double); pending keychain migration/read/sign-out cleanup state is cleared.",
+        "The initializer then calls0x102bcab78 before returning self."
+      ],
+      "unknowns": [
+        "The called initializer continuation0x102bcab78 is not captured here. Keychain read/write, token format, callback URL validation, sign-in/out and refresh/retry policies remain unresolved.",
+        "No actual account/token/keychain data was read; field labels are source metadata, not user state."
+      ]
+    },
+    {
+      "id": "conversation-history-initial-state",
+      "authority": "saved-public-pseudocode-initializer",
+      "calls": [
+        13,
+        20
+      ],
+      "facts": [
+        "Allocator0x1010a15cc calls initializer0x1010b2598.",
+        "The initializer constructs messages as empty, initializes hasEarlierMessages/isLoadingNewest/isLoadingEarlier/hasLoadFailed false, lastAnswerEndedAt and lastRefreshStartedAt absent, accountID/liveReplyID empty, and refreshTask/earlierTask nil."
+      ],
+      "unknowns": [
+        "The initializer establishes empty ownership/loading state only. Fetch/load ordering, paging, cancellation, server-versus-local storage, path/schema/migration and recovery are not established by this body."
+      ]
+    }
+  ],
+  "saved_public_reply_references": [
+    {
+      "ordinal": 7,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/007-lifecycle-did-finish-launching.json",
+      "bytes": 14296,
+      "sha256": "169bfd98b9a6b37d4168a204bc8745be9d76041c12bd816cd948d1a30a268a2e",
+      "evidence_id": "ev_28f4d6be1f828e37373d345f5cf291465857521a05d37c9b61d9194a62d9cca4",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x102595c40"
+      },
+      "normalized_result_characters": 1118,
+      "normalized_result_utf8_sha256": "cc5de7a9057342394dc291f0c00cee748cb13c40b397eff3a22984decd5cfc1a"
+    },
+    {
+      "ordinal": 8,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/008-lifecycle-will-terminate.json",
+      "bytes": 14276,
+      "sha256": "e5b0c25e1f0b15d5a32154ea787fb11315ef57fe013b289afeef7603e63149c2",
+      "evidence_id": "ev_e3863b348a151f0dd55942cb961b2e060fbf1311ae613a17722a2929ade79b27",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x102595d78"
+      },
+      "normalized_result_characters": 1113,
+      "normalized_result_utf8_sha256": "34e70848537bb9cd8cd1b0d7c14cb3f665c607b9ea1ea390d29840e32eb1ea5b"
+    },
+    {
+      "ordinal": 9,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/009-lifecycle-open-urls.json",
+      "bytes": 13032,
+      "sha256": "c8ff4c80be1479c969f86695eda3c534c828fbc3f8d052264699af362ec03afb",
+      "evidence_id": "ev_8691af206e78b8d30707fba42ba370f4096df21be3254765dad3a625d89d1738",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x1025962b8"
+      },
+      "normalized_result_characters": 817,
+      "normalized_result_utf8_sha256": "17910ec24672ffd7360837f8215414c27c8bc0ab6152709228f2723722df82c9"
+    },
+    {
+      "ordinal": 10,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/010-realtime-voice-controller.json",
+      "bytes": 10002,
+      "sha256": "5a49d099d4616ec72ec03d68bb38c903930f0634a4935a90a0bb9fb33b3baf9b",
+      "evidence_id": "ev_7b747ea83033b47029ea7271c1cb365dbbc0fbf0184bbd776a27c2ec29386880",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x102056788"
+      },
+      "normalized_result_characters": 85,
+      "normalized_result_utf8_sha256": "0d94e3289875639077b8f8add245cecb1416306456ba536432bf3894c3f4c2c8"
+    },
+    {
+      "ordinal": 11,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/011-realtime-voice-client.json",
+      "bytes": 10090,
+      "sha256": "3c1c59338181573d2a73ec66c921f319c967f8cb2fa6c5d79968554c6bc2f11c",
+      "evidence_id": "ev_4b2c2c7810052be09ad0480d8bb074974acebff7577d21c77a0d168379eff354",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x102af7074"
+      },
+      "normalized_result_characters": 107,
+      "normalized_result_utf8_sha256": "ebb43a849ba8e7c4a4a48fb4d5970ba99a8d3968229694bb8d660e2c4a1dcf10"
+    },
+    {
+      "ordinal": 12,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/012-supabase-auth-manager.json",
+      "bytes": 10002,
+      "sha256": "6af122a4988306599855ad5920922028da76b312dbbc2f64374e1eca823b9929",
+      "evidence_id": "ev_b1af7bb02d23f6dfdd7f54ad0d5090fe4d0a0148d5b8e99508edb18b0304b86e",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x102bc3284"
+      },
+      "normalized_result_characters": 85,
+      "normalized_result_utf8_sha256": "5ff417fda2be8416270c90f24a174ccf6f5611e203cf11c9ea73988e4bc500ad"
+    },
+    {
+      "ordinal": 13,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/013-conversation-history.json",
+      "bytes": 10002,
+      "sha256": "0693e5bc6a318fb8d2235bc6ba36e24469859ccbd4af03df836026d3d78272a3",
+      "evidence_id": "ev_fd941121d5fbfdb644a57c37056a697a8d4ea9db4f62c6f204dcbd5e56f59012",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x1010a15cc"
+      },
+      "normalized_result_characters": 85,
+      "normalized_result_utf8_sha256": "1828c0b9136f0a56bb0c0efdbf223c21b92eced49ed4a3b433965fed598d0040"
+    },
+    {
+      "ordinal": 14,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/014-lifecycle-launch-body.json",
+      "bytes": 63056,
+      "sha256": "a83cf631a1ace8f66a63ef8ed7b7f7cc086c92379f199a66eb0b5bb01922ffff",
+      "evidence_id": "ev_3301a66e6d8b234cf82223289563739af894a1aa187e9e48e0c37af3847dbdc9",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x1025926e8"
+      },
+      "normalized_result_characters": 12743,
+      "normalized_result_utf8_sha256": "5fefe8169fe8218dcca643fc9e2544315bbcc6a36c05d76d50814d3fc45580a4"
+    },
+    {
+      "ordinal": 15,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/015-lifecycle-terminate-body.json",
+      "bytes": 10884,
+      "sha256": "4a1b919e76149e6db4cead1bccd75e97815d9d180c1109ab06abd29ecc4940bd",
+      "evidence_id": "ev_e8ee02aeaa991ad313432752a9db87439a92d23fa5428a5a7d39c2d36a087898",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x102595d20"
+      },
+      "normalized_result_characters": 295,
+      "normalized_result_utf8_sha256": "cf7b2165be975ef70d52c1d82b6c91543b5a99f5a9e77a43da7e35c67e5c27d1"
+    },
+    {
+      "ordinal": 16,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/016-lifecycle-open-urls-body.json",
+      "bytes": 14250,
+      "sha256": "6cc4206f1f8e3208faf42d68ef00907ebd5e9ac936a95934301008a85b256a12",
+      "evidence_id": "ev_0adf51755c4305928fe2b05e9cf6f1beeef4f1b09bfcfbad935c4972cbfd6ab7",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x102596118"
+      },
+      "normalized_result_characters": 1096,
+      "normalized_result_utf8_sha256": "2f9b34a93a0ceb6103c23072112ae55c76536edc380c2a83d2e54478795cd2d5"
+    },
+    {
+      "ordinal": 17,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/017-realtime-voice-controller-initializer.json",
+      "bytes": 45568,
+      "sha256": "9d3b4c2f964e044b4ce82fd0dc127eb7bf8c2600dabc2fabc1a69c939c19d3fe",
+      "evidence_id": "ev_58bb8789e0ce2a66c987022cd0b84170d0103487ae87b5821c2c2004ef8b2d07",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x102163c5c"
+      },
+      "normalized_result_characters": 8659,
+      "normalized_result_utf8_sha256": "2d6f68461f8548ee7c0f7c7b0e866a7aa9cb6a1c95b7f031195ba1cadcda2e69"
+    },
+    {
+      "ordinal": 18,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/018-realtime-voice-client-initializer.json",
+      "bytes": 76312,
+      "sha256": "bc4d17b0e1c0bbeb4456e538c338a3a45962e63d779370e5be2f6586c2f3ac52",
+      "evidence_id": "ev_93dfbfc483e007ff33f5460eeb65390110503143263c2a14f8488ad5f5dc947e",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x102b16b60"
+      },
+      "normalized_result_characters": 16045,
+      "normalized_result_utf8_sha256": "19ea0bee6b5b3bb72aa1497dd85d892e6daf4d0218de498b57bad1d4714b57e5"
+    },
+    {
+      "ordinal": 19,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/019-supabase-auth-initializer.json",
+      "bytes": 30094,
+      "sha256": "693daa9e06ca4892bdab89386713b7573fe90ad18a6b213d1f3a5c7073625f5a",
+      "evidence_id": "ev_3e3a1534fd3833ea6f59bbbf4f6f605f46cb2a47c00926773c45390a442665ec",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x102bca654"
+      },
+      "normalized_result_characters": 4901,
+      "normalized_result_utf8_sha256": "3194a49c13e1d3211483d2a338f17bd83a538122e04ba1fbe8d1b46f9c82bc14"
+    },
+    {
+      "ordinal": 20,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/020-conversation-history-initializer.json",
+      "bytes": 23686,
+      "sha256": "afcfdc1d993e47a5b0963f756dc9916a64f6a304b71945a5dcab776fadd5b529",
+      "evidence_id": "ev_5e38ce113c1521e8867f2d4f43fdbe4c4282cf06ffd10926a63be5769f0023ed",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x1010b2598"
+      },
+      "normalized_result_characters": 3356,
+      "normalized_result_utf8_sha256": "87c136db52ec079b8962632eac38cb58e144aa035a9c017a3f95571235c6038d"
+    },
+    {
+      "ordinal": 25,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/025-lifecycle-termination-delegate.json",
+      "bytes": 88274,
+      "sha256": "0ea27b8e977aeadd953a17db97f963ae8af3c51ce6b65bf48617a67b5a467aca",
+      "evidence_id": "ev_33c629f37172fe56b9f516e1a303de71b4b6605240911876ea034bd238dafff6",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x101d50474"
+      },
+      "normalized_result_characters": 18747,
+      "normalized_result_utf8_sha256": "db8607e7ef347166789a5210a32c9849273fd19cb01d799bfa1ae5fbf51f383a"
+    },
+    {
+      "ordinal": 26,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/026-native-url-router.json",
+      "bytes": 20366,
+      "sha256": "1bc4cede3b879400e566a44698a6737bc2d43f16ae708d7340d1f3d407e82edc",
+      "evidence_id": "ev_9d9656db8345baed801a17bf036812995d2d7d6786ceca7d67cacbc7a2463d98",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x101f7c938"
+      },
+      "normalized_result_characters": 2550,
+      "normalized_result_utf8_sha256": "d520e217006e6e9e8c9448f241643a6abbf174160f091a4474a44b545e27208b"
+    }
+  ]
+}

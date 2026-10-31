@@ -78,6 +78,14 @@ Null class/meta flags, ivar counts, atomicity, or read-only values mean the
 selected provider did not establish that fact. Symbol names alone do not prove
 that a class is a root class or has no ivars.
 
+For a budget-limited native metadata investigation, select
+`inspect_native_dispatch_metadata` with `facet: "objc"`, `"swift-conformances"`
+or `"swift-vtables"` instead of spending its aggregate `max_records` budget on
+all families. CLI uses `--facet`; omitted selection remains `"all"`.
+Unselected families are `not_requested`, and unavailable binary decoders remain
+unsupported. Selection does not raise the input-byte budget or prove that
+unsupported Swift layouts were decoded.
+
 ## Managed PE/CLI
 
 Start with `inspect_managed_artifact`. REA+'s canonical managed inspection is
@@ -85,6 +93,23 @@ execution-free: do not claim it loaded, reflected, executed, or resolved the
 assembly. Keep managed/native boundaries and unavailable reconstruction facts
 explicit. A bring-your-own reconstruction oracle is separate from the canonical
 parser and must not become an implicit setup dependency.
+
+For a large Ghidra import, `REA_GHIDRA_STARTUP_TIMEOUT_MS` bounds the entire
+startup. An explicit `REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS` (1–2,147,483) selects a
+separate bounded-analysis profile and can expose the stable partial Program
+after auto-analysis stops. Keep its measured completion/timeout flags and
+limitations in conclusions; incomplete inventories do not establish absence.
+The default profile still requires completed auto-analysis. Changing the policy
+requires a fresh binding, and the client's tool deadline must allow startup.
+
+If a partial Program has no procedure at an entry established by metadata or a
+resolved call, preserve that evidence and try the existing
+`REA_GHIDRA_SEED_FILE` workflow before declaring the code inaccessible. The
+UTF-8 TSV accepts `address<TAB>function`, `address<TAB>code` and named label
+entries. Reopen under the separately committed seed profile and check the
+reported application outcome. Seeds are caller assertions, not Ghidra
+discoveries; retain the original entry evidence, avoid invented method names,
+and keep decoding failures and remaining analysis limits explicit.
 
 ### .NET NativeAOT
 

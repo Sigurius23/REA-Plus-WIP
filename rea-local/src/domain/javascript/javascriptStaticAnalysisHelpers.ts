@@ -3,6 +3,7 @@ import { posix } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import * as t from "@babel/types";
+import type { JavaScriptCallReceiverFact } from "./javascriptCallReceiverFacts.js";
 
 import type {
   JavaScriptBundlerRegistration,
@@ -25,6 +26,9 @@ import { endpointTemplate } from "./javascriptEndpointTemplates.js";
 /** Explicit result for source text that Babel cannot parse. */
 export const failedJavaScriptStaticAnalysis = (): JavaScriptStaticAnalysis => ({
   parse_status: "failed",
+  syntax_parse_status: "failed",
+  static_facts_status: "failed",
+  unresolved_static_occurrences: null,
   parse_error_count: 1,
   visited_ast_nodes: 0,
   references: [],
@@ -373,13 +377,6 @@ const XHR_METHODS = new Set([
   "TRACE",
 ]);
 
-/** An absolute HTTP(S)/WebSocket URL, or an absolute or relative path. */
-const isRequestUrlLiteral = (value: string): boolean =>
-  /^(?:https?|wss?):\/\//iu.test(value) ||
-  value.startsWith("/") ||
-  value.startsWith("./") ||
-  value.startsWith("../");
-
 /**
  * Browsing-context and document `open` take a URL or type first and a target
  * name second. The name is only a spelling, since `parent` or `self` may be a
@@ -435,20 +432,20 @@ const xhrOpenUrl = (
   name: string,
   methodNode: t.Node | null | undefined,
   url: string | undefined,
-  receiverFact?: OpenReceiverFact,
+  receiverFact?: JavaScriptCallReceiverFact,
 ): string | undefined => {
   if (url === undefined) return undefined;
   // A lexical fact is stronger than the receiver's spelling. In particular,
   // browser Window and Document globals overload `open` with URL/content APIs.
-  if (receiverFact === "window") return undefined;
+  if (receiverFact?.kind === "window") return undefined;
   const method = stringValue(methodNode);
   // IndexedDB and Cache Storage `open` take a name and a version, so a
   // receiver spelled as storage needs a standard HTTP method literal.
   const storage =
-    receiverFact === "local-indexed-db" ||
-    receiverFact === "local-cache-storage" ||
-    receiverFact === "indexed-db" ||
-    receiverFact === "cache-storage" ||
+    receiverFact?.kind === "local-indexed-db" ||
+    receiverFact?.kind === "local-cache-storage" ||
+    receiverFact?.kind === "indexed-db" ||
+    receiverFact?.kind === "cache-storage" ||
     storageKind(name) !== undefined;
   if (method === undefined)
     return storage ||
@@ -459,61 +456,16 @@ const xhrOpenUrl = (
       : url;
   return XHR_METHODS.has(method.toUpperCase()) ||
     ((!storage ||
-      receiverFact === "local-indexed-db" ||
-      receiverFact === "local-cache-storage") &&
+      receiverFact?.kind === "local-indexed-db" ||
+      receiverFact?.kind === "local-cache-storage") &&
       /^[A-Z][A-Z-]*$/u.test(method))
     ? url
     : undefined;
 };
 
-const KEYED_COLLECTION_CONSTRUCTORS = new Set([
-  "FormData",
-  "Headers",
-  "Map",
-  "Set",
-  "URLSearchParams",
-  "WeakMap",
-  "WeakSet",
-]);
-
-/**
- * Whether a get/delete receiver is spelled as a keyed collection: a
- * constructed Map, Set, Headers, FormData, or URLSearchParams, or a
- * `headers`/`searchParams` property. Spelling alone does not prove the
- * binding, so callers keep URL and path literals as requests.
- */
-const isKeyedCollectionReceiver = (callee: t.Node): boolean => {
-  if (!t.isMemberExpression(callee) && !t.isOptionalMemberExpression(callee))
-    return false;
-  const receiver = callee.object;
-  if (t.isNewExpression(receiver))
-    return (
-      t.isIdentifier(receiver.callee) &&
-      KEYED_COLLECTION_CONSTRUCTORS.has(receiver.callee.name)
-    );
-  if (
-    !t.isMemberExpression(receiver) &&
-    !t.isOptionalMemberExpression(receiver)
-  )
-    return false;
-  const property = semanticStaticPropertyName(
-    receiver.property,
-    receiver.computed,
-  );
-  return property === "headers" || property === "searchParams";
-};
-
-type OpenReceiverFact =
-  | "window"
-  | "indexed-db"
-  | "cache-storage"
-  | "local"
-  | "local-indexed-db"
-  | "local-cache-storage";
-
 /** What a call site knows beyond its syntax. */
 export interface EndpointArgumentContext {
-  readonly receiverFact?: OpenReceiverFact | undefined;
+  readonly receiverFact?: JavaScriptCallReceiverFact | undefined;
   /**
    * Resolve a URL argument that is not an exact string: a template, a
    * concatenation or a variable. Defaults to {@link endpointTemplate}.
@@ -533,14 +485,18 @@ export const endpointArgument = (
     | t.JSXNamespacedName
     | t.ArgumentPlaceholder
   )[],
-  callee: t.Node,
   context: EndpointArgumentContext = {},
 ): string | undefined => {
   const { receiverFact } = context;
   const resolve = context.resolve ?? endpointTemplate;
   const url = (node: t.Node | undefined): string | undefined =>
     node === undefined ? undefined : (stringValue(node) ?? resolve(node));
-  if (receiverFact === "window") return undefined;
+  if (
+    receiverFact?.kind === "window" ||
+    receiverFact?.kind === "keyed-collection" ||
+    receiverFact?.kind === "extension-storage"
+  )
+    return undefined;
   if (
     name === "fetch" ||
     name.endsWith(".fetch") ||
@@ -551,19 +507,17 @@ export const endpointArgument = (
     return url(args[0]);
   if (name.endsWith(".open"))
     return xhrOpenUrl(name, args[0], url(args[1]), receiverFact);
+  if (
+    !name.includes(".") &&
+    receiverFact?.kind === "network" &&
+    receiverFact.identity !== "XMLHttpRequest"
+  )
+    return url(args[0]);
   const method = ["get", "post", "put", "patch", "delete", "request"].find(
     (candidate) => name === candidate || name.endsWith(`.${candidate}`),
   );
   if (method !== undefined) {
-    const value = url(args[0]);
-    // Only get and delete also belong to the keyed-collection APIs, whose
-    // keys are header, field, and parameter names rather than URLs or paths.
-    return value !== undefined &&
-      (method === "get" || method === "delete") &&
-      !isRequestUrlLiteral(value) &&
-      isKeyedCollectionReceiver(callee)
-      ? undefined
-      : value;
+    return url(args[0]);
   }
   if (name.endsWith("loadURL")) return url(args[0]);
   return undefined;

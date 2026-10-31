@@ -89,6 +89,168 @@ const fixture = (relative = false) => {
   return bytes;
 };
 const provenance = { path: "/fixture/app", sha256: "a".repeat(64) };
+
+const mixedFixture = () => {
+  const bytes = fixture();
+  const u32 = (at: number, value: number) => bytes.writeUInt32LE(value, at);
+  const ptr = (at: number, to: number) =>
+    bytes.writeBigUInt64LE(base + BigInt(to), at);
+  const relative = (at: number, to: number) => bytes.writeInt32LE(to - at, at);
+  u32(0x300, 2); // Root class and root metaclass have no external superclass.
+  u32(0x380, 3);
+  u32(20, 312);
+  u32(36, 312);
+  u32(96, 3);
+  for (const [index, name, at] of [
+    [1, "__swift5_types", 0xa00],
+    [2, "__swift5_proto", 0xa04],
+  ] as const) {
+    const section = 104 + index * 80;
+    bytes.write(name, section);
+    bytes.write("__DATA", section + 16);
+    ptr(section + 32, at);
+    bytes.writeBigUInt64LE(4n, section + 40);
+    u32(section + 48, at);
+  }
+  relative(0xa00, 0xa40);
+  u32(0xa40, 0x80000010);
+  relative(0xa48, 0xac0);
+  u32(0xa5c, 64);
+  u32(0xa6c, 0);
+  u32(0xa70, 1);
+  u32(0xa74, 0);
+  relative(0xa78, 0xb00);
+  bytes.write("SwiftFixture\0", 0xac0);
+  relative(0xa04, 0xb40);
+  relative(0xb40, 0xbc0);
+  relative(0xb44, 0xc00);
+  relative(0xb48, 0xc80);
+  u32(0xb4c, 0);
+  u32(0xbc0, 3);
+  relative(0xbc8, 0xd00);
+  u32(0xbcc, 0);
+  u32(0xbd0, 1);
+  u32(0xbd8, 1);
+  u32(0xc00, 16);
+  relative(0xc08, 0xc40);
+  ptr(0xc80, 0xb40);
+  ptr(0xc88, 0xb00);
+  bytes.write("SwiftWidget\0", 0xc40);
+  bytes.write("Proto\0", 0xd00);
+  return bytes;
+};
+
+describe("Apple dispatch metadata facet admission", () => {
+  it.each(["swift-conformances", "swift-vtables"] as const)(
+    "directs one aggregate budget to %s without earlier Objective-C work",
+    (facet) => {
+      const all = decodeAppleDispatchMetadata(mixedFixture(), 10, provenance);
+      expect(all.swift_dispatch_slots).toEqual([]);
+      const selected = decodeAppleDispatchMetadata(
+        mixedFixture(),
+        10,
+        provenance,
+        { facet },
+      );
+      expect(selected.objc_classes).toEqual([]);
+      expect(selected.objc_ivars).toEqual([]);
+      expect(selected.swift_dispatch_slots).toMatchObject([
+        {
+          table_kind:
+            facet === "swift-vtables" ? "class_vtable" : "witness_table",
+          implementation_address: "0x100000b00",
+        },
+      ]);
+      expect(
+        selected.coverage.find(
+          ({ facet: name }) => name === "objc_class_method_ivar_metadata",
+        ),
+      ).toMatchObject({ status: "not_requested", examined: 0 });
+      expect(
+        selected.coverage.find(
+          ({ facet: name }) =>
+            name ===
+            (facet === "swift-vtables"
+              ? "swift_conformances_static_witness_slots"
+              : "swift_class_vtable_descriptors"),
+        ),
+      ).toMatchObject({ status: "not_requested", examined: 0 });
+    },
+  );
+
+  it("does not retroactively mark completed Objective-C work truncated by a later Swift family", () => {
+    const result = decodeAppleDispatchMetadata(mixedFixture(), 18, provenance);
+    expect(
+      result.coverage.find(
+        ({ facet }) => facet === "objc_class_method_ivar_metadata",
+      ),
+    ).toMatchObject({ status: "complete" });
+    expect(
+      result.coverage.find(
+        ({ facet }) => facet === "swift_class_vtable_descriptors",
+      ),
+    ).toMatchObject({ status: "partial" });
+  });
+
+  it("attributes caught category protocol failures to categories without poisoning completed classes", () => {
+    const bytes = fixture();
+    bytes.writeUInt32LE(2, 0x300);
+    bytes.writeUInt32LE(3, 0x380);
+    bytes.writeUInt32LE(232, 20);
+    bytes.writeUInt32LE(232, 36);
+    bytes.writeUInt32LE(2, 96);
+    bytes.write("__objc_catlist", 184);
+    bytes.write("__DATA", 200);
+    const ptr = (at: number, to: number) =>
+      bytes.writeBigUInt64LE(base + BigInt(to), at);
+    ptr(216, 0xa00);
+    bytes.writeBigUInt64LE(8n, 224);
+    bytes.writeUInt32LE(0xa00, 232);
+    ptr(0xa00, 0xa40);
+    ptr(0xa40, 0xae0);
+    ptr(0xa48, 0x200);
+    ptr(0xa60, 0xb00);
+    bytes.write("BrokenProtocolCategory\0", 0xae0);
+    bytes.writeBigUInt64LE(1n, 0xb00);
+    ptr(0xb08, 0xb40);
+    ptr(0xb48, 0xbc0);
+    bytes.write("BrokenProtocol\0", 0xbc0);
+    const result = decodeAppleDispatchMetadata(bytes, 100, provenance);
+    expect(
+      result.coverage.find(
+        ({ facet }) => facet === "objc_class_method_ivar_metadata",
+      ),
+    ).toMatchObject({ status: "complete" });
+    expect(
+      result.coverage.find(
+        ({ facet }) => facet === "objc_properties_categories",
+      ),
+    ).toMatchObject({
+      status: "partial",
+      reason: expect.stringContaining("category_protocol_decode_failed"),
+    });
+  });
+
+  it("keeps measured empty property/category lists complete when only class work exhausts", () => {
+    const bytes = fixture();
+    bytes.writeBigUInt64LE(0n, 0x200); // No additional metaclass to examine.
+    bytes.writeBigUInt64LE(0n, 0x340); // Empty class property list.
+    const result = decodeAppleDispatchMetadata(bytes, 1, provenance, {
+      facet: "objc",
+    });
+    expect(
+      result.coverage.find(
+        ({ facet }) => facet === "objc_class_method_ivar_metadata",
+      ),
+    ).toMatchObject({ status: "partial" });
+    expect(
+      result.coverage.find(
+        ({ facet }) => facet === "objc_properties_categories",
+      ),
+    ).toMatchObject({ status: "complete", reason: null });
+  });
+});
+
 describe("Apple dispatch binary metadata", () => {
   it.each([false, true])(
     "decodes stripped absolute/relative method lists (relative=%s) with exact offsets",
@@ -284,7 +446,9 @@ describe("FAT64 dispatch slice validation", () => {
 
   it("rejects a missing selected architecture", () => {
     expect(() =>
-      decodeAppleDispatchMetadata(wrapped(), 100, provenance, "x86_64"),
+      decodeAppleDispatchMetadata(wrapped(), 100, provenance, {
+        architecture: "x86_64",
+      }),
     ).toThrow("Requested FAT architecture is absent");
   });
 });

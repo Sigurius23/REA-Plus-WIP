@@ -1,0 +1,103 @@
+{
+  "schema": "heyclicky-limited-ui-observation/v1",
+  "client_date": "2026-10-30",
+  "status": "partial-observed",
+  "authority": "CUA accessibility trees and inline screenshots; analyst observation, not REA+ Evidence",
+  "authorization": {
+    "user_answer": "Allow the UI check",
+    "scope": "Launch/select HeyClicky and inspect hover, expansion, focus and Escape without submitting prompts or starting jobs",
+    "possible_existing_state_and_service_access_disclosed": true
+  },
+  "target": {
+    "path": "/Applications/HeyClicky.app",
+    "bundle_id": "com.humansongs.clicky",
+    "displayed_version": "1.1.1 (66)",
+    "main_sha256": "764a68a80f53de64a0e48a509d5a98737994f93e0888605e2de85b4028f3cb17",
+    "running_observed": true,
+    "fresh_launch_proven": false,
+    "fresh_launch_limit": "No pre-selection process snapshot; CUA selection may launch the app if needed"
+  },
+  "checks": [
+    {
+      "id": "collapsed-appearance",
+      "status": "observed",
+      "result": "Small black rounded top-center notch within a 1640x1800 pixel app capture",
+      "limit": "Capture envelope matches static 820x900 point envelope at 2x; capture alpha and full display geometry are not established"
+    },
+    {
+      "id": "settings-expansion",
+      "status": "observed",
+      "input": "App menu Settings…",
+      "result": "Dark settings panel with navigation and General version/appearance controls"
+    },
+    {
+      "id": "settings-escape",
+      "status": "observed",
+      "precondition": "Settings General visible; pointer inside panel",
+      "input": "Escape",
+      "result": "Settings AX content removed; screenshot collapsed to notch; app remained running"
+    },
+    {
+      "id": "hover",
+      "status": "unverified",
+      "reason": "No documented pointer-move/hover API; click probes do not verify pure hover"
+    },
+    {
+      "id": "text-input-focus",
+      "status": "observed",
+      "observed_shortcut": "Control twice",
+      "attempt": "Earlier first Control_L modifier-only key press was rejected before the shortcut executed",
+      "controller_error": "keyPressIncludedNoNonModifierKeys",
+      "manual_action_requested": true,
+      "manual_action_answer": "its open",
+      "historical_observation_block": "Mac locked; automatic unlock unavailable",
+      "historical_block_resolved": true,
+      "actual_manual_keystrokes_observed": false,
+      "result": "First observation after user reported panel open explicitly identifies Ask HeyClicky… as the focused settable text field; Chat selected, Send disabled",
+      "authority": "CUA initial app accessibility tree explicitly reports focused UI element",
+      "text_entered": false
+    },
+    {
+      "id": "chat-text-mode-escape",
+      "status": "observed",
+      "precondition": "Ask HeyClicky… text field explicitly focused; Chat selected; Send disabled",
+      "input": "Escape",
+      "result": "Focus moved to root system dialog; Attach, read-aloud and Send controls removed; microphone control and compact text field remained",
+      "panel_collapsed": false,
+      "panel_state_authority": "Subsequent full accessibility tree and inline screenshot show Chat panel still expanded",
+      "distinction": "Earlier Settings Escape collapsed its panel; this Chat Escape removed text-entry focus without collapsing"
+    }
+  ],
+  "excluded_attempt": {
+    "input": "Escape while View menu was open",
+    "result": "Menu remained in AX tree; exposed Cancel action dismissed it",
+    "not_counted_as_panel_escape_test": true
+  },
+  "scope": {
+    "prompt_typed_or_submitted": false,
+    "job_started": false,
+    "preferences_changed": false,
+    "permissions_or_account_changed": false,
+    "user_application_data_files_opened": false,
+    "network_observed": false,
+    "app_initiated_service_access": "unknown",
+    "account_identity_or_usage_exported": false,
+    "screenshots_exported": false,
+    "commit_or_push_performed": false,
+    "full_accessibility_dump_saved_to_disk": false,
+    "incidental_conversation_or_artifact_contents_saved_to_disk": false
+  },
+  "remaining": [
+    "Pure hover and hover-leave behavior",
+    "Visible state transitions, hit-testing and animation timing",
+    "Multi-display and Space/full-screen behavior"
+  ],
+  "follow_up": {
+    "client_date": "2026-10-30",
+    "user_message": "its open",
+    "focus_check_complete": true,
+    "manual_action_pending": false,
+    "mac_lock_block_resolved": true,
+    "stopped_after_observation": true
+  }
+}

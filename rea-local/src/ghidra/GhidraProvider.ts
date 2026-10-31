@@ -199,8 +199,17 @@ export class GhidraProvider implements AnalysisProviderCandidate {
       target,
       GHIDRA_PROVIDER_IDENTITY,
       installation,
-      options?.signal,
-      this.config.ghidraLanguageOverride,
+      {
+        ...(options?.signal === undefined ? {} : { signal: options.signal }),
+        ...(this.config.ghidraLanguageOverride === undefined
+          ? {}
+          : { languageOverride: this.config.ghidraLanguageOverride }),
+        ...(this.config.ghidraAnalysisTimeoutSeconds === undefined
+          ? {}
+          : {
+              analysisTimeoutSeconds: this.config.ghidraAnalysisTimeoutSeconds,
+            }),
+      },
     );
     if (!resolved.ok || resolved.value.profile === null) return resolved;
     const override = this.config.ghidraLanguageOverride;

@@ -87,7 +87,7 @@ it("keeps static facts and skips semantic analysis above max_semantic_source_byt
     if (!small.ok) throw small.error.error;
     expect(small.value.module).not.toBeNull();
 
-    const value = `export const load = (id) => fetch(\`/threads/\${id}/\`);${" ".repeat(64)}`;
+    const value = `export const load = (id) => fetch(\`/threads/\${id}/\`); function check(sender) { return sender.id !== expected; }${" ".repeat(64)}`;
     const large = await worker.analyze(source("large.mjs", value), 100);
     expect(large.ok).toBe(false);
     if (large.ok) return;
@@ -96,6 +96,13 @@ it("keeps static facts and skips semantic analysis above max_semantic_source_byt
     expect(large.error.javascript?.endpoints).toContainEqual(
       expect.objectContaining({ value: "/threads/{}/" }),
     );
+    expect(large.error.javascript).toMatchObject({
+      parse_status: "partial",
+      parse_error_count: 0,
+      syntax_parse_status: "complete",
+      static_facts_status: "partial",
+      unresolved_static_occurrences: 1,
+    });
     expect(projectAnalysisError(large.error.error)).toMatchObject({
       code: "resource_constraint",
       details: {

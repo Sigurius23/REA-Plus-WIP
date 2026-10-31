@@ -138,6 +138,11 @@ describe("source map comment locations and recovery", () => {
     );
     expect(result.parse_status).toBe("partial");
     expect(result.parse_error_count).toBeGreaterThan(0);
+    expect(result).toMatchObject({
+      syntax_parse_status: "partial",
+      static_facts_status: "partial",
+      unresolved_static_occurrences: 0,
+    });
     expect(
       result.source_map_urls.map(({ declared_url }) => declared_url),
     ).toEqual(["recovered.map"]);
@@ -148,6 +153,11 @@ describe("source map comment locations and recovery", () => {
       "const value = ;\n//# sourceMappingURL=unparsed.map",
     );
     expect(result.parse_status).toBe("failed");
+    expect(result).toMatchObject({
+      syntax_parse_status: "failed",
+      static_facts_status: "failed",
+      unresolved_static_occurrences: null,
+    });
     expect(result.source_map_urls).toEqual([]);
   });
 });

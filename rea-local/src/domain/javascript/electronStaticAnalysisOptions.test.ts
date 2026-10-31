@@ -11,6 +11,11 @@ describe("Electron option evidence", () => {
     `);
 
     expect(analysis.parse_status).toBe("complete");
+    expect(analysis).toMatchObject({
+      syntax_parse_status: "complete",
+      static_facts_status: "complete",
+      unresolved_static_occurrences: 0,
+    });
     expect(analysis.electron.browser_windows[0]).toMatchObject({
       preload_path: "./kept.js",
       preload_resolution_context: "module-specifier",
@@ -48,6 +53,12 @@ describe("Electron option evidence", () => {
 
     expect(analysis.parse_status).toBe("partial");
     expect(analysis.parse_error_count).toBe(0);
+    expect(analysis).toMatchObject({
+      syntax_parse_status: "complete",
+      static_facts_status: "partial",
+      unresolved_static_occurrences: expect.any(Number),
+    });
+    expect(analysis.unresolved_static_occurrences).toBeGreaterThan(0);
     expect(analysis.limitations.join(" ")).toContain("remain unknown");
     expect(analysis.electron.browser_windows[0]).toMatchObject({
       preload_path: null,
@@ -72,6 +83,10 @@ describe("Electron option evidence", () => {
 
     expect(analysis.parse_status).toBe("partial");
     expect(analysis.parse_error_count).toBe(1);
+    expect(analysis).toMatchObject({
+      syntax_parse_status: "partial",
+      static_facts_status: "partial",
+    });
     expect(
       analysis.electron.browser_windows[0]?.web_preferences,
     ).toContainEqual(

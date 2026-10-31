@@ -298,6 +298,23 @@ answered, partially answered, or unresolved based on its evidence; keep
 bounded negative searches bounded, and do not describe a broad investigation
 as complete while required questions remain open.
 
+When the request is to understand an app's features and design, keep tool
+verification separate from feature recovery. For each feature, trace its input
+or entry point through decisions, state changes and implementation to the
+visible result. An inventory, recovered class names, successful decompilation
+or passing tool regression does not close that feature. Follow available
+callers, callees, value flow and resources before treating a partial result as
+a tool limitation. Record an actual attempted boundary for each remaining
+blocker, and continue independently answerable questions.
+
+When evaluating or improving REA+, reproduce a confirmed gap on a small owned
+artifact, repair the producing capability, and verify the result through public
+CLI/MCP workflows before rerunning the app investigation. Keep manual actions,
+external parsers and other UI tools explicitly supplemental: their findings
+must not fill REA+ output fields or count as verified REA+ recovery. Ask for human
+interaction only for a necessary, clearly explained runtime check; do not make
+it a prerequisite for independently answerable static work.
+
 ## Read only the relevant guide
 
 - Native binaries, managed assemblies, archives, and extraction:

@@ -362,7 +362,10 @@ const executeAnalysisTool = async (input: {
     tool === "trace_native_ui_action"
   ) {
     const { EnhancedTools } = await import("./EnhancedTools.js");
-    const result = await new EnhancedTools(session).execute(
+    const { WorkflowEvidenceScope } =
+      await import("./WorkflowEvidenceScope.js");
+    const scope = new WorkflowEvidenceScope(session, tool);
+    const result = await new EnhancedTools(scope).execute(
       tool,
       input.arguments,
       signal,
@@ -374,6 +377,7 @@ const executeAnalysisTool = async (input: {
       parameters: input.arguments,
       result: result.value,
       upstreamProfile: evidenceProfile,
+      upstreamLimitations: scope.limitations(),
     });
     return { output: evidence, evidence };
   }

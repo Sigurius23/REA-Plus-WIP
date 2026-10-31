@@ -178,6 +178,33 @@ describe("Ghidra provider", () => {
 });
 
 describe("Ghidra Mach-O slice support", () => {
+  it("commits Swift enum recovery only for supported native profiles", async () => {
+    for (const [format, architecture, enabled] of [
+      ["mach-o", "arm64", true],
+      ["mach-o", "x86_64", false],
+      ["elf", "arm64", false],
+      ["pe", "x86_64", false],
+    ] as const) {
+      const resolved = await provider().resolveAnalysisProfile(
+        executableTarget(format, architecture),
+      );
+      expect(resolved.ok).toBe(true);
+      if (!resolved.ok) throw resolved.error;
+      expect(
+        resolved.value.profile?.parameters.swift_enum_switch_recovery,
+      ).toBe(enabled ? "abi-signed-word-cfg-v1" : undefined);
+    }
+    const windows = await provider({
+      ...installationHost(),
+      platform: "win32",
+    }).resolveAnalysisProfile(peTarget("x86_64"));
+    expect(windows.ok).toBe(true);
+    if (!windows.ok) throw windows.error;
+    expect(
+      windows.value.profile?.parameters.swift_enum_switch_recovery,
+    ).toBeUndefined();
+  });
+
   it("refuses universal targets whose selected slice cannot be enforced", () => {
     const ghidra = provider();
     const universal: BinaryTarget = {
@@ -541,7 +568,7 @@ describe("Ghidra client projection", () => {
       {
         operation: "list_procedures",
         input: { document: null },
-        options: {},
+        options: { expectedSession: sessionInfo() },
       },
     ]);
     expect(result).toMatchObject({
@@ -557,7 +584,7 @@ describe("Ghidra client projection", () => {
         rawResult: [{ procedure: { external: false, thunk: false } }],
       },
     });
-    expect(startCount).toBe(0);
+    expect(startCount).toBe(1);
   });
 });
 
@@ -1682,4 +1709,72 @@ describe("Ghidra analysis seeds and configured language", () => {
       expect(starts).toBe(0);
     }
   });
+});
+
+it("binds bounded-analysis policy to its own profile and rejects policy drift before launch", async () => {
+  const target = executableTarget("elf", "x86_64");
+  const unbounded = await provider().resolveAnalysisProfile(target);
+  if (!unbounded.ok || unbounded.value.profile === null)
+    throw new Error("Missing default profile");
+  const config = parseConfig({
+    GHIDRA_INSTALL_DIR: INSTALL,
+    REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS: "60",
+  });
+  if (!config.ok) throw config.error;
+  let observedBudget: number | undefined;
+  const bounded = new GhidraProvider(
+    config.value,
+    silentLogger,
+    {},
+    installationHost(),
+    (options) => {
+      observedBudget = options.analysisTimeoutSeconds;
+      return {
+        start: () =>
+          Promise.resolve(
+            ok({
+              ...sessionInfo(),
+              analysis_complete: false,
+              analysis_timed_out: true,
+              analysis_timeout_seconds: 60,
+            }),
+          ),
+        callTool: () => Promise.resolve(ok([])),
+        close: () => Promise.resolve(ok(null)),
+      };
+    },
+  );
+  const resolved = await bounded.resolveAnalysisProfile(target);
+  if (!resolved.ok || resolved.value.profile === null)
+    throw new Error("Missing bounded profile");
+  expect(resolved.value.profile.digest).not.toBe(
+    unbounded.value.profile.digest,
+  );
+  expect(resolved.value.profile.parameters).toMatchObject({
+    analysis_policy: "bounded-autoanalysis-v1",
+    analysis_timeout_seconds: 60,
+  });
+  const drift = await bounded
+    .createClient(target, unbounded.value.profile)
+    .execute("health", {});
+  expect(drift).toMatchObject({
+    ok: false,
+    error: { _tag: "ProviderAdapterError" },
+  });
+  expect(observedBudget).toBeUndefined();
+  const client = bounded.createClient(target, resolved.value.profile);
+  try {
+    const health = await client.execute("health", {});
+    if (!health.ok) throw health.error;
+    expect(observedBudget).toBe(60);
+    expect(health.value.limitations).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining(
+          "analysis_complete=false; analysis_timed_out=true",
+        ),
+      ]),
+    );
+  } finally {
+    await client.close();
+  }
 });

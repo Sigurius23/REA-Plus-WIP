@@ -1,5 +1,6 @@
 import { ghidraSeedReportSchema } from "./GhidraAnalysisSeeds.js";
 import { z } from "zod";
+import { ghidraAnalysisTimeoutValueSchema } from "../config/ghidraStartupTimeout.js";
 
 import type { JsonValue } from "../domain/jsonValue.js";
 import { err, ok, type Result } from "../domain/result.js";
@@ -40,6 +41,7 @@ const sessionInfoSchema = z
     read_only: z.boolean(),
     analysis_complete: z.boolean(),
     analysis_timed_out: z.boolean(),
+    analysis_timeout_seconds: ghidraAnalysisTimeoutValueSchema.optional(),
     analysis_extensions: z.array(ghidraExtensionResultSchema).optional(),
     analysis_seeds: ghidraSeedReportSchema.optional(),
     capabilities: z.array(capabilitySchema),
@@ -68,6 +70,7 @@ export const parseGhidraSessionInfo = (
     readonly profileDigest: string;
     readonly targetSha256: string;
     readonly expectedReadOnly?: boolean;
+    readonly analysisTimeoutSeconds?: number;
     readonly expectedLanguageId?: string;
     readonly expectedCompilerSpecId?: string;
   },
@@ -80,6 +83,7 @@ export const parseGhidraSessionInfo = (
   if (
     !parsed.success ||
     parsed.data.run_id !== expected.runId ||
+    parsed.data.analysis_timeout_seconds !== expected.analysisTimeoutSeconds ||
     parsed.data.read_only !== readOnly ||
     parsed.data.capabilities.length !== expectedCapabilities.length ||
     parsed.data.provider.version !== expected.providerVersion ||

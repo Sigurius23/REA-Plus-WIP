@@ -10,10 +10,10 @@ import {
   traverseJavaScriptAst,
 } from "./javascript/javascriptSemanticTraversal.js";
 import {
-  classifyParsedJavaScriptOpenReceivers,
+  classifyParsedJavaScriptCallReceivers,
   classifyParsedJavaScriptRpcClientRootsSteps,
 } from "./javascript/javascriptSemanticAnalysis.js";
-import type { JavaScriptOpenReceiverFact } from "./javascript/javascriptSemanticAnalysis.js";
+import type { JavaScriptCallReceiverFacts } from "./javascript/javascriptCallReceiverFacts.js";
 import { semanticStaticPropertyName } from "./javascript/javascriptAstValues.js";
 import {
   calleeName,
@@ -30,6 +30,8 @@ import {
 } from "./webBundleAnalyzerAst.js";
 import { createJavaScriptRpcScan } from "./javascript/javascriptRpcEndpoints.js";
 import { EndpointBindings } from "./javascript/javascriptEndpointTemplates.js";
+import { endpointReceiver } from "./javascript/javascriptEndpointReceiver.js";
+import type { JavaScriptEndpointReceiver } from "./javascript/javascriptEndpointReceiver.js";
 
 type BundleObservations = WebBundleAnalysis["observations"];
 type ChunkEdge = BundleObservations["chunks"]["edges"][number];
@@ -74,7 +76,7 @@ export const analyzeScript = (
   accumulator.parsedScripts += 1;
   detectVendorFingerprints(script, accumulator);
   const facts: CallFacts = {
-    openReceiverFacts: classifyParsedJavaScriptOpenReceivers(file),
+    callReceiverFacts: classifyParsedJavaScriptCallReceivers(file),
     bindings: new EndpointBindings(),
   };
   const rpc = createJavaScriptRpcScan(
@@ -103,7 +105,7 @@ export const analyzeScript = (
 
 /** Per-script facts that endpoint recognition reads at each call. */
 interface CallFacts {
-  readonly openReceiverFacts: ReadonlyMap<number, JavaScriptOpenReceiverFact>;
+  readonly callReceiverFacts: JavaScriptCallReceiverFacts;
   readonly bindings: EndpointBindings;
 }
 
@@ -192,8 +194,8 @@ const inspectCall = (
       accumulator,
     });
   }
-  const endpoint = endpointArgument(name, node.arguments, node.callee, {
-    receiverFact: facts.openReceiverFacts.get(node.start ?? -1),
+  const endpoint = endpointArgument(name, node.arguments, {
+    receiverFact: facts.callReceiverFacts.get(node),
     resolve: (argument) => facts.bindings.resolve(argument),
   });
   if (endpoint !== undefined)
@@ -201,6 +203,7 @@ const inspectCall = (
       collection: accumulator.endpoints,
       script,
       rawValue: endpoint,
+      network_receiver: endpointReceiver(facts.callReceiverFacts.get(node)),
       mechanism: `call:${name}`,
       node,
       accumulator,
@@ -256,6 +259,7 @@ const addEdge = (context: AddEdgeContext): void => {
 };
 
 interface AddFindingContext {
+  readonly network_receiver?: JavaScriptEndpointReceiver;
   readonly collection: Finding[];
   readonly script: IncludedScript;
   readonly rawValue: string;
@@ -269,6 +273,9 @@ const addFinding = (context: AddFindingContext): void => {
   const key = `finding\0${context.mechanism}\0${context.script.script_key}\0${value}`;
   addUnique(context.accumulator, key, () =>
     context.collection.push({
+      ...(context.network_receiver === undefined
+        ? {}
+        : { network_receiver: context.network_receiver }),
       value,
       mechanism: context.mechanism,
       location: location(context.script.script_key, context.node),

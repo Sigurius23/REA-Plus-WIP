@@ -87,6 +87,7 @@ class FixtureLauncher implements GhidraLauncher {
           profileDigest: session.profileDigest,
           targetSha256: session.targetSha256,
           transport: session.transport,
+          analysisTimeoutSeconds: session.analysisTimeoutSeconds,
           mode: this.mode,
         }),
       },
@@ -117,6 +118,7 @@ const clientFor = (
   launcher: GhidraLauncher,
   options: {
     readonly startupTimeoutMs?: number;
+    readonly analysisTimeoutSeconds?: number;
     readonly onDiagnostic?: (event: GhidraDiagnostic) => void;
     readonly transport?: GhidraTransportKind;
     readonly runId?: string;
@@ -131,6 +133,9 @@ const clientFor = (
     providerVersion: PROVIDER_VERSION,
     profileDigest: PROFILE_DIGEST,
     startupTimeoutMs: options.startupTimeoutMs ?? 1_000,
+    ...(options.analysisTimeoutSeconds === undefined
+      ? {}
+      : { analysisTimeoutSeconds: options.analysisTimeoutSeconds }),
     ...(options.runId === undefined ? {} : { runId: options.runId }),
     ...(options.logger === undefined ? {} : { logger: options.logger }),
     ...(options.onDiagnostic === undefined
@@ -359,6 +364,22 @@ describe("GhidraClient startup lifecycle", () => {
     await client.close();
     await expect(waitForExit(process_)).resolves.toBe(true);
   });
+});
+
+it("serves an explicitly bounded stable partial Program and retains the exact budget", async () => {
+  const client = clientFor(new FixtureLauncher("analysis_timeout"), {
+    analysisTimeoutSeconds: 1,
+  });
+  const started = await client.start();
+  if (!started.ok) throw started.error;
+  expect(started.value).toMatchObject({
+    analysis_complete: false,
+    analysis_timed_out: true,
+    analysis_timeout_seconds: 1,
+  });
+  const result = await client.callTool("list_documents", {});
+  if (!result.ok) throw result.error;
+  expect(result.value).toEqual(["fixture"]);
 });
 
 describe("GhidraClient established requests", () => {
@@ -940,3 +961,27 @@ describe.skipIf(process.platform === "win32")(
     );
   },
 );
+
+it("rejects results from a restarted run instead of attributing the earlier analysis state", async () => {
+  const launcher = new FixtureLauncher();
+  const client = clientFor(launcher, {
+    runId: "11111111-1111-4111-8111-111111111111",
+  });
+  const first = await client.start();
+  if (!first.ok) throw first.error;
+  await client.close();
+  const result = await client.callTool(
+    "list_documents",
+    {},
+    { expectedSession: first.value },
+  );
+  expect(result).toMatchObject({
+    ok: false,
+    error: {
+      kind: "process",
+      message: expect.stringContaining("session restarted"),
+    },
+  });
+  expect(launcher.processes).toHaveLength(2);
+  expect(launcher.requests).not.toContain("list_documents");
+});

@@ -3,7 +3,6 @@ import * as t from "@babel/types";
 import type {
   ElectronIpcDescriptor,
   ElectronIpcFinding,
-  ElectronSenderValidationFinding,
 } from "./electronStaticAnalysisTypes.js";
 import {
   boundedExpression,
@@ -12,13 +11,7 @@ import {
   handlerKind,
 } from "./electronStaticAnalysisValues.js";
 import { addLocatedFinding } from "./javascriptStaticAnalysisFindings.js";
-import {
-  argumentNode,
-  calleeName,
-  range,
-} from "./javascriptStaticAnalysisHelpers.js";
-import { semanticStaticPropertyName } from "./javascriptAstValues.js";
-import { compositeKey } from "../unicodeCodePointOrder.js";
+import { argumentNode, range } from "./javascriptStaticAnalysisHelpers.js";
 import type { JavaScriptFindingContext } from "./javascriptStaticAnalysisState.js";
 
 /** Inspect Electron IPC operations and validation candidates. */
@@ -28,9 +21,7 @@ export const inspectElectronIpcNode = (
 ): void => {
   if (t.isCallExpression(node) || t.isOptionalCallExpression(node)) {
     inspectIpcCall(node, context);
-    inspectValidationCall(node, context);
   }
-  if (t.isBinaryExpression(node)) inspectValidationComparison(node, context);
 };
 
 const inspectIpcCall = (
@@ -100,81 +91,6 @@ const inspectIpcCall = (
   });
 };
 
-const inspectValidationComparison = (
-  node: t.BinaryExpression,
-  context: JavaScriptFindingContext,
-): void => {
-  if (!["==", "===", "!=", "!==", "in"].includes(node.operator)) return;
-  const left = senderSubject(node.left);
-  const right = senderSubject(node.right);
-  if (left === undefined && right === undefined) return;
-  const expected = left === undefined ? node.left : node.right;
-  addValidation(context, node, {
-    subject: left ?? right ?? "sender-frame",
-    mechanism: `comparison:${node.operator}`,
-    expected: electronStaticValue(context.source, expected),
-  });
-};
-
-const inspectValidationCall = (
-  node: t.CallExpression | t.OptionalCallExpression,
-  context: JavaScriptFindingContext,
-): void => {
-  if (
-    !t.isMemberExpression(node.callee) &&
-    !t.isOptionalMemberExpression(node.callee)
-  )
-    return;
-  const method = semanticStaticPropertyName(
-    node.callee.property,
-    node.callee.computed,
-  );
-  if (!["startsWith", "endsWith", "includes"].includes(method)) return;
-  const subject = t.isNode(node.callee.object)
-    ? senderSubject(node.callee.object)
-    : undefined;
-  if (subject === undefined) return;
-  addValidation(context, node, {
-    subject,
-    mechanism: `call:${method}`,
-    expected: electronStaticValue(
-      context.source,
-      argumentNode(node.arguments[0]),
-    ),
-  });
-};
-
-const addValidation = (
-  context: JavaScriptFindingContext,
-  node: t.Node,
-  input: Pick<
-    ElectronSenderValidationFinding,
-    "subject" | "mechanism" | "expected"
-  >,
-): void => {
-  if (input.expected.status === "dynamic")
-    context.accumulator.unknownFindings += 1;
-  const finding: ElectronSenderValidationFinding = {
-    ...input,
-    enforcement: "unknown",
-    module_key: null,
-    location: range(node),
-  };
-  addLocatedFinding(context, {
-    collection: context.accumulator.senderValidations,
-    key: compositeKey([
-      "electron-validation",
-      input.subject,
-      input.mechanism,
-      input.expected.status === "literal"
-        ? String(input.expected.value)
-        : input.expected.expression,
-    ]),
-    node,
-    value: finding,
-  });
-};
-
 const ipcDescriptor = (
   path: readonly string[] | undefined,
 ): ElectronIpcDescriptor | undefined => {
@@ -220,21 +136,4 @@ const ipcDescriptor = (
     default:
       return undefined;
   }
-};
-
-const senderSubject = (
-  node: t.Node,
-): ElectronSenderValidationFinding["subject"] | undefined => {
-  const name =
-    t.isCallExpression(node) || t.isOptionalCallExpression(node)
-      ? calleeName(node.callee)
-      : calleeName(node);
-  if (/(?:^|\.)sender\.getURL$/u.test(name)) return "sender-url";
-  if (/(?:^|\.)senderFrame\.origin$/u.test(name)) return "sender-origin";
-  if (/(?:^|\.)senderFrame\.url$/u.test(name)) return "sender-url";
-  if (/(?:^|\.)senderFrame$/u.test(name)) return "sender-frame";
-  if (/(?:^|\.)sender\.id$/u.test(name)) return "sender-id";
-  if (/(?:^|\.)frameId$/u.test(name)) return "frame-id";
-  if (/(?:^|\.)processId$/u.test(name)) return "process-id";
-  return undefined;
 };

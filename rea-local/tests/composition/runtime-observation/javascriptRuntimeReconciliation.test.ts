@@ -31,6 +31,52 @@ const reconcileInput = (input: unknown) =>
     ),
   );
 
+it("matches HTML page locations without assigning an Electron role to the static document", async () => {
+  const root = await applicationFixture();
+  await writeFile(
+    join(root, "package.json"),
+    JSON.stringify({ name: "ordinary-web-assets" }),
+  );
+  const application = await analyzeFixture(root);
+  const runtime = electronRuntimeEvidence(root, SOURCE, {
+    includeWorker: false,
+  });
+  const result = reconcileInput({
+    static_layers: [{ role: "application", analysis: application }],
+    runtime_observations: [runtime],
+  });
+  const document = result.graph.nodes.find(
+    ({ kind }) => kind === "web-document",
+  );
+  if (document === undefined)
+    throw new Error("Expected a static HTML document");
+  expect(
+    result.graph.nodes.filter(({ kind }) => kind === "electron-renderer"),
+  ).toEqual([]);
+  for (const entity of ["target", "frame"])
+    expect(result.reconciliations).toContainEqual(
+      expect.objectContaining({
+        entity_kind: entity,
+        status: "matched",
+        basis: "artifact-path",
+        static_node_id: document.node_id,
+      }),
+    );
+  // Runtime family comes from the supplied capture, never the HTML node kind.
+  expect(result.runtime_captures).toEqual([
+    expect.objectContaining({
+      evidence_id: runtime.evidence_id,
+      kind: "electron",
+    }),
+  ]);
+  expect(
+    result.graph.edges.filter(
+      ({ source_node_id, relation }) =>
+        source_node_id === document.node_id && relation === "observed_as",
+    ),
+  ).toHaveLength(2);
+});
+
 it("preserves source-capture input paths for runtime Evidence", async () => {
   const root = await applicationFixture();
   const application = await analyzeFixture(root);

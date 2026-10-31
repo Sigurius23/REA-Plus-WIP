@@ -287,7 +287,7 @@ describe("web bundle API classification parity", () => {
     ]);
   });
 
-  it("keeps HTTP-method-named reads of provable keyed collections out of endpoints", () => {
+  it("keeps keyed reads out of endpoints while retaining unresolved method-name candidates", () => {
     const result = analyzeCapturedWebBundle(
       inspection(`
         axios.get("https://api.example.test/users");
@@ -312,9 +312,10 @@ describe("web bundle API classification parity", () => {
     ).toEqual([
       "../search",
       "/search",
-      "/users",
       "/v1/headers",
       "cache-key",
+      "content-type",
+      "cookie",
       "https://api.example.test/headers",
       "https://api.example.test/users",
       "users",
@@ -344,6 +345,154 @@ describe("web bundle API classification parity", () => {
     expect(result.observations.endpoints).toContainEqual(
       expect.objectContaining({ value: "https://embedded.test/app" }),
     );
+  });
+});
+
+describe("network receiver identity", () => {
+  it("keeps nested call receivers distinct across storage, keyed and network results", () => {
+    const source = `
+      import axios from 'axios';
+      const local = chrome.storage.local;
+      local.get('alpha').then(value => value);
+      const {session} = browser.storage;
+      session?.get('beta')?.then(value => value).catch(() => {});
+      chrome.storage.local.get('gamma').get('/outer-storage');
+      new Map().get('map-key')?.get('/outer-keyed');
+      axios.get('/inner-network').get('/outer-network');
+    `;
+    const captured = analyzeCapturedWebBundle(inspection(source));
+    const analysis = analyzeJavaScriptStaticSource(source);
+    expect(analysis.storage).toEqual([
+      expect.objectContaining({
+        api: "chrome.storage.local",
+        name: "alpha",
+        mechanism: "call:local.get",
+      }),
+      expect.objectContaining({
+        api: "browser.storage.session",
+        name: "beta",
+        mechanism: "call:session.get",
+      }),
+      expect.objectContaining({
+        api: "chrome.storage.local",
+        name: "gamma",
+        mechanism: "call:chrome.storage.local.get",
+      }),
+    ]);
+    for (const endpoints of [
+      analysis.endpoints,
+      captured.observations.endpoints,
+    ]) {
+      expect(endpoints.map(({ value }) => value).sort()).toEqual([
+        "/inner-network",
+        "/outer-keyed",
+        "/outer-network",
+        "/outer-storage",
+      ]);
+      expect(
+        endpoints.find(({ value }) => value === "/inner-network")
+          ?.network_receiver,
+      ).toEqual({ status: "recognized-network", identity: "axios" });
+      expect(
+        endpoints
+          .filter(({ value }) => value !== "/inner-network")
+          .every(
+            ({ network_receiver }) => network_receiver?.status === "unknown",
+          ),
+      ).toBe(true);
+    }
+  });
+
+  it("classifies extension storage by lexical API identity rather than the key's URL shape", () => {
+    const source = `
+      chrome.storage.local.get("https://example.invalid/stored-key");
+      const local = chrome.storage.local;
+      local.get("/users");
+      const { session } = browser.storage;
+      session.get("profileId");
+      fetch("/network");
+      api.get("users");
+      function custom(chrome, Headers) {
+        chrome.storage.local.get("shadow-key");
+        new Headers().get("custom-key");
+      }
+    `;
+    const result = analyzeCapturedWebBundle(inspection(source));
+    expect(
+      result.observations.endpoints.map(({ value }) => value).sort(),
+    ).toEqual(["/network", "custom-key", "shadow-key", "users"]);
+    expect(
+      result.observations.endpoints.find(({ value }) => value === "/network")
+        ?.network_receiver,
+    ).toEqual({ status: "recognized-network", identity: "fetch" });
+    expect(
+      result.observations.endpoints.find(({ value }) => value === "users")
+        ?.network_receiver,
+    ).toEqual({ status: "unknown", identity: null });
+    const analysis = analyzeJavaScriptStaticSource(source);
+    expect(analysis.endpoints.map(({ value }) => value).sort()).toEqual(
+      result.observations.endpoints.map(({ value }) => value).sort(),
+    );
+    expect(analysis.storage).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          kind: "extension-storage",
+          area: "local",
+          name: "/users",
+          api: "chrome.storage.local",
+        }),
+        expect.objectContaining({
+          kind: "extension-storage",
+          area: "session",
+          name: "profileId",
+          api: "browser.storage.session",
+        }),
+      ]),
+    );
+  });
+
+  it("does not retain proven API authority after visible receiver mutations", () => {
+    const source = `
+      import axios from 'axios';
+      const client = axios.create();
+      client.get('/imported');
+      const {get: read} = browser.storage.sync;
+      read('sync-key');
+      const records = new Map();
+      records.get('/map-key');
+      let local = chrome.storage.local;
+      local = custom;
+      local.get('reassigned');
+      const changed = browser.storage.local;
+      changed.get = customGet;
+      changed.get('mutated');
+      function shadow(browser) {
+        const {session} = browser.storage;
+        session.get('shadowed');
+      }
+    `;
+    const result = analyzeCapturedWebBundle(inspection(source));
+    expect(
+      result.observations.endpoints.map(({ value }) => value).sort(),
+    ).toEqual(["/imported", "mutated", "reassigned", "shadowed"]);
+    expect(
+      result.observations.endpoints.find(({ value }) => value === "/imported")
+        ?.network_receiver,
+    ).toEqual({ status: "recognized-network", identity: "axios" });
+    expect(
+      result.observations.endpoints
+        .filter(({ value }) => value !== "/imported")
+        .every(
+          ({ network_receiver }) => network_receiver?.status === "unknown",
+        ),
+    ).toBe(true);
+    expect(analyzeJavaScriptStaticSource(source).storage).toEqual([
+      expect.objectContaining({
+        kind: "extension-storage",
+        area: "sync",
+        name: "sync-key",
+      }),
+    ]);
   });
 });
 

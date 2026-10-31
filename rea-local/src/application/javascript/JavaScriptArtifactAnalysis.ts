@@ -5,7 +5,7 @@ import { resolveJavaScriptSourceMapReference } from "../../domain/javascript/jav
 import { analyzeParsedJavaScriptStaticSourceSteps } from "../../domain/javascript/javascriptStaticAnalysis.js";
 import {
   analyzeParsedJavaScriptSemanticsSteps,
-  classifyParsedJavaScriptOpenReceiversSteps,
+  classifyParsedJavaScriptCallReceiversSteps,
 } from "../../domain/javascript/javascriptSemanticAnalysis.js";
 import type { JavaScriptSemanticIr } from "../../domain/javascript/javascriptSemanticIr.js";
 import { projectJavaScriptModuleSemantics } from "../../domain/javascript/javascriptModuleSemanticIr.js";
@@ -397,12 +397,12 @@ function* analyzeArtifactFileSteps<
     state.parseFailures += 1;
     return;
   }
-  const openReceiverFacts =
-    yield* classifyParsedJavaScriptOpenReceiversSteps(parsed);
+  const callReceiverFacts =
+    yield* classifyParsedJavaScriptCallReceiversSteps(parsed);
   const analysis = yield* analyzeParsedJavaScriptStaticSourceSteps(
     file.text.value,
     parsed,
-    openReceiverFacts,
+    callReceiverFacts,
   );
   const staticFindings = findingCount(analysis);
   yield;
@@ -623,6 +623,7 @@ const findingCount = (analysis: JavaScriptStaticAnalysis): number =>
   analysis.references.length +
   analysis.endpoints.length +
   analysis.storage.length +
+  (analysis.sender_validations?.length ?? 0) +
   analysis.role_paths.length +
   analysis.source_map_urls.length +
   analysis.bundler_registrations.length +

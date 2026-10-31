@@ -3,9 +3,11 @@ import type {
   ProviderIdentity,
 } from "../application/AnalysisProvider.js";
 import { createAnalysisProfile } from "../domain/analysisProfile.js";
+import { ghidraAnalysisTimeoutValueSchema } from "../config/ghidraStartupTimeout.js";
 import type { GhidraLanguageOverride } from "../config/ghidraLanguageOverride.js";
 import type { BinaryTarget } from "../domain/binaryTargetTypes.js";
 import {
+  AnalysisInputError,
   AnalysisCancelledError,
   AnalysisUnsupportedTargetError,
 } from "../domain/analysisErrorCore.js";
@@ -38,9 +40,27 @@ export const resolveGhidraAnalysisProfile = async (
   target: BinaryTarget,
   identity: ProviderIdentity,
   installation: GhidraInstallationInspection,
-  signal?: AbortSignal,
-  languageOverride?: GhidraLanguageOverride,
+  options: {
+    readonly signal?: AbortSignal;
+    readonly languageOverride?: GhidraLanguageOverride;
+    readonly analysisTimeoutSeconds?: number;
+  } = {},
 ): Promise<Result<AnalysisProfileResolution, AnalysisError>> => {
+  const { signal, languageOverride, analysisTimeoutSeconds } = options;
+  if (
+    analysisTimeoutSeconds !== undefined &&
+    !ghidraAnalysisTimeoutValueSchema.safeParse(analysisTimeoutSeconds).success
+  )
+    return err(
+      new AnalysisInputError("resolve_analysis_profile", undefined, [
+        {
+          path: ["analysisTimeoutSeconds"],
+          reason: "invalid_value",
+          message:
+            "Ghidra analysis timeout must be a positive integer at most 2147483 seconds (safe signed millisecond conversion).",
+        },
+      ]),
+    );
   if (signal?.aborted === true)
     return Promise.resolve(err(new AnalysisCancelledError("open_binary")));
   if (target.kind !== "executable")
@@ -147,6 +167,11 @@ export const resolveGhidraAnalysisProfile = async (
             }
           : {}),
         jump_table_evidence: "typed-case-default-blocks-v1",
+        ...(installation.platform !== "win32" &&
+        target.format === "mach-o" &&
+        target.architecture === "arm64"
+          ? { swift_enum_switch_recovery: "abi-signed-word-cfg-v1" }
+          : {}),
         decompiler_jump_loads: true,
         loader: dosMz
           ? "MzLoader"
@@ -195,6 +220,12 @@ export const resolveGhidraAnalysisProfile = async (
             }
           : {}),
         analyzer_preset: "ghidra-default",
+        ...(analysisTimeoutSeconds === undefined
+          ? {}
+          : {
+              analysis_policy: "bounded-autoanalysis-v1",
+              analysis_timeout_seconds: analysisTimeoutSeconds,
+            }),
         ...ghidraMipsProfileParameters(target),
         ...(pspExtension?.ok === true
           ? {

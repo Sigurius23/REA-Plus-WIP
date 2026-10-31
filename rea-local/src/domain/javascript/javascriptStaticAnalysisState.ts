@@ -1,6 +1,7 @@
 import type * as t from "@babel/types";
 import type { JavaScriptRpcScan } from "./javascriptRpcEndpoints.js";
 import type { EndpointBindings } from "./javascriptEndpointTemplates.js";
+import type { JavaScriptCallReceiverFacts } from "./javascriptCallReceiverFacts.js";
 
 import type {
   JavaScriptBundlerRegistration,
@@ -9,6 +10,7 @@ import type {
   JavaScriptStaticEndpoint,
   JavaScriptStaticReference,
   JavaScriptStaticStorage,
+  JavaScriptSenderValidationFinding,
 } from "./javascriptStaticAnalysisTypes.js";
 import type {
   ElectronBrowserWindowFinding,
@@ -52,6 +54,7 @@ export interface JavaScriptAnalysisAccumulator {
   readonly contextBridgeApis: LocatedJavaScriptFinding<ElectronContextBridgeFinding>[];
   readonly ipc: LocatedJavaScriptFinding<ElectronIpcFinding>[];
   readonly senderValidations: LocatedJavaScriptFinding<ElectronSenderValidationFinding>[];
+  readonly genericSenderValidations: LocatedJavaScriptFinding<JavaScriptSenderValidationFinding>[];
   readonly utilityProcesses: LocatedJavaScriptFinding<ElectronUtilityProcessFinding>[];
   readonly nativeAddonBindings: LocatedJavaScriptFinding<ElectronNativeAddonBindingFinding>[];
   readonly moduleRangeIndex: JavaScriptModuleRangeIndex;
@@ -67,17 +70,13 @@ export interface JavaScriptFindingContext {
   readonly rpcScan: JavaScriptRpcScan;
   readonly source: string;
   readonly accumulator: JavaScriptAnalysisAccumulator;
-  readonly openReceiverFacts?: ReadonlyMap<
-    number,
-    | "window"
-    | "indexed-db"
-    | "cache-storage"
-    | "local"
-    | "local-indexed-db"
-    | "local-cache-storage"
-  >;
+  readonly callReceiverFacts?: JavaScriptCallReceiverFacts;
   /** Proven Electron export path segments by root offset. */
   readonly electronBindings?: ReadonlyMap<number, readonly string[]>;
+  readonly senderOrigins?: ReadonlyMap<
+    number,
+    import("./javascriptSenderOrigins.js").JavaScriptSenderOrigin
+  >;
   /** Paths and URLs held by local variables at the current node. */
   readonly endpointBindings?: EndpointBindings;
 }
@@ -91,6 +90,7 @@ export interface JavaScriptReferenceInput {
 
 /** Candidate route or network endpoint literal. */
 export interface JavaScriptEndpointInput {
+  readonly network_receiver?: import("./javascriptEndpointReceiver.js").JavaScriptEndpointReceiver;
   readonly template_parts?: readonly import("./javascriptEndpointTemplates.js").JavaScriptEndpointTemplatePart[];
   readonly node: t.Node;
   readonly kind: JavaScriptStaticEndpoint["kind"];
@@ -124,6 +124,7 @@ export const createJavaScriptAnalysisAccumulator = (
   contextBridgeApis: [],
   ipc: [],
   senderValidations: [],
+  genericSenderValidations: [],
   utilityProcesses: [],
   nativeAddonBindings: [],
   moduleRangeIndex: new JavaScriptModuleRangeIndex(sourceLength),

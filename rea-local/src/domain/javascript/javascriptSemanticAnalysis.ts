@@ -61,6 +61,14 @@ import {
 } from "./javascriptSourceParser.js";
 
 import { isJavaScriptRpcClientFactory } from "./javascriptRpcEndpoints.js";
+import {
+  classifyJavaScriptCallReceiversSteps,
+  type JavaScriptCallReceiverFacts,
+} from "./javascriptCallReceiverFacts.js";
+import {
+  classifyJavaScriptSenderOriginsSteps,
+  type JavaScriptSenderOrigin,
+} from "./javascriptSenderOrigins.js";
 
 interface BindPatternInput {
   readonly pattern: t.Node;
@@ -218,141 +226,34 @@ export function* classifyParsedJavaScriptRpcClientRootsSteps(
   return roots;
 }
 
-/** Receiver identity facts for the overloaded `.open` syntax only. */
-export type JavaScriptOpenReceiverFact =
-  | "window"
-  | "indexed-db"
-  | "cache-storage"
-  | "local"
-  | "local-indexed-db"
-  | "local-cache-storage";
-
-/**
- * Resolve only the lexical receiver identity needed to distinguish browser
- * `window.open` from XHR and global storage `.open` calls. This deliberately
- * builds definitions without running semantic value or provenance analysis.
- */
-export const classifyParsedJavaScriptOpenReceivers = (
+/** Resolve call receiver identities without building the general semantic IR. */
+export const classifyParsedJavaScriptCallReceivers = (
   file: ParsedJavaScriptSource,
-): ReadonlyMap<number, JavaScriptOpenReceiverFact> =>
-  completeSemanticSteps(classifyParsedJavaScriptOpenReceiversSteps(file));
+): JavaScriptCallReceiverFacts =>
+  completeSemanticSteps(classifyParsedJavaScriptCallReceiversSteps(file));
 
-/** Classify `.open` receivers while yielding during lexical and AST scans. */
-export function* classifyParsedJavaScriptOpenReceiversSteps(
+/** Classify call receivers while yielding during lexical and AST scans. */
+export function* classifyParsedJavaScriptCallReceiversSteps(
   file: ParsedJavaScriptSource,
-): Generator<void, ReadonlyMap<number, JavaScriptOpenReceiverFact>> {
+): Generator<void, JavaScriptCallReceiverFacts> {
   const state = createState(file.program);
   yield* collectDefinitionsSteps(file.program, state);
-  const facts = new Map<number, JavaScriptOpenReceiverFact>();
-  yield* traverseJavaScriptAstSteps(file.program, {
-    enter: (node) => {
-      if (
-        (!t.isCallExpression(node) && !t.isOptionalCallExpression(node)) ||
-        (!t.isMemberExpression(node.callee) &&
-          !t.isOptionalMemberExpression(node.callee)) ||
-        semanticStaticPropertyKey(
-          node.callee.property,
-          node.callee.computed,
-        ) !== "open" ||
-        !t.isIdentifier(node.callee.object)
-      )
-        return;
-      const receiver = node.callee.object.name;
-      const binding = resolveSemanticBindingState(state, node, receiver);
-      if (binding === undefined) {
-        if (semanticResolutionBlocked(state, node, receiver)) return;
-        const fact = openGlobalFact(receiver);
-        if (fact !== undefined) facts.set(node.start ?? -1, fact);
-        return;
-      }
-      // A lexically bound receiver overrides ambient browser globals. Mark an
-      // otherwise unresolved local as local so name-based window.open
-      // heuristics do not hide its XHR-like overloads.
-      facts.set(node.start ?? -1, "local");
-      if (receiver === "indexedDB" || receiver === "caches") {
-        facts.set(
-          node.start ?? -1,
-          receiver === "indexedDB" ? "local-indexed-db" : "local-cache-storage",
-        );
-        return;
-      }
-      if (binding.mutable || binding.initializers.length !== 1) return;
-      const initializer = binding.initializers[0]?.node;
-      if (!t.isIdentifier(initializer)) return;
-      const initializerBinding = resolveSemanticBindingState(
-        state,
-        initializer,
-        initializer.name,
-      );
-      if (initializerBinding !== undefined) {
-        if (initializer.name === "indexedDB" || initializer.name === "caches") {
-          const localFact =
-            initializer.name === "indexedDB"
-              ? "local-indexed-db"
-              : "local-cache-storage";
-          facts.set(node.start ?? -1, localFact);
-          if (
-            initializerBinding.mutable ||
-            initializerBinding.initializers.length !== 1
-          )
-            return;
-          const nested = initializerBinding.initializers[0]?.node;
-          if (t.isIdentifier(nested)) {
-            const nestedFact = resolveGlobalAliasFact(
-              state,
-              initializer,
-              nested.name,
-            );
-            if (nestedFact !== undefined)
-              facts.set(node.start ?? -1, nestedFact);
-          }
-        } else if (initializer.name === "window") {
-          facts.set(node.start ?? -1, "local");
-        }
-        return;
-      }
-      const aliasFact = resolveGlobalAliasFact(
-        state,
-        initializer,
-        initializer.name,
-      );
-      if (aliasFact !== undefined) facts.set(node.start ?? -1, aliasFact);
-    },
-  });
-  return facts;
+  return yield* classifyJavaScriptCallReceiversSteps(file.program, state);
 }
 
-const openGlobalFact = (
-  name: string,
-): JavaScriptOpenReceiverFact | undefined => {
-  if (
-    name === "window" ||
-    name === "self" ||
-    name === "globalThis" ||
-    name === "top" ||
-    name === "parent" ||
-    name === "opener" ||
-    name === "frames" ||
-    name === "document"
-  )
-    return "window";
-  if (name === "indexedDB") return "indexed-db";
-  if (name === "caches") return "cache-storage";
-  return undefined;
-};
-
-const resolveGlobalAliasFact = (
-  state: JavaScriptSemanticAnalysisState,
-  node: t.Node,
-  name: string,
-): JavaScriptOpenReceiverFact | undefined => {
-  if (
-    resolveSemanticBindingState(state, node, name) !== undefined ||
-    semanticResolutionBlocked(state, node, name)
-  )
-    return undefined;
-  return openGlobalFact(name);
-};
+/** Recover callback sender origins while yielding during lexical and AST scans. */
+export function* classifyParsedJavaScriptSenderOriginsSteps(
+  file: ParsedJavaScriptSource,
+  electronBindings: ReadonlyMap<number, readonly string[]>,
+): Generator<void, ReadonlyMap<number, JavaScriptSenderOrigin>> {
+  const state = createState(file.program);
+  yield* collectDefinitionsSteps(file.program, state);
+  return yield* classifyJavaScriptSenderOriginsSteps(
+    file.program,
+    state,
+    electronBindings,
+  );
+}
 
 /**
  * Proven Electron export path segments for call and construction roots, keyed by

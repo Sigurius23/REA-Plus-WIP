@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { javaScriptEndpointReceiverSchema } from "./javascript/javascriptEndpointReceiver.js";
 
 import { emptyArraySchema } from "./emptyArraySchema.js";
 import { inspectWebPageWithSourceInputSchema } from "./browserObservation.js";
@@ -26,6 +27,7 @@ const basisSchema = z.object({
 });
 
 const findingSchema = z.object({
+  network_receiver: javaScriptEndpointReceiverSchema.optional(),
   value: z.string(),
   mechanism: z.string(),
   location: sourceLocationSchema,

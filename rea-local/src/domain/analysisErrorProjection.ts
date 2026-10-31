@@ -78,7 +78,10 @@ export const projectAnalysisError = (
     code,
     category: analysisErrorCategory(error),
     message: analysisErrorUserMessage(error),
-    retryable: RETRYABLE_CODES.has(code),
+    retryable:
+      error instanceof AnalysisTimeoutError && error.context !== undefined
+        ? !error.cleanupIncomplete && error.context.retryable
+        : RETRYABLE_CODES.has(code),
     remediation: {
       action: analysisErrorRemediationAction(error),
     },
@@ -447,6 +450,15 @@ const lifecycleErrorDetails = (
     return {
       operation: error.operation,
       timeout_ms: error.timeoutMs,
+      ...(error.context === undefined
+        ? {}
+        : {
+            provider: error.context.providerId,
+            phase: error.context.phase,
+            stage: error.context.stage,
+            provider_operation: error.context.providerOperation,
+            diagnostics: { ...error.context.diagnostics },
+          }),
       ...(error.cleanup === undefined
         ? {}
         : {

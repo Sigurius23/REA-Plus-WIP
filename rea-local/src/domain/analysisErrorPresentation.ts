@@ -34,6 +34,8 @@ import type { AnalysisErrorProjection } from "./analysisErrorProjection.js";
 export const analysisErrorRemediationAction = (
   error: AnalysisError,
 ): string => {
+  if (error instanceof AnalysisTimeoutError && error.context !== undefined)
+    return error.context.remediationAction;
   if (error instanceof AnalysisSnapshotMismatchError)
     return "Run analysis without this snapshot, then save a fresh snapshot using the intended artifact, provider, and analysis profile.";
   if (error instanceof AnalysisUnsupportedTargetError)
@@ -190,6 +192,11 @@ const STATIC_ERROR_CATEGORIES: Readonly<
 };
 
 export const analysisErrorUserMessage = (error: AnalysisError): string => {
+  if (
+    error instanceof AnalysisTimeoutError &&
+    error.context?.phase === "startup"
+  )
+    return `${error.context.providerId} startup timed out during ${error.operation} while ${error.context.stage}. See the startup settings and captured diagnostics.`;
   if (error instanceof AnalysisSnapshotMismatchError) return error.message;
   if (error instanceof AnalysisUnsupportedTargetError) return error.message;
   if (error instanceof AnalysisResourceConstraintError) return error.reason;

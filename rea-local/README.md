@@ -207,7 +207,10 @@ Native formats and host support vary by provider. See
 [experimental Windows Ghidra support](docs/windows-ghidra-p0.md).
 Ghidra also supports [16-bit DOS analysis](docs/ghidra-dos.md).
 For large binaries, raise its startup deadline with
-`REA_GHIDRA_STARTUP_TIMEOUT_MS`.
+`REA_GHIDRA_STARTUP_TIMEOUT_MS`, or explicitly select
+bounded auto-analysis with
+`REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS` to inspect a stable partial Program.
+Returned Evidence retains the measured analysis state.
 For provider selection, see the [CLI guide](docs/cli.md#choose-a-provider).
 Check [release availability](docs/installation.md#released-package-and-main)
 for features added since the latest npm release.

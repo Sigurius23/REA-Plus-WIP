@@ -113,6 +113,24 @@ describe("Ghidra COM loader", () => {
   });
 });
 
+it("adds a per-file analysis bound only for an explicit policy", () => {
+  const base = {
+    projectRoot: "/tmp/project",
+    targetPath: "/tmp/target",
+    bridgeScriptPath: "/package/bridge/ReaGhidraBridge.java",
+    descriptorPath: "/tmp/session.json",
+    ghidraLogPath: "/tmp/ghidra.log",
+    scriptLogPath: "/tmp/script.log",
+  };
+  expect(ghidraHeadlessArguments(base)).not.toContain(
+    "-analysisTimeoutPerFile",
+  );
+  expectOptions(
+    ghidraHeadlessArguments({ ...base, analysisTimeoutSeconds: 60 }),
+    [["-analysisTimeoutPerFile", "60"]],
+  );
+});
+
 describe("Ghidra headless launcher", () => {
   it("forces the admitted real-mode language and loader for DOS MZ", () => {
     const arguments_ = ghidraHeadlessArguments({

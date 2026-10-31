@@ -12,6 +12,7 @@ import type {
 import type { AnalysisOperationPort } from "../application/AnalysisProvider.js";
 import type { BinarySessionPort } from "../application/binary/BinarySessionPort.js";
 import { EnhancedTools } from "../application/EnhancedTools.js";
+import { WorkflowEvidenceScope } from "../application/WorkflowEvidenceScope.js";
 import type { ValidatedEnhancedCall } from "../application/EnhancedToolTypes.js";
 import {
   createWorkflowEvidence,
@@ -231,13 +232,17 @@ const executeEnhancedTool = async (
           context,
           parameters,
         });
-      const services = new EnhancedTools({
-        execute: (operation, operationParameters, executionOptions) =>
-          admittedAnalysis.execute(operation, operationParameters, {
-            ...executionOptions,
-            progress,
-          }),
-      });
+      const scope = new WorkflowEvidenceScope(
+        {
+          execute: (operation, operationParameters, executionOptions) =>
+            admittedAnalysis.execute(operation, operationParameters, {
+              ...executionOptions,
+              progress,
+            }),
+        },
+        name,
+      );
+      const services = new EnhancedTools(scope);
       const result = await logToolExecution(registration.logger, name, () =>
         services.executeValidated(validatedCall, context.mcpReq.signal),
       );
@@ -255,6 +260,7 @@ const executeEnhancedTool = async (
           parameters,
           result: result.value,
           upstreamProfile: registration.analysisProfile?.(),
+          upstreamLimitations: scope.limitations(),
         });
         const recorded = registration.recordEvidence?.(evidence);
         if (recorded !== undefined && !recorded.ok)

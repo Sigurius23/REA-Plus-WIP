@@ -1,0 +1,3913 @@
+{
+  "schema": "rea-heyclicky-native-followup-v1",
+  "recorded_at": "2026-10-29T15:30:34.593758+00:00",
+  "target": {
+    "captured_at": "2026-10-29T07:49:48.815668+00:00",
+    "app_version": "1.1.1",
+    "app_build": "66",
+    "source": {
+      "path": "/Applications/HeyClicky.app/Contents/MacOS/HeyClicky",
+      "bytes": 115396000,
+      "sha256": "764a68a80f53de64a0e48a509d5a98737994f93e0888605e2de85b4028f3cb17"
+    },
+    "derived": {
+      "path": "/private/tmp/rea-heyclicky-retest-2026-10-29-a1uqjww5/HeyClicky-arm64",
+      "bytes": 55971232,
+      "sha256": "bb98afe140170240037589647cbfe00099079655e9223ec87f7f702db3fb7911",
+      "architecture": "arm64",
+      "parent_offset": 59424768
+    },
+    "target_executed": false
+  },
+  "scope": {
+    "offline": true,
+    "target_executed": false,
+    "app_helpers_extensions_bundled_runtime_executed": false,
+    "app_services_or_user_data_accessed": false,
+    "source_bytes_unchanged": true,
+    "provider": "Ghidra12.1.4",
+    "analysis_timeout_seconds": 60,
+    "startup_timeout_ms": 330000,
+    "analysis_complete": false,
+    "analysis_timed_out": true,
+    "stage_scope": "Static initial, resume, six-seed and interrupted closure stages only; later live UI work has separate scope.",
+    "source_bytes_unchanged_authority": "Completed resume/six-seed summaries and later independent audit hash equality; closure original final verification is not recorded."
+  },
+  "question_status": {
+    "screen_inventory_and_panel_creation": "answered statically",
+    "outer_panel_geometry": "answered statically",
+    "base_notch_measurement": "answered statically",
+    "scale_configuration": "code rule answered; current preference not observed",
+    "initial_panel_style_level_and_focus": "answered statically",
+    "which_display_expands_content": "partially traced; full policy unresolved",
+    "complete_visible_presentation_state_machine_shape_animation": "unresolved"
+  },
+  "findings": [
+    {
+      "id": "per_display_panels",
+      "status": "observed-and-derived",
+      "claim": "The screen synchronization routine enumerates NSScreen.screens, attempts a UInt32 NSScreenNumber from deviceDescription, updates an existing dictionary entry or creates a panel for each usable identifier, then orders out/removes entries for identifiers no longer seen.",
+      "entries": [
+        "0x10130edac",
+        "0x101316624",
+        "0x101317934",
+        "0x101316804"
+      ],
+      "evidence": [
+        "screen_sync",
+        "display_id_key",
+        "panel_update",
+        "panel_create"
+      ],
+      "unknowns": [
+        "The separate active-expansion/fullscreen presentation policy has not been completely reconstructed."
+      ]
+    },
+    {
+      "id": "outer_envelope",
+      "status": "derived-from-instructions",
+      "claim": "The transparent outer panel envelope is 820*s wide and min(900*s,max(120,screen.frame.height-80)) high, centered horizontally and aligned at screen.frame.maxY. This is not the collapsed visible-notch size.",
+      "formula": {
+        "width": "820*s",
+        "height": "min(900*s,max(120,screen.frame.height-80))",
+        "x": "screen.frame.midX-width/2",
+        "y": "screen.frame.maxY-height"
+      },
+      "evidence": [
+        "outer_size",
+        "outer_origin",
+        "frame_value_trace"
+      ]
+    },
+    {
+      "id": "base_notch_measurement",
+      "status": "derived-from-instructions-and-external-identities",
+      "claim": "With screen safeAreaInsets.top > 1, both auxiliary top areas and a right.minX-left.maxX gap > 80 yield width ceil(gap)+1+20 and height ceil(top)+1. A usable top inset without a usable gap yields width240 and height ceil(top)+1. Missing screen or top<=1 yields60x8.",
+      "evidence": [
+        "notch_measurement"
+      ],
+      "units": "NSScreen/NSWindow coordinate points",
+      "rounding_authority": "Swift FloatingPointRoundingRule.up enum identity and corroborating ARM64 FRINTP branches; decompiler integer-cast renderings are not the rounding authority."
+    },
+    {
+      "id": "scale_rule",
+      "status": "observed-and-derived",
+      "claim": "The scale helper returns1.0 when safeAreaInsets.top>1. Otherwise it performs the code path NSUserDefaults.standardUserDefaults.boolForKey(ClickyStreamMode), returning1.5 for true and1.0 for false.",
+      "evidence": [
+        "screen_scale",
+        "scale_key_initializer",
+        "scale_key_literal"
+      ],
+      "unknowns": [
+        "No installed user preference was read; its actual current value remains unknown."
+      ]
+    },
+    {
+      "id": "visible_presentation_frame",
+      "status": "derived-with-explicit-unmapped-case",
+      "claim": "A separate presentation-size helper supplies unscaled visible content widthW and heightH. The visible frame is (screen.midX-W*s/2,screen.maxY-H*s-delta,W*s,H*s). delta=4*s for encoded presentation case1 on a screen with top<=1; otherwise0.",
+      "evidence": [
+        "visible_frame",
+        "presentation_size"
+      ],
+      "unknowns": [
+        "Encoded presentation case numbers have not been exhaustively mapped to original Swift enum/source names.",
+        "The large presentation-size routine has an unrecovered jump table and truncated high-p-code; its many branch sizes do not establish the complete visible state machine.",
+        "SwiftUI clipping/shape/animation and exact runtime transitions remain unverified."
+      ]
+    },
+    {
+      "id": "panel_configuration",
+      "status": "observed-and-derived",
+      "claim": "Creation allocates the NotchPanel subclass using style mask0x80 (borderless0 plus nonactivating128), backing2(buffered), deferfalse; then sets opaque=false, clear background, shadow=false, movable=false, movableByWindowBackground=false, hidesOnDeactivate=false and excludedFromWindowsMenu=true.",
+      "evidence": [
+        "panel_create"
+      ],
+      "selector_mapping": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/selector-map.json",
+      "sdk_authority": {
+        "style": "NSWindow.h:55/66",
+        "backing": "NSGraphics.h:99"
+      },
+      "unknowns": [
+        "Creation contains a conditional orderFrontRegardless path; runtime visibility was not observed."
+      ]
+    },
+    {
+      "id": "panel_level",
+      "status": "derived-from-concrete-creation-arguments",
+      "claim": "Creation registers the panel with the overlay coordinator using its boolean flag1. That flag selects integer26 in0x101301454;0x1013065e0 sends setLevel: only if the current level differs.",
+      "entries": [
+        "0x101316804",
+        "0x101305e10",
+        "0x101304cec",
+        "0x101305f1c",
+        "0x1013065e0",
+        "0x101301454"
+      ],
+      "evidence": [
+        "panel_create",
+        "overlay_apply",
+        "overlay_level_apply",
+        "overlay_level_rule"
+      ],
+      "unknowns": [
+        "This proves the creation/registration path, not every later level or system-window interaction transition."
+      ]
+    },
+    {
+      "id": "spaces_mission_control",
+      "status": "observed-and-derived",
+      "claim": "Collection behavior combines canJoinAllSpaces1, ignoresCycle64, fullScreenAuxiliary256, and either transient8 or stationary16 according to keepsNotchVisibleThroughMissionControl. The constructor initially clears that field.",
+      "evidence": [
+        "collection_behavior",
+        "panel_create",
+        "manager_constructor"
+      ],
+      "values": {
+        "false": 329,
+        "true": 337
+      }
+    },
+    {
+      "id": "focus_behavior",
+      "status": "derived-from-instructions",
+      "claim": "canBecomeMainWindow helper returns0. canBecomeKeyWindow returns the inverse of the byte isTemporarilyRefusingKeyStatus at object offset8; the panel initializer clears that byte.",
+      "evidence": [
+        "key_behavior",
+        "main_behavior",
+        "key_flag_offset",
+        "panel_initializer"
+      ],
+      "unknowns": [
+        "The Objective-C thunks contain unreliable recovered Swift/ObjC ABI casts; these conclusions use helper instructions and the decoded ivar identity."
+      ]
+    },
+    {
+      "id": "metadata_entry_recovery",
+      "status": "public-seed-workflow-demonstrated",
+      "claim": "The two metadata-backed entries rejected as missing procedures in the unseeded partial Program became analyzable through documented REA_GHIDRA_SEED_FILE; no private provider mutation or new product feature was required.",
+      "entries": [
+        "0x101c66870",
+        "0x1017971e0"
+      ],
+      "seed_profile_digest": "f1cdc9b3a50b4baf8ee7ed2a09ccc2afe9f56e3da0414e39d034f7066ef5dda1",
+      "seed_canonical_sha256": "099e48a138c3c1ee5c8bf582f1383184e5b3bec6165e228091c830298e45b3d3",
+      "seed_raw_tsv_sha256": "3a1bd9a2819d70baea3101ab1080f32f87cd11adada548c31754d406ad7a4a00",
+      "outcome": {
+        "function_created": 6,
+        "function_existing": 0,
+        "function_failed": 0,
+        "unmapped": 0
+      },
+      "unknowns": [
+        "Seeds are caller assertions backed by metadata/direct-call observations; they are not original source method names or discoveries of auto-analysis.",
+        "Other unseeded unreachable functions still report no-procedure; future focused seed profiles can include those explicit entries."
+      ]
+    }
+  ],
+  "evidence": {
+    "screen_sync": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/031-manager-screen-sync.json",
+      "sha256": "b7c13cb02ea6dafeb7b9f3f648a3fce81ae8119090da783e6e1483aae3309999",
+      "bytes": 10460665,
+      "evidence_id": "ev_0a3dfdb96d2afa6075063b9fcab32227040691b7f9a776544ff546753616e94b",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/031-manager-screen-sync.json.gz",
+        "sha256": "ce716c976e30a0727d86a7a91aa62c5d47bb7c5b548def218316cc488a201b35",
+        "bytes": 367145,
+        "compression": "gzip",
+        "restored_original_sha256": "b7c13cb02ea6dafeb7b9f3f648a3fce81ae8119090da783e6e1483aae3309999",
+        "restored_original_bytes": 10460665,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/031-manager-screen-sync.json.gz"
+      }
+    },
+    "panel_create": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/033-panel-update-candidate.json",
+      "sha256": "096c9d334051d0c568f8f368cfd534448d0b16b91ee2c6b6752d443d1e3e8f26",
+      "bytes": 10822943,
+      "evidence_id": "ev_38d2c14096c4e80e0cda4a44f81d15e3e90e9beca93f83c59e837f941340c4ce",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/033-panel-update-candidate.json.gz",
+        "sha256": "8050fd92e946030d07786acc118d93ed23d2d752e48a7cfcb421caf7a28932b3",
+        "bytes": 404572,
+        "compression": "gzip",
+        "restored_original_sha256": "096c9d334051d0c568f8f368cfd534448d0b16b91ee2c6b6752d443d1e3e8f26",
+        "restored_original_bytes": 10822943,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/033-panel-update-candidate.json.gz"
+      }
+    },
+    "panel_update": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/032-panel-build-candidate.json",
+      "sha256": "9103db1d7055ad04c3679b4894f90a2cb1df43ff51e0facad73a8ed17d9d6c01",
+      "bytes": 3768883,
+      "evidence_id": "ev_17addb71faee962a65629fb6b059fe8ad37fbe00e94e12675d60abf854bbee7f",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/032-panel-build-candidate.json.gz",
+        "sha256": "6222cfe148d2b6e3105c5fbd097a474d5b2c05cc2e152431acd4115de146b019",
+        "bytes": 143789,
+        "compression": "gzip",
+        "restored_original_sha256": "9103db1d7055ad04c3679b4894f90a2cb1df43ff51e0facad73a8ed17d9d6c01",
+        "restored_original_bytes": 3768883,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/032-panel-build-candidate.json.gz"
+      }
+    },
+    "notch_measurement": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/042-notch-screen-measurement.json",
+      "sha256": "99dcae35ec4e32c88f1f7ee0f0e9b5a194c54f8c35896aa7a347ac669993de61",
+      "bytes": 8430649,
+      "evidence_id": "ev_ef5ce8e58be6bdd237f336c96136caffa88db6353dd0f0184c150ae2b9b84ede",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/042-notch-screen-measurement.json.gz",
+        "sha256": "f581168344668bbb71067e186e99fcec683066a1d2efa5ccc232ba58cafdf706",
+        "bytes": 294274,
+        "compression": "gzip",
+        "restored_original_sha256": "99dcae35ec4e32c88f1f7ee0f0e9b5a194c54f8c35896aa7a347ac669993de61",
+        "restored_original_bytes": 8430649,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/042-notch-screen-measurement.json.gz"
+      }
+    },
+    "outer_size": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/043-panel-size-helper.json",
+      "sha256": "5aaeee887c493746cc8b6ad1f1f84fa195b79b60c7eeee7002408950975d1e6d",
+      "bytes": 610285,
+      "evidence_id": "ev_eb59061762523c46f8939d2c183966a758619f902a027aacc016f17f76645db9",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3"
+    },
+    "outer_origin": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/044-panel-origin-helper.json",
+      "sha256": "0b381d96f47a3d38fac8264b7a332ed77d85c18200d35f917bdf4ec09b775e42",
+      "bytes": 180439,
+      "evidence_id": "ev_d0ae9ddd47ede2f337d7948c7a3b4d47842e19824c055af9b1518506849b44aa",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3"
+    },
+    "visible_frame": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/045-notch-geometry-helper.json",
+      "sha256": "ddce129dba9e344136cf4ab67bd7a1626143131035bded7a9b7387279113196f",
+      "bytes": 470991,
+      "evidence_id": "ev_95bb1b6541219db1cdf2e533476a14daf799baafb9ea0a2dd308777c62795ec9",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3"
+    },
+    "key_behavior": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/009-key-body.json",
+      "sha256": "9a7ab5608b4ee17777bcc1e83a9073ae6f47c252834a04742ea0c0068ebb7c8c",
+      "bytes": 14936,
+      "evidence_id": "ev_4f35f314545e96a1e5f72514cccdbae6eb050fa139b54c16fad1180a5a05b58c",
+      "operation": "read_function_instructions",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3"
+    },
+    "main_behavior": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/010-main-body.json",
+      "sha256": "c1fd4bac3969475b720295e2bd5b16585938c75d6dd407fd2b3a3847c7d45d51",
+      "bytes": 11904,
+      "evidence_id": "ev_d4baddd04e9460dc703d00246ab397f236adcb3c5045bea7e082ef2914a91781",
+      "operation": "read_function_instructions",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3"
+    },
+    "key_flag_offset": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/041-key-flag-bytes.json",
+      "sha256": "3340b93113f024017b7a9340491deaf412d9c48f2468fd7737da944a57ba1e60",
+      "bytes": 8104,
+      "evidence_id": "ev_20e350b9625ec8d8bcdebe813b771efbb8e6e83c126e241f660b6bffadc836b5",
+      "operation": "read_bytes",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3"
+    },
+    "collection_behavior": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/048-panel-collection-behavior.json",
+      "sha256": "5ce2c08ed73d476745aecabe8a9be33da07f43c81d0cb8a783b52d3f7aadffad",
+      "bytes": 10740,
+      "evidence_id": "ev_90d5429b1e28d5763a34bfaebaf82db899cfe933104f0995e60d427c59345c2a",
+      "operation": "procedure_pseudo_code",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3"
+    },
+    "frame_value_trace": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/011-panel-frame-value-trace.json",
+      "sha256": "0351019a8eba48d506aa1164b365c60181af5d502c7aacc4d988b0c2b030f643",
+      "bytes": 110091,
+      "evidence_id": "ev_617e35352c314d1814b4a3027eefe900f674d728c60c5e3805cc1b01ddba212a",
+      "operation": "trace_native_values",
+      "profile_digest": "e2107e73e1702d90d1d9071a0f78b96a6cadcc04536b4565fd92b8fb6cffaf88"
+    },
+    "screen_scale": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/012-screen-scale.json",
+      "sha256": "e6f02574cd4b47dbd0d96a7e8575ed84483507b5ecc83a9d4a3026008fc94091",
+      "bytes": 569667,
+      "evidence_id": "ev_70c7d237ebda199b953830aca34dc5ae615d0514d49fade388c540cdcf3c896b",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3"
+    },
+    "display_id_key": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/013-screen-id-key.json",
+      "sha256": "2e95008c462087e3210f345b627747c174e6225b46c9b954d0e29eb51f280f14",
+      "bytes": 8306,
+      "evidence_id": "ev_f6f60693d582f94c5d561be641af04109d4f1d3fa5d2e96a4e7c54ff01748c23",
+      "operation": "read_bytes",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3"
+    },
+    "presentation_size": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/032-panel-current-presentation-size.json",
+      "sha256": "5289d521b3496f1baf02be289c3dcd8701cab2ab15a4b53e7b060494b3414bbe",
+      "bytes": 11668085,
+      "evidence_id": "ev_f378e1a6df289284d2ce2b7a28b124bbc916cb5994eef9aed0c7b214d1a9defe",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/032-panel-current-presentation-size.json.gz",
+        "sha256": "3e9a7bc8b6ce3e54f73bede05de5accb7690cbb52e2a0ca7e6350b5f6f21ecc2",
+        "bytes": 413688,
+        "compression": "gzip",
+        "restored_original_sha256": "5289d521b3496f1baf02be289c3dcd8701cab2ab15a4b53e7b060494b3414bbe",
+        "restored_original_bytes": 11668085,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/032-panel-current-presentation-size.json.gz"
+      }
+    },
+    "overlay_apply": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/028-overlay-apply-function.json",
+      "sha256": "21942b072746d74ee1b17aec9aeae488b485f8ef103b12bb7db2ec27dd9bacde",
+      "bytes": 1336287,
+      "evidence_id": "ev_3a5844d7cb02770cd15c897bd4d0d282f7c003f0dacc1347157b744b8951406a",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/028-overlay-apply-function.json.gz",
+        "sha256": "fed3d99566702924b44290ce5c2a26421e13fa830ae315e73441627590b86335",
+        "bytes": 65236,
+        "compression": "gzip",
+        "restored_original_sha256": "21942b072746d74ee1b17aec9aeae488b485f8ef103b12bb7db2ec27dd9bacde",
+        "restored_original_bytes": 1336287,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/028-overlay-apply-function.json.gz"
+      }
+    },
+    "overlay_level_apply": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/031-overlay-level-computation.json",
+      "sha256": "4a45493a48332f2e5944f680d34987e1d4e8ab370ef9d6a7894e8d0882e7541c",
+      "bytes": 1715229,
+      "evidence_id": "ev_225785b39beab7f0064d8a8007af04edeeea542fa26e3dd87417574716a0c331",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/031-overlay-level-computation.json.gz",
+        "sha256": "e97de9ea5d8f633eb0230284c416c0f3003fc2ade362856134d5458f8df24527",
+        "bytes": 78957,
+        "compression": "gzip",
+        "restored_original_sha256": "4a45493a48332f2e5944f680d34987e1d4e8ab370ef9d6a7894e8d0882e7541c",
+        "restored_original_bytes": 1715229,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/031-overlay-level-computation.json.gz"
+      }
+    },
+    "overlay_level_rule": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/034-overlay-level-rule.json",
+      "sha256": "0f3b1a18d54f312677af5806845afe274b73ab2dea76c4c8b301a07a5a210b1d",
+      "bytes": 1483787,
+      "evidence_id": "ev_4a34bd7bd53524fb8e508a6e210ca6a0a14363df47381dda912a1ad116f68d66",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/034-overlay-level-rule.json.gz",
+        "sha256": "0827c0c5587e885bcf818fd703ec3ae26d8fcfa5d473fb06087afb9fee390c31",
+        "bytes": 69536,
+        "compression": "gzip",
+        "restored_original_sha256": "0f3b1a18d54f312677af5806845afe274b73ab2dea76c4c8b301a07a5a210b1d",
+        "restored_original_bytes": 1483787,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/034-overlay-level-rule.json.gz"
+      }
+    },
+    "scale_key_initializer": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/007-scale-preference-key-seeded.json",
+      "sha256": "59ec26dd32c1cb0fcf4786e0595b1356f194ffe5aeb14481af73022f703f7483",
+      "bytes": 79519,
+      "evidence_id": "ev_ef2aea8d6e7cfeb6aae1d2f6b58abb51b65e867b22c934ec8dce04c513cf801b",
+      "operation": "analyze_function",
+      "profile_digest": "f1cdc9b3a50b4baf8ee7ed2a09ccc2afe9f56e3da0414e39d034f7066ef5dda1"
+    },
+    "scale_key_literal": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/023-scale-preference-key-bytes.json",
+      "sha256": "86b38cd7bf0995b959f6eb00f8042ce7d128e7d2997ee03bf955a9a376319ecc",
+      "bytes": 9996,
+      "evidence_id": "ev_0a5b7cbefc4a6a8269abcbdd79f9b4a2c25298467abff3467c27c1b17f29e0d0",
+      "operation": "read_bytes",
+      "profile_digest": "f1cdc9b3a50b4baf8ee7ed2a09ccc2afe9f56e3da0414e39d034f7066ef5dda1"
+    },
+    "manager_constructor": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/014-manager-constructor-body.json",
+      "bytes": 9430153,
+      "sha256": "13419d737fa6eecd44cd96cd9dc8ce5c6fb5ec666dbad6d4bf8299699a684bd7",
+      "evidence_id": "ev_590000fa3c8e447a5185923f35fee1bf38273132509773e3a45616b36ac5cd9e",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/014-manager-constructor-body.json.gz",
+        "sha256": "1c334e15c9b7be848179a36c29e683491a962059fa76f058a3e432de9332a5f3",
+        "bytes": 335222,
+        "compression": "gzip",
+        "restored_original_sha256": "13419d737fa6eecd44cd96cd9dc8ce5c6fb5ec666dbad6d4bf8299699a684bd7",
+        "restored_original_bytes": 9430153,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/014-manager-constructor-body.json.gz"
+      }
+    },
+    "panel_initializer": {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/004-panel-init-body.json",
+      "bytes": 279375,
+      "sha256": "46dd809aa05976080d96880078cb7b5726f0227f61009ecc3a12c7c17122c5be",
+      "evidence_id": "ev_ad324dcad3d60f61d744db3a91af18255bbb0b3436994da396437aebbc163a3d",
+      "operation": "analyze_function",
+      "profile_digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3"
+    }
+  },
+  "sessions": [
+    {
+      "name": "initial",
+      "invocations": 52,
+      "successes": 50,
+      "errors": 2,
+      "final_lineage": "not_recorded",
+      "interruption_receipt": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/interruption.json",
+      "schema_and_hash_validation": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/first-session-validation.json"
+    },
+    {
+      "name": "resume",
+      "invocations": 39,
+      "successes": 36,
+      "errors": 3,
+      "started_at": "2026-10-29T15:13:04.564Z",
+      "finished_at": "2026-10-29T15:19:30.246Z",
+      "duration_ms": 385682,
+      "public_close_succeeded": true,
+      "unchanged": {
+        "derived": true,
+        "source": true
+      },
+      "analysis_profile": {
+        "provider": {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        },
+        "parameters": {
+          "target_kind": "executable",
+          "target_format": "mach-o",
+          "architecture": "arm64",
+          "available_architectures": [
+            "arm64"
+          ],
+          "import_mode": "ephemeral-source-immutable",
+          "annotation_policy": "atomic-function-entry-metadata-v1",
+          "load_image_observations": "source-mappings-entry-context-v2",
+          "function_body_evidence": "complete-inclusive-ranges-v1",
+          "function_references": "complete-body-and-entry-reference-manager-v2",
+          "string_inventory_evidence": "defined-data-coverage-v1",
+          "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+          "instruction_flow_evidence": "decoded-return-pcode-v1",
+          "instruction_references": "exact-address-incoming-v1",
+          "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+          "no_return_repair": "returning-imports-decoded-return-v2",
+          "process_launch": "inspected-jvm-launch-support-v1",
+          "jump_table_evidence": "typed-case-default-blocks-v1",
+          "decompiler_jump_loads": true,
+          "loader": "auto-from-header",
+          "language_id": "auto-from-header",
+          "compiler_spec_id": "auto-default",
+          "analyzer_preset": "ghidra-default",
+          "analysis_policy": "bounded-autoanalysis-v1",
+          "analysis_timeout_seconds": 60
+        },
+        "digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3"
+      },
+      "provider_analysis_run": {
+        "run_id": "b125542b-b857-4232-81b6-e9cd68e23a17",
+        "process_lineage": {
+          "status": "snapshots",
+          "snapshots": [
+            {
+              "provider": {
+                "id": "ghidra",
+                "name": "Ghidra",
+                "version": "12.1.4"
+              },
+              "observation": {
+                "status": "verified",
+                "observed_at": "2026-10-29T15:15:39.241Z",
+                "launcher_pid": 34629,
+                "launcher_parent_pid": 34499,
+                "process_group_id": 34629,
+                "descendants": [
+                  {
+                    "pid": 34834,
+                    "parent_pid": 34629,
+                    "process_group_id": 34629
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "verifier_run": {
+        "run_id": "ffe08344-f454-4797-ab4d-a6863f0ed355",
+        "verifier_pid": 34476,
+        "parent_pid": 33819,
+        "process_lineage": {
+          "status": "unavailable",
+          "observed_at": "2026-10-29T15:19:30.246Z",
+          "launcher_pid": 34476,
+          "launcher_parent_pid": 33819,
+          "process_group_id": 34476,
+          "reason": "descendant 34498 run token did not match"
+        }
+      },
+      "cleanup_followup": {
+        "observed_at": "2026-10-29T15:21:32.200368+00:00",
+        "status": "known_pids_absent",
+        "known_pids": [
+          34476,
+          34498,
+          34499,
+          34629,
+          34834
+        ],
+        "remaining": [],
+        "ps_exit_code": 0,
+        "limitations": [
+          "Follow-up PID absence does not change unavailable generic verifier lineage into verified lineage.",
+          "Public close_binary succeeded before driver was interrupted to end its lingering stdin handle."
+        ]
+      },
+      "summary_path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/summary.json"
+    },
+    {
+      "name": "seeded",
+      "invocations": 33,
+      "successes": 27,
+      "errors": 6,
+      "started_at": "2026-10-29T15:20:46.681Z",
+      "finished_at": "2026-10-29T15:27:07.706Z",
+      "duration_ms": 381025,
+      "public_close_succeeded": true,
+      "unchanged": {
+        "derived": true,
+        "source": true
+      },
+      "analysis_profile": {
+        "provider": {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        },
+        "parameters": {
+          "target_kind": "executable",
+          "target_format": "mach-o",
+          "architecture": "arm64",
+          "available_architectures": [
+            "arm64"
+          ],
+          "import_mode": "ephemeral-source-immutable",
+          "annotation_policy": "atomic-function-entry-metadata-v1",
+          "load_image_observations": "source-mappings-entry-context-v2",
+          "function_body_evidence": "complete-inclusive-ranges-v1",
+          "function_references": "complete-body-and-entry-reference-manager-v2",
+          "string_inventory_evidence": "defined-data-coverage-v1",
+          "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+          "instruction_flow_evidence": "decoded-return-pcode-v1",
+          "instruction_references": "exact-address-incoming-v1",
+          "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+          "no_return_repair": "returning-imports-decoded-return-v2",
+          "process_launch": "inspected-jvm-launch-support-v1",
+          "jump_table_evidence": "typed-case-default-blocks-v1",
+          "decompiler_jump_loads": true,
+          "loader": "auto-from-header",
+          "language_id": "auto-from-header",
+          "compiler_spec_id": "auto-default",
+          "analyzer_preset": "ghidra-default",
+          "analysis_policy": "bounded-autoanalysis-v1",
+          "analysis_timeout_seconds": 60,
+          "analysis_seeds": {
+            "format": "rea-ghidra-seeds-v1",
+            "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/seeds.tsv",
+            "configured_path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/seeds.tsv",
+            "sha256": "099e48a138c3c1ee5c8bf582f1383184e5b3bec6165e228091c830298e45b3d3",
+            "entries": {
+              "function": 6,
+              "code": 0,
+              "label": 0
+            }
+          }
+        },
+        "digest": "f1cdc9b3a50b4baf8ee7ed2a09ccc2afe9f56e3da0414e39d034f7066ef5dda1"
+      },
+      "provider_analysis_run": {
+        "run_id": "8ff64e9b-3820-4b7d-a452-36bc63f1bf2b",
+        "process_lineage": {
+          "status": "snapshots",
+          "snapshots": [
+            {
+              "provider": {
+                "id": "ghidra",
+                "name": "Ghidra",
+                "version": "12.1.4"
+              },
+              "observation": {
+                "status": "verified",
+                "observed_at": "2026-10-29T15:23:05.450Z",
+                "launcher_pid": 35743,
+                "launcher_parent_pid": 35703,
+                "process_group_id": 35743,
+                "descendants": [
+                  {
+                    "pid": 35942,
+                    "parent_pid": 35743,
+                    "process_group_id": 35743
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "verifier_run": {
+        "run_id": "f5430795-2aa6-4ab1-a270-a0189538d597",
+        "verifier_pid": 35679,
+        "parent_pid": 33819,
+        "process_lineage": {
+          "status": "unavailable",
+          "observed_at": "2026-10-29T15:27:07.706Z",
+          "launcher_pid": 35679,
+          "launcher_parent_pid": 33819,
+          "process_group_id": 35679,
+          "reason": "descendant 35701 run token did not match"
+        }
+      },
+      "cleanup_followup": {
+        "observed_at": "2026-10-29T15:28:15.981330+00:00",
+        "status": "known_pids_absent",
+        "known_pids": [
+          35679,
+          35701,
+          35703,
+          35743,
+          35942
+        ],
+        "remaining": [],
+        "ps_exit_code": 0,
+        "public_close_succeeded": true,
+        "driver_exit_code": 0,
+        "limitations": [
+          "Known PID absence does not change unavailable generic verifier lineage into verified lineage."
+        ]
+      },
+      "summary_path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/summary.json"
+    },
+    {
+      "name": "closure",
+      "status": "interrupted_before_final_receipts",
+      "scope": "Static saved-evidence stage; target_executed:false applies to this stage only.",
+      "target_executed": false,
+      "started_at": "2026-10-29T20:14:51.374Z",
+      "last_saved_request_started_at": "2026-10-29T20:38:36.876Z",
+      "last_saved_response": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/046-notch-enum-descriptor-data-type.json",
+        "bytes": 16135,
+        "sha256": "ab004ca47c11d01d8175e375f9d6d414957163f9e95245284175e60376157917"
+      },
+      "invocations": 46,
+      "successes": 44,
+      "errors": 2,
+      "invocations_file": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/invocations.json",
+        "bytes": 26143,
+        "sha256": "586f0397f8a3b11089b38aea3b0bad48275090d97d45ca6d7052ae49b07adc10"
+      },
+      "run_start": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/run-start.json",
+        "bytes": 148,
+        "sha256": "b40b22d8138fd7f21a50156cdb39a427f5d1162c4ff96c4a5e58476deb329615"
+      },
+      "verifier_run_start": {
+        "run_id": "e4249d81-ea24-45f8-9312-d719cc9b886b",
+        "verifier_pid": 41119,
+        "parent_pid": 33819
+      },
+      "analysis_profile": {
+        "provider": {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        },
+        "parameters": {
+          "target_kind": "executable",
+          "target_format": "mach-o",
+          "architecture": "arm64",
+          "available_architectures": [
+            "arm64"
+          ],
+          "import_mode": "ephemeral-source-immutable",
+          "annotation_policy": "atomic-function-entry-metadata-v1",
+          "load_image_observations": "source-mappings-entry-context-v2",
+          "function_body_evidence": "complete-inclusive-ranges-v1",
+          "function_references": "complete-body-and-entry-reference-manager-v2",
+          "string_inventory_evidence": "defined-data-coverage-v1",
+          "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+          "instruction_flow_evidence": "decoded-return-pcode-v1",
+          "instruction_references": "exact-address-incoming-v1",
+          "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+          "no_return_repair": "returning-imports-decoded-return-v2",
+          "process_launch": "inspected-jvm-launch-support-v1",
+          "jump_table_evidence": "typed-case-default-blocks-v1",
+          "decompiler_jump_loads": true,
+          "loader": "auto-from-header",
+          "language_id": "auto-from-header",
+          "compiler_spec_id": "auto-default",
+          "analyzer_preset": "ghidra-default",
+          "analysis_policy": "bounded-autoanalysis-v1",
+          "analysis_timeout_seconds": 60,
+          "analysis_seeds": {
+            "format": "rea-ghidra-seeds-v1",
+            "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/seeds.tsv",
+            "configured_path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/seeds.tsv",
+            "sha256": "df7e9aa469bb740381b35f210b4ad7bd4784a690468eaf0234748a1b6525bbbd",
+            "entries": {
+              "function": 219,
+              "code": 0,
+              "label": 0
+            }
+          }
+        },
+        "digest": "9d767b19f3309990487caf9039fe04860ed266f921d78225574c5e75ceb24c77"
+      },
+      "composed_workflow_profiles": [
+        "60be1e14d237aab8cb9baca15702d862e2c6fea25d8372e045a60c22b20439fc"
+      ],
+      "analysis_complete": false,
+      "analysis_timed_out": true,
+      "analysis_timeout_seconds": 60,
+      "startup_timeout_ms": 330000,
+      "seed_file": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/seeds.tsv",
+        "raw_bytes": 4692,
+        "raw_sha256": "1de864253daddbb824c1ebd7a82cf01ba670c47a1209887dc7046873df816040",
+        "normalized_commitment": {
+          "format": "rea-ghidra-seeds-v1",
+          "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/seeds.tsv",
+          "configured_path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/seeds.tsv",
+          "sha256": "df7e9aa469bb740381b35f210b4ad7bd4784a690468eaf0234748a1b6525bbbd",
+          "entries": {
+            "function": 219,
+            "code": 0,
+            "label": 0
+          }
+        }
+      },
+      "seed_provenance": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/seed-provenance.json",
+        "bytes": 16088,
+        "sha256": "c6f1a7f758677a8ebb1fa665ee5ff35aba301065e606ca22e16a30dba89184cf",
+        "counts": {
+          "unique_entries": 219,
+          "direct_bl_closure_entries": 198,
+          "metadata_feature_entries": 21,
+          "named_seeds": 0
+        },
+        "source_hashes_verified": true
+      },
+      "reported_seed_outcome": {
+        "functions_created": 219,
+        "functions_already_present": 0,
+        "functions_failed": 0,
+        "code_seeds_decoded": 0,
+        "code_seeds_failed": 0,
+        "labels_applied": 0,
+        "labels_failed": 0,
+        "seeds_outside_initialized_memory": 0
+      },
+      "seed_authority": "Unnamed caller assertions backed by declared function-start/direct-call and metadata sources; not Ghidra discoveries or original Swift names.",
+      "preserved_errors": [
+        {
+          "label": "codex-initialize-request-owner",
+          "operation": "procedure_pseudo_code",
+          "arguments": {
+            "procedure": "0x101bffdd8"
+          },
+          "started_at": "2026-10-29T20:21:43.594Z",
+          "duration_ms": 5,
+          "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/024-codex-initialize-request-owner.json",
+          "is_error": true,
+          "bytes": 520,
+          "sha256": "f9fc0ddc7053f9c5dc87cb81fc251d5d2171884f5116ff56fbcf7d2847b4625e",
+          "error": {
+            "code": "invalid_request",
+            "category": "invalid_input",
+            "message": "Analysis input is invalid. Check the arguments and try again.",
+            "retryable": true,
+            "remediation": {
+              "action": "Correct the listed arguments and retry."
+            },
+            "details": {
+              "operation": "procedure_pseudo_code",
+              "issues": [
+                {
+                  "path": [],
+                  "reason": "invalid_value",
+                  "message": "No procedure exists at the requested address: 0x101bffdd8"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "label": "codex-runtime-component-initializer",
+          "operation": "procedure_pseudo_code",
+          "arguments": {
+            "procedure": "0x101ca516c"
+          },
+          "started_at": "2026-10-29T20:28:22.641Z",
+          "duration_ms": 3,
+          "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/039-codex-runtime-component-initializer.json",
+          "is_error": true,
+          "bytes": 520,
+          "sha256": "78bbdff1d07ffe837ff8e21bf157c2800eb8d383540a4318056d10784f979e41",
+          "error": {
+            "code": "invalid_request",
+            "category": "invalid_input",
+            "message": "Analysis input is invalid. Check the arguments and try again.",
+            "retryable": true,
+            "remediation": {
+              "action": "Correct the listed arguments and retry."
+            },
+            "details": {
+              "operation": "procedure_pseudo_code",
+              "issues": [
+                {
+                  "path": [],
+                  "reason": "invalid_value",
+                  "message": "No procedure exists at the requested address: 0x101ca516c"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "successful_captures": [
+        {
+          "label": "codex-launch-owner",
+          "operation": "analyze_function",
+          "procedure": "0x101cb8544",
+          "evidence_id": "ev_a2c2d8ef8fa80058c5f8ffe562395578994dea447bf957c1aea9e30f39b6b21b",
+          "analysis_profile_digest": "9d767b19f3309990487caf9039fe04860ed266f921d78225574c5e75ceb24c77",
+          "body_bytes": 4688,
+          "raw": {
+            "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/002-codex-launch-owner.json",
+            "bytes": 11409216,
+            "sha256": "4387632185ab29d5921bc9865d03ada2ea48e96039d17d9a3c3776a91a939f40"
+          }
+        },
+        {
+          "label": "codex-initialized-owner",
+          "operation": "analyze_function",
+          "procedure": "0x101c00878",
+          "evidence_id": "ev_d9dd76a7abb7928d5b1e2d3d97c1fdd3ea25df64e5280dcc33fcd5eba283ddad",
+          "analysis_profile_digest": "9d767b19f3309990487caf9039fe04860ed266f921d78225574c5e75ceb24c77",
+          "body_bytes": 1536,
+          "raw": {
+            "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/003-codex-initialized-owner.json",
+            "bytes": 2430681,
+            "sha256": "83946202e79295520c761ec01f69ed1be4acbe6c80135b749a92d31d8283d314"
+          }
+        },
+        {
+          "label": "drawing-jscontext-setup",
+          "operation": "analyze_function",
+          "procedure": "0x10177df10",
+          "evidence_id": "ev_8ba87a76450cab22fd18e33a59d9cf26a9dc7a874e5cbd13060d10496b2a8226",
+          "analysis_profile_digest": "9d767b19f3309990487caf9039fe04860ed266f921d78225574c5e75ceb24c77",
+          "body_bytes": 3664,
+          "raw": {
+            "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/004-drawing-jscontext-setup.json",
+            "bytes": 10935875,
+            "sha256": "1382302dbcfbd26dd39e2b50caea1e3108263d8bc072f7c0af9914d626c45e7a"
+          }
+        },
+        {
+          "label": "drawing-evaluate-wrapper",
+          "operation": "analyze_function",
+          "procedure": "0x10178a1dc",
+          "evidence_id": "ev_f3d9cbff7119fd71724a4bf5aab011757b3d1c4580be516e2e31f4c00e42ef74",
+          "analysis_profile_digest": "9d767b19f3309990487caf9039fe04860ed266f921d78225574c5e75ceb24c77",
+          "body_bytes": 472,
+          "raw": {
+            "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/005-drawing-evaluate-wrapper.json",
+            "bytes": 573645,
+            "sha256": "28f7d9a674c1ce794d559fd45fce5e083b1200b408c6dcd85c2f3a0fdf39ba76"
+          }
+        },
+        {
+          "label": "drawing-host-installation",
+          "operation": "analyze_function",
+          "procedure": "0x101781e30",
+          "evidence_id": "ev_eaebb46c848e45409c334dc4d185799e39488ff6867557dfd6a4d3835a80bc00",
+          "analysis_profile_digest": "9d767b19f3309990487caf9039fe04860ed266f921d78225574c5e75ceb24c77",
+          "body_bytes": 5068,
+          "raw": {
+            "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/006-drawing-host-installation.json",
+            "bytes": 11322773,
+            "sha256": "c6f34c72516e061fcb079bc3d86e8fcdd9df9a341c2a6cf6f3167d06b1924276"
+          }
+        }
+      ],
+      "public_final_binary_session": "not_recorded",
+      "public_close": "not_recorded",
+      "summary": "not_recorded",
+      "stderr": "not_recorded",
+      "final_verifier_lineage": "not_recorded",
+      "original_final_input_verification": "not_recorded",
+      "original_cleanup_history": "unverified",
+      "current_driver_or_process_state": "not_observed_by_saved_evidence_audit",
+      "saved_response_environment": "No closure Evidence response contains a runtime environment observation.",
+      "raw_storage": {
+        "encoding": "raw-json",
+        "saved_replies": 46,
+        "in_existing_17_carrier_manifest": false,
+        "original_identities": "retained in invocations_file and independent_audit"
+      },
+      "independent_audit": {
+        "path": "/private/tmp/rea-heyclicky-closure-audit-2026-10-30-07MVJW/audit.json",
+        "bytes": 130006,
+        "sha256": "6f1393cff8e46076672456806f13fe68f39053e100cbd11d97f9289f8fea9fde",
+        "recorded_at": "2026-10-30T07:27:57.047Z",
+        "runtime": "v22.17.0",
+        "compiled_contract_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/dist/contracts/toolContracts.js",
+        "combined_saved_replies": 170,
+        "successes": 157,
+        "preserved_errors": 13,
+        "closure": {
+          "saved_replies": 46,
+          "successes": 44,
+          "preserved_errors": 2
+        },
+        "checks": {
+          "raw_bytes_and_sha256": true,
+          "advertised_input_schemas": true,
+          "advertised_success_output_schemas": true,
+          "canonical_success_contracts": true,
+          "text_structured_agreement": true,
+          "all_17_gzip_and_decompressed_identities": true,
+          "seed_commitment_and_provenance_source_hashes": true,
+          "current_input_hashes": true
+        },
+        "limits": [
+          "The audit used saved replies and existing compiled contracts; it did not launch analyzers or target code.",
+          "Current input hash equality is a later observation and does not establish missing original final verification or cleanup."
+        ]
+      }
+    }
+  ],
+  "raw_invocations": [
+    {
+      "label": "open",
+      "operation": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-heyclicky-retest-2026-10-29-a1uqjww5/HeyClicky-arm64",
+        "provider_id": "ghidra"
+      },
+      "started_at": "2026-10-29T09:28:01.642Z",
+      "duration_ms": 2677,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/001-open.json",
+      "is_error": false,
+      "bytes": 631,
+      "sha256": "6752dec2318f34c8d3f9a87c2d17b92fb336588857800ff51722f6f1ca0cb242",
+      "evidence_id": null,
+      "session": "initial"
+    },
+    {
+      "label": "search-notch",
+      "operation": "search_procedures",
+      "arguments": {
+        "pattern": "Notch",
+        "mode": "literal"
+      },
+      "started_at": "2026-10-29T09:28:04.356Z",
+      "duration_ms": 135109,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/002-search-notch.json",
+      "is_error": false,
+      "bytes": 36376,
+      "sha256": "24430526bce43e48ebfa3f2a8b912f45d20b8923a9411391cb84174957af5db4",
+      "evidence_id": "ev_84e6f74e7a3d11bbff244be3081fef49b1cafb18db5edea3567da21362b9eeb2",
+      "session": "initial"
+    },
+    {
+      "label": "search-screen",
+      "operation": "search_procedures",
+      "arguments": {
+        "pattern": "Screen",
+        "mode": "literal"
+      },
+      "started_at": "2026-10-29T09:30:19.562Z",
+      "duration_ms": 45,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/003-search-screen.json",
+      "is_error": false,
+      "bytes": 53054,
+      "sha256": "1c68bbcb3c805bfa3acdfda9bf728c0a5c88d1cb0c2e94ae26fb323696dd9998",
+      "evidence_id": "ev_42f7cd8216912d9a006ff3ffdb97cbbea86a26c27d4f385608d808fde357c2f6",
+      "session": "initial"
+    },
+    {
+      "label": "panel-init-body",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10132fbf8"
+      },
+      "started_at": "2026-10-29T09:30:19.619Z",
+      "duration_ms": 263,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/004-panel-init-body.json",
+      "is_error": false,
+      "bytes": 279375,
+      "sha256": "46dd809aa05976080d96880078cb7b5726f0227f61009ecc3a12c7c17122c5be",
+      "evidence_id": "ev_ad324dcad3d60f61d744db3a91af18255bbb0b3436994da396437aebbc163a3d",
+      "session": "initial"
+    },
+    {
+      "label": "manager-init",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10132b698"
+      },
+      "started_at": "2026-10-29T09:30:20.048Z",
+      "duration_ms": 82,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/005-manager-init.json",
+      "is_error": false,
+      "bytes": 63139,
+      "sha256": "bd2940b0dca4e32718871302a9af678b90b48c5abbac6edc46df4ce7b89a0bba",
+      "evidence_id": "ev_d92d2f2f13a47150ed2a1ddb3b24aff9b63b5fa56a12ea7d522fe5ecfb22a685",
+      "session": "initial"
+    },
+    {
+      "label": "manager-slot",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10130e5e0"
+      },
+      "started_at": "2026-10-29T09:30:20.137Z",
+      "duration_ms": 62,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/006-manager-slot.json",
+      "is_error": false,
+      "bytes": 80595,
+      "sha256": "69a0f56d5ecf1ef2456d2ed70d406fcf79eb965cb9b9c360be9e1691351af203",
+      "evidence_id": "ev_6b10616edc87693d600b5c7f164ab9ccb406b48a5b5955ca1083db25188ed44c",
+      "session": "initial"
+    },
+    {
+      "label": "presenter-slot",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012352bc"
+      },
+      "started_at": "2026-10-29T09:30:20.208Z",
+      "duration_ms": 90,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/007-presenter-slot.json",
+      "is_error": false,
+      "bytes": 81183,
+      "sha256": "d936916cec22dabbd7532cc78b7de5f698f6baa9329f876b109a119cfaaadf61",
+      "evidence_id": "ev_1ddcaefcf80e914edec409f075122bce2cbe89d13b285cad42fcf123848d212f",
+      "session": "initial"
+    },
+    {
+      "label": "view-state-slot",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10131de64"
+      },
+      "started_at": "2026-10-29T09:30:20.310Z",
+      "duration_ms": 57,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/008-view-state-slot.json",
+      "is_error": false,
+      "bytes": 114961,
+      "sha256": "22df8e49bd4680d1e70c3746d2ddfb4d64f9b73c6194874f2eb3fb53fec01d31",
+      "evidence_id": "ev_8272da5b0d283564b0044e9f84f831e5e2e14bcc7dc1721320cc9cedbafd086b",
+      "session": "initial"
+    },
+    {
+      "label": "key-body",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x10132fa58"
+      },
+      "started_at": "2026-10-29T09:30:20.387Z",
+      "duration_ms": 39,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/009-key-body.json",
+      "is_error": false,
+      "bytes": 14936,
+      "sha256": "9a7ab5608b4ee17777bcc1e83a9073ae6f47c252834a04742ea0c0068ebb7c8c",
+      "evidence_id": "ev_4f35f314545e96a1e5f72514cccdbae6eb050fa139b54c16fad1180a5a05b58c",
+      "session": "initial"
+    },
+    {
+      "label": "main-body",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1001cfa04"
+      },
+      "started_at": "2026-10-29T09:30:20.462Z",
+      "duration_ms": 13,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/010-main-body.json",
+      "is_error": false,
+      "bytes": 11904,
+      "sha256": "c1fd4bac3969475b720295e2bd5b16585938c75d6dd407fd2b3a3847c7d45d51",
+      "evidence_id": "ev_d4baddd04e9460dc703d00246ab397f236adcb3c5045bea7e082ef2914a91781",
+      "session": "initial"
+    },
+    {
+      "label": "geometry-strings",
+      "operation": "search_strings",
+      "arguments": {
+        "pattern": "safeAreaInsets|auxiliaryTop|displayIdentifier|notchScreen|floatingSliver|setLevel:|setStyleMask:|setCollectionBehavior:",
+        "mode": "regex"
+      },
+      "started_at": "2026-10-29T09:30:20.484Z",
+      "duration_ms": 799,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/011-geometry-strings.json",
+      "is_error": false,
+      "bytes": 14009,
+      "sha256": "533082b1c48dd63a8500c61c50a0109d6dd2172942617eeeb734947ca7598af1",
+      "evidence_id": "ev_92c198e4eb147af824f70e83633a90aa79da62850d74da91c8b90129312573f9",
+      "session": "initial"
+    },
+    {
+      "label": "manager-ivar-screen-instances",
+      "operation": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x1033a9cf8"
+      },
+      "started_at": "2026-10-29T09:30:21.306Z",
+      "duration_ms": 9,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/012-manager-ivar-screen-instances.json",
+      "is_error": false,
+      "bytes": 10037,
+      "sha256": "c81773cc7b5d8de0443d637c42e24b7d4a5e34fe97bc45059f1ddf8a724d17d3",
+      "evidence_id": "ev_8552570e3cb46c1f08ffe2a414571359bcecc8f8b23563405f824bca1d85193e",
+      "session": "initial"
+    },
+    {
+      "label": "panel-class-references",
+      "operation": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x1033f3190"
+      },
+      "started_at": "2026-10-29T09:30:21.347Z",
+      "duration_ms": 9,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/013-panel-class-references.json",
+      "is_error": false,
+      "bytes": 11571,
+      "sha256": "539edee3b7cda9b8830dade1753ff220f8b57f34cfa9b8166119392e4c941fb8",
+      "evidence_id": "ev_48818ee72444b1d86ffe7468b12f441441ea2dbcab35f78dac856bd2432d9dce",
+      "session": "initial"
+    },
+    {
+      "label": "manager-constructor-body",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10130e618"
+      },
+      "started_at": "2026-10-29T09:30:50.501Z",
+      "duration_ms": 1205,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/014-manager-constructor-body.json",
+      "is_error": false,
+      "bytes": 9430153,
+      "sha256": "13419d737fa6eecd44cd96cd9dc8ce5c6fb5ec666dbad6d4bf8299699a684bd7",
+      "evidence_id": "ev_590000fa3c8e447a5185923f35fee1bf38273132509773e3a45616b36ac5cd9e",
+      "session": "initial",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/014-manager-constructor-body.json.gz",
+        "sha256": "1c334e15c9b7be848179a36c29e683491a962059fa76f058a3e432de9332a5f3",
+        "bytes": 335222,
+        "compression": "gzip",
+        "restored_original_sha256": "13419d737fa6eecd44cd96cd9dc8ce5c6fb5ec666dbad6d4bf8299699a684bd7",
+        "restored_original_bytes": 9430153,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/014-manager-constructor-body.json.gz"
+      }
+    },
+    {
+      "label": "presenter-constructor-body",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101235304"
+      },
+      "started_at": "2026-10-29T09:30:51.796Z",
+      "duration_ms": 1195,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/015-presenter-constructor-body.json",
+      "is_error": false,
+      "bytes": 9772563,
+      "sha256": "f7c408ae182507fe7e9a862f5199c94556c46ceccb2fecdf26114b163fcf64a6",
+      "evidence_id": "ev_3f433884ff39fb92657c7863e2c303fb1b119f939425f7b9a6deb530aded1a19",
+      "session": "initial",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/015-presenter-constructor-body.json.gz",
+        "sha256": "ff840a8f0550ac92fcd415e2bf821887dfb835bf468b96186addcda0f823209d",
+        "bytes": 361062,
+        "compression": "gzip",
+        "restored_original_sha256": "f7c408ae182507fe7e9a862f5199c94556c46ceccb2fecdf26114b163fcf64a6",
+        "restored_original_bytes": 9772563,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/015-presenter-constructor-body.json.gz"
+      }
+    },
+    {
+      "label": "view-state-constructor-body",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10132cb98"
+      },
+      "started_at": "2026-10-29T09:30:53.046Z",
+      "duration_ms": 202,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/016-view-state-constructor-body.json",
+      "is_error": false,
+      "bytes": 2179247,
+      "sha256": "42af54b5d14c7c828c8090da3262e770bd2af1909e1e4d48b449d0eb94828765",
+      "evidence_id": "ev_7ead498ec8804bac73726981b973baab77d17db8c076f3a05284347c44e88faa",
+      "session": "initial",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/016-view-state-constructor-body.json.gz",
+        "sha256": "a469d8c317a8c313cfebc3b3cf2ed2f2abd2af1d4298a969a03a84ce9456e57c",
+        "bytes": 89978,
+        "compression": "gzip",
+        "restored_original_sha256": "42af54b5d14c7c828c8090da3262e770bd2af1909e1e4d48b449d0eb94828765",
+        "restored_original_bytes": 2179247,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/016-view-state-constructor-body.json.gz"
+      }
+    },
+    {
+      "label": "panel-init-callers",
+      "operation": "procedure_callers",
+      "arguments": {
+        "procedure": "0x10132fbf8"
+      },
+      "started_at": "2026-10-29T09:30:53.266Z",
+      "duration_ms": 8,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/017-panel-init-callers.json",
+      "is_error": false,
+      "bytes": 7652,
+      "sha256": "2e2e321ba4dd230c9a4e5d89f23d30b6583fe0383af8df2d0f22be95cb5ecafd",
+      "evidence_id": "ev_26d892615dbffdedb09d308786a473fa9be4ad58a1524a189e7931c42c904404",
+      "session": "initial"
+    },
+    {
+      "label": "screen-left-callers",
+      "operation": "procedure_callers",
+      "arguments": {
+        "procedure": "EXTERNAL:0x6f3"
+      },
+      "started_at": "2026-10-29T09:30:53.300Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/018-screen-left-callers.json",
+      "is_error": false,
+      "bytes": 7578,
+      "sha256": "a9568e6cdbf1b020853a2d9010fb9b200717455a7649c397d2605427f9586de9",
+      "evidence_id": "ev_f32d91ff5d666e54fa52f02011654f0953fb3d31e698ac916ebd0f733973e926",
+      "session": "initial"
+    },
+    {
+      "label": "screen-right-callers",
+      "operation": "procedure_callers",
+      "arguments": {
+        "procedure": "EXTERNAL:0x6f4"
+      },
+      "started_at": "2026-10-29T09:30:53.304Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/019-screen-right-callers.json",
+      "is_error": false,
+      "bytes": 7578,
+      "sha256": "e0738bc612daaec51974fbf0318ebde7d2debda4962208a20e4dde4c4eb15b9e",
+      "evidence_id": "ev_de522c8b7b460af924b19765276041eeaa120e399558be85d051fd1a7ff4d9a6",
+      "session": "initial"
+    },
+    {
+      "label": "key-flag-offset",
+      "operation": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x10343b260"
+      },
+      "started_at": "2026-10-29T09:30:53.308Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/020-key-flag-offset.json",
+      "is_error": false,
+      "bytes": 11599,
+      "sha256": "1de7a1f5b925150afbf8c5638db5a1250ccdf476d3d64cd844b4f1d2b9a5f9f0",
+      "evidence_id": "ev_f7b3e62d23ce5ed0a893e7e3961cf520a7e5becf59743f1025e12b974508274b",
+      "session": "initial"
+    },
+    {
+      "label": "manager-setup-screen",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x10130ebc4"
+      },
+      "started_at": "2026-10-29T09:32:11.414Z",
+      "duration_ms": 96,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/021-manager-setup-screen.json",
+      "is_error": false,
+      "bytes": 15170,
+      "sha256": "ab10eec13aadc4ad091c0d672ac24566d52b67844ac2ce6451ab0046230c2d87",
+      "evidence_id": "ev_be33d9e6dfb9b53e3036a25b7386d30526afb115cda765f3e61af0f02e32b8dc",
+      "session": "initial"
+    },
+    {
+      "label": "manager-setup-two",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x10130edac"
+      },
+      "started_at": "2026-10-29T09:32:11.527Z",
+      "duration_ms": 185,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/022-manager-setup-two.json",
+      "is_error": false,
+      "bytes": 59344,
+      "sha256": "11a594eedfc26711f7826bfecd03dcf6aa68c14afecb981f65220e828d5decb4",
+      "evidence_id": "ev_27748eed923a9d057faf044f8fc0b815ec698a1dcea80e8d938615cd7db17cd5",
+      "session": "initial"
+    },
+    {
+      "label": "manager-setup-three",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x10130f5c8"
+      },
+      "started_at": "2026-10-29T09:32:11.713Z",
+      "duration_ms": 2025,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/023-manager-setup-three.json",
+      "is_error": false,
+      "bytes": 173404,
+      "sha256": "fc6617aef3854af5021b80a6e931348fd91a5dab8946a15fbde8be9327d4701c",
+      "evidence_id": "ev_573544cf7f5b19e9b6801357f949f701beebba77dec4bca19439ff851b21c48f",
+      "session": "initial"
+    },
+    {
+      "label": "manager-setup-four",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1013116e4"
+      },
+      "started_at": "2026-10-29T09:32:13.739Z",
+      "duration_ms": 58,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/024-manager-setup-four.json",
+      "is_error": false,
+      "bytes": 30246,
+      "sha256": "4e5ed76a2bbc8093481d15217c516d49dc236b48077e14f9678f48f0da47b3c1",
+      "evidence_id": "ev_e0863260e4a738820595b9b2448c7814dfb95593c04d551486ad8ee3bcedb26f",
+      "session": "initial"
+    },
+    {
+      "label": "manager-setup-five",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101311db0"
+      },
+      "started_at": "2026-10-29T09:32:17.997Z",
+      "duration_ms": 24,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/025-manager-setup-five.json",
+      "is_error": false,
+      "bytes": 15812,
+      "sha256": "79dc2583d53a73c9c7124c1a3aaf3fd89dccf20ed812d423a8f850e8d10ba2ee",
+      "evidence_id": "ev_f663e9460b586bc920e26b22a6cb6266196c560d3633e14925cb397f67929aa5",
+      "session": "initial"
+    },
+    {
+      "label": "manager-setup-six",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101312098"
+      },
+      "started_at": "2026-10-29T09:32:18.022Z",
+      "duration_ms": 21,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/026-manager-setup-six.json",
+      "is_error": false,
+      "bytes": 15824,
+      "sha256": "c766c5c543082a39850b8071e4f20a7f916cf161e7d8a4e0ddebe7c25c7c637f",
+      "evidence_id": "ev_6e85f583760c4b266826b7d78afd21de05f1e5dbe5136aba28f1acc5bc6f43d0",
+      "session": "initial"
+    },
+    {
+      "label": "safe-area-selector-xrefs",
+      "operation": "xrefs",
+      "arguments": {
+        "address": "0x10326440b"
+      },
+      "started_at": "2026-10-29T09:32:18.045Z",
+      "duration_ms": 5,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/027-safe-area-selector-xrefs.json",
+      "is_error": false,
+      "bytes": 7833,
+      "sha256": "3ade0bf816859f9ea2bedb3622654e13cccf9f7712e2bc5d49faac062ad26aff",
+      "session": "initial"
+    },
+    {
+      "label": "codex-process-manager-seed",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101cb8030"
+      },
+      "started_at": "2026-10-29T09:32:41.133Z",
+      "duration_ms": 23,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/028-codex-process-manager-seed.json",
+      "is_error": false,
+      "bytes": 81079,
+      "sha256": "8a1f6108df7c841ecfbe4f8a09ac5f78a1af66bbbe3a8eb2c71ba981502313b4",
+      "evidence_id": "ev_d10946cf21158c7c0cd963c0818e9b9bed6e437e22887ef964048bd003452df0",
+      "session": "initial"
+    },
+    {
+      "label": "codex-protocol-client-seed",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101c66870"
+      },
+      "started_at": "2026-10-29T09:32:41.159Z",
+      "duration_ms": 5,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/029-codex-protocol-client-seed.json",
+      "is_error": true,
+      "bytes": 515,
+      "sha256": "185a3a4ccb9ebb241dc063fc65043f8158842cba3ab58f8323d5bfd0ed59e1bc",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"analyze_function\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x101c66870\"}]}}}",
+      "session": "initial"
+    },
+    {
+      "label": "screen-native-painter-seed",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x1017971e0"
+      },
+      "started_at": "2026-10-29T09:32:41.164Z",
+      "duration_ms": 2,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/030-screen-native-painter-seed.json",
+      "is_error": true,
+      "bytes": 515,
+      "sha256": "0bafaa69ab36ead8b27a5563db4680015d4cab3823171f330abcffbb23f5415b",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"analyze_function\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x1017971e0\"}]}}}",
+      "session": "initial"
+    },
+    {
+      "label": "manager-screen-sync",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10130edac"
+      },
+      "started_at": "2026-10-29T09:32:59.368Z",
+      "duration_ms": 1348,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/031-manager-screen-sync.json",
+      "is_error": false,
+      "bytes": 10460665,
+      "sha256": "b7c13cb02ea6dafeb7b9f3f648a3fce81ae8119090da783e6e1483aae3309999",
+      "evidence_id": "ev_0a3dfdb96d2afa6075063b9fcab32227040691b7f9a776544ff546753616e94b",
+      "session": "initial",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/031-manager-screen-sync.json.gz",
+        "sha256": "ce716c976e30a0727d86a7a91aa62c5d47bb7c5b548def218316cc488a201b35",
+        "bytes": 367145,
+        "compression": "gzip",
+        "restored_original_sha256": "b7c13cb02ea6dafeb7b9f3f648a3fce81ae8119090da783e6e1483aae3309999",
+        "restored_original_bytes": 10460665,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/031-manager-screen-sync.json.gz"
+      }
+    },
+    {
+      "label": "panel-build-candidate",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101317934"
+      },
+      "started_at": "2026-10-29T09:33:00.782Z",
+      "duration_ms": 367,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/032-panel-build-candidate.json",
+      "is_error": false,
+      "bytes": 3768883,
+      "sha256": "9103db1d7055ad04c3679b4894f90a2cb1df43ff51e0facad73a8ed17d9d6c01",
+      "evidence_id": "ev_17addb71faee962a65629fb6b059fe8ad37fbe00e94e12675d60abf854bbee7f",
+      "session": "initial",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/032-panel-build-candidate.json.gz",
+        "sha256": "6222cfe148d2b6e3105c5fbd097a474d5b2c05cc2e152431acd4115de146b019",
+        "bytes": 143789,
+        "compression": "gzip",
+        "restored_original_sha256": "9103db1d7055ad04c3679b4894f90a2cb1df43ff51e0facad73a8ed17d9d6c01",
+        "restored_original_bytes": 3768883,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/032-panel-build-candidate.json.gz"
+      }
+    },
+    {
+      "label": "panel-update-candidate",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101316804"
+      },
+      "started_at": "2026-10-29T09:33:01.197Z",
+      "duration_ms": 1433,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/033-panel-update-candidate.json",
+      "is_error": false,
+      "bytes": 10822943,
+      "sha256": "096c9d334051d0c568f8f368cfd534448d0b16b91ee2c6b6752d443d1e3e8f26",
+      "evidence_id": "ev_38d2c14096c4e80e0cda4a44f81d15e3e90e9beca93f83c59e837f941340c4ce",
+      "session": "initial",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/033-panel-update-candidate.json.gz",
+        "sha256": "8050fd92e946030d07786acc118d93ed23d2d752e48a7cfcb421caf7a28932b3",
+        "bytes": 404572,
+        "compression": "gzip",
+        "restored_original_sha256": "096c9d334051d0c568f8f368cfd534448d0b16b91ee2c6b6752d443d1e3e8f26",
+        "restored_original_bytes": 10822943,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/033-panel-update-candidate.json.gz"
+      }
+    },
+    {
+      "label": "screen-filter-candidate",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101316624"
+      },
+      "started_at": "2026-10-29T09:33:02.691Z",
+      "duration_ms": 17,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/034-screen-filter-candidate.json",
+      "is_error": false,
+      "bytes": 15688,
+      "sha256": "97ab1a6cc448d58e7413748ff48907f8846fec045156de21890178edc82ceecc",
+      "evidence_id": "ev_c24571bb73972e1caabd930a86409b9beff413834dfd91007663a861337bd1e8",
+      "session": "initial"
+    },
+    {
+      "label": "left-area-stub-callers",
+      "operation": "procedure_callers",
+      "arguments": {
+        "procedure": "0x102dc245c"
+      },
+      "started_at": "2026-10-29T09:33:02.708Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/035-left-area-stub-callers.json",
+      "is_error": false,
+      "bytes": 7726,
+      "sha256": "be1775f982bf903568fdbf4232f25d3d4b762819a61f56907c27f4813d84cba0",
+      "evidence_id": "ev_5f6ebdcaa20bf58ccaede7f5de4665f2a93a96e32509ce44569aafae0b6d372c",
+      "session": "initial"
+    },
+    {
+      "label": "right-area-stub-callers",
+      "operation": "procedure_callers",
+      "arguments": {
+        "procedure": "0x102dc2468"
+      },
+      "started_at": "2026-10-29T09:33:02.712Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/036-right-area-stub-callers.json",
+      "is_error": false,
+      "bytes": 7726,
+      "sha256": "cff41816ce367044556e90226f6905eea5ad5de34aaec295969027ead61ed9bf",
+      "evidence_id": "ev_df26baa747e0e094d59989d18fb0ef391b3648cce1533729c52a92169e477530",
+      "session": "initial"
+    },
+    {
+      "label": "level-selector-xrefs",
+      "operation": "xrefs",
+      "arguments": {
+        "address": "0x103267415"
+      },
+      "started_at": "2026-10-29T09:33:02.716Z",
+      "duration_ms": 2,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/037-level-selector-xrefs.json",
+      "is_error": false,
+      "bytes": 7833,
+      "sha256": "eb25a1d4bcd444b8d65baf0b3fba1eb9c9be1a9deeaa9fb78f6b4b317d8cfdd8",
+      "evidence_id": "ev_a4930e018b440cdc7ce8ff48838dd73598b638a09fc1fd582961b4e92d417624",
+      "session": "initial"
+    },
+    {
+      "label": "collection-selector-xrefs",
+      "operation": "xrefs",
+      "arguments": {
+        "address": "0x103265bcd"
+      },
+      "started_at": "2026-10-29T09:33:06.067Z",
+      "duration_ms": 4,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/038-collection-selector-xrefs.json",
+      "is_error": false,
+      "bytes": 7833,
+      "sha256": "ea4c4318c2c608b8419d2ebf52aa1b840bc736622f6ea1800eca8f448e7ce0ec",
+      "evidence_id": "ev_77cf8a8710db1f51dd8c22048f6b93b91e4f769c72bbd45b66dde067364a300d",
+      "session": "initial"
+    },
+    {
+      "label": "codex-protocol-address",
+      "operation": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x101c66870"
+      },
+      "started_at": "2026-10-29T09:33:15.813Z",
+      "duration_ms": 8,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/039-codex-protocol-address.json",
+      "is_error": false,
+      "bytes": 14651,
+      "sha256": "181770f944b048e6c19fc36628f14f75ef46c561b8fd00b8df82e75aeeff33f9",
+      "evidence_id": "ev_f7eaf18fd0a56078fb97ebdb16e48e09ff1127c578873c065dda081e17e8f4df",
+      "session": "initial"
+    },
+    {
+      "label": "native-painter-address",
+      "operation": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x1017971e0"
+      },
+      "started_at": "2026-10-29T09:33:15.823Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/040-native-painter-address.json",
+      "is_error": false,
+      "bytes": 14651,
+      "sha256": "80160e330ee44dca56d1cd77831869384a69807b12e81372ccd8f74d437d5188",
+      "evidence_id": "ev_dc81695f5c56e259a09e461dbda81377d18fcf6975161125f98fb8e7765df8c9",
+      "session": "initial"
+    },
+    {
+      "label": "key-flag-bytes",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x10343b260",
+        "length": 8
+      },
+      "started_at": "2026-10-29T09:33:15.829Z",
+      "duration_ms": 7,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/041-key-flag-bytes.json",
+      "is_error": false,
+      "bytes": 8104,
+      "sha256": "3340b93113f024017b7a9340491deaf412d9c48f2468fd7737da944a57ba1e60",
+      "evidence_id": "ev_20e350b9625ec8d8bcdebe813b771efbb8e6e83c126e241f660b6bffadc836b5",
+      "session": "initial"
+    },
+    {
+      "label": "notch-screen-measurement",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012fbff0"
+      },
+      "started_at": "2026-10-29T09:33:32.344Z",
+      "duration_ms": 835,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/042-notch-screen-measurement.json",
+      "is_error": false,
+      "bytes": 8430649,
+      "sha256": "99dcae35ec4e32c88f1f7ee0f0e9b5a194c54f8c35896aa7a347ac669993de61",
+      "evidence_id": "ev_ef5ce8e58be6bdd237f336c96136caffa88db6353dd0f0184c150ae2b9b84ede",
+      "session": "initial",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/042-notch-screen-measurement.json.gz",
+        "sha256": "f581168344668bbb71067e186e99fcec683066a1d2efa5ccc232ba58cafdf706",
+        "bytes": 294274,
+        "compression": "gzip",
+        "restored_original_sha256": "99dcae35ec4e32c88f1f7ee0f0e9b5a194c54f8c35896aa7a347ac669993de61",
+        "restored_original_bytes": 8430649,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/042-notch-screen-measurement.json.gz"
+      }
+    },
+    {
+      "label": "panel-size-helper",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101319c20"
+      },
+      "started_at": "2026-10-29T09:33:33.227Z",
+      "duration_ms": 65,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/043-panel-size-helper.json",
+      "is_error": false,
+      "bytes": 610285,
+      "sha256": "5aaeee887c493746cc8b6ad1f1f84fa195b79b60c7eeee7002408950975d1e6d",
+      "evidence_id": "ev_eb59061762523c46f8939d2c183966a758619f902a027aacc016f17f76645db9",
+      "session": "initial"
+    },
+    {
+      "label": "panel-origin-helper",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101319d74"
+      },
+      "started_at": "2026-10-29T09:33:33.297Z",
+      "duration_ms": 21,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/044-panel-origin-helper.json",
+      "is_error": false,
+      "bytes": 180439,
+      "sha256": "0b381d96f47a3d38fac8264b7a332ed77d85c18200d35f917bdf4ec09b775e42",
+      "evidence_id": "ev_d0ae9ddd47ede2f337d7948c7a3b4d47842e19824c055af9b1518506849b44aa",
+      "session": "initial"
+    },
+    {
+      "label": "notch-geometry-helper",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10131dad4"
+      },
+      "started_at": "2026-10-29T09:33:33.321Z",
+      "duration_ms": 64,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/045-notch-geometry-helper.json",
+      "is_error": false,
+      "bytes": 470991,
+      "sha256": "ddce129dba9e344136cf4ab67bd7a1626143131035bded7a9b7387279113196f",
+      "evidence_id": "ev_95bb1b6541219db1cdf2e533476a14daf799baafb9ea0a2dd308777c62795ec9",
+      "session": "initial"
+    },
+    {
+      "label": "panel-floating-helper",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x10131dcec"
+      },
+      "started_at": "2026-10-29T09:33:33.389Z",
+      "duration_ms": 10,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/046-panel-floating-helper.json",
+      "is_error": false,
+      "bytes": 10588,
+      "sha256": "ef9e2eaf9ef697c340508ffe2117ad4b29ddafd53742d61477a486d291a3833d",
+      "evidence_id": "ev_99792176d72b93e16faf4f362a8597c83119ccf4b62258f607756ec6751c38e0",
+      "session": "initial"
+    },
+    {
+      "label": "panel-mask-constructor",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1001ba2fc"
+      },
+      "started_at": "2026-10-29T09:33:33.400Z",
+      "duration_ms": 5,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/047-panel-mask-constructor.json",
+      "is_error": false,
+      "bytes": 16224,
+      "sha256": "24efb76d8d9277b4940b5f11cbcf78bb6318dfdd2b7e97870ff27b16e8362f0b",
+      "evidence_id": "ev_9dccae20fe5c928359cb2d83eb95ce1a50351bf68b70a76754e8b25da17f9af0",
+      "session": "initial"
+    },
+    {
+      "label": "panel-collection-behavior",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1013159d4"
+      },
+      "started_at": "2026-10-29T09:33:35.805Z",
+      "duration_ms": 10,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/048-panel-collection-behavior.json",
+      "is_error": false,
+      "bytes": 10740,
+      "sha256": "5ce2c08ed73d476745aecabe8a9be33da07f43c81d0cb8a783b52d3f7aadffad",
+      "evidence_id": "ev_90d5429b1e28d5763a34bfaebaf82db899cfe933104f0995e60d427c59345c2a",
+      "session": "initial"
+    },
+    {
+      "label": "overlay-window-config",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101305e10"
+      },
+      "started_at": "2026-10-29T09:33:35.816Z",
+      "duration_ms": 26,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/049-overlay-window-config.json",
+      "is_error": false,
+      "bytes": 223355,
+      "sha256": "28f7e4f0e18f5b954abfa75890a454c43385352a32c0ee8ec8d6b53f26f0a044",
+      "evidence_id": "ev_390e02238fd4f762b6a4a9a8a2aa036f014c5b7a085286a62266dece7bf201eb",
+      "session": "initial"
+    },
+    {
+      "label": "panel-option-stub-bytes",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x102dd6600",
+        "length": 32
+      },
+      "started_at": "2026-10-29T09:33:35.845Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/050-panel-option-stub-bytes.json",
+      "is_error": false,
+      "bytes": 8306,
+      "sha256": "9e1dd14fb2560439d79df5d7829c33db668c532f00da498fd71f861966d215ff",
+      "evidence_id": "ev_ffaa8c7aa51a0f17522c1f99a25ce40614a730e1149cec2f7c817feba1a88f39",
+      "session": "initial"
+    },
+    {
+      "label": "panel-set-frame-stub",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x102dd6360"
+      },
+      "started_at": "2026-10-29T09:33:35.849Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/051-panel-set-frame-stub.json",
+      "is_error": false,
+      "bytes": 11672,
+      "sha256": "33d5624dbd132962a1027f34511d895b2a8d831c8ef1a060a539ed56dbcc3a21",
+      "evidence_id": "ev_e2df74692641f9306826f6a353b1258d016306568d48babe642490016fabf85e",
+      "session": "initial"
+    },
+    {
+      "label": "panel-visibility-stub",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x102dd7720"
+      },
+      "started_at": "2026-10-29T09:33:35.852Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/052-panel-visibility-stub.json",
+      "is_error": false,
+      "bytes": 11672,
+      "sha256": "ce4926f4dfa0ef2333e42efcfe48538635b16d4d8e51c7acb404128d4e8d97d4",
+      "evidence_id": "ev_b864f15cdb2bb4f548eedce2c50c38e461c2321a1555e67523fbd83fe352266d",
+      "session": "initial"
+    },
+    {
+      "label": "open",
+      "operation": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-heyclicky-retest-2026-10-29-a1uqjww5/HeyClicky-arm64",
+        "provider_id": "ghidra"
+      },
+      "started_at": "2026-10-29T15:13:06.305Z",
+      "duration_ms": 2284,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/001-open.json",
+      "is_error": false,
+      "bytes": 631,
+      "sha256": "6752dec2318f34c8d3f9a87c2d17b92fb336588857800ff51722f6f1ca0cb242",
+      "evidence_id": null,
+      "session": "resume"
+    },
+    {
+      "label": "codex-protocol-bytes",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x101c66870",
+        "length": 64
+      },
+      "started_at": "2026-10-29T15:13:26.793Z",
+      "duration_ms": 132463,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/002-codex-protocol-bytes.json",
+      "is_error": false,
+      "bytes": 8562,
+      "sha256": "6970abeb3c440a7d6e1d7de5b27de9ca667c7cf1758538087f6edb75fd39c669",
+      "evidence_id": "ev_8af4de8e118c2bfa613a267ab7b0bc62ee1d81be8c6acd50c0709d03b7f5b7fa",
+      "session": "resume"
+    },
+    {
+      "label": "native-painter-bytes",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x1017971e0",
+        "length": 64
+      },
+      "started_at": "2026-10-29T15:15:39.301Z",
+      "duration_ms": 4,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/003-native-painter-bytes.json",
+      "is_error": false,
+      "bytes": 8562,
+      "sha256": "b08b6188a677a886f88e95c90bb70bcb52d52aac1fe02f8a1aac7958dc9217c8",
+      "evidence_id": "ev_5528ec34ddb58387edc80701da78cbe918a4791038a49389e9bd45f46418e7b4",
+      "session": "resume"
+    },
+    {
+      "label": "codex-protocol-containing",
+      "operation": "resolve_containing_procedure",
+      "arguments": {
+        "address": "0x101c66870"
+      },
+      "started_at": "2026-10-29T15:15:39.329Z",
+      "duration_ms": 5,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/004-codex-protocol-containing.json",
+      "is_error": false,
+      "bytes": 8078,
+      "sha256": "eca2614ad346916420a97383d658b5556b04c1ee10a1e1e7a6655fc1575893fe",
+      "evidence_id": "ev_649296894f0cedc8aed37946cd9498dee2c6758b26e3523257e735e3d1c9269c",
+      "session": "resume"
+    },
+    {
+      "label": "native-painter-containing",
+      "operation": "resolve_containing_procedure",
+      "arguments": {
+        "address": "0x1017971e0"
+      },
+      "started_at": "2026-10-29T15:15:39.361Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/005-native-painter-containing.json",
+      "is_error": false,
+      "bytes": 8078,
+      "sha256": "f3dc68ccf17066598c1b9efffa40e41d9967bd914fd462871b35fdd1047719a0",
+      "evidence_id": "ev_bd76f91df327fc612165f09be41b0b0313c39b08d21873cb0729115a7df02d9e",
+      "session": "resume"
+    },
+    {
+      "label": "codex-protocol-function-instructions",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x101c66870"
+      },
+      "started_at": "2026-10-29T15:15:39.386Z",
+      "duration_ms": 4,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/006-codex-protocol-function-instructions.json",
+      "is_error": true,
+      "bytes": 525,
+      "sha256": "ba7a227a1ba8b35aad977a159f79da8718989aadc59fcd15f7efa8868362d6f3",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"read_function_instructions\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x101c66870\"}]}}}",
+      "session": "resume"
+    },
+    {
+      "label": "native-painter-function-instructions",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1017971e0"
+      },
+      "started_at": "2026-10-29T15:15:39.397Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/007-native-painter-function-instructions.json",
+      "is_error": true,
+      "bytes": 525,
+      "sha256": "f2bf881be871d900a8ca8827d2d2546be90285aa15b563153c9b752faed0ecaf",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"read_function_instructions\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x1017971e0\"}]}}}",
+      "session": "resume"
+    },
+    {
+      "label": "selector-reference-page",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x1033e75b8",
+        "length": 32800
+      },
+      "started_at": "2026-10-29T15:15:39.408Z",
+      "duration_ms": 13,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/008-selector-reference-page.json",
+      "is_error": false,
+      "bytes": 270480,
+      "sha256": "ce8fe346781c98135d08eec48a8959079417893c76cc015bb4a67dea834dd929",
+      "evidence_id": "ev_b12ce31ed193ff41da3e1c1b977fa7dcd377f080aefb92ccf078b2f5d88d260e",
+      "session": "resume"
+    },
+    {
+      "label": "selector-name-page",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x10323abc0",
+        "length": 212736
+      },
+      "started_at": "2026-10-29T15:15:39.436Z",
+      "duration_ms": 35,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/009-selector-name-page.json",
+      "is_error": false,
+      "bytes": 1709978,
+      "sha256": "aeedff46bd7c580d80dbc7002339472453cf77dd49fcc916bd2892cce5739f6e",
+      "evidence_id": "ev_f7ba155a51731ef25bdcd1cd287c66347e61b51a0c6767c9f020e451eaae258f",
+      "session": "resume",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/009-selector-name-page.json.gz",
+        "sha256": "9a8d76c1d19ca1b7a9daa0d59a01e8c924bd8a3d27b6927fc35cf7a8b9c83769",
+        "bytes": 291388,
+        "compression": "gzip",
+        "restored_original_sha256": "aeedff46bd7c580d80dbc7002339472453cf77dd49fcc916bd2892cce5739f6e",
+        "restored_original_bytes": 1709978,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/009-selector-name-page.json.gz"
+      }
+    },
+    {
+      "label": "objc-stub-page",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x102dc59c0",
+        "length": 93280
+      },
+      "started_at": "2026-10-29T15:15:39.493Z",
+      "duration_ms": 16,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/010-objc-stub-page.json",
+      "is_error": false,
+      "bytes": 754320,
+      "sha256": "b38e63d4a899af818575c90769040aa217980a996894ec778aff4e69c443cc52",
+      "evidence_id": "ev_bdb1ca180d52eac6c009b9ca387988ab7a7002d052e75e9db70c0bcfdfe46b84",
+      "session": "resume"
+    },
+    {
+      "label": "panel-frame-value-trace",
+      "operation": "trace_native_values",
+      "arguments": {
+        "procedure": "0x101319d74",
+        "max_depth": 1,
+        "max_functions": 4,
+        "max_call_sites": 16,
+        "max_nodes": 2000,
+        "max_edges": 4000,
+        "limit": 1000
+      },
+      "started_at": "2026-10-29T15:15:39.538Z",
+      "duration_ms": 162,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/011-panel-frame-value-trace.json",
+      "is_error": false,
+      "bytes": 110091,
+      "sha256": "0351019a8eba48d506aa1164b365c60181af5d502c7aacc4d988b0c2b030f643",
+      "evidence_id": "ev_617e35352c314d1814b4a3027eefe900f674d728c60c5e3805cc1b01ddba212a",
+      "session": "resume"
+    },
+    {
+      "label": "screen-scale",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012fd210"
+      },
+      "started_at": "2026-10-29T15:15:39.726Z",
+      "duration_ms": 106,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/012-screen-scale.json",
+      "is_error": false,
+      "bytes": 569667,
+      "sha256": "e6f02574cd4b47dbd0d96a7e8575ed84483507b5ecc83a9d4a3026008fc94091",
+      "evidence_id": "ev_70c7d237ebda199b953830aca34dc5ae615d0514d49fade388c540cdcf3c896b",
+      "session": "resume"
+    },
+    {
+      "label": "screen-id-key",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x102eda1a0",
+        "length": 32
+      },
+      "started_at": "2026-10-29T15:15:39.894Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/013-screen-id-key.json",
+      "is_error": false,
+      "bytes": 8306,
+      "sha256": "2e95008c462087e3210f345b627747c174e6225b46c9b954d0e29eb51f280f14",
+      "evidence_id": "ev_f6f60693d582f94c5d561be641af04109d4f1d3fa5d2e96a4e7c54ff01748c23",
+      "session": "resume"
+    },
+    {
+      "label": "rect-mid-x",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1001a0c34"
+      },
+      "started_at": "2026-10-29T15:15:39.910Z",
+      "duration_ms": 6,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/014-rect-mid-x.json",
+      "is_error": false,
+      "bytes": 13216,
+      "sha256": "653bc37786d215999cb6a99d427793543cdcad0331ec0049303c275c630c4d08",
+      "evidence_id": "ev_5982f658118829145189fc59f36f5b22814c6ee35fd9e8877efffadc2e478031",
+      "session": "resume"
+    },
+    {
+      "label": "rect-max-y",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1001ade64"
+      },
+      "started_at": "2026-10-29T15:15:39.932Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/015-rect-max-y.json",
+      "is_error": false,
+      "bytes": 13216,
+      "sha256": "9c357b55227f53ee0bfda6810519ab4af07f40725cd3d4aae4a8e1453360134f",
+      "evidence_id": "ev_485ce9507ade0fab90406544fd7e610a456d85b7111d438fcd3ad32aa2984248",
+      "session": "resume"
+    },
+    {
+      "label": "rect-height",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1002ce8d4"
+      },
+      "started_at": "2026-10-29T15:15:39.949Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/016-rect-height.json",
+      "is_error": false,
+      "bytes": 13216,
+      "sha256": "35d76389179d35c2504360a12d334ed57208f7f4a07ae3af6806e76ab134c16a",
+      "evidence_id": "ev_1dba83e8069539d5c2cc24397473f63003da7e6d2381ce9000d0cbc63dce3833",
+      "session": "resume"
+    },
+    {
+      "label": "rect-max-x",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1002ce94c"
+      },
+      "started_at": "2026-10-29T15:15:39.966Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/017-rect-max-x.json",
+      "is_error": false,
+      "bytes": 13216,
+      "sha256": "0b90c7b11537ccccf5561acf2fa2ca06b8c7bb6b474ffb55d611bf0dbc75b126",
+      "evidence_id": "ev_64761802eb6d92556bc1d46192645f2cc6a2aefcb8a270f98c1cf6ee70275dcd",
+      "session": "resume"
+    },
+    {
+      "label": "rect-min-x",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1002ce910"
+      },
+      "started_at": "2026-10-29T15:15:39.982Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/018-rect-min-x.json",
+      "is_error": false,
+      "bytes": 13216,
+      "sha256": "7f29ad1072902a4b64bf3ee93f3b9ca5656914ebdd016c5c53554d94110597e1",
+      "evidence_id": "ev_94e7f4adad5e5b7e77fd2fff0e329ea5a93eecc2363679f80020721b321caaf5",
+      "session": "resume"
+    },
+    {
+      "label": "frame-external-identities",
+      "operation": "search_procedures",
+      "arguments": {
+        "pattern": "_CGRectGet",
+        "mode": "literal"
+      },
+      "started_at": "2026-10-29T15:16:29.769Z",
+      "duration_ms": 124,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/019-frame-external-identities.json",
+      "is_error": false,
+      "bytes": 14882,
+      "sha256": "b7c7dd2e67fcf0979ec7b516963e91ca8fb175db4d1e27452a14d03d5eff5aea",
+      "evidence_id": "ev_7c32b116312d5d43503e37bf145ca408428b155bcd6c30037e3ba7065764a3b2",
+      "session": "resume"
+    },
+    {
+      "label": "scale-preference-key-function",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101227cb8"
+      },
+      "started_at": "2026-10-29T15:16:29.913Z",
+      "duration_ms": 41,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/020-scale-preference-key-function.json",
+      "is_error": false,
+      "bytes": 107481,
+      "sha256": "134cabcc3f1d57b25280a17bc0eb35a0ba8117d5cf09864ae8aa383b16d18bda",
+      "evidence_id": "ev_29982dd83ede1aba1b79b9cd5974ce8f687cf8088479c9c483f24b7b20cf8b9f",
+      "session": "resume"
+    },
+    {
+      "label": "notch-sliver-condition",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x10131e8b4"
+      },
+      "started_at": "2026-10-29T15:16:30.067Z",
+      "duration_ms": 8,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/021-notch-sliver-condition.json",
+      "is_error": false,
+      "bytes": 8568,
+      "sha256": "7109082a0efb1576cae0837e9e9cb554ab80c1208dcf1c9d87d12a18e65cd55d",
+      "evidence_id": "ev_582d52e07c86db7e13da33160bc8df63b7214793d62dd295a2ca4289ce76dc3c",
+      "session": "resume"
+    },
+    {
+      "label": "overlay-level-body",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101304c98"
+      },
+      "started_at": "2026-10-29T15:16:30.091Z",
+      "duration_ms": 21,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/022-overlay-level-body.json",
+      "is_error": false,
+      "bytes": 88743,
+      "sha256": "f3b2abe56abc757e0811bd634d3581dfc3494dec8d21b3a990839220b79b8f5f",
+      "evidence_id": "ev_918530e061860639287f4db0840469353977d732942733d5ab176a86602bf5e2",
+      "session": "resume"
+    },
+    {
+      "label": "scale-preference-key-init",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x101227c78",
+        "length": 64
+      },
+      "started_at": "2026-10-29T15:17:22.877Z",
+      "duration_ms": 6,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/023-scale-preference-key-init.json",
+      "is_error": false,
+      "bytes": 8562,
+      "sha256": "942665df251f04600b24c04ac50217d285ca9127b96679c00891841575a9c96b",
+      "evidence_id": "ev_ab0f0c472dcdbc78d1c10c9411e17164c643f4a72ca509d01cf82f39e886cdcc",
+      "session": "resume"
+    },
+    {
+      "label": "scale-preference-key-pseudocode",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101227c78"
+      },
+      "started_at": "2026-10-29T15:17:22.902Z",
+      "duration_ms": 2,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/024-scale-preference-key-pseudocode.json",
+      "is_error": true,
+      "bytes": 520,
+      "sha256": "6517541b8673e1dc43fcbcca9dd50be794d1384ef377731be735f1bd4474e279",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"procedure_pseudo_code\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x101227c78\"}]}}}",
+      "session": "resume"
+    },
+    {
+      "label": "overlay-record-constructor",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101304cec"
+      },
+      "started_at": "2026-10-29T15:17:22.911Z",
+      "duration_ms": 6,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/025-overlay-record-constructor.json",
+      "is_error": false,
+      "bytes": 9790,
+      "sha256": "2718ed1158ac0e7234795d2f54f6c6ec3e3599780ff304228923b98fa2616ec0",
+      "evidence_id": "ev_d2ac48e8060b705f88f2e8b634b4e2754ae5bcfbdc1055d39f11ceab21567ff6",
+      "session": "resume"
+    },
+    {
+      "label": "level-stub-callers",
+      "operation": "procedure_callers",
+      "arguments": {
+        "procedure": "0x102dd6d00"
+      },
+      "started_at": "2026-10-29T15:17:22.930Z",
+      "duration_ms": 4,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/026-level-stub-callers.json",
+      "is_error": false,
+      "bytes": 9502,
+      "sha256": "502bbf63900e810cb7d833dd81baab5feff2f3fd737d00412ed50bc50ec06a8b",
+      "evidence_id": "ev_1f774d5056b1d70781330c48022b50e67f343bc210c8b15b12d341d2f2db04e5",
+      "session": "resume"
+    },
+    {
+      "label": "screen-sync-existing-pseudo",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101317dfc"
+      },
+      "started_at": "2026-10-29T15:17:22.948Z",
+      "duration_ms": 3664,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/027-screen-sync-existing-pseudo.json",
+      "is_error": false,
+      "bytes": 162782,
+      "sha256": "b803d661685248c102f8bb35f9451d2d14d21bde427cbe2551993855033740e6",
+      "evidence_id": "ev_e1b20c541bbd3f0b0e2cb6b055270811719c0fb9ac1ae4c86281a19c23d27fd1",
+      "session": "resume"
+    },
+    {
+      "label": "overlay-apply-function",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101305f1c"
+      },
+      "started_at": "2026-10-29T15:17:57.315Z",
+      "duration_ms": 172,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/028-overlay-apply-function.json",
+      "is_error": false,
+      "bytes": 1336287,
+      "sha256": "21942b072746d74ee1b17aec9aeae488b485f8ef103b12bb7db2ec27dd9bacde",
+      "evidence_id": "ev_3a5844d7cb02770cd15c897bd4d0d282f7c003f0dacc1347157b744b8951406a",
+      "session": "resume",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/028-overlay-apply-function.json.gz",
+        "sha256": "fed3d99566702924b44290ce5c2a26421e13fa830ae315e73441627590b86335",
+        "bytes": 65236,
+        "compression": "gzip",
+        "restored_original_sha256": "21942b072746d74ee1b17aec9aeae488b485f8ef103b12bb7db2ec27dd9bacde",
+        "restored_original_bytes": 1336287,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/028-overlay-apply-function.json.gz"
+      }
+    },
+    {
+      "label": "notch-screen-measurement-flow",
+      "operation": "trace_native_values",
+      "arguments": {
+        "procedure": "0x1012fbff0",
+        "max_depth": 0,
+        "max_functions": 1,
+        "max_call_sites": 16,
+        "max_nodes": 3000,
+        "max_edges": 6000,
+        "limit": 1000
+      },
+      "started_at": "2026-10-29T15:17:57.548Z",
+      "duration_ms": 570,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/029-notch-screen-measurement-flow.json",
+      "is_error": false,
+      "bytes": 2721805,
+      "sha256": "a51e336ae9f954aa2d8880eb97f1f41455f13c551746c5a7fa41843081bc50b5",
+      "evidence_id": "ev_4bd1154a12ea96294fb207db2d1a2c2aa0b43134b188f59a25e226591ac0ff77",
+      "session": "resume",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/029-notch-screen-measurement-flow.json.gz",
+        "sha256": "3e2fc5fc70bc3f97b7b2f6854059a6123f0f8898e2bf4d67f74ed6e474f0498d",
+        "bytes": 78422,
+        "compression": "gzip",
+        "restored_original_sha256": "a51e336ae9f954aa2d8880eb97f1f41455f13c551746c5a7fa41843081bc50b5",
+        "restored_original_bytes": 2721805,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/029-notch-screen-measurement-flow.json.gz"
+      }
+    },
+    {
+      "label": "scale-key-strings",
+      "operation": "search_strings",
+      "arguments": {
+        "pattern": "large.*notch|notch.*large|sliver|streamMode|notchScale",
+        "mode": "regex"
+      },
+      "started_at": "2026-10-29T15:17:58.168Z",
+      "duration_ms": 439,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/030-scale-key-strings.json",
+      "is_error": false,
+      "bytes": 9035,
+      "sha256": "76dd0bdfb75fcbf05b0081b03f5d35c2e35880b8f1bbcf3e4374a36ea77b36d9",
+      "evidence_id": "ev_327032c6bc03b3d3185dfd1e0643643a536d73a02b0826edf279e68adb4b5c25",
+      "session": "resume"
+    },
+    {
+      "label": "overlay-level-computation",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x1013065e0"
+      },
+      "started_at": "2026-10-29T15:18:17.183Z",
+      "duration_ms": 168,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/031-overlay-level-computation.json",
+      "is_error": false,
+      "bytes": 1715229,
+      "sha256": "4a45493a48332f2e5944f680d34987e1d4e8ab370ef9d6a7894e8d0882e7541c",
+      "evidence_id": "ev_225785b39beab7f0064d8a8007af04edeeea542fa26e3dd87417574716a0c331",
+      "session": "resume",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/031-overlay-level-computation.json.gz",
+        "sha256": "e97de9ea5d8f633eb0230284c416c0f3003fc2ade362856134d5458f8df24527",
+        "bytes": 78957,
+        "compression": "gzip",
+        "restored_original_sha256": "4a45493a48332f2e5944f680d34987e1d4e8ab370ef9d6a7894e8d0882e7541c",
+        "restored_original_bytes": 1715229,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/031-overlay-level-computation.json.gz"
+      }
+    },
+    {
+      "label": "panel-current-presentation-size",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101319e48"
+      },
+      "started_at": "2026-10-29T15:18:17.475Z",
+      "duration_ms": 1904,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/032-panel-current-presentation-size.json",
+      "is_error": false,
+      "bytes": 11668085,
+      "sha256": "5289d521b3496f1baf02be289c3dcd8701cab2ab15a4b53e7b060494b3414bbe",
+      "evidence_id": "ev_f378e1a6df289284d2ce2b7a28b124bbc916cb5994eef9aed0c7b214d1a9defe",
+      "session": "resume",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/032-panel-current-presentation-size.json.gz",
+        "sha256": "3e9a7bc8b6ce3e54f73bede05de5accb7690cbb52e2a0ca7e6350b5f6f21ecc2",
+        "bytes": 413688,
+        "compression": "gzip",
+        "restored_original_sha256": "5289d521b3496f1baf02be289c3dcd8701cab2ab15a4b53e7b060494b3414bbe",
+        "restored_original_bytes": 11668085,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/032-panel-current-presentation-size.json.gz"
+      }
+    },
+    {
+      "label": "panel-dynamic-update-helper",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x10131e6e4"
+      },
+      "started_at": "2026-10-29T15:18:19.490Z",
+      "duration_ms": 17,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/033-panel-dynamic-update-helper.json",
+      "is_error": false,
+      "bytes": 13588,
+      "sha256": "045b631a330ba313e5539374647567e80f25868a61969133eb664107d5bc87bb",
+      "evidence_id": "ev_81c91d12215f3bd84adc15b779fed0917d828d041785b21c0e49ca5c5e990a32",
+      "session": "resume"
+    },
+    {
+      "label": "overlay-level-rule",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101301454"
+      },
+      "started_at": "2026-10-29T15:19:08.801Z",
+      "duration_ms": 239,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/034-overlay-level-rule.json",
+      "is_error": false,
+      "bytes": 1483787,
+      "sha256": "0f3b1a18d54f312677af5806845afe274b73ab2dea76c4c8b301a07a5a210b1d",
+      "evidence_id": "ev_4a34bd7bd53524fb8e508a6e210ca6a0a14363df47381dda912a1ad116f68d66",
+      "session": "resume",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/034-overlay-level-rule.json.gz",
+        "sha256": "0827c0c5587e885bcf818fd703ec3ae26d8fcfa5d473fb06087afb9fee390c31",
+        "bytes": 69536,
+        "compression": "gzip",
+        "restored_original_sha256": "0f3b1a18d54f312677af5806845afe274b73ab2dea76c4c8b301a07a5a210b1d",
+        "restored_original_bytes": 1483787,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/034-overlay-level-rule.json.gz"
+      }
+    },
+    {
+      "label": "external-level-identities",
+      "operation": "search_procedures",
+      "arguments": {
+        "pattern": "WindowLevel|ShieldingWindow|WindowList",
+        "mode": "regex"
+      },
+      "started_at": "2026-10-29T15:19:09.106Z",
+      "duration_ms": 48,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/035-external-level-identities.json",
+      "is_error": false,
+      "bytes": 9734,
+      "sha256": "8643ca90c8d28e04ef6b9b681cc8e9e432b5a119ba5b0ff1df1ab0612a23d438",
+      "evidence_id": "ev_b6a73c61bf258ab3c018a98f893f3cd2a646708cd03ce950336edcc03a68e1a7",
+      "session": "resume"
+    },
+    {
+      "label": "notch-updates-view-init",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x10131e024"
+      },
+      "started_at": "2026-10-29T15:19:09.173Z",
+      "duration_ms": 5,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/036-notch-updates-view-init.json",
+      "is_error": false,
+      "bytes": 13072,
+      "sha256": "53b84cc9b996c18dd665107d21e3286907260b79478ac310ebe01408b1ad0548",
+      "evidence_id": "ev_beeadc99cb067f7867c117a39d4e29e92416c7d8786279b409d8349609be99f6",
+      "session": "resume"
+    },
+    {
+      "label": "panel-class-reference",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x101332edc"
+      },
+      "started_at": "2026-10-29T15:19:09.199Z",
+      "duration_ms": 11,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/037-panel-class-reference.json",
+      "is_error": false,
+      "bytes": 12256,
+      "sha256": "e84fa8ff635e716c42805905c9ead2fffba1e9c5c3d54317114e4dfb537f4205",
+      "evidence_id": "ev_0fa47372b066b9e0e4cd51b5c962db2029bf95e784028f56989c82cbe5d564ef",
+      "session": "resume"
+    },
+    {
+      "label": "session-final",
+      "operation": "binary_session",
+      "arguments": {},
+      "started_at": "2026-10-29T15:19:28.497Z",
+      "duration_ms": 608,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/038-session-final.json",
+      "is_error": false,
+      "bytes": 947866,
+      "sha256": "279dc5a7ad3adafe0c89dc9ca2abdc11c69d159ade46646965bdfdbad782e528",
+      "evidence_id": null,
+      "session": "resume"
+    },
+    {
+      "label": "close",
+      "operation": "close_binary",
+      "arguments": {},
+      "started_at": "2026-10-29T15:19:29.197Z",
+      "duration_ms": 759,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/039-close.json",
+      "is_error": false,
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d",
+      "evidence_id": null,
+      "session": "resume"
+    },
+    {
+      "label": "open",
+      "operation": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-heyclicky-retest-2026-10-29-a1uqjww5/HeyClicky-arm64",
+        "provider_id": "ghidra"
+      },
+      "started_at": "2026-10-29T15:20:48.022Z",
+      "duration_ms": 2078,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/001-open.json",
+      "is_error": false,
+      "bytes": 631,
+      "sha256": "6752dec2318f34c8d3f9a87c2d17b92fb336588857800ff51722f6f1ca0cb242",
+      "evidence_id": null,
+      "session": "seeded"
+    },
+    {
+      "label": "codex-process-manager-body",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101cb8078"
+      },
+      "started_at": "2026-10-29T15:21:17.676Z",
+      "duration_ms": 107882,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/002-codex-process-manager-body.json",
+      "is_error": false,
+      "bytes": 244883,
+      "sha256": "8b844afc482d3233acb288dca13d1800e1f3de002f31b8936cce9a6e5766acd5",
+      "evidence_id": "ev_b9d31984ba48a0d5f774e88faf86af91cfb0882ba0d8a413fb9e702a13e0f451",
+      "session": "seeded"
+    },
+    {
+      "label": "codex-protocol-client-seeded",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101c66870"
+      },
+      "started_at": "2026-10-29T15:23:05.653Z",
+      "duration_ms": 27,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/003-codex-protocol-client-seeded.json",
+      "is_error": false,
+      "bytes": 78199,
+      "sha256": "2a378149be679e43da34cc367cd70a468d91bd2beb4de3204e25fccaa5cf65e8",
+      "evidence_id": "ev_90c854aeff71ebac5267ef45a17582c98c4947ae7648c94f428e0dc88eb1e88f",
+      "session": "seeded"
+    },
+    {
+      "label": "screen-native-painter-seeded",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x1017971e0"
+      },
+      "started_at": "2026-10-29T15:23:05.759Z",
+      "duration_ms": 16,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/004-screen-native-painter-seeded.json",
+      "is_error": false,
+      "bytes": 78039,
+      "sha256": "8be7da2b9e1a1fac6ac638953a68608b2fd6311111377209e4ce90d14268e262",
+      "evidence_id": "ev_3a300782b5063535bfeec6b88cdb30725f05a1d8be3726c17ac60f16d7b83fa5",
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-native-engine",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10177dec8"
+      },
+      "started_at": "2026-10-29T15:23:05.818Z",
+      "duration_ms": 13,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/005-drawing-native-engine.json",
+      "is_error": false,
+      "bytes": 73681,
+      "sha256": "73aaa877c600b52d25166f119a19cb8ba5be7da69a8ca1869a64ae7a3f382b70",
+      "evidence_id": "ev_f7d1b36a8f7e0dc55e19c5b3d4560f4a8e9963f037cc01c642efddd102ae7fac",
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-clock",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10176e7d4"
+      },
+      "started_at": "2026-10-29T15:23:05.869Z",
+      "duration_ms": 15,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/006-drawing-clock.json",
+      "is_error": false,
+      "bytes": 85963,
+      "sha256": "ca1a30fbd73f5a4ec9b14b129d98e307a13413853b350df80b5a888e7cfbf459",
+      "evidence_id": "ev_c0053d441dfef6e01eb61b9628722da3fcc64c2eb4b74f39d45972c45f6958c8",
+      "session": "seeded"
+    },
+    {
+      "label": "scale-preference-key-seeded",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101227c78"
+      },
+      "started_at": "2026-10-29T15:23:05.919Z",
+      "duration_ms": 12,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/007-scale-preference-key-seeded.json",
+      "is_error": false,
+      "bytes": 79519,
+      "sha256": "59ec26dd32c1cb0fcf4786e0595b1356f194ffe5aeb14481af73022f703f7483",
+      "evidence_id": "ev_ef2aea8d6e7cfeb6aae1d2f6b58abb51b65e867b22c934ec8dce04c513cf801b",
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-evaluate-callers",
+      "operation": "procedure_callers",
+      "arguments": {
+        "procedure": "0x102dcb2c0"
+      },
+      "started_at": "2026-10-29T15:23:05.967Z",
+      "duration_ms": 4,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/008-drawing-evaluate-callers.json",
+      "is_error": true,
+      "bytes": 516,
+      "sha256": "974183577dc00f827fe74ef685570b3cbf32c66a3e8bbd9855484d93a921813f",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"procedure_callers\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x102dcb2c0\"}]}}}",
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-evaluate-url-callers",
+      "operation": "procedure_callers",
+      "arguments": {
+        "procedure": "0x102dcb2e0"
+      },
+      "started_at": "2026-10-29T15:23:05.979Z",
+      "duration_ms": 2,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/009-drawing-evaluate-url-callers.json",
+      "is_error": true,
+      "bytes": 516,
+      "sha256": "afcfd9c0c40066a22a535e88880b75b88de96253e51abcaae59b3a5bf7c039c3",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"procedure_callers\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x102dcb2e0\"}]}}}",
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-js-resource-strings",
+      "operation": "search_strings",
+      "arguments": {
+        "pattern": "clicky-draw|__drainRender|clickyCanvas|JSContext",
+        "mode": "regex",
+        "case_sensitive": false
+      },
+      "started_at": "2026-10-29T15:23:05.989Z",
+      "duration_ms": 536,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/010-drawing-js-resource-strings.json",
+      "is_error": false,
+      "bytes": 17617,
+      "sha256": "de9225ccfb63320992b2cc82daac1de062e60fcd5debf5ae75f1085446d3e7a4",
+      "evidence_id": "ev_9c7d1b2ccb2fa592f5eace0c211e612135fe93ebec5805b29e3e18e32055b71f",
+      "session": "seeded"
+    },
+    {
+      "label": "codex-launch-log-xrefs",
+      "operation": "xrefs",
+      "arguments": {
+        "address": "0x102efe5d0"
+      },
+      "started_at": "2026-10-29T15:23:06.541Z",
+      "duration_ms": 4,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/011-codex-launch-log-xrefs.json",
+      "is_error": false,
+      "bytes": 9571,
+      "sha256": "dd1dbd2db8fdd13e1977070389d08f3ae5f109514b98522debf9365d86c894a3",
+      "evidence_id": "ev_9e1d4d499732bc7a17ea1672aa4f3fe0054f281776b09a8e1f01d3800a0b3ba2",
+      "session": "seeded"
+    },
+    {
+      "label": "codex-appserver-xrefs",
+      "operation": "xrefs",
+      "arguments": {
+        "address": "0x102efe68f"
+      },
+      "started_at": "2026-10-29T15:23:06.562Z",
+      "duration_ms": 2,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/012-codex-appserver-xrefs.json",
+      "is_error": false,
+      "bytes": 9571,
+      "sha256": "729c76c88ed025e97b5485c63fb5ded08ba59d02040c624c29c7fa00d1fb66e5",
+      "evidence_id": "ev_41278473ce4120c2eeac99da2dee2911a542a1eaddeb93aef5e3a8c6da329e5b",
+      "session": "seeded"
+    },
+    {
+      "label": "codex-initialize-xrefs",
+      "operation": "xrefs",
+      "arguments": {
+        "address": "0x102ef76ca"
+      },
+      "started_at": "2026-10-29T15:23:06.578Z",
+      "duration_ms": 2,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/013-codex-initialize-xrefs.json",
+      "is_error": false,
+      "bytes": 9571,
+      "sha256": "b5a70b6d885fef8f143b5db51377dc5b9ef3e24e23063f39db2635745f461775",
+      "evidence_id": "ev_53b11d4fecd5357d68509447d0c820f8c5471b612219c922ec6bf22ad3cc3a41",
+      "session": "seeded"
+    },
+    {
+      "label": "codex-model-catalog-xrefs",
+      "operation": "xrefs",
+      "arguments": {
+        "address": "0x102efcd10"
+      },
+      "started_at": "2026-10-29T15:23:06.594Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/014-codex-model-catalog-xrefs.json",
+      "is_error": false,
+      "bytes": 9571,
+      "sha256": "561a69bde4bc321ea7efee9e14027a354bac8e456a5fb4450c467e080ad233b7",
+      "evidence_id": "ev_7410901d6d7e17cadd6724f60db665aeb72310078a49e8e54d9960581bd833cd",
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-engine-body",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10177df10"
+      },
+      "started_at": "2026-10-29T15:23:47.642Z",
+      "duration_ms": 8,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/015-drawing-engine-body.json",
+      "is_error": true,
+      "bytes": 515,
+      "sha256": "f459207782398994159827a1db5ee69d55d0fe8052323ac439988634575f8cb7",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"analyze_function\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x10177df10\"}]}}}",
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-eval-wrapper",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10178a1dc"
+      },
+      "started_at": "2026-10-29T15:23:47.659Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/016-drawing-eval-wrapper.json",
+      "is_error": true,
+      "bytes": 515,
+      "sha256": "0cbce11f6a61ab9e5cd7870f85a85bd6e544db5d918ee3b1c6b7165a269008a0",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"analyze_function\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x10178a1dc\"}]}}}",
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-call-wrapper",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10178a3b4"
+      },
+      "started_at": "2026-10-29T15:23:47.670Z",
+      "duration_ms": 200,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/017-drawing-call-wrapper.json",
+      "is_error": false,
+      "bytes": 1837481,
+      "sha256": "281ee411f500c4defade409228c9fa963c696e11596a2a386fae7e3f36c7252a",
+      "evidence_id": "ev_7df982a43ef2e55b885bc13c39e762d7718764633639dee8dbb616898b13ee97",
+      "session": "seeded",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/017-drawing-call-wrapper.json.gz",
+        "sha256": "9c306960349f8debdfc839ba9a3f08e439d3585f2d1f36064ebac184d9d2fb6c",
+        "bytes": 83004,
+        "compression": "gzip",
+        "restored_original_sha256": "281ee411f500c4defade409228c9fa963c696e11596a2a386fae7e3f36c7252a",
+        "restored_original_bytes": 1837481,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/017-drawing-call-wrapper.json.gz"
+      }
+    },
+    {
+      "label": "seeded-session-check",
+      "operation": "binary_session",
+      "arguments": {},
+      "started_at": "2026-10-29T15:23:47.928Z",
+      "duration_ms": 576,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/018-seeded-session-check.json",
+      "is_error": false,
+      "bytes": 948750,
+      "sha256": "9b9a44d7def0a4519cb625a891b6f1e17149a70bd3d63372711cadd34c19bbe8",
+      "evidence_id": null,
+      "session": "seeded"
+    },
+    {
+      "label": "codex-protocol-client-body",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101c668c0"
+      },
+      "started_at": "2026-10-29T15:24:30.862Z",
+      "duration_ms": 114,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/019-codex-protocol-client-body.json",
+      "is_error": false,
+      "bytes": 665369,
+      "sha256": "66cabc375985ba3343feb653ff3573799c4acc42630267f5f539451b5e6ba6f3",
+      "evidence_id": "ev_8d6e4e464c04a9dfac409afa71381b720dc952097bb17cb67d3f6eb509704483",
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-engine-constructor",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10177fdb8"
+      },
+      "started_at": "2026-10-29T15:24:31.019Z",
+      "duration_ms": 283,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/020-drawing-engine-constructor.json",
+      "is_error": false,
+      "bytes": 3143273,
+      "sha256": "3ce7b09067676b27b4a81afa7efbd510ea0490251b47448a5b2bafd0b422e74c",
+      "evidence_id": "ev_0ae4a475ff0c65888f89381ecb4690eb9a746898ee05ef474a7b26820489c562",
+      "session": "seeded",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/020-drawing-engine-constructor.json.gz",
+        "sha256": "ffeb1718a1298bc5bcd4addd830b3c0df58142109f53746b1f0c64309912d095",
+        "bytes": 126870,
+        "compression": "gzip",
+        "restored_original_sha256": "3ce7b09067676b27b4a81afa7efbd510ea0490251b47448a5b2bafd0b422e74c",
+        "restored_original_bytes": 3143273,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/020-drawing-engine-constructor.json.gz"
+      }
+    },
+    {
+      "label": "drawing-painter-constructor",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10179bf2c"
+      },
+      "started_at": "2026-10-29T15:24:31.369Z",
+      "duration_ms": 863,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/021-drawing-painter-constructor.json",
+      "is_error": false,
+      "bytes": 10039407,
+      "sha256": "b46880476d1b6ac86af009eeea3d8d93be577e1bc567cff16ea8a28a480789e3",
+      "evidence_id": "ev_ac81865bfcd95f1d6cadc11a5204bd4c8680790e97d135ce373d8f219a46419c",
+      "session": "seeded",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/021-drawing-painter-constructor.json.gz",
+        "sha256": "f62086a25e4ec93936d065863ce9e58d19e83a2d9ad8a12fabef29c1011f1656",
+        "bytes": 355820,
+        "compression": "gzip",
+        "restored_original_sha256": "b46880476d1b6ac86af009eeea3d8d93be577e1bc567cff16ea8a28a480789e3",
+        "restored_original_bytes": 10039407,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/021-drawing-painter-constructor.json.gz"
+      }
+    },
+    {
+      "label": "drawing-clock-body",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x10176e820"
+      },
+      "started_at": "2026-10-29T15:24:32.324Z",
+      "duration_ms": 8,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/022-drawing-clock-body.json",
+      "is_error": false,
+      "bytes": 12320,
+      "sha256": "25c72e297e692a065f329e039e22f7e0dcf9c60a631506e71e9aa3f675fdfdf7",
+      "evidence_id": "ev_3b1f274eff034ec185714802af7b0e541a1fafe2fe0624f8be60834b1305a975",
+      "session": "seeded"
+    },
+    {
+      "label": "scale-preference-key-bytes",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x102ed9ca0",
+        "length": 16
+      },
+      "started_at": "2026-10-29T15:24:32.351Z",
+      "duration_ms": 6,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/023-scale-preference-key-bytes.json",
+      "is_error": false,
+      "bytes": 9996,
+      "sha256": "86b38cd7bf0995b959f6eb00f8042ce7d128e7d2997ee03bf955a9a376319ecc",
+      "evidence_id": "ev_0a5b7cbefc4a6a8269abcbdd79f9b4a2c25298467abff3467c27c1b17f29e0d0",
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-evaluate-url-xrefs",
+      "operation": "xrefs",
+      "arguments": {
+        "address": "0x102dcb2e0"
+      },
+      "started_at": "2026-10-29T15:24:32.372Z",
+      "duration_ms": 2,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/024-drawing-evaluate-url-xrefs.json",
+      "is_error": false,
+      "bytes": 9571,
+      "sha256": "fbf74622af4058bc433f8f24e588dddb296ab91dbf3b7a64b1e108fc57372791",
+      "evidence_id": "ev_2255fb02b87c7b0f1dbd7500a368cb75470d3fbd99f55fd486b374db1c8ce169",
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-evaluate-xrefs",
+      "operation": "xrefs",
+      "arguments": {
+        "address": "0x102dcb2c0"
+      },
+      "started_at": "2026-10-29T15:24:32.387Z",
+      "duration_ms": 2,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/025-drawing-evaluate-xrefs.json",
+      "is_error": false,
+      "bytes": 9571,
+      "sha256": "0802e037bed7ea6f43f6376a4f66401dd9eb2a31214d66a0a225a7ffae6849b7",
+      "evidence_id": "ev_36e7de419602b294c568f513cc726d3f282a87dd0c5991cee86eae72fbbcc6aa",
+      "session": "seeded"
+    },
+    {
+      "label": "seeded-current-session",
+      "operation": "binary_session",
+      "arguments": {},
+      "started_at": "2026-10-29T15:25:36.359Z",
+      "duration_ms": 41,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/026-seeded-current-session.json",
+      "is_error": false,
+      "bytes": 948750,
+      "sha256": "9b9a44d7def0a4519cb625a891b6f1e17149a70bd3d63372711cadd34c19bbe8",
+      "evidence_id": null,
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-drain-render-literal",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x102ee5119",
+        "length": 13
+      },
+      "started_at": "2026-10-29T15:26:01.465Z",
+      "duration_ms": 8,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/027-drawing-drain-render-literal.json",
+      "is_error": false,
+      "bytes": 9972,
+      "sha256": "86bcd17dfc70dfd6679ae9dd7cb9b0794197d553226e70a524eab02bb473cc30",
+      "evidence_id": "ev_a3c519d405df238cf1c64eb23293c98a66b246b3a4a59b62b99ce7c40c32f86f",
+      "session": "seeded"
+    },
+    {
+      "label": "drawing-painter-consume",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101798320"
+      },
+      "started_at": "2026-10-29T15:26:01.491Z",
+      "duration_ms": 5504,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/028-drawing-painter-consume.json",
+      "is_error": false,
+      "bytes": 14440690,
+      "sha256": "794563b82af0d21ea45314d3bdbdb4af7a4d93906cf96733921cded04390bfd6",
+      "evidence_id": "ev_3090f2afab95c956e7580ad1b540d24714a37f1f024f22cedf2ca3b6baa01678",
+      "session": "seeded",
+      "archive_carrier": {
+        "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/028-drawing-painter-consume.json.gz",
+        "sha256": "fbb45a212d20eb5c430aef5079a72415b71b8d31fc97d7e4307ee30b9cd1527b",
+        "bytes": 510351,
+        "compression": "gzip",
+        "restored_original_sha256": "794563b82af0d21ea45314d3bdbdb4af7a4d93906cf96733921cded04390bfd6",
+        "restored_original_bytes": 14440690,
+        "restore_command": "gzip -dk /private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/028-drawing-painter-consume.json.gz"
+      }
+    },
+    {
+      "label": "drawing-script-call-site",
+      "operation": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x10177e6ac"
+      },
+      "started_at": "2026-10-29T15:26:07.136Z",
+      "duration_ms": 8,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/029-drawing-script-call-site.json",
+      "is_error": false,
+      "bytes": 11883,
+      "sha256": "318817f651389b1a1e22b2f38ab6b00c704ff67de35456fe8a0df9655418a631",
+      "evidence_id": "ev_91fd9ef2dfc4b0812a7ac1d184e80dea75d8873b8c5dc5caccebdd3dc244e0d9",
+      "session": "seeded"
+    },
+    {
+      "label": "codex-launch-owner",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101cb8544"
+      },
+      "started_at": "2026-10-29T15:27:03.260Z",
+      "duration_ms": 15,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/030-codex-launch-owner.json",
+      "is_error": true,
+      "bytes": 515,
+      "sha256": "031bf48902ab54c7d0c50a31689ae2ab32943b7b8b451370f6f16f004074b6a0",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"analyze_function\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x101cb8544\"}]}}}",
+      "session": "seeded"
+    },
+    {
+      "label": "codex-initialized-owner",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101c00878"
+      },
+      "started_at": "2026-10-29T15:27:03.285Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/031-codex-initialized-owner.json",
+      "is_error": true,
+      "bytes": 515,
+      "sha256": "7f001474d436558f15267662e0afa2e20f02a5bde3bd1e9ec689925a6c4207e2",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"analyze_function\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x101c00878\"}]}}}",
+      "session": "seeded"
+    },
+    {
+      "label": "session-final",
+      "operation": "binary_session",
+      "arguments": {},
+      "started_at": "2026-10-29T15:27:06.199Z",
+      "duration_ms": 52,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/032-session-final.json",
+      "is_error": false,
+      "bytes": 948750,
+      "sha256": "9b9a44d7def0a4519cb625a891b6f1e17149a70bd3d63372711cadd34c19bbe8",
+      "evidence_id": null,
+      "session": "seeded"
+    },
+    {
+      "label": "close",
+      "operation": "close_binary",
+      "arguments": {},
+      "started_at": "2026-10-29T15:27:06.321Z",
+      "duration_ms": 1167,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/033-close.json",
+      "is_error": false,
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d",
+      "evidence_id": null,
+      "session": "seeded"
+    },
+    {
+      "label": "open",
+      "operation": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-heyclicky-retest-2026-10-29-a1uqjww5/HeyClicky-arm64",
+        "provider_id": "ghidra"
+      },
+      "started_at": "2026-10-29T20:14:53.335Z",
+      "duration_ms": 2626,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/001-open.json",
+      "is_error": false,
+      "bytes": 631,
+      "sha256": "6752dec2318f34c8d3f9a87c2d17b92fb336588857800ff51722f6f1ca0cb242",
+      "evidence_id": null,
+      "session": "closure"
+    },
+    {
+      "label": "codex-launch-owner",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101cb8544"
+      },
+      "started_at": "2026-10-29T20:15:12.688Z",
+      "duration_ms": 125304,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/002-codex-launch-owner.json",
+      "is_error": false,
+      "bytes": 11409216,
+      "sha256": "4387632185ab29d5921bc9865d03ada2ea48e96039d17d9a3c3776a91a939f40",
+      "evidence_id": "ev_a2c2d8ef8fa80058c5f8ffe562395578994dea447bf957c1aea9e30f39b6b21b",
+      "session": "closure"
+    },
+    {
+      "label": "codex-initialized-owner",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101c00878"
+      },
+      "started_at": "2026-10-29T20:17:18.163Z",
+      "duration_ms": 275,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/003-codex-initialized-owner.json",
+      "is_error": false,
+      "bytes": 2430681,
+      "sha256": "83946202e79295520c761ec01f69ed1be4acbe6c80135b749a92d31d8283d314",
+      "evidence_id": "ev_d9dd76a7abb7928d5b1e2d3d97c1fdd3ea25df64e5280dcc33fcd5eba283ddad",
+      "session": "closure"
+    },
+    {
+      "label": "drawing-jscontext-setup",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10177df10"
+      },
+      "started_at": "2026-10-29T20:17:18.518Z",
+      "duration_ms": 1225,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/004-drawing-jscontext-setup.json",
+      "is_error": false,
+      "bytes": 10935875,
+      "sha256": "1382302dbcfbd26dd39e2b50caea1e3108263d8bc072f7c0af9914d626c45e7a",
+      "evidence_id": "ev_8ba87a76450cab22fd18e33a59d9cf26a9dc7a874e5cbd13060d10496b2a8226",
+      "session": "closure"
+    },
+    {
+      "label": "drawing-evaluate-wrapper",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x10178a1dc"
+      },
+      "started_at": "2026-10-29T20:17:19.894Z",
+      "duration_ms": 65,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/005-drawing-evaluate-wrapper.json",
+      "is_error": false,
+      "bytes": 573645,
+      "sha256": "28f7d9a674c1ce794d559fd45fce5e083b1200b408c6dcd85c2f3a0fdf39ba76",
+      "evidence_id": "ev_f3d9cbff7119fd71724a4bf5aab011757b3d1c4580be516e2e31f4c00e42ef74",
+      "session": "closure"
+    },
+    {
+      "label": "drawing-host-installation",
+      "operation": "analyze_function",
+      "arguments": {
+        "procedure": "0x101781e30"
+      },
+      "started_at": "2026-10-29T20:17:20.020Z",
+      "duration_ms": 1685,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/006-drawing-host-installation.json",
+      "is_error": false,
+      "bytes": 11322773,
+      "sha256": "c6f34c72516e061fcb079bc3d86e8fcdd9df9a341c2a6cf6f3167d06b1924276",
+      "evidence_id": "ev_eaebb46c848e45409c334dc4d185799e39488ff6867557dfd6a4d3835a80bc00",
+      "session": "closure"
+    },
+    {
+      "label": "lifecycle-did-finish-launching",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x102595c40"
+      },
+      "started_at": "2026-10-29T20:19:31.565Z",
+      "duration_ms": 32,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/007-lifecycle-did-finish-launching.json",
+      "is_error": false,
+      "bytes": 14296,
+      "sha256": "169bfd98b9a6b37d4168a204bc8745be9d76041c12bd816cd948d1a30a268a2e",
+      "evidence_id": "ev_28f4d6be1f828e37373d345f5cf291465857521a05d37c9b61d9194a62d9cca4",
+      "session": "closure"
+    },
+    {
+      "label": "lifecycle-will-terminate",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x102595d78"
+      },
+      "started_at": "2026-10-29T20:19:31.626Z",
+      "duration_ms": 10,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/008-lifecycle-will-terminate.json",
+      "is_error": false,
+      "bytes": 14276,
+      "sha256": "e5b0c25e1f0b15d5a32154ea787fb11315ef57fe013b289afeef7603e63149c2",
+      "evidence_id": "ev_e3863b348a151f0dd55942cb961b2e060fbf1311ae613a17722a2929ade79b27",
+      "session": "closure"
+    },
+    {
+      "label": "lifecycle-open-urls",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1025962b8"
+      },
+      "started_at": "2026-10-29T20:19:31.662Z",
+      "duration_ms": 9,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/009-lifecycle-open-urls.json",
+      "is_error": false,
+      "bytes": 13032,
+      "sha256": "c8ff4c80be1479c969f86695eda3c534c828fbc3f8d052264699af362ec03afb",
+      "evidence_id": "ev_8691af206e78b8d30707fba42ba370f4096df21be3254765dad3a625d89d1738",
+      "session": "closure"
+    },
+    {
+      "label": "realtime-voice-controller",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x102056788"
+      },
+      "started_at": "2026-10-29T20:19:31.689Z",
+      "duration_ms": 5,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/010-realtime-voice-controller.json",
+      "is_error": false,
+      "bytes": 10002,
+      "sha256": "5a49d099d4616ec72ec03d68bb38c903930f0634a4935a90a0bb9fb33b3baf9b",
+      "evidence_id": "ev_7b747ea83033b47029ea7271c1cb365dbbc0fbf0184bbd776a27c2ec29386880",
+      "session": "closure"
+    },
+    {
+      "label": "realtime-voice-client",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x102af7074"
+      },
+      "started_at": "2026-10-29T20:19:31.711Z",
+      "duration_ms": 5,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/011-realtime-voice-client.json",
+      "is_error": false,
+      "bytes": 10090,
+      "sha256": "3c1c59338181573d2a73ec66c921f319c967f8cb2fa6c5d79968554c6bc2f11c",
+      "evidence_id": "ev_4b2c2c7810052be09ad0480d8bb074974acebff7577d21c77a0d168379eff354",
+      "session": "closure"
+    },
+    {
+      "label": "supabase-auth-manager",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x102bc3284"
+      },
+      "started_at": "2026-10-29T20:19:31.732Z",
+      "duration_ms": 5,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/012-supabase-auth-manager.json",
+      "is_error": false,
+      "bytes": 10002,
+      "sha256": "6af122a4988306599855ad5920922028da76b312dbbc2f64374e1eca823b9929",
+      "evidence_id": "ev_b1af7bb02d23f6dfdd7f54ad0d5090fe4d0a0148d5b8e99508edb18b0304b86e",
+      "session": "closure"
+    },
+    {
+      "label": "conversation-history",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1010a15cc"
+      },
+      "started_at": "2026-10-29T20:19:31.754Z",
+      "duration_ms": 5,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/013-conversation-history.json",
+      "is_error": false,
+      "bytes": 10002,
+      "sha256": "0693e5bc6a318fb8d2235bc6ba36e24469859ccbd4af03df836026d3d78272a3",
+      "evidence_id": "ev_fd941121d5fbfdb644a57c37056a697a8d4ea9db4f62c6f204dcbd5e56f59012",
+      "session": "closure"
+    },
+    {
+      "label": "lifecycle-launch-body",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1025926e8"
+      },
+      "started_at": "2026-10-29T20:19:49.874Z",
+      "duration_ms": 440,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/014-lifecycle-launch-body.json",
+      "is_error": false,
+      "bytes": 63056,
+      "sha256": "a83cf631a1ace8f66a63ef8ed7b7f7cc086c92379f199a66eb0b5bb01922ffff",
+      "evidence_id": "ev_3301a66e6d8b234cf82223289563739af894a1aa187e9e48e0c37af3847dbdc9",
+      "session": "closure"
+    },
+    {
+      "label": "lifecycle-terminate-body",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x102595d20"
+      },
+      "started_at": "2026-10-29T20:19:50.332Z",
+      "duration_ms": 5,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/015-lifecycle-terminate-body.json",
+      "is_error": false,
+      "bytes": 10884,
+      "sha256": "4a1b919e76149e6db4cead1bccd75e97815d9d180c1109ab06abd29ecc4940bd",
+      "evidence_id": "ev_e8ee02aeaa991ad313432752a9db87439a92d23fa5428a5a7d39c2d36a087898",
+      "session": "closure"
+    },
+    {
+      "label": "lifecycle-open-urls-body",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x102596118"
+      },
+      "started_at": "2026-10-29T20:19:50.355Z",
+      "duration_ms": 12,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/016-lifecycle-open-urls-body.json",
+      "is_error": false,
+      "bytes": 14250,
+      "sha256": "6cc4206f1f8e3208faf42d68ef00907ebd5e9ac936a95934301008a85b256a12",
+      "evidence_id": "ev_0adf51755c4305928fe2b05e9cf6f1beeef4f1b09bfcfbad935c4972cbfd6ab7",
+      "session": "closure"
+    },
+    {
+      "label": "realtime-voice-controller-initializer",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x102163c5c"
+      },
+      "started_at": "2026-10-29T20:19:50.383Z",
+      "duration_ms": 191,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/017-realtime-voice-controller-initializer.json",
+      "is_error": false,
+      "bytes": 45568,
+      "sha256": "9d3b4c2f964e044b4ce82fd0dc127eb7bf8c2600dabc2fabc1a69c939c19d3fe",
+      "evidence_id": "ev_58bb8789e0ce2a66c987022cd0b84170d0103487ae87b5821c2c2004ef8b2d07",
+      "session": "closure"
+    },
+    {
+      "label": "realtime-voice-client-initializer",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x102b16b60"
+      },
+      "started_at": "2026-10-29T20:19:50.589Z",
+      "duration_ms": 403,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/018-realtime-voice-client-initializer.json",
+      "is_error": false,
+      "bytes": 76312,
+      "sha256": "bc4d17b0e1c0bbeb4456e538c338a3a45962e63d779370e5be2f6586c2f3ac52",
+      "evidence_id": "ev_93dfbfc483e007ff33f5460eeb65390110503143263c2a14f8488ad5f5dc947e",
+      "session": "closure"
+    },
+    {
+      "label": "supabase-auth-initializer",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x102bca654"
+      },
+      "started_at": "2026-10-29T20:19:51.007Z",
+      "duration_ms": 46,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/019-supabase-auth-initializer.json",
+      "is_error": false,
+      "bytes": 30094,
+      "sha256": "693daa9e06ca4892bdab89386713b7573fe90ad18a6b213d1f3a5c7073625f5a",
+      "evidence_id": "ev_3e3a1534fd3833ea6f59bbbf4f6f605f46cb2a47c00926773c45390a442665ec",
+      "session": "closure"
+    },
+    {
+      "label": "conversation-history-initializer",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1010b2598"
+      },
+      "started_at": "2026-10-29T20:19:51.068Z",
+      "duration_ms": 27,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/020-conversation-history-initializer.json",
+      "is_error": false,
+      "bytes": 23686,
+      "sha256": "afcfdc1d993e47a5b0963f756dc9916a64f6a304b71945a5dcab776fadd5b529",
+      "evidence_id": "ev_5e38ce113c1521e8867f2d4f43fdbe4c4282cf06ffd10926a63be5769f0023ed",
+      "session": "closure"
+    },
+    {
+      "label": "codex-launch-specification",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101cbed5c"
+      },
+      "started_at": "2026-10-29T20:21:43.472Z",
+      "duration_ms": 43,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/021-codex-launch-specification.json",
+      "is_error": false,
+      "bytes": 31484,
+      "sha256": "d52be12a5b188de11fa3ee9f09075c479c29a6815192521c57d153af6bfb14f9",
+      "evidence_id": "ev_68321fc99196a162f03b118144636dee8104e86e27b5c241ec72ba25541a8d0a",
+      "session": "closure"
+    },
+    {
+      "label": "codex-notification-helper",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101c62d44"
+      },
+      "started_at": "2026-10-29T20:21:43.534Z",
+      "duration_ms": 16,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/022-codex-notification-helper.json",
+      "is_error": false,
+      "bytes": 16378,
+      "sha256": "bacc12c257455dd41ac12cace1cff09967dd229027cd36195ea103a0e074f9f7",
+      "evidence_id": "ev_f79c6c71998e94bf79fabcf5099505bbb18e010c3b3435ef816a376c2dae0132",
+      "session": "closure"
+    },
+    {
+      "label": "codex-read-loop-start",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101c66a2c"
+      },
+      "started_at": "2026-10-29T20:21:43.566Z",
+      "duration_ms": 13,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/023-codex-read-loop-start.json",
+      "is_error": false,
+      "bytes": 15020,
+      "sha256": "c4863447338da8df5cc2b461521f77f04cc3d30b4277ebc441c43d3521e70a85",
+      "evidence_id": "ev_91c9ed591388daa4f3f4f26dae0fecd8b2b62dd2de179b91f2689134011bce7f",
+      "session": "closure"
+    },
+    {
+      "label": "codex-initialize-request-owner",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101bffdd8"
+      },
+      "started_at": "2026-10-29T20:21:43.594Z",
+      "duration_ms": 5,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/024-codex-initialize-request-owner.json",
+      "is_error": true,
+      "bytes": 520,
+      "sha256": "f9fc0ddc7053f9c5dc87cb81fc251d5d2171884f5116ff56fbcf7d2847b4625e",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"procedure_pseudo_code\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x101bffdd8\"}]}}}",
+      "session": "closure"
+    },
+    {
+      "label": "lifecycle-termination-delegate",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101d50474"
+      },
+      "started_at": "2026-10-29T20:21:43.607Z",
+      "duration_ms": 406,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/025-lifecycle-termination-delegate.json",
+      "is_error": false,
+      "bytes": 88274,
+      "sha256": "0ea27b8e977aeadd953a17db97f963ae8af3c51ce6b65bf48617a67b5a467aca",
+      "evidence_id": "ev_33c629f37172fe56b9f516e1a303de71b4b6605240911876ea034bd238dafff6",
+      "session": "closure"
+    },
+    {
+      "label": "native-url-router",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101f7c938"
+      },
+      "started_at": "2026-10-29T20:21:44.028Z",
+      "duration_ms": 25,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/026-native-url-router.json",
+      "is_error": false,
+      "bytes": 20366,
+      "sha256": "1bc4cede3b879400e566a44698a6737bc2d43f16ae708d7340d1f3d407e82edc",
+      "evidence_id": "ev_9d9656db8345baed801a17bf036812995d2d7d6786ceca7d67cacbc7a2463d98",
+      "session": "closure"
+    },
+    {
+      "label": "codex-notification-dictionary-writer",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101c6cf98"
+      },
+      "started_at": "2026-10-29T20:22:40.320Z",
+      "duration_ms": 97,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/027-codex-notification-dictionary-writer.json",
+      "is_error": false,
+      "bytes": 37961,
+      "sha256": "df6c52e79554f7511ab678125fcc9c150342aed30bbe613e22f2d8f8014cf4e5",
+      "evidence_id": "ev_2accaeb610f619684f5985d0c6a3eaf3aba5b4f5607354bc9df02fb6d5432dae",
+      "session": "closure"
+    },
+    {
+      "label": "codex-executable-resolver",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101cc0934"
+      },
+      "started_at": "2026-10-29T20:22:40.434Z",
+      "duration_ms": 20,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/028-codex-executable-resolver.json",
+      "is_error": false,
+      "bytes": 20044,
+      "sha256": "8f074ee92cef593579afd2db13f7649dda498df2418d0a24fe251bd4e92289a5",
+      "evidence_id": "ev_e7c67c1dc8be6ef5e80bbae68f78ed5a678e9c1ef3f69de98ea4ce28b498a201",
+      "session": "closure"
+    },
+    {
+      "label": "codex-alternate-executable-one",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101cc0c64"
+      },
+      "started_at": "2026-10-29T20:22:40.469Z",
+      "duration_ms": 15,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/029-codex-alternate-executable-one.json",
+      "is_error": false,
+      "bytes": 17924,
+      "sha256": "202ea875015ef41a473e9dee3506ec92a48c54eb4b525e0e43df8d4c7e68806a",
+      "evidence_id": "ev_9353a52d588a3d4df3f8d243d1322f69933ddf35ae5ed362dc5ddbcfbffd62c3",
+      "session": "closure"
+    },
+    {
+      "label": "codex-alternate-executable-two",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101cc0e8c"
+      },
+      "started_at": "2026-10-29T20:22:40.499Z",
+      "duration_ms": 69,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/030-codex-alternate-executable-two.json",
+      "is_error": false,
+      "bytes": 46618,
+      "sha256": "2fb354307ebb58936f657e5aea30b959f6af1beba58481a5e6d485b1be39e32c",
+      "evidence_id": "ev_8fd2656952447b5e06943d96c17bda5964772712602b7817a0730bce3985fed7",
+      "session": "closure"
+    },
+    {
+      "label": "codex-byte-append-helper",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101681640"
+      },
+      "started_at": "2026-10-29T20:23:41.356Z",
+      "duration_ms": 18,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/031-codex-byte-append-helper.json",
+      "is_error": false,
+      "bytes": 12839,
+      "sha256": "379c4620967e268723626d600601ddb988089bc4f700703d227da64d015c3a4b",
+      "evidence_id": "ev_fbe439e148b20936fff2a035748ef6b7969d517fcd5bb246c6415e4c40cc5e39",
+      "session": "closure"
+    },
+    {
+      "label": "codex-preferred-executable-url",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101cae19c"
+      },
+      "started_at": "2026-10-29T20:23:41.394Z",
+      "duration_ms": 7,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/032-codex-preferred-executable-url.json",
+      "is_error": false,
+      "bytes": 10670,
+      "sha256": "6629d486c94fa0eba80a45c7b8ab2f1ae064344d88a41d865a13626615440d36",
+      "evidence_id": "ev_6e1dbfedcb670604f9b015cfae7c2c669c40990d219594a235b050e82f78f694",
+      "session": "closure"
+    },
+    {
+      "label": "codex-preferred-resolver-body",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101cae1f4"
+      },
+      "started_at": "2026-10-29T20:24:07.103Z",
+      "duration_ms": 23,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/033-codex-preferred-resolver-body.json",
+      "is_error": false,
+      "bytes": 19432,
+      "sha256": "6c8380a45aade33d7356e06937f8b31222a21a2db2e7044db631e70d162fd035",
+      "evidence_id": "ev_7a8d68f6449a51d26d3703e1c2562e21a03b4dece076703499dd6a5b7dbe32a1",
+      "session": "closure"
+    },
+    {
+      "label": "codex-runtime-base-resolver",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101cae4d4"
+      },
+      "started_at": "2026-10-29T20:25:26.153Z",
+      "duration_ms": 34,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/034-codex-runtime-base-resolver.json",
+      "is_error": false,
+      "bytes": 25906,
+      "sha256": "129267dc116988651f571faa651f0286d5d7ea7c8e29e8840d6e68445db5658c",
+      "evidence_id": "ev_a258802f8726f50c5f4766213e0693905cb531182552a5168bac9bb643032bdf",
+      "session": "closure"
+    },
+    {
+      "label": "codex-writer-instructions",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x101c6cf98"
+      },
+      "started_at": "2026-10-29T20:25:26.205Z",
+      "duration_ms": 12,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/035-codex-writer-instructions.json",
+      "is_error": false,
+      "bytes": 92981,
+      "sha256": "372d3c464f41a05b6ed0f65560626b95dae338c2b43231144a8ff080e547bf76",
+      "evidence_id": "ev_bfdc1aa92a7a8ed44547c5ef46eaabbd78b4313a5fa6144a69e3d085bcca7aaa",
+      "session": "closure"
+    },
+    {
+      "label": "codex-runtime-component-getter",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101ca51ac"
+      },
+      "started_at": "2026-10-29T20:27:05.007Z",
+      "duration_ms": 8,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/036-codex-runtime-component-getter.json",
+      "is_error": false,
+      "bytes": 10520,
+      "sha256": "756210ac79488fb8c56de444108d6aaae4c20539774ce53fcd253cbf52eaf216",
+      "evidence_id": "ev_d420c564567106937bd9020148e8cd4469789b5298f68d2f6346cfd5a4c248d8",
+      "session": "closure"
+    },
+    {
+      "label": "notch-presentation-jump-table-bytes",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x10131da5c",
+        "length": 128
+      },
+      "started_at": "2026-10-29T20:28:06.153Z",
+      "duration_ms": 13,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/037-notch-presentation-jump-table-bytes.json",
+      "is_error": false,
+      "bytes": 10920,
+      "sha256": "a52f09c6eec8040e6930865a3a86591f29f5d87e74ea820cdcaef915acd27e88",
+      "evidence_id": "ev_1db99ae5f87b4ea5dc486b5507fd1bbc38acec91e202e931d4760ef2eb81908e",
+      "session": "closure"
+    },
+    {
+      "label": "notch-first-unrecovered-case-instruction",
+      "operation": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x10131a328"
+      },
+      "started_at": "2026-10-29T20:28:06.244Z",
+      "duration_ms": 9,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/038-notch-first-unrecovered-case-instruction.json",
+      "is_error": false,
+      "bytes": 11901,
+      "sha256": "b7c35fb1865ccb2c4d47bf7611f82967f19bd4b056157a10834c652641050734",
+      "evidence_id": "ev_6cea8f54741b1cd854209538c56de1df9daa09aaa9a047cb4f3b247574d9b2d0",
+      "session": "closure"
+    },
+    {
+      "label": "codex-runtime-component-initializer",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101ca516c"
+      },
+      "started_at": "2026-10-29T20:28:22.641Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/039-codex-runtime-component-initializer.json",
+      "is_error": true,
+      "bytes": 520,
+      "sha256": "78bbdff1d07ffe837ff8e21bf157c2800eb8d383540a4318056d10784f979e41",
+      "error": "{\"error\":{\"code\":\"invalid_request\",\"category\":\"invalid_input\",\"message\":\"Analysis input is invalid. Check the arguments and try again.\",\"retryable\":true,\"remediation\":{\"action\":\"Correct the listed arguments and retry.\"},\"details\":{\"operation\":\"procedure_pseudo_code\",\"issues\":[{\"path\":[],\"reason\":\"invalid_value\",\"message\":\"No procedure exists at the requested address: 0x101ca516c\"}]}}}",
+      "session": "closure"
+    },
+    {
+      "label": "codex-runtime-component-initializer-bytes",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x101ca516c",
+        "length": 96
+      },
+      "started_at": "2026-10-29T20:28:22.654Z",
+      "duration_ms": 2,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/040-codex-runtime-component-initializer-bytes.json",
+      "is_error": false,
+      "bytes": 10654,
+      "sha256": "6898d25cd5dc276ec8feba0287d681411a028b4402063faf5b2fb8466db674cf",
+      "evidence_id": "ev_cd51abc63a7b0256f9a1a00af20fce8f49bc7c0832e2af08a266c9c0c7972ebf",
+      "session": "closure"
+    },
+    {
+      "label": "notch-swift-enum-name-search",
+      "operation": "analyze_swift_types",
+      "arguments": {
+        "category": "enums",
+        "pattern": "Notch"
+      },
+      "started_at": "2026-10-29T20:32:20.847Z",
+      "duration_ms": 7100,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/041-notch-swift-enum-name-search.json",
+      "is_error": false,
+      "bytes": 11937,
+      "sha256": "36e50d81c4b0961f3599d32aeeb93bc1598e9fa1d52f28189f314c14a4993d81",
+      "evidence_id": "ev_7f90f85606610a8b2eb0ed9bb56741efe0997d9f07e60cc98c832c3b0ef73d82",
+      "session": "closure"
+    },
+    {
+      "label": "notch-presentation-metadata-accessor",
+      "operation": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101228b70"
+      },
+      "started_at": "2026-10-29T20:37:50.471Z",
+      "duration_ms": 16,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/042-notch-presentation-metadata-accessor.json",
+      "is_error": false,
+      "bytes": 11788,
+      "sha256": "f9a9a263bbb42130e065e220696022605ffe59bdc6bd0cda7224e73e9dcb6a8e",
+      "evidence_id": "ev_21d17ff5f54bbde4c71b2f1c6b109b5a909b83a28af5626d97cda0977deedf86",
+      "session": "closure"
+    },
+    {
+      "label": "notch-presentation-metadata-accessor-instructions",
+      "operation": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x101228b70"
+      },
+      "started_at": "2026-10-29T20:37:50.509Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/043-notch-presentation-metadata-accessor-instructions.json",
+      "is_error": false,
+      "bytes": 16508,
+      "sha256": "e3ab55adcf44ee95ebbf2954fcf4c4f05a39e08ec21d02ea003d4f660a912f63",
+      "evidence_id": "ev_515ec47310cc3c7fb0bfd0affd49e5144bc296e24608c68ee97e64e9354200c7",
+      "session": "closure"
+    },
+    {
+      "label": "notch-enum-descriptor-bytes",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x1031ac770",
+        "length": 40
+      },
+      "started_at": "2026-10-29T20:38:27.131Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/044-notch-enum-descriptor-bytes.json",
+      "is_error": false,
+      "bytes": 10206,
+      "sha256": "8c2ef9be486ee81fb8d846f3118ed9bd4de4fdbd367c8bb057f3be3c6d183c30",
+      "evidence_id": "ev_4a2efc7768d595e889c9567be3a52f18c0c49c7e4229d7ad6fa5733500936ac7",
+      "session": "closure"
+    },
+    {
+      "label": "notch-enum-metadata-cache-bytes",
+      "operation": "read_bytes",
+      "arguments": {
+        "address": "0x103439948",
+        "length": 8
+      },
+      "started_at": "2026-10-29T20:38:27.153Z",
+      "duration_ms": 3,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/045-notch-enum-metadata-cache-bytes.json",
+      "is_error": false,
+      "bytes": 9940,
+      "sha256": "6b64eb59323ea911a502f1d2cf052e92561764a3da457b6453de88b4b5cbb3d7",
+      "evidence_id": "ev_b8460e674200a7b3857497984928639bbe33ea158fb367465f096753c05efa95",
+      "session": "closure"
+    },
+    {
+      "label": "notch-enum-descriptor-data-type",
+      "operation": "inspect_native_data_type",
+      "arguments": {
+        "address": "0x1031ac770"
+      },
+      "started_at": "2026-10-29T20:38:36.876Z",
+      "duration_ms": 11,
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/046-notch-enum-descriptor-data-type.json",
+      "is_error": false,
+      "bytes": 16135,
+      "sha256": "ab004ca47c11d01d8175e375f9d6d414957163f9e95245284175e60376157917",
+      "evidence_id": "ev_81821ea2b03a8fab789d534f222a0aa983e6d7a71bbbe72621089ca419f2ce98",
+      "session": "closure"
+    }
+  ],
+  "receipt_references": [
+    {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/interruption.json",
+      "bytes": 894,
+      "sha256": "cdd81872b8cbff36d02254fa16eec5421187e140426ca6f466caf07586031559"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/first-session-validation.json",
+      "bytes": 13646,
+      "sha256": "b2f6303b6297349d6d578994852e24f78393dbec83d69dea7dc386f024f726c6"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/followup-validation.json",
+      "bytes": 701,
+      "sha256": "e67609a35738c935826bc5c1441a93da9fce8616123379e6c74d79870b17a4c1"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/selector-map.json",
+      "bytes": 474136,
+      "sha256": "7fab9333c3075a90b281074129bea150fec27a2beb258b293aa2797a80474d13"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/resume/cleanup-followup.json",
+      "bytes": 436,
+      "sha256": "c81666dc7a5b84a4123c87fd0e51957a0b2b640b6d995ce6e1eadbe762a86016"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/seed-provenance.json",
+      "bytes": 1391,
+      "sha256": "7a0039dcafc710628b34a1504489c06ca1f3f2541595af0ab889f7859eded1fd"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/seeds.tsv",
+      "bytes": 196,
+      "sha256": "3a1bd9a2819d70baea3101ab1080f32f87cd11adada548c31754d406ad7a4a00"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/seeded/cleanup-followup.json",
+      "bytes": 389,
+      "sha256": "8c508625bb14c54619ac4694d3262390d5953d05b6be0bd96db2bc058bdb5653"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-closure-audit-2026-10-30-07MVJW/audit.json",
+      "bytes": 130006,
+      "sha256": "6f1393cff8e46076672456806f13fe68f39053e100cbd11d97f9289f8fea9fde"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/invocations.json",
+      "bytes": 26143,
+      "sha256": "586f0397f8a3b11089b38aea3b0bad48275090d97d45ca6d7052ae49b07adc10"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/seed-provenance.json",
+      "bytes": 16088,
+      "sha256": "c6f1a7f758677a8ebb1fa665ee5ff35aba301065e606ca22e16a30dba89184cf"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/seeds.tsv",
+      "bytes": 4692,
+      "sha256": "1de864253daddbb824c1ebd7a82cf01ba670c47a1209887dc7046873df816040"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/closure/run-start.json",
+      "bytes": 148,
+      "sha256": "b40b22d8138fd7f21a50156cdb39a427f5d1162c4ff96c4a5e58476deb329615"
+    }
+  ],
+  "validation": {
+    "total_raw_replies": 170,
+    "successes": 157,
+    "preserved_errors": 13,
+    "advertised_and_canonical_schemas": "All 170 advertised inputs, 157 successful advertised outputs and canonical success contracts independently validated; 13 tool errors retained.",
+    "prior_three_stages": {
+      "total_raw_replies": 124,
+      "successes": 113,
+      "preserved_errors": 11,
+      "receipts": [
+        "first-session-validation.json",
+        "followup-validation.json"
+      ]
+    },
+    "text_structured_agreement": "All successful replies verified",
+    "independent_saved_evidence_audit": {
+      "path": "/private/tmp/rea-heyclicky-closure-audit-2026-10-30-07MVJW/audit.json",
+      "bytes": 130006,
+      "sha256": "6f1393cff8e46076672456806f13fe68f39053e100cbd11d97f9289f8fea9fde",
+      "recorded_at": "2026-10-30T07:27:57.047Z",
+      "runtime": "v22.17.0",
+      "compiled_contract_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/dist/contracts/toolContracts.js",
+      "combined_saved_replies": 170,
+      "successes": 157,
+      "preserved_errors": 13,
+      "closure": {
+        "saved_replies": 46,
+        "successes": 44,
+        "preserved_errors": 2
+      },
+      "checks": {
+        "raw_bytes_and_sha256": true,
+        "advertised_input_schemas": true,
+        "advertised_success_output_schemas": true,
+        "canonical_success_contracts": true,
+        "text_structured_agreement": true,
+        "all_17_gzip_and_decompressed_identities": true,
+        "seed_commitment_and_provenance_source_hashes": true,
+        "current_input_hashes": true
+      },
+      "limits": [
+        "The audit used saved replies and existing compiled contracts; it did not launch analyzers or target code.",
+        "Current input hash equality is a later observation and does not establish missing original final verification or cleanup."
+      ]
+    }
+  },
+  "limitations": [
+    "Static analysis did not execute HeyClicky or establish runtime reachability.",
+    "All Ghidra Programs were explicitly bounded and partial.",
+    "Trace-native-values returned truncated graphs with residual argument/alias/call-depth unknowns; formulas are corroborated against raw instructions and named external calls.",
+    "The initial52-call run was interrupted without public close/final lineage; later process absence is preserved separately.",
+    "Both completed runs preserve unavailable generic verifier lineage (run-token mismatches) and separate later known-PID absence.",
+    "The raw evidence remains local under /private/tmp; repository notes do not embed the large provider replies.",
+    "The interrupted 219-seed closure stage has no saved final binary_session, public close, summary, stderr or final verifier-lineage receipt; its original cleanup remains unverified.",
+    "Later input hash equality does not establish missing closure final verification or cleanup.",
+    "All target_executed:false values here describe these static stages; later live UI evidence is separate."
+  ],
+  "sdk_references": [
+    {
+      "path": "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSWindow.h",
+      "sha256": "b9bad4a33919679cf3ff5365a2d6268892147f0155d87448b9deab13cb8a8379",
+      "lines": [
+        55,
+        66,
+        130,
+        134,
+        135,
+        138,
+        141
+      ],
+      "authority": "local Apple SDK header, used only to decode observed constants"
+    },
+    {
+      "path": "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSGraphics.h",
+      "sha256": "f21b5a61a870a78ed939ba7e412020e89291efff63dbaf786835b888ef99319a",
+      "lines": [
+        99
+      ],
+      "authority": "local Apple SDK header, used only to decode observed constants"
+    }
+  ],
+  "raw_archive": {
+    "manifest_path": "/private/tmp/rea-heyclicky-native-followup-2026-10-29/raw-json-archive-manifest.json",
+    "manifest_sha256": "e3b8c9489233e0c485931c77baf0639d059f701349b5ed93d3478a6fe8aad022",
+    "archived_files": 17,
+    "logical_bytes_reclaimed": 100891811,
+    "allocated_bytes_reclaimed": 100904960,
+    "original_identities_preserved": true,
+    "verification": "All carriers rechecked: compressed digest/length and streamed decompressed original digest/length. Originals removed only after first verified decompression; small receipts/catalogs remain raw.",
+    "independent_recheck": {
+      "path": "/private/tmp/rea-heyclicky-closure-audit-2026-10-30-07MVJW/audit.json",
+      "bytes": 130006,
+      "sha256": "6f1393cff8e46076672456806f13fe68f39053e100cbd11d97f9289f8fea9fde",
+      "verified_carriers": 17
+    },
+    "closure_storage": {
+      "saved_replies": 46,
+      "encoding": "raw-json",
+      "in_manifest": false
+    }
+  },
+  "updated_at": "2026-10-30T09:17:39.224Z"
+}

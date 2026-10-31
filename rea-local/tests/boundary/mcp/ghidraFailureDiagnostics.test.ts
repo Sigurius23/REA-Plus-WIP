@@ -4,7 +4,10 @@ import { expect, it } from "vitest";
 import { logCliCommand } from "../../../src/cliLogging.js";
 import { analysisErrorProjectionSchema } from "../../../src/contracts/errorSchemas.js";
 import { GhidraRequestQueue } from "../../../src/ghidra/GhidraRequestQueue.js";
-import { bindGhidraSessionFailure } from "../../../src/ghidra/GhidraSessionError.js";
+import {
+  GhidraSessionError,
+  bindGhidraSessionFailure,
+} from "../../../src/ghidra/GhidraSessionError.js";
 import { silentLogger } from "../../../src/logger.js";
 import { connectGhidraMcp } from "./ghidraMcpHarness.js";
 
@@ -79,3 +82,59 @@ it("preserves queue failure diagnostics through the provider, CLI adapter and SD
     await harness.close();
   }
 }, 30_000);
+
+it("preserves the public overview operation and bounded startup diagnostics through MCP", async () => {
+  const failure = new GhidraSessionError(
+    "timeout",
+    "Startup deadline elapsed",
+    {
+      phase: "startup",
+      stage: "awaiting-post-analysis-bridge",
+      startup_timeout_ms: 900000,
+      stdout: {
+        text: "bounded captured import output",
+        bytes: 28,
+        retained_bytes: 28,
+      },
+      diagnostic_truncated: true,
+    },
+    { timeoutMs: 900000 },
+  );
+  const harness = await connectGhidraMcp(
+    "startup-failure-diagnostics",
+    undefined,
+    { startupFailure: failure },
+  );
+  try {
+    const reply = await harness.mcp.callTool({
+      name: "binary_overview",
+      arguments: {},
+    });
+    const error = parseMcpToolError(reply).error;
+    expect(error).toMatchObject({
+      code: "provider_timeout",
+      retryable: false,
+      details: {
+        operation: "binary_overview",
+        provider: "ghidra",
+        provider_operation: "list_documents",
+        phase: "startup",
+        stage: "awaiting-post-analysis-bridge",
+        timeout_ms: 900000,
+        diagnostics: {
+          diagnostic_truncated: true,
+          stdout: { text: "bounded captured import output" },
+        },
+      },
+    });
+    expect(error.message).toContain("binary_overview");
+    expect(error.message).not.toContain("smaller request");
+    expect(error.remediation.action).toContain("REA_GHIDRA_STARTUP_TIMEOUT_MS");
+    expect(error.remediation.action).toContain(
+      "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS",
+    );
+    expect(error.remediation.action).toContain("Unchanged settings");
+  } finally {
+    await harness.close();
+  }
+});

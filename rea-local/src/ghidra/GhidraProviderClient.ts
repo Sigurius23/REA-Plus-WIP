@@ -426,6 +426,23 @@ export const createGhidraProviderClient = (input: {
         },
       }),
     );
+  const analysisTimeoutSeconds = config.ghidraAnalysisTimeoutSeconds;
+  if (
+    committedProfile.parameters.analysis_timeout_seconds !==
+      analysisTimeoutSeconds ||
+    (analysisTimeoutSeconds === undefined
+      ? committedProfile.parameters.analysis_policy !== undefined
+      : committedProfile.parameters.analysis_policy !==
+        "bounded-autoanalysis-v1")
+  )
+    return unavailableClient(
+      new ProviderAdapterError("ghidra", "open_binary", {
+        diagnostics: {
+          reason:
+            "The committed analysis policy and REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS differ; reopen the target to resolve a new profile.",
+        },
+      }),
+    );
   const invalidProfile = validateGhidraExtensionProfile(
     extensions,
     config,
@@ -462,6 +479,7 @@ export const createGhidraProviderClient = (input: {
         : [];
   const client = clientFactory({
     startupTimeoutMs: config.ghidraStartupTimeoutMs,
+    ...(analysisTimeoutSeconds === undefined ? {} : { analysisTimeoutSeconds }),
     platform: installation.platform,
     launcher: new GhidraHeadlessLauncher({
       environment: input.environment,
@@ -550,7 +568,13 @@ export const createGhidraProviderClient = (input: {
   const releaseLimitation = unverifiedGhidraBuildLimitation(
     prerequisites.value.providerVersion,
   );
-  const sessionLimitations = (): readonly string[] => [
+  const sessionLimitations = (info: GhidraSessionInfo): readonly string[] => [
+    `Ghidra auto-analysis state: analysis_complete=${String(info.analysis_complete)}; analysis_timed_out=${String(info.analysis_timed_out)}${info.analysis_timeout_seconds === undefined ? "" : `; analysis_timeout_seconds=${String(info.analysis_timeout_seconds)}`}.`,
+    ...(info.analysis_timed_out
+      ? [
+          "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+        ]
+      : []),
     ...providerLimitations,
     ...targetLimitations,
     ...(psp ? GHIDRA_PSP_LIMITATIONS : []),
@@ -596,7 +620,10 @@ export const createGhidraProviderClient = (input: {
         return ok(
           createAnalysisExecution(started.value, committedProfile.provider, {
             analysisProfile: committedProfile,
-            limitations: [...healthLimitations, ...sessionLimitations()],
+            limitations: [
+              ...healthLimitations,
+              ...sessionLimitations(started.value),
+            ],
           }),
         );
       }
@@ -604,24 +631,21 @@ export const createGhidraProviderClient = (input: {
         ? parseGhidraFunctionInput(operation, parameters)
         : parseGhidraInventoryInput(operation, parameters);
       if (!input.ok) return input;
-      if (extensions.length > 0 || seeds !== undefined) {
-        const started = await client.start(options?.signal);
-        if (!started.ok)
-          return err(
-            projectSessionError(
-              operation,
-              started.error,
-              config.ghidraStartupTimeoutMs,
-            ),
-          );
-        const failed = await checkExtensions(operation, started.value);
-        if (failed !== undefined) return err(failed);
-      }
-      const called = await client.callTool(
-        operation,
-        input.value,
-        options?.signal === undefined ? {} : { signal: options.signal },
-      );
+      const started = await client.start(options?.signal);
+      if (!started.ok)
+        return err(
+          projectSessionError(
+            operation,
+            started.error,
+            config.ghidraStartupTimeoutMs,
+          ),
+        );
+      const failed = await checkExtensions(operation, started.value);
+      if (failed !== undefined) return err(failed);
+      const called = await client.callTool(operation, input.value, {
+        expectedSession: started.value,
+        ...(options?.signal === undefined ? {} : { signal: options.signal }),
+      });
       if (!called.ok)
         return err(
           projectSessionError(
@@ -729,7 +753,7 @@ export const createGhidraProviderClient = (input: {
           limitations: [
             ...limitationsFor(operation),
             ...observationLimitations,
-            ...sessionLimitations(),
+            ...sessionLimitations(started.value),
           ],
         }),
       );
@@ -847,11 +871,36 @@ const projectPrimarySessionError = (
     ]);
   if (failure.kind === "cancelled")
     return new AnalysisCancelledError(operation);
-  if (failure.kind === "timeout" || failure.kind === "analysis_timeout")
+  if (failure.kind === "timeout" || failure.kind === "analysis_timeout") {
+    const startup =
+      failure.diagnostics.phase === "startup" ||
+      failure.kind === "analysis_timeout" ||
+      operation === "health";
     return new AnalysisTimeoutError(
       operation,
       failure.timeoutMs ?? startupTimeoutMs,
+      {
+        cause: failure,
+        ...(startup
+          ? {
+              context: {
+                providerId: "ghidra",
+                phase: "startup" as const,
+                stage:
+                  typeof failure.diagnostics.stage === "string"
+                    ? failure.diagnostics.stage
+                    : "awaiting-post-analysis-bridge",
+                providerOperation: operation,
+                diagnostics: failure.diagnostics,
+                retryable: false,
+                remediationAction:
+                  "Review the captured Ghidra startup diagnostics. Increase REA_GHIDRA_STARTUP_TIMEOUT_MS to allow more import, analysis and bridge time, or explicitly set REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS to admit a stable partial Program after bounded auto-analysis. Reopen the target after changing the analysis policy. Unchanged settings can reproduce the failure; the public request has no input-size knob. A separately identified smaller binary is another input choice.",
+              },
+            }
+          : {}),
+      },
     );
+  }
   if (failure.kind === "remote" && failure.remoteCode === "decompile_cancelled")
     return new AnalysisCancelledError(operation);
   if (

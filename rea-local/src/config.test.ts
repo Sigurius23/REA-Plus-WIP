@@ -256,19 +256,17 @@ describe("configuration failure diagnostics", () => {
   ])(
     "rejects malformed Ghidra startup deadline %j with its setting and constraint",
     (value) => {
-      const result = parseConfig({ REA_GHIDRA_STARTUP_TIMEOUT_MS: value });
-      if (result.ok) throw new Error("Expected invalid startup deadline");
-      expect(projectAnalysisError(result.error)).toMatchObject({
-        code: "configuration_invalid",
-        details: {
-          settings: [
-            {
-              setting: "REA_GHIDRA_STARTUP_TIMEOUT_MS",
-              constraint: expect.any(String),
-            },
-          ],
-        },
-      });
+      for (const setting of [
+        "REA_GHIDRA_STARTUP_TIMEOUT_MS",
+        "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS",
+      ]) {
+        const result = parseConfig({ [setting]: value });
+        if (result.ok) throw new Error("Expected invalid Ghidra deadline");
+        expect(projectAnalysisError(result.error)).toMatchObject({
+          code: "configuration_invalid",
+          details: { settings: [{ setting, constraint: expect.any(String) }] },
+        });
+      }
     },
   );
 
@@ -311,4 +309,18 @@ describe("configuration failure diagnostics", () => {
         },
       });
   });
+});
+
+it("keeps bounded analysis opt-in and rejects Ghidra's overflowing millisecond conversion", () => {
+  const defaults = parseConfig({});
+  if (!defaults.ok) throw defaults.error;
+  expect(defaults.value.ghidraAnalysisTimeoutSeconds).toBeUndefined();
+  const maximum = parseConfig({
+    REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS: "2147483",
+  });
+  if (!maximum.ok) throw maximum.error;
+  expect(maximum.value.ghidraAnalysisTimeoutSeconds).toBe(2147483);
+  expect(
+    parseConfig({ REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS: "2147484" }),
+  ).toMatchObject({ ok: false });
 });

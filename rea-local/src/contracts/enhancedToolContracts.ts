@@ -27,7 +27,7 @@ const enhanced = <Name extends string, Schema extends z.ZodObject>(
 export const ENHANCED_TOOL_CONTRACTS = [
   enhanced(
     "inspect_native_dispatch_metadata",
-    "Inspect the bound provider's name inventory for Objective-C class/method symbols and Swift mangled symbols, returning at most max_records decoded names. Includes target SHA-256 when available, provider identity/version, analysis-profile digest, facet coverage, and per-record Evidence. This is symbol-level evidence, not runtime metadata: ivar layouts, protocol conformances, witness/class tables, and relative pointers are explicitly marked unsupported unless a provider supplies those decoders. The provider controls how its name inventory is acquired.",
+    "Inspect native Objective-C/Swift metadata using the bound provider. Select all families or only Objective-C, Swift conformances/witness slots, or Swift class vtables; max_records is one aggregate decode-admission budget, not a separate allowance per family. Unselected families are not_requested. A validated Apple binary reader supplies encoded metadata, addresses, fixups and per-record Evidence; other providers retain narrower symbol-only observations and mark requested binary facets unsupported. Includes target/provider identity, analysis-profile digest and explicit coverage. Static metadata does not prove runtime dispatch.",
     enhancedInputSchemas.inspect_native_dispatch_metadata,
   ),
   enhanced(

@@ -1,3 +1,4 @@
+import { addSenderValidationObservation } from "./JavaScriptSenderValidationGraph.js";
 import type { ApplicationNode } from "../../domain/javascript/javascriptApplicationGraphSchemas.js";
 import type {
   ElectronIpcFinding,
@@ -41,14 +42,6 @@ interface IpcHandlerInput {
   readonly record: ElectronIpcRecord;
   readonly source: ApplicationNode;
   readonly channel: ApplicationNode;
-  readonly coverage: JavaScriptArtifactGraphCoverage;
-}
-
-interface ValidationObservationInput {
-  readonly context: JavaScriptArtifactGraphContext;
-  readonly file: JavaScriptArtifactFile;
-  readonly validation: ElectronSenderValidationFinding;
-  readonly target: ApplicationNode;
   readonly coverage: JavaScriptArtifactGraphCoverage;
 }
 
@@ -283,8 +276,7 @@ const addValidationObservations = (state: IpcGraphState): void => {
             )
           : state.handlers.get(handlerRecord.key);
       if (target !== undefined)
-        addValidationObservation({
-          context: state.context,
+        addSenderValidationObservation(state.context, {
           file,
           validation,
           target,
@@ -292,36 +284,6 @@ const addValidationObservations = (state: IpcGraphState): void => {
         });
     }
   }
-};
-
-const addValidationObservation = (input: ValidationObservationInput): void => {
-  const { context, file, validation, target, coverage } = input;
-  context.accumulator.addNode({
-    kind: target.kind,
-    identity: target.identity,
-    observations: [
-      {
-        label: `${validation.subject} validation candidate`,
-        properties: {
-          fact_kind: "sender-validation-candidate",
-          subject: validation.subject,
-          mechanism: validation.mechanism,
-          expected: validation.expected,
-          enforcement: validation.enforcement,
-        },
-        evidence: astObservationEvidence({
-          sha256: file.sha256,
-          path: file.path,
-          range: validation.location,
-          operation: "observe-ipc-sender-validation-candidate",
-          coverage,
-          limitations: [
-            "A comparison or string check is visible, but static syntax alone does not prove rejection, ordering, or complete sender validation.",
-          ],
-        }),
-      },
-    ],
-  });
 };
 
 const containingHandler = (

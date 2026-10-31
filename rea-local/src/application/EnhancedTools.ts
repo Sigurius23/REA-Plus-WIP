@@ -28,6 +28,7 @@ import {
   discoverObjcProtocols,
 } from "../domain/symbolAnalysis.js";
 import { inspectNativeDispatch } from "./native/NativeDispatchMetadataInspection.js";
+import type { NativeDispatchFacet } from "../domain/native/objcSwiftMetadata.js";
 import { traceNativeValues } from "./native/NativeValueTrace.js";
 import { traceNativeUiAction } from "./native/NativeUiActionTrace.js";
 import { jsonValueSchema, type JsonValue } from "../domain/jsonValue.js";
@@ -135,6 +136,7 @@ export class EnhancedTools {
         return this.#inspectNativeDispatchMetadata(
           call.input.max_records,
           signal,
+          call.input.facet,
         );
       case "get_objc_classes":
         return this.#objcClasses(call.input.pattern, signal);
@@ -237,8 +239,9 @@ export class EnhancedTools {
   #inspectNativeDispatchMetadata(
     maxRecords: number,
     signal?: AbortSignal,
+    facet: NativeDispatchFacet = "all",
   ): EnhancedResult {
-    return inspectNativeDispatch(this.analysis, maxRecords, signal);
+    return inspectNativeDispatch(this.analysis, maxRecords, signal, facet);
   }
 
   async #objcProtocols(signal?: AbortSignal): EnhancedResult {

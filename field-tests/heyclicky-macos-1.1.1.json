@@ -1,0 +1,1910 @@
+{
+  "schema": "rea-field-test-summary-v1",
+  "recorded_date": "2026-10-28",
+  "target": {
+    "path": "/Applications/HeyClicky.app",
+    "bundle_id": "com.humansongs.clicky",
+    "version": "1.1.1",
+    "build": "66",
+    "shipped_git_revision": "5c6081997",
+    "inventory_root_sha256": "f0e768a522509880c791569baa1a3bd964bf682f64861f68bf56ebd49d572960",
+    "main_binary_sha256": "764a68a80f53de64a0e48a509d5a98737994f93e0888605e2de85b4028f3cb17",
+    "main_binary_bytes": 115396000,
+    "architectures": {
+      "items": [
+        {
+          "name": "x86_64",
+          "cpu_type": "CPU_TYPE_X86_64",
+          "cpu_subtype": "CPU_SUBTYPE_X86_64_ALL",
+          "file_offset": 16384,
+          "size": 59399024,
+          "alignment": 16384
+        },
+        {
+          "name": "arm64",
+          "cpu_type": "CPU_TYPE_ARM64",
+          "cpu_subtype": "CPU_SUBTYPE_ARM64_ALL",
+          "file_offset": 59424768,
+          "size": 55971232,
+          "alignment": 16384
+        }
+      ],
+      "total": 2,
+      "exhaustive": true,
+      "limitations": []
+    },
+    "derived_arm64": {
+      "path": "/tmp/rea-heyclicky-2026-10-28/HeyClicky-arm64",
+      "sha256": "bb98afe140170240037589647cbfe00099079655e9223ec87f7f702db3fb7911",
+      "parent_file_offset": 59424768,
+      "bytes": 55971232,
+      "derivation": "lipo -thin arm64; original slice bytes retained",
+      "original_span_sha256_verified": true
+    }
+  },
+  "rea": {
+    "version": "6.4.0",
+    "source_commit": "895057282e98d809253abf6a49ff1bf1f59aee5f",
+    "runtime": "Node.js 24.22.1",
+    "deep_provider": "Ghidra 12.1.4 with existing OpenJDK 27"
+  },
+  "scope": {
+    "target_executed": false,
+    "target_services_contacted": false,
+    "user_application_data_read": false,
+    "target_modified": false,
+    "evidence_type": "static shipped artifact; selected source review; owned headless analysis only"
+  },
+  "inventory": {
+    "evidence_id": "ev_fcb474300e2cc19ae655a2f521a743d08fe73739c070504bcbf7fd1c33d830c2",
+    "manifest": {
+      "manifest_id": "agm_6030a988812ecbd348493471b074ae4713375b07684eda079e0635964d3a3683",
+      "root_artifact_id": "art_af27c8a62bb11ced3d185c11def3df9fe1e78f1f83f7212b94a13dfb2e2722cf",
+      "root_sha256": "f0e768a522509880c791569baa1a3bd964bf682f64861f68bf56ebd49d572960",
+      "root_format": "directory",
+      "graph_sha256": "a7b060ea3565063f0cb103de5f4ac4b8108f0b6f05a1150de363c8612493854d",
+      "node_count": 395,
+      "occurrence_count": 408,
+      "edge_count": 398
+    },
+    "occurrence_kinds": {
+      "directory": 111,
+      "symlink": 9,
+      "file": 288
+    },
+    "integrity_contradictions": [],
+    "apple_bundles": 8,
+    "apple_runtime_families": [
+      "javascript",
+      "native"
+    ],
+    "bridge_candidates": {
+      "status": "complete",
+      "total_candidates": 187,
+      "emitted_candidates": 187,
+      "omitted_candidates": 0
+    },
+    "bridge_candidate_authority": "content co-presence, not verified native-to-JavaScript call edges"
+  },
+  "signature_inspection": {
+    "signed": true,
+    "identifier": "com.humansongs.clicky",
+    "team_identifier": "2UDAY4J48G",
+    "authorities": [
+      "Developer ID Application: Farzain Majeed (2UDAY4J48G)",
+      "Developer ID Certification Authority",
+      "Apple Root CA"
+    ],
+    "entitlements": {
+      "com.apple.security.app-sandbox": false,
+      "com.apple.security.cs.allow-jit": true,
+      "com.apple.security.device.audio-input": true,
+      "com.apple.security.device.camera": true,
+      "com.apple.security.network.client": true,
+      "com.apple.security.temporary-exception.mach-lookup.global-name": [
+        "com.apple.screencapturekit.picker"
+      ]
+    },
+    "timestamp": "23. Oct 2026 at 20:09:40",
+    "hardened_runtime": true,
+    "limitations": [
+      "Entitlements and designated requirements require separate bounded commands.",
+      "Inspected a digest-verified Mach-O byte snapshot; filesystem-bound signing context and trust validation are not examined."
+    ]
+  },
+  "dylib_trace": {
+    "architecture": "arm64",
+    "roots": 11,
+    "images": 16,
+    "edges": 166,
+    "resolutions": {
+      "undetermined": 165,
+      "conditional": 1
+    },
+    "findings": [],
+    "coverage": {
+      "status": "partial",
+      "unparsed_images": [],
+      "roots_without_architecture": [
+        "Contents/Resources/CodexRuntime/vendor/x86_64-apple-darwin/bin/codex",
+        "Contents/Resources/CodexRuntime/vendor/x86_64-apple-darwin/bin/codex-code-mode-host",
+        "Contents/Resources/CodexRuntime/vendor/x86_64-apple-darwin/codex-path/rg",
+        "Contents/Resources/CodexRuntime/vendor/x86_64-apple-darwin/codex-resources/zsh/bin/zsh"
+      ]
+    },
+    "limitations": [
+      "LC_LAZY_LOAD_DYLIB dependencies are resolved but not traversed, because dyld loads them only on first use.",
+      "Slices are matched by dyld's graded architectures (an x86_64h process also loads x86_64). arm64e processes that disable pointer authentication can also load arm64 slices; that fallback is not modeled.",
+      "Absolute install names and rpaths are outside the analyzed root and are not evaluated, including /System and /usr/lib libraries that the dyld shared cache usually provides.",
+      "Leaf and relative install names depend on dyld fallback paths, DYLD_* variables, and the working directory; they are undetermined.",
+      "Load order follows dyld's dependents-first traversal in load-command order. An image reached through several chains is resolved once per process, with the rpath stack and conditionality of the first chain; a later request whose install name matches an already loaded image reuses it.",
+      "@loader_path uses each image's symlink-resolved path within the analyzed root.",
+      "Code-signing checks that can reject a found image, such as library validation and the hardened runtime, are not evaluated.",
+      "Dylib compatibility versions are not compared. Apple's linker documentation describes a load-time rejection when an image's compatibility version is older than the loader requires, but dyld on macOS 26 was observed to load such an image."
+    ]
+  },
+  "dispatch": {
+    "input": "derived_arm64",
+    "max_records": 20000,
+    "objc_class_list_entries_examined": 656,
+    "retained_record_counts": {
+      "objc_classes": 1312,
+      "objc_protocols": 74,
+      "objc_categories": 4,
+      "objc_ivars": 4372,
+      "objc_dispatch_implementations": 3934,
+      "swift_decls": 0,
+      "swift_conformances": 0,
+      "swift_dispatch_slots": 0,
+      "swift_symbols": 0,
+      "relative_pointers": 8059
+    },
+    "class_count_note": "objc_classes includes metaclasses; 1312 records do not mean 1312 unique classes",
+    "coverage": [
+      {
+        "facet": "objc_class_method_ivar_metadata",
+        "status": "partial",
+        "examined": 656,
+        "reason_preview": "Unresolved ivar offset pointer 0x103470008; Unresolved ivar offset pointer 0x103470010; Unresolved ivar offset pointer 0x103470018; Unresolved ivar offset pointer 0x103470100; Unresolved ivar offset pointer 0x1034700d0; Unresolved ivar offset pointer 0x103470108; Unresolved ivar offset pointer 0x1034700f8; Unresolved ivar offset pointer 0x103470110; Unresolved ivar offset pointer 0x1034700d8; Unresolved ivar offset pointer 0x1034700e0; Unresolved ivar offset pointer 0x103470118; Unresolved ivar offset pointer 0x1034700e8; Unresolved ivar offset pointer 0x1034700f0; Unresolved ivar offset pointer 0x103470120; Unresolved ivar offset pointer 0x1034702a8; Unresolved ivar offset pointer 0x103470288; Unresolved ivar offset pointer 0x1034702d0; Unresolved ivar offset pointer 0x1034702d8; Unresolv"
+      },
+      {
+        "facet": "binary_relative_pointers",
+        "status": "partial",
+        "examined": 8059,
+        "reason_preview": "max_records_reached"
+      },
+      {
+        "facet": "objc_properties_categories",
+        "status": "partial",
+        "examined": 4,
+        "reason_preview": "max_records_reached"
+      },
+      {
+        "facet": "pointer_fixups",
+        "status": "complete",
+        "examined": 2,
+        "reason_preview": "chained fixups: DYLD_CHAINED_PTR_64_OFFSET"
+      },
+      {
+        "facet": "swift_generic_resilient_witnesses_overrides_async_coroutines",
+        "status": "unsupported",
+        "examined": 0,
+        "reason_preview": "This reader admits simple Swift conformance/static witness records and non-generic, non-resilient class vtables; generic/resilient tables and other Swift metadata families are not decoded"
+      },
+      {
+        "facet": "swift_conformances_static_witness_slots",
+        "status": "partial",
+        "examined": 96,
+        "reason_preview": "conformance_decode_failed at 0x10322bd18: Unmapped or ambiguous metadata pointer 0x0; conformance_decode_failed at 0x10322bd1c: Unmapped or ambiguous metadata pointer 0x0; conformance_decode_failed at 0x10322bd20: Unmapped or ambiguous metadata pointer 0x0; conformance_decode_failed at 0x10322bd24: Unmapped or ambiguous metadata pointer 0x0; conformance_decode_failed at 0x10322bd28: Unmapped or ambiguous metadata pointer 0x0; conformance_decode_failed at 0x10322bd2c: Unmapped or ambiguous metadata pointer 0x0; conformance_decode_failed at 0x10322bd30: Unmapped or ambiguous metadata pointer 0x0; conformance_decode_failed at 0x10322bd34: Unmapped or ambiguous metadata pointer 0x0; conformance_decode_failed at 0x10322bd38: Unmapped or ambiguous metadata pointer 0x0; conformance_decode_failed "
+      },
+      {
+        "facet": "swift_class_vtable_descriptors",
+        "status": "partial",
+        "examined": 0,
+        "reason_preview": "record_budget_exhausted at 0x10322fc28: max_records_reached; max_records_reached"
+      }
+    ]
+  },
+  "javascript_full_resources": {
+    "view_summary": {
+      "input_path": "/Applications/HeyClicky.app/Contents/Resources",
+      "format": "directory",
+      "root_artifact_sha256": "e00c545b13c33378cd9d88f791d92c74076b7a75ade17241ffb4f12e275f7a61",
+      "statistics": {
+        "relevant_files": 18,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 1739340,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 11,
+        "visited_ast_nodes": 176696,
+        "findings": 30,
+        "modules": 0,
+        "parse_failures": 0,
+        "paths_scope": {
+          "paths_include": [],
+          "paths_exclude": [],
+          "considered_files": 18,
+          "selected_files": 18,
+          "excluded_files": 0
+        }
+      },
+      "module_counts": {
+        "bundler_module_registrations": 0,
+        "javascript_assets": 11,
+        "javascript_modules": 22,
+        "source_modules": 0,
+        "module_page_entries": 33
+      },
+      "electron": {
+        "browser_windows": 0,
+        "explicit_web_preferences": 0,
+        "preload_entrypoints": 0,
+        "context_bridge_apis": 0,
+        "exposed_api_members": 0,
+        "ipc": {
+          "operations": 0,
+          "literal_channels": 0,
+          "dynamic_channel_operations": 0,
+          "renderer_transmissions": 0,
+          "renderer_listeners": 0,
+          "main_handlers": 0,
+          "paired_renderer_transmissions": 0,
+          "ambiguous_renderer_transmissions": 0,
+          "unpaired_literal_renderer_transmissions": 0
+        },
+        "sender_validation_observations": 1,
+        "utility_processes": 0,
+        "resolved_utility_entrypoints": 0,
+        "native_addon_bindings": 0,
+        "resolved_native_addon_bindings": 0,
+        "context_bridge_member_candidates": 0
+      },
+      "coverage": {
+        "application": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null,
+          "limits": []
+        },
+        "semantic": {
+          "status": "partial",
+          "truncated": true,
+          "omitted_nodes": null,
+          "omitted_relations": null,
+          "limits": [
+            {
+              "name": "semantic_graph_node_ceiling",
+              "value": 100000,
+              "unit": "items"
+            }
+          ],
+          "families": [
+            {
+              "family": "boundary",
+              "status": "partial",
+              "retained_relations": 124,
+              "omitted_relations": null,
+              "unknown_count": 23
+            },
+            {
+              "family": "call-flow",
+              "status": "partial",
+              "retained_relations": 5876,
+              "omitted_relations": null,
+              "unknown_count": 6888
+            },
+            {
+              "family": "child-process",
+              "status": "partial",
+              "retained_relations": 0,
+              "omitted_relations": null,
+              "unknown_count": 0
+            },
+            {
+              "family": "closure",
+              "status": "partial",
+              "retained_relations": 6040,
+              "omitted_relations": null,
+              "unknown_count": 0
+            },
+            {
+              "family": "configuration",
+              "status": "partial",
+              "retained_relations": 0,
+              "omitted_relations": null,
+              "unknown_count": 0
+            },
+            {
+              "family": "data-flow",
+              "status": "partial",
+              "retained_relations": 49384,
+              "omitted_relations": null,
+              "unknown_count": 10202
+            },
+            {
+              "family": "event",
+              "status": "partial",
+              "retained_relations": 13,
+              "omitted_relations": null,
+              "unknown_count": 13
+            },
+            {
+              "family": "object-flow",
+              "status": "partial",
+              "retained_relations": 2899,
+              "omitted_relations": null,
+              "unknown_count": 20196
+            },
+            {
+              "family": "promise-ownership",
+              "status": "partial",
+              "retained_relations": 317,
+              "omitted_relations": null,
+              "unknown_count": 248
+            },
+            {
+              "family": "request",
+              "status": "partial",
+              "retained_relations": 1,
+              "omitted_relations": null,
+              "unknown_count": 1
+            },
+            {
+              "family": "resource-lifecycle",
+              "status": "partial",
+              "retained_relations": 0,
+              "omitted_relations": null,
+              "unknown_count": 0
+            },
+            {
+              "family": "timer",
+              "status": "partial",
+              "retained_relations": 13,
+              "omitted_relations": null,
+              "unknown_count": 2
+            }
+          ]
+        },
+        "application_unknowns": 0,
+        "semantic_unknowns": 37573
+      },
+      "limitation_count": 8
+    },
+    "file_status_summary": {
+      "files": 11,
+      "files_with_issues": 3,
+      "files_without_retention_metadata": 0,
+      "parent_limitation_count": 19
+    },
+    "file_statuses": [
+      {
+        "path": "ClickyBrowserExtension/background.js",
+        "sha256": "0dd4562fe856271b5adfb9d397885512d2fda2c2b7089c546eebcf23858aecb5",
+        "parse_status": "partial",
+        "module_ir_status": "retained",
+        "module_ir_coverage": "complete",
+        "semantic_graph_status": "retained",
+        "issues": [
+          {
+            "operation": "parse-javascript",
+            "code": null,
+            "message": "Recorded syntax parse status is partial.",
+            "limits": [],
+            "node_id": "jag_node_c0d75473da4695de7e8085c81b90bdb0b8c05c291601429286731cacd6413305",
+            "observation_id": "jag_observation_a63207572d2a92e0f0c5b203a28dbaf98a123563956a26e8e5b09a9ca882c8a1"
+          }
+        ]
+      },
+      {
+        "path": "ClickyBrowserExtension/bubble.js",
+        "sha256": "4fe22409379a26baf30b0062f32e1a9016d49bd862988c428a13bb29b8cfefb8",
+        "parse_status": "complete",
+        "module_ir_status": "retained",
+        "module_ir_coverage": "complete",
+        "semantic_graph_status": "retained",
+        "issues": []
+      },
+      {
+        "path": "ClickyBrowserExtension/core.mjs",
+        "sha256": "cc9cdce31af2d09201b0e213180f640c90dbc8105e271b4115c673cd33b35353",
+        "parse_status": "complete",
+        "module_ir_status": "retained",
+        "module_ir_coverage": "complete",
+        "semantic_graph_status": "retained",
+        "issues": []
+      },
+      {
+        "path": "ClickyBrowserExtension/mark.js",
+        "sha256": "ffac23a6eb19e9f8b21b07d9ac6f90cf88a2ab9af6e903073af5f2fce1e46ab9",
+        "parse_status": "complete",
+        "module_ir_status": "retained",
+        "module_ir_coverage": "complete",
+        "semantic_graph_status": "retained",
+        "issues": []
+      },
+      {
+        "path": "ClickyBrowserExtension/popup.js",
+        "sha256": "b94b977fd9b2433261b2cfbb17e7fc6d3a009e86f3adb8a39c1ff14b66e80c4c",
+        "parse_status": "complete",
+        "module_ir_status": "retained",
+        "module_ir_coverage": "complete",
+        "semantic_graph_status": "retained",
+        "issues": []
+      },
+      {
+        "path": "ClickyBrowserExtension/welcome.js",
+        "sha256": "6d99b98d793d2dd92b5f8b21ca2d3c18e6803b76185e44594dc17c9ffe969b9c",
+        "parse_status": "complete",
+        "module_ir_status": "retained",
+        "module_ir_coverage": "complete",
+        "semantic_graph_status": "retained",
+        "issues": []
+      },
+      {
+        "path": "clicky-draw-engine.js",
+        "sha256": "f2161b9c4def6092f5f866d5135ef3fea23a25e01787c22844b0002cebd8b966",
+        "parse_status": "complete",
+        "module_ir_status": "retained",
+        "module_ir_coverage": "complete",
+        "semantic_graph_status": "partial",
+        "issues": [
+          {
+            "operation": "project-semantic-graph",
+            "code": null,
+            "message": "The file's semantic graph projection was truncated.",
+            "limits": [
+              {
+                "name": "semantic_graph_file_node_budget",
+                "value": 20000,
+                "unit": "items"
+              }
+            ],
+            "node_id": "jag_node_2ce3b3d85df475c417a889eff075744fe73e83074cc375f96b50513ae3a92c49",
+            "observation_id": "jag_observation_a6bdf0c4523818683d838be6cf50f51102a5580070cb3056437d94ce53c6176e"
+          }
+        ]
+      },
+      {
+        "path": "clicky-draw-native.js",
+        "sha256": "599407179fac65b5bae9d360b93b7a292bd869ede5c14d63cd09cbc5680bae95",
+        "parse_status": "complete",
+        "module_ir_status": "retained",
+        "module_ir_coverage": "complete",
+        "semantic_graph_status": "retained",
+        "issues": []
+      },
+      {
+        "path": "clicky-draw-pieces.js",
+        "sha256": "13872a70cddfb18368a1f3f789be76dca127608b91eea1928e24fb145cae96b8",
+        "parse_status": "complete",
+        "module_ir_status": "retained",
+        "module_ir_coverage": "complete",
+        "semantic_graph_status": "retained",
+        "issues": []
+      },
+      {
+        "path": "clicky-three-parts.js",
+        "sha256": "0db80e7902cfffa7b543a18d129a61a0a23119f674a0c45591f608c5da1a0410",
+        "parse_status": "complete",
+        "module_ir_status": "retained",
+        "module_ir_coverage": "complete",
+        "semantic_graph_status": "retained",
+        "issues": []
+      },
+      {
+        "path": "clicky-three.js",
+        "sha256": "c36acdd6028e3b84b5d66dd2f89ed077683f8066f0a9a72f686ef186ae8f07dd",
+        "parse_status": "complete",
+        "module_ir_status": "retained",
+        "module_ir_coverage": "complete",
+        "semantic_graph_status": "partial",
+        "issues": [
+          {
+            "operation": "project-semantic-graph",
+            "code": null,
+            "message": "The file's semantic graph projection was truncated.",
+            "limits": [
+              {
+                "name": "semantic_graph_file_node_budget",
+                "value": 20000,
+                "unit": "items"
+              }
+            ],
+            "node_id": "jag_node_1ed9c0d1f8e0e45c0840afa86623413246af920171f8514ae47f30a3331d2421",
+            "observation_id": "jag_observation_d87c83bcef23f2180309a0334afd705391159760591d5e5ff98888db6f42b9a7"
+          }
+        ]
+      }
+    ],
+    "reported_endpoints": [
+      {
+        "node_id": "jag_node_779b1f8f81272bb068d9e59e4f7283a2bb5b8f55d3c686aa470416508be4b761",
+        "observation_id": "jag_observation_a076e8b64aa156138b7b21d66630c8e7d4f3b7796919773fb37dec217acbfc1a",
+        "template": "cursorOverlay",
+        "template_parts": null,
+        "materialized_value": "cursorOverlay",
+        "materialization_status": "literal",
+        "unresolved_expressions": [],
+        "evidence": {
+          "authority": "ast-static-analysis",
+          "state": "observed",
+          "confidence": "exact",
+          "artifact": {
+            "available": true,
+            "artifact_id": "art_0dd4562fe856271b5adfb9d397885512d2fda2c2b7089c546eebcf23858aecb5",
+            "sha256": "0dd4562fe856271b5adfb9d397885512d2fda2c2b7089c546eebcf23858aecb5"
+          },
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ClickyBrowserExtension/background.js",
+              "start": {
+                "line": 187,
+                "column": 7
+              },
+              "end": {
+                "line": 187,
+                "column": 48
+              }
+            }
+          },
+          "extractor": {
+            "name": "rea-javascript-artifact-reconstruction",
+            "version": "1",
+            "operation": "discover-static-endpoint",
+            "executable_sha256": null
+          },
+          "coverage": {
+            "status": "partial",
+            "truncated": false,
+            "omitted_count": null,
+            "limits": []
+          },
+          "limitations": [
+            "AST coverage is incomplete; omitted or dynamic facts must not be interpreted as absence."
+          ],
+          "evidence_ids": []
+        }
+      },
+      {
+        "node_id": "jag_node_a6d26780ed6a0beade9f8502affa7580630bc0024af66e33cad423db9e2b0000",
+        "observation_id": "jag_observation_bc83b66ff9582ba0ba19c6783b9cf507657dbae475116adeed4cbe18a069c03f",
+        "template": "cursorOverlay",
+        "template_parts": null,
+        "materialized_value": "cursorOverlay",
+        "materialization_status": "literal",
+        "unresolved_expressions": [],
+        "evidence": {
+          "authority": "ast-static-analysis",
+          "state": "observed",
+          "confidence": "exact",
+          "artifact": {
+            "available": true,
+            "artifact_id": "art_b94b977fd9b2433261b2cfbb17e7fc6d3a009e86f3adb8a39c1ff14b66e80c4c",
+            "sha256": "b94b977fd9b2433261b2cfbb17e7fc6d3a009e86f3adb8a39c1ff14b66e80c4c"
+          },
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ClickyBrowserExtension/popup.js",
+              "start": {
+                "line": 248,
+                "column": 0
+              },
+              "end": {
+                "line": 248,
+                "column": 41
+              }
+            }
+          },
+          "extractor": {
+            "name": "rea-javascript-artifact-reconstruction",
+            "version": "1",
+            "operation": "discover-static-endpoint",
+            "executable_sha256": null
+          },
+          "coverage": {
+            "status": "complete",
+            "truncated": false,
+            "omitted_count": 0,
+            "limits": []
+          },
+          "limitations": [],
+          "evidence_ids": []
+        }
+      },
+      {
+        "node_id": "jag_node_fa642188bc4c04e5c2b6d0cfc0e4bda0894c9480a6f22898629b2ab48e383d54",
+        "observation_id": "jag_observation_52089caab63d9dd716ee2c9910ae1b48170bd8cf4d7299dc90aa94928ddb0cb7",
+        "template": "profileId",
+        "template_parts": null,
+        "materialized_value": "profileId",
+        "materialization_status": "literal",
+        "unresolved_expressions": [],
+        "evidence": {
+          "authority": "ast-static-analysis",
+          "state": "observed",
+          "confidence": "exact",
+          "artifact": {
+            "available": true,
+            "artifact_id": "art_0dd4562fe856271b5adfb9d397885512d2fda2c2b7089c546eebcf23858aecb5",
+            "sha256": "0dd4562fe856271b5adfb9d397885512d2fda2c2b7089c546eebcf23858aecb5"
+          },
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ClickyBrowserExtension/background.js",
+              "start": {
+                "line": 30,
+                "column": 24
+              },
+              "end": {
+                "line": 30,
+                "column": 61
+              }
+            }
+          },
+          "extractor": {
+            "name": "rea-javascript-artifact-reconstruction",
+            "version": "1",
+            "operation": "discover-static-endpoint",
+            "executable_sha256": null
+          },
+          "coverage": {
+            "status": "partial",
+            "truncated": false,
+            "omitted_count": null,
+            "limits": []
+          },
+          "limitations": [
+            "AST coverage is incomplete; omitted or dynamic facts must not be interpreted as absence."
+          ],
+          "evidence_ids": []
+        }
+      },
+      {
+        "node_id": "jag_node_fda27254e6490ce8fadb8291ced57a2545246743720fb8392e64ebe17cf096f3",
+        "observation_id": "jag_observation_c1e087fb164f5ce364a6b6078477a489254a1b12dd83d83e66b00b44939ff2f6",
+        "template": "clickyTabs",
+        "template_parts": null,
+        "materialized_value": "clickyTabs",
+        "materialization_status": "literal",
+        "unresolved_expressions": [],
+        "evidence": {
+          "authority": "ast-static-analysis",
+          "state": "observed",
+          "confidence": "exact",
+          "artifact": {
+            "available": true,
+            "artifact_id": "art_0dd4562fe856271b5adfb9d397885512d2fda2c2b7089c546eebcf23858aecb5",
+            "sha256": "0dd4562fe856271b5adfb9d397885512d2fda2c2b7089c546eebcf23858aecb5"
+          },
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ClickyBrowserExtension/background.js",
+              "start": {
+                "line": 11,
+                "column": 27
+              },
+              "end": {
+                "line": 11,
+                "column": 67
+              }
+            }
+          },
+          "extractor": {
+            "name": "rea-javascript-artifact-reconstruction",
+            "version": "1",
+            "operation": "discover-static-endpoint",
+            "executable_sha256": null
+          },
+          "coverage": {
+            "status": "partial",
+            "truncated": false,
+            "omitted_count": null,
+            "limits": []
+          },
+          "limitations": [
+            "AST coverage is incomplete; omitted or dynamic facts must not be interpreted as absence."
+          ],
+          "evidence_ids": []
+        }
+      }
+    ],
+    "endpoint_review": "All four are chrome.storage keys, incorrectly classified as network endpoints; tracked as gap30",
+    "material_scan": [
+      {
+        "node_id": "jag_node_2bde954c3c2ccc8de8e629c96a26a5e3f628eb7119f231693cb9a2e21c6d2884",
+        "observation_id": "jag_observation_e57cc3405e854844a8766acef649923f64ea897c59d1782ffee43b4f87f448b4",
+        "properties": {
+          "candidate_kind": "scan-summary",
+          "candidates": 0,
+          "javascript_files_examined": 11,
+          "unavailable_files": 0,
+          "literal_candidates_not_projected": 0,
+          "paths_scope": {
+            "paths_include": [],
+            "paths_exclude": [],
+            "considered_files": 18,
+            "selected_files": 18,
+            "excluded_files": 0
+          },
+          "rules": [
+            "key-certificate-extension",
+            "hex-literal-32-40-64-128"
+          ],
+          "content_claim": "candidates-only"
+        },
+        "evidence": {
+          "authority": "artifact-bytes",
+          "state": "observed",
+          "confidence": "exact",
+          "artifact": {
+            "available": true,
+            "artifact_id": "art_e00c545b13c33378cd9d88f791d92c74076b7a75ade17241ffb4f12e275f7a61",
+            "sha256": "e00c545b13c33378cd9d88f791d92c74076b7a75ade17241ffb4f12e275f7a61"
+          },
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "artifact-path",
+              "path": "artifact-root"
+            }
+          },
+          "extractor": {
+            "name": "rea-javascript-artifact-reconstruction",
+            "version": "1",
+            "operation": "scan-shipped-material",
+            "executable_sha256": null
+          },
+          "coverage": {
+            "status": "complete",
+            "truncated": false,
+            "omitted_count": 0,
+            "limits": []
+          },
+          "limitations": [
+            "Only inventory filename extensions and admitted UTF-8 JavaScript literals were examined. Other binary blobs, formats and secrets may be present. Unavailable workers and result-budget omissions do not establish absence."
+          ],
+          "evidence_ids": []
+        }
+      }
+    ]
+  },
+  "javascript_extension_scope": {
+    "paths_include": [
+      "ClickyBrowserExtension/**"
+    ],
+    "statistics": {
+      "relevant_files": 9,
+      "nested_asar_containers": 0,
+      "text_bytes_read": 158418,
+      "invalid_utf8_files": 0,
+      "parsed_javascript_files": 6,
+      "visited_ast_nodes": 19856,
+      "findings": 28,
+      "modules": 0,
+      "parse_failures": 0,
+      "paths_scope": {
+        "paths_include": [
+          "ClickyBrowserExtension/**"
+        ],
+        "paths_exclude": [],
+        "considered_files": 18,
+        "selected_files": 9,
+        "excluded_files": 9
+      }
+    },
+    "summary": {
+      "browser_windows": 0,
+      "explicit_web_preferences": 0,
+      "preload_entrypoints": 0,
+      "context_bridge_apis": 0,
+      "exposed_api_members": 0,
+      "ipc": {
+        "operations": 0,
+        "literal_channels": 0,
+        "dynamic_channel_operations": 0,
+        "renderer_transmissions": 0,
+        "renderer_listeners": 0,
+        "main_handlers": 0,
+        "paired_renderer_transmissions": 0,
+        "ambiguous_renderer_transmissions": 0,
+        "unpaired_literal_renderer_transmissions": 0
+      },
+      "sender_validation_observations": 1,
+      "utility_processes": 0,
+      "resolved_utility_entrypoints": 0,
+      "native_addon_bindings": 0,
+      "resolved_native_addon_bindings": 0
+    },
+    "graph_nodes": 34,
+    "graph_edges": 46,
+    "graph_node_kinds": {
+      "javascript-module": 17,
+      "electron-renderer": 2,
+      "artifact": 5,
+      "javascript-asset": 6,
+      "endpoint": 4
+    },
+    "semantic_nodes": 13086,
+    "semantic_relations": 10395,
+    "semantic_unknowns": 4600,
+    "semantic_coverage": {
+      "status": "unknown",
+      "truncated": false,
+      "omitted_nodes": 0,
+      "omitted_relations": 0,
+      "limits": []
+    },
+    "module_import_review": "background.js imports BrowserBridge and ModelView from core.mjs; inert source review corroborates ESM relation",
+    "resolved_background_named_imports": [
+      {
+        "edge_id": "jag_edge_725e9038f30d02b898d9eed82bfc6595b50f2c0c8cb796e09a8a501a6d757c2a",
+        "source_node_id": "jag_node_c6b59d592bdbefba6b18ccde4cdfb253d75091f4653558529723b6f2b7b6f44c",
+        "target_node_id": "jag_node_19dc6218cde1a6e7804637be790dc90832b198835ddc1943d6dabd9b26c40bd2",
+        "properties": {
+          "module_link_kind": "import",
+          "specifier": "./core.mjs",
+          "imported_name": "ModelView",
+          "imported_path": [
+            "ModelView"
+          ],
+          "local_name": "ModelView",
+          "exported_name": null,
+          "resolved_path": "ClickyBrowserExtension/core.mjs",
+          "resolution_status": "resolved",
+          "target_file_kind": "javascript",
+          "target_json_status": null
+        }
+      },
+      {
+        "edge_id": "jag_edge_ab4a1ed6b7b1d903d22740f054b8819e854b1750ebe6d3bf53e6bcb8bad3c03c",
+        "source_node_id": "jag_node_c6b59d592bdbefba6b18ccde4cdfb253d75091f4653558529723b6f2b7b6f44c",
+        "target_node_id": "jag_node_19dc6218cde1a6e7804637be790dc90832b198835ddc1943d6dabd9b26c40bd2",
+        "properties": {
+          "module_link_kind": "import",
+          "specifier": "./core.mjs",
+          "imported_name": "BrowserBridge",
+          "imported_path": [
+            "BrowserBridge"
+          ],
+          "local_name": "BrowserBridge",
+          "exported_name": null,
+          "resolved_path": "ClickyBrowserExtension/core.mjs",
+          "resolution_status": "resolved",
+          "target_file_kind": "javascript",
+          "target_json_status": null
+        }
+      }
+    ]
+  },
+  "javascript_host_search": {
+    "query": "com.heyclicky.browser",
+    "scope": "strings",
+    "total_files": 11,
+    "scanned_files": 11,
+    "parse_failures": 0,
+    "skipped_files": 0,
+    "incomplete_text_files": 0,
+    "matches": [
+      {
+        "path": "ClickyBrowserExtension/background.js",
+        "sha256": "0dd4562fe856271b5adfb9d397885512d2fda2c2b7089c546eebcf23858aecb5",
+        "offset": 1740,
+        "value": "com.heyclicky.browser",
+        "kind": "string"
+      }
+    ],
+    "omitted_matches": 0,
+    "coverage": "complete"
+  },
+  "new_registry_items": [
+    30,
+    31,
+    32,
+    33,
+    34,
+    35
+  ],
+  "raw_records": {
+    "inventory": {
+      "evidence_id": "ev_ea1b048d514dffefa4d46cbe2393f2b3ebc0a1ad207af5b39d0b2ce9909e7f8b",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/inventory.json",
+      "raw_bytes": 467277,
+      "raw_sha256": "68027898fa7bd01f93ef9034f05320d50609f261b04b2be7510bf008929f4b2b"
+    },
+    "apple": {
+      "evidence_id": "ev_50b0bec079c3ef8e913ef784d4795c706d89f688be4d8e1c16fd0236138e367d",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/apple.json",
+      "raw_bytes": 86393,
+      "raw_sha256": "1adcc2186e859c27d9923960eec7fa408fa35eab7b34cffea9163304eeddddab"
+    },
+    "macho": {
+      "evidence_id": "ev_fc5b30a2d744b4a5d127d60fc4db84d4358af704989c831253d46d4c190e972c",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/macho.json",
+      "raw_bytes": 637655,
+      "raw_sha256": "5871021a46ede6d48ad21215960738a602e304f4b26c41e5dfdd4c81242ee7d1"
+    },
+    "signature": {
+      "evidence_id": "ev_61e60602400db211f03c720d4415ed235d59535079a0f7ffba8a4c5a6edd591c",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/signature.json",
+      "raw_bytes": 3341,
+      "raw_sha256": "6426f779c1ecdf0c28fe55dfe622cbdfde9c8a43e6760b93d4fc8f84c488f0a1"
+    },
+    "plist": {
+      "evidence_id": "ev_6824c1373a8f78268f7373da3d9d79d74abb753c6675bb1b299efdb853a757e3",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/plist.json",
+      "raw_bytes": 4429,
+      "raw_sha256": "92931d807d71f57521cebd73439936a2692191fa35c6ec99859c850ea5c51012"
+    },
+    "dylib": {
+      "evidence_id": "ev_e4cf2e219210b2c55bfffbe2687d33d82b11514a656895c9dd54254a6c796dcb",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/dylib.json",
+      "raw_bytes": 140412,
+      "raw_sha256": "be8adad7c3f299cec94720b6c9293a8ccec1100ce3e7f0515b9fb68b9878da5a"
+    },
+    "dispatch": {
+      "evidence_id": null,
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/dispatch.json",
+      "raw_bytes": 631,
+      "raw_sha256": "c7c17a9c2bb0e5572a55fbffac999d84104a2d59d6721ce8d25939f975e2d045"
+    },
+    "dispatch-arm64": {
+      "evidence_id": "ev_de5b548a10f12cf4883259df41ee9aa1b2b81f1d198222c17da46f4aaec0f621",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/dispatch-arm64.json",
+      "raw_bytes": 10969395,
+      "raw_sha256": "2a0c43db20d69a69170b6200bd81707e5be91be8ad178ac7ed9c722eafc938b5"
+    },
+    "javascript": {
+      "evidence_id": "ev_09b280cd6c2359cb28f333aaeb13307c0c65b83070e9de6ced124f54e71176a7",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/javascript.json",
+      "raw_bytes": 130401011,
+      "raw_sha256": "bb0704c5428fb6b7d587f92f359f3c0d616ef90b65d3543faaa4f7da8751874b"
+    },
+    "javascript-extension": {
+      "evidence_id": "ev_3e21011a730f7f74ecc7ce27924aeaa5acf2af655cd24e1b8cefc54bd8e66ce2",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/javascript-extension.json",
+      "raw_bytes": 21584511,
+      "raw_sha256": "5e157e91ec74d401b4d552a6bc2202077cf0c27c69d7eb112cc8db023cbf46df"
+    },
+    "javascript-host-search": {
+      "evidence_id": "ev_35b866b42d25576fcbe5ee5cca42d378a0246216c29059092381d6a630bf5833",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/javascript-host-search.json",
+      "raw_bytes": 1521,
+      "raw_sha256": "eb84ca8585336be513ad919a6879b03f31d3c3e7e07254af6a55e7a1b8bf9024"
+    },
+    "view-summary": {
+      "evidence_id": "ev_2e54e57c931af9956f652cf5ab5ea128a6378b0e48610c10c096efffde4981c5",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/view-summary.json",
+      "raw_bytes": 11471,
+      "raw_sha256": "fd769e41e894ebe97b839568bb42a23df436a7f21c8ce5333082c8d9fbd84945"
+    },
+    "view-file-statuses": {
+      "evidence_id": "ev_17d75189e06d8f32399fa4a0c1b147f2c5f9e4059905859300126fb94de4f692",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/view-file-statuses.json",
+      "raw_bytes": 8887,
+      "raw_sha256": "41ae6be4830d45b449bb318894f25e25c6d9257f69d223f99ffbb9dbe5552112"
+    },
+    "view-modules": {
+      "evidence_id": "ev_00b0f33bc10244d35c542784bb4dc5742bcc9b6daf12324ea3ca933131e553ff",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/view-modules.json",
+      "raw_bytes": 13649,
+      "raw_sha256": "a95f5a55d8746cc4eb732bd41e58523c35c9968d5e672133fa78f537cb982d7f"
+    },
+    "view-endpoints": {
+      "evidence_id": "ev_515c80e931281dd6f77252dd21c219144ccc9024622692a4826e6cf3c0314283",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/view-endpoints.json",
+      "raw_bytes": 13430,
+      "raw_sha256": "d8a2e576b8f4bdc55c57f264e7758e18e450a00086c20188134146b7f0b3aeda"
+    },
+    "view-material": {
+      "evidence_id": "ev_57cd397b83229489d111ab081b27a893215ce751301c1e3de0964672b26b4856",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/view-material.json",
+      "raw_bytes": 10011,
+      "raw_sha256": "f3329fb5034612b197df73d9399bc92aa019ac3d91bfe79e4cb4c85af4a2ab3d"
+    },
+    "view-background-module": {
+      "evidence_id": "ev_7c8df6c0222ab6ba55961a7772e1bda822d79340e50fff24432905fc7d4348cc",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/view-background-module.json",
+      "raw_bytes": 11198,
+      "raw_sha256": "000ec431d7bb355067afd9e6deb0d7c077299bb2a2e519a030ceb15e6dab70f8"
+    },
+    "native-universal-summary": {
+      "evidence_id": null,
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/native-universal-summary.json",
+      "raw_bytes": 4870,
+      "raw_sha256": "ab6236a9c471f6644824584af7894485689c59624dd33150f8674f814fb9d3de"
+    },
+    "native-arm64-summary": {
+      "evidence_id": null,
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/native-arm64-summary.json",
+      "raw_bytes": 2645,
+      "raw_sha256": "42328ffd0c795f19745cddd3cf1dc4156f0ec50b763e41c7025ac76f2d62b293"
+    },
+    "native-helper-summary": {
+      "evidence_id": null,
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/native-helper-summary.json",
+      "raw_bytes": 4984,
+      "raw_sha256": "c957149b779f21d8bd8553acfda40df4699e6990fb929e1869bc78014b507346"
+    },
+    "native-results": {
+      "evidence_id": null,
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/native-results.json",
+      "raw_bytes": 19596,
+      "raw_sha256": "5c4d36b7af8cf3aa78f88907be50e97a615eda2e842a65d350ea675a82a6e261"
+    },
+    "native-helper-derivation": {
+      "evidence_id": null,
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/native-helper-derivation.json",
+      "raw_bytes": 879,
+      "raw_sha256": "4d62c8a9b8b27bd5148f6e8331559bae600b262f1a3c8b4cd91fe740173bfb20"
+    },
+    "native-helper-03-overview": {
+      "evidence_id": "ev_4c2a38fa9a9ba4977f7a6afde0900368c7b15f3d355728f05d573558aa9d034d",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/native-helper-03-overview.json",
+      "raw_bytes": 7127,
+      "raw_sha256": "b678a9f7dd59c4449d01116c9c2b045547e941b2929a71ae59d6cab99e8b7737"
+    },
+    "native-helper-06-write-message-function": {
+      "evidence_id": "ev_d4bd40b68d8a3ebb11f6f3a077db7a9bfe1b9ae804ee234baf21f1227e7664e6",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/native-helper-06-write-message-function.json",
+      "raw_bytes": 1009522,
+      "raw_sha256": "f6309f88006bfb82137b2d5178b65c408374c0254ed20615672e7278f2b84ecb"
+    },
+    "native-helper-07-read-exactly-function": {
+      "evidence_id": "ev_79dd53c24b8fdfc6aa7828a26dea9c4204545b9499566e0f2a0e31000f959ead",
+      "raw_path": "/tmp/rea-heyclicky-2026-10-28/native-helper-07-read-exactly-function.json",
+      "raw_bytes": 359008,
+      "raw_sha256": "8d22d3d9ed45172062322714752acaf3b4ebde143c96dbdd33c798f893caf534"
+    }
+  },
+  "source_recheck": {
+    "regular_files_checked": 288,
+    "changed_or_unreadable_files": [],
+    "main_sha256": "764a68a80f53de64a0e48a509d5a98737994f93e0888605e2de85b4028f3cb17"
+  },
+  "signature_verification": {
+    "authority": "independent host utility; separate from REA signature metadata",
+    "command": [
+      "/usr/bin/codesign",
+      "--verify",
+      "--deep",
+      "--strict",
+      "--verbose=2",
+      "/Applications/HeyClicky.app"
+    ],
+    "exit_code": 0,
+    "result": "valid on disk; satisfies designated requirement",
+    "notarization_or_online_revocation_assessed": false,
+    "sandbox_attempt_result": "exit 1 invalid signature; not reproduced with host access"
+  },
+  "native_deep": {
+    "scope": "static-arm64-browser-host-helper; main-app-import-timeout",
+    "main": {
+      "original_universal_target": "/Applications/HeyClicky.app/Contents/MacOS/HeyClicky",
+      "original_universal_sha256": "764a68a80f53de64a0e48a509d5a98737994f93e0888605e2de85b4028f3cb17",
+      "derivation": {
+        "operation": "lipo-thin",
+        "architecture": "arm64",
+        "original_file_offset": 59424768,
+        "size": 55971232
+      },
+      "target": "/tmp/rea-heyclicky-2026-10-28/HeyClicky-arm64",
+      "started_at": "2026-10-28T17:55:43.463Z",
+      "calls": [
+        {
+          "index": 1,
+          "name": "open_binary",
+          "arguments": {
+            "path": "/tmp/rea-heyclicky-2026-10-28/HeyClicky-arm64",
+            "provider_id": "ghidra"
+          },
+          "label": "open",
+          "elapsed_ms": 2738,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-arm64-01-open.json",
+          "evidence_id": null,
+          "schema_valid": true
+        },
+        {
+          "index": 2,
+          "name": "binary_session",
+          "arguments": {},
+          "label": "status-open",
+          "elapsed_ms": 664,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-arm64-02-status-open.json",
+          "evidence_id": null,
+          "schema_valid": true
+        },
+        {
+          "index": 3,
+          "name": "binary_overview",
+          "arguments": {},
+          "label": "overview",
+          "elapsed_ms": 903183,
+          "is_error": true,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-arm64-03-overview.json",
+          "error": {
+            "code": "provider_timeout",
+            "category": "timeout",
+            "message": "Analysis took too long. Try a smaller request, then run `rea doctor` if it continues.",
+            "retryable": true,
+            "remediation": {
+              "action": "Analysis took too long. Try a smaller request, then run `rea doctor` if it continues."
+            },
+            "details": {
+              "operation": "list_documents",
+              "timeout_ms": 900000
+            }
+          },
+          "failure": "Error: binary_overview failed; see /tmp/rea-heyclicky-2026-10-28/native-arm64-03-overview.json"
+        },
+        {
+          "index": 4,
+          "name": "close_binary",
+          "arguments": {},
+          "label": "close",
+          "elapsed_ms": 6,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-arm64-04-close.json",
+          "evidence_id": null,
+          "schema_valid": true
+        }
+      ],
+      "source_sha256_before": "bb98afe140170240037589647cbfe00099079655e9223ec87f7f702db3fb7911",
+      "failure": "Error: binary_overview failed; see /tmp/rea-heyclicky-2026-10-28/native-arm64-03-overview.json",
+      "closed": true,
+      "source_sha256_after": "bb98afe140170240037589647cbfe00099079655e9223ec87f7f702db3fb7911",
+      "source_unchanged": true,
+      "finished_at": "2026-10-28T18:10:51.864Z"
+    },
+    "helper": {
+      "original_universal_target": "/Applications/HeyClicky.app/Contents/Helpers/ClickyBrowserHost",
+      "original_universal_sha256": "5fb7e18d994bbdcb9d1d380e492fc8cf38e28efd58dea0b470db48027714965c",
+      "derivation": {
+        "operation": "lipo-thin",
+        "architecture": "arm64",
+        "original_file_offset": 98304,
+        "size": 109424
+      },
+      "target": "/tmp/rea-heyclicky-2026-10-28/native-ClickyBrowserHost-arm64",
+      "started_at": "2026-10-28T18:11:09.181Z",
+      "calls": [
+        {
+          "index": 1,
+          "name": "open_binary",
+          "arguments": {
+            "path": "/tmp/rea-heyclicky-2026-10-28/native-ClickyBrowserHost-arm64",
+            "provider_id": "ghidra"
+          },
+          "label": "open",
+          "elapsed_ms": 2627,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-helper-01-open.json",
+          "evidence_id": null,
+          "schema_valid": true
+        },
+        {
+          "index": 2,
+          "name": "binary_session",
+          "arguments": {},
+          "label": "status-open",
+          "elapsed_ms": 630,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-helper-02-status-open.json",
+          "evidence_id": null,
+          "schema_valid": true
+        },
+        {
+          "index": 3,
+          "name": "binary_overview",
+          "arguments": {},
+          "label": "overview",
+          "elapsed_ms": 27829,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-helper-03-overview.json",
+          "evidence_id": "ev_4c2a38fa9a9ba4977f7a6afde0900368c7b15f3d355728f05d573558aa9d034d",
+          "schema_valid": true
+        },
+        {
+          "index": 4,
+          "name": "search_procedures",
+          "arguments": {
+            "pattern": "main|message|read|write|socket|hello|command",
+            "mode": "regex",
+            "case_sensitive": false
+          },
+          "label": "feature-procedures",
+          "elapsed_ms": 12,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-helper-04-feature-procedures.json",
+          "evidence_id": "ev_641c6c9f601bf5b69a1bf037556d0ba3f7e3d513f1c13abb1ef10e25752b104a",
+          "schema_valid": true
+        },
+        {
+          "index": 5,
+          "name": "search_strings",
+          "arguments": {
+            "pattern": "hello|command|result|socket|connect|ready",
+            "mode": "regex",
+            "case_sensitive": false
+          },
+          "label": "protocol-strings",
+          "elapsed_ms": 7,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-helper-05-protocol-strings.json",
+          "evidence_id": "ev_cb213def14eeac3fad1e597b7b4cd2d0a7738e5b420b471fd77fec5ea53e1d00",
+          "schema_valid": true
+        },
+        {
+          "index": 6,
+          "name": "analyze_function",
+          "arguments": {
+            "procedure": "0x100003a38"
+          },
+          "label": "write-message-function",
+          "elapsed_ms": 316,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-helper-06-write-message-function.json",
+          "evidence_id": "ev_d4bd40b68d8a3ebb11f6f3a077db7a9bfe1b9ae804ee234baf21f1227e7664e6",
+          "schema_valid": true
+        },
+        {
+          "index": 7,
+          "name": "analyze_function",
+          "arguments": {
+            "procedure": "0x100002678"
+          },
+          "label": "read-exactly-function",
+          "elapsed_ms": 81,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-helper-07-read-exactly-function.json",
+          "evidence_id": "ev_79dd53c24b8fdfc6aa7828a26dea9c4204545b9499566e0f2a0e31000f959ead",
+          "schema_valid": true
+        },
+        {
+          "index": 8,
+          "name": "search_procedures",
+          "arguments": {
+            "pattern": "request|entry|openHeyClicky",
+            "mode": "regex",
+            "case_sensitive": false
+          },
+          "label": "request-procedures",
+          "elapsed_ms": 4,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-helper-08-request-procedures.json",
+          "evidence_id": "ev_2e554e23a0bdb015f6a0c04aa7f21e8c1b53d8adae70899cd0498386ee34fab1",
+          "schema_valid": true
+        },
+        {
+          "index": 9,
+          "name": "search_strings",
+          "arguments": {
+            "pattern": "http|heyclicky|browser|poll|result|command",
+            "mode": "regex",
+            "case_sensitive": false
+          },
+          "label": "bridge-url-strings",
+          "elapsed_ms": 4,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-helper-09-bridge-url-strings.json",
+          "evidence_id": "ev_134d66ab9d04c132dd2a246e9cdbf39d5b899eaf11aec0267096ea1dbb9c9dd6",
+          "schema_valid": true
+        },
+        {
+          "index": 10,
+          "name": "close_binary",
+          "arguments": {},
+          "label": "close",
+          "elapsed_ms": 430,
+          "is_error": false,
+          "path": "/tmp/rea-heyclicky-2026-10-28/native-helper-10-close.json",
+          "evidence_id": null,
+          "schema_valid": true
+        }
+      ],
+      "source_sha256_before": "57df5ec91fd804279fda1d46a6cd577375bf006396a3a7b4f49bd22a3d6cb179",
+      "closed": true,
+      "source_sha256_after": "57df5ec91fd804279fda1d46a6cd577375bf006396a3a7b4f49bd22a3d6cb179",
+      "source_unchanged": true,
+      "finished_at": "2026-10-28T18:12:55.687Z"
+    },
+    "helper_derivation": {
+      "source": "/Applications/HeyClicky.app/Contents/Helpers/ClickyBrowserHost",
+      "sha256": "5fb7e18d994bbdcb9d1d380e492fc8cf38e28efd58dea0b470db48027714965c",
+      "size": 207728,
+      "slices": [
+        {
+          "cpu_type": 16777223,
+          "cpu_subtype": 3,
+          "offset": 16384,
+          "size": 80016,
+          "alignment": 14
+        },
+        {
+          "cpu_type": 16777228,
+          "cpu_subtype": 0,
+          "offset": 98304,
+          "size": 109424,
+          "alignment": 14
+        }
+      ],
+      "derivation": "lipo -thin arm64",
+      "selected": {
+        "cpu_type": 16777228,
+        "cpu_subtype": 0,
+        "offset": 98304,
+        "size": 109424,
+        "alignment": 14
+      },
+      "derived_path": "/tmp/rea-heyclicky-2026-10-28/native-ClickyBrowserHost-arm64",
+      "derived_sha256": "57df5ec91fd804279fda1d46a6cd577375bf006396a3a7b4f49bd22a3d6cb179",
+      "derived_size": 109424,
+      "source_span_equal": true,
+      "source_unchanged": true
+    },
+    "helper_overview_evidence_id": "ev_4c2a38fa9a9ba4977f7a6afde0900368c7b15f3d355728f05d573558aa9d034d",
+    "helper_overview": {
+      "document": "target-57df5ec91fd8.bin",
+      "segment_count": 32,
+      "procedure_count": 318,
+      "string_count": 632
+    },
+    "functions": [
+      {
+        "evidence_id": "ev_d4bd40b68d8a3ebb11f6f3a077db7a9bfe1b9ae804ee234baf21f1227e7664e6",
+        "path": "/tmp/rea-heyclicky-2026-10-28/native-helper-06-write-message-function.json",
+        "procedure": {
+          "address": "0x100003a38",
+          "name": "arm64::$writeMessage",
+          "classification": {
+            "external": false,
+            "thunk": false,
+            "thunk_target": null,
+            "provenance": "ghidra-function-manager"
+          },
+          "body": {
+            "available": true,
+            "provenance": "ghidra-function-body-address-set",
+            "ranges": [
+              {
+                "start": "0x100003a38",
+                "end": "0x100003c8f"
+              }
+            ],
+            "total_bytes": 600,
+            "span_bytes": 600,
+            "non_contiguous": false,
+            "contains_entry": true
+          },
+          "signature": "tuple0 $writeMessage(Dictionary<String,arm64.writeMessage([Swift.String_:_Any])_->_()> param_1)",
+          "locals": [
+            {
+              "description": "undefined8 local_10 @ Stack[-0x10]:8",
+              "provenance": "ghidra-function-database"
+            },
+            {
+              "description": "undefined8 local_20 @ Stack[-0x20]:8",
+              "provenance": "ghidra-function-database"
+            },
+            {
+              "description": "undefined8 local_30 @ Stack[-0x30]:8",
+              "provenance": "ghidra-function-database"
+            },
+            {
+              "description": "undefined8 local_40 @ Stack[-0x40]:8",
+              "provenance": "ghidra-function-database"
+            },
+            {
+              "description": "undefined8 local_50 @ Stack[-0x50]:8",
+              "provenance": "ghidra-function-database"
+            },
+            {
+              "description": "undefined8 local_58 @ Stack[-0x58]:8",
+              "provenance": "ghidra-function-database"
+            },
+            {
+              "description": "undefined8 local_68 @ Stack[-0x68]:8",
+              "provenance": "ghidra-function-database"
+            },
+            {
+              "description": "undefined4 local_74 @ Stack[-0x74]:4",
+              "provenance": "ghidra-function-database"
+            }
+          ]
+        },
+        "pseudocode_chars": 3713,
+        "callers": [
+          {
+            "address": "0x10000281c",
+            "name": "$$closure_#6_@Sendable_()_->_()_in_arm64"
+          }
+        ],
+        "callees": [
+          {
+            "address": "0x100004ab0",
+            "name": "outlined_consume"
+          },
+          {
+            "address": "0x100005720",
+            "name": "Foundation::Data::_Representation::$init"
+          },
+          {
+            "address": "0x100005828",
+            "name": "Foundation::Data::$lazy_protocol_witness_table_accessor"
+          },
+          {
+            "address": "0x1000059a0",
+            "name": "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation::Foundation::$_convertNSErrorToError"
+          },
+          {
+            "address": "0x100005a48",
+            "name": "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation::Foundation::Data::$_unconditionallyBridgeFromObjectiveC"
+          },
+          {
+            "address": "0x100005ac0",
+            "name": "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation::(extension_Foundation)::Swift::Dictionary::_bridgeToObjectiveC"
+          },
+          {
+            "address": "0x100005b68",
+            "name": "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation::(extension_Foundation)::__C::NSFileHandle::$write"
+          },
+          {
+            "address": "0x100005c94",
+            "name": "___stack_chk_fail"
+          },
+          {
+            "address": "0x100005cb8",
+            "name": "_exit"
+          },
+          {
+            "address": "0x100005cf4",
+            "name": "_objc_opt_self"
+          },
+          {
+            "address": "0x100005d00",
+            "name": "_objc_release"
+          },
+          {
+            "address": "0x100005d0c",
+            "name": "_objc_retain"
+          },
+          {
+            "address": "0x100005d18",
+            "name": "_objc_retainAutoreleasedReturnValue"
+          },
+          {
+            "address": "0x100005da8",
+            "name": "_swift_errorRelease"
+          },
+          {
+            "address": "0x100005e44",
+            "name": "_swift_willThrow"
+          },
+          {
+            "address": "0x100005ea0",
+            "name": "_objc_msgSend$dataWithJSONObject:options:error:"
+          },
+          {
+            "address": "0x100005f40",
+            "name": "_objc_msgSend$fileHandleWithStandardOutput"
+          },
+          {
+            "address": "0x100005fe0",
+            "name": "_objc_msgSend$lock"
+          },
+          {
+            "address": "0x100006120",
+            "name": "_objc_msgSend$unlock"
+          }
+        ],
+        "limitations": [
+          "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+          "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+          "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+          "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+          "Ghidra Listing reports a terminal call at 0x100003c84 to 0x100005c94 ___stack_chk_fail (external=false, thunk=true, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return.",
+          "Ghidra Listing reports a terminal call at 0x100003c8c to 0x100005cb8 _exit (external=false, thunk=true, hasNoReturn=true); fallthrough is excluded by Ghidra's flow model. This records Ghidra's FunctionManager flag, not an independent verification that the callee cannot return."
+        ]
+      },
+      {
+        "evidence_id": "ev_79dd53c24b8fdfc6aa7828a26dea9c4204545b9499566e0f2a0e31000f959ead",
+        "path": "/tmp/rea-heyclicky-2026-10-28/native-helper-07-read-exactly-function.json",
+        "procedure": {
+          "address": "0x100002678",
+          "name": "arm64::$readExactly",
+          "classification": {
+            "external": false,
+            "thunk": false,
+            "thunk_target": null,
+            "provenance": "ghidra-function-manager"
+          },
+          "body": {
+            "available": true,
+            "provenance": "ghidra-function-body-address-set",
+            "ranges": [
+              {
+                "start": "0x100002678",
+                "end": "0x10000281b"
+              }
+            ],
+            "total_bytes": 420,
+            "span_bytes": 420,
+            "non_contiguous": false,
+            "contains_entry": true
+          },
+          "signature": "undefined $readExactly(__int64 param_1)",
+          "locals": [
+            {
+              "description": "undefined8 local_10 @ Stack[-0x10]:8",
+              "provenance": "ghidra-function-database"
+            },
+            {
+              "description": "undefined8 local_20 @ Stack[-0x20]:8",
+              "provenance": "ghidra-function-database"
+            },
+            {
+              "description": "undefined8 local_30 @ Stack[-0x30]:8",
+              "provenance": "ghidra-function-database"
+            },
+            {
+              "description": "undefined8 local_40 @ Stack[-0x40]:8",
+              "provenance": "ghidra-function-database"
+            },
+            {
+              "description": "undefined1[16] local_50 @ Stack[-0x50]:16",
+              "provenance": "ghidra-function-database"
+            }
+          ]
+        },
+        "pseudocode_chars": 2090,
+        "callers": [
+          {
+            "address": "0x100000e30",
+            "name": "entry"
+          }
+        ],
+        "callees": [
+          {
+            "address": "0x100004a70",
+            "name": "outlined_copy"
+          },
+          {
+            "address": "0x100004ab0",
+            "name": "outlined_consume"
+          },
+          {
+            "address": "0x100004af0",
+            "name": "$outlined_consume"
+          },
+          {
+            "address": "0x100005a54",
+            "name": "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation::Foundation::Data::append"
+          },
+          {
+            "address": "0x100005b5c",
+            "name": "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation::(extension_Foundation)::__C::NSFileHandle::$read"
+          },
+          {
+            "address": "0x100005da8",
+            "name": "_swift_errorRelease"
+          }
+        ],
+        "limitations": [
+          "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+          "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+          "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+          "Synthetic Ghidra entry-point references without actionable memory sources are omitted."
+        ]
+      }
+    ],
+    "source_verification": [
+      {
+        "path": "/Applications/HeyClicky.app/Contents/MacOS/HeyClicky",
+        "sha256": "764a68a80f53de64a0e48a509d5a98737994f93e0888605e2de85b4028f3cb17",
+        "unchanged": true
+      },
+      {
+        "path": "/Applications/HeyClicky.app/Contents/Helpers/ClickyBrowserHost",
+        "sha256": "5fb7e18d994bbdcb9d1d380e492fc8cf38e28efd58dea0b470db48027714965c",
+        "unchanged": true
+      }
+    ],
+    "static_conclusions": [
+      {
+        "authority": "ghidra-pseudocode-and-call-facts",
+        "description": "writeMessage serializes dictionary using NSJSONSerialization, writes a four-byte length value and JSON Data to standard output while holding outputLock; inferred Chrome-native-message framing, not an observed runtime message."
+      },
+      {
+        "authority": "ghidra-pseudocode-and-call-facts",
+        "description": "readExactly is called from entry and loops over NSFileHandle.read/Data.append; Swift ABI/decompiler warnings prevent treating recovered pseudocode as exact source."
+      },
+      {
+        "authority": "ghidra-defined-string-data",
+        "description": "Helper has Library/Application Support/Clicky/BrowserBridge, http://127.0.0.1:, heyclicky://settings/browser and browser_poll literals; strings do not establish traffic or runtime endpoint use."
+      }
+    ]
+  },
+  "outcome": "Offline field test completed with partial native/main coverage and six new REA+ issues. Main Ghidra import timed out; separate browser-host helper decompilation succeeded.",
+  "verification": {
+    "implementation_code_changed": false,
+    "new_repository_tests_run": false,
+    "field_test_public_workflows": true,
+    "source_regular_file_recheck": 288,
+    "owned_native_sessions_closed": true
+  },
+  "notch_ui_followup": {
+    "parent_dispatch_evidence_id": "ev_de5b548a10f12cf4883259df41ee9aa1b2b81f1d198222c17da46f4aaec0f621",
+    "authority": "observed class/selector/ivar names; architectural interpretation inferred",
+    "classes": [
+      {
+        "name": "_TtC9HeyClicky14NotchPresenter",
+        "super_class": "_TtCs12_SwiftObject",
+        "location": {
+          "address": "0x103439a80",
+          "file_offset": 54762112
+        },
+        "methods": [],
+        "ivar_names": [
+          "_presentation",
+          "_hoveredOverNotch",
+          "suppressHoverExpandUntilNotchReentry",
+          "hoverExpandRearmNotBefore",
+          "_isTextInputActive",
+          "_isTextInputAgentFollowUp",
+          "_textInputExtraLineCount",
+          "_textInputAttachmentCount",
+          "_textResponseFollowUpExtraLineCount",
+          "_textResponseFollowUpAttachmentCount",
+          "_multiAgentRotationCursorIndex",
+          "multiAgentRotationLastAdvancedAtElapsedTime",
+          "_introClickyPeekActive",
+          "_introHomeWelcomeActive",
+          "_introHomeWelcomeAutoShownPin",
+          "introHomeWelcomeHadHoverIn",
+          "_introSkillPingActive",
+          "_introSkillPingGlyphColor",
+          "_introSkillPingWiggleToken",
+          "_introSkillPingLastDirection",
+          "_introSkillPingScaleBias",
+          "_userManuallyDismissedOnboardingPin",
+          "heldVoiceLiveEvent",
+          "heldVoiceLiveEventDeadline",
+          "heldVoiceLiveEventClearTask",
+          "lastObservedVoiceState",
+          "voiceTurnTerminationSuppressesNextHandoffHold",
+          "previousOnboardingFingerprint",
+          "hasReportedNotchFirstShown",
+          "hasAppliedInitialPresentation",
+          "expandedSurfaceStartedAt",
+          "companionManager",
+          "cancellables",
+          "lastObservedRestingMarkIsWorking",
+          "_dockedStripWouldCoverFrontmostAppMenuItems",
+          "frontmostAppActivationObserver",
+          "pendingDelayedDockedStripCoverageReprobeTask",
+          "pendingCollapseTask",
+          "pendingHandoffToastCollapseTask",
+          "activeIntegrationConnectedToast",
+          "pendingIntroSkillPingScaleSettleTask",
+          "isNotchAgentPeekHeldOpen",
+          "isNotchHeldOpenForPresentation",
+          "_isNotchHeldOpenByArc",
+          "keepsOpenNotchThroughVoiceTurn",
+          "_voicePillPhase",
+          "voiceTurnBeganWithListening",
+          "isNotchDocumentOpen",
+          "_isNotchChatSessionOpen",
+          "notchChatSessionStartedAt",
+          "notchChatSessionOpenedVia",
+          "notchChatSessionSentMessageCount",
+          "notchChatSessionSentAttachmentCount",
+          "notchChatComposerHasDraft",
+          "notchChatComposerIsFocused",
+          "notchChatComposerWindow",
+          "notchChatOpenedByFileDrag",
+          "pendingDragOpenedChatCloseTask",
+          "isNotchAgentPeekOpenRequested",
+          "notchAgentPeekRequestSawHover",
+          "notchAgentPeekRequestTimeout",
+          "hoveredNotchScreen",
+          "dictationLabel",
+          "dictationIsRecording",
+          "_pendingDroppedAttachmentURLs",
+          "_isFileDropTargetingNotch",
+          "_textInputOpenedByFileDrag",
+          "pendingDragOpenedComposerCloseTask",
+          "allowsMorningSuggestionsPreparation"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky18NotchWindowManager",
+        "super_class": "NSObject",
+        "location": {
+          "address": "0x1033f2db8",
+          "file_offset": 54472120
+        },
+        "methods": [
+          {
+            "selector": "dealloc",
+            "address": "0x101314ba4"
+          },
+          {
+            "selector": "init",
+            "address": "0x10132b698"
+          },
+          {
+            "selector": ".cxx_destruct",
+            "address": "0x101314bd4"
+          }
+        ],
+        "ivar_names": [
+          "presenter",
+          "companionManager",
+          "notchInstancesByDisplayIdentifier",
+          "presentationCancellable",
+          "lastAppliedPresentation",
+          "introSkillPingScaleBiasCancellable",
+          "notchTabCancellable",
+          "notchFullReplyCancellable",
+          "textInputLineCountCancellable",
+          "notchTextResponseStreamingTextCancellable",
+          "notchTextResponseGalleryImagesCancellable",
+          "notchTextResponseFollowUpComposerCancellable",
+          "clickyCursorDockedCancellable",
+          "menuBarCoverageCancellable",
+          "anyActiveCodexTaskUsingIntegrationCancellable",
+          "missionControlVisibilityCancellable",
+          "keepsNotchVisibleThroughMissionControl",
+          "screenChangeObserver",
+          "streamModeObserver",
+          "showPanelObserver",
+          "openSettingsObserver",
+          "topArcFrontCardSizeObserver",
+          "dismissPanelObserver",
+          "bringToFrontObserver",
+          "systemWindowPickerYieldObserver",
+          "lastFrontmostApplicationProcessIdentifier",
+          "frontmostAppDidActivateObserver",
+          "activeSpaceDidChangeObserver",
+          "outsideClickMonitor",
+          "hoverTickScheduler",
+          "hoverTickStateChangeCancellable",
+          "lastHoverTickFoundPointerOverNotch",
+          "lastObservedFullscreenHostProbeSample",
+          "nextFullscreenHostProbeDeadline",
+          "fullscreenHostProbeIntervalSeconds",
+          "nextEnvelopeDriftProbeDeadline",
+          "envelopeDriftProbeIntervalSeconds",
+          "cachedFullscreenHostDisplayIdentifier",
+          "collapseSuppressedUntil",
+          "activeExpansionDisplayIdentifier",
+          "stickyHoverHitRect",
+          "hoverDwellPendingDisplayIdentifier",
+          "hoverDwellStartedAt",
+          "$__lazy_storage_$_keyboardFocusReleasePanel"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky19NotchPanelViewState",
+        "super_class": "_TtCs12_SwiftObject",
+        "location": {
+          "address": "0x10343b348",
+          "file_offset": 54768456
+        },
+        "methods": [],
+        "ivar_names": [
+          "_visibleSize",
+          "_notchScreenOrigin",
+          "_presentationOverride",
+          "_isFloatingSliver",
+          "_isSuppressedForFullscreen",
+          "_contentScale"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky21NotchPanelContentView",
+        "super_class": "NSView",
+        "location": {
+          "address": "0x1033f30b8",
+          "file_offset": 54472888
+        },
+        "methods": [
+          {
+            "selector": "hitTest:",
+            "address": "0x10132e2d0"
+          },
+          {
+            "selector": "draggingEntered:",
+            "address": "0x10132e51c"
+          },
+          {
+            "selector": "draggingUpdated:",
+            "address": "0x10132e58c"
+          },
+          {
+            "selector": "draggingExited:",
+            "address": "0x10132e6bc"
+          },
+          {
+            "selector": "draggingEnded:",
+            "address": "0x10132e7d8"
+          },
+          {
+            "selector": "prepareForDragOperation:",
+            "address": "0x10132ec7c"
+          },
+          {
+            "selector": "performDragOperation:",
+            "address": "0x10132f18c"
+          },
+          {
+            "selector": "initWithFrame:",
+            "address": "0x10132f660"
+          },
+          {
+            "selector": "initWithCoder:",
+            "address": "0x10132f804"
+          },
+          {
+            "selector": ".cxx_destruct",
+            "address": "0x10132f844"
+          }
+        ],
+        "ivar_names": [
+          "hostingView",
+          "onFileURLsDropped",
+          "shouldAcceptFileDrops",
+          "onFileDragHoverChanged",
+          "onFileDragSessionEnded"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky10NotchPanel",
+        "super_class": "NSPanel",
+        "location": {
+          "address": "0x1033f3190",
+          "file_offset": 54473104
+        },
+        "methods": [
+          {
+            "selector": "constrainFrameRect:toScreen:",
+            "address": "0x10132f900"
+          },
+          {
+            "selector": "canBecomeKeyWindow",
+            "address": "0x10132f9f4"
+          },
+          {
+            "selector": "canBecomeMainWindow",
+            "address": "0x10132fac0"
+          },
+          {
+            "selector": "initWithContentRect:styleMask:backing:defer:",
+            "address": "0x10132fd18"
+          }
+        ],
+        "ivar_names": [
+          "isTemporarilyRefusingKeyStatus"
+        ]
+      }
+    ],
+    "runtime_observed": false,
+    "function_bodies_decompiled": false,
+    "unknowns": [
+      "exact screen-coordinate and notch-width calculation",
+      "panel style mask/window level/collection behavior",
+      "animation constants",
+      "precise SwiftUI hosting call",
+      "runtime appearance and interaction on different displays/Spaces"
+    ]
+  }
+}

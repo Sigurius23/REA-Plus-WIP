@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { addSenderValidationObservation } from "./JavaScriptSenderValidationGraph.js";
 
 import { compactStringIdentityKey } from "../../domain/compactStringIdentity.js";
 import type { ApplicationNode } from "../../domain/javascript/javascriptApplicationGraphSchemas.js";
@@ -60,6 +61,19 @@ export function* addJavaScriptStaticFindingsSteps(
       addEndpoint(context, { file, asset, value, coverage });
     for (const value of javascript.storage)
       addStorage(context, { file, asset, value, coverage });
+    for (const validation of javascript.sender_validations ?? [])
+      addSenderValidationObservation(context, {
+        file,
+        validation,
+        coverage,
+        target:
+          sourceNodeFor(
+            context,
+            file.path,
+            validation.module_key,
+            validation.module_runtime,
+          ) ?? asset,
+      });
     for (const value of javascript.role_paths)
       addDiscoveredRole(context, { file, asset, value, coverage });
     for (const value of javascript.source_map_urls)
@@ -173,6 +187,8 @@ const addEndpoint = (
       input.value.module_runtime,
     ) ?? input.asset;
   const key = compactStringIdentityKey(input.value.value);
+  const receiver = input.value.network_receiver;
+  const candidate = receiver?.status === "unknown";
   const label = `${input.value.kind} endpoint`;
   const node = context.accumulator.addNode({
     kind: "endpoint",
@@ -183,18 +199,29 @@ const addEndpoint = (
           input.value.value.length <= label.length ? input.value.value : label,
         properties: {
           endpoint_kind: input.value.kind,
+          ...(receiver === undefined ? {} : { network_receiver: receiver }),
           ...(input.value.template_parts === undefined
             ? {}
             : { template_parts: input.value.template_parts }),
           value: input.value.value,
           mechanism: input.value.mechanism,
         },
-        evidence: astObservationEvidence({
+        evidence: (candidate
+          ? staticInferenceEvidence
+          : astObservationEvidence)({
           sha256: input.file.sha256,
           path: input.file.path,
           range: input.value.location,
           operation: "discover-static-endpoint",
           coverage: input.coverage,
+          ...(candidate
+            ? {
+                confidence: "low" as const,
+                limitations: [
+                  "The method name and argument identify a network candidate; the receiver API is unresolved.",
+                ],
+              }
+            : {}),
         }),
       },
     ],
@@ -206,7 +233,11 @@ const addEndpoint = (
     range: input.value.location,
     coverage: input.coverage,
     relation: input.value.kind === "route" ? "exposes" : "calls",
-    properties: { mechanism: input.value.mechanism },
+    ...(candidate ? { confidence: "low" } : {}),
+    properties: {
+      mechanism: input.value.mechanism,
+      ...(receiver === undefined ? {} : { network_receiver: receiver }),
+    },
   });
 };
 
@@ -225,7 +256,9 @@ const addStorage = (
     kind: "storage",
     identity: artifactLocalIdentity(
       input.file.sha256,
-      input.value.kind,
+      input.value.area === undefined
+        ? input.value.kind
+        : `${input.value.kind}.${input.value.area}`,
       input.value.name ?? input.value.mechanism,
     ),
     observations: [
@@ -233,6 +266,8 @@ const addStorage = (
         label: input.value.name ?? input.value.kind,
         properties: {
           storage_kind: input.value.kind,
+          ...(input.value.area === undefined ? {} : { area: input.value.area }),
+          ...(input.value.api === undefined ? {} : { api: input.value.api }),
           name: input.value.name,
           mechanism: input.value.mechanism,
         },

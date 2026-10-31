@@ -729,7 +729,7 @@ supervisor and private runtime instead of removing files beneath a live provider
 The experimental Windows transport uses authenticated IPv4 loopback with a
 private native-owned bearer descriptor and Job Object process ownership.
 
-Operations begin only after default auto-analysis completes. `open_binary`
+The default profile requires completed auto-analysis. `open_binary`
 selects and validates the target/provider binding; it does not wait for Ghidra
 import and auto-analysis. The first Ghidra-backed query starts that work lazily.
 The provider startup deadline is 330,000 ms by default for import, analysis,
@@ -739,11 +739,32 @@ milliseconds in the server environment. An absent setting uses the default;
 empty, invalid or out-of-range supplied values fail configuration validation.
 REA+ parses the supplied configuration environment and
 passes the deadline to each provider client; a startup failure is returned by the query that triggered it,
-without exposing partial analysis. This deadline is separate from MCP transport
+without exposing a partially running analysis database. This deadline is separate from MCP transport
 initialization and the client's deadline for that individual tool call. A client
 can time out earlier even when Ghidra would complete within its startup deadline.
 See [Ghidra first-query deadlines and recovery](mcp-contracts.md#ghidra-first-query-deadlines-and-recovery)
 for client options and the close/reopen recovery flow.
+
+For an explicit reduced-analysis path, set
+`REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS` to a positive decimal integer from 1 to
+2,147,483 seconds. It supplies Ghidra's `-analysisTimeoutPerFile`, which requests cooperative
+cancellation at that deadline. Active analyzers can take additional time to
+settle. Queries begin after analysis has finished or stopped and its transaction
+has closed; the outer startup deadline still bounds readiness. The upper bound prevents overflow in Ghidra 12.1.4's signed
+`seconds * 1000` timer conversion. The option has no default; omitting it keeps
+the complete-only policy.
+
+The policy and analysis budget are committed in a distinct analysis profile,
+and the authenticated bridge must echo the exact budget. Actual
+`analysis_complete` / `analysis_timed_out` state stays in provider and composed
+workflow Evidence limitations. Counts describe the resulting Program; missing
+functions, references, strings and types in partial analysis remain unknown.
+This option does not bound import, bridge compilation, post-analysis repairs,
+extensions or individual decompilation requests. Keep the outer startup deadline
+large enough for that work, and the MCP client's request deadline large enough
+for startup. Changing the policy requires a new target binding (close/reopen, or
+restart a server whose configuration environment changed). Snapshots from a
+different policy do not replay as this profile.
 
 One session contains exactly one imported Program; use `provider_id: "ghidra"`, `--provider ghidra`, or
 `REA_ANALYSIS_PROVIDER=ghidra` when both Hopper and Ghidra support the target.

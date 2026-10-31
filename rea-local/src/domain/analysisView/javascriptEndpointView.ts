@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { javaScriptEndpointReceiverSchema } from "../javascript/javascriptEndpointReceiver.js";
 import type { JsonValue } from "../jsonValue.js";
 import type { ApplicationNode } from "../javascript/javascriptApplicationGraphSchemas.js";
 
@@ -20,6 +21,9 @@ export const javascriptEndpointItems = (
       node.observations.map((observation) => {
         const { value, template_parts } = observation.properties;
         const parsed = partsSchema.safeParse(template_parts);
+        const receiver = javaScriptEndpointReceiverSchema.safeParse(
+          observation.properties.network_receiver,
+        );
         const unresolved = new Set<string>();
         let materialized: string | null = null;
         if (parsed.success) {
@@ -39,6 +43,7 @@ export const javascriptEndpointItems = (
         return {
           node_id: node.node_id,
           observation_id: observation.observation_id,
+          network_receiver: receiver.success ? receiver.data : null,
           template: value ?? null,
           template_parts: parsed.success ? parsed.data : null,
           materialized_value: materialized,

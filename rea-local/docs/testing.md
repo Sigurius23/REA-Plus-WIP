@@ -459,7 +459,9 @@ prove behavior on the verified Ghidra 12.1.4 and JDK 21 build.
 | ------------------------------------------ | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | `npm run verify:ghidra`                    | Linux x64/arm64 ELF or macOS x64/arm64 Mach-O                                                   | Host C compiler, Ghidra 12.1.4, and full JDK 21                     |
 | `npm run verify:ghidra:seeds`              | POSIX host; source-owned 32-bit x86 raw fixture; function order and BSS labels                  | Ghidra 12.1.4 and full JDK 21                                       |
+| `npm run verify:ghidra:bounded`            | Source-built default/bounded Program, public CLI/MCP state and schema parity                    | Host C compiler, installed Ghidra with native decompiler, full JDK  |
 | `npm run verify:ghidra:swift`              | macOS x64/arm64 Mach-O                                                                          | Host Swift compiler, Ghidra 12.1.4, and full JDK 21                 |
+| `npm run verify:ghidra:swift-enum`         | macOS arm64 Mach-O; source-owned mixed-payload enum switches                                    | Host Swift compiler, Ghidra 12.1.4, and a supported full JDK        |
 | `npm run verify:ghidra:switch`             | Linux x64 ELF; GCC/Clang optimized and stripped switch fixtures                                 | GCC, Clang, GNU nm/objdump/strip, Ghidra 12.1.4, and full JDK 21    |
 | `npm run verify:ghidra:aarch64-jump-table` | Any supported Ghidra host; AArch64 ELF; signed/unsigned byte/halfword tables; host ARM64 Mach-O | Clang with AArch64 target support, Ghidra 12.1.4, and full JDK 21   |
 | `npm run verify:ghidra:cross-format`       | Any supported Ghidra host; also analyzes AArch64 ELF, x86-64 PE, and x86-64 Mach-O              | `clang`, LLD, and `lld-link` in addition to host-lane prerequisites |
@@ -576,6 +578,20 @@ fixture. It checks the recovered case values against the source cases and
 requires unresolved table bounds or case mappings to remain visible as
 residual unknowns.
 
+The Swift enum lane compiles 30-case and 12-case resilient-payload enums without
+executing them. A separate Mach-O/instruction decoder verifies the emitted
+unguarded runtime-tag and `LDRSW` shape, source case callees and table entries.
+Real MCP observations must include every case in the owning function before
+decompilation; the 30-case CLI result must have the exact same Evidence ID.
+Owned mutated copies check changed indices, descriptor/accessor/count/stride
+mismatches, unresolved or wrong-library imports, partial stack writes, escaped
+frame arguments (including predecessors laid out after the dispatch), wide tag
+copies without zero-extension, short initialized tables and invalid destinations. Rejection
+means no REA+ Swift-bound table is published; Ghidra's independent observations
+remain its own. Input hashes and final owned process lineage are checked. Use
+`--compiler-oracle-only` to check the compiler shape without starting Ghidra;
+that mode does not establish provider coverage.
+
 `npm run verify:inspector` requires the supported Node.js runtime and installed
 REA+ dependencies. CI runs it on Linux and macOS x64/arm64 and Windows x64. It starts owned loopback
 Node Inspector fixtures and verifies discovery and passive observation through
@@ -586,6 +602,25 @@ are tested on POSIX only because Windows does not support them.
 Node Inspector verification does not establish Electron GUI or other engine
 behavior. Browser and Inspector share CDP transport/value and file-location
 helpers; their producer workflows remain distinct.
+
+The bounded Ghidra verifier never executes its targets. Its default lane builds
+an owned C fixture, checks complete-only and explicit bounded profiles through
+CLI/MCP, and compares exact Evidence after cleanup. For a caller-selected static
+artifact, run:
+
+```bash
+node scripts/verify-real-ghidra-bounded.mjs --target /absolute/image \
+  --procedure 0xADDRESS --analysis-seconds 60 --expect-partial \
+  --output-dir /absolute/new-capture-directory
+```
+
+This lane
+retains exact public replies, checks useful overview/pseudocode and unchanged
+input bytes, and reports token-verified descendant observations after cleanup.
+`--cli` adds an independent CLI import/parity check; it is enabled automatically
+for source-owned fixtures. Timeout-induced inventories can differ between runs,
+so exact CLI parity is a claim about the selected test run, not every partial
+analysis of that artifact.
 
 ## Android APK analysis
 
@@ -1086,6 +1121,9 @@ conformance/vtable fixture.
   fixups; on Apple silicon the ObjC fixture is also built as arm64e, which uses
   authenticated pointers.
 - The lane inspects the bytes and repeats after stripping local symbols.
+- The stripped chained-fixup Swift fixture also selects conformances and
+  vtables independently through public CLI/MCP calls, checks the advertised
+  facet enum, and requires unselected families to remain `not_requested`.
 - It requires the bound `NSObject` superclass, the external category, and the
   matching `pointer_fixups` coverage. It requires macOS and the host Xcode toolchain; targets are not
   executed. `npm run verify:native-ui` launches exactly one source-owned fixture

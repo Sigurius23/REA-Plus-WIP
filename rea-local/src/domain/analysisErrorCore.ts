@@ -116,19 +116,52 @@ export class AnalysisCancelledError extends AnalysisError {
   }
 }
 
+/** Provider-owned deadline context, preserved without interpreting diagnostic prose. */
+export interface AnalysisTimeoutContext {
+  readonly providerId: string;
+  readonly phase: "startup" | "operation";
+  readonly stage: string;
+  readonly providerOperation: string;
+  readonly diagnostics: Readonly<Record<string, JsonValue>>;
+  readonly remediationAction: string;
+  readonly retryable: boolean;
+}
+
 /** Provider-neutral operation exceeded its declared execution deadline. */
 export class AnalysisTimeoutError extends AnalysisError {
   readonly _tag = "AnalysisTimeoutError";
+  readonly context: AnalysisTimeoutContext | undefined;
 
   constructor(
     readonly operation: string,
     readonly timeoutMs: number,
-    options?: AnalysisErrorOptions,
+    options?: AnalysisErrorOptions & {
+      readonly context?: AnalysisTimeoutContext;
+    },
   ) {
     super(
       `Analysis operation timed out after ${String(timeoutMs)}ms: ${operation}`,
       options,
     );
+    this.context =
+      options?.context === undefined
+        ? undefined
+        : structuredClone(options.context);
+  }
+
+  /** The workflow owns its public operation; the provider's internal operation stays in context. */
+  forOperation(operation: string): AnalysisTimeoutError {
+    return new AnalysisTimeoutError(operation, this.timeoutMs, {
+      cause: this,
+      ...(this.context === undefined ? {} : { context: this.context }),
+      ...(this.capturedOutput === undefined
+        ? {}
+        : { capturedOutput: this.capturedOutput }),
+      ...(this.cleanup === undefined ? {} : { cleanup: this.cleanup }),
+      ...(this.partialObservation === undefined
+        ? {}
+        : { partialObservation: this.partialObservation }),
+    });
   }
 }
 

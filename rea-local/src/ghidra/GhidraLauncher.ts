@@ -3,6 +3,7 @@ import {
   snapshotGhidraAnalysisSeeds,
   type GhidraSeedCommitment,
 } from "./GhidraAnalysisSeeds.js";
+import { ghidraAnalysisTimeoutValueSchema } from "../config/ghidraStartupTimeout.js";
 import type { GhidraLanguageOverride } from "../config/ghidraLanguageOverride.js";
 import { snapshotEnvironment } from "../process/snapshotEnvironment.js";
 import { mkdir, realpath } from "node:fs/promises";
@@ -53,6 +54,7 @@ export interface GhidraLaunchSession {
   readonly targetSha256: string;
   readonly providerVersion: string;
   readonly profileDigest: string;
+  readonly analysisTimeoutSeconds?: number;
 }
 
 /** Process plus private log coordinates returned by a Ghidra launcher. */
@@ -180,6 +182,9 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
           target_sha256: session.targetSha256,
           provider_version: session.providerVersion,
           profile_digest: session.profileDigest,
+          ...(session.analysisTimeoutSeconds === undefined
+            ? {}
+            : { analysis_timeout_seconds: session.analysisTimeoutSeconds }),
           ...(extensions.length === 0
             ? {}
             : { analysis_extensions: extensions }),
@@ -189,6 +194,9 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
       if (isAborted(options.signal))
         return err(new AnalysisCancelledError("open_binary"));
       const headlessArguments = ghidraHeadlessArguments({
+        ...(session.analysisTimeoutSeconds === undefined
+          ? {}
+          : { analysisTimeoutSeconds: session.analysisTimeoutSeconds }),
         platform,
         ...(psp === undefined ? {} : { psp: true as const }),
         projectRoot: paths.projectRoot,
@@ -404,6 +412,7 @@ const cleanupStartedProcess = (
 
 /** Paths encoded into one bounded analyzeHeadless invocation. */
 export interface GhidraHeadlessArgumentOptions {
+  readonly analysisTimeoutSeconds?: number;
   readonly platform?: NodeJS.Platform;
   readonly projectRoot: string;
   readonly targetPath: string;
@@ -431,6 +440,9 @@ export const ghidraHeadlessArguments = (
     (options.platform ?? process.platform) === "win32" ? win32 : posix;
   const bridgeDirectory = scriptPath.dirname(options.bridgeScriptPath);
   const override = options.languageOverride;
+  ghidraAnalysisTimeoutValueSchema
+    .optional()
+    .parse(options.analysisTimeoutSeconds);
   if (
     options.psp === true &&
     (options.dosMz === true ||
@@ -508,6 +520,9 @@ export const ghidraHeadlessArguments = (
                     : ["-cspec", override.compilerSpecId]),
                 ]
               : []),
+    ...(options.analysisTimeoutSeconds === undefined
+      ? []
+      : ["-analysisTimeoutPerFile", String(options.analysisTimeoutSeconds)]),
     "-readOnly",
     "-deleteProject",
     "-log",

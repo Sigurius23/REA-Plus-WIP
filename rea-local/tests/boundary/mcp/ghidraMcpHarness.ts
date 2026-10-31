@@ -6,7 +6,8 @@ import type { BinarySession } from "../../../src/application/binary/BinarySessio
 import { AnalysisProviderRegistry } from "../../../src/application/binary/AnalysisProviderRegistry.js";
 import { parseConfig } from "../../../src/config/parseConfig.js";
 import type { JsonValue } from "../../../src/domain/jsonValue.js";
-import { ok } from "../../../src/domain/result.js";
+import type { GhidraSessionError } from "../../../src/ghidra/GhidraSessionError.js";
+import { err, ok } from "../../../src/domain/result.js";
 import type { GhidraInstallationHost } from "../../../src/ghidra/GhidraInstallation.js";
 import type { GhidraOperation } from "../../../src/ghidra/GhidraClient.js";
 import { GhidraProvider } from "../../../src/ghidra/GhidraProvider.js";
@@ -26,12 +27,26 @@ const INSTALL = "/opt/ghidra_12.1.4_PUBLIC";
 export const connectGhidraMcp = async (
   name: string,
   execute?: ReturnType<GhidraProviderClientFactory>["callTool"],
+  settings: {
+    readonly analysisTimeoutSeconds?: number;
+    readonly analysisTimedOut?: boolean;
+    readonly startupFailure?: GhidraSessionError;
+  } = {},
 ) => {
   const calls: GhidraOperation[] = [];
   const factory: GhidraProviderClientFactory = (options) => ({
     start: () =>
       Promise.resolve(
-        ok(sessionInfo(options.profileDigest, options.targetSha256)),
+        settings.startupFailure !== undefined
+          ? err(settings.startupFailure)
+          : ok({
+              ...sessionInfo(options.profileDigest, options.targetSha256),
+              analysis_complete: !(settings.analysisTimedOut ?? false),
+              analysis_timed_out: settings.analysisTimedOut ?? false,
+              ...(options.analysisTimeoutSeconds === undefined
+                ? {}
+                : { analysis_timeout_seconds: options.analysisTimeoutSeconds }),
+            }),
       ),
     callTool: (operation, input, options) => {
       calls.push(operation);
@@ -40,7 +55,16 @@ export const connectGhidraMcp = async (
     },
     close: () => Promise.resolve(ok(null)),
   });
-  const config = parseConfig({ GHIDRA_INSTALL_DIR: INSTALL });
+  const config = parseConfig({
+    GHIDRA_INSTALL_DIR: INSTALL,
+    ...(settings.analysisTimeoutSeconds === undefined
+      ? {}
+      : {
+          REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS: String(
+            settings.analysisTimeoutSeconds,
+          ),
+        }),
+  });
   if (!config.ok) throw config.error;
   const provider = new GhidraProvider(
     config.value,

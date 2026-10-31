@@ -74,6 +74,10 @@ describe("CLI selected environment", () => {
   it("does not borrow invalid ambient settings or capture inherited environment in artifact Evidence", async () => {
     vi.stubEnv("REA_GHIDRA_STARTUP_TIMEOUT_MS", "ambient-invalid-setting");
     vi.stubEnv(
+      "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS",
+      "ambient-invalid-setting",
+    );
+    vi.stubEnv(
       "REA_AMBIENT_CAPTURE_SENTINEL",
       "ambient-value-must-not-be-captured",
     );

@@ -388,6 +388,19 @@ const createFileTarget = (
           file_kind: file.kind,
           text_status: file.text.included ? "included" : file.text.reason,
           parse_status: javascript?.parse_status ?? null,
+          parse_error_count: javascript?.parse_error_count ?? null,
+          ...(javascript?.syntax_parse_status === undefined
+            ? {}
+            : { syntax_parse_status: javascript.syntax_parse_status }),
+          ...(javascript?.static_facts_status === undefined
+            ? {}
+            : { static_facts_status: javascript.static_facts_status }),
+          ...(javascript?.unresolved_static_occurrences === undefined
+            ? {}
+            : {
+                unresolved_static_occurrences:
+                  javascript.unresolved_static_occurrences,
+              }),
           ...(file.kind !== "javascript"
             ? {}
             : {

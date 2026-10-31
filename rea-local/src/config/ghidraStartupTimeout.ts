@@ -13,3 +13,18 @@ export const ghidraStartupTimeoutSchema = z
   .transform(Number)
   .pipe(z.number().int().min(1).max(MAX_TIMER_DELAY_MS))
   .default(DEFAULT_GHIDRA_STARTUP_TIMEOUT_MS);
+
+// Ghidra 12.1.4 multiplies seconds by 1000 as a signed Java int before scheduling.
+const MAX_GHIDRA_ANALYSIS_TIMEOUT_SECONDS = 2_147_483;
+export const ghidraAnalysisTimeoutValueSchema = z
+  .number()
+  .int()
+  .min(1)
+  .max(MAX_GHIDRA_ANALYSIS_TIMEOUT_SECONDS);
+
+/** Explicit per-file auto-analysis bound, safe for Ghidra's millisecond conversion. */
+export const ghidraAnalysisTimeoutSecondsSchema = z
+  .string()
+  .regex(/^[1-9]\d*$/u, "must be a positive decimal integer")
+  .transform(Number)
+  .pipe(ghidraAnalysisTimeoutValueSchema);

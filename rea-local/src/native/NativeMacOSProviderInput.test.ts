@@ -41,6 +41,11 @@ describe("native dispatch metadata input boundary", () => {
         path: "max_record",
         reason: "unknown_argument",
       },
+      {
+        parameters: { facet: "swift-witnesses" },
+        path: "facet",
+        reason: "invalid_value",
+      },
     ];
     for (const { parameters, path, reason } of cases) {
       const result = await client.execute(

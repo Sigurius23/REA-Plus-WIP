@@ -3,6 +3,7 @@ import {
   objcSwiftMetadataSchema,
   nativeDispatchMetadataResultSchema,
   type ObjcSwiftMetadata,
+  type NativeDispatchFacet,
 } from "../domain/native/objcSwiftMetadata.js";
 import type { BinaryTarget } from "../domain/binaryTargetTypes.js";
 import {
@@ -28,8 +29,12 @@ export const decodeAppleDispatchMetadata = (
   bytes: Buffer,
   maxRecords: number,
   provenance: { path: string; sha256: string },
-  architecture = "arm64",
+  selection: {
+    readonly architecture?: string;
+    readonly facet?: NativeDispatchFacet;
+  } = {},
 ): ObjcSwiftMetadata => {
+  const { architecture = "arm64", facet = "all" } = selection;
   const layout = parseMachoLayout(bytes, architecture);
   const { segments, sections, offset } = layout;
   const fixups = parsePointerFixups(
@@ -76,21 +81,29 @@ export const decodeAppleDispatchMetadata = (
   };
   const result = objcSwiftMetadataSchema.parse({ db_save_result: null });
   let records = 0;
-  const budget: DispatchRecordBudget = {
-    truncated: false,
-    isFull: () => records >= maxRecords,
-    markTruncated: () => {
-      budget.truncated = true;
-    },
-    admit: () => {
-      if (records >= maxRecords) {
+  // Each family owns its exhaustion status while sharing the one record cap.
+  const createBudget = (): DispatchRecordBudget => {
+    const budget: DispatchRecordBudget = {
+      truncated: false,
+      isFull: () => records >= maxRecords,
+      markTruncated: () => {
         budget.truncated = true;
-        return false;
-      }
-      records++;
-      return true;
-    },
+      },
+      admit: () => {
+        if (records >= maxRecords) {
+          budget.truncated = true;
+          return false;
+        }
+        records++;
+        return true;
+      },
+    };
+    return budget;
   };
+  const objcBudget = createBudget();
+  const objcPropertyBudget = createBudget();
+  const swiftBudget = createBudget();
+  const vtableBudget = createBudget();
   const readers = {
     u32,
     i32: (address: bigint) => bytes.readInt32LE(offset(address, 4)),
@@ -102,65 +115,108 @@ export const decodeAppleDispatchMetadata = (
     evidence,
     offset,
   };
-  const { failures, categoryIssues, examined, categoriesExamined } =
-    decodeObjcDispatchFacets({
-      bytes,
-      sections,
-      segments,
-      readers,
-      budget,
-      result,
-    });
-  const swiftRelative = createSwiftRelativeReader({
-    bytes,
-    readers,
-    budget,
-    result,
-  });
-  const swift = decodeSwiftDispatchFacets({
-    sections,
-    segments,
-    readers,
-    relative: swiftRelative,
-    budget,
-    result,
-  });
+  const objc =
+    facet === "all" || facet === "objc"
+      ? decodeObjcDispatchFacets({
+          bytes,
+          sections,
+          segments,
+          readers,
+          budget: objcBudget,
+          propertyBudget: objcPropertyBudget,
+          result,
+        })
+      : {
+          failures: [],
+          categoryIssues: [],
+          examined: 0,
+          categoriesExamined: 0,
+          classTruncated: false,
+          categoriesTruncated: false,
+        };
+  const swift =
+    facet === "all" || facet === "swift-conformances"
+      ? decodeSwiftDispatchFacets({
+          sections,
+          segments,
+          readers: { ...readers, pointer: decodePointer },
+          relative: createSwiftRelativeReader({
+            bytes,
+            readers: { ...readers, pointer: decodePointer },
+            budget: swiftBudget,
+            result,
+          }),
+          budget: swiftBudget,
+          result,
+        })
+      : {
+          facet: "swift_conformances_static_witness_slots" as const,
+          examined: 0,
+          decoded: 0,
+          exhaustive: true,
+          issues: [],
+        };
   const typeEntries: bigint[] = [];
-  for (const section of sections.filter(
-    ({ name }) => name === "__swift5_types",
-  )) {
-    if (section.size % 4 !== 0)
-      throw new RangeError("Misaligned Swift type section");
-    for (let index = 0; index < section.size / 4 && index < maxRecords; index++)
-      typeEntries.push(section.address + BigInt(index * 4));
-    if (section.size / 4 > maxRecords) budget.truncated = true;
-  }
-  const vtables = decodeSwiftClassVtables({
-    entries: typeEntries,
-    result,
-    readers: {
-      u32,
-      relative: swiftRelative,
-      string,
-      location,
-      evidence,
-      admit: () => budget.admit(),
-      executable: (address) =>
-        segments.some(
-          (segment) =>
-            segment.executable &&
-            address >= segment.address &&
-            address < segment.address + segment.size,
-        ),
-    },
-  });
+  if (facet === "all" || facet === "swift-vtables")
+    for (const section of sections.filter(
+      ({ name }) => name === "__swift5_types",
+    )) {
+      if (section.size % 4 !== 0)
+        throw new RangeError("Misaligned Swift type section");
+      const entries = Math.min(
+        section.size / 4,
+        maxRecords - typeEntries.length,
+      );
+      for (let index = 0; index < entries; index++)
+        typeEntries.push(section.address + BigInt(index * 4));
+      if (section.size / 4 > entries) vtableBudget.markTruncated();
+    }
+  const vtables =
+    facet === "all" || facet === "swift-vtables"
+      ? decodeSwiftClassVtables({
+          entries: typeEntries,
+          result,
+          readers: {
+            u32,
+            relative: createSwiftRelativeReader({
+              bytes,
+              readers: { ...readers, pointer: decodePointer },
+              budget: vtableBudget,
+              result,
+            }).local,
+            string,
+            location,
+            evidence,
+            admit: () => vtableBudget.admit(),
+            executable: (address) =>
+              segments.some(
+                (segment) =>
+                  segment.executable &&
+                  address >= segment.address &&
+                  address < segment.address + segment.size,
+              ),
+          },
+        })
+      : {
+          facet: "swift_class_vtable_descriptors" as const,
+          examined: 0,
+          decoded: 0,
+          exhaustive: true,
+          issues: [],
+        };
   pushDispatchCoverage({
     result,
-    failures,
-    categoryIssues,
-    examined,
-    categoriesExamined,
-    truncated: budget.truncated,
+    facet,
+    failures: objc.failures,
+    categoryIssues: objc.categoryIssues,
+    examined: objc.examined,
+    categoriesExamined: objc.categoriesExamined,
+    truncated: {
+      objc: objc.classTruncated,
+      objcCategories: objc.categoriesTruncated,
+      swift: swiftBudget.truncated,
+      vtables: vtableBudget.truncated,
+    },
     fixups,
     vtables,
     swift,
@@ -173,6 +229,7 @@ export const inspectAppleDispatchMetadata = async (
   target: BinaryTarget,
   maxRecords: number,
   signal?: AbortSignal,
+  facet: NativeDispatchFacet = "all",
 ) => {
   if (target.kind !== "executable" || target.format !== "mach-o")
     throw new TypeError("Apple dispatch metadata requires a Mach-O target");
@@ -212,7 +269,7 @@ export const inspectAppleDispatchMetadata = async (
         bytes,
         maxRecords,
         { path: target.path, sha256: digest },
-        target.architecture,
+        { architecture: target.architecture, facet },
       ),
     });
   } finally {

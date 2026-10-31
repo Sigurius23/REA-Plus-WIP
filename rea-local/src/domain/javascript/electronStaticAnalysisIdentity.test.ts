@@ -74,3 +74,79 @@ describe("Electron API identity", () => {
     ]);
   });
 });
+
+describe("Sender transport authority", () => {
+  it("keeps browser and helper checks generic while proving Electron event projections", () => {
+    const analysis = analyzeJavaScriptStaticSource(`
+      import {ipcMain} from 'electron';
+      ipcMain.handle('trusted', event => {
+        const sender = event.sender;
+        const {senderFrame: frame} = event;
+        return sender.id === 42 && frame.origin === 'https://trusted.invalid';
+      });
+      browser.runtime.onMessage.addListener((message, source) => {
+        return source.id === 'extension-id' && source.url.startsWith('https://');
+      });
+      function helper(event) { return event.sender.id === 123; }
+    `);
+    expect(analysis.electron.sender_validations).toMatchObject([
+      { subject: "sender-id", transport: "electron", expected: { value: 42 } },
+      {
+        subject: "sender-origin",
+        transport: "electron",
+        expected: { value: "https://trusted.invalid" },
+      },
+    ]);
+    expect(analysis.sender_validations).toMatchObject([
+      {
+        subject: "sender-id",
+        transport: "browser-extension",
+        expected: { value: "extension-id" },
+        enforcement: "unknown",
+      },
+      {
+        subject: "sender-url",
+        transport: "browser-extension",
+        expected: { value: "https://" },
+      },
+      { subject: "sender-id", transport: "unknown", expected: { value: 123 } },
+    ]);
+  });
+
+  it("does not promote reassigned, mutated or shadowed callback values", () => {
+    const analysis = analyzeJavaScriptStaticSource(`
+      import {ipcMain} from 'electron';
+      ipcMain.handle('assignment', event => {
+        event = other;
+        return event.sender.id === 1;
+      });
+      ipcMain.handle('mutation', event => {
+        const sender = event.sender;
+        sender.id = custom;
+        return event.sender.id === 2;
+      });
+      ipcMain.handle('nested', event => {
+        function nested(event) { return event.sender.id === 3; }
+      });
+      function shadow(ipcMain) {
+        ipcMain.handle('local', event => event.sender.id === 4);
+      }
+      function customBrowser(chrome) {
+        chrome.runtime.onMessage.addListener((message, sender) => sender.id === 5);
+      }
+    `);
+    expect(analysis.electron.sender_validations).toEqual([]);
+    expect(
+      analysis.sender_validations?.map((v) => ({
+        value: v.expected.value,
+        transport: v.transport,
+      })),
+    ).toEqual([
+      { value: 1, transport: "unknown" },
+      { value: 2, transport: "unknown" },
+      { value: 3, transport: "unknown" },
+      { value: 4, transport: "unknown" },
+      { value: 5, transport: "unknown" },
+    ]);
+  });
+});

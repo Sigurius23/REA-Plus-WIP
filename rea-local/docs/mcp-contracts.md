@@ -203,16 +203,18 @@ REA+ never kills a process it cannot prove it owns.
 A successful MCP initialize handshake establishes the REA+ connection.
 `open_binary` then selects a target and provider binding; it does not establish
 that Ghidra has finished importing the target. The first Ghidra-backed query,
-such as `binary_overview`, starts the engine and waits for import, default
-auto-analysis, bridge connection, and health readiness before returning analysis.
+such as `binary_overview`, starts the engine and waits for import, auto-analysis
+under the committed policy, bridge connection, and health readiness before
+returning analysis. The default policy requires completed auto-analysis.
 
 These deadlines have different owners:
 
-| Deadline             | Owner and effect                                                                                                                                                                                                                     |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| MCP initialize       | The client bounds transport/REA+ connection startup, before any target query.                                                                                                                                                        |
-| Ghidra startup       | REA+ allows 330,000 ms by default; `REA_GHIDRA_STARTUP_TIMEOUT_MS` accepts decimal integers from 1–2,147,483,647 ms. Invalid supplied values fail configuration validation. Startup failure is reported by the first provider query. |
-| Individual tool call | The client bounds its wait, including cold engine startup. The pinned client SDK 2.3.1 defaults to 60,000 ms and can cancel earlier than REA+'s startup deadline.                                                                    |
+| Deadline             | Owner and effect                                                                                                                                                                                                                                                                                                                                   |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| MCP initialize       | The client bounds transport/REA+ connection startup, before any target query.                                                                                                                                                                                                                                                                      |
+| Ghidra startup       | REA+ allows 330,000 ms by default; `REA_GHIDRA_STARTUP_TIMEOUT_MS` accepts decimal integers from 1–2,147,483,647 ms. Invalid supplied values fail configuration validation. Startup failure is reported by the first provider query.                                                                                                               |
+| Ghidra auto-analysis | Optional `REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS` accepts 1–2,147,483 seconds. It stops the auto-analysis phase and explicitly admits its stable partial Program; the outer startup and client deadlines still apply. Policy/budget are profile-bound and actual completion flags remain in every returned observation, including composed workflows. |
+| Individual tool call | The client bounds its wait, including cold engine startup. The pinned client SDK 2.3.1 defaults to 60,000 ms and can cancel earlier than REA+'s startup deadline.                                                                                                                                                                                  |
 
 For an already connected client using the pinned SDK, request options are the
 **second** argument of `callTool`:
@@ -244,6 +246,14 @@ Configure the deadline in the caller's existing request settings; it is not a
 tool argument, setup grant, or server-side automatic extension. CLI analysis has
 no MCP client request deadline, but keeps the provider startup deadline and
 SIGINT cancellation.
+
+Provider startup failures retain the public operation, internal provider
+operation, startup stage and bounded redacted diagnostics. For example, an
+unanswered post-analysis bridge is `awaiting-post-analysis-bridge`; this does
+not identify a particular active analyzer. Remediation names the startup and
+optional bounded-analysis settings. Startup failures do not promise that an
+unchanged automatic retry will help; changing request-size arguments cannot
+shorten an import triggered by `binary_overview {}`.
 
 If the client timed out or cancelled during startup, the pending query may have
 been interrupted. Reissuing `open_binary` for the same active target can reuse

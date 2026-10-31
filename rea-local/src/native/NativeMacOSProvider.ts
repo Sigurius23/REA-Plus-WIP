@@ -181,6 +181,7 @@ class NativeMacOSClient implements AnalysisClient {
           this.target,
           input.data.max_records,
           options?.signal,
+          input.data.facet,
         );
         return ok(
           createAnalysisExecution(result, result.provider, {

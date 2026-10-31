@@ -1,0 +1,288 @@
+{
+  "schema": "rea-heyclicky-item36-verification/v1",
+  "recorded_at": "2026-10-29T15:15:54.884726+00:00",
+  "open_task": 36,
+  "status": "fixed and verified locally; uncommitted",
+  "change": "Use exact AST node identity for ephemeral call-receiver facts across static and captured-web consumers. No wire or schema change.",
+  "build": {
+    "compile_key": "01e1c5cf3bf97ec2",
+    "skills_key": "e429dd3f981ce30e"
+  },
+  "checks": [
+    {
+      "check": "regression-before",
+      "exit_code": 1,
+      "result": "one new domain case fails before the fix",
+      "command": [
+        "node_modules/.bin/vitest",
+        "run",
+        "--project",
+        "domain",
+        "src/domain/webBundleAnalyzer.test.ts",
+        "--testNamePattern",
+        "keeps nested call receivers distinct"
+      ],
+      "working_directory": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local",
+      "log": {
+        "path": "/private/tmp/rea-heyclicky-36-regression-before.log",
+        "bytes": 5635,
+        "sha256": "85982892899a7d102187035c0a15db384aa5adcc50bd77ea63302e3623689a6e"
+      }
+    },
+    {
+      "check": "domain",
+      "exit_code": 0,
+      "result": "30 tests pass",
+      "command": "node_modules/.bin/vitest run --project domain src/domain/webBundleAnalyzer.test.ts src/domain/javascript/javascriptSemanticAnalysisSteps.test.ts",
+      "working_directory": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local",
+      "log": {
+        "path": "/private/tmp/rea-heyclicky-36-domain.log",
+        "bytes": 650,
+        "sha256": "8906ad489a7893fa65f94bb74642d32d248ea099ab7a5645d20fb961a397cf3e"
+      }
+    },
+    {
+      "check": "focused",
+      "exit_code": 0,
+      "result": "13 compiled CLI/MCP/worker tests pass; three build tasks pass",
+      "command": "/usr/bin/caffeinate -i npm run test:focused -- tests/acceptance/applications/javascriptEndpointPayload.test.ts tests/boundary/javascript/javascriptSourceAnalysisWorker.test.ts",
+      "working_directory": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local",
+      "log": {
+        "path": "/private/tmp/rea-heyclicky-36-focused.log",
+        "bytes": 2425,
+        "sha256": "403a616f7b1a92b6f648ee464230b5fc27bb94fa562538a0d849a412ef9a963b"
+      }
+    },
+    {
+      "check": "typecheck",
+      "exit_code": 0,
+      "result": "full TypeScript check passes",
+      "command": "node_modules/.bin/tsc --noEmit",
+      "working_directory": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local",
+      "log": {
+        "path": "/private/tmp/rea-heyclicky-36-typecheck.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "check": "lint",
+      "exit_code": 0,
+      "result": "scoped oxlint: zero errors, ten existing warnings",
+      "working_directory": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local",
+      "log": {
+        "path": "/private/tmp/rea-heyclicky-36-lint.log",
+        "bytes": 1683,
+        "sha256": "fde4b9a7180fe9ffb668c41e166dec5ed5d586ed9d02b95b70bee91aa1332798"
+      },
+      "scope": "nine source/test files listed in source_files",
+      "exact_argument_vector_retained": false
+    }
+  ],
+  "formatting_and_scoped_diff_check": {
+    "passed": true,
+    "separate_saved_log": false
+  },
+  "full_gate_rerun": false,
+  "prior_full_gate": "2026-10-29: 913 files / 8474 tests pass; 16 files / 274 tests skip; predates item36",
+  "shipped_extension_retest": {
+    "date": "2026-10-29",
+    "started_at": "2026-10-29T09:32:54.257022+00:00",
+    "finished_at": "2026-10-29T09:33:02.882691+00:00",
+    "command": [
+      "analyze-javascript-application",
+      "/Applications/HeyClicky.app/Contents/Resources",
+      "--artifact-format",
+      "directory",
+      "--scan-shipped-material",
+      "--paths-include",
+      "ClickyBrowserExtension/**",
+      "--json"
+    ],
+    "exit_code": 0,
+    "elapsed_ms": 8626,
+    "source_unchanged": true,
+    "source_regular_files": 222,
+    "source_regular_bytes": 691837272,
+    "target_executed": false,
+    "evidence_id": "ev_84f1cc12fe637b3b7988bb7b00a77a4c8cb40d2543a47a690dba6d32b6dbab27",
+    "statistics": {
+      "relevant_files": 9,
+      "nested_asar_containers": 0,
+      "text_bytes_read": 158418,
+      "invalid_utf8_files": 0,
+      "parsed_javascript_files": 6,
+      "visited_ast_nodes": 19856,
+      "findings": 32,
+      "modules": 0,
+      "parse_failures": 0,
+      "paths_scope": {
+        "paths_include": [
+          "ClickyBrowserExtension/**"
+        ],
+        "paths_exclude": [],
+        "considered_files": 18,
+        "selected_files": 9,
+        "excluded_files": 9
+      }
+    },
+    "storage_observations": [
+      {
+        "storage_kind": "extension-storage",
+        "area": "session",
+        "api": "chrome.storage.session",
+        "name": "clickyTabs",
+        "mechanism": "call:chrome.storage.session.get"
+      },
+      {
+        "storage_kind": "extension-storage",
+        "area": "local",
+        "api": "chrome.storage.local",
+        "name": "cursorOverlay",
+        "mechanism": "call:chrome.storage.local.get"
+      },
+      {
+        "storage_kind": "extension-storage",
+        "area": "local",
+        "api": "chrome.storage.local",
+        "name": null,
+        "mechanism": "call:chrome.storage.local.set"
+      },
+      {
+        "storage_kind": "extension-storage",
+        "area": "local",
+        "api": "chrome.storage.local",
+        "name": "profileId",
+        "mechanism": "call:chrome.storage.local.get"
+      },
+      {
+        "storage_kind": "extension-storage",
+        "area": "local",
+        "api": "chrome.storage.local",
+        "name": "cursorOverlay",
+        "mechanism": "call:chrome.storage.local.get"
+      },
+      {
+        "storage_kind": "extension-storage",
+        "area": "session",
+        "api": "chrome.storage.session",
+        "name": null,
+        "mechanism": "call:chrome.storage.session.set"
+      },
+      {
+        "storage_kind": "extension-storage",
+        "area": "local",
+        "api": "chrome.storage.local",
+        "name": null,
+        "mechanism": "call:chrome.storage.local.set"
+      }
+    ],
+    "endpoints": [
+      {
+        "endpoint_kind": "network",
+        "network_receiver": {
+          "status": "unknown",
+          "identity": null
+        },
+        "value": "content-type",
+        "mechanism": "call:response.headers.get"
+      }
+    ],
+    "raw_evidence": {
+      "path": "/private/tmp/rea-heyclicky-36-verified-h84960mi/extension-analysis.json",
+      "bytes": 21596496,
+      "sha256": "c17d5022c96a51a7c5232bfd377a3fd07725b56e97518539b3e1be613940910e"
+    },
+    "build_compile_key": "01e1c5cf3bf97ec2"
+  },
+  "raw_references": [
+    {
+      "path": "/private/tmp/rea-heyclicky-36-verified-h84960mi/receipt.json",
+      "bytes": 3001,
+      "sha256": "63c64c0de64af62cd5a5658b5074a7fd7ec8f237e2160511a612118c8fb96f84"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-36-verified-h84960mi/source-before.json",
+      "bytes": 33584,
+      "sha256": "a1f93575183a080c1939455a180ce48e125d5c3c6c300d9bd574c00f03d8cee3"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-36-verified-h84960mi/source-after.json",
+      "bytes": 33584,
+      "sha256": "a1f93575183a080c1939455a180ce48e125d5c3c6c300d9bd574c00f03d8cee3"
+    }
+  ],
+  "source_files": [
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/src/domain/javascript/javascriptCallReceiverFacts.ts",
+      "bytes": 17937,
+      "sha256": "452d37dae7dfa58f9e4bc2e4f861064c24c6af0f95485d833ad360a59869e2dc"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/src/domain/javascript/javascriptSemanticAnalysis.ts",
+      "bytes": 36716,
+      "sha256": "cd195792ba0b2767c2b88886ee3b3e754f4728513b30a55f1d687940434c90e3"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/src/domain/javascript/javascriptStaticAnalysis.ts",
+      "bytes": 9399,
+      "sha256": "98cfed5ff605d74447ff831593b2819c7becebc1b27fbe44c4fcb606b8547eba"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/src/domain/javascript/javascriptStaticAnalysisState.ts",
+      "bytes": 5284,
+      "sha256": "3bd35cf9e5ba92d0a339eb3c03684976eb847641ee5ca123810a495d0db57ed6"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/src/domain/javascript/javascriptStaticAnalysisCalls.ts",
+      "bytes": 13511,
+      "sha256": "f84b1f9e6cb69cdb8c74b384933ed94a5c579c618a99d23a9041d36c829777c9"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/src/domain/webBundleAnalyzerInspection.ts",
+      "bytes": 14056,
+      "sha256": "f63309356f1f2647e70a3e8dbf221272384a7ddb97e663015181f445fd900cd2"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/src/domain/javascript/javascriptSemanticAnalysisSteps.test.ts",
+      "bytes": 6473,
+      "sha256": "cf59a53958216dcf4eaad1269c82ce0421172c941c9caa85d1dc4005ce30b6a3"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/src/domain/webBundleAnalyzer.test.ts",
+      "bytes": 27324,
+      "sha256": "76e9c72aca9852a65e840743ffe4aa979c4778d5453ee005faeefe8941bdd3f0"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/tests/acceptance/applications/javascriptEndpointPayload.test.ts",
+      "bytes": 16657,
+      "sha256": "e0ce569a6ddcf052d8b32019f8fcfbe7774980c796caba3db314c042b84d15a1"
+    }
+  ],
+  "skill_guidance_update": {
+    "source": {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.agents/skills/reverse-engineer-anything/SKILL.md",
+      "bytes": 21247,
+      "sha256": "7af99f7f65b62109087de9649a61b789704793c6568c9b4f2d3ddcbea318980f"
+    },
+    "change": "Separate tool verification from feature recovery; trace entry, decisions, state and visible result, attempt existing evidence paths before declaring a tool blocker.",
+    "packaged_skill_regenerated": true
+  },
+  "target_executed": false,
+  "target_services_contacted": false,
+  "user_application_data_accessed": false,
+  "committed": false,
+  "pushed": false,
+  "documentation_check": {
+    "command": [
+      "npm",
+      "run",
+      "docs:check"
+    ],
+    "exit_code": 0,
+    "tasks_successful": 6,
+    "compile_key": "01e1c5cf3bf97ec2",
+    "skills_key": "e429dd3f981ce30e",
+    "scope": "completed after item36 and broad-investigation SKILL.md guidance, before subsequent native seed recipe addition"
+  }
+}

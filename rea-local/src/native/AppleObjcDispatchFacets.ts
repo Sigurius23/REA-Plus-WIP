@@ -2,7 +2,7 @@ import type { ObjcSwiftMetadata } from "../domain/native/objcSwiftMetadata.js";
 import type { Segment, Section } from "./AppleMachoSelection.js";
 import { boundClassName, decodeObjcCategories } from "./AppleObjcCategories.js";
 import { readObjcPropertiesOf } from "./AppleObjcProperties.js";
-import type { DecodeIssue } from "./AppleDispatchDecodeFacts.js";
+import { issue, type DecodeIssue } from "./AppleDispatchDecodeFacts.js";
 import { createObjcProtocolReader } from "./AppleObjcProtocols.js";
 import type {
   BinaryMetadataEvidence,
@@ -67,14 +67,25 @@ export const decodeObjcDispatchFacets = (input: {
   segments: readonly Segment[];
   readers: ObjcDispatchReaders;
   budget: DispatchRecordBudget;
+  propertyBudget: DispatchRecordBudget;
   result: ObjcSwiftMetadata;
 }): {
   failures: string[];
   categoryIssues: DecodeIssue[];
   examined: number;
   categoriesExamined: number;
+  classTruncated: boolean;
+  categoriesTruncated: boolean;
 } => {
-  const { bytes, sections, segments, readers: read, budget, result } = input;
+  const {
+    bytes,
+    sections,
+    segments,
+    readers: read,
+    propertyBudget,
+    result,
+  } = input;
+  let budget = input.budget;
   const failures: string[] = [];
   const categoryIssues: DecodeIssue[] = [];
   let examined = 0;
@@ -205,7 +216,12 @@ export const decodeObjcDispatchFacets = (input: {
   }
   const visited = new Set<string>();
   const readClass = (address: bigint, meta = false) => {
-    if (address === 0n || visited.has(hex(address)) || !budget.admit()) return;
+    if (address === 0n || visited.has(hex(address))) return;
+    if (!budget.admit()) {
+      // The properties of an unexamined class/metaclass remain unknown too.
+      propertyBudget.markTruncated();
+      return;
+    }
     visited.add(hex(address));
     const ro = read.pointer(address + 32n) & ~7n;
     const name = read.string(read.pointer(ro + 24n));
@@ -281,7 +297,7 @@ export const decodeObjcDispatchFacets = (input: {
         })),
       properties: readObjcPropertiesOf(read, read.pointer(ro + 64n), {
         owner: name,
-        admit: () => budget.admit(),
+        admit: () => propertyBudget.admit(),
         issues: categoryIssues,
         location: hex(read.pointer(ro + 64n)),
       }),
@@ -318,6 +334,7 @@ export const decodeObjcDispatchFacets = (input: {
     for (let index = 0; index < section.size / 8; index++) {
       if (budget.isFull()) {
         budget.markTruncated();
+        propertyBudget.markTruncated();
         break;
       }
       examined++;
@@ -331,16 +348,38 @@ export const decodeObjcDispatchFacets = (input: {
       }
     }
   }
+  // Later category work must not change already established class coverage.
+  const classFailures = [...failures];
+  const classTruncated = budget.truncated;
+  budget = propertyBudget;
+  const categoryFailures: string[] = [];
   const categoriesExamined = decodeObjcCategories({
     sections,
     read,
     result,
-    failures,
+    failures: categoryFailures,
     issues: categoryIssues,
     admit: () => budget.admit(),
     methods,
     protocols: (list) => protocolReader.list(list),
     localClassName: (address) => localClassName(read, address),
   });
-  return { failures, categoryIssues, examined, categoriesExamined };
+  // The shared protocol reader reports caught dependency failures through its
+  // original sink. They belong to the category phase, not completed classes.
+  for (const failure of failures.slice(classFailures.length))
+    categoryIssues.push(
+      issue(
+        "objc_properties_categories",
+        "category_protocol_decode_failed",
+        failure,
+      ),
+    );
+  return {
+    failures: classFailures,
+    categoryIssues,
+    examined,
+    categoriesExamined,
+    classTruncated,
+    categoriesTruncated: propertyBudget.truncated,
+  };
 };

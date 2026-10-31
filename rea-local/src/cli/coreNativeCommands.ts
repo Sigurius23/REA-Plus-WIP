@@ -11,6 +11,7 @@ import {
   stagingDirSelectionOption,
 } from "./options.js";
 import type { CliInstance } from "./types.js";
+import { nativeDispatchFacetSchema } from "../domain/native/objcSwiftMetadata.js";
 
 /** Register native load-image, memory, and annotation CLI commands. */
 export const registerCoreNativeCommands = (
@@ -268,7 +269,12 @@ const registerNativeDispatchMetadataCommand = (
         .min(1)
         .max(20_000)
         .default(5_000)
-        .describe("Maximum symbol records to inspect"),
+        .describe("Aggregate metadata decode-admission budget"),
+      facet: nativeDispatchFacetSchema
+        .default("all")
+        .describe(
+          "Metadata family to inspect; unselected families are not_requested",
+        ),
       snapshot: z
         .string()
         .min(1)
@@ -283,7 +289,7 @@ const registerNativeDispatchMetadataCommand = (
         runDirectAnalysis(
           args.path,
           "inspect_native_dispatch_metadata",
-          { max_records: options.maxRecords },
+          { max_records: options.maxRecords, facet: options.facet },
           directAnalysisOptions(logger, {
             snapshotPath: options.snapshot,
             providerId: options.provider,

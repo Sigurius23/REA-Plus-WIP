@@ -1,5 +1,6 @@
 import * as t from "@babel/types";
 import { endpointTemplateParts } from "./javascriptEndpointTemplates.js";
+import { endpointReceiver } from "./javascriptEndpointReceiver.js";
 
 import { sanitizeEndpointCandidate } from "../browserObservation.js";
 import {
@@ -187,8 +188,9 @@ const inspectEndpointCall = (
       mechanism: `call:${name}`,
     });
   const bindings = context.endpointBindings;
-  const endpoint = endpointArgumentHelper(name, node.arguments, node.callee, {
-    receiverFact: context.openReceiverFacts?.get(node.start ?? -1),
+  const receiverFact = context.callReceiverFacts?.get(node);
+  const endpoint = endpointArgumentHelper(name, node.arguments, {
+    receiverFact,
     ...(bindings === undefined
       ? {}
       : { resolve: (argument: t.Node) => bindings.resolve(argument) }),
@@ -197,6 +199,7 @@ const inspectEndpointCall = (
     addEndpoint(context, {
       node,
       kind: "network",
+      network_receiver: endpointReceiver(receiverFact),
       value: endpoint,
       ...endpointParts(node, endpoint, context),
       mechanism: `call:${name}`,
@@ -253,24 +256,30 @@ const inspectStorageCall = (
   first: string | undefined,
   context: FindingContext,
 ): void => {
-  const receiverFact = context.openReceiverFacts?.get(node.start ?? -1);
+  const receiverFact = context.callReceiverFacts?.get(node);
+  const receiverKind = receiverFact?.kind;
   const storage =
-    receiverFact === "local" ||
-    receiverFact === "local-indexed-db" ||
-    receiverFact === "local-cache-storage"
+    receiverKind === "local" ||
+    receiverKind === "local-indexed-db" ||
+    receiverKind === "local-cache-storage"
       ? undefined
-      : receiverFact === "indexed-db"
-        ? "indexed-db"
-        : receiverFact === "cache-storage"
-          ? "cache-storage"
-          : storageKind(name);
+      : receiverKind === "extension-storage"
+        ? "extension-storage"
+        : receiverKind === "indexed-db"
+          ? "indexed-db"
+          : receiverKind === "cache-storage"
+            ? "cache-storage"
+            : storageKind(name);
   if (storage === undefined) return;
   addLocatedFinding(context, {
     collection: context.accumulator.storage,
-    key: `storage\0${storage}\0${first ?? ""}`,
+    key: `storage\0${storage}\0${receiverFact?.kind === "extension-storage" ? receiverFact.area : ""}\0${first ?? ""}`,
     node,
     value: {
       kind: storage,
+      ...(receiverFact?.kind === "extension-storage"
+        ? { area: receiverFact.area, api: receiverFact.identity }
+        : {}),
       name: first ?? null,
       mechanism: `call:${name}`,
       module_key: null,
@@ -333,6 +342,9 @@ const addEndpoint = (context: FindingContext, input: EndpointInput): void =>
     node: input.node,
     value: {
       kind: input.kind,
+      ...(input.network_receiver === undefined
+        ? {}
+        : { network_receiver: input.network_receiver }),
       value: sanitizeEndpointCandidate(input.value),
       ...(input.template_parts === undefined
         ? {}

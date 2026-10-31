@@ -1,0 +1,1031 @@
+{
+  "schema": "heyclicky-feature-analysis-ledger/v1",
+  "recorded_at": "2026-10-29T15:21:30.961514+00:00",
+  "target": {
+    "path": "/Applications/HeyClicky.app",
+    "version": "1.1.1",
+    "build": "66",
+    "main_sha256": "764a68a80f53de64a0e48a509d5a98737994f93e0888605e2de85b4028f3cb17",
+    "arm64_sha256": "bb98afe140170240037589647cbfe00099079655e9223ec87f7f702db3fb7911"
+  },
+  "complete": false,
+  "completion_rule": "Each original feature/design question needs a trace from entry through decisions,state and implementation to result,with supporting evidence. A tool check or inventory does not close it. Each remaining blocker must state attempted boundary and actual reason.",
+  "questions": [
+    {
+      "id": "components",
+      "question": "Which shipped components make up the app?",
+      "status": "partial",
+      "evidence_so_far": "Bundle/resource map and eight Apple bundles identified; native code now joins browser helper transport, JS drawing consumption and bundled agent process launch.",
+      "remaining": "Trace remaining component activation/ownership; the 187 co-presence bridges remain candidates.",
+      "supporting_reports": [
+        "heyclicky-native-followup-2026-10-29.json",
+        "heyclicky-runtime-followup-2026-10-29.json",
+        "heyclicky-browser-host-followup-2026-10-29.json"
+      ]
+    },
+    {
+      "id": "browser-operations",
+      "question": "How do browser requests change page/tab state and return results?",
+      "status": "answered-from-source",
+      "evidence_so_far": "Startup/hello, command dispatch,24operations,tab ownership/cancellation,Chrome APIs,snapshot/model deltas and same-id result are traced.",
+      "remaining": "Running Chrome/native-host exchange is unobserved; native admission/routing separate."
+    },
+    {
+      "id": "browser-design",
+      "question": "How are browser popup and presence rendered?",
+      "status": "answered-from-source",
+      "evidence_so_far": "Popup/CSS,toolbar states,cursor/shadow overlay,screenshot hiding and reduced-motion paths traced.",
+      "remaining": "Actual rendered appearance and interaction are unobserved."
+    },
+    {
+      "id": "native-browser-boundary",
+      "question": "How does the native host route messages to the main app?",
+      "status": "answered-helper-source-path",
+      "evidence_so_far": "Shipped helper checks extension origin/hello, frames four-byte length plus JSON, reads a configured loopback port/token, calls JSON-RPC browser_poll/browser_reply and extracts result.structuredContent.",
+      "remaining": "Main-app server authorization, profile selection, queue admission and runtime exchange remain untraced. No connection/token file was read.",
+      "supporting_reports": [
+        "heyclicky-browser-host-followup-2026-10-29.json",
+        "heyclicky-browser-followup-2026-10-29.json"
+      ]
+    },
+    {
+      "id": "notch-geometry",
+      "question": "How is the notch host panel positioned and sized for each display?",
+      "status": "answered-selected-native-paths",
+      "evidence_so_far": "Instructions establish per-display envelope, safe-area/gap/fallback sizing, rounding, scale, visible-frame placement, level26 and Space flags. Item37 now recovers all30 sizing-case mappings and the full15380-byte/313-block body through REA+ native API and retained analysis.",
+      "remaining": "Interpret every width/height decision and called helper in the recovered case code; complete active-display, Space and full-screen expansion policy. No remaining missing-switch blocker for this routine.",
+      "supporting_reports": [
+        "heyclicky-native-followup-2026-10-29.json",
+        "heyclicky-notch-state-followup-2026-10-30.json",
+        "heyclicky-37-fix-verification-2026-10-30.json"
+      ]
+    },
+    {
+      "id": "notch-interaction",
+      "question": "How do focus,hover,hit-testing,expansion and animation work?",
+      "status": "partial",
+      "evidence_so_far": "Native focus helpers, nonactivating panel configuration and content construction recovered. Live Settings expansion/Escape collapse and user-opened text-input focus observed. Escape from text input removed focus while Chat stayed expanded.",
+      "remaining": "Pure hover, hover-leave, hit-testing, remaining state transitions, clipping and animation timing. Earlier locked-Mac/manual-focus block resolved.",
+      "supporting_reports": [
+        "heyclicky-native-followup-2026-10-29.json",
+        "heyclicky-ui-check-2026-10-30.json"
+      ]
+    },
+    {
+      "id": "drawing-engine",
+      "question": "How does drawing program text become timed geometry and render operations?",
+      "status": "answered-selected-source-paths",
+      "evidence_so_far": "Scanner/session, marks, shape geometry, layout, pacing, painting/edit motion and adapter drain paths traced; selected native JSON consumer path is now separately traced.",
+      "remaining": "Complete native/audio/3D semantics and runtime corroboration; selected source paths do not establish every piece."
+    },
+    {
+      "id": "drawing-native",
+      "question": "How are JS records consumed by native layers,actions,audio and 3D renderers?",
+      "status": "partial",
+      "evidence_so_far": "Public native bodies establish JSContext resource setup, evaluation and HOST installation; __drainRender call/toString feeds JSON parsing, operation dispatch and CATransaction-managed layer updates.",
+      "remaining": "Complete resource/global/callback semantics, isolation/time limits, property/motion helpers, native3D/audio timing and actual rendered output.",
+      "supporting_reports": [
+        "heyclicky-drawing-native-followup-2026-10-29.json",
+        "heyclicky-drawing-engine-followup-2026-10-29.json"
+      ]
+    },
+    {
+      "id": "agent-runtime",
+      "question": "How are agent processes launched,configured and spoken to?",
+      "status": "partial",
+      "evidence_so_far": "Native code selects bundle/fallback executable, supplies app-server arguments, overlays inherited environment, wires pipes and launches Foundation Process. Outbound protocol serializes JSON, appends LF and writes stdin; initialized continuation captured.",
+      "remaining": "Full initialize-request owner remains unavailable in this profile; inbound framing/correlation, thread/turn/auth effects and process/session lifetime require further trace.",
+      "supporting_reports": [
+        "heyclicky-runtime-followup-2026-10-29.json"
+      ]
+    },
+    {
+      "id": "voice",
+      "question": "How do microphone,speech timing,dictation and realtime voice drive app state?",
+      "status": "partial-initial-state-only",
+      "evidence_so_far": "Native controller/client initializers establish transcript/history/task ownership, watchdog/idle constants, socket/microphone handles and pending-audio chunk state. Live UI declares voice/dictation shortcuts.",
+      "remaining": "Trace actual capture/transcription/voice protocol, permission decisions, VAD/cancellation and native timing consumers. Initializers and shortcut labels do not establish those behaviors.",
+      "supporting_reports": [
+        "heyclicky-lifecycle-followup-2026-10-30.json",
+        "heyclicky-ui-check-2026-10-30.json"
+      ]
+    },
+    {
+      "id": "persistence",
+      "question": "How are conversations,jobs,notes,lessons and settings persisted and recovered?",
+      "status": "partial-initial-state-only",
+      "evidence_so_far": "Conversation history initializer establishes empty message/loading/account/task state; extension storage operations are source-traced.",
+      "remaining": "Trace native fetch/paging, storage/server ownership, formats, paths, migrations and recovery using code; no user appdata files were read.",
+      "supporting_reports": [
+        "heyclicky-lifecycle-followup-2026-10-30.json"
+      ]
+    },
+    {
+      "id": "auth-permissions",
+      "question": "How do sign-in,permissions,integrations and service requests work?",
+      "status": "partial-initial-state-only",
+      "evidence_so_far": "Native auth initializer establishes token/refresh/keychain-migration ownership. URL entry routes each nonempty URL through an auth-manager-related gate and handler/fallback.",
+      "remaining": "Follow initializer continuation0x102bcab78, actual callback URL validation, keychain/token read-write, sign-in/out/refresh, permissions and integration activation. Gate meaning remains unresolved.",
+      "supporting_reports": [
+        "heyclicky-lifecycle-followup-2026-10-30.json"
+      ]
+    },
+    {
+      "id": "lifecycle",
+      "question": "How do startup,updates,disconnects,restart and failures recover?",
+      "status": "partial",
+      "evidence_so_far": "Launch, termination and URL thunks traced to native bodies. Termination explicitly cancels9 Swift Tasks and8 Combine subscriptions, clears owned handles and permission state.",
+      "remaining": "Startup predicates/onboarding, called shutdown helpers, actual cleanup/failure recovery and Sparkle update decisions remain unresolved.",
+      "supporting_reports": [
+        "heyclicky-lifecycle-followup-2026-10-30.json"
+      ]
+    },
+    {
+      "id": "native-feature-surfaces",
+      "question": "How do remaining native workspaces,documents,lessons,overlays and take-over features work?",
+      "status": "unperformed-code-trace",
+      "evidence_so_far": "Matching first-party metadata records identify candidate scopes.",
+      "remaining": "Derive concrete entry-to-result paths; do not infer implemented features from class names alone."
+    },
+    {
+      "id": "runtime-corroboration",
+      "question": "Does the installed app render and behave as the static paths imply?",
+      "status": "partial-observed",
+      "evidence_so_far": "Authorized CUA check observed running app, displayed1.1.1(66), small notch, Settings expansion/Escape collapse, focused text input and Chat Escape removing focus without collapsing. No prompts/jobs/preferences changed.",
+      "remaining": "No documented CUA hover API; pure hover and wider behavior remain unverified. App network activity was not captured.",
+      "supporting_reports": [
+        "heyclicky-ui-check-2026-10-30.json"
+      ]
+    }
+  ],
+  "component_capture": {
+    "path": "/private/tmp/rea-heyclicky-components-2026-10-29-_909z0mb/components.json",
+    "bytes": 192734,
+    "sha256": "87316fafec4f6f869b9fdfdb2dd7985dff22b77708e0b505f1096ba0f3d13042"
+  },
+  "component_facts": {
+    "parent_evidence_id": "ev_829647f26309751e4490a5c2a22682768f6f62a5a00aeb52efb32e0c679c580a",
+    "matched_non_metaclass_records": 322,
+    "not_a_feature_count": true,
+    "selected_classes": [
+      {
+        "name": "_TtC9HeyClicky25AgentHarnessRunnerProcess",
+        "location": {
+          "address": "0x103405678",
+          "file_offset": 54548088
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "process",
+          "stdinPipe",
+          "endpoint",
+          "starting",
+          "lastStartFailureAt"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky25AgentHarnessRunnerRuntime",
+        "location": {
+          "address": "0x1034058a8",
+          "file_offset": 54548648
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "harness",
+          "place"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky19CodexProtocolClient",
+        "location": {
+          "address": "0x10344c958",
+          "file_offset": 54839640
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "stdinPipe",
+          "stdoutPipe",
+          "nextRequestID",
+          "pendingRequests",
+          "responseProjections",
+          "readTask",
+          "isClosed",
+          "onNotification",
+          "onServerRequest",
+          "onConnectionClosed"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky19CodexProcessManager",
+        "location": {
+          "address": "0x10344d940",
+          "file_offset": 54843712
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "homeManager",
+          "process",
+          "protocolClient",
+          "managedEnvironmentOverrides",
+          "stderrReadTask"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky16CodexHomeManager",
+        "location": {
+          "address": "0x10344d838",
+          "file_offset": 54843448
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "fileManager",
+          "deliveredModelInstructions",
+          "clickyDirectoryName",
+          "codexHomeDirectoryName",
+          "codexAssetsDirectoryName",
+          "codexLogDirectoryName",
+          "codexSQLiteDirectoryName",
+          "codexSkillsDirectoryName",
+          "managedModelInstructionsFileName",
+          "agentProjectsDirectoryName",
+          "hasLoggedRuntimeConfigurationThisRun",
+          "bundledSkillPathsSynchronizedThisRun",
+          "bundledIntegrationSkillContentsBySlug",
+          "$__lazy_storage_$_availableIntegrationSkillSlugs"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky23RealtimeVoiceController",
+        "location": {
+          "address": "0x103452068",
+          "file_offset": 54861928
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "isRunning",
+          "hasOpenSession",
+          "isAlwaysOnEnabled",
+          "pendingFollowUpRouteTarget",
+          "voiceClient",
+          "hostCompanionManager",
+          "lastSubmittedScreenCaptures",
+          "previousHigherModelScreenRound",
+          "lastSubmittedAnnotationGesture",
+          "lastSubmittedAnnotationElements",
+          "lastSubmittedActiveDocumentReference",
+          "activeDocumentContextExtractionTask",
+          "activeDocumentAccessDenialProbeTask",
+          "lastSubmittedActiveDocumentApplicationProcessIdentifier",
+          "lastInjectedActiveDocumentRoutingNoteReference",
+          "lastInjectedTurnLocalTimeStampDate",
+          "frontmostAppBundleIdentifierForCurrentTurn",
+          "frontmostBrowserHostForCurrentTurn",
+          "conversationHistory",
+          "pendingUserTranscript",
+          "liveTranscriptMirrorFlushTask",
+          "pendingAssistantTranscript",
+          "currentSpokenTurnAudioSuppressedForSilentSpeaker",
+          "activeRealtimeVoiceTurnUserText",
+          "activeRealtimeVoiceUserMessagePersisted",
+          "activeRealtimeVoiceAssistantMessagePersisted",
+          "activeTurnIsAgentFollowUp",
+          "agentFollowUpResponseFinished",
+          "supersededTurnWasAgentFollowUp",
+          "activeTextTurn",
+          "activeTextTurnAccumulatedAnswer",
+          "activeTextTurnRespondsWithVoice",
+          "activeTextTurnPrompt",
+          "activeTextTurnAttachedFilePaths",
+          "activeTextTurnAttachmentRouting",
+          "ignoreNextSupersededResponseFinish",
+          "pendingGuidedActionTurnTexts",
+          "activeToolStatusLabel",
+          "consecutiveToolCallsThisTurn",
+          "responseDoneWatchdog",
+          "responseDoneWatchdogSeconds",
+          "idleTeardownTask",
+          "pendingSessionRebuildForIntegrationChange",
+          "rePrewarmAfterIntegrationChangeTask",
+          "pendingSessionRebuildForVoiceChange",
+          "currentBeginPushToTalkTask",
+          "sessionPrewarmTask",
+          "sessionPrewarmGeneration",
+          "oneBrainMouthSessionOpeningCount",
+          "activeOneBrainTurnCount",
+          "oneBrainMutedTurnLines",
+          "currentAlwaysOnStartTask",
+          "currentAlwaysOnCommittedTurnTask",
+          "currentAlwaysOnBargeInConfirmationTask",
+          "alwaysOnSpeechStartedSinceLastCommit",
+          "alwaysOnSuppressCurrentVADTurn",
+          "alwaysOnCurrentVADTurnStartedDuringAssistantOutput",
+          "alwaysOnSuppressSpeechUntil",
+          "alwaysOnVADTurnSequence",
+          "alwaysOnCurrentVADTurnID",
+          "alwaysOnCurrentVADSpeechStartedAt",
+          "currentBeginPushToTalkGeneration",
+          "pushToTalkTailCommitTask",
+          "pushToTalkPressBeganAt",
+          "pushToTalkPressLostToTransportFailure",
+          "lastPushToTalkPressWasBlockedByMessageCap",
+          "idleTeardownSeconds",
+          "oneBrainMouthIdleTeardownSeconds",
+          "realtimeGuidedWorkTask",
+          "realtimeGuidedWorkGeneration",
+          "realtimeVoiceTurnGeneration",
+          "pendingDroppedDrawingLineCut",
+          "lastScreenDrawingOutcome",
+          "pendingCustomerUsage",
+          "realtimeToolDispatchTask",
+          "realtimeToolCallIdentifierAwaitingOutput",
+          "activeWalkthroughSync",
+          "walkthroughPlaybackPollTask",
+          "sessionRePrewarmTask",
+          "roomVoiceSendInFlightSafetyClearTask",
+          "onboardingInterviewRecapInjectedClient",
+          "didInjectNewClickyInterviewNote",
+          "preparedInterviewClient",
+          "interviewPreparationTask",
+          "interviewPreparationExpiryTask",
+          "interviewOpeningDelayTask",
+          "sessionHasUsedSpokenLookupTool"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky19RealtimeVoiceClient",
+        "location": {
+          "address": "0x1033fa038",
+          "file_offset": 54501432
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "callbacks",
+          "webSocketSession",
+          "webSocketTask",
+          "isSocketOpen",
+          "hasStartedSessionDidStart",
+          "openContinuation",
+          "currentSupabaseAccessToken",
+          "currentConfig",
+          "microphoneCapture",
+          "microphoneCaptureFailoverDeviceID",
+          "hasReportedIrrecoverableMicrophoneCapture",
+          "microphoneSelectionChangeObserver",
+          "consecutiveDeadAirPushToTalkTurnCount",
+          "realtimePlayer",
+          "duplexAudioEngine",
+          "isEchoCancellationActive",
+          "pendingDuplexUpgradeEngine",
+          "pendingDuplexUpgradeChunkCount",
+          "pendingDuplexUpgradeNonSilentChunkCount",
+          "duplexUpgradeTask",
+          "duplexEngineGeneration",
+          "duplexUpgradeAttemptsThisSession",
+          "duplexCaptureSilenceWatchdogTask",
+          "duplexCaptureDeliveredChunkCount",
+          "duplexCaptureNonSilentChunkCount",
+          "captureChunksDeliveredSinceAudioPathChange",
+          "captureNonSilentChunksSinceAudioPathChange",
+          "legacyCaptureLivenessTask",
+          "alwaysOnListeningBeganAt",
+          "lastSpeechLikeCaptureAt",
+          "isDuplexProbeInFlight",
+          "currentResponseFirstAudioEnqueuedAt",
+          "currentResponseAssistantAudioItemID",
+          "playedFrameCountBaselineForCurrentResponse",
+          "playbackSinkForCurrentResponse",
+          "lingeringBluetoothMicrophoneCapture",
+          "lingeringBluetoothMicrophoneTeardownTask",
+          "pendingAudioAppendChunks",
+          "pendingAudioAppendChunkSoftCap",
+          "hasReportedPendingAudioOverflow",
+          "receivedAudioDeltaChunkCount",
+          "receivedAudioDeltaByteCount",
+          "completedResponseCount",
+          "lastCompletedResponseAudioSeconds",
+          "completedResponseAudioSecondsByNumber",
+          "hasNotifiedAudioStartForCurrentResponse",
+          "suppressAudioForCurrentResponseSilentSpeaker",
+          "suppressAudioForCurrentResponseCancelled",
+          "scopedResponseGate",
+          "currentResponseCancellationScopeID",
+          "previousResponseInputTokens",
+          "mostRecentScreenshotItemID",
+          "screenshotItemSequence",
+          "receivedTextDeltaThisResponse",
+          "sentAudioAppendBytesThisTurn",
+          "sentAudioAppendChunksThisTurn",
+          "capturedAudioDurationThisTurn",
+          "speechLikeAudioDurationThisTurn",
+          "alwaysOnSpeechLikeAudioDurationThisTurn",
+          "alwaysOnBargeInSpeechLikeAudioDurationThisTurn",
+          "peakAudioPowerThisTurn",
+          "sessionOpenedAt",
+          "expectedAlwaysOnResponseCreateCount",
+          "suppressUnexpectedAlwaysOnResponseEvents",
+          "pendingFollowupResponseCreate",
+          "pendingFollowupResponseCreateInstructions",
+          "pendingAnnouncementResponseCreatePayload",
+          "queuedAnnouncementFallbackWorkItem",
+          "pendingTextResponseCreatePayload",
+          "pendingOutputSpeechSpeedUpdate",
+          "activeTurnIsTextOnly",
+          "currentResponseIsSilentToolRouting",
+          "currentResponseLessonLineIndex",
+          "onLessonNarrationAudio",
+          "isResponseInFlight",
+          "spokenLineAwaitingResponseCreated",
+          "lastServerMessageReceivedAt",
+          "inflightToolCallBuffers",
+          "awaitedToolResultCallIdentifiers",
+          "pendingToolContinuationResponseCount",
+          "preparedInterviewCallbacks",
+          "preparedInterviewEvents",
+          "preparedInterviewBytes",
+          "preparedInterviewHasAudio",
+          "isPreparedInterviewReady",
+          "preparedInterviewReplayGeneration",
+          "transcriptPlaybackGeneration",
+          "responseTranscriptCharacterCount",
+          "transcriptAwaitingFirstAudio",
+          "higherModelDelegationsThisSession",
+          "lastHigherModelDelegationAt",
+          "mostRecentLookupStyleNoteItemID",
+          "lookupStyleNoteItemSequence"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky13OneBrainVoice",
+        "location": {
+          "address": "0x10343e3a8",
+          "file_offset": 54780840
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "hasLookedForSavedSession",
+          "sessionID",
+          "codeOfDrawingOnScreen",
+          "environmentSentForSessionID",
+          "isCompacting",
+          "compactionGeneration",
+          "compactionNextCheckInputTokens",
+          "lastTurnInputTokens",
+          "sessionBaselineInputTokens",
+          "sessionScreenshotFiles",
+          "screenshotFilesOffForSession",
+          "isFirstKeyDownAfterReload",
+          "lastCanvasSize",
+          "lastPrewarmAt",
+          "sessionStartedAt",
+          "authHost",
+          "userLayer",
+          "userLayerSignature",
+          "userLayerSkillsFingerprint",
+          "accountID",
+          "thread",
+          "pendingAppNotes",
+          "pendingHighlight",
+          "pageReadStartedAtKeyDown",
+          "pageReference",
+          "pageApplicationProcessIdentifier",
+          "pageReadTask",
+          "pageReadStartedAt",
+          "pageReadGeneration",
+          "lastTurnAt",
+          "previousTurnAt",
+          "statsTurnCount",
+          "inFlightTurnIsOnboarding",
+          "latestTurnHeardLines",
+          "latestTurnDrewMarks",
+          "currentTurnProgramSoFar",
+          "latestTurnWasTyped",
+          "latestTurnAnswersInText",
+          "idleSessionEndTask",
+          "actionsWaitingForTheDrawing",
+          "automaticRestartsInARow",
+          "advanceArmedUntil",
+          "advanceTask",
+          "microphone",
+          "earsPressID",
+          "lingeringBluetoothMicrophone",
+          "lingeringBluetoothMicrophoneTask",
+          "microphoneFailover",
+          "hasReportedIrrecoverableMicrophone",
+          "consecutiveDeadAirPressCount",
+          "pressAudio",
+          "transcriber",
+          "transcriptWaiter",
+          "warmEars",
+          "warmEarsWakeObserver",
+          "listeningStartedAt",
+          "heardAudioSecondsForNextTurn",
+          "pressWasRefused",
+          "deliveredBufferCount",
+          "liveTranscriptTask",
+          "lastPressEarsFailed"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky19SupabaseAuthManager",
+        "location": {
+          "address": "0x103467ce8",
+          "file_offset": 54951144
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "_isAuthenticated",
+          "_userId",
+          "_userEmail",
+          "_userDisplayName",
+          "_userAvatarURL",
+          "_signupDate",
+          "accessToken",
+          "refreshToken",
+          "refreshAccessTokenTask",
+          "refreshAccessTokenTaskIdentifier",
+          "lastAccessTokenRefreshFailureDescription",
+          "lastAccessTokenRefreshFailureError",
+          "lastAccessTokenRefreshFailureDate",
+          "accessTokenRefreshRetryCooldown",
+          "pendingKeychainMigrationTelemetry",
+          "pendingKeychainReadFailureOSStatus",
+          "pendingSignOutKeychainCleanupStillFailing"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky14ClickyJobStore",
+        "location": {
+          "address": "0x103409f28",
+          "file_offset": 54566696
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "_jobs",
+          "jobIDsWithRoutines"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky14ClickyAppStore",
+        "location": {
+          "address": "0x103406028",
+          "file_offset": 54550568
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "_worksBySlug",
+          "loadedSlugs",
+          "companionManager"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky28HeyClickyConversationHistory",
+        "location": {
+          "address": "0x103434fb8",
+          "file_offset": 54742968
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "_messages",
+          "_hasEarlierMessages",
+          "_isLoadingNewest",
+          "_isLoadingEarlier",
+          "_hasLoadFailed",
+          "_lastAnswerEndedAt",
+          "accountID",
+          "lastRefreshStartedAt",
+          "refreshTask",
+          "earlierTask",
+          "liveReplyID"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky25PermissionFlowCoordinator",
+        "location": {
+          "address": "0x10345f1e0",
+          "file_offset": 54915552
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "permissionSnapshot",
+          "runtimeStatuses",
+          "entryContext",
+          "activeGuidePermissionKind",
+          "currentViewState",
+          "activeRequestID"
+        ]
+      },
+      {
+        "name": "_TtC9HeyClicky21SparkleUpdateDelegate",
+        "location": {
+          "address": "0x1033f88f0",
+          "file_offset": 54495472
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "field_names": [
+          "companionManager"
+        ]
+      }
+    ]
+  },
+  "packaged_runtime": {
+    "launcher": {
+      "source": {
+        "path": "/Applications/HeyClicky.app/Contents/Resources/CodexRuntime/bin/codex",
+        "bytes": 1048,
+        "sha256": "48af1a58b1fbb853635b08cddb78aaf2910dad03004ddd31e419b54178235652"
+      },
+      "architecture_selection": {
+        "arm64": "aarch64-apple-darwin",
+        "x86_64": "x86_64-apple-darwin"
+      },
+      "primary_candidate": "../vendor/<triple>/bin/codex",
+      "fallback_candidate": "../vendor/<triple>/codex/codex",
+      "forwards_arguments": true,
+      "prepends_existing_helper_path": true,
+      "native_app_invocation_not_traced": false,
+      "native_app_invocation_authority": "Conditional native launch path traced statically in heyclicky-runtime-followup-2026-10-29.json; no live subprocess invocation verified",
+      "not_executed_in_static_capture": true,
+      "invocation_during_separate_ui_check": "not observed"
+    },
+    "declared_versions": {
+      "aarch64": "0.152.1",
+      "x86_64": "0.152.1"
+    },
+    "catalog": {
+      "entries": 14,
+      "visibility_counts": {
+        "list": 9,
+        "hide": 5
+      },
+      "descriptors": [
+        {
+          "slug": "gpt-6-luna",
+          "display_name": "GPT-6-Luna",
+          "default_reasoning_level": "medium",
+          "visibility": "list",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "gpt-6-sol",
+          "display_name": "GPT-6-Sol",
+          "default_reasoning_level": "medium",
+          "visibility": "list",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "gpt-6.1-sol",
+          "display_name": "GPT-6.1-Sol",
+          "default_reasoning_level": "medium",
+          "visibility": "list",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "gpt-6-astra",
+          "display_name": "GPT-6-Astra",
+          "default_reasoning_level": "low",
+          "visibility": "list",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "gpt-5.6-sol",
+          "display_name": "GPT-5.6-Sol",
+          "default_reasoning_level": "low",
+          "visibility": "list",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "gpt-5.6-terra",
+          "display_name": "GPT-5.6-Terra",
+          "default_reasoning_level": "medium",
+          "visibility": "list",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "gpt-5.6-luna",
+          "display_name": "GPT-5.6-Luna",
+          "default_reasoning_level": "medium",
+          "visibility": "list",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "gpt-daybreak-blue-latest",
+          "display_name": "Daybreak Blue",
+          "default_reasoning_level": "low",
+          "visibility": "hide",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "gpt-daybreak-red-latest",
+          "display_name": "Daybreak Red",
+          "default_reasoning_level": "medium",
+          "visibility": "hide",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "gpt-5.5",
+          "display_name": "GPT-5.5",
+          "default_reasoning_level": "medium",
+          "visibility": "list",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "gpt-5.4",
+          "display_name": "GPT-5.4",
+          "default_reasoning_level": "medium",
+          "visibility": "hide",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "gpt-5.4-mini",
+          "display_name": "GPT-5.4-Mini",
+          "default_reasoning_level": "medium",
+          "visibility": "hide",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "gpt-5.2",
+          "display_name": "GPT-5.2",
+          "default_reasoning_level": "medium",
+          "visibility": "list",
+          "shell_type": "unified_exec"
+        },
+        {
+          "slug": "codex-auto-review",
+          "display_name": "Codex Auto Review",
+          "default_reasoning_level": "medium",
+          "visibility": "hide",
+          "shell_type": "unified_exec"
+        }
+      ],
+      "not_proof_of_runtime_model_selection_or_availability": true
+    },
+    "declarations": {
+      "CFBundleExecutable": "HeyClicky",
+      "CFBundleIdentifier": "com.humansongs.clicky",
+      "CFBundleURLTypes": [
+        {
+          "CFBundleURLName": "com.humansongs.clicky.auth",
+          "CFBundleURLSchemes": [
+            "clicky",
+            "heyclicky"
+          ]
+        }
+      ],
+      "LSMinimumSystemVersion": "14.2",
+      "LSUIElement": true,
+      "NSDesktopFolderUsageDescription": "HeyClicky reads the document you're viewing so it can answer about the whole file, not just what's visible on screen.",
+      "NSDocumentsFolderUsageDescription": "HeyClicky reads the document you're viewing so it can answer about the whole file, not just what's visible on screen.",
+      "NSDownloadsFolderUsageDescription": "HeyClicky reads the document you're viewing so it can answer about the whole file, not just what's visible on screen.",
+      "NSMicrophoneUsageDescription": "HeyClicky uses your microphone so you can talk to it",
+      "NSScreenCaptureUsageDescription": "HeyClicky needs screen recording access to see your screen and help you.",
+      "NSSpeechRecognitionUsageDescription": "HeyClicky uses speech recognition to transcribe your voice when you talk to it",
+      "SUFeedURL": "https://farzaa.github.io/clicky-releases/appcast.xml",
+      "SUPublicEDKey": "2bZCRkVZa++RiAgbbZ08+asMwyKheOK9jkbJXu5mU6c="
+    },
+    "attribution_document_claim": {
+      "lines": [
+        8,
+        12
+      ],
+      "claim": "selected onboarding skill IDs persisted in UserDefaults; backend activation wiring described as not included",
+      "authority": "shipped documentation only; may be stale; code activation path unverified"
+    }
+  },
+  "tool_verification": {
+    "item36": "fixed and verified; see separate receipt",
+    "full_gate_predates_item36": true,
+    "not_feature_completion": true,
+    "item37": "fixed and verified through public CLI/MCP; see separate receipt",
+    "full_gate_predates_item37": true,
+    "manual_observations_do_not_count_as_rea_recovery": true
+  },
+  "evidence_references": [
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-36-verification-2026-10-29.json",
+      "bytes": 11292,
+      "sha256": "fa77a8b6b8f188d2838bcbb6a1e45dac88ed473abb57e03aaf6e570ec159fd94"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-37-fix-verification-2026-10-30.json",
+      "bytes": 72433,
+      "sha256": "d47d7f120378e152c16982c2b78eb6bec431aae35cd692da185dc74fb6eaa70d"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-browser-followup-2026-10-29.json",
+      "bytes": 73006,
+      "sha256": "ea402017f28adc8f367590a7a0e1d95a64825eb5863b1f889226cb853df92683"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-browser-host-followup-2026-10-29.json",
+      "bytes": 21085,
+      "sha256": "a62e2d5704eba2984cda0e2423d8e43d4e131d4b2662d1dcdb43fa70030b3b39"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-drawing-engine-followup-2026-10-29.json",
+      "bytes": 35876,
+      "sha256": "e137af18d18d440b548701fb5ed8563b4de409b107a37db730c43f7c4c60ee55"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-drawing-native-followup-2026-10-29.json",
+      "bytes": 102551,
+      "sha256": "d3e69caa108a0f412ed91eec46c461e1eaec5c8932c12f79cfc54a1b1b07617d"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-lifecycle-followup-2026-10-30.json",
+      "bytes": 18873,
+      "sha256": "f8c449f655e3327e8a6649fed5110f87ebaa78a8b761b53792a9ee24fd91b94c"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-macos-1.1.1.json",
+      "bytes": 71865,
+      "sha256": "e6fbe3c15818fe2f098364d86fe38ad245d1ad4076a946abfecdf45588ef8b9a"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-native-followup-2026-10-29.json",
+      "bytes": 169651,
+      "sha256": "f1be214c65d70e9537e6de8a6235e1a4909806493da20ed3757b0106e3439751"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-notch-state-followup-2026-10-30.json",
+      "bytes": 42066,
+      "sha256": "9b6b42896c948a31c48c315e418adfa69267b2d517f416ded8c58bab65075f91"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-retest-2026-10-29.json",
+      "bytes": 78955,
+      "sha256": "f70119590bc70742344be8914dcf778e89cd3b8a5490847f7dd23f51100c613c"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-runtime-followup-2026-10-29.json",
+      "bytes": 342450,
+      "sha256": "40c164fc9754c4f8550a6780b42920a086914a5011be4565d92c1d57a6a22504"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-switch-reproduction-2026-10-30.json",
+      "bytes": 41404,
+      "sha256": "72b9a0378ea328946c48e8fe65ad2c15975827c5a0c19f300eb13e66e981db55"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/heyclicky-ui-check-2026-10-30.json",
+      "bytes": 4476,
+      "sha256": "0691057641809127576c68cbe8c9b9bb3f54f1a893361f8fa5298493f6e2d0be"
+    }
+  ],
+  "updated_client_date": "2026-10-30",
+  "historical_offline_scope": {
+    "target_executed": false,
+    "target_services_contacted": false,
+    "user_application_data_read": false,
+    "shipped_instruction_documents_treated_as_inert_data": true,
+    "applies_to": "Static reports and REA+ captures only; the separately authorized CUA pass is recorded independently"
+  },
+  "runtime_observation_scope": {
+    "report": "heyclicky-ui-check-2026-10-30.json",
+    "authorized": true,
+    "app_running_observed": true,
+    "fresh_launch_proven": false,
+    "prompts_or_jobs_submitted": false,
+    "preferences_changed": false,
+    "app_initiated_network_activity": "not observed; may occur",
+    "incidental_account_identity_exported": false,
+    "historical_follow_up_block": "Mac locked; manual unlock/text-mode request pending",
+    "follow_up_block": null,
+    "mac_lock_block_resolved": true,
+    "manual_text_mode_answer": "its open",
+    "text_input_focus_observed": true,
+    "chat_escape_observation": "Input focus removed; Chat panel remained expanded",
+    "manual_action_pending": false
+  },
+  "native_saved_evidence_audit": {
+    "replies": 170,
+    "successes": 157,
+    "preserved_errors": 13,
+    "closure_replies": 46,
+    "closure_successes": 44,
+    "closure_errors": 2,
+    "closure_finalization": "No saved final public session, close, summary, stderr or token-verified final cleanup; later audit does not repair historical absence",
+    "audit_path": "/private/tmp/rea-heyclicky-closure-audit-2026-10-30-07MVJW/audit.json",
+    "audit_sha256": "6f1393cff8e46076672456806f13fe68f39053e100cbd11d97f9289f8fea9fde",
+    "audit_runtime": "Node22.17.0; read-only validation, not new provider coverage",
+    "six_report_validation_path": "/private/tmp/rea-heyclicky-closure-audit-2026-10-30-07MVJW/report-validation.json",
+    "six_report_validation_sha256": "516c7359dc25bd603dcc578a73fbbf057c6effeb2f833b3c3352d50befbb9574",
+    "six_report_validation_runtime": "Node24.22.1",
+    "scope": "Earlier initial/resume/six-seed/closure stages only; item37 verification is recorded separately"
+  },
+  "verification_this_update": {
+    "client_date": "2026-10-30",
+    "item37_receipt": "heyclicky-37-fix-verification-2026-10-30.json",
+    "build_cached": {
+      "exit_code": 0,
+      "log": "/private/tmp/rea-37-build-final.log",
+      "tasks": 3
+    },
+    "docs_check": {
+      "exit_code": 0,
+      "tasks": 6,
+      "log": "/private/tmp/rea-37-docs-final-width.log"
+    },
+    "source_tests": {
+      "passed": 50,
+      "files": 2
+    },
+    "static_gate": {
+      "exit_code": 0,
+      "log": "/private/tmp/rea-37-static-check-final.log",
+      "architecture_source_files": 1516
+    },
+    "fixture_mcp_calls": 72,
+    "fixture_variants": 18,
+    "fixture_cli_mcp_parity": true,
+    "duplication_percent": 2.49,
+    "production_change_since_item36": true,
+    "full_gate_rerun": false
+  },
+  "rea_issue37": {
+    "registry_item": 37,
+    "owner_function": "0x101319e48",
+    "dispatch": "0x10131a324",
+    "pattern": "unguarded Swift runtime enum index and LDRSW signed32-bit relative table",
+    "manual_recovery_remains_possible": true,
+    "status": "fixed-and-verified",
+    "metadata_receipt": "heyclicky-notch-state-followup-2026-10-30.json",
+    "reproduction": {
+      "report": "heyclicky-switch-reproduction-2026-10-30.json",
+      "adapter": "MCP only",
+      "calls": 8,
+      "successes": 8,
+      "errors": 0,
+      "analysis_complete": true,
+      "analysis_timed_out": false,
+      "overview_duration_ms": 14009,
+      "jump_tables": [],
+      "recovered_body_bytes": 176,
+      "known_case_targets_excluded": 30,
+      "target_executed": false,
+      "close_succeeded": true,
+      "token_verified_lineage_empty": true
+    },
+    "diagnostic_limits_before_fix": [
+      "Supplementary recovery is entered only for existing HighFunction JumpTables",
+      "Existing recovered targets required",
+      "Byte/halfword loads plus a local CMP/unsigned guard supported; target uses Swift ABI bound",
+      "Emitting mappings alone does not repair owning function-body coverage"
+    ],
+    "fix_receipt": "heyclicky-37-fix-verification-2026-10-30.json",
+    "verification": {
+      "fixture_variants": 18,
+      "fixture_positive_variants": 2,
+      "fixture_negative_variants": 16,
+      "mcp_calls": 72,
+      "cli_mcp_exact_evidence_identity": true,
+      "app_case_mappings": 30,
+      "app_body_bytes": 15380,
+      "app_basic_blocks": 313,
+      "app_owning_body_repaired_before_decompilation": true,
+      "app_autoanalysis_still_partial": true,
+      "manual_inputs_used_as_rea_mappings": false
+    }
+  }
+}

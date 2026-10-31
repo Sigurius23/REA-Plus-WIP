@@ -2,7 +2,7 @@ import { parseJavaScriptSource } from "../domain/javascript/javascriptSourcePars
 import { analyzeParsedJavaScriptStaticSourceSteps } from "../domain/javascript/javascriptStaticAnalysis.js";
 import {
   analyzeParsedJavaScriptSemanticsSteps,
-  classifyParsedJavaScriptOpenReceiversSteps,
+  classifyParsedJavaScriptCallReceiversSteps,
 } from "../domain/javascript/javascriptSemanticAnalysis.js";
 import { failedJavaScriptStaticAnalysis } from "../domain/javascript/javascriptStaticAnalysisHelpers.js";
 import { projectJavaScriptModuleSemantics } from "../domain/javascript/javascriptModuleSemanticIr.js";
@@ -30,7 +30,7 @@ const analyze: JavaScriptSourceWorkerAnalyzer = async (
   }
   await callbacks.phase("static");
   const receivers = await completeJavaScriptAnalysisSteps(
-    classifyParsedJavaScriptOpenReceiversSteps(parsed),
+    classifyParsedJavaScriptCallReceiversSteps(parsed),
   );
   const facts = await completeJavaScriptAnalysisSteps(
     analyzeParsedJavaScriptStaticSourceSteps(

@@ -133,6 +133,7 @@ interface SnapshotProviderOptions {
   readonly profile?: ReturnType<typeof createAnalysisProfile>;
   readonly identity?: ProviderIdentity;
   readonly supportedOperations?: readonly CapabilityDescriptor["operation"][];
+  readonly limitations?: readonly string[];
 }
 
 const makeProvider = (
@@ -206,6 +207,9 @@ const makeProvider = (
             createAnalysisExecution(result, profile.provider, {
               analysisProfile: profile,
               rawResult: result,
+              ...(options.limitations === undefined
+                ? {}
+                : { limitations: options.limitations }),
             }),
           );
         },
@@ -250,11 +254,11 @@ const withAlternateWorkflowProfile = (
   snapshot: AnalysisSnapshot,
   path: string,
   current: Evidence,
-): AnalysisSnapshot => {
-  const alternateProfile = createAnalysisProfile(REA_WORKFLOW_PROVIDER, {
+  alternateProfile = createAnalysisProfile(REA_WORKFLOW_PROVIDER, {
     workflow: "binary_overview",
     fixture: "alternate-profile",
-  });
+  }),
+): AnalysisSnapshot => {
   if (
     typeof current.normalized_result !== "object" ||
     current.normalized_result === null ||
@@ -551,6 +555,121 @@ describe("binary overview snapshot replay", () => {
     expect(fixture.calls.toSorted()).toEqual(operations.toSorted());
     expect(fixture.starts).toHaveLength(1);
   });
+});
+
+describe("workflow Evidence provenance revision", () => {
+  it.each([
+    { tool: "binary_overview", arguments: {}, reusesPrimitives: false },
+    {
+      tool: "inspect_native_api",
+      arguments: { procedure: "0x1000" },
+      reusesPrimitives: true,
+    },
+  ] as const)(
+    "recomputes legacy $tool and then replays the revised Evidence exactly",
+    async ({ tool, arguments: parameters, reusesPrimitives }) => {
+      const fixture = await createSnapshotReplayFixture(
+        "rea-workflow-provenance-revision-",
+      );
+      const recordedLimitation =
+        "Recorded provider limitation; historical completion state was not recorded.";
+      const provider = fixture.createProvider({
+        supportedOperations: workflowProviderOperations,
+        limitations: [recordedLimitation],
+      });
+      const dependencies = fixture.dependencies(provider);
+      await runDirectAnalysis(dependencies, fixture.path, tool, parameters, {
+        snapshotPath: fixture.snapshotPath,
+      });
+      const saved = await readAnalysisSnapshot(fixture.snapshotPath);
+      if (!saved.ok) throw saved.error;
+      const current = saved.value.evidence_bundle.records.find(
+        (record) => record.operation === tool,
+      );
+      if (current === undefined)
+        throw new Error("Fixture workflow Evidence was not retained");
+      const legacyProfile = createAnalysisProfile(REA_WORKFLOW_PROVIDER, {
+        upstream_analysis_profile: saved.value.binding.analysis_profile,
+        ...(tool === "binary_overview" ? { workflow_revision: 2 } : {}),
+      });
+      const historical = withAlternateWorkflowProfile(
+        saved.value,
+        fixture.path,
+        {
+          ...current,
+          limitations: ["Derived by an REA+ composed workflow."],
+        },
+        legacyProfile,
+      );
+      const legacyOnly: AnalysisSnapshot = {
+        ...historical,
+        evidence_bundle: createEvidenceBundle(
+          historical.evidence_bundle.records.filter(
+            (record) =>
+              record.provider.id !== REA_WORKFLOW_PROVIDER.id ||
+              record.analysis_profile?.digest === legacyProfile.digest,
+          ),
+        ),
+      };
+      const stored = await writeAnalysisSnapshot(
+        legacyOnly,
+        fixture.snapshotPath,
+        true,
+      );
+      if (!stored.ok) throw stored.error;
+      const callsBeforeRecomputation = [...fixture.calls];
+      const clientsBeforeRecomputation = fixture.starts.length;
+
+      const recomputed = parseEvidence(
+        await runDirectAnalysis(dependencies, fixture.path, tool, parameters, {
+          snapshotPath: fixture.snapshotPath,
+        }),
+      );
+      expect(recomputed.analysis_profile).toEqual(
+        workflowAnalysisProfile(saved.value.binding.analysis_profile, tool),
+      );
+      expect(recomputed.analysis_profile?.parameters).toMatchObject({
+        workflow_evidence_revision: 1,
+        ...(tool === "binary_overview" ? { workflow_revision: 2 } : {}),
+      });
+      expect(recomputed.limitations).toEqual([
+        "Derived by an REA+ composed workflow.",
+        ...(reusesPrimitives
+          ? [
+              "Loaded from a local REA+ analysis snapshot; this call did not re-run the provider.",
+            ]
+          : []),
+        recordedLimitation,
+      ]);
+      // The overview's current-document inventory calls are intentionally live;
+      // the exact function dossier can be recomputed from recorded primitives.
+      expect(fixture.calls).toEqual(
+        reusesPrimitives
+          ? callsBeforeRecomputation
+          : [...callsBeforeRecomputation, ...callsBeforeRecomputation],
+      );
+      expect(fixture.starts).toHaveLength(
+        clientsBeforeRecomputation + (reusesPrimitives ? 0 : 1),
+      );
+      const revised = await readAnalysisSnapshot(fixture.snapshotPath);
+      if (!revised.ok) throw revised.error;
+      expect(revised.value.binding).toEqual(saved.value.binding);
+      expect(revised.value.entries).toEqual(saved.value.entries);
+      const clientsAfterRecomputation = [...fixture.starts];
+      const callsAfterRecomputation = [...fixture.calls];
+
+      const replay = await runDirectAnalysis(
+        dependencies,
+        fixture.path,
+        tool,
+        parameters,
+        { snapshotPath: fixture.snapshotPath },
+      );
+      expect(replay).toEqual(recomputed);
+      expect(fixture.starts).toEqual(clientsAfterRecomputation);
+      expect(fixture.calls).toEqual(callsAfterRecomputation);
+    },
+  );
 });
 
 describe("snapshot replay provider identity", () => {

@@ -6,7 +6,13 @@ import {
 } from "./WorkflowEvidence.js";
 import { InvestigationRecords } from "./investigation/InvestigationRecords.js";
 import { UnknownRegistryError } from "../domain/unknownRegistryError.js";
-import { err } from "../domain/result.js";
+import { WorkflowEvidenceScope } from "./WorkflowEvidenceScope.js";
+import {
+  createAnalysisExecution,
+  type AnalysisOperation,
+} from "./AnalysisProvider.js";
+import { AnalysisTimeoutError } from "../domain/analysisErrorCore.js";
+import { err, ok } from "../domain/result.js";
 import { nativeApiBoundarySchema } from "../domain/native/nativeApiBoundary.js";
 import { projectNativeApiInspection } from "./native/NativeApiInspection.js";
 import { functionDossierSchema } from "../domain/hopperValues.js";
@@ -159,3 +165,80 @@ it.each([
     });
   },
 );
+
+describe("workflow upstream provenance", () => {
+  it("commits the same limitations regardless of concurrent provider settlement order", async () => {
+    const run = async (reverse: boolean) => {
+      const pending = new Map<AnalysisOperation, () => void>();
+      const scope = new WorkflowEvidenceScope(
+        {
+          execute: (operation) =>
+            new Promise((resolve) => {
+              pending.set(operation, () =>
+                resolve(
+                  ok(
+                    createAnalysisExecution(
+                      [],
+                      { id: "fixture", name: "fixture", version: "1" },
+                      { limitations: [operation] },
+                    ),
+                  ),
+                ),
+              );
+            }),
+        },
+        "binary_overview",
+      );
+      const calls = [
+        scope.execute("list_segments", {}),
+        scope.execute("list_procedures", {}),
+      ];
+      for (const operation of (reverse
+        ? ["list_procedures", "list_segments"]
+        : ["list_segments", "list_procedures"]) as AnalysisOperation[])
+        pending.get(operation)?.();
+      await Promise.all(calls);
+      return createWorkflowEvidence({
+        target: undefined,
+        operation: "binary_overview",
+        parameters: {},
+        result: {},
+        upstreamProfile: undefined,
+        upstreamLimitations: scope.limitations(),
+      });
+    };
+    expect((await run(false)).evidence_id).toBe((await run(true)).evidence_id);
+  });
+
+  it("retains a swallowed startup failure qualification without persisting diagnostics as facts", async () => {
+    const failure = new AnalysisTimeoutError("list_documents", 30, {
+      context: {
+        providerId: "ghidra",
+        phase: "startup",
+        stage: "awaiting-post-analysis-bridge",
+        providerOperation: "list_documents",
+        diagnostics: { stdout: "diagnostics-only" },
+        remediationAction: "Change startup policy",
+        retryable: false,
+      },
+    });
+    const scope = new WorkflowEvidenceScope(
+      { execute: () => Promise.resolve(err(failure)) },
+      "trace_native_values",
+    );
+    const result = await scope.execute("list_documents", {});
+    expect(result).toMatchObject({
+      ok: false,
+      error: {
+        operation: "trace_native_values",
+        context: { providerOperation: "list_documents" },
+      },
+    });
+    expect(scope.limitations()).toEqual([
+      expect.stringContaining("dependent workflow facts remain unknown"),
+    ]);
+    expect(JSON.stringify(scope.limitations())).not.toContain(
+      "diagnostics-only",
+    );
+  });
+});

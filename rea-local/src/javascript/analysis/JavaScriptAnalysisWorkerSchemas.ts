@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { javaScriptEndpointReceiverSchema } from "../../domain/javascript/javascriptEndpointReceiver.js";
 import { digestSchema } from "../../domain/digests.js";
 import type { JavaScriptStaticAnalysis } from "../../domain/javascript/javascriptStaticAnalysisTypes.js";
 import type {
@@ -136,6 +137,21 @@ const bridgeShape = {
   unknown_members: count,
 };
 const utilityShape = { ...findingContext, service_name: z.string().nullable() };
+const senderValidationShape = {
+  ...findingContext,
+  subject: z.enum([
+    "sender-url",
+    "sender-origin",
+    "sender-frame",
+    "sender-id",
+    "frame-id",
+    "process-id",
+  ]),
+  mechanism: z.string(),
+  expected: staticValue,
+  enforcement: z.literal("unknown"),
+};
+
 const electron = z.strictObject({
   browser_windows: z.array(
     z.union([
@@ -183,18 +199,8 @@ const electron = z.strictObject({
   ipc: z.array(ipc),
   sender_validations: z.array(
     z.strictObject({
-      ...findingContext,
-      subject: z.enum([
-        "sender-url",
-        "sender-origin",
-        "sender-frame",
-        "sender-id",
-        "frame-id",
-        "process-id",
-      ]),
-      mechanism: z.string(),
-      expected: staticValue,
-      enforcement: z.literal("unknown"),
+      ...senderValidationShape,
+      transport: z.literal("electron").optional(),
     }),
   ),
   utility_processes: z.array(
@@ -244,6 +250,9 @@ const referenceShape = {
 export const javaScriptWorkerStaticAnalysisSchema = z
   .strictObject({
     parse_status: z.enum(["complete", "partial", "failed"]),
+    syntax_parse_status: z.enum(["complete", "partial", "failed"]).optional(),
+    static_facts_status: z.enum(["complete", "partial", "failed"]).optional(),
+    unresolved_static_occurrences: count.nullable().optional(),
     parse_error_count: count,
     visited_ast_nodes: count,
     references: z.array(
@@ -264,6 +273,14 @@ export const javaScriptWorkerStaticAnalysisSchema = z
           .transform(withRuntime),
       ]),
     ),
+    sender_validations: z
+      .array(
+        z.strictObject({
+          ...senderValidationShape,
+          transport: z.enum(["browser-extension", "unknown"]).optional(),
+        }),
+      )
+      .optional(),
     shipped_material_candidates: z
       .array(
         z.strictObject({
@@ -277,6 +294,7 @@ export const javaScriptWorkerStaticAnalysisSchema = z
       z.strictObject({
         ...findingContext,
         kind: z.enum(["route", "network"]),
+        network_receiver: javaScriptEndpointReceiverSchema.optional(),
         template_parts: z
           .array(
             z.union([
@@ -297,8 +315,11 @@ export const javaScriptWorkerStaticAnalysisSchema = z
           "session-storage",
           "indexed-db",
           "cache-storage",
+          "extension-storage",
           "sqlite",
         ]),
+        area: z.enum(["local", "session", "sync", "managed"]).optional(),
+        api: z.string().optional(),
         name: z.string().nullable(),
         mechanism: z.string(),
       }),
@@ -345,38 +366,80 @@ export const javaScriptWorkerStaticAnalysisSchema = z
     electron,
     limitations: strings,
   })
-  .transform(({ shipped_material_candidates, ...analysis }) => ({
-    ...analysis,
-    ...(shipped_material_candidates === undefined
-      ? {}
-      : { shipped_material_candidates }),
-    endpoints: analysis.endpoints.map((entry) => {
-      const { template_parts, ...rest } = withRuntime(entry);
-      return {
-        ...rest,
-        ...(template_parts === undefined ? {} : { template_parts }),
-      };
+  .transform(
+    ({
+      shipped_material_candidates,
+      sender_validations,
+      syntax_parse_status,
+      static_facts_status,
+      unresolved_static_occurrences,
+      ...analysis
+    }) => ({
+      ...analysis,
+      ...(syntax_parse_status === undefined ? {} : { syntax_parse_status }),
+      ...(static_facts_status === undefined ? {} : { static_facts_status }),
+      ...(unresolved_static_occurrences === undefined
+        ? {}
+        : { unresolved_static_occurrences }),
+      ...(shipped_material_candidates === undefined
+        ? {}
+        : { shipped_material_candidates }),
+      ...(sender_validations === undefined
+        ? {}
+        : {
+            sender_validations: sender_validations.map((entry) => {
+              const { transport, ...rest } = withRuntime(entry);
+              return {
+                ...rest,
+                ...(transport === undefined ? {} : { transport }),
+              };
+            }),
+          }),
+      endpoints: analysis.endpoints.map((entry) => {
+        const { template_parts, network_receiver, ...rest } =
+          withRuntime(entry);
+        return {
+          ...rest,
+          ...(template_parts === undefined ? {} : { template_parts }),
+          ...(network_receiver === undefined ? {} : { network_receiver }),
+        };
+      }),
+      storage: analysis.storage.map((entry) => {
+        const { area, api, ...rest } = withRuntime(entry);
+        return {
+          ...rest,
+          ...(area === undefined ? {} : { area }),
+          ...(api === undefined ? {} : { api }),
+        };
+      }),
+      role_paths: analysis.role_paths.map(withRuntime),
+      electron: {
+        ...analysis.electron,
+        sender_validations: analysis.electron.sender_validations.map(
+          (entry) => {
+            const { transport, ...rest } = withRuntime(entry);
+            return {
+              ...rest,
+              ...(transport === undefined ? {} : { transport }),
+            };
+          },
+        ),
+        native_addon_bindings: analysis.electron.native_addon_bindings.map(
+          (value) => {
+            const { namespace_access, dynamic_member_access, ...rest } =
+              withRuntime(value);
+            return {
+              ...rest,
+              ...(namespace_access === undefined ? {} : { namespace_access }),
+              ...(dynamic_member_access === undefined
+                ? {}
+                : { dynamic_member_access }),
+            };
+          },
+        ),
+      },
     }),
-    storage: analysis.storage.map(withRuntime),
-    role_paths: analysis.role_paths.map(withRuntime),
-    electron: {
-      ...analysis.electron,
-      sender_validations: analysis.electron.sender_validations.map(withRuntime),
-      native_addon_bindings: analysis.electron.native_addon_bindings.map(
-        (value) => {
-          const { namespace_access, dynamic_member_access, ...rest } =
-            withRuntime(value);
-          return {
-            ...rest,
-            ...(namespace_access === undefined ? {} : { namespace_access }),
-            ...(dynamic_member_access === undefined
-              ? {}
-              : { dynamic_member_access }),
-          };
-        },
-      ),
-    },
-  })) satisfies z.ZodType<JavaScriptStaticAnalysis>;
+  ) satisfies z.ZodType<JavaScriptStaticAnalysis>;
 
 const resourceLimit = z.enum([
   "primitive-candidates",

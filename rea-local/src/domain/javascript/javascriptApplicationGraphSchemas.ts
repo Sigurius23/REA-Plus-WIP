@@ -27,6 +27,7 @@ export const JAVASCRIPT_APPLICATION_NODE_KINDS = [
   "source-map",
   "source-module",
   "browser-window",
+  "web-document",
   "frame",
   "target",
   "context-bridge-api",

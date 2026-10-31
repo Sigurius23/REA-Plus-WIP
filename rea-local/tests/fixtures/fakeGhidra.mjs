@@ -11,6 +11,7 @@ const {
   providerVersion,
   profileDigest,
   targetSha256,
+  analysisTimeoutSeconds,
   transport,
   mode = "success",
 } = configuration ?? {};
@@ -192,6 +193,7 @@ const handlePing = (socket, request, state) => {
     profileDigest: state.profileDigest,
     targetSha256: state.targetSha256,
     timedOut: state.mode === "analysis_timeout",
+    analysisTimeoutSeconds,
   });
   const response = `${JSON.stringify({ id: request.id, ok: true, result })}\n`;
   if (state.mode === "fragmented") {
@@ -207,6 +209,7 @@ const sessionInfo = ({
   profileDigest: digest,
   targetSha256: sha256,
   timedOut,
+  analysisTimeoutSeconds: analysisBound,
 }) => ({
   name: "REA+ Ghidra bridge",
   run_id: sessionRunId,
@@ -215,6 +218,9 @@ const sessionInfo = ({
   read_only: transport !== "unix-socket",
   analysis_complete: !timedOut,
   analysis_timed_out: timedOut,
+  ...(analysisBound === undefined
+    ? {}
+    : { analysis_timeout_seconds: analysisBound }),
   capabilities: [
     "ping",
     "shutdown",

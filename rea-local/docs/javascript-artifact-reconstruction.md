@@ -174,8 +174,29 @@ still have separate rows and path-specific failures. Rows sort by Unicode
 code-point path order, then observation ID; page coverage counts the filtered
 rows, not all inventoried files.
 
+Fresh source results record `syntax_parse_status` separately from
+`static_facts_status`. Syntax is complete when parsing succeeds without
+recovered errors, even when dynamic keys or expressions leave static facts
+partial. `unresolved_static_occurrences` counts unresolved discovery
+occurrences before deduplication; it is not a count of distinct facts or
+semantic-IR unknowns. A failed parse leaves that count unknown (`null`).
+The recorded `parse_error_count` is the recovered parser error count; the
+failed-parse result retains its legacy value of one as a failure indicator.
+Application `statistics.parse_failures` counts files that could not be parsed;
+recovered syntax errors remain visible in the per-file metadata.
+
+`parse_status` remains the legacy aggregate of syntax and static-fact coverage
+for compatibility. It must not be read as a syntax-only outcome. Per-file
+views use the separate fields: syntax problems appear under `parse-javascript`,
+while unresolved static facts appear under `analyze-static-facts`. Missing
+historical fields remain `not-recorded`; a historical aggregate `partial`
+does not establish a syntax failure. Observation and application coverage
+remain partial when static facts are unresolved, including when syntax and
+retained module IR are complete.
+
 `file_status_summary` reports observed files, files with issues, missing
-retention metadata and the number of distinct parent limitations. Older
+retention metadata, missing separate syntax/static-fact coverage metadata and
+the number of distinct parent limitations. Older
 Evidence can expose its existing failure records without re-analysis; missing
 retention fields remain `not-recorded`. An empty issue page does not imply
 complete analysis. Parent coverage remains explicit in the view's unknowns,
@@ -386,6 +407,27 @@ document receivers are treated as browsing-context or document operations,
 while locally shadowed receivers can still contribute network endpoint
 candidates. A template recovered with a parser error and no cooked value stays
 dynamic; its raw spelling is not treated as a valid JavaScript string.
+
+Network method names alone establish candidates, not receiver identity. Current
+analyses retain `network_receiver` as `recognized-network` with the statically
+identified API, or `unknown` with null identity. Unknown custom clients such as
+`api.get("users")` stay useful candidates with low-confidence inferred graph
+evidence. The endpoint view preserves this distinction; absent historical
+metadata remains null. Recognized API syntax still does not prove execution.
+Lexically identified keyed collections and Chrome/browser extension storage are
+excluded from network endpoints even when their keys look like URLs. Extension
+storage observations retain `extension-storage`, its `local`/`session`/`sync`/
+`managed` area and API identity. Shadows, visible mutations and ambiguous aliases
+do not acquire a proven API identity.
+
+Scripted HTML documents use the generic `web-document` graph kind. Their source
+and script links do not establish an Electron renderer; separately observed
+Electron entrypoints retain their own role. Sender-like comparisons likewise
+stay in generic `sender_validations` unless a lexical callback parameter is
+proven to originate from Electron IPC. Browser-extension callbacks retain their
+own transport identity, and named/general helpers remain unknown when argument
+flow is unproven. All checks keep `enforcement: "unknown"`; neither callback
+provenance nor a visible comparison establishes a complete authorization policy.
 
 A request URL built from strings and expressions is reported as a template,
 in both `analyze_javascript_application` and `analyze_web_bundle`, with `{}`

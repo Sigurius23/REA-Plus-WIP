@@ -1,0 +1,514 @@
+{
+  "schema": "heyclicky-browser-host-feature-followup/v1",
+  "recorded_at": "2026-10-29T20:23:10.260378+00:00",
+  "input": {
+    "captured_at": "2026-10-29T15:30:02.039640+00:00",
+    "app_version": "1.1.1",
+    "app_build": "66",
+    "source": {
+      "path": "/Applications/HeyClicky.app/Contents/Helpers/ClickyBrowserHost",
+      "bytes": 207728,
+      "sha256": "5fb7e18d994bbdcb9d1d380e492fc8cf38e28efd58dea0b470db48027714965c"
+    },
+    "derived": {
+      "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/ClickyBrowserHost-arm64",
+      "bytes": 109424,
+      "sha256": "57df5ec91fd804279fda1d46a6cd577375bf006396a3a7b4f49bd22a3d6cb179",
+      "architecture": "arm64",
+      "parent_offset": 98304
+    },
+    "target_executed": false
+  },
+  "failed_first_attempt": {
+    "failed_stage": "persisting first overview reply",
+    "error": "ENOSPC: no space left on device",
+    "tool_response_preserved": false,
+    "analysis_outcome": "unverified",
+    "following_entry_and_search_requests_executed": false,
+    "public_close_record": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/003-close.json",
+    "summary": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/summary.json",
+    "wall_clock_session_included_idle_wait_after_storage_failure": true,
+    "temporary_driver_exit_code": 0,
+    "target_executed": false
+  },
+  "recovery": {
+    "calls": 14,
+    "all_successful": true,
+    "input_output_advertised_schemas_and_canonical_success_contracts_validated": true,
+    "overview_call_ms": 30360,
+    "program_counts": {
+      "procedure_count": 318,
+      "string_count": 632,
+      "segment_count": 32
+    },
+    "measured_analysis_state": {
+      "analysis_complete": true,
+      "analysis_timed_out": false,
+      "analysis_timeout_seconds": 60
+    },
+    "profile": {
+      "provider": {
+        "id": "rea-workflow",
+        "name": "REA+ composed investigation workflow",
+        "version": "1"
+      },
+      "parameters": {
+        "upstream_analysis_profile": {
+          "provider": {
+            "id": "ghidra",
+            "name": "Ghidra",
+            "version": "12.1.4"
+          },
+          "parameters": {
+            "target_kind": "executable",
+            "target_format": "mach-o",
+            "architecture": "arm64",
+            "available_architectures": [
+              "arm64"
+            ],
+            "import_mode": "ephemeral-source-immutable",
+            "annotation_policy": "atomic-function-entry-metadata-v1",
+            "load_image_observations": "source-mappings-entry-context-v2",
+            "function_body_evidence": "complete-inclusive-ranges-v1",
+            "function_references": "complete-body-and-entry-reference-manager-v2",
+            "string_inventory_evidence": "defined-data-coverage-v1",
+            "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+            "instruction_flow_evidence": "decoded-return-pcode-v1",
+            "instruction_references": "exact-address-incoming-v1",
+            "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+            "no_return_repair": "returning-imports-decoded-return-v2",
+            "process_launch": "inspected-jvm-launch-support-v1",
+            "jump_table_evidence": "typed-case-default-blocks-v1",
+            "decompiler_jump_loads": true,
+            "loader": "auto-from-header",
+            "language_id": "auto-from-header",
+            "compiler_spec_id": "auto-default",
+            "analyzer_preset": "ghidra-default",
+            "analysis_policy": "bounded-autoanalysis-v1",
+            "analysis_timeout_seconds": 60
+          },
+          "digest": "2328bbbe80f8f0c0af9b71d06a54943009a0619e6854d0a36ea7ca12b829f6b3"
+        },
+        "workflow_evidence_revision": 1,
+        "workflow_revision": 2
+      },
+      "digest": "394b5ead5220ea5bc5f3f6c7e049d49ec0086a47aae0b018792993b08681c062"
+    },
+    "records": [
+      {
+        "label": "open",
+        "operation": "open_binary",
+        "arguments": {
+          "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/ClickyBrowserHost-arm64",
+          "provider_id": "ghidra"
+        },
+        "started_at": "2026-10-29T20:09:33.905Z",
+        "duration_ms": 2636,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/001-open.json",
+        "is_error": false,
+        "bytes": 661,
+        "sha256": "585f1ed048f69e04894377888d3378d4af7daca367f931a1bcc2316836f05913",
+        "evidence_id": null
+      },
+      {
+        "label": "overview",
+        "operation": "binary_overview",
+        "arguments": {},
+        "started_at": "2026-10-29T20:09:42.453Z",
+        "duration_ms": 30360,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/002-overview.json",
+        "is_error": false,
+        "bytes": 17224,
+        "sha256": "895a8bc654b794c0516e63905cc4b5b5bf2c8d4aa6cfe5ca9575b2c35347b020",
+        "evidence_id": "ev_7206aef79531c6e596f5170a120bcbd9ec2caad31b0d6ba2d47c014cfdeee075"
+      },
+      {
+        "label": "entry",
+        "operation": "analyze_function",
+        "arguments": {
+          "procedure": "0x100000e30"
+        },
+        "started_at": "2026-10-29T20:10:12.862Z",
+        "duration_ms": 1884,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/003-entry.json",
+        "is_error": false,
+        "bytes": 13263141,
+        "sha256": "aef31eeae400402aa133c67e1397e15f39bf1e5c2e280c6eeaccc9140e380674",
+        "evidence_id": "ev_e434b94cd01bce1ee76a453dd8a74e40d3f848a5c6d19e29a52e229a6fba8d46"
+      },
+      {
+        "label": "routing-strings",
+        "operation": "search_strings",
+        "arguments": {
+          "pattern": "socket|connect|localhost|127\\.0\\.0\\.1|heyclicky|clicky|bridge|profile|protocol",
+          "mode": "regex",
+          "case_sensitive": false
+        },
+        "started_at": "2026-10-29T20:10:14.937Z",
+        "duration_ms": 17,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/004-routing-strings.json",
+        "is_error": false,
+        "bytes": 23024,
+        "sha256": "a9b100908c5aeba5c6ea0665c15090af738cc1043e0e378eaa4e7c930822a7ae",
+        "evidence_id": "ev_78b877f3de4d76ba481d146dee467d0c104937d2d7433fc84576f67c58b49373"
+      },
+      {
+        "label": "request",
+        "operation": "procedure_pseudo_code",
+        "arguments": {
+          "procedure": "0x100002b7c"
+        },
+        "started_at": "2026-10-29T20:11:52.923Z",
+        "duration_ms": 541,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/005-request.json",
+        "is_error": false,
+        "bytes": 110734,
+        "sha256": "087540c03814ca85f642e9ef21d0e594ce0d8e91e09d1d6847f8c62279d5fcfe",
+        "evidence_id": "ev_fad0c91241bd10c39c3c4a84b9431c18e376c6f5d488f4a649bca4afcd792e58"
+      },
+      {
+        "label": "open-app",
+        "operation": "procedure_pseudo_code",
+        "arguments": {
+          "procedure": "0x100003cbc"
+        },
+        "started_at": "2026-10-29T20:11:53.505Z",
+        "duration_ms": 48,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/006-open-app.json",
+        "is_error": false,
+        "bytes": 31042,
+        "sha256": "63eb923efc82c95e26ba4ccd727e247b1424e554341078bfeee3d09efb01a953",
+        "evidence_id": "ev_8ca4ff491c3c803ad69026c09af9d55eb318e8465a66d3dd921ae924aa5f2650"
+      },
+      {
+        "label": "literal-bytes",
+        "operation": "read_bytes",
+        "arguments": {
+          "address": "0x1000062a0",
+          "length": 512
+        },
+        "started_at": "2026-10-29T20:11:53.576Z",
+        "duration_ms": 23,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/007-literal-bytes.json",
+        "is_error": false,
+        "bytes": 11753,
+        "sha256": "a6a4855f81820cb1ac841a5975e542dc17650b48fc740d4667d9b65df66b0c62",
+        "evidence_id": "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+      },
+      {
+        "label": "closures",
+        "operation": "search_procedures",
+        "arguments": {
+          "pattern": "closure",
+          "mode": "literal",
+          "case_sensitive": false
+        },
+        "started_at": "2026-10-29T20:12:16.912Z",
+        "duration_ms": 10,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/008-closures.json",
+        "is_error": false,
+        "bytes": 9045,
+        "sha256": "126f66cbbeb476dfa43f61eb013ab8d4d29ff6cd26caf2f3b9dda0337c65d14c",
+        "evidence_id": "ev_e43aa2aeb7cca76b96037ea794d7680efe926f002f9bc5863c701d86d871826c"
+      },
+      {
+        "label": "framing",
+        "operation": "read_function_instructions",
+        "arguments": {
+          "procedure": "0x100003a38"
+        },
+        "started_at": "2026-10-29T20:12:16.949Z",
+        "duration_ms": 11,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/009-framing.json",
+        "is_error": false,
+        "bytes": 37978,
+        "sha256": "45bfa15b1e98f7aad31a4a59ecc07929e283c81c742e794500f20f69c8c21f97",
+        "evidence_id": "ev_a12b6ff485317452056b303d3ba9432edb1e14c63eb949ebcc026c9883b27b6b"
+      },
+      {
+        "label": "poll-loop",
+        "operation": "procedure_pseudo_code",
+        "arguments": {
+          "procedure": "0x10000281c"
+        },
+        "started_at": "2026-10-29T20:12:45.547Z",
+        "duration_ms": 41,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/010-poll-loop.json",
+        "is_error": false,
+        "bytes": 36703,
+        "sha256": "0012f23fb29c4b3590ddba618ac527dc4a2c3694bcc91f8db5b16bb8cd8d1d99",
+        "evidence_id": "ev_678f875e3b23424ff0138366114e020c1d4d535b86da7f50a67c382657919a16"
+      },
+      {
+        "label": "request-instructions",
+        "operation": "read_function_instructions",
+        "arguments": {
+          "procedure": "0x100002b7c"
+        },
+        "started_at": "2026-10-29T20:12:45.608Z",
+        "duration_ms": 14,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/011-request-instructions.json",
+        "is_error": false,
+        "bytes": 157782,
+        "sha256": "be569211cf72e2ab1dab05b98b90457e8a8a2f60fa5ad46fd2dae8c659d8476d",
+        "evidence_id": "ev_82fbc5aeba64efcd5bf3f5b295f35c2774208df787510ffd8501a4b2271e585b"
+      },
+      {
+        "label": "open-app-instructions",
+        "operation": "read_function_instructions",
+        "arguments": {
+          "procedure": "0x100003cbc"
+        },
+        "started_at": "2026-10-29T20:12:45.646Z",
+        "duration_ms": 6,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/012-open-app-instructions.json",
+        "is_error": false,
+        "bytes": 50978,
+        "sha256": "d4b4aa4d20f7e3b63a0010f1f8849bf0f81be7c7ffc355f924fecdf3436b4bf8",
+        "evidence_id": "ev_8347ce55a6c36c07fd9173da1c6363a1650a87ad8aed9b3034eb5476bef0597c"
+      },
+      {
+        "label": "session-final",
+        "operation": "binary_session",
+        "arguments": {},
+        "started_at": "2026-10-29T20:13:05.809Z",
+        "duration_ms": 687,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/013-session-final.json",
+        "is_error": false,
+        "bytes": 948122,
+        "sha256": "b2552caea8e4fa259e04ce5ed31723661d839e36f41501f38214183dea9ac5f1",
+        "evidence_id": null
+      },
+      {
+        "label": "close",
+        "operation": "close_binary",
+        "arguments": {},
+        "started_at": "2026-10-29T20:13:06.596Z",
+        "duration_ms": 585,
+        "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/014-close.json",
+        "is_error": false,
+        "bytes": 140,
+        "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d",
+        "evidence_id": null
+      }
+    ],
+    "unchanged": {
+      "derived": true,
+      "source": true
+    },
+    "initial_generic_verifier_run": {
+      "run_id": "92295c73-ebd5-4442-840c-9a4c1b47fc9b",
+      "verifier_pid": 40120,
+      "parent_pid": 33819,
+      "process_lineage": {
+        "status": "unavailable",
+        "observed_at": "2026-10-29T20:13:07.237Z",
+        "launcher_pid": 40120,
+        "launcher_parent_pid": 33819,
+        "process_group_id": 40120,
+        "reason": "descendant 40142 run token did not match"
+      }
+    },
+    "cleanup_followup": {
+      "observed_at": "2026-10-29T20:14:40.431233+00:00",
+      "known_pids": [
+        36546,
+        36568,
+        40120,
+        40142,
+        40144,
+        40223,
+        40306,
+        40510
+      ],
+      "remaining_known_pids": [],
+      "ps_exit_code": 1,
+      "status": "known_pids_absent",
+      "process_rows": "",
+      "initial_generic_verifier_lineage": "unavailable; later PID absence does not replace that snapshot",
+      "provider_identity_source": "013-session-final.json verified provider launcher/descendants before close"
+    },
+    "driver_exit_code": 0
+  },
+  "questions": [
+    {
+      "id": "origin",
+      "status": "source-traced",
+      "finding": "Entry loads the shipped extension-ID allowlist, trims lines and compares argv origin against constructed chrome-extension://<id>/ values before accepting framed messages.",
+      "evidence": [
+        "ev_e434b94cd01bce1ee76a453dd8a74e40d3f848a5c6d19e29a52e229a6fba8d46",
+        "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+      ],
+      "limits": [
+        "Origin whitelist content and invocation are code paths; no live browser origin was inspected."
+      ]
+    },
+    {
+      "id": "framing",
+      "status": "instruction-backed",
+      "finding": "The selected arm64 code reads a four-byte length then an input payload guarded to 1..1048576 bytes, parses a JSON dictionary and dispatches by type; output serialization writes a four-byte length and JSON under a lock.",
+      "evidence": [
+        "ev_e434b94cd01bce1ee76a453dd8a74e40d3f848a5c6d19e29a52e229a6fba8d46",
+        "ev_a12b6ff485317452056b303d3ba9432edb1e14c63eb949ebcc026c9883b27b6b"
+      ],
+      "limits": [
+        "Selected arm64 header representation is little-endian; this is not a runtime exchange."
+      ]
+    },
+    {
+      "id": "hello",
+      "status": "source-traced",
+      "finding": "First message must be hello with protocol integer 1; profile parsing/validation precedes setting started and scheduling the polling closure.",
+      "evidence": [
+        "ev_e434b94cd01bce1ee76a453dd8a74e40d3f848a5c6d19e29a52e229a6fba8d46"
+      ],
+      "limits": [
+        "Swift UUID reconstruction has ABI/type warnings; full canonicalization policy is not inferred from decompiled temporary variables."
+      ]
+    },
+    {
+      "id": "http",
+      "status": "source-and-instruction-traced",
+      "finding": "Request code loads connection.json beneath the declared Application Support base, checks port 1..65535 and a string token, builds POST http://127.0.0.1:<port>/mcp with Bearer and JSON headers, and packages JSON-RPC2.0 tools/call with session/profile arguments.",
+      "evidence": [
+        "ev_fad0c91241bd10c39c3c4a84b9431c18e376c6f5d488f4a649bca4afcd792e58",
+        "ev_82fbc5aeba64efcd5bf3f5b295f35c2774208df787510ffd8501a4b2271e585b",
+        "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+      ],
+      "instruction_anchors": {
+        "token": "0x100002ed4..0x100002edc",
+        "POST": "0x1000030c4..0x1000030d4"
+      },
+      "limits": [
+        "The user connection file and credential value were never read; server-side authorization remains separate."
+      ]
+    },
+    {
+      "id": "poll",
+      "status": "source-traced",
+      "finding": "After hello, the dispatch closure calls browser_poll repeatedly. Missing result emits ready/selected:false/app:false and sleeps two seconds. A result emits ready with selected status and app:true and can forward an optional dictionary to extension stdout.",
+      "evidence": [
+        "ev_678f875e3b23424ff0138366114e020c1d4d535b86da7f50a67c382657919a16"
+      ],
+      "limits": [
+        "The exact optional-dictionary field lookup is not named by the decompiler; no payload content is guessed."
+      ]
+    },
+    {
+      "id": "reply",
+      "status": "source-traced",
+      "finding": "Subsequent result/stop messages call browser_reply through the same JSON-RPC wrapper; request code extracts result.structuredContent from HTTP response JSON.",
+      "evidence": [
+        "ev_e434b94cd01bce1ee76a453dd8a74e40d3f848a5c6d19e29a52e229a6fba8d46",
+        "ev_fad0c91241bd10c39c3c4a84b9431c18e376c6f5d488f4a649bca4afcd792e58",
+        "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+      ],
+      "limits": [
+        "Native app method admission, queue ownership and response schema need the main server handlers."
+      ]
+    },
+    {
+      "id": "open-app",
+      "status": "source-traced",
+      "finding": "openApp dispatches to openHeyClicky, which constructs an NSTask-based open/settings route using its bundle location and heyclicky://settings/browser.",
+      "evidence": [
+        "ev_e434b94cd01bce1ee76a453dd8a74e40d3f848a5c6d19e29a52e229a6fba8d46",
+        "ev_8ca4ff491c3c803ad69026c09af9d55eb318e8465a66d3dd921ae924aa5f2650",
+        "ev_8347ce55a6c36c07fd9173da1c6363a1650a87ad8aed9b3034eb5476bef0597c",
+        "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+      ],
+      "limits": [
+        "The task was inspected as code and never launched."
+      ]
+    }
+  ],
+  "literal_observations": [
+    {
+      "value": "Library/Application Support/Clicky/BrowserBridge",
+      "address": "0x1000062c0",
+      "evidence_id": "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+    },
+    {
+      "value": "Resources/ClickyBrowserExtensionID.txt",
+      "address": "0x100006300",
+      "evidence_id": "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+    },
+    {
+      "value": "chrome-extension://",
+      "address": "0x100006330",
+      "evidence_id": "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+    },
+    {
+      "value": "http://127.0.0.1:",
+      "address": "0x100006350",
+      "evidence_id": "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+    },
+    {
+      "value": "application/json",
+      "address": "0x100006370",
+      "evidence_id": "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+    },
+    {
+      "value": "structuredContent",
+      "address": "0x100006390",
+      "evidence_id": "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+    },
+    {
+      "value": "heyclicky://settings/browser",
+      "address": "0x1000063b0",
+      "evidence_id": "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+    },
+    {
+      "value": "browser_poll",
+      "address": "0x1000063cd",
+      "evidence_id": "ev_aec583f9ddb86997bab105c7f83f32ec4f8f7f2f9754e5b3dcce1e0c4c5bc01b"
+    }
+  ],
+  "raw_references": [
+    {
+      "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/input.json",
+      "bytes": 609,
+      "sha256": "efb70cef51ec48af208b71c444ddd0f69a2d3d8e9bb1bc815c61cead111eb1c6"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/storage-interruption.json",
+      "bytes": 559,
+      "sha256": "b6594ab0cc60eb03238f5341546d50e9f5db3aa525ace49c3ec0fbea438e871e"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/summary.json",
+      "bytes": 2693,
+      "sha256": "c8a0de608e06bea2d591b326ed9baa077f09eac5aec135dc7ee706a2f2c96430"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/summary.json",
+      "bytes": 8975,
+      "sha256": "978087763b03bdecbba16c1c7f6fed97b28cd826f7a9f8d8c1927547c8a890f4"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/catalog.json",
+      "bytes": 5930611,
+      "sha256": "9239ce6032f27621f568d01b5a1fdc620e37161605a50331f426375482aef3ef"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/driver.mjs",
+      "bytes": 4838,
+      "sha256": "2e03320b4697a70b59722aa25f9d1d8d3c94e450c375d022823c2b413c4fb93a"
+    },
+    {
+      "path": "/private/tmp/rea-heyclicky-host-followup-2026-10-29-c6pv0v95/recovery/cleanup-followup.json",
+      "bytes": 483,
+      "sha256": "adaf5eec960eeddd37be847772a29f9d96e893a5d21e0a2350414ae8ca247d63"
+    }
+  ],
+  "scope": {
+    "target_executed": false,
+    "target_services_contacted": false,
+    "user_application_data_accessed": false,
+    "token_file_accessed": false
+  },
+  "complete": false,
+  "completion_scope": "Selected helper origin/framing/HTTP/poll/reply paths are mapped from static code. Native main-server handlers and runtime corroboration remain separate.",
+  "committed": false,
+  "pushed": false
+}

@@ -44,6 +44,7 @@ export interface GhidraClientOptions {
   readonly expectedLanguageId?: string;
   readonly expectedCompilerSpecId?: string;
   readonly startupTimeoutMs?: number;
+  readonly analysisTimeoutSeconds?: number;
   readonly onDiagnostic?: (event: GhidraDiagnostic) => void;
   readonly logger?: Logger;
 }

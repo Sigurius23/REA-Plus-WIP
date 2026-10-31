@@ -16,10 +16,13 @@ const view = (filter: "all" | "with-issues", offset = 0, limit = 20) => ({
   offset,
   limit,
 });
-const project = (filter: "all" | "with-issues", offset = 0, limit = 20) => {
-  const evidence = analysisViewJavaScriptEvidence(
-    javascriptFileStatusAnalysis(),
-  );
+const project = (
+  filter: "all" | "with-issues",
+  offset = 0,
+  limit = 20,
+  analysis = javascriptFileStatusAnalysis(),
+) => {
+  const evidence = analysisViewJavaScriptEvidence(analysis);
   const result = projectAnalysisView(
     {
       evidenceId: evidence.evidence_id,
@@ -90,6 +93,10 @@ it("distinguishes missing historical metadata, syntax failure and partial semant
     expect.arrayContaining([
       expect.objectContaining({
         path: "legacy.js",
+        syntax_parse_status: "not-recorded",
+        static_facts_status: "not-recorded",
+        parse_error_count: null,
+        unresolved_static_occurrences: null,
         module_ir_status: "not-recorded",
         semantic_graph_status: "not-recorded",
         issues: [],
@@ -129,6 +136,31 @@ it("distinguishes missing historical metadata, syntax failure and partial semant
     ]),
   );
   expect(project("all").view_digest).toBe(result.view_digest);
+});
+
+it("does not reinterpret a historical aggregate partial status as a syntax failure", () => {
+  const result = project(
+    "all",
+    0,
+    20,
+    javascriptFileStatusAnalysis({ parse_status: "partial" }),
+  );
+  expect(result.items).toContainEqual(
+    expect.objectContaining({
+      path: "legacy.js",
+      parse_status: "partial",
+      syntax_parse_status: "not-recorded",
+      static_facts_status: "not-recorded",
+      unresolved_static_occurrences: null,
+      issues: [
+        expect.objectContaining({
+          operation: "analyze-static-facts",
+          message:
+            "Legacy aggregate parse_status is partial; syntax and static-fact causes were not recorded separately.",
+        }),
+      ],
+    }),
+  );
 });
 
 it("validates collection-specific filters and rejects file pages for native layout parents", () => {

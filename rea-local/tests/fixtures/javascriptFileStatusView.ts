@@ -8,8 +8,20 @@ import {
   analysisViewJavaScriptAnalysis,
 } from "./analysisView.js";
 
+const failedSyntax: Record<string, JsonValue> = {
+  parse_status: "failed",
+  syntax_parse_status: "failed",
+  parse_error_count: 1,
+  static_facts_status: "failed",
+  unresolved_static_occurrences: null,
+  module_ir_status: "not-retained",
+  semantic_graph_status: "not-retained",
+};
+
 /** Recorded aliases, failures, partial projections and missing historical metadata. */
-export const javascriptFileStatusAnalysis = () => {
+export const javascriptFileStatusAnalysis = (
+  legacyProperties: Record<string, JsonValue> = {},
+) => {
   const base = analysisViewJavaScriptAnalysis();
   const evidence = base.graph.nodes[0]?.observations[0]?.evidence;
   if (evidence === undefined) throw new Error("Missing view fixture evidence");
@@ -119,12 +131,9 @@ export const javascriptFileStatusAnalysis = () => {
       module_ir_status: null,
       module_ir_coverage: null,
       semantic_graph_status: null,
+      ...legacyProperties,
     }),
-    asset("invalid.js", "e", {
-      parse_status: "failed",
-      module_ir_status: "not-retained",
-      semantic_graph_status: "not-retained",
-    }),
+    asset("invalid.js", "e", failedSyntax),
     asset("partial.js", "f", {
       module_ir_coverage: {
         status: "partial",

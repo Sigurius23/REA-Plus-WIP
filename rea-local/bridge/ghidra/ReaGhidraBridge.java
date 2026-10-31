@@ -159,6 +159,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
     private List<InventoryItem> stringInventory;
     private DecompInterface decompiler;
     private final ReaGhidraExtensions analysisExtensions = new ReaGhidraExtensions();
+    private ReaGhidraSwiftEnumSwitches swiftEnumSwitches;
     private static AddressSpace sessionDefaultAddressSpace;
 
     @Override
@@ -207,6 +208,13 @@ public final class ReaGhidraBridge extends HeadlessScript {
             if (!descriptor.transport.equals("unix-socket") && descriptor.analysisExtensions.size() > 0)
                 throw new IOException("Windows Ghidra P0 does not admit metadata recovery or database mutation.");
             analysisExtensions.analyze(descriptor.analysisExtensions, currentProgram, monitor);
+            // Windows P0 retains its no-database-mutation authority. On other
+            // hosts this is source-immutable analysis, completed before serving.
+            if (descriptor.transport.equals("unix-socket")) {
+                swiftEnumSwitches = new ReaGhidraSwiftEnumSwitches(currentProgram, monitor);
+                swiftEnumSwitches.analyze();
+                println(swiftEnumSwitches.summary());
+            }
             initializeDecompiler();
             serve(descriptor);
         }
@@ -347,7 +355,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
             requireKeys(request.params, Set.of());
             return sessionInfo(descriptor);
         }
-        if (analysisTimeoutOccurred()) {
+        if (analysisTimeoutOccurred() && descriptor.analysisTimeoutSeconds == null) {
             throw new RequestFailure(
                 "analysis_incomplete",
                 "Ghidra auto-analysis did not complete for this Program"
@@ -429,6 +437,8 @@ public final class ReaGhidraBridge extends HeadlessScript {
         result.addProperty("read_only", readOnly);
         result.addProperty("analysis_complete", !timedOut);
         result.addProperty("analysis_timed_out", timedOut);
+        if (descriptor.analysisTimeoutSeconds != null)
+            result.addProperty("analysis_timeout_seconds", descriptor.analysisTimeoutSeconds);
         result.add("capabilities", GSON.toJsonTree(
             java.util.Arrays.stream(CAPABILITIES)
                 .filter(value -> !readOnly || !(value.equals("annotate_native_function")
@@ -1918,8 +1928,11 @@ public final class ReaGhidraBridge extends HeadlessScript {
             decompilation.getCCodeMarkup().flatten(caseTokens);
         }
         for (int index = 0; index < recoveredJumpTables.length; index += 1) {
+            if (swiftEnumSwitches != null && swiftEnumSwitches.owns(recoveredJumpTables[index].getSwitchAddress())) continue;
             jumpTables.add(inferredJumpTable(recoveredJumpTables[index], caseTokens));
         }
+        if (swiftEnumSwitches != null) jumpTables.addAll(swiftEnumSwitches.tables(function));
+        limitations.add("On supported non-Windows AArch64 Mach-O inputs, REA+ can restore signed-word Swift enum dispatches from verified ABI metadata, accessor and instruction flow. Generated switch overrides are analysis metadata. Recovery budgets are 4096 cases, 100000 CFG/reaching-definition work units per candidate function and 256 nested queries; unsupported or exhausted paths remain unrecovered, not complete.");
         return result;
     }
 
@@ -3620,7 +3633,13 @@ public final class ReaGhidraBridge extends HeadlessScript {
         Set<String> keys = new HashSet<>(DESCRIPTOR_KEYS);
         if (parsed.isJsonObject() && parsed.getAsJsonObject().has("analysis_extensions"))
             keys.add("analysis_extensions");
+        if (parsed.isJsonObject() && parsed.getAsJsonObject().has("analysis_timeout_seconds"))
+            keys.add("analysis_timeout_seconds");
         JsonObject object = requireObject(parsed, keys);
+        Integer analysisTimeoutSeconds = object.has("analysis_timeout_seconds")
+            ? requireInteger(object, "analysis_timeout_seconds") : null;
+        if (analysisTimeoutSeconds != null && (analysisTimeoutSeconds <= 0 || analysisTimeoutSeconds > 2147483))
+            throw new IllegalArgumentException("Analysis timeout must fit the supported signed millisecond conversion");
         return new SessionDescriptor(
             requireString(object, "transport"),
             requireString(object, "endpoint_path"),
@@ -3629,6 +3648,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
             requireSha256(object, "target_sha256"),
             requireString(object, "provider_version"),
             requireString(object, "profile_digest"),
+            analysisTimeoutSeconds,
             object.has("analysis_extensions") ? object.getAsJsonArray("analysis_extensions") : new JsonArray()
         );
     }
@@ -3825,6 +3845,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
         String targetSha256,
         String providerVersion,
         String profileDigest,
+        Integer analysisTimeoutSeconds,
         JsonArray analysisExtensions
     ) {}
     private record Request(int id, String method, JsonObject params) {}

@@ -103,6 +103,12 @@ export class GhidraClient {
   readonly #lineage = new ProviderRunLineage();
   #nextId = 1;
   #closing = false;
+  #phase:
+    | "target-admission"
+    | "launch"
+    | "awaiting-post-analysis-bridge"
+    | "bridge-handshake"
+    | "operation" = "target-admission";
   #processSnapshot: ProviderProcessSnapshot | undefined;
   #lastDiagnostics: Readonly<Record<string, JsonValue>> = {};
   #startupController: AbortController | undefined;
@@ -231,10 +237,23 @@ export class GhidraClient {
   async callTool(
     operation: GhidraOperation,
     parameters: Readonly<Record<string, JsonValue>>,
-    options: { readonly signal?: AbortSignal } = {},
+    options: {
+      readonly signal?: AbortSignal;
+      readonly expectedSession?: GhidraSessionInfo;
+    } = {},
   ): Promise<Result<JsonValue, GhidraSessionError>> {
     const started = await this.start(options.signal);
     if (!started.ok) return started;
+    if (
+      options.expectedSession !== undefined &&
+      started.value !== options.expectedSession
+    )
+      return err(
+        this.#failure(
+          "process",
+          "Ghidra session restarted before request admission; retry against the current session",
+        ),
+      );
     return this.#requestQueue.run(
       operation,
       parameters,
@@ -422,6 +441,7 @@ export class GhidraClient {
   }
 
   async #start(signal: AbortSignal): Promise<GhidraStartResult> {
+    this.#phase = "target-admission";
     if (signal.aborted)
       return err(this.#failure("cancelled", "Ghidra startup was cancelled"));
     if (this.#socket !== undefined || this.#runtimeRoot !== undefined)
@@ -501,6 +521,7 @@ export class GhidraClient {
     this.#authenticationTokens.add(this.#token);
     this.#lineage.reset();
     this.#runId = this.#options.runId ?? randomUUID();
+    this.#phase = "launch";
     const launched = await this.#options.launcher
       .launch(
         {
@@ -513,6 +534,9 @@ export class GhidraClient {
           targetSha256: this.#options.targetSha256,
           providerVersion: this.#options.providerVersion,
           profileDigest: this.#options.profileDigest,
+          ...(this.#options.analysisTimeoutSeconds === undefined
+            ? {}
+            : { analysisTimeoutSeconds: this.#options.analysisTimeoutSeconds }),
         },
         { signal: deadline.signal },
       )
@@ -543,12 +567,17 @@ export class GhidraClient {
       maxDiagnosticBytes: GHIDRA_PROCESS_DIAGNOSTIC_BYTES,
       onDiagnostic: (event) => this.#onProcessDiagnostic(event),
     });
+    this.#phase = "awaiting-post-analysis-bridge";
     const connected = await this.#connect(endpoint, deadline);
     if (!connected.ok) {
       const failure = connected.error;
       return this.#startupFailure(failure);
     }
+    this.#phase = "bridge-handshake";
     const completed = await completeGhidraStartupHandshake({
+      ...(this.#options.analysisTimeoutSeconds === undefined
+        ? {}
+        : { analysisTimeoutSeconds: this.#options.analysisTimeoutSeconds }),
       deadline,
       request: (method, params, requestOptions) =>
         this.#wire.request(method, params, requestOptions),
@@ -559,6 +588,7 @@ export class GhidraClient {
     if (!completed.ok) return this.#startupFailure(completed.error);
     await this.#lineage.observe(this.#launch);
     this.#requestQueue.reopen();
+    this.#phase = "operation";
     return completed;
   }
 
@@ -596,6 +626,9 @@ export class GhidraClient {
       providerVersion: this.#options.providerVersion,
       profileDigest: this.#options.profileDigest,
       targetSha256: this.#options.targetSha256,
+      ...(this.#options.analysisTimeoutSeconds === undefined
+        ? {}
+        : { analysisTimeoutSeconds: this.#options.analysisTimeoutSeconds }),
       ...(this.#targetAdmission === undefined
         ? {}
         : { targetAdmission: this.#targetAdmission }),
@@ -823,29 +856,35 @@ export class GhidraClient {
 
   #diagnostics(): Readonly<Record<string, JsonValue>> {
     const snapshot = this.#process?.snapshot() ?? this.#processSnapshot;
-    return createGhidraDiagnostics({
-      targetPath: this.#options.targetPath,
-      targetSha256: this.#options.targetSha256,
-      ...(this.#targetAdmission === undefined
-        ? {}
-        : { targetAdmission: this.#targetAdmission }),
-      transport: this.#options.transport,
-      providerVersion: this.#options.providerVersion,
-      profileDigest: this.#options.profileDigest,
-      ...(this.#runId === undefined ? {} : { runId: this.#runId }),
-      ...(this.#runtimeRoot === undefined
-        ? {}
-        : { runtimeRoot: this.#runtimeRoot.path }),
-      ...(this.#socketRoot === undefined
-        ? {}
-        : { socketRoot: this.#socketRoot.path }),
-      ...(this.#endpointPath === undefined
-        ? {}
-        : { endpointPath: this.#endpointPath }),
-      ...(this.#launch === undefined ? {} : { launch: this.#launch }),
-      ...(snapshot === undefined ? {} : { snapshot }),
-      ...(this.#token === undefined ? {} : { token: this.#token }),
-      previous: this.#lastDiagnostics,
-    });
+    return {
+      ...createGhidraDiagnostics({
+        targetPath: this.#options.targetPath,
+        targetSha256: this.#options.targetSha256,
+        ...(this.#targetAdmission === undefined
+          ? {}
+          : { targetAdmission: this.#targetAdmission }),
+        transport: this.#options.transport,
+        providerVersion: this.#options.providerVersion,
+        profileDigest: this.#options.profileDigest,
+        ...(this.#runId === undefined ? {} : { runId: this.#runId }),
+        ...(this.#runtimeRoot === undefined
+          ? {}
+          : { runtimeRoot: this.#runtimeRoot.path }),
+        ...(this.#socketRoot === undefined
+          ? {}
+          : { socketRoot: this.#socketRoot.path }),
+        ...(this.#endpointPath === undefined
+          ? {}
+          : { endpointPath: this.#endpointPath }),
+        ...(this.#launch === undefined ? {} : { launch: this.#launch }),
+        ...(snapshot === undefined ? {} : { snapshot }),
+        ...(this.#token === undefined ? {} : { token: this.#token }),
+        previous: this.#lastDiagnostics,
+      }),
+      phase: this.#phase === "operation" ? "operation" : "startup",
+      stage: this.#phase,
+      startup_timeout_ms: this.#options.startupTimeoutMs,
+      analysis_timeout_seconds: this.#options.analysisTimeoutSeconds ?? null,
+    };
   }
 }

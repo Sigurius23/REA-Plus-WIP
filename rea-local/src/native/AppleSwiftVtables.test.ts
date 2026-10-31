@@ -55,11 +55,17 @@ describe("Swift vtable coverage facts: unresolved Swift dispatch slots", () => {
 
     pushDispatchCoverage({
       result,
+      facet: "all",
       failures: [],
       categoryIssues: [],
       examined: 0,
       categoriesExamined: 0,
-      truncated: false,
+      truncated: {
+        objc: false,
+        objcCategories: false,
+        swift: false,
+        vtables: false,
+      },
       fixups: {
         kind: "none",
         formats: [],
@@ -88,7 +94,9 @@ describe("Swift vtable coverage facts: unresolved Swift dispatch slots", () => {
       reason: expect.stringContaining("0x234"),
     });
   });
+});
 
+describe("Swift witness coverage facts", () => {
   it("returns a located issue for an emitted unresolved witness slot", () => {
     const result = objcSwiftMetadataSchema.parse({ db_save_result: null });
     const values = new Map<bigint, number>([
@@ -107,12 +115,24 @@ describe("Swift vtable coverage facts: unresolved Swift dispatch slots", () => {
       },
       admit: () => true,
     };
+    const relative = (field: bigint) =>
+      new Map<bigint, bigint>([
+        [0x100n, 0x200n],
+        [0x200n, 0x500n],
+        [0x508n, 0x600n],
+        [0x204n, 0x2b0n],
+        [0x2b8n, 0x700n],
+        [0x208n, 0x380n],
+      ]).get(field) ?? 0n;
     const facts = decodeSwiftDispatchFacets({
       sections: [{ name: "__swift5_proto", address: 0x100n, size: 4 }],
       segments: [],
       readers: {
         u32: (address) => values.get(address) ?? 0,
-        pointer: (address) => (address === 0x380n ? 0x200n : 0x900n),
+        pointer: (address) => ({
+          kind: "rebase",
+          target: address === 0x380n ? 0x200n : 0x900n,
+        }),
         string: (address) => (address === 0x600n ? "Proto" : "Widget"),
         location: (address) => ({
           address: `0x${address.toString(16)}`,
@@ -132,15 +152,10 @@ describe("Swift vtable coverage facts: unresolved Swift dispatch slots", () => {
         ],
         offset: (address) => Number(address),
       },
-      relative: (field) =>
-        new Map<bigint, bigint>([
-          [0x100n, 0x200n],
-          [0x200n, 0x500n],
-          [0x508n, 0x600n],
-          [0x204n, 0x2b0n],
-          [0x2b8n, 0x700n],
-          [0x208n, 0x380n],
-        ]).get(field) ?? 0n,
+      relative: {
+        local: relative,
+        resolve: (field) => ({ kind: "local", address: relative(field) }),
+      },
       budget,
       result,
     });
@@ -159,11 +174,17 @@ describe("Swift vtable coverage facts: unsupported pointer fixup coverage", () =
     const result = objcSwiftMetadataSchema.parse({ db_save_result: null });
     pushDispatchCoverage({
       result,
+      facet: "all",
       failures: [],
       categoryIssues: [],
       examined: 0,
       categoriesExamined: 0,
-      truncated: false,
+      truncated: {
+        objc: false,
+        objcCategories: false,
+        swift: false,
+        vtables: false,
+      },
       fixups: {
         kind: "chained",
         formats: ["format-99"],

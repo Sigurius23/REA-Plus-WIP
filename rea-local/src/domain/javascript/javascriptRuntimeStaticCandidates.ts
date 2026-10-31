@@ -120,7 +120,10 @@ const candidatesForLayer = (
 const candidateCategory = (
   node: ApplicationNode,
 ): StaticRuntimeCandidate["category"] | null => {
-  if (node.kind === "electron-renderer") return "renderer";
+  // This category matches page/frame locations across browser and Electron captures;
+  // a static HTML document does not establish the runtime family of either.
+  if (node.kind === "web-document" || node.kind === "electron-renderer")
+    return "renderer";
   if (
     node.kind === "javascript-asset" ||
     (node.kind === "javascript-module" && !isStaticSourceModule(node))
