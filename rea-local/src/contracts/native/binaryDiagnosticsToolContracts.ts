@@ -11,6 +11,10 @@ import {
   analysisDetailSchema,
 } from "../analysisDetail.js";
 import type { ToolContract } from "../toolContractTypes.js";
+import {
+  inspectChromiumResourcesInputSchema,
+  chromiumResourcesSchema,
+} from "../../domain/native/chromiumResources.js";
 import { toolContractMetadata } from "../toolEffects.js";
 import { evidenceResultOf } from "../toolOutputSchemaPrimitives.js";
 import {
@@ -28,6 +32,25 @@ export const inspectBinaryLayoutRequestSchema =
 
 /** Offline binary diagnostics are independent of macOS process/UI providers. */
 export const BINARY_DIAGNOSTICS_TOOL_CONTRACTS = [
+  {
+    name: "inspect_chromium_resources",
+    ...toolContractMetadata("inspect_chromium_resources"),
+    kind: "native-provider",
+    description:
+      "Inspect a stable local Chromium DataPack v4/v5 (.pak) without launching a browser. Validates the complete bounded numeric index and direct aliases, then returns an ID-ordered page with original table/payload offsets, stored-byte SHA-256 and compression candidates. Select resource_id for complete bounded stored or decoded bytes, decoded SHA-256 and an optional text preview. Gzip and Chromium-envelope Brotli are decoded only for that selected ID; decode:false preserves stored bytes. No filenames/MIME types are invented, resources are never executed, and outer gzip packs are unsupported. Padding/sentinel/unclaimed ranges are preserved. Large complete Evidence uses retained export; no active target, engine or installation is required.",
+    inputSchema: inspectChromiumResourcesInputSchema,
+    outputSchema: evidenceResultOf(chromiumResourcesSchema),
+    examples: [
+      {
+        title: "Inventory a Chromium resource pack",
+        input: { path: "/artifacts/resources.pak" },
+      },
+      {
+        title: "Read one original resource ID",
+        input: { path: "/artifacts/resources.pak", resource_id: 100 },
+      },
+    ],
+  },
   {
     name: "emulate_function",
     ...toolContractMetadata("emulate_function"),

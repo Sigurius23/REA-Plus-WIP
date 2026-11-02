@@ -104,6 +104,10 @@ all families. CLI uses `--facet`; omitted selection remains `"all"`.
 Unselected families are `not_requested`, and unavailable binary decoders remain
 unsupported. Selection does not raise the input-byte budget or prove that
 unsupported Swift layouts were decoded.
+The binary reader accepts explicit `max_file_bytes` (CLI `--max-file-bytes`),
+default 64 MiB and maximum 512 MiB, for the entire original file including all
+universal slices. Its error reports observed size and the required knob. This
+changes snapshot admission, not supported layouts or process RSS guarantees.
 
 ## Managed PE/CLI
 
@@ -209,3 +213,16 @@ resolution is explicit; missing references and size mismatch remain visible.
 Other payloads are opaque, and this operation does not decode images or simulate
 Windows resource loading. Consult the budgets and supported tree profile in
 [offline binary diagnostics](https://github.com/morluto/rea/blob/main/docs/binary-diagnostics.md).
+
+## Chromium resource packs
+
+Use `inspect_chromium_resources` on an explicit unwrapped DataPack v4/v5 path;
+no active native target is required. Page original IDs/ranges/hashes and direct
+aliases, then select an exact `resource_id` for complete bounded bytes. Gzip and
+Chromium-envelope Brotli are decoded only for that selected resource; use
+`decode: false` (CLI `--stored`) to keep stored bytes. Encoding labels are hints,
+and filenames/MIME types are not embedded. Preserve source pack digest, numeric
+ID, stored range/hash and decoded digest if publishing selected bytes for later
+inert JavaScript analysis. An analyst-chosen filename is not recovered metadata.
+Resource limits fail explicitly; large retained Evidence uses export rather than
+reanalysis. See [Chromium resources](https://github.com/morluto/rea/blob/main/docs/chromium-resources.md).

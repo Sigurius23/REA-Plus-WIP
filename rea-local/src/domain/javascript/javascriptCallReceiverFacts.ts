@@ -14,6 +14,7 @@ import {
 import { semanticRequireOrigin } from "./javascriptSemanticRequireOrigin.js";
 import { SemanticPropertyPathCoverage } from "./javascriptSemanticPropertyPaths.js";
 import { traverseJavaScriptAstSteps } from "./javascriptSemanticTraversal.js";
+import { GuardedReceiverInitializers } from "./javascriptGuardedReceiverInitializer.js";
 
 /** Lexical API identity for a call; an absent fact leaves the receiver unknown. */
 export type JavaScriptCallReceiverFact =
@@ -46,6 +47,8 @@ interface ApiReference {
   readonly identity: string;
   readonly instanceKind?: "network" | "keyed-collection" | "url";
   readonly constructionOrigin?: ApiReference;
+  /** Guard restrictions survive aliases and are checked at each actual read. */
+  readonly guardedBy?: readonly string[];
 }
 
 type ResolutionStep =
@@ -55,6 +58,7 @@ type ResolutionStep =
       readonly node: t.Node;
       readonly bindingId: string;
       readonly projection: readonly string[];
+      readonly perUse?: true;
     }
   | { readonly kind: "construction" | "factory"; readonly node: t.Node };
 
@@ -140,9 +144,16 @@ class CallReceiverReferences {
   readonly #nodes = new WeakMap<t.Node, ApiReference | null>();
   readonly #bindings = new Map<string, ApiReference | null>();
 
-  constructor(readonly state: JavaScriptSemanticAnalysisState) {}
+  readonly #guarded: GuardedReceiverInitializers;
+  constructor(readonly state: JavaScriptSemanticAnalysisState) {
+    this.#guarded = new GuardedReceiverInitializers(state);
+  }
 
-  resolve(input: t.Node): ApiReference | undefined {
+  initializesGuard(node: t.Node): boolean {
+    return this.#guarded.initializes(node);
+  }
+
+  resolve(input: t.Node, mutation = false): ApiReference | undefined {
     const steps: ResolutionStep[] = [];
     const visited = new Set<string>();
     let node = input;
@@ -166,15 +177,24 @@ class CallReceiverReferences {
     for (const step of steps.toReversed()) {
       if (reference !== undefined) {
         if (step.kind === "member") reference = project(reference, [step.key]);
-        else if (step.kind === "binding")
+        else if (step.kind === "binding") {
           reference = project(reference, step.projection);
-        else reference = instanceReference(reference, step);
+          if (step.perUse === true)
+            reference = {
+              ...reference,
+              guardedBy: [...(reference.guardedBy ?? []), step.bindingId],
+            };
+        } else reference = instanceReference(reference, step);
       }
       this.#nodes.set(step.node, reference ?? null);
-      if (step.kind === "binding")
+      if (step.kind === "binding" && step.perUse !== true)
         this.#bindings.set(step.bindingId, reference ?? null);
     }
-    return reference;
+    return mutation ||
+      reference?.guardedBy?.every((id) => this.#guarded.allows(id, input)) !==
+        false
+      ? reference
+      : undefined;
   }
 
   #advance(node: t.Node, visited: Set<string>): ReferenceResolution {
@@ -215,8 +235,22 @@ class CallReceiverReferences {
     if (binding === undefined) return { reference: globalReference(node.name) };
     const cached = this.#bindings.get(binding.bindingId);
     if (cached !== undefined) return { reference: cached ?? undefined };
-    if (visited.has(binding.bindingId) || !stableBinding(binding))
-      return { reference: undefined };
+    if (visited.has(binding.bindingId)) return { reference: undefined };
+    if (!stableBinding(binding)) {
+      const initializer = this.#guarded.initializer(binding);
+      if (initializer === undefined) return { reference: undefined };
+      visited.add(binding.bindingId);
+      return {
+        next: initializer.node,
+        step: {
+          kind: "binding",
+          node,
+          bindingId: binding.bindingId,
+          projection: [],
+          perUse: true,
+        },
+      };
+    }
     visited.add(binding.bindingId);
     if (binding.directOrigins.length > 0) {
       const [origin] = binding.directOrigins;
@@ -303,23 +337,23 @@ function* collectReceiverWritesSteps(
               : undefined;
       if (target !== undefined) {
         for (const member of semanticMemberWriteTargets(target)) {
-          const receiver = references.resolve(member.object);
+          const receiver = references.resolve(member.object, true);
           if (receiver !== undefined)
             writes.retain([
               ...referencePath(receiver),
               semanticStaticPropertyKey(member.property, member.computed),
             ]);
         }
-        for (const identifier of Object.values(
-          t.getBindingIdentifiers(target),
-        )) {
-          const reference = references.resolve(identifier);
+        for (const identifier of references.initializesGuard(node)
+          ? []
+          : Object.values(t.getBindingIdentifiers(target))) {
+          const reference = references.resolve(identifier, true);
           if (reference !== undefined) writes.retain(referencePath(reference));
         }
       }
       if (!t.isCallExpression(node) && !t.isOptionalCallExpression(node))
         return;
-      const callee = references.resolve(node.callee);
+      const callee = references.resolve(node.callee, true);
       if (
         callee?.owner !== "global" ||
         callee.path.length !== 2 ||
@@ -341,7 +375,7 @@ function* collectReceiverWritesSteps(
         return;
       const first = node.arguments[0];
       if (!t.isExpression(first)) return;
-      const receiver = references.resolve(first);
+      const receiver = references.resolve(first, true);
       if (receiver === undefined) return;
       const key = node.arguments[1];
       writes.retain([

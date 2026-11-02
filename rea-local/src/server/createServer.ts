@@ -47,11 +47,15 @@ import { registerProtocolTools } from "./registerProtocolTools.js";
 import { registerBinaryDiffTools } from "./registerBinaryDiffTools.js";
 import { registerLibraryIdentificationTools } from "./registerLibraryIdentificationTools.js";
 import { snapshotEnvironment } from "../process/snapshotEnvironment.js";
-import { createPeResourcesService } from "../composition/binaryDiagnostics.js";
+import {
+  createPeResourcesService,
+  createChromiumResourcesService,
+} from "../composition/binaryDiagnostics.js";
 import { createFunctionEmulationService } from "../composition/binaryDiagnostics.js";
 import type { FunctionEmulationService } from "../application/binaryDiagnostics/FunctionEmulationService.js";
 import { registerFunctionEmulationTool } from "./registerFunctionEmulationTool.js";
 import { registerPeResourcesTool } from "./registerPeResourcesTool.js";
+import { registerChromiumResourcesTool } from "./registerChromiumResourcesTool.js";
 import type { EvmInterfaceService } from "../application/evm/EvmInterfaceService.js";
 import { createEvmInterfaceService } from "../composition/evm.js";
 import { registerEvmTools } from "./registerEvmTools.js";
@@ -535,6 +539,13 @@ const registerConfiguredAnalysisTools = (
   registerPeResourcesTool(
     server,
     createPeResourcesService(),
+    toolLogger,
+    recordEvidence,
+    withAdmittedAnalysis,
+  );
+  registerChromiumResourcesTool(
+    server,
+    createChromiumResourcesService(),
     toolLogger,
     recordEvidence,
     withAdmittedAnalysis,

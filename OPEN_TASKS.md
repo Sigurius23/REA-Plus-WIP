@@ -4,6 +4,14 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc fixes (2026-11-02):** Items **38–40 are fixed and retested** in the
+  current working tree. Explicit snapshot budgets admit the original universal
+  executable; the new Chromium resource reader validates packs and selected
+  gzip/Brotli content; guarded URL receiver provenance removes the query-key
+  candidate without suppressing unknown custom clients. **77 tests / 11 files**
+  and matching real Arc CLI/MCP Evidence verify the changes. Full app behavior
+  remains incomplete. See [fix verification](field-tests/arc-fixes-2026-11-02.md)
+  and the [original field test](field-tests/arc-macos-1.171.0.md).
 - **Function emulation (2026-10-31):** Item **16 is implemented and verified**
   for its initial bounded arm64/x86-64 profile. Public `emulate_function` and
   `rea emulate-function` preserve explicit code/register/memory inputs and
@@ -73,6 +81,12 @@ Open work on `main` following PR #1 and the field tests.
      also passed with unchanged test budgets; see
      [HeyClicky fix verification](field-tests/heyclicky-fixes-2026-10-28.md).
 2. **Branch state and push:**
+   - **Arc publication batch (2026-11-02):** the initial field test, items 38–40
+     implementation and verification are included together after `9636c6860758`,
+     for the user-requested push to the existing WIP `origin/main`. The required
+     `check:fast` passes. Historical receipts' uncommitted/unpushed statements
+     describe their original verification sessions. The existing two large Rize
+     JSONs remain local and excluded from this batch.
    - **Item 16 publication batch (2026-10-31):** the bounded function-emulation
      implementation, tests, documentation and durable small Evidence bundles
      are included together. The user requested publication to the existing
@@ -92,7 +106,7 @@ Open work on `main` following PR #1 and the field tests.
      `field-tests/rize-macos-1.1.52/evidence.json` and `summary-view.json`.
      Historical reports' “no commit or push” statements describe their original
      verification sessions. The full `check:pr` gate still predates items
-     36–37 and 16's new implementation; their focused and real-provider
+     36–37, 16 and 38–40; their focused and real-provider
      verification is recorded below.
 
    **Remaining work:** item 12 (Consensus HAR), optional item 13 (Consensus
@@ -694,3 +708,59 @@ include this later field test.
     all layout decisions, animation or full app completeness. See the
     [fix report](field-tests/heyclicky-37-fix-verification-2026-10-30.md) and
     [exact receipt](field-tests/heyclicky-37-fix-verification-2026-10-30.json).
+
+## Arc field-test follow-ups (2026-11-02)
+
+Target: `/Applications/Arc.app`, version **1.171.0**, build **89666**.
+This is an offline shipped-artifact test; Arc and its helpers were not launched,
+and no browser profile, account data or target service was selected. Full feature
+recovery is not established. See [Arc field test](field-tests/arc-macos-1.171.0.md)
+for the exact scope, raw observations and native-analysis outcome.
+
+38. **Whole-file dispatch-metadata cap blocks large native applications.** Done
+    (2026-11-02). The binary reader accepts explicit `max_file_bytes` (CLI
+    `--max-file-bytes`), default **64 MiB**, maximum **512 MiB**, for the whole
+    original file including universal slices. Refusals report the observed file
+    size, selected cap and exact knob; unchanged retries remain non-retryable.
+    Facet/record selection does not change byte admission. Large thin/universal
+    owned fixtures verify admission, default refusal, cancellation and changed
+    identity. Arc's original **166,692,288-byte** universal executable succeeds
+    with a **256 MiB** snapshot policy; CLI/MCP Evidence matches exactly. The
+    selected 1,000-record Swift-vtable pass retains 337 dispatch slots and 517
+    relative pointers, with partial/unsupported layout coverage still explicit.
+    This is bounded snapshot admission, not an RSS or complete-metadata claim.
+
+39. **Chromium resource packs remain opaque.** Done (2026-11-02).
+    New target-free `inspect_chromium_resources` /
+    `rea inspect-chromium-resources` validates DataPack **v4/v5**, pages original
+    numeric IDs/aliases with source ranges and hashes, and reads complete bounded
+    selected stored or decoded content. Gzip and Chromium-envelope Brotli are
+    supported; unknown filenames/MIME types are not invented. Defaults admit
+    64 MiB files / 1 MiB selected payloads, with explicit 512 MiB / 8 MiB maxima.
+    The public fixture journey verifies actual advertised schemas, CLI/MCP
+    parity, aliases, UTF16/binary coexistence, corruption/size/overlap refusals,
+    bounded decoding, recovery and stored-byte selection. Arc's main, scale and
+    locale packs are positively decoded as v5: **5,414+382**, **319+68** and
+    **12,470+2,215** canonical/alias counts respectively. Selected resource 205
+    produces **8,038 decoded bytes**; original inventory and selected-content
+    CLI/MCP Evidence both match exactly. This fixes a missing format primitive;
+    the game archive reader correctly retains its separate advertised formats.
+    Outer compressed pack wrappers and automatic resource-to-feature attribution
+    remain outside the profile. See [guide](rea-local/docs/chromium-resources.md).
+
+40. **Mutable URL bindings leave query keys as network candidates.** Done
+    (2026-11-02); a receiver-provenance refinement, not a regression of item 30.
+    The owning lexical receiver model now proves the narrow single-assignment
+    URL/URLSearchParams try/catch initialization with an abrupt catch. Guard
+    restrictions survive immutable aliases and are checked at each read;
+    earlier uses and callable/class boundary crossings stay uncertain. Visible
+    member/prototype writes, including writes in closures, still invalidate
+    facts. Non-abrupt catches, finally, conditional initialization, reassignment,
+    preinitialized bindings, shadowed constructors and unknown HTTP clients
+    retain uncertainty. Eleven public source scenarios plus representative
+    CLI/MCP parity pin those boundaries. Arc's unchanged three-script scope now
+    emits **zero endpoint candidates**, while the retained fixture's real fetch
+    remains recognized. That scoped result is not absence of Arc network traffic.
+
+Items 38–40 share the [verification report](field-tests/arc-fixes-2026-11-02.md)
+and durable complete Evidence under `field-tests/arc-fixes-2026-11-02/`.

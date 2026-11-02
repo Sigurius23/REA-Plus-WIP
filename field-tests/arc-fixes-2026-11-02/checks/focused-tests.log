@@ -1,0 +1,77 @@
+Focused tests: src/native/AppleDispatchMetadata.test.ts, src/application/native/EnhancedNativeInvestigation.test.ts, tests/boundary/providers/native/appleDispatchSnapshotBudget.test.ts, tests/boundary/filesystem/chromiumResources.test.ts, tests/acceptance/applications/chromiumResources.test.ts, tests/acceptance/applications/guardedUrlReceivers.test.ts, tests/acceptance/applications/javascriptEndpointPayload.test.ts, src/application/CapabilityInventory.test.ts, tests/boundary/mcp/toolSchemaValidity.test.ts, tests/boundary/mcp/compactInputSchemaMcp.test.ts, tests/boundary/mcp/outputSchemaSemanticConstraints.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills, artifacts:mcp-catalog
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 8c4f7a98c47e5c75
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs 1f73395fa93dc87e
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache miss, executing 86824b020a06689d
+artifacts:mcp-catalog: cache miss, executing 5b970843222af08a
+artifacts:mcp-catalog: 
+artifacts:mcp-catalog: > rea-agents@6.4.0 artifacts:mcp-catalog
+artifacts:mcp-catalog: > node scripts/generate-mcp-tool-catalog.mjs
+artifacts:mcp-catalog: 
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+artifacts:skills: npm notice
+artifacts:skills: npm notice New major version of npm available! 10.9.2 -> 12.2.1
+artifacts:skills: npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+artifacts:skills: npm notice To update run: npm install -g npm@12.2.1
+artifacts:skills: npm notice
+artifacts:mcp-catalog: npm notice
+artifacts:mcp-catalog: npm notice New major version of npm available! 10.9.2 -> 12.2.1
+artifacts:mcp-catalog: npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+artifacts:mcp-catalog: npm notice To update run: npm install -g npm@12.2.1
+artifacts:mcp-catalog: npm notice
+
+ Tasks:    4 successful, 4 total
+Cached:    2 cached, 4 total
+  Time:    2.353s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |acceptance| tests/acceptance/applications/guardedUrlReceivers.test.ts (1 test) 12082ms
+   ✓ classifies guarded URL query receivers through public static analysis without broadening uncertain receivers 12081ms
+ ✓ |acceptance| tests/acceptance/applications/javascriptEndpointPayload.test.ts (4 tests) 21546ms
+   ✓ keeps full endpoint evidence usable without copying large values into metadata 8822ms
+   ✓ keeps browser storage, sender checks and page roles distinct from network and Electron authority 2703ms
+   ✓ keeps chained call receiver ownership exact through CLI 2037ms
+   ✓ keeps chained call receiver ownership exact through stdio MCP 7982ms
+ ✓ |acceptance| tests/acceptance/applications/chromiumResources.test.ts (1 test) 8740ms
+   ✓ inspects Chromium packs through compiled CLI and real stdio MCP with bounded decoding and recovery 8739ms
+ ✓ |adapters| src/native/AppleDispatchMetadata.test.ts (23 tests) 19ms
+ ✓ |boundary| tests/boundary/filesystem/chromiumResources.test.ts (3 tests) 18ms
+ ✓ |boundary| tests/boundary/providers/native/appleDispatchSnapshotBudget.test.ts (2 tests) 623ms
+   ✓ Apple metadata whole-file snapshot policy (2)
+     ✓ admits an explicitly budgeted large Mach-O (universal=false) and preserves identity/cancellation 357ms
+ ✓ |mcp-boundary| tests/boundary/mcp/compactInputSchemaMcp.test.ts (8 tests) 1729ms
+   ✓ MCP compact input schema profile (6)
+     ✓ advertises every tool input schema within the provider budget 318ms
+     ✓ keeps output schemas and tool descriptions identical to the default profile 417ms
+     ✓ keeps compact schemas valid and accepting canonical examples 566ms
+ ✓ |mcp-boundary| tests/boundary/mcp/outputSchemaSemanticConstraints.test.ts (1 test) 70ms
+ ✓ |services| src/application/native/EnhancedNativeInvestigation.test.ts (16 tests) 45ms
+ ✓ |mcp-boundary| tests/boundary/mcp/toolSchemaValidity.test.ts (8 tests) 1390ms
+   ✓ MCP JSON Schema validity (2)
+     ✓ advertises valid input and output schemas for every canonical tool 408ms
+   ✓ MCP root input schemas (1)
+     ✓ advertises object roots while enforcing union requirements at runtime 682ms
+ ✓ |services| src/application/CapabilityInventory.test.ts (10 tests) 8ms
+
+ Test Files  11 passed (11)
+      Tests  77 passed (77)
+   Start at  15:46:39
+   Duration  27.18s (tests 87%, import 7%, transform 6%)
+

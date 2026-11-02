@@ -1,9 +1,19 @@
 import { z } from "zod";
-
 import {
   compareUnicodeCodePoints,
   compositeKey,
 } from "../unicodeCodePointOrder.js";
+
+/** Stable whole-file snapshot policy, shared by CLI/MCP and the binary reader. */
+export const nativeDispatchFileBudgetSchema = z
+  .number()
+  .int()
+  .min(32)
+  .max(536870912)
+  .default(67108864)
+  .describe(
+    "Maximum whole-file bytes for the binary Apple metadata snapshot, including all universal slices (default 64 MiB, maximum 512 MiB). Facet and record selection do not change this limit.",
+  );
 
 /** Native metadata family to inspect within the caller's aggregate record budget. */
 export const nativeDispatchFacetSchema = z.enum([

@@ -4,6 +4,7 @@ import {
   nativeDispatchMetadataResultSchema,
   type ObjcSwiftMetadata,
   type NativeDispatchFacet,
+  nativeDispatchFileBudgetSchema,
 } from "../domain/native/objcSwiftMetadata.js";
 import type { BinaryTarget } from "../domain/binaryTargetTypes.js";
 import {
@@ -224,22 +225,27 @@ export const decodeAppleDispatchMetadata = (
   return objcSwiftMetadataSchema.parse(result);
 };
 
-/** Read digest-verified target bytes under a 64 MiB static metadata budget. */
+/** Read digest-verified target bytes under the explicit whole-file snapshot budget. */
 export const inspectAppleDispatchMetadata = async (
   target: BinaryTarget,
   maxRecords: number,
   signal?: AbortSignal,
   facet: NativeDispatchFacet = "all",
+  maxFileBytes?: number,
 ) => {
   if (target.kind !== "executable" || target.format !== "mach-o")
     throw new TypeError("Apple dispatch metadata requires a Mach-O target");
-  const maximumBytes = 64 * 1024 * 1024;
-  const capacityError = () =>
+  const maximumBytes = nativeDispatchFileBudgetSchema.parse(maxFileBytes);
+  const capacityError = (observedBytes: number) =>
     new AnalysisResourceConstraintError(
       "inspect_native_dispatch_metadata",
-      "memory",
-      "Apple static metadata input exceeds its 64 MiB snapshot budget",
-      { input_bytes: maximumBytes },
+      "file-size",
+      `Apple static metadata input exceeds max_file_bytes (${String(maximumBytes)} bytes)`,
+      { max_file_bytes: maximumBytes, observed_file_bytes: observedBytes },
+      {
+        remediationAction:
+          "Select max_file_bytes (CLI --max-file-bytes) large enough for the entire original file, up to 536870912 bytes, or select a smaller original artifact. Facet/max_records changes do not reduce snapshot bytes. This limit is a byte-snapshot policy, not an RSS guarantee; unchanged limits reproduce the refusal.",
+      },
     );
   const handle = await openRegularFile(target.path, {
     symlinks: "reject",
@@ -247,11 +253,11 @@ export const inspectAppleDispatchMetadata = async (
   });
   try {
     const before = await handle.stat();
-    if (before.size > maximumBytes) throw capacityError();
+    if (before.size > maximumBytes) throw capacityError(before.size);
     if (signal?.aborted)
       throw new AnalysisCancelledError("inspect_native_dispatch_metadata");
     const bytes = await readBoundedFileBytes(handle, maximumBytes, signal);
-    if (bytes === undefined) throw capacityError();
+    if (bytes === undefined) throw capacityError((await handle.stat()).size);
     const digest = createHash("sha256").update(bytes).digest("hex");
     if (digest !== target.sha256)
       throw new EvidenceIntegrityError(

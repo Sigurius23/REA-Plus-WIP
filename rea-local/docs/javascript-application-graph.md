@@ -191,3 +191,20 @@ The public domain functions are:
 - `serializeJavaScriptApplicationGraph` for canonical JSON;
 - `computeJavaScriptApplicationGraphSha256` for a byte-stable verified graph
   digest.
+
+## Guarded URL receiver provenance
+
+A query-key argument to proven `URL.searchParams.get` or `URLSearchParams.get`
+is not a network endpoint. Besides immutable constructions, the lexical reader
+recognizes the narrow `let url; try { url = new URL(input); } catch { return; }`
+shape (and URLSearchParams/catch throw). It requires one sole assignment, an
+immediately preceding uninitialized single let declaration in the same block,
+no finally, and a catch consisting of return or throw. Receiver use must follow
+the try in the same execution frame. Guard restrictions travel through immutable
+aliases and are checked per use, rather than cached as unconditional facts.
+
+Other assignments, conditional initialization, shadowed constructors and visible
+prototype/member writes remain uncertain; writes through closures still
+invalidate affected identities. Unknown custom HTTP clients retain explicit
+low-confidence candidates. This is a bounded lexical/control-flow proof, not
+arbitrary control-flow reconstruction or a runtime network observation.

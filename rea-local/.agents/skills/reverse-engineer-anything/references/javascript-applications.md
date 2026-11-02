@@ -179,3 +179,11 @@ provenance; a static pairing does not establish execution. `commonjs-bootstrap`
 tables preserve recovered module identities without asserting packager origin.
 The legacy `statistics.modules` counts bundled registrations; the summary's
 `module_counts` reports graph categories separately.
+
+Endpoint candidates retain `network_receiver` provenance. Proven URL query
+collection calls are not endpoints, including the narrowly supported single
+try/catch initialization with an abrupt catch. Guard facts are checked at each
+use and across aliases; ambiguous assignments, callable boundaries and visible
+writes remain uncertain. A low-confidence receiver-unknown candidate is not
+proof of network traffic, and an empty scoped endpoint list is not evidence that
+the whole application makes no network requests.

@@ -5,6 +5,7 @@ import {
   createBinaryLayoutService,
   createPeResourcesService,
   createFunctionEmulationService,
+  createChromiumResourcesService,
 } from "../composition/binaryDiagnostics.js";
 import { CLI_COMMANDS } from "../cliCommandNames.js";
 import { logCliCommand } from "../cliLogging.js";
@@ -13,6 +14,7 @@ import type { Logger } from "pino";
 import type { CliInstance } from "./types.js";
 import { withCommandCancellation } from "./commandCancellation.js";
 import { inspectPeResourcesInputSchema } from "../domain/native/peResources.js";
+import { inspectChromiumResourcesInputSchema } from "../domain/native/chromiumResources.js";
 import { parseCliJsonInput, resolveCliJsonPaths } from "../cliJsonInput.js";
 
 /** Inspect operator-selected files through the same shared workflow as MCP. */
@@ -21,6 +23,50 @@ export const registerBinaryDiagnosticsCommands = (
   logger: Logger,
   environment: Readonly<NodeJS.ProcessEnv>,
 ): void => {
+  const chromium = createChromiumResourcesService();
+  cli.command(CLI_COMMANDS.inspectChromiumResources, {
+    description:
+      "Inspect Chromium DataPack resource IDs, aliases and selected decoded bytes without executing them",
+    args: z.object({ path: z.string().describe("Local Chromium .pak file") }),
+    options: z.object({
+      offset: inspectChromiumResourcesInputSchema.shape.offset,
+      limit: inspectChromiumResourcesInputSchema.shape.limit,
+      resourceId: inspectChromiumResourcesInputSchema.shape.resource_id,
+      stored: z
+        .boolean()
+        .default(false)
+        .describe(
+          "Return stored bytes for the selected ID without decompression",
+        ),
+      maxFileBytes: inspectChromiumResourcesInputSchema.shape.max_file_bytes,
+      maxResourceBytes:
+        inspectChromiumResourcesInputSchema.shape.max_resource_bytes,
+    }),
+    run: ({ args, options }) =>
+      withCommandCancellation((signal) =>
+        logCliCommand(
+          logger,
+          CLI_COMMANDS.inspectChromiumResources,
+          async () => {
+            const result = await chromium.inspect(
+              {
+                path: resolve(args.path),
+                offset: options.offset,
+                limit: options.limit,
+                resource_id: options.resourceId,
+                decode: !options.stored,
+                max_file_bytes: options.maxFileBytes,
+                max_resource_bytes: options.maxResourceBytes,
+              },
+              { signal },
+            );
+            return result.ok
+              ? result.value
+              : projectAnalysisError(result.error);
+          },
+        ),
+      ),
+  });
   const emulation = createFunctionEmulationService(environment);
   cli.command(CLI_COMMANDS.emulateFunction, {
     description:

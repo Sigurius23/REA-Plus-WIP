@@ -11,7 +11,10 @@ import {
   stagingDirSelectionOption,
 } from "./options.js";
 import type { CliInstance } from "./types.js";
-import { nativeDispatchFacetSchema } from "../domain/native/objcSwiftMetadata.js";
+import {
+  nativeDispatchFacetSchema,
+  nativeDispatchFileBudgetSchema,
+} from "../domain/native/objcSwiftMetadata.js";
 
 /** Register native load-image, memory, and annotation CLI commands. */
 export const registerCoreNativeCommands = (
@@ -263,6 +266,7 @@ const registerNativeDispatchMetadataCommand = (
       path: z.string().describe("Target path used to bind the result evidence"),
     }),
     options: z.object({
+      maxFileBytes: nativeDispatchFileBudgetSchema,
       maxRecords: z
         .number()
         .int()
@@ -289,7 +293,11 @@ const registerNativeDispatchMetadataCommand = (
         runDirectAnalysis(
           args.path,
           "inspect_native_dispatch_metadata",
-          { max_records: options.maxRecords, facet: options.facet },
+          {
+            max_records: options.maxRecords,
+            facet: options.facet,
+            max_file_bytes: options.maxFileBytes,
+          },
           directAnalysisOptions(logger, {
             snapshotPath: options.snapshot,
             providerId: options.provider,

@@ -2,7 +2,7 @@
 name: reverse-engineer-anything
 description: Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA+. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip REA+ for ordinary source-repository architecture analysis.
 metadata:
-  version: "39"
+  version: "40"
 ---
 
 # REA+
@@ -184,6 +184,10 @@ explicit path or endpoint and do not need it.
 - PE resource type/name/language trees and static icon group references:
   `inspect_pe_resources` with an explicit path. This portable operation requires
   no active target or engine; opaque payloads retain file ranges and SHA-256.
+- Chromium DataPack `.pak` resources: `inspect_chromium_resources` inventories
+  numeric IDs and aliases or reads one bounded selected payload. Preserve original
+  and decoded hashes; no filenames or script execution are inferred. See the native
+  reference for compression and publication limits.
 - Native executable, library, or analysis database: `open_binary`, then
   use focused analysis tools directly; call `binary_overview` when metadata or
   inventory context is useful and available from the selected provider.

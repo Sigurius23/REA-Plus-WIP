@@ -1461,3 +1461,17 @@ records each result/error, elapsed time and the source digest before/after.
 Set `REA_JADX_HEAP_MIB` explicitly when characterizing heap pressure; OS resource
 measurements are separate from the configured heap and coverage. A timed-out
 run is a measurement of the limit, not a completed search or stable skip count.
+
+The Chromium resource lane uses owned DataPack fixtures and public compiled
+CLI/stdio MCP workflows in `tests/acceptance/applications/chromiumResources.test.ts`.
+It checks v4/v5 identities/aliases, advertised schemas, complete Evidence parity,
+gzip/Brotli content, malformed indexes, decoding limits and recovery. The stable
+file boundary additionally checks binary/text coexistence, padding, ID zero,
+unclaimed bytes, file selection and cancellation. Apple dispatch snapshot tests
+retain inputs above the former 64 MiB ceiling, with explicit budget refusals,
+large thin/universal admission, cancellation and changed input identity.
+
+The guarded-URL acceptance journey retains same-binding before/after uses,
+immutable aliases, callable boundaries, shadowed constructors and visible writes
+(including closure writes). It verifies unknown custom HTTP candidates and known
+fetch controls through the public worker, with representative CLI/MCP parity.

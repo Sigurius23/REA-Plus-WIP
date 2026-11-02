@@ -1,0 +1,51 @@
+
+> rea-agents@6.4.0 docs:check
+> node scripts/check-dependency-install.mjs && node scripts/run-exclusive.mjs artifacts turbo run docs:check:built
+
+
+   • turbo 2.11.7
+   • Running docs:check:built
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 8c4f7a98c47e5c75
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs 1f73395fa93dc87e
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:product-catalog: cache hit, replaying logs c32af946ba7771c6
+artifacts:product-catalog: 
+artifacts:product-catalog: > rea-agents@6.4.0 artifacts:product-catalog
+artifacts:product-catalog: > node scripts/generate-product-catalog.mjs
+artifacts:product-catalog: 
+artifacts:skills: cache hit, replaying logs 86824b020a06689d
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+artifacts:skills: npm notice
+artifacts:skills: npm notice New major version of npm available! 10.9.2 -> 12.2.1
+artifacts:skills: npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+artifacts:skills: npm notice To update run: npm install -g npm@12.2.1
+artifacts:skills: npm notice
+artifacts:managed-evidence: cache hit, replaying logs c819fe97a385c136
+artifacts:managed-evidence: 
+artifacts:managed-evidence: > rea-agents@6.4.0 artifacts:managed-evidence
+artifacts:managed-evidence: > node scripts/generate-completion-ledger.mjs
+artifacts:managed-evidence: 
+artifacts:managed-evidence: {"manifest_id":"ecm_18c7c37cb21bdbc9a103dc7004c43250b6b7426cc012db6c18bd87c1efb66347","ledger_id":"ecl_cae29b5be6164d4cbdd39d47489adf95619efb7521885322cd7d781c7e67c021","claims":13,"complete":false}
+docs:check:built: cache miss, executing 54e8ffae8dec55fa
+docs:check:built: 
+docs:check:built: > rea-agents@6.4.0 docs:check:built
+docs:check:built: > node scripts/generate-package-metadata.mjs --check && node scripts/generate-skill-metadata.mjs --check && node scripts/generate-product-catalog.mjs --check && node scripts/generate-completion-ledger.mjs --check && node scripts/check-doc-facts.mjs && node scripts/generate-error-schema.mjs --check
+docs:check:built: 
+docs:check:built: {"manifest_id":"ecm_18c7c37cb21bdbc9a103dc7004c43250b6b7426cc012db6c18bd87c1efb66347","ledger_id":"ecl_cae29b5be6164d4cbdd39d47489adf95619efb7521885322cd7d781c7e67c021","claims":13,"complete":false}
+
+ Tasks:    6 successful, 6 total
+Cached:    5 cached, 6 total
+  Time:    3.91s 
+

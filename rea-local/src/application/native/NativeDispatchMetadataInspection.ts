@@ -15,10 +15,15 @@ export const inspectNativeDispatch = async (
   maxRecords: number,
   signal?: AbortSignal,
   facet: NativeDispatchFacet = "all",
+  maxFileBytes?: number,
 ): EnhancedResult => {
   const binaryMetadata = await analysis.execute(
     "inspect_native_dispatch_metadata",
-    { max_records: maxRecords, facet },
+    {
+      max_records: maxRecords,
+      facet,
+      ...(maxFileBytes === undefined ? {} : { max_file_bytes: maxFileBytes }),
+    },
     signal === undefined ? {} : { signal },
   );
   if (binaryMetadata.ok)

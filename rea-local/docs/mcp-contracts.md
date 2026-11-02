@@ -511,3 +511,11 @@ writing the archive header, so their declared hashes no longer match. Electron
 does not check unpacked companions against those hashes at runtime. Integrity
 failures for such entries name this cause and the operation to rerun with
 `record-and-continue`; REA+ does not exempt unpacked entries silently.
+
+`inspect_chromium_resources` is a portable target-free static reader. Its complete
+catalog entry stays advertised without an active binary. Pages preserve original
+resource IDs/aliases and stored byte identity; selected bounded gzip/Brotli
+content carries a separate decoded hash. Complete retained Evidence remains
+available when its inline delivery exceeds the transport limit. It performs no
+browser launch, resource execution or implicit filesystem publication. See
+[Chromium resources](chromium-resources.md).

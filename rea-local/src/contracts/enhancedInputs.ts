@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { nativeValueTraceInputSchema } from "../domain/native/nativeValueTrace.js";
-import { nativeDispatchFacetSchema } from "../domain/native/objcSwiftMetadata.js";
+import {
+  nativeDispatchFacetSchema,
+  nativeDispatchFileBudgetSchema,
+} from "../domain/native/objcSwiftMetadata.js";
 const traceLiteralInputSchema = z.strictObject({
   query: z.string().min(1),
   case_sensitive: z.boolean().default(false),
@@ -10,6 +13,7 @@ const traceLiteralInputSchema = z.strictObject({
 export const enhancedInputSchemas = {
   trace_native_values: nativeValueTraceInputSchema,
   inspect_native_dispatch_metadata: z.strictObject({
+    max_file_bytes: nativeDispatchFileBudgetSchema,
     max_records: z
       .number()
       .int()

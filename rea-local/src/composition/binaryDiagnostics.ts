@@ -6,6 +6,12 @@ import { PeResourcesService } from "../application/binaryDiagnostics/PeResources
 import { PeResourcesProvider } from "../native/pe/PeResourcesProvider.js";
 import { FunctionEmulationService } from "../application/binaryDiagnostics/FunctionEmulationService.js";
 import { UnicornFunctionProvider } from "../native/emulation/UnicornFunctionProvider.js";
+import { ChromiumResourcesService } from "../application/binaryDiagnostics/ChromiumResourcesService.js";
+import { ChromiumResourcesProvider } from "../native/chromium/ChromiumResourcesProvider.js";
+
+/** Chromium resource bytes are decoded without loading browser code. */
+export const createChromiumResourcesService = (): ChromiumResourcesService =>
+  new ChromiumResourcesService(new ChromiumResourcesProvider());
 
 /** Compose explicit-state emulation without dependency acquisition or target execution. */
 export const createFunctionEmulationService = (

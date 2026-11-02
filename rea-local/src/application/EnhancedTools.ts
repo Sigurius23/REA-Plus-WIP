@@ -137,6 +137,7 @@ export class EnhancedTools {
           call.input.max_records,
           signal,
           call.input.facet,
+          call.input.max_file_bytes,
         );
       case "get_objc_classes":
         return this.#objcClasses(call.input.pattern, signal);
@@ -240,8 +241,15 @@ export class EnhancedTools {
     maxRecords: number,
     signal?: AbortSignal,
     facet: NativeDispatchFacet = "all",
+    maxFileBytes?: number,
   ): EnhancedResult {
-    return inspectNativeDispatch(this.analysis, maxRecords, signal, facet);
+    return inspectNativeDispatch(
+      this.analysis,
+      maxRecords,
+      signal,
+      facet,
+      maxFileBytes,
+    );
   }
 
   async #objcProtocols(signal?: AbortSignal): EnhancedResult {

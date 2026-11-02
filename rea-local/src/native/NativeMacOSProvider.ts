@@ -182,6 +182,7 @@ class NativeMacOSClient implements AnalysisClient {
           input.data.max_records,
           options?.signal,
           input.data.facet,
+          input.data.max_file_bytes,
         );
         return ok(
           createAnalysisExecution(result, result.provider, {
