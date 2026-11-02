@@ -1,0 +1,23 @@
+{
+  "classification": "supplemental raw-source review; not REA+ recovered output",
+  "execution": "none; inert text read only",
+  "selections": [
+    {
+      "path": "/Applications/Arc.app/Contents/Resources/ARC_EaselUI.bundle/Contents/Resources/DisableInlineLinks.js",
+      "lines": [
+        1,
+        39
+      ],
+      "finding": "The script removes a prior capture click listener saved at window._arc_forceLinksToOpenInNewTab, installs a replacement, walks ancestor links with tagName A and href, and for a nonempty href prevents default, stops propagation and calls open(url, _blank). This states static implementation intent; no runtime behavior was observed."
+    },
+    {
+      "path": "/Applications/Arc.app/Contents/Resources/ARC_EaselUI.bundle/Contents/Resources/EaselExportViewer.js",
+      "lines": [
+        435,
+        466
+      ],
+      "finding": "embedURL initializes URL in a try/catch with return null on failure, then uses url.searchParams.get(v) as a YouTube video identifier fallback. It does not perform a network request at this call site."
+    }
+  ],
+  "source_identity": "inputs.json and verification-receipt.json preserve before/after file hashes"
+}

@@ -1,0 +1,89 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-02/native/seeded",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "60",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-02/native/seeded/caller-established-seeds.tsv"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-arc-fresh-2026-11-02-7pjfvfjv/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "binary_overview",
+      "label": "overview",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100231f00"
+      },
+      "label": "boost-gallery-callback"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100537fac"
+      },
+      "label": "boost-command-helper"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1009f7730"
+      },
+      "label": "sidebar-state-helper"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1000cbf04"
+      },
+      "label": "sidebar-fallback-helper"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x103635460"
+      },
+      "label": "sidebar-cursor-selector"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "objc",
+        "max_records": 5000,
+        "max_file_bytes": 268435456
+      },
+      "label": "objc-expanded-budget"
+    },
+    {
+      "name": "get_evidence_bundle",
+      "arguments": {
+        "detail": "summary"
+      },
+      "label": "bundle-summary"
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-02/native/seeded/evidence-bundle.json"
+      },
+      "label": "bundle-export"
+    },
+    {
+      "name": "close_binary",
+      "label": "close"
+    }
+  ]
+}

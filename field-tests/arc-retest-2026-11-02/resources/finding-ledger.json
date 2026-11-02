@@ -1,0 +1,94 @@
+[
+  {
+    "id": "RES-1",
+    "question": "Can the new public resource reader inventory this installed Arc main pack completely?",
+    "status": "answered",
+    "evidence_type": "observed shipped index plus supplemental page consistency",
+    "conclusion": "Six pages return all 5796 unique ascending identities: 5414 canonical and 382 direct aliases. Every main page binds the same 24824807-byte SHA256. All returned aliases match a canonical payload/range/hash and canonical index.",
+    "evidence_ids": [
+      "ev_87266bb1f6843c505458c04a0afbcf804f432a48a1aabbb5e2813d344f4d826b",
+      "ev_60ee2a9c83fa94421017f1d7ccc8f18cb458b44214e1de5a57fe514cd9fd1d81",
+      "ev_4694547b1ce74d546a467940aa7bb0ea59f1952d078ba77fbab08eb18153738b",
+      "ev_86717d2e5bdba224a8ccc4ce4e90b81dd7092764ddc12bae3d56888e1175f819",
+      "ev_d49fee27696eb4757338bb3550f6fdeadf066a88007c607f8e806d2c7e67df20",
+      "ev_92feaf8e5aab1285b91f4cd128665fee1a1a92bd170d3434671b0346aa8877d5"
+    ],
+    "unknowns": [
+      "Index completeness does not establish runtime resource use."
+    ]
+  },
+  {
+    "id": "RES-2",
+    "question": "Does bounded selected-content decode work for both stored compression families and aliases?",
+    "status": "answered",
+    "evidence_type": "observed decoded bytes",
+    "conclusion": "Gzip resource205 decodes2667\u21928038 bytes and remains binary despite the pack UTF8 hint. Selected14552 decodes1438\u21923886 bytes to HTML with inline JS/CSS. Brotli canonical14633 and alias14634 both decode396\u21921213 identical vector-command source bytes, SHA2560ba39b8b799c5f4e8c23ea87748e8045779590ab331a6fa7ecc3fa5396fcbb7d. ID14544 stored mode preserves786 bytes/hash, while decoded mode yields1222 bytes.",
+    "evidence_ids": [
+      "ev_15e0d1ad7a01be89f798de641913064ea2e377867171b3dd21649a83333520a3",
+      "ev_b1b7a30abc33832035d3bedc914ea47255311c97371c3cf78d339cc117d6559f",
+      "ev_007f09cbe95cbf8b753348c63311f935742ce4bc6800588c3d109c0f255c2d41",
+      "ev_41d491aac8be3ab62708c26f99774b605fc7b1b86b88cc57d4560ac6489a6df7",
+      "ev_365fa79d2756f62b6de0a39301e9cb897bc7e0317bd4293fe55e69a457afae41"
+    ],
+    "unknowns": [
+      "Unselected gzip/Brotli markers remain candidates, not validated compression.",
+      "Vector content has no recovered filename or feature mapping."
+    ]
+  },
+  {
+    "id": "RES-3",
+    "question": "What static page behavior can be recovered from real decoded text?",
+    "status": "partially_answered",
+    "evidence_type": "observed source bytes; derived control-flow explanation",
+    "conclusion": "ID14552 defines an incognito-blocked page. On load it reads loadTimeData.missingExtensions; a nonempty list unhides the missing-extensions container, appends entries as text nodes and returns. Otherwise it unhides the blocking-extensions container and populates loadTimeData.blockingExtensions. ID14565 is an incognito page template: it subscribes to theme-changed, applies hasCustomBackground, reloads chrome://theme/css/incognito_tab_theme.css with a timestamp and sends observeThemeChanges. It contains actual chrome://resources CSS/JS imports. These paths are embedded references, not numeric-ID filenames.",
+    "evidence_ids": [
+      "ev_b1b7a30abc33832035d3bedc914ea47255311c97371c3cf78d339cc117d6559f",
+      "ev_959525e0facb51aee5c664e37219a42b3a9e929e52090fc3080b9773e43a01bd"
+    ],
+    "unknowns": [
+      "Arc entry point, backend message implementation, supplied values, active flags and rendered behavior were not observed."
+    ]
+  },
+  {
+    "id": "RES-4",
+    "question": "Do selected manifests establish any packaged feature declarations?",
+    "status": "partially_answered",
+    "evidence_type": "observed manifest bytes",
+    "conclusion": "ID14558 declares a literal <APP_NAME> Internal Extension, background.js worker, scripting/tabs and host permissions for Slack, Chrome Web Store and Notion. ID14548 declares Reading Mode Google Docs Helper, content.js at document_start in matching Docs frames, and gdocs_script.js as a web-accessible resource. IDs14544/14545 declare Hangouts MV2/MV3 variants;14547 declares Google Network Speech.",
+    "evidence_ids": [
+      "ev_3edc795a5dffdca14c6226f13cfba5f956be7727d0aab27421bc605cb8fc88bc",
+      "ev_4386f3cd9d7ecf08f546629ca3c82eec51e6053925d6ff281a34640f120a8159",
+      "ev_7540cf347b0156e5b65f142a4ec01ceb4e72f93995fcf5c17680fd695a3e24cb",
+      "ev_c268502ecc0fb8646358e44922c25f8a1708e59f77fea145cd6bb10f02f7ff23",
+      "ev_611926b32f6d69f4e762ec6e4a0dfbbea2a8e5d66441ccc0a76e243c261dc777"
+    ],
+    "unknowns": [
+      "The manifest paths have no ID mapping. No associated worker/content implementation was identified. A bounded adjacent selection14559 was binary (PNG signature), so adjacency did not establish background.js.",
+      "Declarations do not establish loaded extensions, activated integrations, browser permission grants or network access."
+    ]
+  },
+  {
+    "id": "RES-5",
+    "question": "Do real adapter contracts, limits and cleanup remain explicit?",
+    "status": "answered_with_limits",
+    "evidence_type": "public CLI/MCP verification",
+    "conclusion": "All21 successful MCP records pass actual advertised schemas and named Evidence contracts; text and structured content agree. Complete CLI/MCP ID14544 Evidence is identical. Both CLI results validate the advertised output schema. Three expected errors are typed: file-size resource_constraint, decoded-output resource_constraint, absent-ID invalid_request. Subsequent three driver runs report verified ownership and no descendants after close.",
+    "evidence_ids": [
+      "ev_7540cf347b0156e5b65f142a4ec01ceb4e72f93995fcf5c17680fd695a3e24cb"
+    ],
+    "files": [
+      "resource-tool.schema.json",
+      "cli-schema-validation.json",
+      "selection-boundaries/limit-file-budget-15.reply.json",
+      "selection-boundaries/limit-decoded-14544-budget-800.reply.json",
+      "selection-boundaries/unknown-resource-65535.reply.json",
+      "inventory/summary.json",
+      "inventory-more/summary.json",
+      "selection-boundaries/summary.json"
+    ],
+    "unknowns": [
+      "Initial zero-operation catalog discovery lacked OS process-lineage visibility; its client and transport closed.",
+      "Cancellation, changed-file races, malformed pack, outer-wrapper and transport/export boundaries were not exercised."
+    ]
+  }
+]

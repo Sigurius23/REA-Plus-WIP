@@ -4,14 +4,20 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
-- **Arc fixes (2026-11-02):** Items **38–40 are fixed and retested** in the
-  current working tree. Explicit snapshot budgets admit the original universal
+- **Arc fixes and fresh retest (2026-11-02):** Items **38–40 are fixed and
+  published in `3a3b6c438e7f`**, then independently retested on Arc. Explicit
+  snapshot budgets admit the original universal
   executable; the new Chromium resource reader validates packs and selected
   gzip/Brotli content; guarded URL receiver provenance removes the query-key
   candidate without suppressing unknown custom clients. **77 tests / 11 files**
   and matching real Arc CLI/MCP Evidence verify the changes. Full app behavior
-  remains incomplete. See [fix verification](field-tests/arc-fixes-2026-11-02.md)
-  and the [original field test](field-tests/arc-macos-1.171.0.md).
+  remains incomplete. The fresh pass exhausts all **5,796 main-pack IDs**,
+  confirms zero scoped false endpoint candidates and recovers five seeded
+  native helpers. **69 retained MCP calls / 63 successes**, five expected
+  errors and one resolved environmental startup error; no new product defect
+  reproduced. See [fresh retest](field-tests/arc-retest-2026-11-02.md),
+  [fix verification](field-tests/arc-fixes-2026-11-02.md) and the
+  [original field test](field-tests/arc-macos-1.171.0.md).
 - **Function emulation (2026-10-31):** Item **16 is implemented and verified**
   for its initial bounded arm64/x86-64 profile. Public `emulate_function` and
   `rea emulate-function` preserve explicit code/register/memory inputs and
@@ -82,9 +88,10 @@ Open work on `main` following PR #1 and the field tests.
      [HeyClicky fix verification](field-tests/heyclicky-fixes-2026-10-28.md).
 2. **Branch state and push:**
    - **Arc publication batch (2026-11-02):** the initial field test, items 38–40
-     implementation and verification are included together after `9636c6860758`,
-     for the user-requested push to the existing WIP `origin/main`. The required
-     `check:fast` passes. Historical receipts' uncommitted/unpushed statements
+     implementation and verification were pushed in `3a3b6c438e7f` to the
+     existing WIP `origin/main`; the remote main hash was checked explicitly.
+     The subsequent fresh retest is documented separately and adds no
+     production changes. The required `check:fast` passes. Historical receipts' uncommitted/unpushed statements
      describe their original verification sessions. The existing two large Rize
      JSONs remain local and excluded from this batch.
    - **Item 16 publication batch (2026-10-31):** the bounded function-emulation
@@ -116,7 +123,10 @@ Open work on `main` following PR #1 and the field tests.
    remains incomplete; the [dossier's feature checklist](field-tests/heyclicky-analysis-dossier-2026-10-29.md#feature-checklist)
    records the remaining tracing and runtime questions. Rize's admitted offline
    engineering scope (17–29) is complete with the documented dynamic/coverage
-   limits; those limits do not establish full runtime understanding.
+   limits; those limits do not establish full runtime understanding. Arc's
+   tool gaps 38–40 are done and pass the fresh retest, while its broader
+   feature/design investigation remains incomplete; see the
+   [remaining investigation](field-tests/arc-retest-2026-11-02.md#remaining-investigation).
 
 ## DEX support
 
@@ -764,3 +774,8 @@ for the exact scope, raw observations and native-analysis outcome.
 
 Items 38–40 share the [verification report](field-tests/arc-fixes-2026-11-02.md)
 and durable complete Evidence under `field-tests/arc-fixes-2026-11-02/`.
+The subsequent [fresh retest](field-tests/arc-retest-2026-11-02.md) confirms
+their behavior after publication. Its maximum-budget Objective-C read recovers
+871 class/metaclass records and 3,052 method implementations, with coverage
+still partial; lower-budget empty class arrays are not absence claims. No new
+numbered defect was reproduced, and full Arc feature recovery remains open.

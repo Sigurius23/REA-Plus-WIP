@@ -1,0 +1,118 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-02/native",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "60"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Applications/Arc.app"
+      },
+      "label": "open-app",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "objc",
+        "max_records": 2000,
+        "max_file_bytes": 268435456
+      },
+      "label": "objc-metadata"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-conformances",
+        "max_records": 2000,
+        "max_file_bytes": 268435456
+      },
+      "label": "swift-conformances-metadata"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-vtables",
+        "max_records": 2000,
+        "max_file_bytes": 268435456
+      },
+      "label": "swift-vtables-metadata"
+    },
+    {
+      "name": "close_binary",
+      "label": "close-app"
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-arc-fresh-2026-11-02-7pjfvfjv/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open-native",
+      "expect_success": true
+    },
+    {
+      "name": "binary_overview",
+      "label": "overview",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100003138"
+      },
+      "label": "entry"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100231fd8"
+      },
+      "label": "boost-gallery-entry"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1001ecfa8"
+      },
+      "label": "boost-gallery-dispatch"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100231f00"
+      },
+      "label": "boost-gallery-callback"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1005381a0"
+      },
+      "label": "boost-command-entry"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100537fac"
+      },
+      "label": "boost-command-helper"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1000cbd30"
+      },
+      "label": "sidebar-cursor"
+    }
+  ],
+  "continuations": [
+    "/private/tmp/rea-arc-fresh-native-next.json"
+  ],
+  "idle_timeout_ms": 180000
+}
