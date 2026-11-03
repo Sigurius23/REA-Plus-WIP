@@ -75,6 +75,17 @@ const reconstructionStatisticsFields = {
 const reconstructionStatisticsSchema = z.union([
   z.strictObject({
     ...reconstructionStatisticsFields,
+    parsed_inline_scripts: countSchema.describe(
+      "Derived HTML inline bodies with retained parsing results, including parse failures recorded separately in parse_failures and source statuses. Separate from physical JavaScript files. Absent in historical Evidence; absence is not a measured zero.",
+    ),
+    paths_scope: javaScriptPathScopeSummarySchema,
+  }),
+  z.strictObject({
+    ...reconstructionStatisticsFields,
+    parsed_inline_scripts: countSchema,
+  }),
+  z.strictObject({
+    ...reconstructionStatisticsFields,
     paths_scope: javaScriptPathScopeSummarySchema,
   }),
   z.strictObject(reconstructionStatisticsFields),

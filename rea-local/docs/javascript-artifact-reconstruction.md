@@ -429,6 +429,63 @@ own transport identity, and named/general helpers remain unknown when argument
 flow is unproven. All checks keep `enforcement: "unknown"`; neither callback
 provenance nor a visible comparison establishes a complete authorization policy.
 
+### Inline HTML JavaScript
+
+Selected HTML documents also supply independently parsed classic and module
+`script` bodies. Analysis never executes them. The HTML parser supplies exact
+body ranges; comments, template fragments, foreign-namespace scripts, data
+blocks, import maps, speculation rules and bodies on elements with a `src`
+attribute do not become inline JavaScript sources. Script-type classification
+follows the [HTML type-string rules](https://html.spec.whatwg.org/multipage/scripting.html#prepare-the-script-element)
+and [JavaScript MIME essence list](https://mimesniff.spec.whatwg.org/#javascript-mime-type):
+MIME parameters are significant, and the `module` keyword is not whitespace-trimmed.
+An unterminated eligible body is recorded as unsupported and leaves application
+coverage partial. JavaScript parse failures retain the normal explicit source
+diagnostics and partial coverage.
+
+Each admitted body has a reserved logical `rea-inline-script://...` URI,
+body SHA-256 and UTF-8 byte count. It has no inventory artifact ID and is not
+an invented `.js` file or ASAR member. Its `inline_source` metadata names the
+original inventoried HTML path, digest and inventory ID, classic/module kind,
+document base and exact body range. `start_offset`/`end_offset` count UTF-16
+code units with an exclusive end; the HTML line/column range uses one-based
+lines and zero-based UTF-16 columns. Syntax and IR ranges are relative to the
+logical body. Explicit `maps_to` edges map that body back to its original HTML
+range. The body digest hashes its exact UTF-8 text, including original line
+endings; HTML and body digests describe different byte sequences.
+
+Bodies are analyzed separately, preserving repeated bodies and independent
+module scopes. `statistics.parsed_javascript_files` continues to count physical
+JavaScript files, while `parsed_inline_scripts` counts derived inline bodies
+with recorded parse outcomes, including failures; check `parse_failures` and
+individual source statuses for success. Physical inventory, text bytes read and path-scope
+counts do not grow when an HTML document supplies several scripts. Historical
+Evidence may omit the new counter; omission is retained and does not mean zero.
+
+`max_inline_scripts` (CLI `--max-inline-scripts`) controls run-wide inline-body
+admission, default **1,000**; zero records selection metadata without analyzing
+the bodies. The policy bounds derived-source retention separately from physical
+file inventory. Excess eligible bodies are counted, not expanded into fake
+files, and application coverage reports the limit and omission. Raise the
+policy to inspect them. Existing worker heap/time, per-body semantic-size and
+aggregate result/graph budgets still apply; this count is not an RSS guarantee.
+
+The `file_statuses` page distinguishes `source_kind: physical-file`,
+`html-document` and `html-inline-script`. HTML rows expose admission and
+unterminated-body issues even under `filter: "with-issues"`; JavaScript syntax
+and IR outcomes belong to the separate body rows. Summary `files` counts
+physical rows and `inline_scripts` counts derived bodies. Their issue and
+missing-metadata counts are also separate. The same parent retains the complete
+HTML-selection metadata and body-to-document maps.
+
+Inline module imports and source-map URLs resolve from the original HTML
+document/base. Bare browser imports needing import maps and unproven Node
+`require` bindings stay unresolved. A classic body stays `classic-script` even
+if it contains Node-like syntax. Shared globals between classic scripts,
+execution order, module scheduling, activation conditions and DOM/native
+callbacks remain static-analysis unknowns. Inline handlers, `javascript:` URLs
+and runtime-inserted scripts are outside this profile.
+
 A request URL built from strings and expressions is reported as a template,
 in both `analyze_javascript_application` and `analyze_web_bundle`, with `{}`
 for each expression:

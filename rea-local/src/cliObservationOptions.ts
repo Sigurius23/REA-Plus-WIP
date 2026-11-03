@@ -67,6 +67,8 @@ export const javascriptApplicationOptions = z.object({
     javaScriptAnalysisResourceControlsSchema.shape.analysis_timeout_ms,
   maxSemanticSourceBytes:
     javaScriptAnalysisResourceControlsSchema.shape.max_semantic_source_bytes,
+  maxInlineScripts:
+    javaScriptAnalysisResourceControlsSchema.shape.max_inline_scripts,
   pathsInclude: z
     .array(z.string().min(1))
     .optional()

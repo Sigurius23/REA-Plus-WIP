@@ -31,6 +31,13 @@ type FileStatus = {
   node_id: string;
   observation_id: string;
   path: string;
+  source_kind: "physical-file" | "html-document" | "html-inline-script";
+  html_inline_scripts?: {
+    total: number;
+    omitted: number;
+    unsupported: number;
+    budget: number | null;
+  };
   sha256: string | null;
   text_status: string | null;
   parse_status: string | null;
@@ -222,13 +229,21 @@ const fileRows = (
   const issues = fileIssues(analysis.graph.nodes);
   const rows: FileStatus[] = [];
   for (const node of analysis.graph.nodes) {
-    if (node.kind !== "javascript-asset") continue;
+    if (node.kind !== "javascript-asset" && node.kind !== "artifact") continue;
     for (const observation of node.observations) {
       if (
-        observation.evidence.extractor.operation !== "inventory-relevant-file"
+        observation.evidence.extractor.operation !==
+          "inventory-relevant-file" &&
+        observation.evidence.extractor.operation !== "derive-html-inline-source"
       )
         continue;
       const { properties } = observation;
+      const html = object(properties.html_inline_sources);
+      const isHtml =
+        properties.file_kind === "html" &&
+        html !== undefined &&
+        (count(html.inline_script_count) ?? 0) > 0;
+      if (node.kind !== "javascript-asset" && !isHtml) continue;
       const path = text(properties.path);
       if (path === null) continue;
       const digest = sha256(node, observation);
@@ -236,23 +251,76 @@ const fileRows = (
         node_id: node.node_id,
         observation_id: observation.observation_id,
         path,
+        source_kind: isHtml
+          ? "html-document"
+          : observation.evidence.extractor.operation ===
+              "derive-html-inline-source"
+            ? "html-inline-script"
+            : "physical-file",
         sha256: digest,
         text_status: text(properties.text_status),
         parse_status: text(properties.parse_status),
-        syntax_parse_status:
-          text(properties.syntax_parse_status) ?? "not-recorded",
+        syntax_parse_status: isHtml
+          ? "not-applicable"
+          : (text(properties.syntax_parse_status) ?? "not-recorded"),
         parse_error_count: count(properties.parse_error_count),
-        static_facts_status:
-          text(properties.static_facts_status) ?? "not-recorded",
+        static_facts_status: isHtml
+          ? "not-applicable"
+          : (text(properties.static_facts_status) ?? "not-recorded"),
         unresolved_static_occurrences: count(
           properties.unresolved_static_occurrences,
         ),
-        module_ir_status: retention(properties.module_ir_status),
+        module_ir_status: isHtml
+          ? "not-applicable"
+          : retention(properties.module_ir_status),
         module_ir_coverage: text(object(properties.module_ir_coverage)?.status),
-        semantic_graph_status: retention(properties.semantic_graph_status),
+        semantic_graph_status: isHtml
+          ? "not-applicable"
+          : retention(properties.semantic_graph_status),
         issues: [...(issues.get(fileKey(digest, path)) ?? [])],
       };
-      addStatusIssues(row, properties);
+      if (isHtml && html !== undefined) {
+        const omitted = count(html.omitted_inline_scripts) ?? 0;
+        const budget = count(html.inline_script_budget);
+        const unsupported = Array.isArray(html.inline_scripts)
+          ? html.inline_scripts.filter(
+              (script) => object(script)?.terminated === false,
+            ).length
+          : 0;
+        row.html_inline_scripts = {
+          total: count(html.inline_script_count) ?? 0,
+          omitted,
+          unsupported,
+          budget,
+        };
+        if (omitted > 0)
+          row.issues.push({
+            operation: "admit-html-inline-scripts",
+            code: "resource_constraint",
+            message: `${String(omitted)} inline bodies were omitted by max_inline_scripts (${String(budget)}). Raise that policy to inspect them; unchanged limits reproduce the omission.`,
+            limits:
+              budget === null
+                ? []
+                : [
+                    {
+                      name: "javascript_inline_scripts",
+                      value: budget,
+                      unit: "items",
+                    },
+                  ],
+            node_id: node.node_id,
+            observation_id: observation.observation_id,
+          });
+        if (unsupported > 0)
+          row.issues.push({
+            operation: "parse-html-inline-script",
+            code: null,
+            message: `${String(unsupported)} unterminated inline JavaScript bodies are unsupported and were not analyzed.`,
+            limits: [],
+            node_id: node.node_id,
+            observation_id: observation.observation_id,
+          });
+      } else addStatusIssues(row, properties);
       rows.push(row);
     }
   }
@@ -271,6 +339,12 @@ export const projectJavaScriptFileStatusPage = (
 ): UnsignedAnalysisView => {
   const rows = fileRows(analysis);
   const withIssues = rows.filter((row) => row.issues.length > 0);
+  const physicalRows = rows.filter(
+    (row) => row.source_kind !== "html-inline-script",
+  );
+  const inlineRows = rows.filter(
+    (row) => row.source_kind === "html-inline-script",
+  );
   const selected = view.filter === "all" ? rows : withIssues;
   const page = selected.slice(view.offset, view.offset + view.limit);
   const missingMetadata = rows.filter(
@@ -294,10 +368,33 @@ export const projectJavaScriptFileStatusPage = (
     view,
     items: page.map((row) => jsonValueSchema.parse(row)),
     file_status_summary: {
-      files: rows.length,
-      files_with_issues: withIssues.length,
-      files_without_retention_metadata: missingMetadata,
-      files_without_static_coverage_metadata: missingStaticMetadata,
+      files: physicalRows.length,
+      files_with_issues: physicalRows.filter((row) => row.issues.length > 0)
+        .length,
+      files_without_retention_metadata: physicalRows.filter(
+        (row) =>
+          row.module_ir_status === "not-recorded" ||
+          row.semantic_graph_status === "not-recorded",
+      ).length,
+      files_without_static_coverage_metadata: physicalRows.filter(
+        (row) =>
+          row.syntax_parse_status === "not-recorded" ||
+          row.static_facts_status === "not-recorded",
+      ).length,
+      inline_scripts: inlineRows.length,
+      inline_scripts_with_issues: inlineRows.filter(
+        (row) => row.issues.length > 0,
+      ).length,
+      inline_scripts_without_retention_metadata: inlineRows.filter(
+        (row) =>
+          row.module_ir_status === "not-recorded" ||
+          row.semantic_graph_status === "not-recorded",
+      ).length,
+      inline_scripts_without_static_coverage_metadata: inlineRows.filter(
+        (row) =>
+          row.syntax_parse_status === "not-recorded" ||
+          row.static_facts_status === "not-recorded",
+      ).length,
       parent_limitation_count: parentLimitations.size,
     },
     coverage: pageViewCoverage(view.offset, page.length, selected.length),
@@ -310,6 +407,7 @@ export const projectJavaScriptFileStatusPage = (
     },
     limitations: [
       "This page projects recorded JavaScript file observations; no source was read or analyzed again.",
+      "source_kind distinguishes physical-file, html-document and derived html-inline-script rows. HTML rows report admission/unsupported bodies; body IR and syntax statuses belong to separate logical sources. Summary files counts physical rows, while inline_scripts counts derived bodies.",
       "Parent limitations, raw static/semantic facts and captured diagnostics remain in the parent Evidence; they are not repeated in this compact view.",
       "The with-issues filter selects recorded failures or incomplete file coverage; an empty page does not establish complete analysis.",
       "parse_status is a legacy aggregate. Only explicit syntax_parse_status establishes the syntax outcome; absent syntax/static-fact metadata remains not-recorded.",
@@ -321,8 +419,8 @@ export const projectJavaScriptFileStatusPage = (
           ]
         : []),
       `Parent application coverage is ${analysis.graph.coverage.status}; semantic coverage is ${analysis.semantic_graph.coverage.status}.`,
-      `${String(missingMetadata)} files lack module-IR or semantic-projection retention metadata; their missing statuses are not recorded, not successful.`,
-      `${String(missingStaticMetadata)} files lack separate syntax or static-fact coverage metadata; legacy aggregate status does not identify a syntax failure.`,
+      `${String(missingMetadata)} source units lack module-IR or semantic-projection retention metadata; their missing statuses are not recorded, not successful.`,
+      `${String(missingStaticMetadata)} source units lack separate syntax or static-fact coverage metadata; legacy aggregate status does not identify a syntax failure.`,
     ],
   };
 };

@@ -39,7 +39,7 @@ it("retains exact opening-tag offsets rather than the script body", () => {
   const opening = '<script\n title=">" src=actual.js>';
   const prefix = "<!doctype html>\n\n";
   const text = `${prefix}${opening}ignored body</script>`;
-  expect(htmlArtifactReferences(text)).toEqual({
+  expect(htmlArtifactReferences(text)).toMatchObject({
     baseHref: null,
     scripts: [
       {
@@ -49,6 +49,93 @@ it("retains exact opening-tag offsets rather than the script body", () => {
       },
     ],
   });
+});
+
+it.each([
+  ["", "classic"],
+  [" type=module", "module"],
+  [" type=MODULE", "module"],
+  [" type=' text/javascript '", "classic"],
+  [" language=JavaScript", "classic"],
+  [" type=application/json", null],
+  [" type=importmap", null],
+  [" type=speculationrules", null],
+  [" type='text/javascript; charset=utf-8'", null],
+  [" type=' module '", null],
+  [" type=' '", null],
+  [" src=''", null],
+  [" src=external.js", null],
+  [" language=VBScript", null],
+])("classifies an inline body with attributes %s", (attrs, kind) => {
+  const text = `<script${attrs}>fetch('/inline')</script>`;
+  const inline = htmlArtifactReferences(text).inlineScripts;
+  expect(inline.map(({ scriptKind }) => scriptKind)).toEqual(
+    kind === null ? [] : [kind],
+  );
+});
+
+it("keeps comments, template fragments and non-HTML scripts inert", () => {
+  const text = `<!-- <script>fetch('/comment')</script> -->
+  <template><script>fetch('/template')</script></template>
+  <svg><script>fetch('/svg')</script></svg>
+  <textarea><script>fetch('/textarea')</script></textarea>
+  <script>fetch('/actual')</script>`;
+  const refs = htmlArtifactReferences(text);
+  expect(
+    refs.inlineScripts.map((s) => text.slice(s.startOffset, s.endOffset)),
+  ).toEqual(["fetch('/actual')"]);
+});
+
+it.each(["\n", "\r\n", "\r"])(
+  "maps raw inline ranges across %j and astral text",
+  (newline) => {
+    const prefix = `\ufeff<p>😀</p>${newline}<script type=module>`;
+    const body = `const face = '😀';${newline}fetch('/inline');`;
+    const text = `${prefix}${body}</script>`;
+    expect(htmlArtifactReferences(text).inlineScripts).toEqual([
+      {
+        scriptKind: "module",
+        startOffset: prefix.length,
+        endOffset: prefix.length + body.length,
+        location: {
+          start: { line: 2, column: 20 },
+          end: { line: 3, column: 17 },
+        },
+        terminated: true,
+      },
+    ]);
+  },
+);
+
+it("counts omitted bodies without retaining their contents and preserves external links", () => {
+  const refs = htmlArtifactReferences(
+    `<script>first()</script><script>second()</script><script src=external.js></script>`,
+    1,
+  );
+  expect(refs.inlineScriptCount).toBe(2);
+  expect(refs.omittedInlineScripts).toBe(1);
+  expect(refs.inlineScripts).toHaveLength(1);
+  expect(refs.scripts).toHaveLength(1);
+});
+
+it("counts same-line BOM and astral prefix/body columns as UTF-16 units", () => {
+  const text = '\ufeff😀<script>"😀";</script>';
+  expect(htmlArtifactReferences(text).inlineScripts).toMatchObject([
+    {
+      startOffset: 11,
+      endOffset: 16,
+      location: {
+        start: { line: 1, column: 11 },
+        end: { line: 1, column: 16 },
+      },
+    },
+  ]);
+});
+
+it("retains the unsupported unterminated boundary instead of inventing an end tag", () => {
+  expect(
+    htmlArtifactReferences("<script>fetch('/tail')").inlineScripts,
+  ).toMatchObject([{ terminated: false, startOffset: 8, endOffset: 22 }]);
 });
 
 it.each([

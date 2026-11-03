@@ -36,6 +36,46 @@ in the same session. A returned `error.details.partial_observation` reference
 can be supplied directly to `inspect_analysis_view`. If the SDK cancels locally, retrieve its recorded ID from
 the Evidence bundle before inspecting the partial analysis.
 
+## Inline JavaScript in offline HTML
+
+Select the original HTML documents alongside relevant JavaScript in the
+artifact tree. When advertised, `analyze_javascript_application` analyzes
+eligible classic and module inline bodies independently as inert source.
+An external `src` body, data block or inert template is not a substitute inline
+program. Import-map declarations do not establish browser import-map execution.
+
+Keep each returned `inline_source` origin: original HTML path/digest/inventory
+identity, script kind, exact body offsets and range, and document base.
+Offsets count UTF-16 code units in the decoded document text; body byte counts
+and digests cover the body's UTF-8 text. A `rea-inline-script://...` identity is
+a logical source, not a recovered filename or physical inventory entry. Read
+its returned module node ID and `maps_to` relationship before attributing a
+source-relative trace range to the original HTML. Repeated identical bodies at
+different document ranges retain distinct logical identities.
+
+`statistics.parsed_javascript_files` continues to count parsed physical
+JavaScript files; `parsed_inline_scripts` counts derived bodies. These counters
+include retained parse failures; inspect `parse_failures` and per-source statuses
+before treating a counted source as successfully parsed.
+Historical Evidence lacking the latter field did not measure it. The run-wide
+`max_inline_scripts` policy defaults to 1,000 bodies and is independent of
+physical-file selection. Inspect reported omissions/partial coverage before
+raising it; unchanged limits retain the same omission. Unterminated or
+unparseable bodies do not establish successful source analysis.
+
+Inline imports resolve from the document and its recorded base, rather than
+from the logical URI or an invented `.js` file. Bare specifiers and Node
+bindings remain uncertain without the required resolution authority. Classic
+script shared globals, cross-script order, module scheduling, activation,
+DOM results and UI effects remain unknown. Static inline analysis does not
+execute the page or contact its referenced services.
+
+For a selected packed HTML resource, first retain the complete decoded bytes
+and original pack/entry/range hashes. Materializing those bytes under an
+analyst-chosen HTML filename is supplemental preparation; preserve that mapping
+and never present the filename as recovered pack metadata. Analyze the HTML
+itself so the result retains inline-to-document provenance.
+
 ## Read a module without repeating analysis
 
 Use the actual returned parent ID, on the same connection, as `source.evidence_id`.

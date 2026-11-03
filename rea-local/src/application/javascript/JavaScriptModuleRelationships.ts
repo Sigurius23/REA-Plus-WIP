@@ -30,7 +30,7 @@ import {
   staticInferenceEvidence,
 } from "./JavaScriptArtifactGraphEvidence.js";
 import {
-  resolveArtifactPathByContext,
+  resolveJavaScriptSourceModule,
   type ArtifactPathResolution,
 } from "./JavaScriptArtifactPathResolution.js";
 import { projectJavaScriptExportReturnShapes } from "../../domain/javascript/javascriptExportReturnShapeProjection.js";
@@ -99,7 +99,15 @@ export const addJavaScriptSourceModules = (
             path: file.path,
             container_sha256: file.container_sha256,
             logical_module_key: file.path,
-            module_format: moduleFormat(file.path, semantic.ir),
+            module_format:
+              file.inline_source === undefined
+                ? moduleFormat(file.path, semantic.ir)
+                : file.inline_source.script_kind === "module"
+                  ? "esm"
+                  : "classic-script",
+            ...(file.inline_source === undefined
+              ? {}
+              : { inline_source: { ...file.inline_source } }),
             import_relationships: semantic.ir.moduleLinks.filter(
               ({ kind }) => kind === "import" || kind === "require",
             ).length,
@@ -270,16 +278,14 @@ const resolveModuleTarget = (
   input: RelationshipInput,
   specifier: string,
 ): ResolvedModuleTarget => {
-  const resolution = resolveArtifactPathByContext({
-    declaredPath: specifier,
-    sourcePath: input.file.path,
-    context: "module-specifier",
-    files: input.context.filesByPath,
-    moduleKind:
-      input.link.kind === "require" || input.link.kind === "commonjs-export"
-        ? "require"
-        : "import",
-  });
+  const resolution = resolveJavaScriptSourceModule(
+    input.file,
+    specifier,
+    input.context.filesByPath,
+    input.link.kind === "require" || input.link.kind === "commonjs-export"
+      ? "require"
+      : "import",
+  );
   if (resolution.resolution_status !== "resolved")
     return {
       node: unresolvedModuleNode(

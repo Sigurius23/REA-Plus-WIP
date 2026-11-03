@@ -1,0 +1,214 @@
+{
+  "evidence_id": "ev_62ac6fa2be337f23accdd860715cb6bdcb2370c66310972bdbd51f8c46ed2159",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "085056cad2197ab3b87b6b54a5a0d36964c5d9e756ec451a5b6f0b478c8baae8"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/private/tmp/rea-arc-fresh-2026-11-02-7pjfvfjv/Arc-arm64"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "mach-o",
+      "architecture": "arm64",
+      "available_architectures": [
+        "arm64"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "swift_enum_switch_recovery": "abi-signed-word-cfg-v1",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default",
+      "analysis_policy": "bounded-autoanalysis-v1",
+      "analysis_timeout_seconds": 60,
+      "analysis_seeds": {
+        "format": "rea-ghidra-seeds-v1",
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/context/caller-established-seeds.tsv",
+        "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/context/caller-established-seeds.tsv",
+        "sha256": "589422125448ff1a22b932ed399acf33482b0ebdbbda756e2df9e2d98f35d00f",
+        "entries": {
+          "function": 12,
+          "code": 0,
+          "label": 0
+        }
+      }
+    },
+    "digest": "9e7aa4a0d4ad0dd10ea49e3df4418e8f0e74713aecbb5680432b21f4d5e9f8ce"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_native_instruction",
+  "parameters": {
+    "address": "0x103646ca4"
+  },
+  "raw_result": {
+    "address": "0x103646ca4",
+    "procedure": null,
+    "architecture": "AARCH64:LE:64:AppleSilicon",
+    "mode": "AppleSilicon",
+    "status": "decoded",
+    "bytes": "219843f9",
+    "length": 4,
+    "mnemonic": "ldr",
+    "raw_disassembly": "ldr x1,[x1, #0x730]",
+    "operands": [
+      {
+        "index": 0,
+        "raw": "x1",
+        "provider_type": 512,
+        "memory_addressing": "unavailable",
+        "components": [
+          {
+            "text": "x1",
+            "value": "x1",
+            "bit_width": 64,
+            "kind": "register"
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "raw": "[x1, #0x730]",
+        "provider_type": 4194304,
+        "memory_addressing": "unavailable",
+        "components": [
+          {
+            "text": "x1",
+            "value": "x1",
+            "bit_width": 64,
+            "kind": "register"
+          },
+          {
+            "text": "0x730",
+            "value": "0x730",
+            "bit_width": 64,
+            "kind": "immediate"
+          }
+        ]
+      }
+    ],
+    "flow": {
+      "kind": "fallthrough",
+      "conditional": false,
+      "computed": false,
+      "direct_destinations": [],
+      "classification_evidence": [
+        {
+          "source": "ghidra-listing-flow-type",
+          "value": "FALL_THROUGH"
+        }
+      ]
+    },
+    "references": [],
+    "incoming_references": [],
+    "limitations": [
+      "Operand components are Ghidra Listing decoder tokens; effective memory base/index/displacement roles and per-instruction context mode are unavailable. The mode field is the program language variant."
+    ]
+  },
+  "normalized_result": {
+    "address": "0x103646ca4",
+    "status": "decoded",
+    "procedure": null,
+    "architecture": "AARCH64:LE:64:AppleSilicon",
+    "mode": "AppleSilicon",
+    "bytes": "219843f9",
+    "length": 4,
+    "mnemonic": "ldr",
+    "raw_disassembly": "ldr x1,[x1, #0x730]",
+    "operands": [
+      {
+        "index": 0,
+        "raw": "x1",
+        "provider_type": 512,
+        "components": [
+          {
+            "kind": "register",
+            "text": "x1",
+            "value": "x1",
+            "bit_width": 64
+          }
+        ],
+        "memory_addressing": "unavailable"
+      },
+      {
+        "index": 1,
+        "raw": "[x1, #0x730]",
+        "provider_type": 4194304,
+        "components": [
+          {
+            "kind": "register",
+            "text": "x1",
+            "value": "x1",
+            "bit_width": 64
+          },
+          {
+            "kind": "immediate",
+            "text": "0x730",
+            "value": "0x730",
+            "bit_width": 64
+          }
+        ],
+        "memory_addressing": "unavailable"
+      }
+    ],
+    "flow": {
+      "kind": "fallthrough",
+      "conditional": false,
+      "computed": false,
+      "direct_destinations": [],
+      "classification_evidence": [
+        {
+          "source": "ghidra-listing-flow-type",
+          "value": "FALL_THROUGH"
+        }
+      ]
+    },
+    "references": [],
+    "incoming_references": [],
+    "limitations": [
+      "Operand components are Ghidra Listing decoder tokens; effective memory base/index/displacement roles and per-instruction context mode are unavailable. The mode field is the program language variant."
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=60.",
+    "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/context/caller-established-seeds.tsv (sha256 589422125448ff1a22b932ed399acf33482b0ebdbbda756e2df9e2d98f35d00f: 12 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+    "Seed outcome: 12 functions created, 0 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

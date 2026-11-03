@@ -13,7 +13,6 @@ import {
   javascriptAnalysisCoverage,
   linkElectronRoleToAsset,
   moduleLookupKey,
-  resolveArtifactPath,
   selfReferenceOmissions,
   sourceNodeFor,
   type JavaScriptArtifactGraphContext,
@@ -23,7 +22,10 @@ import {
   astObservationEvidence,
   staticInferenceEvidence,
 } from "./JavaScriptArtifactGraphEvidence.js";
-import { resolveArtifactPathByContext } from "./JavaScriptArtifactPathResolution.js";
+import {
+  resolveArtifactPathByContext,
+  resolveJavaScriptSourceModule,
+} from "./JavaScriptArtifactPathResolution.js";
 
 type StaticReference = JavaScriptStaticAnalysis["references"][number];
 type StaticEndpoint = JavaScriptStaticAnalysis["endpoints"][number];
@@ -101,7 +103,7 @@ const addReference = (
   const resolved =
     input.value.specifier === null
       ? null
-      : resolveReference(context, input.file.path, input.value);
+      : resolveReference(context, input.file, input.value);
   if (input.value.kind === "worker" || input.value.kind === "service-worker") {
     const worker = context.accumulator.addNode({
       kind: input.value.kind === "worker" ? "worker" : "service-worker",
@@ -343,12 +345,19 @@ const addSourceMapEdge = (
   const declaredUrlSha256 = createHash("sha256")
     .update(input.value.declared_url)
     .digest("hex");
-  const resolvedPath = resolveArtifactPathByContext({
+  const resolution = resolveArtifactPathByContext({
     declaredPath: input.value.declared_url,
-    sourcePath: input.file.path,
-    context: "url-reference",
+    sourcePath: input.file.inline_source?.html_path ?? input.file.path,
+    context:
+      input.file.inline_source === undefined
+        ? "url-reference"
+        : "html-reference",
+    ...(input.file.inline_source === undefined
+      ? {}
+      : { htmlBaseHref: input.file.inline_source.base_href }),
     files: context.filesByPath,
-  }).resolved_path;
+  });
+  const resolvedPath = resolution.resolved_path;
   const resolvedFile =
     resolvedPath === null ? undefined : context.filesByPath.get(resolvedPath);
   const resolvedNode =
@@ -373,6 +382,8 @@ const addSourceMapEdge = (
           declared_url_sha256: declaredUrlSha256,
           resolved_path: resolvedPath,
           available: isAvailable,
+          resolution_context: resolution.resolution_context,
+          resolution_status: resolution.resolution_status,
         },
         evidence: staticInferenceEvidence({
           sha256: input.file.sha256,
@@ -382,8 +393,9 @@ const addSourceMapEdge = (
           coverage: input.coverage,
           confidence: "medium",
           limitations: isAvailable
-            ? []
+            ? resolution.limitations
             : [
+                ...resolution.limitations,
                 "The declared source map was not present in the inventoried artifact.",
               ],
         }),
@@ -406,10 +418,11 @@ const addSourceMapEdge = (
 
 const resolveReference = (
   context: JavaScriptArtifactGraphContext,
-  sourcePath: string,
+  sourceFile: JavaScriptArtifactFile,
   reference: StaticReference,
 ): ResolvedReference | null => {
   const specifier = reference.specifier;
+  const sourcePath = sourceFile.path;
   if (specifier === null) return null;
   const chunk = resolveBundlerChunkReference(context, sourcePath, reference);
   if (chunk !== null) return chunk;
@@ -430,13 +443,19 @@ const resolveReference = (
     reference.kind === "worker" || reference.kind === "service-worker"
       ? resolveArtifactPathByContext({
           declaredPath: specifier,
-          sourcePath,
-          context: "url-reference",
+          sourcePath: sourceFile.inline_source?.html_path ?? sourcePath,
+          context:
+            sourceFile.inline_source === undefined
+              ? "url-reference"
+              : "html-reference",
+          ...(sourceFile.inline_source === undefined
+            ? {}
+            : { htmlBaseHref: sourceFile.inline_source.base_href }),
           files: context.filesByPath,
         }).resolved_path
-      : resolveArtifactPath(
+      : resolveJavaScriptSourceModule(
+          sourceFile,
           specifier,
-          sourcePath,
           context.filesByPath,
           reference.kind === "require"
             ? "require"
@@ -444,7 +463,7 @@ const resolveReference = (
                 reference.kind === "dynamic-import"
               ? "import"
               : undefined,
-        );
+        ).resolved_path;
   if (path === null) return null;
   const file = context.filesByPath.get(path);
   const node = context.fileNodes.get(path);

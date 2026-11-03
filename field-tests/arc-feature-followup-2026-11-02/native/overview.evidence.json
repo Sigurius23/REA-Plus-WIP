@@ -1,0 +1,495 @@
+{
+  "evidence_id": "ev_12c687d796420903f8a9033ee7690399e56cf80c87b6e7ed591a746e254271a5",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "085056cad2197ab3b87b6b54a5a0d36964c5d9e756ec451a5b6f0b478c8baae8"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/private/tmp/rea-arc-fresh-2026-11-02-7pjfvfjv/Arc-arm64"
+  },
+  "provider": {
+    "id": "rea-workflow",
+    "name": "REA+ composed investigation workflow",
+    "version": "1"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "rea-workflow",
+      "name": "REA+ composed investigation workflow",
+      "version": "1"
+    },
+    "parameters": {
+      "upstream_analysis_profile": {
+        "provider": {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        },
+        "parameters": {
+          "target_kind": "executable",
+          "target_format": "mach-o",
+          "architecture": "arm64",
+          "available_architectures": [
+            "arm64"
+          ],
+          "import_mode": "ephemeral-source-immutable",
+          "annotation_policy": "atomic-function-entry-metadata-v1",
+          "load_image_observations": "source-mappings-entry-context-v2",
+          "function_body_evidence": "complete-inclusive-ranges-v1",
+          "function_references": "complete-body-and-entry-reference-manager-v2",
+          "string_inventory_evidence": "defined-data-coverage-v1",
+          "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+          "instruction_flow_evidence": "decoded-return-pcode-v1",
+          "instruction_references": "exact-address-incoming-v1",
+          "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+          "no_return_repair": "returning-imports-decoded-return-v2",
+          "process_launch": "inspected-jvm-launch-support-v1",
+          "jump_table_evidence": "typed-case-default-blocks-v1",
+          "swift_enum_switch_recovery": "abi-signed-word-cfg-v1",
+          "decompiler_jump_loads": true,
+          "loader": "auto-from-header",
+          "language_id": "auto-from-header",
+          "compiler_spec_id": "auto-default",
+          "analyzer_preset": "ghidra-default",
+          "analysis_policy": "bounded-autoanalysis-v1",
+          "analysis_timeout_seconds": 60,
+          "analysis_seeds": {
+            "format": "rea-ghidra-seeds-v1",
+            "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/caller-established-seeds.tsv",
+            "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/caller-established-seeds.tsv",
+            "sha256": "589422125448ff1a22b932ed399acf33482b0ebdbbda756e2df9e2d98f35d00f",
+            "entries": {
+              "function": 12,
+              "code": 0,
+              "label": 0
+            }
+          }
+        },
+        "digest": "ac93bc9c79092debb1fbfaae05d4eca4791eeb89022787cf39d3b54125168d73"
+      },
+      "workflow_evidence_revision": 1,
+      "workflow_revision": 2
+    },
+    "digest": "5ae8324157b84bccdb6038ac7ee91a4e1e0a669f6add397c9ea947149a6b86f8"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "binary_overview",
+  "parameters": {},
+  "raw_result": null,
+  "normalized_result": {
+    "document": "target-085056cad219.bin",
+    "segments": [
+      {
+        "name": "__TEXT",
+        "start": "0x100000000",
+        "end": "0x100003138",
+        "length": 12600
+      },
+      {
+        "name": "__text",
+        "start": "0x100003138",
+        "end": "0x10360bf20",
+        "length": 56659432
+      },
+      {
+        "name": "__stubs",
+        "start": "0x10360bf20",
+        "end": "0x103618bc0",
+        "length": 52384
+      },
+      {
+        "name": "__objc_stubs",
+        "start": "0x103618bc0",
+        "end": "0x103647200",
+        "length": 190016
+      },
+      {
+        "name": "__init_offsets",
+        "start": "0x103647200",
+        "end": "0x1036479d8",
+        "length": 2008
+      },
+      {
+        "name": "__objc_methlist",
+        "start": "0x1036479d8",
+        "end": "0x10367eaf0",
+        "length": 225560
+      },
+      {
+        "name": "__const",
+        "start": "0x10367eaf0",
+        "end": "0x103984d90",
+        "length": 3170976
+      },
+      {
+        "name": "__cstring",
+        "start": "0x103984d90",
+        "end": "0x103b04360",
+        "length": 1570256
+      },
+      {
+        "name": "__swift5_typeref",
+        "start": "0x103b04360",
+        "end": "0x103cd7c10",
+        "length": 1915056
+      },
+      {
+        "name": "__constg_swiftt",
+        "start": "0x103cd7c10",
+        "end": "0x103d776d4",
+        "length": 654020
+      },
+      {
+        "name": "__swift5_entry",
+        "start": "0x103d776d4",
+        "end": "0x103d776dc",
+        "length": 8
+      },
+      {
+        "name": "__swift5_builtin",
+        "start": "0x103d776dc",
+        "end": "0x103d7bb30",
+        "length": 17492
+      },
+      {
+        "name": "__swift5_reflstr",
+        "start": "0x103d7bb30",
+        "end": "0x103e0e270",
+        "length": 599872
+      },
+      {
+        "name": "__swift5_fieldmd",
+        "start": "0x103e0e270",
+        "end": "0x103eb04dc",
+        "length": 664172
+      },
+      {
+        "name": "__swift5_assocty",
+        "start": "0x103eb04dc",
+        "end": "0x103eca3c4",
+        "length": 106216
+      },
+      {
+        "name": "__swift5_capture",
+        "start": "0x103eca3c4",
+        "end": "0x103f04888",
+        "length": 238788
+      },
+      {
+        "name": "__swift5_proto",
+        "start": "0x103f04888",
+        "end": "0x103f19fa4",
+        "length": 87836
+      },
+      {
+        "name": "__swift5_types",
+        "start": "0x103f19fa4",
+        "end": "0x103f24cd0",
+        "length": 44332
+      },
+      {
+        "name": "__objc_methname",
+        "start": "0x103f24cd0",
+        "end": "0x103f830d0",
+        "length": 386048
+      },
+      {
+        "name": "__objc_methtype",
+        "start": "0x103f830d0",
+        "end": "0x103f9c6e0",
+        "length": 103952
+      },
+      {
+        "name": "__objc_classname",
+        "start": "0x103f9c6e0",
+        "end": "0x103fb4f18",
+        "length": 100408
+      },
+      {
+        "name": "__swift5_mpenum",
+        "start": "0x103fb4f18",
+        "end": "0x103fb6a70",
+        "length": 7000
+      },
+      {
+        "name": "__swift5_protos",
+        "start": "0x103fb6a70",
+        "end": "0x103fb7450",
+        "length": 2528
+      },
+      {
+        "name": "__oslogstring",
+        "start": "0x103fb7450",
+        "end": "0x103fb76a0",
+        "length": 592
+      },
+      {
+        "name": "__swift_as_entry",
+        "start": "0x103fb76a0",
+        "end": "0x103fba71c",
+        "length": 12412
+      },
+      {
+        "name": "__swift_as_ret",
+        "start": "0x103fba71c",
+        "end": "0x103fbdc24",
+        "length": 13576
+      },
+      {
+        "name": "__swift5_types2",
+        "start": "0x103fbdc24",
+        "end": "0x103fbdc68",
+        "length": 68
+      },
+      {
+        "name": "__gcc_except_tab",
+        "start": "0x103fbdc68",
+        "end": "0x104035e4c",
+        "length": 492004
+      },
+      {
+        "name": "__ustring",
+        "start": "0x104035e4c",
+        "end": "0x10403604c",
+        "length": 512
+      },
+      {
+        "name": "__unwind_info",
+        "start": "0x10403604c",
+        "end": "0x1041084e0",
+        "length": 861332
+      },
+      {
+        "name": "__eh_frame",
+        "start": "0x1041084e0",
+        "end": "0x1041cc000",
+        "length": 801568
+      },
+      {
+        "name": "__got",
+        "start": "0x1041cc000",
+        "end": "0x1041e2840",
+        "length": 92224
+      },
+      {
+        "name": "__const",
+        "start": "0x1041e2840",
+        "end": "0x104402398",
+        "length": 2227032
+      },
+      {
+        "name": "__cfstring",
+        "start": "0x104402398",
+        "end": "0x104415cd8",
+        "length": 80192
+      },
+      {
+        "name": "__objc_classlist",
+        "start": "0x104415cd8",
+        "end": "0x104419a00",
+        "length": 15656
+      },
+      {
+        "name": "__objc_nlclslist",
+        "start": "0x104419a00",
+        "end": "0x104419a40",
+        "length": 64
+      },
+      {
+        "name": "__objc_catlist",
+        "start": "0x104419a40",
+        "end": "0x104419b48",
+        "length": 264
+      },
+      {
+        "name": "__objc_protolist",
+        "start": "0x104419b48",
+        "end": "0x10441a748",
+        "length": 3072
+      },
+      {
+        "name": "__objc_imageinfo",
+        "start": "0x10441a748",
+        "end": "0x10441a750",
+        "length": 8
+      },
+      {
+        "name": "__objc_arraydata",
+        "start": "0x10441a750",
+        "end": "0x10441a770",
+        "length": 32
+      },
+      {
+        "name": "__objc_arrayobj",
+        "start": "0x10441a770",
+        "end": "0x10441a7a0",
+        "length": 48
+      },
+      {
+        "name": "__objc_dictobj",
+        "start": "0x10441a7a0",
+        "end": "0x10441a7c8",
+        "length": 40
+      },
+      {
+        "name": "__DATA_CONST",
+        "start": "0x10441a7c8",
+        "end": "0x10441c000",
+        "length": 6200
+      },
+      {
+        "name": "__objc_const",
+        "start": "0x10441c000",
+        "end": "0x1044db268",
+        "length": 782952
+      },
+      {
+        "name": "__objc_selrefs",
+        "start": "0x1044db268",
+        "end": "0x1044ec378",
+        "length": 69904
+      },
+      {
+        "name": "__objc_protorefs",
+        "start": "0x1044ec378",
+        "end": "0x1044ecd20",
+        "length": 2472
+      },
+      {
+        "name": "__objc_classrefs",
+        "start": "0x1044ecd20",
+        "end": "0x1044ee4b8",
+        "length": 6040
+      },
+      {
+        "name": "__objc_superrefs",
+        "start": "0x1044ee4b8",
+        "end": "0x1044eed90",
+        "length": 2264
+      },
+      {
+        "name": "__objc_ivar",
+        "start": "0x1044eed90",
+        "end": "0x1044f0720",
+        "length": 6544
+      },
+      {
+        "name": "__objc_data",
+        "start": "0x1044f0720",
+        "end": "0x10452e538",
+        "length": 253464
+      },
+      {
+        "name": "__DATA",
+        "start": "0x10452e538",
+        "end": "0x10452e540",
+        "length": 8
+      },
+      {
+        "name": "__data",
+        "start": "0x10452e540",
+        "end": "0x1046913a8",
+        "length": 1453672
+      },
+      {
+        "name": "__objc_stublist",
+        "start": "0x1046913a8",
+        "end": "0x104691500",
+        "length": 344
+      },
+      {
+        "name": "__s_async_hook",
+        "start": "0x104691500",
+        "end": "0x104691690",
+        "length": 400
+      },
+      {
+        "name": "__swift56_hooks",
+        "start": "0x104691690",
+        "end": "0x104691740",
+        "length": 176
+      },
+      {
+        "name": "__thread_vars",
+        "start": "0x104691740",
+        "end": "0x104691a40",
+        "length": 768
+      },
+      {
+        "name": "__thread_data",
+        "start": "0x104691a40",
+        "end": "0x104692010",
+        "length": 1488
+      },
+      {
+        "name": "__common",
+        "start": "0x104692010",
+        "end": "0x104694000",
+        "length": 8176
+      },
+      {
+        "name": "__common",
+        "start": "0x104694000",
+        "end": "0x1046adcf0",
+        "length": 105712
+      },
+      {
+        "name": "__DATA",
+        "start": "0x1046adcf0",
+        "end": "0x1046add00",
+        "length": 16
+      },
+      {
+        "name": "__bss",
+        "start": "0x1046add00",
+        "end": "0x10494c000",
+        "length": 2745088
+      },
+      {
+        "name": "__LINKEDIT",
+        "start": "0x10494c000",
+        "end": "0x104f145c0",
+        "length": 6063552
+      },
+      {
+        "name": "__LINKEDIT",
+        "start": "0x104f145c0",
+        "end": "0x104f18000",
+        "length": 14912
+      },
+      {
+        "name": "EXTERNAL",
+        "start": "0x104f18000",
+        "end": "0x104fe8d00",
+        "length": 855296
+      }
+    ],
+    "segment_count": 64,
+    "procedure_count": 19584,
+    "string_count": 213501
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Derived by an REA+ composed workflow.",
+    "A headless Ghidra session contains exactly one imported Program, unlike Hopper's multi-document GUI session.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Charset is reported, while a non-missing terminator cannot distinguish a present terminator from a fixed or Pascal layout.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "External functions and local thunks are distinct; procedure metadata identifies both and preserves a thunk target when Ghidra resolves one.",
+    "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/caller-established-seeds.tsv (sha256 589422125448ff1a22b932ed399acf33482b0ebdbbda756e2df9e2d98f35d00f: 12 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+    "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=60.",
+    "Memory-block end addresses are exclusive; permissions come from Ghidra MemoryBlock flags rather than inference from section names.",
+    "Only Ghidra-defined string Data is observed; packed or undefined string bytes may be absent. Completeness applies to that inventory, and an empty search does not establish that text is absent from the artifact. If an address is known, use read_bytes and xrefs to inspect bytes and references.",
+    "Seed outcome: 12 functions created, 0 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory.",
+    "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+    "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

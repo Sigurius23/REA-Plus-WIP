@@ -19,9 +19,10 @@ export interface EvidenceInput {
   readonly coverage: ReconstructionEvidenceCoverage;
   readonly limitations?: readonly string[];
   readonly range?: JavaScriptSourceRange;
+  readonly logicalSource?: boolean;
 }
 
-/** Exact artifact-byte evidence for one safely inventoried local file. */
+/** Exact bytes from an inventoried file or an explicitly derived logical body. */
 export const artifactObservationEvidence = (
   input: EvidenceInput,
 ): ApplicationGraphEvidence => ({
@@ -31,7 +32,10 @@ export const artifactObservationEvidence = (
   artifact: artifactReference(input.sha256),
   location: {
     available: true,
-    value: { kind: "artifact-path", path: input.path },
+    value:
+      input.logicalSource === true
+        ? { kind: "url", url: input.path }
+        : { kind: "artifact-path", path: input.path },
   },
   extractor: { ...EXTRACTOR, operation: input.operation },
   coverage: input.coverage,
@@ -79,7 +83,13 @@ export const staticInferenceEvidence = (
   artifact: artifactReference(input.sha256),
   location:
     input.range === undefined
-      ? { available: true, value: { kind: "artifact-path", path: input.path } }
+      ? {
+          available: true,
+          value:
+            input.logicalSource === true
+              ? { kind: "url", url: input.path }
+              : { kind: "artifact-path", path: input.path },
+        }
       : {
           available: true,
           value: { kind: "source-range", source: input.path, ...input.range },
@@ -103,7 +113,10 @@ export const unavailableAstEvidence = (
   artifact: artifactReference(input.sha256),
   location: {
     available: true,
-    value: { kind: "artifact-path", path: input.path },
+    value:
+      input.logicalSource === true
+        ? { kind: "url", url: input.path }
+        : { kind: "artifact-path", path: input.path },
   },
   extractor: { ...EXTRACTOR, operation: input.operation },
   coverage: input.coverage,

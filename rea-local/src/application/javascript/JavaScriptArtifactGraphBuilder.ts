@@ -107,7 +107,11 @@ function* buildJavaScriptArtifactGraphInputSteps(
     fileSet,
     analysis,
     root,
-    filesByPath: new Map(fileSet.files.map((file) => [file.path, file])),
+    filesByPath: new Map(
+      [...fileSet.files, ...analysis.files.map(({ file }) => file)].map(
+        (file) => [file.path, file],
+      ),
+    ),
     fileNodes: new Map(),
     assetNodes: new Map(),
     sourceModuleNodes: new Map(),
@@ -181,6 +185,12 @@ const graphCoverage = (context: JavaScriptArtifactGraphContext) => {
   );
   const unknownGap =
     context.analysis.files.some(
+      ({ html }) =>
+        html !== undefined &&
+        (html.omitted_inline_scripts > 0 ||
+          html.inline_scripts.some((script) => !script.terminated)),
+    ) ||
+    context.analysis.files.some(
       ({ analysis_failure, application_projection_failure }) =>
         analysis_failure !== undefined ||
         application_projection_failure !== undefined,
@@ -197,6 +207,19 @@ const graphCoverage = (context: JavaScriptArtifactGraphContext) => {
           ? []
           : javaScriptAnalysisCoverageLimits(failure.limits),
       ),
+  );
+  executionLimits.push(
+    ...context.analysis.files.flatMap(({ html }) =>
+      html !== undefined && html.omitted_inline_scripts > 0
+        ? [
+            {
+              name: "javascript_inline_scripts",
+              value: html.inline_script_budget,
+              unit: "items" as const,
+            },
+          ]
+        : [],
+    ),
   );
   if (resourceLimits.length > 0 || executionLimits.length > 0)
     return partialApplicationCoverage(

@@ -6,6 +6,7 @@ import {
 } from "./JavaScriptArtifactGraphContext.js";
 import {
   artifactObservationEvidence,
+  astObservationEvidence,
   staticInferenceEvidence,
 } from "./JavaScriptArtifactGraphEvidence.js";
 import { completeApplicationCoverage } from "../../domain/javascript/javascriptApplicationEvidenceSchemas.js";
@@ -18,6 +19,7 @@ export const addJavaScriptHtmlRoles = (
   context: JavaScriptArtifactGraphContext,
 ): void => {
   const byHtml = new Map<string, typeof context.analysis.html_scripts>();
+  const inlineByHtml = new Map<string, JavaScriptArtifactFile[]>();
   for (const script of context.analysis.html_scripts) {
     const existing = byHtml.get(script.html_path);
     byHtml.set(
@@ -25,10 +27,51 @@ export const addJavaScriptHtmlRoles = (
       existing === undefined ? [script] : [...existing, script],
     );
   }
+  for (const { file, html } of context.analysis.files) {
+    if (file.inline_source !== undefined) {
+      const existing = inlineByHtml.get(file.inline_source.html_path) ?? [];
+      existing.push(file);
+      inlineByHtml.set(file.inline_source.html_path, existing);
+    }
+    if (
+      html !== undefined &&
+      html.inline_script_count > 0 &&
+      !byHtml.has(file.path)
+    )
+      byHtml.set(file.path, []);
+  }
   for (const [htmlPath, scripts] of byHtml) {
     const html = context.filesByPath.get(htmlPath);
     if (html === undefined) continue;
     const document = addHtmlDocument(context, html);
+    for (const file of inlineByHtml.get(htmlPath) ?? []) {
+      const origin = file.inline_source;
+      if (origin === undefined || origin.html_path !== htmlPath) continue;
+      const derived = context.fileNodes.get(file.path);
+      if (derived === undefined) continue;
+      context.accumulator.addEdge({
+        source_node_id: document.node_id,
+        target_node_id: derived.node_id,
+        relation: "contains",
+        properties: {
+          mechanism: "html-inline-script",
+          logical_source: file.path,
+          script_kind: origin.script_kind,
+          body_sha256: file.sha256,
+          runtime_execution: "unknown",
+        },
+        evidence: astObservationEvidence({
+          sha256: html.sha256,
+          path: html.path,
+          range: origin.source_range,
+          operation: "discover-html-inline-script",
+          coverage: completeApplicationCoverage(),
+          limitations: [
+            "The source body is observed; browser activation and execution order remain unknown.",
+          ],
+        }),
+      });
+    }
     for (const script of scripts) {
       const resolution = resolveArtifactPathByContext({
         declaredPath: script.script_path,

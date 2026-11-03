@@ -168,7 +168,36 @@ export const addJavaScriptArtifactFiles = (
     const entry = createAsarEntry(context, file);
     const parent =
       context.containerNodes.get(file.container_sha256) ?? context.root;
-    if (entry === undefined)
+    if (file.inline_source !== undefined) {
+      const parentHtml = context.fileNodes.get(file.inline_source.html_path);
+      if (parentHtml === undefined)
+        throw new TypeError(
+          "Derived inline source has no original HTML graph node",
+        );
+      addArtifactContainsEdge(context, {
+        source: parentHtml,
+        target,
+        file,
+        operation: "derive-html-inline-source",
+      });
+      context.accumulator.addEdge({
+        source_node_id: target.node_id,
+        target_node_id: parentHtml.node_id,
+        relation: "maps_to",
+        properties: {
+          ...file.inline_source,
+          body_sha256: file.sha256,
+          body_bytes: file.bytes,
+        },
+        evidence: astObservationEvidence({
+          sha256: file.inline_source.html_sha256,
+          path: file.inline_source.html_path,
+          range: file.inline_source.source_range,
+          operation: "map-inline-source-to-html",
+          coverage: completeApplicationCoverage(),
+        }),
+      });
+    } else if (entry === undefined)
       addArtifactContainsEdge(context, {
         source: parent,
         target,
@@ -368,15 +397,22 @@ const createFileTarget = (
   analyzed: JavaScriptModuleArtifactAnalysis["files"][number],
   json: JavaScriptModuleArtifactAnalysis["json_modules"][number] | undefined,
 ): ApplicationNode => {
-  const { file, javascript, semantic, semantic_projection } = analyzed;
+  const { file, javascript, semantic, semantic_projection, html } = analyzed;
   const kind = artifactFileNodeKind(file.kind);
   return context.accumulator.addNode({
     kind,
-    identity: {
-      strategy: "content-digest",
-      stability: "global-exact",
-      sha256: file.sha256,
-    },
+    identity:
+      file.inline_source === undefined
+        ? {
+            strategy: "content-digest",
+            stability: "global-exact",
+            sha256: file.sha256,
+          }
+        : artifactLocalIdentity(
+            file.inline_source.html_sha256,
+            "html-inline-script",
+            file.path,
+          ),
     observations: [
       {
         label: file.path,
@@ -384,6 +420,10 @@ const createFileTarget = (
           path: file.path,
           bytes: file.bytes,
           inventory_artifact_id: file.inventory_artifact_id,
+          ...(file.inline_source === undefined
+            ? {}
+            : { inline_source: { ...file.inline_source } }),
+          ...(html === undefined ? {} : { html_inline_sources: html }),
           unpacked: file.unpacked,
           file_kind: file.kind,
           text_status: file.text.included ? "included" : file.text.reason,
@@ -427,10 +467,32 @@ const createFileTarget = (
         evidence: artifactObservationEvidence({
           sha256: file.sha256,
           path: file.path,
-          operation: "inventory-relevant-file",
+          operation:
+            file.inline_source === undefined
+              ? "inventory-relevant-file"
+              : "derive-html-inline-source",
+          logicalSource: file.inline_source !== undefined,
           coverage: completeApplicationCoverage(),
         }),
       },
+      ...(file.inline_source === undefined
+        ? []
+        : [
+            {
+              label: "Inline source in original HTML",
+              properties: {
+                inline_source: { ...file.inline_source },
+                body_sha256: file.sha256,
+              },
+              evidence: astObservationEvidence({
+                sha256: file.inline_source.html_sha256,
+                path: file.inline_source.html_path,
+                range: file.inline_source.source_range,
+                operation: "observe-html-inline-body",
+                coverage: completeApplicationCoverage(),
+              }),
+            },
+          ]),
     ],
   });
 };
@@ -449,6 +511,7 @@ const createAsarEntry = (
   context: JavaScriptArtifactGraphContext,
   file: JavaScriptArtifactFile,
 ): ApplicationNode | undefined => {
+  if (file.inline_source !== undefined) return undefined;
   const isAsar =
     context.snapshot.manifest.root_format === "asar" ||
     file.container_sha256 !== context.snapshot.manifest.root_sha256;

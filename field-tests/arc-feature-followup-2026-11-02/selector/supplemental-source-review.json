@@ -1,0 +1,35 @@
+{
+  "classification": "supplemental inert raw-source review, not REA+ recovery or target execution",
+  "source_path": "/Applications/Arc.app/Contents/Resources/ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+  "bytes": 11068,
+  "sha256": "0e779dad9316f8b14cf4e1b20fa710240cd90bc9a9a1dd820df38ebd525d977d",
+  "source_unchanged_from_retained_parent": true,
+  "ranges": [
+    {
+      "start_code_unit": 9745,
+      "end_code_unit_exclusive": 10872,
+      "text": "window.getSelectorCandidates=function(e){var r=document.elementFromPoint(e.x,e.y);if(!r)return[];var i=function(e,r){console.log(e);for(var i=y(y({},D),r),o={matchCounts:new Map,identifiers:new Map,matchMisses:0,matchHits:0,idMisses:0,idHits:0},c=function(e,r){return T(e,r).map((function(r){return{matches:t(r.selectorTerm).length,semanticness:r.semanticness,originalIdentifier:r.selectorTerm,ancestorTerms:[],descendantTerms:[],topmostConsideredAncestor:e,lowestConsideredDescendant:e,selector:r.selectorTerm}}))}(e,o),s={},u=0,l=B;u<l.length;u++)for(var f=0,d=U(c,l[u],o);f<d.length;f++){var h=d[f];void 0===s[h.selector]&&(s[h.selector]=h)}var m=Object.values(s),p=function(e){for(var t={},r=0,n=e;r<n.length;r++){var a=n[r];t[a]=w(a)}return t}((m=m.filter((function(r){return 0===t(r.selector,e).length})).filter((function(e){return e.matches<=100}))).map((function(e){return e.selector}))),v=n(m,i.outputCandidates,(function(e){return a(e)+(p[e.selector]?20:0)}));return v.sort((function(e,t){return e.matches-t.matches})),v}(r);return 0===i.length?[]:i.map((function(e){return{selector:e.selector,matches:e.matches}}))},",
+      "facts": [
+        "window.getSelectorCandidates accepts coordinate object x/y",
+        "document.elementFromPoint supplies selected element; missing element returns []",
+        "Candidate strings are deduplicated, candidates with matches > 100 are filtered, selected candidates sort by ascending matches",
+        "Final value is an array of objects with selector and matches fields"
+      ]
+    },
+    {
+      "start_code_unit": 10872,
+      "end_code_unit_exclusive": 11063,
+      "text": "window.rectsForSelector=function(e){return Array.from(document.querySelectorAll(e)).map((function(e){var t=e.getBoundingClientRect();return{x:t.left,y:t.top,width:t.width,height:t.height}}))}",
+      "facts": [
+        "window.rectsForSelector accepts a selector string",
+        "document.querySelectorAll -> Array.from -> map invokes getBoundingClientRect for each matching element",
+        "Returned objects expose x=left, y=top, width, height"
+      ]
+    }
+  ],
+  "limits": [
+    "The native caller/injection timing and visual overlay code are not present in these excerpts",
+    "Actual DOM values, CSS matching, candidate quality, rectangle coordinate transforms, and resulting visible behavior were not executed or measured",
+    "These manual facts do not close missing REA+ DOM/callback/return-shape semantic edges"
+  ]
+}

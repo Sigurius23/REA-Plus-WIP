@@ -41,10 +41,11 @@ export const parserPluginsForPath = (sourcePath?: string): ParserPlugin[] => {
 export const parseJavaScriptSource = (
   source: string,
   sourcePath?: string,
+  sourceType: "script" | "module" | "unambiguous" = "unambiguous",
 ): ParsedJavaScriptSource | null => {
   try {
     return parse(source, {
-      sourceType: "unambiguous",
+      sourceType,
       errorRecovery: true,
       attachComment: false,
       plugins: parserPluginsForPath(sourcePath),

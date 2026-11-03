@@ -1,0 +1,132 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/context",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "60",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/context/caller-established-seeds.tsv"
+  },
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 600000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-arc-fresh-2026-11-02-7pjfvfjv/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "binary_overview",
+      "label": "overview",
+      "expect_success": true
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x1039f4160"
+      },
+      "label": "rects-header-xrefs"
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x1039f41c0"
+      },
+      "label": "candidates-header-xrefs"
+    },
+    {
+      "name": "inspect_native_data_type",
+      "arguments": {
+        "address": "0x103ce16e4"
+      },
+      "label": "command-type-descriptor"
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103ce16e4",
+        "length": 32
+      },
+      "label": "command-type-descriptor-bytes"
+    },
+    {
+      "name": "inspect_native_data_type",
+      "arguments": {
+        "address": "0x103d71abc"
+      },
+      "label": "gallery-type-descriptor"
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103d71abc",
+        "length": 32
+      },
+      "label": "gallery-type-descriptor-bytes"
+    },
+    {
+      "name": "inspect_native_data_type",
+      "arguments": {
+        "type": "/SwiftTypeMetadata/TargetTypeContextDescriptor"
+      },
+      "label": "context-descriptor-layout"
+    },
+    {
+      "name": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x103646ca4"
+      },
+      "label": "selector-window-load"
+    },
+    {
+      "name": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x10361e3e4"
+      },
+      "label": "selector-related-load"
+    },
+    {
+      "name": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x1036312e4"
+      },
+      "label": "selector-order-load"
+    },
+    {
+      "name": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x10361fa24"
+      },
+      "label": "selector-candidate-load"
+    },
+    {
+      "name": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x103627c04"
+      },
+      "label": "selector-probe-load"
+    },
+    {
+      "name": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x10362fcc4"
+      },
+      "label": "selector-coordinate-load"
+    },
+    {
+      "name": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x10362c8e4"
+      },
+      "label": "selector-parent-load"
+    }
+  ],
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/context/continuation-1.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/context/continuation-2.json"
+  ]
+}

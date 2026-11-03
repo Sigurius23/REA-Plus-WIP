@@ -1,0 +1,42 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/interruption",
+  "timeout_ms": 120000,
+  "idle_timeout_ms": 600000,
+  "steps": [
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/owned-composite",
+        "max_inline_scripts": 0,
+        "analysis_timeout_ms": 1
+      },
+      "label": "timeout-with-known-html"
+    },
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/materialized-inputs"
+      },
+      "label": "arc-pages-final",
+      "expect_success": true
+    },
+    {
+      "name": "get_evidence_bundle",
+      "arguments": {
+        "detail": "summary"
+      },
+      "label": "bundle-summary"
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/interruption/before-view-bundle.json"
+      },
+      "label": "early-export",
+      "expect_success": true
+    }
+  ],
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/interruption/continuation-1.json"
+  ]
+}

@@ -1,0 +1,65 @@
+
+> rea-agents@6.4.0 test:local
+> node scripts/run-development-tests.mjs local src/application/javascript/JavaScriptArtifactAnalysisOrder.test.ts
+
+Source-test feedback; compiled boundaries and real providers need explicit verification.
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ❯ |services| src/application/javascript/JavaScriptArtifactAnalysisOrder.test.ts (3 tests | 2 failed) 31ms
+   ✓ analyzes JavaScript smallest first in place and reports inventory order 13ms
+   × retains known HTML admission and unsupported-body facts after worker-result interruption 13ms
+   × retains known HTML admission and unsupported-body facts after before-html interruption 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |services| src/application/javascript/JavaScriptArtifactAnalysisOrder.test.ts > retains known HTML admission and unsupported-body facts after worker-result interruption
+AssertionError: expected undefined to match object { inline_script_count: 2, …(1) }
+
+- Expected:
+{
+  "inline_script_count": 2,
+  "omitted_inline_scripts": 2,
+}
+
++ Received:
+undefined
+
+ ❯ src/application/javascript/JavaScriptArtifactAnalysisOrder.test.ts:102:28
+    100|     expect(interruption).toBe(timeout);
+    101|     const retained = analysis.files.find(({ file }) => file.path === "…
+    102|     expect(retained?.html).toMatchObject({
+       |                            ^
+    103|       inline_script_count: 2,
+    104|       omitted_inline_scripts: phase === "worker-result" ? 2 : 0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |services| src/application/javascript/JavaScriptArtifactAnalysisOrder.test.ts > retains known HTML admission and unsupported-body facts after before-html interruption
+AssertionError: expected undefined to match object { inline_script_count: 2, …(1) }
+
+- Expected:
+{
+  "inline_script_count": 2,
+  "omitted_inline_scripts": 0,
+}
+
++ Received:
+undefined
+
+ ❯ src/application/javascript/JavaScriptArtifactAnalysisOrder.test.ts:102:28
+    100|     expect(interruption).toBe(timeout);
+    101|     const retained = analysis.files.find(({ file }) => file.path === "…
+    102|     expect(retained?.html).toMatchObject({
+       |                            ^
+    103|       inline_script_count: 2,
+    104|       omitted_inline_scripts: phase === "worker-result" ? 2 : 0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  00:46:11
+   Duration  648ms (transform 68%, import 23%, tests 6%, worker 4%)
+

@@ -1,4 +1,18 @@
 import type { JavaScriptPathScopeSummary } from "./javascriptAnalysisPathScope.js";
+import type { JavaScriptSourceRange } from "./javascriptStaticAnalysisTypes.js";
+
+/** A logical source body, mapped to its actual inventoried HTML document. */
+export interface JavaScriptInlineSourceOrigin {
+  readonly html_path: string;
+  readonly html_sha256: string;
+  readonly html_inventory_artifact_id: string;
+  readonly script_kind: "classic" | "module";
+  readonly base_href: string | null;
+  readonly start_offset: number;
+  readonly end_offset: number;
+  readonly offset_encoding: "utf16-code-units";
+  readonly source_range: JavaScriptSourceRange;
+}
 
 /** Relevant file categories projected from the complete artifact inventory. */
 export type JavaScriptArtifactFileKind =
@@ -9,13 +23,15 @@ export type JavaScriptArtifactFileKind =
   | "source-map"
   | "native-addon";
 
-/** One content-addressed local artifact file and its text availability. */
+/** An inventoried file or explicitly derived inline source and its inert text. */
 export interface JavaScriptArtifactFile {
   readonly path: string;
   readonly container_sha256: string;
   readonly sha256: string;
   readonly bytes: number;
-  readonly inventory_artifact_id: string;
+  readonly inventory_artifact_id: string | null;
+  /** Present only for a derived body; its path is a logical URI, never a file. */
+  readonly inline_source?: JavaScriptInlineSourceOrigin | undefined;
   readonly kind: JavaScriptArtifactFileKind;
   readonly unpacked: boolean;
   readonly text:

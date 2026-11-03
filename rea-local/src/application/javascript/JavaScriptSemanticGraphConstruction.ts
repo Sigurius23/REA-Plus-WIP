@@ -15,6 +15,7 @@ import type {
 } from "../../domain/javascript/javascriptSemanticGraphSchemas.js";
 import type { JavaScriptSourceRange } from "../../domain/javascript/javascriptStaticAnalysisTypes.js";
 import type { JavaScriptArtifactFile } from "../../domain/javascript/javascriptArtifactFiles.js";
+import { isJavaScriptInlineSourceUri } from "../../domain/javascript/javascriptInlineSourceIdentity.js";
 import {
   inferredSemanticEvidence,
   observedSemanticEvidence,
@@ -253,6 +254,16 @@ const indexApplicationNodes = (
         addApplicationNodeIdentifier(
           identifiers,
           applicationLocationKey(artifact.sha256, location.value.path, null),
+          node.node_id,
+        );
+      }
+      if (
+        location.value.kind === "url" &&
+        isJavaScriptInlineSourceUri(location.value.url)
+      ) {
+        addApplicationNodeIdentifier(
+          identifiers,
+          applicationLocationKey(artifact.sha256, location.value.url, null),
           node.node_id,
         );
       }

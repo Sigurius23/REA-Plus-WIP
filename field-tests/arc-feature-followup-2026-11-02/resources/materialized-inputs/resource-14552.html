@@ -1,0 +1,127 @@
+<!doctype html>
+<html dir="$i18n{textdirection}" lang="$i18n{language}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1,
+      minimum-scale=1,width=device-width">
+  <title>$i18n{incognitoBlockedPageTitle}</title>
+  <style>/* Copyright 2023 The Chromium Authors
+* Use of this source code is governed by a BSD-style license that can be
+* found in the LICENSE file. */
+
+body {
+  --header-color: var(--cr-primary-text-color);
+  --paragraph-color: var(--cr-secondary-text-color);
+  font-family: sans-serif;
+  padding: 24px 24px 20px 24px;
+}
+
+h1 {
+  color: var(--header-color);
+  font-size: 30px;
+  font-weight: normal;
+  margin-bottom: 16px;
+}
+
+.frame-blocked {
+  margin: 100px auto 0;
+  text-align: center;
+}
+
+.information-container {
+  display: inline-block;
+  font-size: 125%;
+  letter-spacing: -0.35px;
+  text-align: start;
+}
+
+#main-message {
+  margin-top: 36px;
+}
+
+.enterprise-icon {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgZmlsbD0iIzIwMjEyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDBWMHoiLz48cGF0aCBkPSJNMTIgN1YzSDJ2MThoMjBWN0gxMnpNNiAxOUg0di0yaDJ2MnptMC00SDR2LTJoMnYyem0wLTRINFY5aDJ2MnptMC00SDRWNWgydjJ6bTQgMTJIOHYtMmgydjJ6bTAtNEg4di0yaDJ2MnptMC00SDhWOWgydjJ6bTAtNEg4VjVoMnYyem0xMCAxMmgtOHYtMmgydi0yaC0ydi0yaDJ2LTJoLTJWOWg4djEwem0tMi04aC0ydjJoMnYtMnptMCA0aC0ydjJoMnYtMnoiLz48L3N2Zz4=);
+  height: 48px;
+  width: 48px;
+}
+</style>
+  <script>// Copyright 2023 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+showBlockingExtensions = (extensionNames) => {
+  const ul = document.getElementById('blocking-extensions');
+  for (extName of extensionNames) {
+    const li = document.createElement('li');
+    li.appendChild(document.createTextNode(extName));
+    ul.appendChild(li);
+  }
+};
+
+showMissingExtensions = (extensionIDs) => {
+  const ul = document.getElementById('missing-extensions');
+  for (extName of extensionIDs) {
+    const li = document.createElement('li');
+    li.appendChild(document.createTextNode(extName));
+    ul.appendChild(li);
+  }
+};
+
+/**
+ * Initializes the page when the window is loaded.
+ */
+window.onload = () => {
+  const missingExtensions = window.loadTimeData.getValue('missingExtensions');
+  if (missingExtensions.length > 0) {
+    document.getElementById('container-missing-extensions').hidden = false;
+    showMissingExtensions(missingExtensions);
+    return;
+  }
+  document.getElementById('container-blocking-extensions').hidden = false;
+  showBlockingExtensions(window.loadTimeData.getValue('blockingExtensions'));
+};
+</script>
+</head>
+<body>
+  <div class="frame-blocked">
+    <div class="information-container">
+      <div class="enterprise-icon"></div>
+      <div id="main-message">
+        <div id="container-blocking-extensions" hidden>
+          <h1 id="heading">
+            $i18n{incognitoBlockedPageTitle}
+          </h1>
+          <p>
+            $i18n{incognitoBlockedMessage}
+          </p>
+          <ul id="blocking-extensions">
+          </ul>
+          <p>
+            $i18n{incognitoBlockedInstructions}
+          </p>
+          <ol>
+            <li>
+              $i18nRaw{incognitoBlockedInstructionsStep1}
+            </li>
+            <li>
+              $i18nRaw{incognitoBlockedInstructionsStep2}
+            </li>
+            <li>
+              $i18nRaw{incognitoBlockedInstructionsStep3}
+            </li>
+            <li>
+              $i18nRaw{incognitoBlockedInstructionsStep4}
+            </li>
+          </ol>
+        </div>
+        <div id="container-missing-extensions" hidden>
+          <h1>
+            $i18n{incognitoBlockedMissingExtensionsTitle}
+          </h1>
+          $i18nRaw{incognitoBlockedMissingExtensionsMessage}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

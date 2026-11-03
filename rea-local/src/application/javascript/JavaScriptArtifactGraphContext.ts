@@ -123,6 +123,7 @@ export const addArtifactContainsEdge = (
           : input.file.sha256,
       path: input.file.path,
       operation: input.operation,
+      logicalSource: input.file.inline_source !== undefined,
       coverage: completeApplicationCoverage(),
     }),
   });
@@ -197,6 +198,7 @@ export const addUnavailableStaticParseScope = (
         evidence: unavailableAstEvidence({
           sha256: input.file.sha256,
           path: input.file.path,
+          logicalSource: input.file.inline_source !== undefined,
           operation: input.operation,
           coverage: partialApplicationCoverage(input.limits ?? [], null),
           limitation: input.limitation,
@@ -213,6 +215,7 @@ export const addUnavailableStaticParseScope = (
       sha256: input.file.sha256,
       path: input.file.path,
       operation: "associate-unavailable-parse-scope",
+      logicalSource: input.file.inline_source !== undefined,
       coverage: completeApplicationCoverage(),
     }),
   });

@@ -1,0 +1,699 @@
+{
+  "evidence_id": "ev_6ea308faf4417c8b5d6f362b0f74757b3e9ac51bb93fe82bb9cdcf2ca8025734",
+  "subject": null,
+  "provider": {
+    "id": "rea-javascript-application-workflows",
+    "name": "REA+ JavaScript application workflows",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.javascript-semantic-trace",
+  "operation": "trace_javascript_semantics",
+  "parameters": {
+    "application_evidence_id": "ev_2b912b006e85b86dad751b5e7bad554cbed02c7df215ac4379748a0bd400f44b",
+    "query": {
+      "seed": {
+        "kind": "semantic-node",
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915"
+      },
+      "direction": "callers",
+      "include_ambiguous_dynamic_edges": false,
+      "expected": null
+    }
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "query_id": "jsrq_35b8cd964db3254867a00c2a77a2f0c7a2fc46d320c9960f8590d3103350da27",
+    "source_graph_id": "jsrg_db550c8798de04c6adb65e0802cb1fc9078cb544dac976c5301cbbdfd4c97388",
+    "seed": {
+      "kind": "semantic-node",
+      "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915"
+    },
+    "direction": "callers",
+    "status": "found",
+    "seed_node_ids": [
+      "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915"
+    ],
+    "evidence_contexts": [
+      {
+        "authority": "static-relationship-inference",
+        "state": "inferred",
+        "confidence": "high",
+        "artifact": {
+          "available": true,
+          "artifact_id": "art_0e779dad9316f8b14cf4e1b20fa710240cd90bc9a9a1dd820df38ebd525d977d",
+          "sha256": "0e779dad9316f8b14cf4e1b20fa710240cd90bc9a9a1dd820df38ebd525d977d"
+        },
+        "extractor": {
+          "name": "rea-javascript-semantic-analysis",
+          "version": "1",
+          "operation": "analyze_javascript_application",
+          "executable_sha256": null
+        },
+        "coverage": {
+          "status": "complete",
+          "truncated": false,
+          "omitted_count": 0,
+          "limits": []
+        },
+        "limitations": [
+          "This relationship is a conservative static candidate; it does not prove runtime execution or causal flow."
+        ],
+        "evidence_ids": [],
+        "context_id": "jsrg_evidence_2551726244cddbd6fb1ee75ca30db5beabde16507005daa937027969b6ef3378"
+      },
+      {
+        "authority": "unknown",
+        "state": "unknown",
+        "confidence": "unknown",
+        "artifact": {
+          "available": true,
+          "artifact_id": "art_0e779dad9316f8b14cf4e1b20fa710240cd90bc9a9a1dd820df38ebd525d977d",
+          "sha256": "0e779dad9316f8b14cf4e1b20fa710240cd90bc9a9a1dd820df38ebd525d977d"
+        },
+        "extractor": {
+          "name": "rea-javascript-semantic-analysis",
+          "version": "1",
+          "operation": "analyze_javascript_application",
+          "executable_sha256": null
+        },
+        "coverage": {
+          "status": "complete",
+          "truncated": false,
+          "omitted_count": 0,
+          "limits": []
+        },
+        "limitations": [
+          "Dynamic syntax prevents an exact static relationship."
+        ],
+        "evidence_ids": [],
+        "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21"
+      },
+      {
+        "authority": "ast-static-analysis",
+        "state": "observed",
+        "confidence": "exact",
+        "artifact": {
+          "available": true,
+          "artifact_id": "art_0e779dad9316f8b14cf4e1b20fa710240cd90bc9a9a1dd820df38ebd525d977d",
+          "sha256": "0e779dad9316f8b14cf4e1b20fa710240cd90bc9a9a1dd820df38ebd525d977d"
+        },
+        "extractor": {
+          "name": "rea-javascript-semantic-analysis",
+          "version": "1",
+          "operation": "analyze_javascript_application",
+          "executable_sha256": null
+        },
+        "coverage": {
+          "status": "complete",
+          "truncated": false,
+          "omitted_count": 0,
+          "limits": []
+        },
+        "limitations": [],
+        "evidence_ids": [],
+        "context_id": "jsrg_evidence_9de0b719c862b28ec9e40e58dd7e997701c771db5d8afd52b372b9b2a2bc703d"
+      }
+    ],
+    "nodes": [
+      {
+        "kind": "call-site",
+        "identity": {
+          "artifact_sha256": "0e779dad9316f8b14cf4e1b20fa710240cd90bc9a9a1dd820df38ebd525d977d",
+          "module_path": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 9848
+            },
+            "end": {
+              "line": 1,
+              "column": 10779
+            }
+          },
+          "role_key": "call:call:call:9848:10779"
+        },
+        "function_node_id": "jsrg_node_acc617e13e124942524ec7c75304eced4c977c5a6eb90e4e9443685a6ff88a2b",
+        "application_node_ids": [],
+        "label": "call",
+        "properties": {},
+        "evidence": {
+          "context_id": "jsrg_evidence_9de0b719c862b28ec9e40e58dd7e997701c771db5d8afd52b372b9b2a2bc703d",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 9848
+              },
+              "end": {
+                "line": 1,
+                "column": 10779
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_0fe54a2758dbaae5e8add3493aa0f43925f5ef07b3d13e595dbdcbc461270c47"
+      },
+      {
+        "kind": "function",
+        "identity": {
+          "artifact_sha256": "0e779dad9316f8b14cf4e1b20fa710240cd90bc9a9a1dd820df38ebd525d977d",
+          "module_path": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 9848
+            },
+            "end": {
+              "line": 1,
+              "column": 10776
+            }
+          },
+          "role_key": "callable:callable:function:9848:10776"
+        },
+        "function_node_id": null,
+        "application_node_ids": [],
+        "label": null,
+        "properties": {
+          "name": null
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_9de0b719c862b28ec9e40e58dd7e997701c771db5d8afd52b372b9b2a2bc703d",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 9848
+              },
+              "end": {
+                "line": 1,
+                "column": 10776
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915"
+      }
+    ],
+    "relations": [
+      {
+        "source_node_id": "jsrg_node_0fe54a2758dbaae5e8add3493aa0f43925f5ef07b3d13e595dbdcbc461270c47",
+        "target_node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "relation": "calls",
+        "resolution": "resolved",
+        "properties": {},
+        "evidence": {
+          "context_id": "jsrg_evidence_2551726244cddbd6fb1ee75ca30db5beabde16507005daa937027969b6ef3378",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 9848
+              },
+              "end": {
+                "line": 1,
+                "column": 10779
+              }
+            }
+          }
+        },
+        "relation_id": "jsrg_relation_e12618787613f2007116d688cf5146b483ef9612d3ece1dc3adac9d8a37f3ba8"
+      }
+    ],
+    "unknowns": [
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "object-flow",
+        "relation_kinds": [
+          "reads-property",
+          "writes-property"
+        ],
+        "reason": "dynamic-property",
+        "detail": "Computed member property is not a static string or number.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 10358
+              },
+              "end": {
+                "line": 1,
+                "column": 10368
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_4d7bcc04bcc3f85508f7d077428f2dab7980e347936d661b3f5ac63210e9e9d5"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "object-flow",
+        "relation_kinds": [
+          "reads-property",
+          "writes-property"
+        ],
+        "reason": "dynamic-property",
+        "detail": "Computed member property is not a static string or number.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 10314
+              },
+              "end": {
+                "line": 1,
+                "column": 10315
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_4f43be2c06369900d8fffcda88aaf9eee301c26c543c33d99119d5e904aa1dba"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "call-flow",
+        "relation_kinds": [
+          "calls"
+        ],
+        "reason": "dynamic-call",
+        "detail": "Call target y has ambiguous or unsupported assignments.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 9889
+              },
+              "end": {
+                "line": 1,
+                "column": 9890
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_54942bd02309f509ea5984e56f68162dffc395056881502f2503589381f7ac5b"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "object-flow",
+        "relation_kinds": [
+          "reads-property",
+          "writes-property"
+        ],
+        "reason": "dynamic-property",
+        "detail": "Computed member property is not a static string or number.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 10374
+              },
+              "end": {
+                "line": 1,
+                "column": 10384
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_5bb9495f646d77db51db7eaaa8f67076db02b1016bd846d890241a07a3a06944"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "call-flow",
+        "relation_kinds": [
+          "calls"
+        ],
+        "reason": "dynamic-call",
+        "detail": "Unsupported MemberExpression call target.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 10494
+              },
+              "end": {
+                "line": 1,
+                "column": 10605
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_6d9e16a61670b2ea68c5d762e5d3ae0e7ebbe1e69ad9e945cc537c7ce0f90d49"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "call-flow",
+        "relation_kinds": [
+          "calls"
+        ],
+        "reason": "dynamic-call",
+        "detail": "Unsupported MemberExpression call target.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 10497
+              },
+              "end": {
+                "line": 1,
+                "column": 10505
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_83407d65d82a6dc68dfa5df915b434f6b7623086cb1032cd6d5f86d219a35da3"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "call-flow",
+        "relation_kinds": [
+          "calls"
+        ],
+        "reason": "dynamic-call",
+        "detail": "Unresolved call target Map.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 9939
+              },
+              "end": {
+                "line": 1,
+                "column": 9942
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_870c286bd9d6ddff717742f67f234aef363843e238cf2f96c10dc50ac1156ff2"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "call-flow",
+        "relation_kinds": [
+          "calls"
+        ],
+        "reason": "dynamic-call",
+        "detail": "Unsupported MemberExpression call target.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 10497
+              },
+              "end": {
+                "line": 1,
+                "column": 10562
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_8b508244418e612a44692e78fdf2d9893748fc0d690e0a68f6888e821ee4167a"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "call-flow",
+        "relation_kinds": [
+          "calls"
+        ],
+        "reason": "dynamic-call",
+        "detail": "Unsupported MemberExpression call target.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 10395
+              },
+              "end": {
+                "line": 1,
+                "column": 10408
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_956fa554b8f0e70d7f1080880fffb9d74bb1c473485b0a1a69c6251371640e4a"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "call-flow",
+        "relation_kinds": [
+          "calls"
+        ],
+        "reason": "dynamic-call",
+        "detail": "Unresolved call target Map.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 9919
+              },
+              "end": {
+                "line": 1,
+                "column": 9922
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_9d0e1b1473ec6f9c3785aa406d8c1faf0dab72688fcd7e288eb399ac8906f8bb"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "call-flow",
+        "relation_kinds": [
+          "calls"
+        ],
+        "reason": "dynamic-call",
+        "detail": "Unsupported MemberExpression call target.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 9862
+              },
+              "end": {
+                "line": 1,
+                "column": 9873
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_a188724af1f038644191d6e7b4d9e9ed8c2faee691eb66e0a83e5c6f1a4ca8bc"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "object-flow",
+        "relation_kinds": [
+          "reads-property",
+          "writes-property"
+        ],
+        "reason": "dynamic-property",
+        "detail": "Computed member property is not a static string or number.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 10344
+              },
+              "end": {
+                "line": 1,
+                "column": 10345
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_c7629b3cb1582814ea274906c5448310e5e8518359ce9621cc914467ed68511a"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "call-flow",
+        "relation_kinds": [
+          "calls"
+        ],
+        "reason": "dynamic-call",
+        "detail": "Unsupported MemberExpression call target.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 10722
+              },
+              "end": {
+                "line": 1,
+                "column": 10728
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_cf4d9aad38f8c8b1fc73eff979c96ffbe8bc4860af2224a95592dcfda1d36d2f"
+      },
+      {
+        "node_id": "jsrg_node_ea64d6e39c1da882bf7c48f261a7e73ce6453b79d5ac3b1b13d958fe6daf8915",
+        "family": "call-flow",
+        "relation_kinds": [
+          "calls"
+        ],
+        "reason": "dynamic-call",
+        "detail": "Call target y has ambiguous or unsupported assignments.",
+        "candidate_node_ids": [],
+        "evidence": {
+          "context_id": "jsrg_evidence_3c7333e656500d0cbc8b977cf80a465a3aed936b139e64fdf5c3ce9f6202be21",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+              "start": {
+                "line": 1,
+                "column": 9887
+              },
+              "end": {
+                "line": 1,
+                "column": 9888
+              }
+            }
+          }
+        },
+        "unknown_id": "jsrg_unknown_e48db5c6adc06780cc45fea5e63af0bc25ff5f62b9989ecdc03139e4b22181e7"
+      }
+    ],
+    "expected_match_node_ids": [],
+    "summary": {
+      "total_seed_matches": 1,
+      "traversed_nodes": 2,
+      "traversed_relations": 1,
+      "traversed_functions": 2,
+      "traversed_modules": 1,
+      "relevant_unknowns": 14
+    },
+    "coverage": {
+      "status": "partial"
+    },
+    "limitations": [
+      "Boundary extraction covers unshadowed JSON/global coercions plus parse and validation method candidates.",
+      "Child-process extraction covers asynchronous node:child_process creation, literal argv/env/stdio options, exit/error listeners, and kill signals.",
+      "Configuration extraction covers process.env, process.argv, node:fs reads, and direct logical defaults.",
+      "Event extraction covers EventEmitter-style literal registrations, removals, and dispatch candidates; dynamic names remain unknown.",
+      "Function fingerprints are static candidates; equal digests can remain ambiguous and do not prove behavioral equivalence.",
+      "Local data flow does not claim control-flow-sensitive reaching definitions or arbitrary dynamic property resolution.",
+      "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+      "Relevant dynamic, unsupported, incomplete, or ambiguous semantics remain unknown.",
+      "Request extraction covers fetch, WebSocket, node:http/node:https construction, direct option fields, and exact local response consumers.",
+      "Resource extraction covers built-in filesystem/network acquisition and exact local close/destroy/end handles.",
+      "Semantic graph reachability is a static inference and does not prove runtime execution.",
+      "The semantic graph contains static syntax observations and conservative relationship candidates; it does not claim runtime execution.",
+      "Timer extraction covers global or node:timers scheduling and exact local-handle cancellation."
+    ],
+    "source_evidence_id": "ev_2b912b006e85b86dad751b5e7bad554cbed02c7df215ac4379748a0bd400f44b",
+    "evidence_links": [
+      "ev_2b912b006e85b86dad751b5e7bad554cbed02c7df215ac4379748a0bd400f44b"
+    ]
+  },
+  "confidence": "inferred",
+  "authority": "analyst-inference",
+  "environment": null,
+  "limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "Boundary extraction covers unshadowed JSON/global coercions plus parse and validation method candidates.",
+    "Child-process extraction covers asynchronous node:child_process creation, literal argv/env/stdio options, exit/error listeners, and kill signals.",
+    "Configuration extraction covers process.env, process.argv, node:fs reads, and direct logical defaults.",
+    "Event extraction covers EventEmitter-style literal registrations, removals, and dispatch candidates; dynamic names remain unknown.",
+    "Function fingerprints are static candidates; equal digests can remain ambiguous and do not prove behavioral equivalence.",
+    "Local data flow does not claim control-flow-sensitive reaching definitions or arbitrary dynamic property resolution.",
+    "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+    "Relevant dynamic, unsupported, incomplete, or ambiguous semantics remain unknown.",
+    "Request extraction covers fetch, WebSocket, node:http/node:https construction, direct option fields, and exact local response consumers.",
+    "Resource extraction covers built-in filesystem/network acquisition and exact local close/destroy/end handles.",
+    "Semantic graph reachability is a static inference and does not prove runtime execution.",
+    "The semantic graph contains static syntax observations and conservative relationship candidates; it does not claim runtime execution.",
+    "Timer extraction covers global or node:timers scheduling and exact local-handle cancellation."
+  ],
+  "locations": [],
+  "evidence_links": [
+    "ev_2b912b006e85b86dad751b5e7bad554cbed02c7df215ac4379748a0bd400f44b"
+  ]
+}

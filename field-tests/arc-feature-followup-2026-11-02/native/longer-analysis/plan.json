@@ -1,0 +1,45 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/longer-analysis",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "600000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "300",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/longer-analysis/caller-established-seeds.tsv"
+  },
+  "timeout_ms": 650000,
+  "idle_timeout_ms": 600000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-arc-fresh-2026-11-02-7pjfvfjv/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "binary_overview",
+      "label": "overview",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1005a44b4"
+      },
+      "label": "gallery-payload"
+    },
+    {
+      "name": "get_evidence_bundle",
+      "arguments": {
+        "detail": "summary"
+      },
+      "label": "bundle-summary"
+    }
+  ],
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/native/longer-analysis/continuation-1.json"
+  ]
+}

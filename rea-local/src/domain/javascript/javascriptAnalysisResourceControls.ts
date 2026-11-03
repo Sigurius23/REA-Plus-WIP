@@ -6,6 +6,8 @@ import type { ApplicationCoverage } from "./javascriptApplicationEvidenceSchemas
 export const JAVASCRIPT_ANALYSIS_RESOURCE_DEFAULTS = {
   heapMb: 1024,
   timeoutMs: 300_000,
+  /** Run-wide derived-source admission, separate from physical file inventory. */
+  inlineScripts: 1_000,
 } as const;
 
 /** Characterization of one parent's result-retention economy, per run. */
@@ -87,6 +89,15 @@ export const javaScriptAnalysisCoverageLimits = (
 
 /** Optional operational choices; omission keeps them out of Evidence parameters. */
 export const javaScriptAnalysisResourceControlsSchema = z.strictObject({
+  max_inline_scripts: z
+    .number()
+    .int()
+    .min(0)
+    .max(Number.MAX_SAFE_INTEGER)
+    .optional()
+    .describe(
+      "Maximum inline JavaScript bodies admitted across selected HTML documents; defaults to 1000. Physical file scope is unchanged. Excess bodies are counted and reported as partial coverage; raise this policy to inspect them. Bodies are parsed independently without execution.",
+    ),
   scan_shipped_material: z
     .boolean()
     .optional()

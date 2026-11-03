@@ -1,0 +1,66 @@
+
+> rea-agents@6.4.0 verify:package
+> npm run build:cached && node scripts/verify-package.mjs
+
+
+> rea-agents@6.4.0 build:cached
+> node scripts/check-dependency-install.mjs && node scripts/run-exclusive.mjs artifacts turbo run artifacts:skills
+
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 95a5780ab3f2d79b
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs 97d572a8a23c80d5
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache hit, replaying logs 3631dce25b74b1e4
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    3 cached, 3 total
+  Time:    317ms >>> FULL TURBO
+
+[verify:package] repository skill: start
+[verify:package] repository skill: complete (3670 ms)
+[verify:package] package archive: start
+[verify:package] workspace cleanup: start
+[verify:package] workspace cleanup: complete (207 ms)
+node:internal/errors:986
+  const err = new Error(message);
+              ^
+
+Error: Command failed: tar -tf /var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-package-3CfEa7/pack/.git can't be found
+rea-agents-6.4.0.tgz
+tar: /var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-package-3CfEa7/pack/.git can't be found
+rea-agents-6.4.0.tgz: m: No such file or directory
+
+    at genericNodeError (node:internal/errors:986:15)
+    at wrappedFn (node:internal/errors:540:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1172:16)
+    at Socket.<anonymous> (node:internal/child_process:527:11)
+    at Socket.emit (node:events:514:28)
+    at Pipe.<anonymous> (node:net:362:12) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: "tar -tf /var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-package-3CfEa7/pack/.git can't be found\n" +
+    'rea-agents-6.4.0.tgz',
+  stdout: '',
+  stderr: "tar: /var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-package-3CfEa7/pack/.git can't be found\n" +
+    'rea-agents-6.4.0.tgz: m: No such file or directory\n'
+}
+
+Node.js v24.22.1

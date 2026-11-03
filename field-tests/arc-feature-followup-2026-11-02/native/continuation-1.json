@@ -1,0 +1,54 @@
+{
+  "steps": [
+    {
+      "name": "search_strings",
+      "arguments": {
+        "pattern": "getSelectorCandidates|rectsForSelector|BoostsCommand|BoostCommand",
+        "mode": "regex"
+      },
+      "label": "selector-command-strings"
+    },
+    {
+      "name": "search_procedures",
+      "arguments": {
+        "pattern": "Boost.*(Command|Delegate)|SidebarResizeRegionView",
+        "mode": "regex"
+      },
+      "label": "boost-sidebar-procedures"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1000caf9c"
+      },
+      "label": "sidebar-init"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1000cbb5c"
+      },
+      "label": "sidebar-layout"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1000cbd08"
+      },
+      "label": "sidebar-update-layer"
+    },
+    {
+      "name": "trace_native_values",
+      "arguments": {
+        "procedure": "0x1009f8cdc",
+        "max_depth": 0,
+        "max_functions": 1,
+        "max_call_sites": 128,
+        "max_nodes": 2000,
+        "max_edges": 4000,
+        "limit": 1000
+      },
+      "label": "sidebar-state-values"
+    }
+  ]
+}

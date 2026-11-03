@@ -6,6 +6,7 @@ import {
   logicalPathEscapesRoot,
 } from "../../domain/artifactIdentity.js";
 import type { JavaScriptArtifactFile } from "../../domain/javascript/javascriptArtifactFiles.js";
+import { isJavaScriptInlineSourceUri } from "../../domain/javascript/javascriptInlineSourceIdentity.js";
 import {
   admitsCanonicalPathSyntax,
   hasScheme,
@@ -106,6 +107,14 @@ export const resolveArtifactPathByContext = (
 };
 
 const resolvePath = (input: ResolveArtifactPathInput): CandidateResolution => {
+  if (isJavaScriptInlineSourceUri(input.sourcePath))
+    return {
+      resolvedPath: null,
+      status: "unavailable",
+      limitations: [
+        "A logical inline source requires its original HTML document/base context; it is not a filesystem module path.",
+      ],
+    };
   const rejected = rejectDeclaration(input.declaredPath);
   if (rejected !== null) return rejected;
   const candidate = contextualCandidate(input);
@@ -120,6 +129,41 @@ const resolvePath = (input: ResolveArtifactPathInput): CandidateResolution => {
       ])
     );
   return resolveCandidate(input, confined, new Set());
+};
+
+/** One module-resolution owner for physical sources and browser inline bodies. */
+export const resolveJavaScriptSourceModule = (
+  file: JavaScriptArtifactFile,
+  declaredPath: string,
+  files: ReadonlyMap<string, JavaScriptArtifactFile>,
+  moduleKind?: "import" | "require",
+): ArtifactPathResolution => {
+  const inline = file.inline_source;
+  if (
+    inline !== undefined &&
+    (moduleKind !== "import" ||
+      (!declaredPath.startsWith("./") &&
+        !declaredPath.startsWith("../") &&
+        !declaredPath.startsWith("/") &&
+        !/^[A-Za-z][A-Za-z0-9+.-]*:/u.test(declaredPath)))
+  )
+    return {
+      declared_path: declaredPath,
+      resolution_context: "html-reference",
+      resolved_path: null,
+      resolution_status: "unavailable",
+      limitations: [
+        "Inline browser sources do not establish a Node require binding or import-map resolution for bare specifiers.",
+      ],
+    };
+  return resolveArtifactPathByContext({
+    declaredPath,
+    files,
+    sourcePath: inline?.html_path ?? file.path,
+    context: inline === undefined ? "module-specifier" : "html-reference",
+    ...(inline === undefined ? {} : { htmlBaseHref: inline.base_href }),
+    ...(moduleKind === undefined ? {} : { moduleKind }),
+  });
 };
 
 const rejectDeclaration = (declared: string): CandidateResolution | null => {

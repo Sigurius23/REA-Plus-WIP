@@ -1,0 +1,189 @@
+{
+  "evidence_id": "ev_feac6616a46e498436dd65965d3a23667b9277a5a595c29bbc42d2f38e209570",
+  "subject": {
+    "name": "html",
+    "digest": {
+      "sha256": "6a39ac4e0215a1435f841bd9ce9710a3e8392bb51110162d5a4fad60ef47b218"
+    },
+    "format": "directory",
+    "architecture": null,
+    "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/owned-inline-reproduction/html"
+  },
+  "provider": {
+    "id": "rea-analysis-view",
+    "name": "REA+ analysis view projection",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis-view",
+  "operation": "inspect_analysis_view",
+  "parameters": {
+    "parent_evidence_id": "ev_c70d3d6f8c05c56187772da8d9066a53bb5b26d007dd57141765f3237e248615",
+    "view": {
+      "kind": "page",
+      "collection": "endpoints",
+      "bindings": {},
+      "offset": 0,
+      "limit": 64
+    }
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "kind": "page",
+    "view": {
+      "kind": "page",
+      "collection": "endpoints",
+      "bindings": {},
+      "offset": 0,
+      "limit": 64
+    },
+    "items": [
+      {
+        "node_id": "jag_node_603d4a63409f4abf8bd47071b35be952a4b1c89a1213ebf92e57ca2764c6e1f4",
+        "observation_id": "jag_observation_3e446f795efa593f2533b7ebc4950b415a03f74a854c976a601c807e9caad284",
+        "network_receiver": {
+          "status": "recognized-network",
+          "identity": "fetch"
+        },
+        "template": "/owned-inline-only",
+        "template_parts": null,
+        "materialized_value": "/owned-inline-only",
+        "materialization_status": "literal",
+        "unresolved_expressions": [],
+        "evidence": {
+          "authority": "ast-static-analysis",
+          "state": "observed",
+          "confidence": "exact",
+          "artifact": {
+            "available": true,
+            "artifact_id": "art_b35decaac97ff1f6eeef230a8849db7e9c5b293527de1df2aef73632226bda44",
+            "sha256": "b35decaac97ff1f6eeef230a8849db7e9c5b293527de1df2aef73632226bda44"
+          },
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "rea-inline-script://index.html?start=38&end=107&kind=module",
+              "start": {
+                "line": 2,
+                "column": 27
+              },
+              "end": {
+                "line": 2,
+                "column": 54
+              }
+            }
+          },
+          "extractor": {
+            "name": "rea-javascript-artifact-reconstruction",
+            "version": "1",
+            "operation": "discover-static-endpoint",
+            "executable_sha256": null
+          },
+          "coverage": {
+            "status": "complete",
+            "truncated": false,
+            "omitted_count": 0,
+            "limits": []
+          },
+          "limitations": [],
+          "evidence_ids": []
+        }
+      }
+    ],
+    "parent_evidence_id": "ev_c70d3d6f8c05c56187772da8d9066a53bb5b26d007dd57141765f3237e248615",
+    "parent_operation": "analyze_javascript_application",
+    "parent_digest": "c70d3d6f8c05c56187772da8d9066a53bb5b26d007dd57141765f3237e248615",
+    "view_digest": "3ed8d3634c90587576c2bc8c7936effdc04e465eafe9746a617ce117d61c109a",
+    "artifact": {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/owned-inline-reproduction/html",
+      "sha256": "6a39ac4e0215a1435f841bd9ce9710a3e8392bb51110162d5a4fad60ef47b218"
+    },
+    "coverage": {
+      "status": "page",
+      "examined": 1,
+      "total": 1,
+      "next_offset": null,
+      "exhausted": true
+    },
+    "limitations": [
+      "Boundary extraction covers unshadowed JSON/global coercions plus parse and validation method candidates.",
+      "Child-process extraction covers asynchronous node:child_process creation, literal argv/env/stdio options, exit/error listeners, and kill signals.",
+      "Classic-script shared globals, cross-script execution order, module scheduling and browser activation conditions are not established by inline source analysis.",
+      "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+      "Configuration extraction covers process.env, process.argv, node:fs reads, and direct logical defaults.",
+      "Event extraction covers EventEmitter-style literal registrations, removals, and dispatch candidates; dynamic names remain unknown.",
+      "Function fingerprints are static candidates; equal digests can remain ambiguous and do not prove behavioral equivalence.",
+      "HTML inline analysis covers supported classic/module script elements. Attribute handlers, javascript: URLs, import-map behavior and runtime-inserted scripts are not evaluated.",
+      "Inline JavaScript bodies are independent logical sources mapped to exact HTML UTF-16 ranges. Body digests cover their UTF-8 text; logical URIs are not inventoried files.",
+      "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+      "Local data flow does not claim control-flow-sensitive reaching definitions or arbitrary dynamic property resolution.",
+      "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+      "Request extraction covers fetch, WebSocket, node:http/node:https construction, direct option fields, and exact local response consumers.",
+      "Resource extraction covers built-in filesystem/network acquisition and exact local close/destroy/end handles.",
+      "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+      "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+      "The semantic graph contains static syntax observations and conservative relationship candidates; it does not claim runtime execution.",
+      "Timer extraction covers global or node:timers scheduling and exact local-handle cancellation.",
+      "Webpack/Rspack factories were recovered from AST literals; REA+ did not invoke push handlers or bundle bootstrap code.",
+      "Materialized values use only the explicit caller map; runtime values and reachability remain unverified. Historical templates without expression metadata cannot be materialized."
+    ],
+    "unknowns": [
+      "2 semantic graph unknowns remain in the parent Evidence.",
+      "Boundary extraction covers unshadowed JSON/global coercions plus parse and validation method candidates.",
+      "Child-process extraction covers asynchronous node:child_process creation, literal argv/env/stdio options, exit/error listeners, and kill signals.",
+      "Classic-script shared globals, cross-script execution order, module scheduling and browser activation conditions are not established by inline source analysis.",
+      "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+      "Configuration extraction covers process.env, process.argv, node:fs reads, and direct logical defaults.",
+      "Event extraction covers EventEmitter-style literal registrations, removals, and dispatch candidates; dynamic names remain unknown.",
+      "Function fingerprints are static candidates; equal digests can remain ambiguous and do not prove behavioral equivalence.",
+      "HTML inline analysis covers supported classic/module script elements. Attribute handlers, javascript: URLs, import-map behavior and runtime-inserted scripts are not evaluated.",
+      "Inline JavaScript bodies are independent logical sources mapped to exact HTML UTF-16 ranges. Body digests cover their UTF-8 text; logical URIs are not inventoried files.",
+      "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+      "Local data flow does not claim control-flow-sensitive reaching definitions or arbitrary dynamic property resolution.",
+      "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+      "Request extraction covers fetch, WebSocket, node:http/node:https construction, direct option fields, and exact local response consumers.",
+      "Resource extraction covers built-in filesystem/network acquisition and exact local close/destroy/end handles.",
+      "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+      "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+      "The semantic graph contains static syntax observations and conservative relationship candidates; it does not claim runtime execution.",
+      "Timer extraction covers global or node:timers scheduling and exact local-handle cancellation.",
+      "Webpack/Rspack factories were recovered from AST literals; REA+ did not invoke push handlers or bundle bootstrap code.",
+      "semantic_graph.coverage.status is unknown"
+    ]
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Boundary extraction covers unshadowed JSON/global coercions plus parse and validation method candidates.",
+    "Child-process extraction covers asynchronous node:child_process creation, literal argv/env/stdio options, exit/error listeners, and kill signals.",
+    "Classic-script shared globals, cross-script execution order, module scheduling and browser activation conditions are not established by inline source analysis.",
+    "CommonJS and ESM binding relationships were recovered from inert syntax and resolved only within the inventoried artifact container.",
+    "Configuration extraction covers process.env, process.argv, node:fs reads, and direct logical defaults.",
+    "Event extraction covers EventEmitter-style literal registrations, removals, and dispatch candidates; dynamic names remain unknown.",
+    "Function fingerprints are static candidates; equal digests can remain ambiguous and do not prove behavioral equivalence.",
+    "HTML inline analysis covers supported classic/module script elements. Attribute handlers, javascript: URLs, import-map behavior and runtime-inserted scripts are not evaluated.",
+    "Inline JavaScript bodies are independent logical sources mapped to exact HTML UTF-16 ranges. Body digests cover their UTF-8 text; logical URIs are not inventoried files.",
+    "JavaScript and HTML were parsed as inert text; bundle bootstrap code was never executed.",
+    "Local data flow does not claim control-flow-sensitive reaching definitions or arbitrary dynamic property resolution.",
+    "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+    "Request extraction covers fetch, WebSocket, node:http/node:https construction, direct option fields, and exact local response consumers.",
+    "Resource extraction covers built-in filesystem/network acquisition and exact local close/destroy/end handles.",
+    "Static imports, entrypoints, workers, endpoints, and storage relationships do not prove runtime execution.",
+    "Static paths and relationships may remain unresolved when expressions are dynamic or obfuscated.",
+    "The semantic graph contains static syntax observations and conservative relationship candidates; it does not claim runtime execution.",
+    "Timer extraction covers global or node:timers scheduling and exact local-handle cancellation.",
+    "Webpack/Rspack factories were recovered from AST literals; REA+ did not invoke push handlers or bundle bootstrap code.",
+    "Materialized values use only the explicit caller map; runtime values and reachability remain unverified. Historical templates without expression metadata cannot be materialized."
+  ],
+  "locations": [
+    {
+      "kind": "artifact-path",
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/owned-inline-reproduction/html"
+    }
+  ],
+  "evidence_links": [
+    "ev_c70d3d6f8c05c56187772da8d9066a53bb5b26d007dd57141765f3237e248615"
+  ]
+}

@@ -17,6 +17,7 @@ import type { ArtifactInventorySnapshot } from "../../domain/artifactInventorySn
 import type { ArtifactInventoryPartialObservation } from "../../domain/artifactPartialObservation.js";
 import type { ArtifactResourceScope } from "../../artifacts/ArtifactResourceScope.js";
 import { analyzeAndAdoptJavaScriptArtifactFiles } from "./JavaScriptArtifactAnalysis.js";
+import { prepareJavaScriptArtifactSourcesSteps } from "./JavaScriptInlineSources.js";
 import { createJavaScriptSourceAnalysis } from "../../artifacts/javascript/JavaScriptSourceAnalysis.js";
 import { JAVASCRIPT_ANALYSIS_RESOURCE_DEFAULTS } from "../../domain/javascript/javascriptAnalysisResourceControls.js";
 import { createOwnedJavaScriptApplicationEvidenceCooperatively } from "./JavaScriptApplicationEvidence.js";
@@ -57,6 +58,7 @@ export interface JavaScriptArtifactReconstructionResult {
     readonly text_bytes_read: number;
     readonly invalid_utf8_files: number;
     readonly parsed_javascript_files: number;
+    readonly parsed_inline_scripts: number;
     readonly visited_ast_nodes: number;
     readonly findings: number;
     readonly modules: number;
@@ -145,6 +147,10 @@ export const reconstructJavaScriptArtifact = async (
         `Parsing and projecting ${String(files.files.length)} application source files`,
       );
       const semanticProjection = createJavaScriptSemanticGraphProjection();
+      const analysisSources = await completeJavaScriptAnalysisSteps(
+        prepareJavaScriptArtifactSourcesSteps(files, input.max_inline_scripts),
+        signal,
+      );
       const worker = createJavaScriptSourceAnalysis(
         {
           heapMb:
@@ -155,7 +161,7 @@ export const reconstructJavaScriptArtifact = async (
           maxSemanticSourceBytes: input.max_semantic_source_bytes,
           scanShippedMaterial: input.scan_shipped_material,
         },
-        files.files.filter(
+        analysisSources.sources.filter(
           (file) => file.kind === "javascript" && file.text.included,
         ).length,
       );
@@ -163,7 +169,7 @@ export const reconstructJavaScriptArtifact = async (
       let cleanupFailure: AnalysisError | undefined;
       try {
         outcome = await analyzeAndAdoptJavaScriptArtifactFiles(
-          files,
+          analysisSources,
           worker,
           semanticProjection,
           async (file, completed, total) => {
@@ -275,7 +281,12 @@ export const reconstructJavaScriptArtifact = async (
           text_bytes_read: files.text_bytes_read,
           invalid_utf8_files: files.invalid_utf8_files,
           parsed_javascript_files: analysis.files.filter(
-            ({ javascript }) => javascript !== null,
+            ({ file, javascript }) =>
+              javascript !== null && file.inline_source === undefined,
+          ).length,
+          parsed_inline_scripts: analysis.files.filter(
+            ({ file, javascript }) =>
+              javascript !== null && file.inline_source !== undefined,
           ).length,
           visited_ast_nodes: analysis.visited_ast_nodes,
           findings: analysis.findings,

@@ -7,6 +7,7 @@ import {
 } from "./javascriptApplicationEvidenceSchemas.js";
 import { jsonValueSchema } from "../jsonValue.js";
 import { digestSchema } from "../digests.js";
+import { isJavaScriptInlineSourceUri } from "./javascriptInlineSourceIdentity.js";
 import { prefixedDigestSchema } from "../digests.js";
 
 const boundedTextSchema = z.string().min(1);
@@ -213,7 +214,15 @@ const semanticPropertiesSchema = z.record(z.string().min(1), jsonValueSchema);
 
 const semanticNodeIdentitySchema = z.strictObject({
   artifact_sha256: digestSchema,
-  module_path: relativePathSchema,
+  module_path: z.union([
+    relativePathSchema,
+    z
+      .string()
+      .refine(
+        isJavaScriptInlineSourceUri,
+        "Expected a canonical derived inline-source URI",
+      ),
+  ]),
   source_range: sourceRangeSchema.nullable(),
   role_key: z.string().min(1),
 });

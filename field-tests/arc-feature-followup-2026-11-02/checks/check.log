@@ -1,0 +1,61 @@
+
+> rea-agents@6.4.0 precheck
+> npm run deps:check
+
+
+> rea-agents@6.4.0 deps:check
+> node scripts/check-dependency-install.mjs
+
+
+> rea-agents@6.4.0 check
+> node scripts/run-exclusive.mjs artifacts turbo run typecheck lint format:check knip metadata:check && npm run verify:architecture-guards
+
+
+   • turbo 2.11.7
+   • Running typecheck, lint, format:check, knip, metadata:check
+   • Remote caching disabled
+
+lint: cache miss, executing 27c1deeba6cf7252
+format:check: cache miss, executing 3cc7399a5f6ecbec
+typecheck: cache miss, executing 28629ed3b98881db
+metadata:check: cache hit, replaying logs 95a5780ab3f2d79b
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs d29a8b0f28e759ca
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+knip: cache miss, executing 4c5e731cb8670740
+typecheck: 
+typecheck: > rea-agents@6.4.0 typecheck
+typecheck: > tsc --noEmit
+typecheck: 
+lint: 
+lint: > rea-agents@6.4.0 lint
+lint: > oxlint && npm run verify:module-boundaries
+lint: 
+knip: 
+knip: > rea-agents@6.4.0 knip
+knip: > knip
+knip: 
+format:check: 
+format:check: > rea-agents@6.4.0 format:check
+format:check: > oxfmt --check .
+format:check: 
+format:check: Checking formatting...
+format:check: 
+format:check: src/domain/javascript/htmlArtifactReferences.test.ts (0ms)
+format:check: 
+format:check: Format issues found in above 1 files. Run without `--check` to fix.
+format:check: Finished in 3406ms on 3142 files using 8 threads.
+format:check:  ERROR  command (/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/) /usr/local/bin/npm run format:check exited (1)
+
+ Tasks:    2 successful, 6 total
+Cached:    2 cached, 6 total
+  Time:    5.57s 
+Failed:    //#format:check
+
+ ERROR  run failed: command  exited (1)

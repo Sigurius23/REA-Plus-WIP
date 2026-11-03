@@ -279,6 +279,9 @@ const registerJavaScriptApplicationCommand = (
                 : {
                     max_semantic_source_bytes: options.maxSemanticSourceBytes,
                   }),
+              ...(options.maxInlineScripts === undefined
+                ? {}
+                : { max_inline_scripts: options.maxInlineScripts }),
               ...(options.scanShippedMaterial === undefined
                 ? {}
                 : { scan_shipped_material: options.scanShippedMaterial }),

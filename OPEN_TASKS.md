@@ -4,6 +4,17 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc inline HTML and feature follow-up (2026-11-03):** Item **41 is done**.
+  Offline HTML now produces derived classic/module sources with original
+  document identity/ranges, separate physical/inline counts and explicit
+  omission/unsupported diagnostics, including after interruption. **166 tests
+  / seven files**, public CLI/MCP parity, legacy Evidence reuse and an actual
+  Arc retest verify the change: **three inline bodies / 222 AST nodes**, with
+  all three module IRs retained. Native follow-up establishes the gallery's
+  URL/action and Boost IDE request-case/response names. A 300-second native
+  comparison still remains partial; full Arc behavior is not complete. Source,
+  docs, duplication and isolated package checks pass. See the
+  [feature follow-up](field-tests/arc-feature-followup-2026-11-02.md).
 - **Arc fixes and fresh retest (2026-11-02):** Items **38–40 are fixed and
   published in `3a3b6c438e7f`**, then independently retested on Arc. Explicit
   snapshot budgets admit the original universal
@@ -87,6 +98,12 @@ Open work on `main` following PR #1 and the field tests.
      also passed with unchanged test budgets; see
      [HeyClicky fix verification](field-tests/heyclicky-fixes-2026-10-28.md).
 2. **Branch state and push:**
+   - **Item 41 publication batch (2026-11-03):** inline-source implementation,
+     tests, skill 41, feature findings and authenticated captures are included
+     together after the published retest `d4bf47b75`. The package check verifies
+     204 tools / six prompts and isolated install/update/cleanup. Historical
+     uncommitted statements describe the original capture sessions; the two
+     large local Rize JSONs remain excluded.
    - **Arc publication batch (2026-11-02):** the initial field test, items 38–40
      implementation and verification were pushed in `3a3b6c438e7f` to the
      existing WIP `origin/main`; the remote main hash was checked explicitly.
@@ -125,8 +142,9 @@ Open work on `main` following PR #1 and the field tests.
    engineering scope (17–29) is complete with the documented dynamic/coverage
    limits; those limits do not establish full runtime understanding. Arc's
    tool gaps 38–40 are done and pass the fresh retest, while its broader
-   feature/design investigation remains incomplete; see the
-   [remaining investigation](field-tests/arc-retest-2026-11-02.md#remaining-investigation).
+   feature/design investigation remains incomplete. Item 41 is also done;
+   the [feature follow-up](field-tests/arc-feature-followup-2026-11-02.md#remaining-questions)
+   records the remaining runtime, native and semantic boundaries.
 
 ## DEX support
 
@@ -779,3 +797,37 @@ their behavior after publication. Its maximum-budget Objective-C read recovers
 871 class/metaclass records and 3,052 method implementations, with coverage
 still partial; lower-budget empty class arrays are not absence claims. No new
 numbered defect was reproduced, and full Arc feature recovery remains open.
+
+41. **Offline HTML inline scripts have no analyzed source identity.** Done
+    (2026-11-03); capability extension, not a regression of the
+    documented external-script-link profile. The exact decoded Arc resource
+    pages 14552 and 14565 contain inline JavaScript bodies, but the earlier offline
+    JavaScript producer inventories their HTML without parsing those bodies.
+    An owned **117-byte HTML / identical 68-byte JavaScript body** pair
+    reproduces the boundary: HTML has zero parsed JavaScript files / AST nodes
+    and no endpoint candidate, while the standalone body yields one parsed
+    file / 12 nodes and the declared `/owned-inline-only` fetch candidate.
+    Evidence `ev_a41c112f831dbe901885768eb338b7304ea2c54b60c072b4f08009f6857bf3c8`
+    and `ev_7d8d352118848a4d7e1059e5c199d913f357cfe2186196b10828784cc3ba8820`
+    is retained under `field-tests/arc-feature-followup-2026-11-02/resources/`.
+
+    **Fix verified:** one prepared-source owner retains exact body identity,
+    original HTML digest/inventory ID, UTF-16 ranges, classic/module kind and
+    document base. Logical `rea-inline-script://` identities are not filesystem
+    entries. Imports and source maps resolve from the document/base; bare
+    browser specifiers and Node bindings retain uncertainty. Physical inventory
+    and parsed-file counts stay separate from inline-source counts. The
+    run-wide `max_inline_scripts` policy (CLI `--max-inline-scripts`) defaults
+    to 1,000; omissions, parser failures and unsupported unterminated bodies
+    stay visible in coverage and compact source-kind-aware statuses. Known HTML
+    metadata survives both active and later-unexamined interruption paths.
+
+    **Verification:** 166 tests / seven files, 15-call public fixture/legacy
+    journey, exact default and zero-budget CLI/MCP parity, and a six-call real
+    timeout/recovery journey (one expected timeout) verify the behavior.
+    Actual Arc pages now retain **three bodies / 222 AST nodes / three complete
+    module IRs**; 142 semantic source ranges map back to the exact decoded HTML.
+    Four retained-parent feature traces remain partial at DOM/dynamic-value
+    boundaries. Source/checks, docs, duplication (2.48%) and isolated package
+    verification pass; full `check:pr` was not rerun. See the
+    [report](field-tests/arc-feature-followup-2026-11-02.md).

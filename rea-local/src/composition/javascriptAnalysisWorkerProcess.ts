@@ -23,7 +23,15 @@ const analyze: JavaScriptSourceWorkerAnalyzer = async (
   if (!file.text.included)
     throw new TypeError("JavaScript worker requires decoded source text");
   await callbacks.phase("parse");
-  let parsed = parseJavaScriptSource(file.text.value, file.path);
+  let parsed = parseJavaScriptSource(
+    file.text.value,
+    file.path,
+    file.inline_source?.script_kind === "classic"
+      ? "script"
+      : file.inline_source?.script_kind === "module"
+        ? "module"
+        : undefined,
+  );
   if (parsed === null) {
     await callbacks.checkpoint(failedJavaScriptStaticAnalysis());
     return null;

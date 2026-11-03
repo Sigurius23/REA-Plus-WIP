@@ -7,6 +7,7 @@ import type { JavaScriptSemanticIr } from "../../domain/javascript/javascriptSem
 import type { JavaScriptModuleSemanticIr } from "../../domain/javascript/javascriptModuleSemanticIr.js";
 import type { JavaScriptArtifactFile } from "../../domain/javascript/javascriptArtifactFiles.js";
 import type { JsonValue } from "../../domain/jsonValue.js";
+import type { HtmlInlineScript } from "../../domain/javascript/htmlArtifactReferences.js";
 
 interface JavaScriptStructuredObservation {
   readonly path: string;
@@ -98,6 +99,17 @@ export interface AnalyzedJavaScriptArtifactFile<
   SemanticIr extends JavaScriptModuleSemanticIr = JavaScriptSemanticIr,
 > {
   readonly file: JavaScriptArtifactFile;
+  /** HTML selection facts retain unsupported/omitted bodies without invented files. */
+  readonly html?: {
+    readonly base_href: string | null;
+    readonly inline_scripts: readonly (HtmlInlineScript & {
+      readonly logical_source: string | null;
+      readonly body_sha256: string;
+    })[];
+    readonly inline_script_count: number;
+    readonly omitted_inline_scripts: number;
+    readonly inline_script_budget: number;
+  };
   readonly javascript: JavaScriptStaticAnalysis | null;
   readonly semantic: {
     readonly ir: SemanticIr;

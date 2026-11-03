@@ -1,0 +1,204 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix",
+  "timeout_ms": 120000,
+  "steps": [
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/owned-inline-reproduction/html"
+      },
+      "label": "owned-html",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/owned-composite"
+      },
+      "label": "composite",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/owned-issues"
+      },
+      "label": "issues",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/owned-composite",
+        "max_inline_scripts": 0
+      },
+      "label": "omitted",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/materialized-inputs"
+      },
+      "label": "arc-pages",
+      "expect_success": true
+    },
+    {
+      "name": "import_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-02/javascript/evidence-bundle.json"
+      },
+      "label": "legacy-import",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_2b912b006e85b86dad751b5e7bad554cbed02c7df215ac4379748a0bd400f44b"
+        },
+        "view": {
+          "kind": "page",
+          "collection": "endpoints",
+          "offset": 0,
+          "limit": 16
+        }
+      },
+      "label": "legacy-endpoints",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_2b912b006e85b86dad751b5e7bad554cbed02c7df215ac4379748a0bd400f44b"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_123bc08f82fbd422374a4f8bbc08564db8654087fdd1898fd9c8833acc2bff84"
+          },
+          "direction": "forward-influence"
+        }
+      },
+      "label": "legacy-trace",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "inline",
+          "evidence": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/owned-html.evidence.json"
+          }
+        },
+        "view": {
+          "kind": "page",
+          "collection": "endpoints",
+          "offset": 0,
+          "limit": 64
+        }
+      },
+      "label": "owned-html-endpoints",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "inline",
+          "evidence": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/composite.evidence.json"
+          }
+        },
+        "view": {
+          "kind": "page",
+          "collection": "file_statuses",
+          "offset": 0,
+          "limit": 64,
+          "filter": "all"
+        }
+      },
+      "label": "composite-file_statuses",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "inline",
+          "evidence": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/omitted.evidence.json"
+          }
+        },
+        "view": {
+          "kind": "page",
+          "collection": "file_statuses",
+          "offset": 0,
+          "limit": 64,
+          "filter": "with-issues"
+        }
+      },
+      "label": "omitted-file_statuses",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "inline",
+          "evidence": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/issues.evidence.json"
+          }
+        },
+        "view": {
+          "kind": "page",
+          "collection": "file_statuses",
+          "offset": 0,
+          "limit": 64,
+          "filter": "with-issues"
+        }
+      },
+      "label": "issues-file_statuses",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "inline",
+          "evidence": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/arc-pages.evidence.json"
+          }
+        },
+        "view": {
+          "kind": "page",
+          "collection": "file_statuses",
+          "offset": 0,
+          "limit": 64,
+          "filter": "all"
+        }
+      },
+      "label": "arc-pages-file_statuses",
+      "expect_success": true
+    },
+    {
+      "name": "get_evidence_bundle",
+      "arguments": {
+        "detail": "summary"
+      },
+      "label": "bundle-summary"
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/evidence-bundle.json"
+      },
+      "label": "bundle-export",
+      "expect_success": true
+    }
+  ]
+}

@@ -103,6 +103,16 @@ const analyzeJob = async (
       throw new TypeError(
         "JavaScript worker source text digest does not match its request",
       );
+    if (
+      request.file.inline_source !== undefined &&
+      (request.file.bytes !== Buffer.byteLength(source) ||
+        request.file.inline_source.end_offset -
+          request.file.inline_source.start_offset !==
+          source.length)
+    )
+      throw new TypeError(
+        "Inline source bytes/range do not match its exact transferred body",
+      );
     const result = await analyze(
       {
         ...request.file,

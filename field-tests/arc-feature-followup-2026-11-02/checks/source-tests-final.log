@@ -1,0 +1,33 @@
+
+> rea-agents@6.4.0 test:local
+> node scripts/run-development-tests.mjs local src/domain/javascript/htmlArtifactReferences.test.ts tests/composition/javascript-applications/javascriptHtmlInlineSources.test.ts src/domain/analysisView/javascriptFileStatusView.test.ts src/application/javascript/JavaScriptArtifactAnalysisOrder.test.ts src/domain/javascript/javascriptApplicationAnalysisSteps.test.ts src/application/javascript/JavaScriptArtifactPathResolution.test.ts tests/composition/javascript-applications/javascriptArtifactReconstruction.test.ts
+
+Source-test feedback; compiled boundaries and real providers need explicit verification.
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |composition| tests/composition/javascript-applications/javascriptHtmlInlineSources.test.ts (8 tests) 402ms
+ ✓ |domain| src/domain/javascript/htmlArtifactReferences.test.ts (47 tests) 699ms
+   ✓ traverses deep valid document content without recursive stack growth 685ms
+ ✓ |domain| src/domain/javascript/javascriptApplicationAnalysisSteps.test.ts (15 tests) 228ms
+ ✓ |domain| src/domain/analysisView/javascriptFileStatusView.test.ts (5 tests) 37ms
+ ✓ |services| src/application/javascript/JavaScriptArtifactAnalysisOrder.test.ts (3 tests) 29ms
+ ✓ |services| src/application/javascript/JavaScriptArtifactPathResolution.test.ts (66 tests) 20ms
+ ✓ |composition| tests/composition/javascript-applications/javascriptArtifactReconstruction.test.ts (22 tests) 10328ms
+   ✓ reports file progress and honors cancellation before the next source 2754ms
+   ✓ reconstructs package, Electron roles, Webpack/Rspack modules, and cross-layer facts without execution 531ms
+   ✓ produces deterministic ASAR graphs with unpacked native linkage and complete paths/digests 1144ms
+   ✓ keeps suffix-named ASAR directories in the graph and analyzes their files 513ms
+   ✓ keeps ASAR analysis usable when unpacked native companion bytes are absent 487ms
+   ✓ recurses into filesystem-backed ASAR containers without losing container-relative paths 485ms
+   ✓ retains ts source facts from a real asar artifact 305ms
+   ✓ retains tsx source facts from a real directory artifact 310ms
+   ✓ retains mts source facts from a real asar artifact 301ms
+   ✓ retains cts source facts from a real asar artifact 300ms
+   ✓ retains mjs source facts from a real asar artifact 303ms
+
+ Test Files  7 passed (7)
+      Tests  166 passed (166)
+   Start at  00:47:36
+   Duration  13.04s (tests 69%, transform 21%, import 9%, worker 1%)
+

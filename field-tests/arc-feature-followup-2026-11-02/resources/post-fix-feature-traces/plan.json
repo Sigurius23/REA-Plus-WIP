@@ -1,0 +1,102 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix-feature-traces",
+  "timeout_ms": 120000,
+  "steps": [
+    {
+      "name": "import_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix/evidence-bundle.json"
+      },
+      "label": "import",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_e8918659b78760ed5c067ec4ea2cafdd2e51b4d07b05ea2aa14ca54467f952d3"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_efa40513f9f812664b6fd35fcb17861d91874af4eb5c69e42affbe010632887c"
+          },
+          "direction": "forward-influence"
+        }
+      },
+      "label": "missing-extensions-forward",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_e8918659b78760ed5c067ec4ea2cafdd2e51b4d07b05ea2aa14ca54467f952d3"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_efa40513f9f812664b6fd35fcb17861d91874af4eb5c69e42affbe010632887c"
+          },
+          "direction": "backward-provenance"
+        }
+      },
+      "label": "missing-extensions-backward",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_e8918659b78760ed5c067ec4ea2cafdd2e51b4d07b05ea2aa14ca54467f952d3"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_251852138e81b02a8ca86569369cbe5029c84aa6b090cb1836538693f3751704"
+          },
+          "direction": "forward-influence"
+        }
+      },
+      "label": "theme-data-forward",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_e8918659b78760ed5c067ec4ea2cafdd2e51b4d07b05ea2aa14ca54467f952d3"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_af749651dba945392cd91b0a72fcaaa765858ec45b8745df9c48d5bc72419345"
+          },
+          "direction": "callers"
+        }
+      },
+      "label": "onload-callers",
+      "expect_success": true
+    },
+    {
+      "name": "get_evidence_bundle",
+      "arguments": {
+        "detail": "summary"
+      },
+      "label": "bundle-summary",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/post-fix-feature-traces/evidence-bundle.json"
+      },
+      "label": "bundle-export",
+      "expect_success": true
+    }
+  ]
+}

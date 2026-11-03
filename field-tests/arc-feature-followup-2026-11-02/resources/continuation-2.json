@@ -1,0 +1,161 @@
+{
+  "steps": [
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_a41c112f831dbe901885768eb338b7304ea2c54b60c072b4f08009f6857bf3c8"
+        },
+        "view": {
+          "kind": "page",
+          "collection": "endpoints",
+          "offset": 0,
+          "limit": 16
+        }
+      },
+      "label": "owned-html-endpoints",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_7d8d352118848a4d7e1059e5c199d913f357cfe2186196b10828784cc3ba8820"
+        },
+        "view": {
+          "kind": "page",
+          "collection": "endpoints",
+          "offset": 0,
+          "limit": 16
+        }
+      },
+      "label": "owned-plain-js-endpoints",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_de9e8a92744610bdfbc26c82fba04c07607e22da77571c84ebf315515af25a45"
+        },
+        "view": {
+          "kind": "page",
+          "collection": "file_statuses",
+          "filter": "all",
+          "offset": 0,
+          "limit": 16
+        }
+      },
+      "label": "extracted-file-statuses",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_de9e8a92744610bdfbc26c82fba04c07607e22da77571c84ebf315515af25a45"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_77d3fa61731051d0618abc23d1aa1928f532d27547d87c8a7261b49067ee655a"
+          },
+          "direction": "forward-influence"
+        }
+      },
+      "label": "missing-extensions-forward",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_de9e8a92744610bdfbc26c82fba04c07607e22da77571c84ebf315515af25a45"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_77d3fa61731051d0618abc23d1aa1928f532d27547d87c8a7261b49067ee655a"
+          },
+          "direction": "backward-provenance"
+        }
+      },
+      "label": "missing-extensions-backward",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_de9e8a92744610bdfbc26c82fba04c07607e22da77571c84ebf315515af25a45"
+        },
+        "query": {
+          "seed": {
+            "kind": "property",
+            "name": "hasCustomBackground"
+          },
+          "direction": "forward-influence"
+        }
+      },
+      "label": "theme-custom-background-forward",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_de9e8a92744610bdfbc26c82fba04c07607e22da77571c84ebf315515af25a45"
+        },
+        "query": {
+          "seed": {
+            "kind": "literal",
+            "value": "theme-changed"
+          },
+          "direction": "forward-influence"
+        }
+      },
+      "label": "theme-change-registration",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_de9e8a92744610bdfbc26c82fba04c07607e22da77571c84ebf315515af25a45"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_e62034c45a381b0065e52a0b4918231995104c6ef55caa354cccdeb59d47963c"
+          },
+          "direction": "callers"
+        }
+      },
+      "label": "onload-callers",
+      "expect_success": true
+    },
+    {
+      "name": "get_evidence_bundle",
+      "arguments": {
+        "detail": "summary"
+      },
+      "label": "final-ledger-summary"
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-02/resources/evidence-bundle.json"
+      },
+      "label": "final-export",
+      "expect_success": true
+    }
+  ]
+}

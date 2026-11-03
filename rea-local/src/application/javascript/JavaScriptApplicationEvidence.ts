@@ -103,6 +103,9 @@ const parameters = (
   ...(input.max_semantic_source_bytes === undefined
     ? {}
     : { max_semantic_source_bytes: input.max_semantic_source_bytes }),
+  ...(input.max_inline_scripts === undefined
+    ? {}
+    : { max_inline_scripts: input.max_inline_scripts }),
   ...(input.paths_include === undefined
     ? {}
     : { paths_include: input.paths_include }),

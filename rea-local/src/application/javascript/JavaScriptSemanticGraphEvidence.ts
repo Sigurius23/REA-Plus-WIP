@@ -20,7 +20,13 @@ export const observedSemanticEvidence = (
   },
   location:
     location === null
-      ? { available: true, value: { kind: "artifact-path", path: file.path } }
+      ? {
+          available: true,
+          value:
+            file.inline_source === undefined
+              ? { kind: "artifact-path", path: file.path }
+              : { kind: "url", url: file.path },
+        }
       : {
           available: true,
           value: { kind: "source-range", source: file.path, ...location },
