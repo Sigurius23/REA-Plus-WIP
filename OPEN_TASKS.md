@@ -4,6 +4,15 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc continuation (2026-11-03):** Items **42–44 are implemented and
+  publicly verified**: static resilient Swift witness records, bounded decoded
+  Chromium-resource literal search, and returned-object field provenance.
+  Arc's request decoder is now addressable through its static witness;
+  complete canonical-pack searches recover three additional code bodies;
+  known return-field traces reach their sink while DOM candidates remain
+  uncertain. **189 tests / 16 files**, repository/docs/native checks and
+  authenticated CLI/MCP receipts verify the batch. Full Arc behavior remains
+  incomplete. See [continuation report](field-tests/arc-continuation-2026-11-03.md).
 - **Arc inline HTML and feature follow-up (2026-11-03):** Item **41 is done**.
   Offline HTML now produces derived classic/module sources with original
   document identity/ranges, separate physical/inline counts and explicit
@@ -98,6 +107,13 @@ Open work on `main` following PR #1 and the field tests.
      also passed with unchanged test budgets; see
      [HeyClicky fix verification](field-tests/heyclicky-fixes-2026-10-28.md).
 2. **Branch state and push:**
+   - **Items 42–44 publication batch (2026-11-03):** static resilient witness
+     records, decoded-resource search, return-field provenance, tests, skill 42,
+     feature notes and authenticated captures are included together after
+     `ab8a587c5928`. The final gate passes 189 focused tests / 16 files,
+     repository/docs/native checks and isolated packaging (205 tools / six
+     prompts). Historical receipts record their source-parent and uncommitted
+     capture sessions. The two large local Rize JSONs remain excluded.
    - **Item 41 publication batch (2026-11-03):** inline-source implementation,
      tests, skill 41, feature findings and authenticated captures are included
      together after the published retest `d4bf47b75`. The package check verifies
@@ -831,3 +847,41 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     boundaries. Source/checks, docs, duplication (2.48%) and isolated package
     verification pass; full `check:pr` was not rerun. See the
     [report](field-tests/arc-feature-followup-2026-11-02.md).
+
+42. **Static resilient Swift witness records are missing.** Done (2026-11-03).
+    Validated resilient requirement/witness tails are now retained separately
+    from runtime slots. Imported requirement flags, generic private storage and
+    runtime instantiation remain unknown where unavailable. Exact indexed
+    `swift_conformance_address` selection requires `facet: "swift-conformances"`
+    and preserves selected scope, rather than raising the admission cap.
+    Unbacked runtime control targets retain independently valid pairs with a
+    partial limitation; malformed file-backed tails remain rejected. Arc's
+    `BoostIDERequest` exposes executable address `0x100537e18`; CLI/MCP Evidence
+    matches exactly. Owned source-built fixtures and selector negatives verify
+    the behavior. See [final native receipts](field-tests/arc-continuation-2026-11-03/resilient/after/final/README.md).
+
+43. **Decoded Chromium resource literal search is unavailable.** Done (2026-11-03).
+    `search_chromium_resources` / `search-chromium-resources` shares the validated
+    DataPack index and bounded decoder with selected inspection. Literal needle
+    encoding is independent of payload text validity. First matches preserve
+    exact decoded byte ranges/hashes, stored ranges and alias table identities.
+    Canonical paging, match limits, skipped resources and charged/observed decode
+    budgets expose partial coverage; blocked entries retain their cursor and
+    continuation can pin the original pack digest. Lossless optional text ranges
+    and surrogate-safe previews retain their own narrower authority. The owned
+    compressed/binary pack and public CLI/MCP journey pass; four real Arc surveys
+    each examine all 5,414 canonical payloads with zero skips. Three additional
+    inert code bodies are authenticated and analyzed, without claiming original
+    filenames or runtime use. See [resource findings](field-tests/arc-continuation-2026-11-03/resources/findings.md).
+
+44. **JavaScript object return fields lose source provenance.** Done (2026-11-03).
+    Optional per-return `fieldSources` reuse the owning static value evaluator,
+    preserving last writes and spread/computed/getter/mutation/prototype
+    invalidation. Existing graph identities link represented source reads to
+    returned own fields and their aggregate, without equating input and output
+    objects. Known return flow is 4 nodes / 3 resolved edges / 1 sink; both arrow
+    forms and nested keys pass, while ten negative controls gain no false sink.
+    Historical IR omission and exact imported legacy traces remain valid.
+    Default ambiguous-edge filtering is unchanged. Fresh Arc analysis retains
+    21 returned-field slots (16 in SelectorPicker), with DOM values unknown.
+    See [public verification](field-tests/arc-continuation-2026-11-03/returns/after/findings.md).

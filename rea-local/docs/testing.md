@@ -1136,6 +1136,12 @@ conformance/vtable fixture.
 - The stripped chained-fixup Swift fixture also selects conformances and
   vtables independently through public CLI/MCP calls, checks the advertised
   facet enum, and requires unselected families to remain `not_requested`.
+- Source-owned `Decodable` struct/enum conformances require static resilient
+  pairs with imported requirement identity and unknown flags, independently of
+  a null witness-table pattern. Their executable addresses must match the
+  compiler's witness symbols before and after stripping. These symbols are a
+  supplemental oracle; CLI/MCP metadata and SDK-converted output-schema checks
+  provide the recovery evidence. Runtime tables are never instantiated.
 - It requires the bound `NSObject` superclass, the external category, and the
   matching `pointer_fixups` coverage. It requires macOS and the host Xcode toolchain; targets are not
   executed. `npm run verify:native-ui` launches exactly one source-owned fixture

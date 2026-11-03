@@ -90,6 +90,19 @@ keep the result ambiguous. Runtime Evidence can later corroborate an exact
 mapped candidate, but structural reachability, semantic influence, runtime
 observation, and causal proof remain separate claims.
 
+New semantic IR optionally retains `fieldSources` for direct own fields of
+returned objects. The graph links a represented source read to its return-owned
+property slot and then to the return aggregate. Known local property reads can
+therefore reach a return sink without opting into candidate edges. Dynamic
+values, receiver aliases and unsupported expression transforms keep candidate
+edges or explicit unknowns; a returned object is never equated with its input.
+The existing value evaluator owns last-write, spread, computed-key, getter,
+mutation and prototype invalidation. Historical IR without `fieldSources`
+remains valid and does not gain invented field provenance. A trace with default
+candidate filtering can have no visible edges even when ambiguous edges exist;
+`include_ambiguous_dynamic_edges: true` exposes those candidates with their
+uncertainty. New producers are needed to recover newly supported facts.
+
 Semantic literal nodes keep their complete value in `properties.value`; literal
 queries match that field. String labels use `string literal` when that is
 shorter than the complete JSON value. A literal's `identity.role_key` commits

@@ -2,6 +2,7 @@ import type { ObjcSwiftMetadata } from "../domain/native/objcSwiftMetadata.js";
 import type { DecodedPointer } from "./AppleMachoFixups.js";
 import type { Segment, Section } from "./AppleMachoSelection.js";
 import { issue, type FacetDecodeFacts } from "./AppleDispatchDecodeFacts.js";
+import type { SwiftResilientWitnessObserver } from "./AppleSwiftResilientWitnesses.js";
 
 /** Resolved file-backed metadata location from the Mach-O layout. */
 export interface ResolvedMetadataLocation {
@@ -157,21 +158,47 @@ export const decodeSwiftDispatchFacets = (input: {
   relative: ReturnType<typeof createSwiftRelativeReader>;
   budget: DispatchRecordBudget;
   result: ObjcSwiftMetadata;
+  resilient?: SwiftResilientWitnessObserver;
+  conformanceAddress?: bigint;
 }): FacetDecodeFacts => {
-  const { sections, segments, readers: read, relative, budget, result } = input;
+  const {
+    sections,
+    segments,
+    readers: read,
+    relative,
+    budget,
+    result,
+    resilient,
+    conformanceAddress,
+  } = input;
   const swiftFailures: string[] = [];
   const issues = [] as ReturnType<typeof issue>[];
   let swiftExamined = 0;
   let decodedRecords = 0;
+  if (conformanceAddress !== undefined)
+    result.swift_conformance_selection = {
+      address: hex(conformanceAddress),
+      matched: false,
+    };
   for (const section of sections.filter(
     ({ name }) => name === "__swift5_proto",
   )) {
     if (section.size % 4 !== 0)
       throw new RangeError("Misaligned Swift conformance section");
     for (let index = 0; index < section.size / 4; index++) {
+      const field = section.address + BigInt(index * 4);
+      // Section membership is checked without spending decode admission on unrelated
+      // descriptors. Arbitrary addresses are never treated as conformance entries.
+      if (conformanceAddress !== undefined) {
+        const displacement = read.u32(field) | 0;
+        if (displacement === 0) continue;
+        const descriptor = field + BigInt(displacement);
+        if (descriptor !== conformanceAddress) continue;
+        if (result.swift_conformance_selection)
+          result.swift_conformance_selection.matched = true;
+      }
       if (!budget.admit()) break;
       swiftExamined++;
-      const field = section.address + BigInt(index * 4);
       try {
         const descriptor = relative.local(field);
         const flags = read.u32(descriptor + 12n);
@@ -225,7 +252,7 @@ export const decodeSwiftDispatchFacets = (input: {
           witnessReason === null
             ? { status: "decoded" as const, reason: null }
             : { status: "partial" as const, reason: witnessReason };
-        result.swift_conformances.push({
+        const conformance = {
           type_name: typeName,
           protocol_name: protocolName,
           type_reference:
@@ -245,7 +272,9 @@ export const decodeSwiftDispatchFacets = (input: {
             descriptor,
             "Swift protocol conformance descriptor, local names and external bind identities",
           ),
-        });
+        };
+        result.swift_conformances.push(conformance);
+        resilient?.decodeConformance({ descriptor, flags, conformance });
         if (conformanceDecode.status === "decoded") decodedRecords++;
         if (witnessReason !== null) {
           swiftFailures.push(`${typeName}: ${witnessReason}`);
@@ -324,6 +353,7 @@ export const decodeSwiftDispatchFacets = (input: {
         }
       } catch (cause) {
         const message = cause instanceof Error ? cause.message : String(cause);
+        resilient?.failedConformance(field, message);
         swiftFailures.push(`${hex(field)}: ${message}`);
         issues.push(
           issue(

@@ -1,8 +1,19 @@
 import { describe, expect, it } from "vitest";
 
-import { inspectNativeDispatchMetadata } from "./objcSwiftMetadata.js";
+import {
+  inspectNativeDispatchMetadata,
+  objcSwiftMetadataSchema,
+} from "./objcSwiftMetadata.js";
 
 describe("ObjC/Swift metadata", () => {
+  it("preserves historical omission of static resilient witness records", () => {
+    const historical = objcSwiftMetadataSchema.parse({ db_save_result: null });
+    expect(historical).not.toHaveProperty("swift_resilient_witnesses");
+    expect(historical).not.toHaveProperty("swift_conformance_selection");
+    expect(
+      objcSwiftMetadataSchema.parse(JSON.parse(JSON.stringify(historical))),
+    ).toEqual(historical);
+  });
   it.each(["swift-conformances", "swift-vtables"] as const)(
     "keeps a requested binary %s facet unsupported for a symbol-only provider",
     (facet) => {

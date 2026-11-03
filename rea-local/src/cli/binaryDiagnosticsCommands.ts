@@ -1,3 +1,4 @@
+import { searchChromiumResourcesInputSchema } from "../domain/native/chromiumResourceSearch.js";
 import { z } from "incur";
 import { resolve } from "node:path";
 import {
@@ -6,6 +7,7 @@ import {
   createPeResourcesService,
   createFunctionEmulationService,
   createChromiumResourcesService,
+  createChromiumResourceSearchService,
 } from "../composition/binaryDiagnostics.js";
 import { CLI_COMMANDS } from "../cliCommandNames.js";
 import { logCliCommand } from "../cliLogging.js";
@@ -23,6 +25,51 @@ export const registerBinaryDiagnosticsCommands = (
   logger: Logger,
   environment: Readonly<NodeJS.ProcessEnv>,
 ): void => {
+  const search = createChromiumResourceSearchService();
+  const shape = searchChromiumResourcesInputSchema.shape;
+  cli.command(CLI_COMMANDS.searchChromiumResources, {
+    description:
+      "Search bounded decoded Chromium resource windows for literal byte candidates",
+    args: z.object({ path: z.string().describe("Local Chromium .pak file") }),
+    options: z.object({
+      query: shape.query,
+      queryEncoding: shape.query_encoding,
+      canonicalOffset: shape.canonical_offset,
+      scanLimit: shape.scan_limit,
+      matchLimit: shape.match_limit,
+      maxFileBytes: shape.max_file_bytes,
+      maxResourceBytes: shape.max_resource_bytes,
+      maxTotalDecodedBytes: shape.max_total_decoded_bytes,
+      expectedSha256: shape.expected_sha256,
+    }),
+    run: ({ args, options }) =>
+      withCommandCancellation((signal) =>
+        logCliCommand(
+          logger,
+          CLI_COMMANDS.searchChromiumResources,
+          async () => {
+            const result = await search.search(
+              {
+                path: resolve(args.path),
+                query: options.query,
+                query_encoding: options.queryEncoding,
+                canonical_offset: options.canonicalOffset,
+                scan_limit: options.scanLimit,
+                match_limit: options.matchLimit,
+                max_file_bytes: options.maxFileBytes,
+                max_resource_bytes: options.maxResourceBytes,
+                max_total_decoded_bytes: options.maxTotalDecodedBytes,
+                expected_sha256: options.expectedSha256,
+              },
+              { signal },
+            );
+            return result.ok
+              ? result.value
+              : projectAnalysisError(result.error);
+          },
+        ),
+      ),
+  });
   const chromium = createChromiumResourcesService();
   cli.command(CLI_COMMANDS.inspectChromiumResources, {
     description:

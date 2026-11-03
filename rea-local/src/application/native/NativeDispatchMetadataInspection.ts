@@ -4,7 +4,10 @@ import {
   inspectNativeDispatchMetadata,
   type NativeDispatchFacet,
 } from "../../domain/native/objcSwiftMetadata.js";
-import { AnalysisOutputError } from "../../domain/analysisErrorCore.js";
+import {
+  AnalysisInputError,
+  AnalysisOutputError,
+} from "../../domain/analysisErrorCore.js";
 import { jsonValueSchema } from "../../domain/jsonValue.js";
 import { err, ok } from "../../domain/result.js";
 import type { AnalysisOperationPort } from "../AnalysisProvider.js";
@@ -16,12 +19,27 @@ export const inspectNativeDispatch = async (
   signal?: AbortSignal,
   facet: NativeDispatchFacet = "all",
   maxFileBytes?: number,
+  swiftConformanceAddress?: string,
 ): EnhancedResult => {
+  if (swiftConformanceAddress !== undefined && facet !== "swift-conformances")
+    return err(
+      new AnalysisInputError("inspect_native_dispatch_metadata", undefined, [
+        {
+          path: ["swift_conformance_address"],
+          reason: "invalid_value",
+          message:
+            "Exact conformance selection requires facet swift-conformances.",
+        },
+      ]),
+    );
   const binaryMetadata = await analysis.execute(
     "inspect_native_dispatch_metadata",
     {
       max_records: maxRecords,
       facet,
+      ...(swiftConformanceAddress === undefined
+        ? {}
+        : { swift_conformance_address: swiftConformanceAddress }),
       ...(maxFileBytes === undefined ? {} : { max_file_bytes: maxFileBytes }),
     },
     signal === undefined ? {} : { signal },
@@ -32,7 +50,10 @@ export const inspectNativeDispatch = async (
         nativeDispatchMetadataResultSchema.parse(binaryMetadata.value.result),
       ),
     );
-  if (binaryMetadata.error._tag !== "AnalysisCapabilityUnavailableError")
+  if (
+    swiftConformanceAddress !== undefined ||
+    binaryMetadata.error._tag !== "AnalysisCapabilityUnavailableError"
+  )
     return err(binaryMetadata.error);
   const execution = await analysis.execute(
     "list_names",

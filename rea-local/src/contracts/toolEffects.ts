@@ -97,6 +97,7 @@ export const TOOL_EFFECTS: Readonly<Record<string, ToolEffects>> = {
   }),
   inspect_pe_resources: evidence,
   inspect_chromium_resources: evidence,
+  search_chromium_resources: evidence,
   emulate_function: effects({
     mutatesSession: true,
     writesFilesystem: true,

@@ -183,6 +183,7 @@ class NativeMacOSClient implements AnalysisClient {
           options?.signal,
           input.data.facet,
           input.data.max_file_bytes,
+          input.data.swift_conformance_address,
         );
         return ok(
           createAnalysisExecution(result, result.provider, {

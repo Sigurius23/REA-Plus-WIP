@@ -1,0 +1,1242 @@
+{
+  "status": "passed",
+  "checked_at": "2026-11-03T16:49:40.614Z",
+  "head": "ab8a587c59284083f8a10ae51b67a9ff79f85445",
+  "node": "v24.22.1",
+  "mcp_calls": 49,
+  "mcp_successful": 47,
+  "retained_caller_boundary_errors": [
+    {
+      "directory": ".",
+      "reply": "arc-analysis.reply.json",
+      "code": "resource_constraint",
+      "message": "The operation completed, but its complete MCP response exceeds the stdio response budget. The analysis result was not truncated. Export retained evidence to consume the complete analysis, or use complete CLI JSON output.",
+      "details": {
+        "operation": "analyze_javascript_application",
+        "resource": "transport",
+        "reason": "The operation completed, but its complete MCP response exceeds the stdio response budget. The analysis result was not truncated. Export retained evidence to consume the complete analysis, or use complete CLI JSON output.",
+        "reported_limits": {
+          "boundary": "mcp-response",
+          "default_receive_buffer_bytes": 10485760,
+          "result_budget_bytes": 10484736,
+          "max_string_code_units": 536869864,
+          "response_bytes_at_least": 10503782,
+          "response_code_units_at_least": 10503782,
+          "constraint": "receive-buffer",
+          "evidence_id": "ev_67fed6fbda38209cdd71c1d664d78436c718b34f890849c9f6244ce6b8dbaffc",
+          "evidence_reference": {
+            "kind": "retained-evidence",
+            "evidence_id": "ev_67fed6fbda38209cdd71c1d664d78436c718b34f890849c9f6244ce6b8dbaffc"
+          }
+        }
+      }
+    },
+    {
+      "directory": "session",
+      "reply": "known-module.reply.json",
+      "code": "invalid_request",
+      "message": "Analysis input is invalid. Check the arguments and try again.",
+      "details": {
+        "operation": "inspect_analysis_view",
+        "issues": [
+          {
+            "path": [
+              "view",
+              "selector",
+              "path"
+            ],
+            "reason": "invalid_value",
+            "message": "Multiple modules have path \"known.js\"; select one by node_id.",
+            "expected": [
+              {
+                "node_id": "jag_node_a59ecb810611662137e669facf4f162608cb71cc487fb99ec03e016f719fc9a8"
+              },
+              {
+                "node_id": "jag_node_eb96cb3ec451d03f065fd8a9593473087d0350620daa9048aca04c3a8fc317eb"
+              },
+              {
+                "node_id": "jag_node_f207a3b62ff480949a351ec43321aa479e77da2b4459bcada9ad054d0b88999e"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "stages": [
+    {
+      "directory": ".",
+      "calls": 6,
+      "successful": 5,
+      "errors": 1,
+      "status": "failed",
+      "verifier_run": {
+        "run_id": "fb3f8338-042d-4954-84b4-b8040db7e840",
+        "verifier_pid": 32153,
+        "parent_pid": 98184,
+        "process_lineage": {
+          "status": "verified",
+          "observed_at": "2026-11-03T16:41:08.586Z",
+          "launcher_pid": 32153,
+          "launcher_parent_pid": 98184,
+          "process_group_id": 32153,
+          "descendants": []
+        }
+      }
+    },
+    {
+      "directory": "session",
+      "calls": 9,
+      "successful": 8,
+      "errors": 1,
+      "status": "failed",
+      "verifier_run": {
+        "run_id": "3b1a6d58-1713-4680-81d9-d22095a6098c",
+        "verifier_pid": 32816,
+        "parent_pid": 98184,
+        "process_lineage": {
+          "status": "verified",
+          "observed_at": "2026-11-03T16:42:48.546Z",
+          "launcher_pid": 32816,
+          "launcher_parent_pid": 98184,
+          "process_group_id": 32816,
+          "descendants": []
+        }
+      }
+    },
+    {
+      "directory": "traces",
+      "calls": 34,
+      "successful": 34,
+      "errors": 0,
+      "status": "completed",
+      "verifier_run": {
+        "run_id": "1b6fa397-8429-432c-a2cd-f76533fd3fd2",
+        "verifier_pid": 34549,
+        "parent_pid": 98184,
+        "process_lineage": {
+          "status": "verified",
+          "observed_at": "2026-11-03T16:44:57.218Z",
+          "launcher_pid": 34549,
+          "launcher_parent_pid": 98184,
+          "process_group_id": 34549,
+          "descendants": []
+        }
+      }
+    }
+  ],
+  "bundles": [
+    {
+      "path": "session/producer-evidence-bundle.json",
+      "bytes": 9953652,
+      "sha256": "e2ef0f4d320f40e2e8ba6d84488f7b667d9625434ee7d5c7cf21ba3e23aa54fd",
+      "records": 8
+    },
+    {
+      "path": "traces/evidence-bundle.json",
+      "bytes": 10362289,
+      "sha256": "de2250ffbfb1b6efda3079597a676da3403b267472a598be147d9b6ef0dffc6f",
+      "records": 40
+    }
+  ],
+  "complete_export_covers_all_successful_evidence": true,
+  "cli_outputs": 1,
+  "exact_cli_mcp_evidence_id": "ev_88b9c237a599a074c252d9c2f9118078df1099a518b29fc46b122faeb5f66a6f",
+  "legacy": {
+    "original_parent": "ev_1d40297e3298503fe2de5923c2fadf027a7635de0ec6992259722cff4c6eb75d",
+    "exact_trace": "ev_2f82510c5afb6d2c03a0532c40015cff6e7f3b1f90cbbe56d0017da8bc04497a",
+    "no_backfilled_fields": true
+  },
+  "known": {
+    "parent": "ev_2585ac7f494dfbe8a5f0ebfd7de8fa53fd3351439e90b1d21a0fe1ef99fee582",
+    "trace": "ev_88b9c237a599a074c252d9c2f9118078df1099a518b29fc46b122faeb5f66a6f",
+    "nodes": 4,
+    "relations": 3,
+    "candidates": 0,
+    "unknowns": 0,
+    "expected_sinks": 1
+  },
+  "controls": [
+    {
+      "name": "arrow-explicit",
+      "positive": true,
+      "evidence_id": "ev_8cc84090dc88cf99214f8c6486c653317984307f7cbdf21eb014766062938a43",
+      "nodes": 4,
+      "relations": 3,
+      "candidates": 0,
+      "unknowns": 0,
+      "expected_sinks": 1,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "c101e93bb1d7fefbaac07cbe6685a848deaf4c13edd1da8491d922afe2612e65",
+          "module_path": "arrow-explicit.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 84
+            },
+            "end": {
+              "line": 1,
+              "column": 103
+            }
+          },
+          "role_key": "return-property:[\"callable:function:24:108:return:1:75:1:106\",[\"output\"]]"
+        },
+        "function_node_id": "jsrg_node_53bbf3e19e62784101e32149f689287a741f9173c1b9913fef921c8b3efed14f",
+        "application_node_ids": [],
+        "label": "output",
+        "properties": {
+          "name": "output",
+          "property_path": [
+            "output"
+          ],
+          "property_pointer": "/output",
+          "return_site_id": "callable:function:24:108:return:1:75:1:106",
+          "presence": "present",
+          "value_status": "literal",
+          "value_coverage": null,
+          "source_status": "complete",
+          "source_reason": null
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_bd9b77118ae2e2efa2f4db2626561e63b53c73c801b258e68bee8836ada1bd3e",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "arrow-explicit.js",
+              "start": {
+                "line": 1,
+                "column": 84
+              },
+              "end": {
+                "line": 1,
+                "column": 103
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_ab118d2a8dc09b626c9cb21e7b2881c420e68083d5c19180dca001ae078268de"
+      }
+    },
+    {
+      "name": "arrow-implicit",
+      "positive": true,
+      "evidence_id": "ev_fa600c9c485fde6982421193e74e59f32d1bb4531d0d04662be151347fa98c00",
+      "nodes": 4,
+      "relations": 3,
+      "candidates": 0,
+      "unknowns": 0,
+      "expected_sinks": 1,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "cb91aee97602f52c73c2a71b51fd6da5d287b6780efde62aa62f2ca28226e25b",
+          "module_path": "arrow-implicit.js",
+          "source_range": {
+            "start": {
+              "line": 2,
+              "column": 33
+            },
+            "end": {
+              "line": 2,
+              "column": 52
+            }
+          },
+          "role_key": "return-property:[\"callable:function:67:98:return:2:31:2:54\",[\"output\"]]"
+        },
+        "function_node_id": "jsrg_node_8095c34ead93b376827a2e4caefe3be7ceff49245072dc8999c8af03fd5ba596",
+        "application_node_ids": [],
+        "label": "output",
+        "properties": {
+          "name": "output",
+          "property_path": [
+            "output"
+          ],
+          "property_pointer": "/output",
+          "return_site_id": "callable:function:67:98:return:2:31:2:54",
+          "presence": "present",
+          "value_status": "literal",
+          "value_coverage": null,
+          "source_status": "complete",
+          "source_reason": null
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_aab5bc8814ae6d1f650d9b7eccbb743509f6c81a66cdd2148fa4dcb5b15d7d9f",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "arrow-implicit.js",
+              "start": {
+                "line": 2,
+                "column": 33
+              },
+              "end": {
+                "line": 2,
+                "column": 52
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_fc80cf6c4fe3e961240abe6dd41102c641673c386db673d9a7865c1a205164bf"
+      }
+    },
+    {
+      "name": "nested",
+      "positive": true,
+      "evidence_id": "ev_b98da4fb8c672d98c4d9eb74659db44a09cf2c5b1678e960e5317e2485c4ac17",
+      "nodes": 4,
+      "relations": 3,
+      "candidates": 0,
+      "unknowns": 0,
+      "expected_sinks": 1,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "8ac770f2db3649ba7cd2fc2bacaac31f8710917eb6a6d6d7759e6e82dbe25757",
+          "module_path": "nested.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 90
+            },
+            "end": {
+              "line": 1,
+              "column": 117
+            }
+          },
+          "role_key": "return-property:[\"callable:function:7:122:return:1:81:1:120\",[\"a/b~c\"]]"
+        },
+        "function_node_id": "jsrg_node_29e4a3696407482726b6b49686f064f7305f0f2d9830a33dc700e50ca6699374",
+        "application_node_ids": [],
+        "label": "a/b~c",
+        "properties": {
+          "name": "a/b~c",
+          "property_path": [
+            "a/b~c"
+          ],
+          "property_pointer": "/a~1b~0c",
+          "return_site_id": "callable:function:7:122:return:1:81:1:120",
+          "presence": "present",
+          "value_status": "literal",
+          "value_coverage": null,
+          "source_status": "complete",
+          "source_reason": null
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_8336c8c495fb569f2e7122f6af64138506b8c41e1d48fcbb552e23cc1ca300ef",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "nested.js",
+              "start": {
+                "line": 1,
+                "column": 90
+              },
+              "end": {
+                "line": 1,
+                "column": 117
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_629e49f75ae6902b0bbb6193611cc513526c4c450fd23f02430589c818f07eed"
+      }
+    },
+    {
+      "name": "overwrite",
+      "positive": false,
+      "evidence_id": "ev_d832736b5b47afb79ceb38ada3a08a5ed5fad5c52f0961acad4131b55edfe0fb",
+      "nodes": 2,
+      "relations": 1,
+      "candidates": 0,
+      "unknowns": 0,
+      "expected_sinks": 0,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "b51c300436877b3ee82079aadf24ddae2ec0430746733e8e5e4a20eb869db08b",
+          "module_path": "overwrite.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 92
+            },
+            "end": {
+              "line": 1,
+              "column": 113
+            }
+          },
+          "role_key": "return-property:[\"callable:function:7:118:return:1:62:1:116\",[\"output\"]]"
+        },
+        "function_node_id": "jsrg_node_cdc28a57d651d202b94469cf963d2873d86ab6d0e851b28021ed8d6a9b053c27",
+        "application_node_ids": [],
+        "label": "output",
+        "properties": {
+          "name": "output",
+          "property_path": [
+            "output"
+          ],
+          "property_pointer": "/output",
+          "return_site_id": "callable:function:7:118:return:1:62:1:116",
+          "presence": "present",
+          "value_status": "literal",
+          "value_coverage": null,
+          "source_status": "complete",
+          "source_reason": null
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_d2e8e47a8f90632fcb439e8f1c32b211613fe378306e9fef67e4163c373de9f4",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "overwrite.js",
+              "start": {
+                "line": 1,
+                "column": 92
+              },
+              "end": {
+                "line": 1,
+                "column": 113
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_ca792a0813cdb44fc94ea67bc3297c1c30776b925138a8b69e4fa76b9f75d023"
+      }
+    },
+    {
+      "name": "spread",
+      "positive": false,
+      "evidence_id": "ev_f41da76aa2b29d4e2e518fc6f2d31a93770a638cfff01a17c333df9ed3d9bed8",
+      "nodes": 2,
+      "relations": 1,
+      "candidates": 0,
+      "unknowns": 0,
+      "expected_sinks": 0,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "f6d21711403d0ef368bc41c0da0a2cca6a3ef4ae804fadf0fbdeae58fc30c072",
+          "module_path": "spread.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 76
+            },
+            "end": {
+              "line": 1,
+              "column": 95
+            }
+          },
+          "role_key": "return-property:[\"callable:function:7:110:return:1:67:1:108\",[\"output\"]]"
+        },
+        "function_node_id": "jsrg_node_bb8a3225cdbb33bc83cd83376729fa25d3dc5ff3f47212edb98a7da33cfd5cf6",
+        "application_node_ids": [],
+        "label": "output",
+        "properties": {
+          "name": "output",
+          "property_path": [
+            "output"
+          ],
+          "property_pointer": "/output",
+          "return_site_id": "callable:function:7:110:return:1:67:1:108",
+          "presence": "present",
+          "value_status": "unknown",
+          "value_coverage": null,
+          "source_status": "ambiguous",
+          "source_reason": "A later property may overwrite this field's source."
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_4af764bc21f761f64ed350be4e38c5104d3b2c67dfbdf3f8e7f76b105a096efe",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "spread.js",
+              "start": {
+                "line": 1,
+                "column": 76
+              },
+              "end": {
+                "line": 1,
+                "column": 95
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_7d2502a96687f274571c46a4bb285fbe436c9e914b6515233e5b550d66203406"
+      }
+    },
+    {
+      "name": "computed-unknown",
+      "positive": false,
+      "evidence_id": "ev_9bc475fc15fdcdd1a211d72298bfced1394319f7ae5bef7c7cfce6780ad96d10",
+      "nodes": 2,
+      "relations": 1,
+      "candidates": 0,
+      "unknowns": 0,
+      "expected_sinks": 0,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "db3e2630d177db1d03293272736b48d7a564b6452d1305cbfd11bb6be28d2248",
+          "module_path": "computed-unknown.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 74
+            },
+            "end": {
+              "line": 1,
+              "column": 93
+            }
+          },
+          "role_key": "return-property:[\"callable:function:7:120:return:1:65:1:118\",[\"output\"]]"
+        },
+        "function_node_id": "jsrg_node_2c2bb24438da533a2abbdd7d9b4854d0fe34b37084fae2e9666171892bcea861",
+        "application_node_ids": [],
+        "label": "output",
+        "properties": {
+          "name": "output",
+          "property_path": [
+            "output"
+          ],
+          "property_pointer": "/output",
+          "return_site_id": "callable:function:7:120:return:1:65:1:118",
+          "presence": "present",
+          "value_status": "unknown",
+          "value_coverage": null,
+          "source_status": "ambiguous",
+          "source_reason": "A later property may overwrite this field's source."
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_6921977223339183e3870c63c0fb09ca90881232eea233b29cdf2625a596c98f",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "computed-unknown.js",
+              "start": {
+                "line": 1,
+                "column": 74
+              },
+              "end": {
+                "line": 1,
+                "column": 93
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_d37e02c4bdd77921319cebc24a9e235f7e52758f1eed500b48960b48c648b625"
+      }
+    },
+    {
+      "name": "computed-literal",
+      "positive": false,
+      "evidence_id": "ev_2f1cbb541f3337e6c647b6283eb0869ad59c4ba32dcc66f767ca8a26fd6b466b",
+      "nodes": 2,
+      "relations": 1,
+      "candidates": 0,
+      "unknowns": 0,
+      "expected_sinks": 0,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "c39a6ee114f78033b8b1b657ad0d728adb7f53732c97cb32d8fb58fc0482b83a",
+          "module_path": "computed-literal.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 71
+            },
+            "end": {
+              "line": 1,
+              "column": 94
+            }
+          },
+          "role_key": "return-property:[\"callable:function:7:99:return:1:62:1:97\",[\"output\"]]"
+        },
+        "function_node_id": "jsrg_node_0d708f9ca1620df3622343d41d7e149b03985297bff957c4c7f0e84056bc21e8",
+        "application_node_ids": [],
+        "label": "output",
+        "properties": {
+          "name": "output",
+          "property_path": [
+            "output"
+          ],
+          "property_pointer": "/output",
+          "return_site_id": "callable:function:7:99:return:1:62:1:97",
+          "presence": "present",
+          "value_status": "literal",
+          "value_coverage": null,
+          "source_status": "unsupported",
+          "source_reason": "Computed keys, methods, accessors and unsupported expressions do not establish a direct copied return-field source."
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_5233762a3375512a6249a4688bddafa607cdff209323ce84858861d6f75b9a5a",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "computed-literal.js",
+              "start": {
+                "line": 1,
+                "column": 71
+              },
+              "end": {
+                "line": 1,
+                "column": 94
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_861308b868fe9e3d987ea6127dc07426e8062c9d028d6e02d807e6ccb2775e08"
+      }
+    },
+    {
+      "name": "getter-output",
+      "positive": false,
+      "evidence_id": "ev_db97116ff6aa95e8456344dafa5e495549ace3be2db1b7c391703811eb959035",
+      "nodes": 2,
+      "relations": 1,
+      "candidates": 0,
+      "unknowns": 0,
+      "expected_sinks": 0,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "c137591e297935d576773809879ae919102b0239baae3b6b5531c9598381a71e",
+          "module_path": "getter-output.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 92
+            },
+            "end": {
+              "line": 1,
+              "column": 130
+            }
+          },
+          "role_key": "return-property:[\"callable:function:7:135:return:1:62:1:133\",[\"output\"]]"
+        },
+        "function_node_id": "jsrg_node_58bc30ce06357790711e1dea11469edd71cf6cff3ccf7d1bd34bd706339d3465",
+        "application_node_ids": [],
+        "label": "output",
+        "properties": {
+          "name": "output",
+          "property_path": [
+            "output"
+          ],
+          "property_pointer": "/output",
+          "return_site_id": "callable:function:7:135:return:1:62:1:133",
+          "presence": "present",
+          "value_status": "unknown",
+          "value_coverage": null,
+          "source_status": "unsupported",
+          "source_reason": "Computed keys, methods, accessors and unsupported expressions do not establish a direct copied return-field source."
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_5aa155fe5c3025e24b251873fed9c6eff1cb11e89ca84e7e575c7994190be7dc",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "getter-output.js",
+              "start": {
+                "line": 1,
+                "column": 92
+              },
+              "end": {
+                "line": 1,
+                "column": 130
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_431c55442f2099ddc6aa110fdfc738f8b02e206815f78b0100dc295791666ad5"
+      }
+    },
+    {
+      "name": "getter-input",
+      "positive": false,
+      "evidence_id": "ev_5c9ec94b967aa9fce6ecb47bd21747a35efb29206606a66f4df23a7bf335f99e",
+      "nodes": 2,
+      "relations": 1,
+      "candidates": 0,
+      "unknowns": 1,
+      "expected_sinks": 0,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "65ff550bd30c7ece675539dd68ceb8ef8e6bd72dd11b98f5466df834c38075ab",
+          "module_path": "getter-input.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 88
+            },
+            "end": {
+              "line": 1,
+              "column": 107
+            }
+          },
+          "role_key": "return-property:[\"callable:function:7:112:return:1:79:1:110\",[\"output\"]]"
+        },
+        "function_node_id": "jsrg_node_25384b4057bacbd75a5196131914f58c439c90ac0d851449ed488dcc0fac54a9",
+        "application_node_ids": [],
+        "label": "output",
+        "properties": {
+          "name": "output",
+          "property_path": [
+            "output"
+          ],
+          "property_pointer": "/output",
+          "return_site_id": "callable:function:7:112:return:1:79:1:110",
+          "presence": "present",
+          "value_status": "unknown",
+          "value_coverage": null,
+          "source_status": "complete",
+          "source_reason": null
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_d4628501950e99ab05989f5527c3adb98b27b0490e9133fd0528aeed49c5a9c6",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "getter-input.js",
+              "start": {
+                "line": 1,
+                "column": 88
+              },
+              "end": {
+                "line": 1,
+                "column": 107
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_ff608854c21f18b17ad33903d7cb28f86edf6ec94d52f0087b4350a03d5ebb5e"
+      }
+    },
+    {
+      "name": "mutation",
+      "positive": false,
+      "evidence_id": "ev_e2dbef954c17cfee34abbcda90e0af454006fce4895e5c2acf8eeab59d732e10",
+      "nodes": 1,
+      "relations": 0,
+      "candidates": 0,
+      "unknowns": 1,
+      "expected_sinks": 0,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "83d5f01155e85e5e5bc3806ec474d97efa55bd2e6e715eaedb6007ad4d89c73a",
+          "module_path": "mutation.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 95
+            },
+            "end": {
+              "line": 1,
+              "column": 114
+            }
+          },
+          "role_key": "return-property:[\"callable:function:7:119:return:1:86:1:117\",[\"output\"]]"
+        },
+        "function_node_id": "jsrg_node_9c82f43c4bb9e2a434b19ce2f85b1dd8a5a80a00602ce4e97fc88e54bd9bb87f",
+        "application_node_ids": [],
+        "label": "output",
+        "properties": {
+          "name": "output",
+          "property_path": [
+            "output"
+          ],
+          "property_pointer": "/output",
+          "return_site_id": "callable:function:7:119:return:1:86:1:117",
+          "presence": "present",
+          "value_status": "unknown",
+          "value_coverage": null,
+          "source_status": "complete",
+          "source_reason": null
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_35636327f679e6ab7d7808b3a8764940bda6c9c41202eee93f8d226de9641e74",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "mutation.js",
+              "start": {
+                "line": 1,
+                "column": 95
+              },
+              "end": {
+                "line": 1,
+                "column": 114
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_73fec38f39909f23bb591ad90104d87082cb39bd09fb92bc4849e56f9c9c60ab"
+      }
+    },
+    {
+      "name": "prototype",
+      "positive": false,
+      "evidence_id": "ev_f624c30a39c626aaad5b69c4676539612de9be48ecbee6729d631edc52698a71",
+      "nodes": 1,
+      "relations": 0,
+      "candidates": 0,
+      "unknowns": 1,
+      "expected_sinks": 0,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "06943d3824795c937d1a3db788bc86d20a3daa9b8f828a9db53baaea963db015",
+          "module_path": "prototype.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 113
+            },
+            "end": {
+              "line": 1,
+              "column": 132
+            }
+          },
+          "role_key": "return-property:[\"callable:function:7:137:return:1:104:1:135\",[\"output\"]]"
+        },
+        "function_node_id": "jsrg_node_ed1c89e5979542edb58afa8d01963957998dc76c4efd61d5dd5b52e2ece0523d",
+        "application_node_ids": [],
+        "label": "output",
+        "properties": {
+          "name": "output",
+          "property_path": [
+            "output"
+          ],
+          "property_pointer": "/output",
+          "return_site_id": "callable:function:7:137:return:1:104:1:135",
+          "presence": "present",
+          "value_status": "unknown",
+          "value_coverage": null,
+          "source_status": "complete",
+          "source_reason": null
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_507fb3aebd899339bafc170b773afe52c7e766b5cacd96714e95cdcda5f5213d",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "prototype.js",
+              "start": {
+                "line": 1,
+                "column": 113
+              },
+              "end": {
+                "line": 1,
+                "column": 132
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_7bc701ecd1c6150936ef50217748b24911096bb7d04b1aa6d603cecd442e9350"
+      }
+    },
+    {
+      "name": "transform",
+      "positive": false,
+      "evidence_id": "ev_5c4eef42c5e7ce00549dea6714cdeb76c8a4db9ab32a73d6702899a731678268",
+      "nodes": 2,
+      "relations": 1,
+      "candidates": 0,
+      "unknowns": 0,
+      "expected_sinks": 0,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "2abc5ac1cac2eb7b7b025f6aebdb780890fa2f7dab14977f224ff9fe4f7f59fe",
+          "module_path": "transform.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 65
+            },
+            "end": {
+              "line": 1,
+              "column": 88
+            }
+          },
+          "role_key": "return-property:[\"callable:function:7:93:return:1:56:1:91\",[\"output\"]]"
+        },
+        "function_node_id": "jsrg_node_42605a7dc768a1ae4531abb6af0c3286aa866ffbb960fa8c186b976af9cb58b9",
+        "application_node_ids": [],
+        "label": "output",
+        "properties": {
+          "name": "output",
+          "property_path": [
+            "output"
+          ],
+          "property_pointer": "/output",
+          "return_site_id": "callable:function:7:93:return:1:56:1:91",
+          "presence": "present",
+          "value_status": "literal",
+          "value_coverage": null,
+          "source_status": "unsupported",
+          "source_reason": "Computed keys, methods, accessors and unsupported expressions do not establish a direct copied return-field source."
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_c7ab8508404f3bcad4eab3bdf696d608967b7c742e5765da203dd7646bbce721",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "transform.js",
+              "start": {
+                "line": 1,
+                "column": 65
+              },
+              "end": {
+                "line": 1,
+                "column": 88
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_2979940ca3a351eeb121f9b1cc892f7fe6c10c873f87c8acd939a7f6d313e069"
+      }
+    },
+    {
+      "name": "call-transform",
+      "positive": false,
+      "evidence_id": "ev_82ce70f6700216c9bc55b40de8e70cc9e2f0cef6932f230c65ec11aa0a596852",
+      "nodes": 2,
+      "relations": 1,
+      "candidates": 0,
+      "unknowns": 0,
+      "expected_sinks": 0,
+      "field": {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "2aaba6b0c0e3bc1bb13a634ea4c697b17aef5fc5a0356e25c8c112fd9e38ce35",
+          "module_path": "call-transform.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 71
+            },
+            "end": {
+              "line": 1,
+              "column": 98
+            }
+          },
+          "role_key": "return-property:[\"callable:function:7:103:return:1:62:1:101\",[\"output\"]]"
+        },
+        "function_node_id": "jsrg_node_f866db2a86791f5e69fabc023083d0eed7c49afa9acd5dde7ff439963c0d1755",
+        "application_node_ids": [],
+        "label": "output",
+        "properties": {
+          "name": "output",
+          "property_path": [
+            "output"
+          ],
+          "property_pointer": "/output",
+          "return_site_id": "callable:function:7:103:return:1:62:1:101",
+          "presence": "present",
+          "value_status": "unknown",
+          "value_coverage": null,
+          "source_status": "unsupported",
+          "source_reason": "Computed keys, methods, accessors and unsupported expressions do not establish a direct copied return-field source."
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_d8963a53a27183762dc32e57b032c728503eac36da2b06da559944cc5c42bccb",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "call-transform.js",
+              "start": {
+                "line": 1,
+                "column": 71
+              },
+              "end": {
+                "line": 1,
+                "column": 98
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_83bee07203cb97cd21a578681232b29bc7ccc0e42daedf8a5d8ad7a4a639ee9e"
+      }
+    }
+  ],
+  "unknown_arrows": [
+    {
+      "form": "explicit",
+      "default": {
+        "evidence_id": "ev_3c28c0ab413c94ee3332a8a0ca73d94d30913e27a52d8ea471eb4d80b895dcc8",
+        "nodes": 2,
+        "relations": 1,
+        "candidates": 0,
+        "unknowns": 1,
+        "expected_sinks": 0
+      },
+      "opt_in": {
+        "evidence_id": "ev_1a8622727c48ca0d6cc1005930ea1c748e11fa33c7b5450b97398898c894e74d",
+        "nodes": 11,
+        "relations": 10,
+        "candidates": 3,
+        "unknowns": 4,
+        "expected_sinks": 0
+      }
+    },
+    {
+      "form": "implicit",
+      "default": {
+        "evidence_id": "ev_87acf3f247602834b33b497de10c406bbec05f92dbb44206a73b31f620917c1f",
+        "nodes": 2,
+        "relations": 1,
+        "candidates": 0,
+        "unknowns": 1,
+        "expected_sinks": 0
+      },
+      "opt_in": {
+        "evidence_id": "ev_9adaa56159898919db6dad4ef749560ea40ab96cac3c1dfca49febc82f36fdb6",
+        "nodes": 11,
+        "relations": 10,
+        "candidates": 3,
+        "unknowns": 4,
+        "expected_sinks": 0
+      }
+    }
+  ],
+  "arc": {
+    "parent": "ev_67fed6fbda38209cdd71c1d664d78436c718b34f890849c9f6244ce6b8dbaffc",
+    "summary": "ev_80d0510d14c6fd1cfcc1ea19466042cffdf57bbad4ef3200e52f62c48b1a2259",
+    "files": 3,
+    "return_fields": 21,
+    "selector_return_fields": 16,
+    "queries": [
+      {
+        "label": "candidate",
+        "default": {
+          "evidence_id": "ev_a041c32f8b1ee08b28a6343f87ba795d8615e7b492c081c8870e9ed4868c0823",
+          "nodes": 3,
+          "relations": 2,
+          "candidates": 0,
+          "unknowns": 2,
+          "expected_sinks": 0
+        },
+        "opt_in": {
+          "evidence_id": "ev_533bc2b66bc98d5ecfe7ff6adaa03cb6a14710ad2543b9ddd2249af488ca3ed8",
+          "nodes": 11,
+          "relations": 11,
+          "candidates": 6,
+          "unknowns": 5,
+          "expected_sinks": 0
+        }
+      },
+      {
+        "label": "rectangle",
+        "default": {
+          "evidence_id": "ev_5ae00f96ec78740a0290461720ba9d560b7a9c787c7240d8d60d669940930e5c",
+          "nodes": 5,
+          "relations": 4,
+          "candidates": 0,
+          "unknowns": 4,
+          "expected_sinks": 0
+        },
+        "opt_in": {
+          "evidence_id": "ev_e75483064115afb2950602c6a6726dff6fd99e39b64ab4094d05d654731120f0",
+          "nodes": 20,
+          "relations": 22,
+          "candidates": 13,
+          "unknowns": 9,
+          "expected_sinks": 0
+        }
+      }
+    ],
+    "unsupported_callback_outputs": [
+      {
+        "node_id": "jsrg_node_3201f0434beb217c75fe37b1c69ec808b9140c0f57292dd1493ccda1dcc39ad2",
+        "label": "rect",
+        "properties": {
+          "name": "rect",
+          "presence": "present",
+          "property_path": [
+            "rect"
+          ],
+          "property_pointer": "/rect",
+          "return_site_id": "callable:function:9587:9744:return:1:9647:1:9743",
+          "source_reason": "Computed keys, methods, accessors and unsupported expressions do not establish a direct copied return-field source.",
+          "source_status": "unsupported",
+          "value_coverage": null,
+          "value_status": "unknown"
+        }
+      },
+      {
+        "node_id": "jsrg_node_b2a5056a7be59a26cddbc3bb64ca316939cafaffa065fe670b9319c43ebdb167",
+        "label": "hash",
+        "properties": {
+          "name": "hash",
+          "presence": "present",
+          "property_path": [
+            "hash"
+          ],
+          "property_pointer": "/hash",
+          "return_site_id": "callable:function:9587:9744:return:1:9647:1:9743",
+          "source_reason": "Computed keys, methods, accessors and unsupported expressions do not establish a direct copied return-field source.",
+          "source_status": "unsupported",
+          "value_coverage": null,
+          "value_status": "unknown"
+        }
+      }
+    ]
+  },
+  "sources": [
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/fixture-known/known.js",
+      "bytes": 98,
+      "sha256": "af41670a2b7fa80368ccfcb8fee5907bd2d7e6ff75d6986a44ce9d237c0fe34e"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/fixture/returns.js",
+      "bytes": 487,
+      "sha256": "232920551bde370f482ee6da926e2f1361944caedf468b07ebe9388a95a612dc"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/arrow-explicit.js",
+      "bytes": 110,
+      "sha256": "c101e93bb1d7fefbaac07cbe6685a848deaf4c13edd1da8491d922afe2612e65"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/arrow-implicit.js",
+      "bytes": 100,
+      "sha256": "cb91aee97602f52c73c2a71b51fd6da5d287b6780efde62aa62f2ca28226e25b"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/call-transform.js",
+      "bytes": 104,
+      "sha256": "2aaba6b0c0e3bc1bb13a634ea4c697b17aef5fc5a0356e25c8c112fd9e38ce35"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/computed-literal.js",
+      "bytes": 100,
+      "sha256": "c39a6ee114f78033b8b1b657ad0d728adb7f53732c97cb32d8fb58fc0482b83a"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/computed-unknown.js",
+      "bytes": 121,
+      "sha256": "db3e2630d177db1d03293272736b48d7a564b6452d1305cbfd11bb6be28d2248"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/getter-input.js",
+      "bytes": 113,
+      "sha256": "65ff550bd30c7ece675539dd68ceb8ef8e6bd72dd11b98f5466df834c38075ab"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/getter-output.js",
+      "bytes": 136,
+      "sha256": "c137591e297935d576773809879ae919102b0239baae3b6b5531c9598381a71e"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/mutation.js",
+      "bytes": 120,
+      "sha256": "83d5f01155e85e5e5bc3806ec474d97efa55bd2e6e715eaedb6007ad4d89c73a"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/nested.js",
+      "bytes": 123,
+      "sha256": "8ac770f2db3649ba7cd2fc2bacaac31f8710917eb6a6d6d7759e6e82dbe25757"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/overwrite.js",
+      "bytes": 119,
+      "sha256": "b51c300436877b3ee82079aadf24ddae2ec0430746733e8e5e4a20eb869db08b"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/prototype.js",
+      "bytes": 138,
+      "sha256": "06943d3824795c937d1a3db788bc86d20a3daa9b8f828a9db53baaea963db015"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/spread.js",
+      "bytes": 111,
+      "sha256": "f6d21711403d0ef368bc41c0da0a2cca6a3ef4ae804fadf0fbdeae58fc30c072"
+    },
+    {
+      "path": "field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls/transform.js",
+      "bytes": 94,
+      "sha256": "2abc5ac1cac2eb7b7b025f6aebdb780890fa2f7dab14977f224ff9fe4f7f59fe"
+    },
+    {
+      "path": "/Applications/Arc.app/Contents/Resources/ARC_BoostsEditor.bundle/Contents/Resources/SelectorPicker.js",
+      "bytes": 11068,
+      "sha256": "0e779dad9316f8b14cf4e1b20fa710240cd90bc9a9a1dd820df38ebd525d977d"
+    },
+    {
+      "path": "/Applications/Arc.app/Contents/Resources/ARC_EaselUI.bundle/Contents/Resources/DisableInlineLinks.js",
+      "bytes": 1383,
+      "sha256": "22541083b829a8f73bf1777964bf5b64c8e320d7e9a86ebe18eaa7597982e307"
+    },
+    {
+      "path": "/Applications/Arc.app/Contents/Resources/ARC_EaselUI.bundle/Contents/Resources/EaselExportViewer.js",
+      "bytes": 18189,
+      "sha256": "99733115dba328672225a63f90025f20518178933cb83847dbc8ddb8c1e0cba0"
+    }
+  ],
+  "producer_files_at_verification": [
+    {
+      "path": "src/domain/javascript/javascriptSemanticIr.ts",
+      "sha256": "01f845f69f982b11dd818ef4bfc8a45ee0a6797ea269158eb1dc8495b68ea465"
+    },
+    {
+      "path": "src/domain/javascript/javascriptSemanticValues.ts",
+      "sha256": "a6501648a0c62e6b3e58e51b333a9a2ce7270c0ece9abd2c2f1c22403a0002b5"
+    },
+    {
+      "path": "src/domain/javascript/javascriptSemanticReturns.ts",
+      "sha256": "df09588f8709b77d5154c1283cd5b80ffed4650074a982c25beea5d7fb4322c5"
+    },
+    {
+      "path": "src/javascript/analysis/JavaScriptAnalysisWorkerSchemas.ts",
+      "sha256": "903586ff3fc43efef75d31545d6799dc0f861a76b2f3ee5eaee88c729e027b56"
+    },
+    {
+      "path": "src/application/javascript/JavaScriptSemanticGraphReturnProjection.ts",
+      "sha256": "85fc6bb1c2ee25f9a17cd147dc2ed386ed5102fcda77ac1267c5f56b701260b7"
+    },
+    {
+      "path": "src/domain/javascript/javascriptSemanticQuery.ts",
+      "sha256": "0875f917613ad9200d5c9fd06547f3109ac78fee9f66a2ad4f4b0593300dcc43"
+    },
+    {
+      "path": "dist/domain/javascript/javascriptSemanticValues.js",
+      "sha256": "e9b81ed4d299c42f9eec9f6c04a9436722cc063e99129488e53d9c72033d6474"
+    },
+    {
+      "path": "dist/application/javascript/JavaScriptSemanticGraphReturnProjection.js",
+      "sha256": "362cbd0a4acf3e897df8e852a7ab513902621b68f0971ca2af6bd96600f34ca0"
+    },
+    {
+      "path": "dist/javascript/analysis/JavaScriptAnalysisWorkerSchemas.js",
+      "sha256": "6f8b368b467d78706b18b52ca1672d7c58b148c9016312855b413265ef41038e"
+    }
+  ],
+  "scope": [
+    "Inert static analysis only. No Arc/fixture JavaScript, UI, DOM, profile, account, endpoint or service execution.",
+    "New field slots and direct source-expression contributions are projected from newly produced owning IR. Old imported Evidence is not backfilled.",
+    "A source_status complete marker means the direct selected expression is retained; unknown values still use candidate defines relations, excluded by default.",
+    "Arithmetic/call transforms and computed output keys have no invented copied-value edge. Existing coarse candidate aliases are unchanged.",
+    "Historical worker IR omission is pinned by source tests; the public module item is graph metadata and does not expose the complete worker IR.",
+    "Arc DOM-dependent values, call transformations, unsupported nested output expressions and runtime rendering remain explicit unknowns.",
+    "The first response-budget attempt and the caller path-ambiguity mistake are retained and recovered through summary/export and exact returned node IDs; they are not counted as successful calls."
+  ]
+}

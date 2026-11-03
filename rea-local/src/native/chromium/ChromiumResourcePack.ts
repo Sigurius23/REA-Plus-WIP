@@ -31,8 +31,8 @@ const capacity = (input: InspectChromiumResourcesInput) =>
         "Raise max_resource_bytes (CLI --max-resource-bytes), up to 8388608, or inspect the index without selecting content. Unchanged limits reproduce the refusal.",
     },
   );
-const cancelled = (signal?: AbortSignal) => {
-  if (signal?.aborted) throw new AnalysisCancelledError(OPERATION);
+const cancelled = (signal?: AbortSignal, operation = OPERATION) => {
+  if (signal?.aborted) throw new AnalysisCancelledError(operation);
 };
 
 const compression = (bytes: Buffer): ChromiumResourceEntry["compression"] => {
@@ -59,32 +59,35 @@ const compression = (bytes: Buffer): ChromiumResourceEntry["compression"] => {
   };
 };
 
-const selectedContent = (
+/** Shared bounded byte decoder; callers own budget accounting and failures. */
+export const decodeChromiumResource = (
   stored: Buffer,
   item: ChromiumResourceEntry,
-  encoding: ChromiumResources["encoding"],
-  input: InspectChromiumResourcesInput,
-): NonNullable<ChromiumResources["resource"]> => {
-  if (stored.length > input.max_resource_bytes) throw capacity(input);
+  maxBytes: number,
+  refuseCapacity: () => never,
+  operation: string,
+  decode = true,
+): { bytes: Buffer; codec: "none" | "gzip" | "chromium-brotli" } => {
+  if (stored.length > maxBytes) throw refuseCapacity();
   let bytes = stored;
   let codec: NonNullable<ChromiumResources["resource"]>["codec"] = "none";
-  if (input.decode && item.compression.kind !== "none") {
+  if (decode && item.compression.kind !== "none") {
     if (item.compression.kind === "truncated-brotli-envelope")
       fail("Truncated Chromium Brotli resource envelope");
     if (
       item.compression.declared_decoded_bytes !== null &&
-      item.compression.declared_decoded_bytes > input.max_resource_bytes
+      item.compression.declared_decoded_bytes > maxBytes
     )
-      throw capacity(input);
+      throw refuseCapacity();
     try {
       if (item.compression.kind === "gzip-candidate") {
         bytes = gunzipSync(stored, {
-          maxOutputLength: input.max_resource_bytes,
+          maxOutputLength: maxBytes,
         });
         codec = "gzip";
       } else {
         const decoded: unknown = brotliDecompressSync(stored.subarray(8), {
-          maxOutputLength: input.max_resource_bytes,
+          maxOutputLength: maxBytes,
           info: true,
         });
         if (
@@ -98,7 +101,7 @@ const selectedContent = (
           !("bytesWritten" in decoded.engine)
         )
           throw new AnalysisOutputError(
-            OPERATION,
+            operation,
             "Node Brotli decoder did not return consumed-input evidence",
           );
         if (decoded.engine.bytesWritten !== stored.length - 8)
@@ -117,7 +120,7 @@ const selectedContent = (
         "code" in cause &&
         cause.code === "ERR_BUFFER_TOO_LARGE"
       )
-        throw capacity(input);
+        throw refuseCapacity();
       fail(
         `Selected resource compression candidate failed decoding: ${cause instanceof Error ? cause.message : String(cause)}`,
       );
@@ -130,7 +133,26 @@ const selectedContent = (
         "Chromium Brotli decoded length differs from its six-byte declared size",
       );
   }
-  if (bytes.length > input.max_resource_bytes) throw capacity(input);
+  if (bytes.length > maxBytes) throw refuseCapacity();
+  return { bytes, codec };
+};
+
+const selectedContent = (
+  stored: Buffer,
+  item: ChromiumResourceEntry,
+  encoding: ChromiumResources["encoding"],
+  input: InspectChromiumResourcesInput,
+): NonNullable<ChromiumResources["resource"]> => {
+  const { bytes, codec } = decodeChromiumResource(
+    stored,
+    item,
+    input.max_resource_bytes,
+    () => {
+      throw capacity(input);
+    },
+    OPERATION,
+    input.decode,
+  );
   let text: string | null = null;
   if (encoding !== "binary") {
     try {
@@ -153,14 +175,13 @@ const selectedContent = (
   };
 };
 
-/** Validate the entire declared index before paging; selected payloads remain inert bytes. */
-export const parseChromiumResourcePack = async (
+/** One validated index snapshot, shared by inspection and canonical search. */
+export const indexChromiumResourcePack = async (
   bytes: Buffer,
-  artifact: ChromiumResources["artifact"],
-  input: InspectChromiumResourcesInput,
   signal?: AbortSignal,
-): Promise<ChromiumResources> => {
-  cancelled(signal);
+  operation = OPERATION,
+) => {
+  cancelled(signal, operation);
   if (bytes.length < 4) fail("Truncated Chromium DataPack header");
   const version = bytes.readUInt32LE(0);
   if (version !== 4 && version !== 5)
@@ -197,7 +218,7 @@ export const parseChromiumResourcePack = async (
   for (let index = 0; index <= count; index++) {
     if (index % 1024 === 0) {
       await setImmediate();
-      cancelled(signal);
+      cancelled(signal, operation);
     }
     const at = header + index * 6,
       id = bytes.readUInt16LE(at),
@@ -224,7 +245,7 @@ export const parseChromiumResourcePack = async (
   for (let index = 0; index < aliases; index++) {
     if (index % 1024 === 0) {
       await setImmediate();
-      cancelled(signal);
+      cancelled(signal, operation);
     }
     const at = aliasStart + index * 4,
       id = bytes.readUInt16LE(at),
@@ -258,6 +279,44 @@ export const parseChromiumResourcePack = async (
       compression: compression(stored),
     };
   };
+  const firstOffset = canonical[0]?.offset ?? previousOffset;
+  const unclaimed = [];
+  if (firstOffset > metadataEnd)
+    unclaimed.push({ offset: metadataEnd, bytes: firstOffset - metadataEnd });
+  if (previousOffset < bytes.length)
+    unclaimed.push({
+      offset: previousOffset,
+      bytes: bytes.length - previousOffset,
+    });
+  return {
+    format: "chromium-datapack",
+    version: version as 4 | 5,
+    encoding,
+    canonical_resources: count,
+    alias_resources: aliases,
+    layout: {
+      header_bytes: header,
+      padding_hex: version === 5 ? bytes.subarray(5, 8).toString("hex") : "",
+      metadata_end: metadataEnd,
+      sentinel_id: bytes.readUInt16LE(header + count * 6),
+      sentinel_offset: previousOffset,
+      unclaimed_ranges: unclaimed,
+    },
+    canonical,
+    rows,
+    entry,
+  };
+};
+
+/** Validate the entire declared index before paging; selected payloads remain inert bytes. */
+export const parseChromiumResourcePack = async (
+  bytes: Buffer,
+  artifact: ChromiumResources["artifact"],
+  input: InspectChromiumResourcesInput,
+  signal?: AbortSignal,
+): Promise<ChromiumResources> => {
+  const index = await indexChromiumResourcePack(bytes, signal);
+  const { rows, entry, canonical, encoding } = index;
   const entries = rows
     .slice(input.offset, input.offset + input.limit)
     .map(entry);
@@ -290,30 +349,14 @@ export const parseChromiumResourcePack = async (
     );
   }
   cancelled(signal);
-  const firstOffset = canonical[0]?.offset ?? previousOffset;
-  const unclaimed = [];
-  if (firstOffset > metadataEnd)
-    unclaimed.push({ offset: metadataEnd, bytes: firstOffset - metadataEnd });
-  if (previousOffset < bytes.length)
-    unclaimed.push({
-      offset: previousOffset,
-      bytes: bytes.length - previousOffset,
-    });
   return {
     artifact,
     format: "chromium-datapack",
-    version,
+    version: index.version,
     encoding,
-    canonical_resources: count,
-    alias_resources: aliases,
-    layout: {
-      header_bytes: header,
-      padding_hex: version === 5 ? bytes.subarray(5, 8).toString("hex") : "",
-      metadata_end: metadataEnd,
-      sentinel_id: bytes.readUInt16LE(header + count * 6),
-      sentinel_offset: previousOffset,
-      unclaimed_ranges: unclaimed,
-    },
+    canonical_resources: index.canonical_resources,
+    alias_resources: index.alias_resources,
+    layout: index.layout,
     page: {
       offset: input.offset,
       limit: input.limit,

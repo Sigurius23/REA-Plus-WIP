@@ -23,7 +23,7 @@ import {
   type JavaScriptSemanticAnalysisState,
   type JavaScriptSemanticBindingState,
 } from "./javascriptSemanticState.js";
-import { evaluateSemanticExpression } from "./javascriptSemanticValues.js";
+import { evaluateSemanticReturnValue } from "./javascriptSemanticValues.js";
 import { range } from "./javascriptStaticAnalysisHelpers.js";
 import { semanticReturnCoverage } from "./javascriptSemanticCoverage.js";
 import { semanticCallableResultExpressions } from "./javascriptSemanticCallableResults.js";
@@ -62,10 +62,14 @@ export const collectSemanticReturns = (
           expression.node !== null && t.isIdentifier(expression.node)
             ? range(expression.node)
             : null,
-        value:
-          expression.node === null
-            ? { status: "unknown", reason: "Return has no value." }
-            : evaluateSemanticExpression(expression.node, state),
+        ...(expression.node === null
+          ? {
+              value: {
+                status: "unknown" as const,
+                reason: "Return has no value.",
+              },
+            }
+          : evaluateSemanticReturnValue(expression.node, state)),
       });
     }
     return {

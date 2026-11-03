@@ -1,0 +1,98 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/resources",
+  "timeout_ms": 120000,
+  "steps": [
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Applications/Arc.app/Contents/Resources",
+        "paths_include": [
+          "**/*.js",
+          "**/*.html"
+        ],
+        "detail": "summary"
+      },
+      "label": "shipped-html-js-summary",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_chromium_resources",
+      "arguments": {
+        "path": "/private/tmp/rea-chromium-search-need-2026-11-03/helper-search.pak",
+        "limit": 16
+      },
+      "label": "owned-pack-index",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_chromium_resources",
+      "arguments": {
+        "path": "/private/tmp/rea-chromium-search-need-2026-11-03/helper-search.pak",
+        "limit": 1,
+        "resource_id": 7
+      },
+      "label": "owned-selected-7",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_chromium_resources",
+      "arguments": {
+        "path": "/private/tmp/rea-chromium-search-need-2026-11-03/helper-search.pak",
+        "limit": 1,
+        "resource_id": 42
+      },
+      "label": "owned-selected-42",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_chromium_resources",
+      "arguments": {
+        "path": "/private/tmp/rea-chromium-search-need-2026-11-03/helper-search.pak",
+        "limit": 1,
+        "resource_id": 43
+      },
+      "label": "owned-selected-43",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_chromium_resources",
+      "arguments": {
+        "path": "/private/tmp/rea-chromium-search-need-2026-11-03/helper-search.pak",
+        "limit": 1,
+        "resource_id": 91
+      },
+      "label": "owned-selected-91",
+      "expect_success": true
+    },
+    {
+      "name": "search_javascript_strings",
+      "arguments": {
+        "input_path": "/private/tmp/rea-chromium-search-need-2026-11-03",
+        "query": "gdocs_script.js"
+      },
+      "label": "owned-existing-js-search",
+      "expect_success": true
+    },
+    {
+      "name": "get_evidence_bundle",
+      "arguments": {
+        "detail": "summary"
+      },
+      "label": "initial-ledger-summary",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/resources/initial-evidence-bundle.json"
+      },
+      "label": "initial-export",
+      "expect_success": true
+    }
+  ],
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/resources/continuation-1.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/resources/continuation-2.json"
+  ],
+  "idle_timeout_ms": 900000
+}

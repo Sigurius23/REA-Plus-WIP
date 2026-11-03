@@ -66,3 +66,46 @@ Format references: Chromium's [GRIT reader/writer](https://chromium.googlesource
 [DataPack implementation](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/ui/base/resource/data_pack.cc),
 and [resource compression producer](https://raw.githubusercontent.com/chromium/chromium/main/tools/grit/grit/node/base.py).
 Validation choices above describe REA+'s profile, not every Chromium reader.
+
+## Decoded literal search
+
+`search_chromium_resources` / `rea search-chromium-resources` finds candidate
+resources without selecting IDs in advance. It validates one index snapshot and
+searches each admitted canonical payload once; aliases share that decode.
+
+```sh
+rea search-chromium-resources /artifacts/resources.pak --query content.js --json
+rea search-chromium-resources /artifacts/locale.pak --query Settings --query-encoding utf16le --json
+```
+
+`query` is a nonempty, well-formed Unicode literal of at most 4,096 UTF-16 code
+units. Search is case-sensitive with no normalization or regex interpretation.
+`query_encoding` (`utf8` by default, or `utf16le`) encodes the needle; every
+payload is searched regardless of its pack encoding or text validity. Each
+matching canonical payload returns its **first** occurrence, exact decoded byte
+range, decoded length/digest, stored range/digest and all numeric identities with
+their original table locations. Optional text offsets use UTF-16 units and
+require lossless whole-payload decoding plus proven byte boundaries. BOMs remain
+part of that text. Byte matches remain valid when text is unavailable.
+
+`canonical_offset` starts at zero. `scan_limit` defaults to 256 and `match_limit`
+to 64; both have a 1,024-record retention ceiling. Continue with
+`page.next_canonical_offset` and `expected_sha256` set to the returned artifact
+digest. A match limit can stop before the requested scan window is exhausted;
+the cursor always names the next unexamined canonical resource. `coverage.index`
+reports validated structure, `coverage.window` reports the requested window's
+search coverage, and `coverage.pack` is complete only for an uninterrupted,
+skip-free search from zero through the final canonical resource. Combine page
+receipts explicitly when surveying a whole pack.
+
+The file and per-resource limits above also apply. `max_total_decoded_bytes`
+defaults to 64 MiB, maximum 512 MiB, for one search window. Before an unknown
+compressed expansion runs, it reserves the full per-resource output bound.
+Successful attempts charge actual decoded bytes; failed codec attempts charge
+their reservation because produced bytes are unobservable. These charged bytes
+are separate from successfully observed decoded bytes. Corrupt and oversized
+resources produce explicit skips and partial coverage. Aggregate exhaustion
+leaves the blocked entry at the next cursor: raise that budget or reduce the
+per-resource reservation when resuming. Unchanged limits reproduce the stop.
+Cancellation returns a typed error and no partial Evidence. Matches establish
+candidate content, not original filenames, native callers or runtime use.

@@ -34,6 +34,7 @@ import {
 import { projectSemanticResources } from "./JavaScriptSemanticGraphResourceProjection.js";
 import { projectSemanticObjects } from "./JavaScriptSemanticGraphObjectProjection.js";
 import { projectSemanticValues } from "./JavaScriptSemanticGraphValueProjection.js";
+import { projectSemanticReturnFields } from "./JavaScriptSemanticGraphReturnProjection.js";
 import { inferredSemanticEvidenceAt } from "./JavaScriptSemanticGraphEvidence.js";
 import { observedSemanticEvidence } from "./JavaScriptSemanticGraphEvidence.js";
 import {
@@ -717,6 +718,7 @@ const FILE_PROJECTION_PASSES: readonly ((
   projectSemanticValues,
   projectSemanticObjects,
   projectCalls,
+  projectSemanticReturnFields,
   projectSemanticPromises,
   projectSemanticEvents,
   projectSemanticTimers,

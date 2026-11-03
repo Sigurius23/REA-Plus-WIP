@@ -94,6 +94,34 @@ complete observation.
   records retain the indirect slot; their final target stays null and external
   layout decoding is unsupported. Local type names and conformance locations
   remain available without claiming to decode another image's metadata.
+  `swift_resilient_witnesses` separately reports static, order-independent
+  requirement/witness pairs for the proved nonconditional, nonretroactive
+  conformance-tail layout. `record_ordinal` identifies the record in that
+  conformance, not a runtime table slot. Imported requirement binds retain their
+  symbol/library/weak/addend identity with null flags. A mapped executable target
+  then has kind `executable_address` and partial decode; a locally decoded,
+  supported synchronous requirement can establish `synchronous_function`.
+  Neither classification invents a source function name. Nil, unmapped,
+  non-executable and unsupported local requirement targets remain unresolved.
+  The optional generic-control tail is structurally validated, but runtime
+  instantiation, requirement counts from external images and runtime ordering
+  remain unknown. This follows the
+  [Swift 5.9 ABI metadata layout](https://github.com/swiftlang/swift/blob/swift-5.9-RELEASE/include/swift/ABI/Metadata.h)
+  and [conformance/requirement flags](https://github.com/swiftlang/swift/blob/swift-5.9-RELEASE/include/swift/ABI/MetadataValues.h).
+  Unproved preceding tails, unknown flags and truncated spans report partial
+  coverage. Historical Evidence and symbol-only providers may omit this newer
+  array; binary conformance inspection includes it even when empty. A file-backed
+  generic-control header does not require its runtime private storage to be
+  file-backed: unavailable control targets retain partial limitations without
+  erasing independently valid static requirement/witness records.
+  With `facet: "swift-conformances"`, optional `swift_conformance_address`
+  (CLI `--swift-conformance-address`) selects one exact unslid descriptor from
+  the image's indexed conformance section before spending admission on unrelated
+  decodes. Arbitrary addresses and null relative cells are not descriptor proof.
+  `swift_conformance_selection` reports canonical address and matched status;
+  coverage is explicitly scoped to that selection, and an unmatched address is
+  partial. Historical unselected results may omit the selection record. Other
+  facets reject this selector, and symbol-only fallback cannot satisfy it.
   Select `facet: "objc"`, `"swift-conformances"` or `"swift-vtables"` to direct
   the aggregate `max_records` decode-admission budget to that family; the
   default `"all"` preserves the combined pass. CLI callers use `--facet`.

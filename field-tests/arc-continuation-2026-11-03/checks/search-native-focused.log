@@ -1,0 +1,86 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/boundary/filesystem/chromiumResourceSearch.test.ts tests/boundary/filesystem/chromiumResources.test.ts src/native/AppleSwiftResilientWitnesses.test.ts
+
+Focused tests: tests/boundary/filesystem/chromiumResourceSearch.test.ts, tests/boundary/filesystem/chromiumResources.test.ts, src/native/AppleSwiftResilientWitnesses.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 95a5780ab3f2d79b
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing 394031bf6ae1738e
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache miss, executing 6a3c2b9435d96c9e
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    1 cached, 3 total
+  Time:    8.257s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ❯ |adapters| src/native/AppleSwiftResilientWitnesses.test.ts (23 tests | 1 failed) 32ms
+   ✓ Swift static resilient witness records (2)
+     ✓ recovers a separate requirement/witness pair without inventing a runtime slot 10ms
+     ✓ retains imported protocol/requirement bind identity without guessing requirement flags 3ms
+   ✓ Swift resilient witness boundaries (20)
+     ✓ accepts a supported resilient tail without generic control data 1ms
+     ✓ rejects unproved tail flags 0x%x 1ms
+     ✓ rejects unproved tail flags 0x%x 1ms
+     ✓ rejects unproved tail flags 0x%x 0ms
+     ✓ rejects unproved tail flags 0x%x 0ms
+     ✓ rejects a declared pair span or generic tail outside the mapping (count 4294967295) 0ms
+     ✓ rejects a declared pair span or generic tail outside the mapping (count 189) 0ms
+     ✓ rejects a nil, non-executable or unmapped implementation (0) 0ms
+     ✓ rejects a nil, non-executable or unmapped implementation (3072) 0ms
+     ✓ rejects a nil, non-executable or unmapped implementation (8192) 0ms
+     ✓ does not classify unsupported requirement flags 0 as a function 0ms
+     ✓ does not classify unsupported requirement flags 33 as a function 0ms
+     ✓ does not classify unsupported requirement flags 7 as a function 0ms
+     ✓ does not classify unsupported requirement flags 129 as a function 0ms
+     ✓ does not classify unsupported requirement flags 65538 as a function 0ms
+     ✓ does not classify unsupported requirement flags 2147483650 as a function 1ms
+     ✓ validates generic control pointers before emitting records 1ms
+     ✓ keeps a missing requirement partial even if the witness points into executable bytes 1ms
+     ✓ shares max_records with conformances and relative pointers and labels exhaustion 0ms
+     ✓ omits the unrequested family 1ms
+   × selects one indexed conformance before unrelated decode admission and rejects absent descriptors 8ms
+ ✓ |boundary| tests/boundary/filesystem/chromiumResources.test.ts (3 tests) 31ms
+ ✓ |boundary| tests/boundary/filesystem/chromiumResourceSearch.test.ts (6 tests) 57ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |adapters| src/native/AppleSwiftResilientWitnesses.test.ts > selects one indexed conformance before unrelated decode admission and rejects absent descriptors
+AssertionError: expected [Function] to throw error including 'requires facet' but got 'Invalid analysis input for inspect_na…'
+
+Expected: "requires facet"
+Received: "Invalid analysis input for inspect_native_dispatch_metadata"
+
+ ❯ src/native/AppleSwiftResilientWitnesses.test.ts:302:127
+    300|   expect(absent.swift_conformance_selection?.matched).toBe(false);
+    301|   expect(absent.swift_conformances).toEqual([]);
+    302|   expect(() => decodeAppleDispatchMetadata(bytes, 20, provenance, { fa…
+       |                                                                                                                               ^
+    303| });
+    304|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 31 passed (32)
+   Start at  17:38:29
+   Duration  930ms (transform 64%, import 22%, tests 9%, worker 5%)
+

@@ -9,6 +9,7 @@ import {
 import type { BinaryTarget } from "../domain/binaryTargetTypes.js";
 import {
   AnalysisCancelledError,
+  AnalysisInputError,
   AnalysisResourceConstraintError,
 } from "../domain/analysisErrorCore.js";
 import { openRegularFile } from "../filesystem/RegularFile.js";
@@ -24,6 +25,7 @@ import {
   type DispatchRecordBudget,
 } from "./AppleSwiftDispatchFacets.js";
 import { decodeSwiftClassVtables } from "./AppleSwiftVtables.js";
+import { createSwiftResilientWitnessReader } from "./AppleSwiftResilientWitnesses.js";
 
 /** Decode validated little-endian 64-bit Apple Objective-C metadata without loading target code. */
 export const decodeAppleDispatchMetadata = (
@@ -33,9 +35,27 @@ export const decodeAppleDispatchMetadata = (
   selection: {
     readonly architecture?: string;
     readonly facet?: NativeDispatchFacet;
+    readonly swiftConformanceAddress?: string;
   } = {},
 ): ObjcSwiftMetadata => {
-  const { architecture = "arm64", facet = "all" } = selection;
+  const {
+    architecture = "arm64",
+    facet = "all",
+    swiftConformanceAddress,
+  } = selection;
+  if (swiftConformanceAddress !== undefined && facet !== "swift-conformances")
+    throw new AnalysisInputError(
+      "inspect_native_dispatch_metadata",
+      undefined,
+      [
+        {
+          path: ["swift_conformance_address"],
+          reason: "invalid_value",
+          message:
+            "Exact conformance selection requires facet swift-conformances.",
+        },
+      ],
+    );
   const layout = parseMachoLayout(bytes, architecture);
   const { segments, sections, offset } = layout;
   const fixups = parsePointerFixups(
@@ -135,20 +155,35 @@ export const decodeAppleDispatchMetadata = (
           classTruncated: false,
           categoriesTruncated: false,
         };
+  const swiftRelative = createSwiftRelativeReader({
+    bytes,
+    readers: { ...readers, pointer: decodePointer },
+    budget: swiftBudget,
+    result,
+  });
+  const resilient =
+    facet === "all" || facet === "swift-conformances"
+      ? createSwiftResilientWitnessReader({
+          readers: { ...readers, pointer: decodePointer },
+          relative: swiftRelative,
+          segments,
+          budget: swiftBudget,
+          result,
+        })
+      : undefined;
   const swift =
     facet === "all" || facet === "swift-conformances"
       ? decodeSwiftDispatchFacets({
           sections,
           segments,
           readers: { ...readers, pointer: decodePointer },
-          relative: createSwiftRelativeReader({
-            bytes,
-            readers: { ...readers, pointer: decodePointer },
-            budget: swiftBudget,
-            result,
-          }),
+          relative: swiftRelative,
           budget: swiftBudget,
           result,
+          ...(resilient === undefined ? {} : { resilient }),
+          ...(swiftConformanceAddress === undefined
+            ? {}
+            : { conformanceAddress: BigInt(swiftConformanceAddress) }),
         })
       : {
           facet: "swift_conformances_static_witness_slots" as const,
@@ -221,6 +256,7 @@ export const decodeAppleDispatchMetadata = (
     fixups,
     vtables,
     swift,
+    ...(resilient === undefined ? {} : { resilient: resilient.facts() }),
   });
   return objcSwiftMetadataSchema.parse(result);
 };
@@ -232,6 +268,7 @@ export const inspectAppleDispatchMetadata = async (
   signal?: AbortSignal,
   facet: NativeDispatchFacet = "all",
   maxFileBytes?: number,
+  swiftConformanceAddress?: string,
 ) => {
   if (target.kind !== "executable" || target.format !== "mach-o")
     throw new TypeError("Apple dispatch metadata requires a Mach-O target");
@@ -275,7 +312,13 @@ export const inspectAppleDispatchMetadata = async (
         bytes,
         maxRecords,
         { path: target.path, sha256: digest },
-        { architecture: target.architecture, facet },
+        {
+          architecture: target.architecture,
+          facet,
+          ...(swiftConformanceAddress === undefined
+            ? {}
+            : { swiftConformanceAddress }),
+        },
       ),
     });
   } finally {

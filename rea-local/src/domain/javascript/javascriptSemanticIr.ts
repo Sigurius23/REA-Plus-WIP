@@ -102,6 +102,24 @@ export interface JavaScriptSemanticReturnSite {
   readonly location: JavaScriptSourceRange;
   readonly identityReferenceLocation: JavaScriptSourceRange | null;
   readonly value: JavaScriptSemanticValue;
+  /** Optional in historical IR; direct object fields observed by the value owner. */
+  readonly fieldSources?:
+    | readonly JavaScriptSemanticReturnFieldSource[]
+    | undefined;
+}
+
+/** One selected own return field, after the object's overwrite rules apply. */
+export interface JavaScriptSemanticReturnFieldSource {
+  readonly path: readonly string[];
+  readonly location: JavaScriptSourceRange;
+  readonly expressionLocation: JavaScriptSourceRange | null;
+  readonly expressionKind:
+    | "identifier"
+    | "property-read"
+    | "literal"
+    | "unsupported";
+  readonly status: "complete" | "ambiguous" | "unsupported";
+  readonly reason: string | null;
 }
 
 /** One statically visible call or construction expression. */

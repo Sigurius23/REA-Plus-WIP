@@ -174,6 +174,60 @@ const checkExternalSwift = (metadata) => {
   assert.equal(typeof conformance.location.file_offset, "number");
 };
 
+const resilientOracle = async (path) => {
+  const { stdout } = await exec("/usr/bin/nm", ["-n", path]);
+  return ["ReaResilientBody", "ReaResilientRequest"].map((name) => {
+    const lines = stdout
+      .split("\n")
+      .filter((line) =>
+        new RegExp(`${name}[VO]SeAASe4from.*TW$`, "u").test(line),
+      );
+    assert.equal(
+      lines.length,
+      1,
+      `Missing compiler witness oracle for ${name}`,
+    );
+    return {
+      name,
+      address: `0x${BigInt(`0x${lines[0].split(/\s+/u)[0]}`).toString(16)}`,
+    };
+  });
+};
+
+const checkResilientSwift = (metadata, oracle) => {
+  for (const { name, address } of oracle) {
+    const conformance = metadata.swift_conformances.find(
+      (item) =>
+        item.type_name === name &&
+        item.protocol_reference?.symbol === "_$sSeMp",
+    );
+    assert.ok(conformance);
+    assert.deepEqual(conformance.witness_table, {
+      address: null,
+      file_offset: null,
+    });
+    const records = metadata.swift_resilient_witnesses.filter(
+      (item) => item.conformance.address === conformance.location.address,
+    );
+    assert.equal(records.length, 1);
+    const [record] = records;
+    assert.equal(record.record_ordinal, 0);
+    assert.equal(Object.hasOwn(record, "slot_index"), false);
+    assert.equal(
+      record.requirement_reference.symbol,
+      "_$sSe4fromxs7Decoder_p_tKcfCTq",
+    );
+    assert.equal(record.requirement_flags, null);
+    assert.equal(record.implementation_address, address);
+    assert.equal(record.implementation_kind, "executable_address");
+    assert.equal(typeof record.implementation_location.file_offset, "number");
+    assert.equal(record.runtime_witness_table, "not_instantiated");
+    assert.equal(record.decode.status, "partial");
+    assert.ok(record.generic_witness_table.address);
+    assert.equal(record.evidence[0].artifact_sha256.length, 64);
+  }
+};
+
 const checkSwift = (metadata, mode) => {
   checkExternalSwift(metadata);
   if (
@@ -298,11 +352,14 @@ try {
       "-o",
       swiftPath,
     ]);
+    // Compiler symbols are a supplemental oracle, never metadata recovery.
+    const oracle = await resilientOracle(swiftPath);
     for (const variant of ["symbols", "stripped"]) {
       if (variant === "stripped")
         await exec("/usr/bin/strip", ["-x", swiftPath]);
       const { target, metadata } = await inspect(swiftPath);
       checkSwift(metadata, mode);
+      checkResilientSwift(metadata, oracle);
       if (mode.mode === "chained" && variant === "stripped") {
         await withArtifactMcp(swiftPath, async (client) => {
           const { tools } = await client.listTools();
@@ -359,6 +416,8 @@ try {
             assert.equal(cli.parameters.facet, facet);
             assert.equal(cliResult.target_sha256, target.sha256);
             checkSelectedSwiftFacet(cliResult.result, facet);
+            if (facet === "swift-conformances")
+              checkResilientSwift(cliResult.result, oracle);
             const response = await client.callTool({
               name: "inspect_native_dispatch_metadata",
               arguments: { facet },
@@ -373,6 +432,8 @@ try {
               response.structuredContent.normalized_result,
             );
             checkSelectedSwiftFacet(mcpResult.result, facet);
+            if (facet === "swift-conformances")
+              checkResilientSwift(mcpResult.result, oracle);
             assert.deepEqual(mcpResult, cliResult);
           }
         });
@@ -382,6 +443,8 @@ try {
         target_sha256: target.sha256,
         conformances: metadata.swift_conformances.length,
         slots: metadata.swift_dispatch_slots.length,
+        resilient_records: metadata.swift_resilient_witnesses.length,
+        resilient_compiler_oracle: oracle,
         fixups: fixupCoverage(metadata)?.reason,
       });
     }

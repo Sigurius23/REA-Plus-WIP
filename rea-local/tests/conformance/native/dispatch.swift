@@ -16,3 +16,13 @@ public struct ReaArrayFixture: ExpressibleByArrayLiteral {
   public typealias ArrayLiteralElement = Int
   public init(arrayLiteral elements: Int...) {}
 }
+
+// These imported resilient requirements have static pairs even when their
+// witness-table pattern is null. The fixture is inspected, never executed.
+public struct ReaResilientBody: Decodable {
+  public let id: String
+}
+public enum ReaResilientRequest: Decodable {
+  case loadCSS(ReaResilientBody)
+  case editCSS(ReaResilientBody)
+}

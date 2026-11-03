@@ -1,4 +1,8 @@
 import {
+  searchChromiumResourcesInputSchema,
+  chromiumResourceSearchSchema,
+} from "../../domain/native/chromiumResourceSearch.js";
+import {
   inspectRecordedCrashInputSchema,
   recordedCrashSchema,
 } from "../../domain/native/recordedCrash.js";
@@ -32,6 +36,21 @@ export const inspectBinaryLayoutRequestSchema =
 
 /** Offline binary diagnostics are independent of macOS process/UI providers. */
 export const BINARY_DIAGNOSTICS_TOOL_CONTRACTS = [
+  {
+    name: "search_chromium_resources",
+    ...toolContractMetadata("search_chromium_resources"),
+    kind: "native-provider",
+    description:
+      "Search decoded Chromium DataPack v4/v5 resource bytes for a case-sensitive literal without executing resources or launching a browser. Query encoding encodes the needle only; binary payloads remain candidates. Returns the first occurrence per matching canonical payload, exact decoded byte ranges/hashes, original stored ranges, all alias identities, and optional lossless text ranges. Validates the index once and decodes each admitted canonical resource once. Bounded canonical windows, per-resource/aggregate decode budgets, explicit skips and a stable next cursor preserve partial coverage. Use expected_sha256 when resuming. No original filename, MIME type or runtime use is inferred. Cancellation returns a typed error; no active target or external engine is required.",
+    inputSchema: searchChromiumResourcesInputSchema,
+    outputSchema: evidenceResultOf(chromiumResourceSearchSchema),
+    examples: [
+      {
+        title: "Find candidate resources containing a literal",
+        input: { path: "/artifacts/resources.pak", query: "content.js" },
+      },
+    ],
+  },
   {
     name: "inspect_chromium_resources",
     ...toolContractMetadata("inspect_chromium_resources"),

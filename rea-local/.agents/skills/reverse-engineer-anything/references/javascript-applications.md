@@ -227,3 +227,10 @@ use and across aliases; ambiguous assignments, callable boundaries and visible
 writes remain uncertain. A low-confidence receiver-unknown candidate is not
 proof of network traffic, and an empty scoped endpoint list is not evidence that
 the whole application makes no network requests.
+
+Direct returned object fields may retain source dependencies in new semantic IR.
+Trace the returned property slot and aggregate using IDs from that producer.
+Known static reads can be resolved, while DOM reads/aliases remain candidates.
+Default traces omit ambiguous edges; opt into
+`include_ambiguous_dynamic_edges: true` to examine candidates without promoting
+them. Reusing older IR preserves its original omission of field provenance.

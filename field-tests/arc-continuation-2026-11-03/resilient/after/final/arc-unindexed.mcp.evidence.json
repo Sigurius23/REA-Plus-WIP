@@ -1,0 +1,124 @@
+{
+  "evidence_id": "ev_9283b38d3298acfcd2309e9de832561b6b010d2908274abd9dd8acac273dc2f5",
+  "subject": {
+    "name": "Arc",
+    "digest": {
+      "sha256": "e82d2a4245b6239860e41a149cb31c0c030e35b383456544c81f21d45ee03376"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/Applications/Arc.app/Contents/MacOS/Arc"
+  },
+  "provider": {
+    "id": "rea-workflow",
+    "name": "REA+ composed investigation workflow",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_native_dispatch_metadata",
+  "parameters": {
+    "swift_conformance_address": "0x1036a9f59",
+    "max_file_bytes": 268435456,
+    "max_records": 20000,
+    "facet": "swift-conformances"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "target_sha256": "e82d2a4245b6239860e41a149cb31c0c030e35b383456544c81f21d45ee03376",
+    "provider": {
+      "id": "native-macos",
+      "name": "macOS native inspection utilities",
+      "version": "apple-metadata-reader-1"
+    },
+    "analysis_profile_digest": null,
+    "result": {
+      "swift_conformance_selection": {
+        "address": "0x1036a9f59",
+        "matched": false
+      },
+      "objc_classes": [],
+      "objc_protocols": [],
+      "objc_categories": [],
+      "swift_decls": [],
+      "objc_ivars": [],
+      "objc_protocol_records": [],
+      "objc_dispatch_implementations": [],
+      "swift_conformances": [],
+      "swift_dispatch_slots": [],
+      "swift_resilient_witnesses": [],
+      "swift_symbols": [],
+      "relative_pointers": [],
+      "coverage": [
+        {
+          "facet": "objc_class_method_ivar_metadata",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "binary_relative_pointers",
+          "status": "complete",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "objc_properties_categories",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "pointer_fixups",
+          "status": "complete",
+          "reason": "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+          "examined": 2,
+          "decoded": 2
+        },
+        {
+          "facet": "swift_generic_resilient_witnesses_overrides_async_coroutines",
+          "status": "unsupported",
+          "reason": "Static resilient requirement/witness records have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine dispatch and other unsupported Swift layouts are not decoded",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_conformances_static_witness_slots",
+          "status": "partial",
+          "reason": "Selected conformance descriptor is not indexed in __swift5_proto; no descriptor was decoded",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_resilient_witness_records",
+          "status": "partial",
+          "reason": "Selected conformance descriptor is not indexed in __swift5_proto; no descriptor was decoded",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_class_vtable_descriptors",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        }
+      ],
+      "db_save_result": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Derived by an REA+ composed workflow.",
+    "Selected conformance descriptor is not indexed in __swift5_proto; no descriptor was decoded",
+    "Static resilient requirement/witness records have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine dispatch and other unsupported Swift layouts are not decoded",
+    "chained fixups: DYLD_CHAINED_PTR_64_OFFSET"
+  ],
+  "locations": [],
+  "evidence_links": []
+}

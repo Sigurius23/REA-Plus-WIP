@@ -98,6 +98,14 @@ selected provider did not establish that fact. Symbol names alone do not prove
 that a class is a root class or has no ivars.
 
 For a budget-limited native metadata investigation, select
+`inspect_native_dispatch_metadata` can retain static resilient Swift
+requirement/witness pairs independently of instantiated runtime witness slots.
+Imported requirement flags and signatures can remain unknown even when a local
+executable address is recovered. With `facet: "swift-conformances"`,
+`swift_conformance_address` selects an exact indexed descriptor before spending
+decode admission on unrelated records; preserve its explicit selection scope
+and matched status. Runtime table ordering and instantiation remain unobserved.
+
 `inspect_native_dispatch_metadata` with `facet: "objc"`, `"swift-conformances"`
 or `"swift-vtables"` instead of spending its aggregate `max_records` budget on
 all families. CLI uses `--facet`; omitted selection remains `"all"`.
@@ -226,3 +234,12 @@ ID, stored range/hash and decoded digest if publishing selected bytes for later
 inert JavaScript analysis. An analyst-chosen filename is not recovered metadata.
 Resource limits fail explicitly; large retained Evidence uses export rather than
 reanalysis. See [Chromium resources](https://github.com/morluto/rea/blob/main/docs/chromium-resources.md).
+
+For literal discovery, `search_chromium_resources` searches a bounded canonical
+window, decoding each admitted payload once and grouping aliases. The query's
+encoding describes needle bytes, not a text-only filter. Preserve exact decoded
+byte ranges, both digests, skipped records, next canonical cursor and pack
+identity (`expected_sha256` on continuation). Match/scan/aggregate limits do not
+establish whole-pack absence. Search reports first occurrences per payload;
+optional text ranges require lossless decoding. No original filename or feature
+mapping follows from a string match.

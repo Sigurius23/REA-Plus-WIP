@@ -138,6 +138,7 @@ export class EnhancedTools {
           signal,
           call.input.facet,
           call.input.max_file_bytes,
+          call.input.swift_conformance_address,
         );
       case "get_objc_classes":
         return this.#objcClasses(call.input.pattern, signal);
@@ -242,6 +243,7 @@ export class EnhancedTools {
     signal?: AbortSignal,
     facet: NativeDispatchFacet = "all",
     maxFileBytes?: number,
+    swiftConformanceAddress?: string,
   ): EnhancedResult {
     return inspectNativeDispatch(
       this.analysis,
@@ -249,6 +251,7 @@ export class EnhancedTools {
       signal,
       facet,
       maxFileBytes,
+      swiftConformanceAddress,
     );
   }
 

@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "scope": "Producer-owned Unicode preview fidelity correction after public Arc/owned fixture captures; complete bytes, digests and byte/UTF16 match ranges remain unchanged.",
+  "source_files": [
+    {
+      "path": "rea-local/src/native/chromium/ChromiumResourceSearch.ts",
+      "sha256": "14c722a293ba05650be52606eaedc26bd7c66c47e34ad43891b75ebbb738e560"
+    },
+    {
+      "path": "rea-local/tests/boundary/filesystem/chromiumResourceSearch.test.ts",
+      "sha256": "ed42587ed03e4c4b4a1de8f10f73845b465f1f6c63edb92e8c6d4a7619dd3f40"
+    }
+  ],
+  "boundary_command": [
+    "node",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "--project",
+    "boundary",
+    "tests/boundary/filesystem/chromiumResourceSearch.test.ts"
+  ],
+  "cwd": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local",
+  "result": {
+    "files_passed": 1,
+    "tests_passed": 7,
+    "tests_failed": 0,
+    "test_duration_ms": 60
+  },
+  "specific_scenario": "Valid astral characters straddle both old UTF16 preview start/end boundaries; the resulting510-code-unit preview contains whole characters for UTF8 and UTF16LE. Full decoded lengths/SHA256 and exact query ranges are pinned.",
+  "format": "oxfmt passed for both touched files",
+  "lint": {
+    "errors": 0,
+    "warnings": 2,
+    "warning_scope": "Existing full search function complexity and line count; no new preview/test warning."
+  },
+  "remaining_owner_gate": "Parent will rebuild, rerun affected public tests and full check after this correction; no child build or target execution."
+}

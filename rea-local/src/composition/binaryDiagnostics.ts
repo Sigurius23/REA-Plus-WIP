@@ -1,3 +1,5 @@
+import { ChromiumResourceSearchService } from "../application/binaryDiagnostics/ChromiumResourceSearchService.js";
+import { ChromiumResourceSearchProvider } from "../native/chromium/ChromiumResourceSearchProvider.js";
 import { RecordedCrashService } from "../application/binaryDiagnostics/RecordedCrashService.js";
 import { PwntoolsRecordedCrashProvider } from "../native/pwntools/PwntoolsRecordedCrashProvider.js";
 import { BinaryLayoutService } from "../application/binaryDiagnostics/BinaryLayoutService.js";
@@ -34,3 +36,8 @@ export const createRecordedCrashService = (
   environment: Readonly<NodeJS.ProcessEnv> = process.env,
 ): RecordedCrashService =>
   new RecordedCrashService(new PwntoolsRecordedCrashProvider(environment));
+
+/** Candidate byte search never loads browser code. */
+export const createChromiumResourceSearchService =
+  (): ChromiumResourceSearchService =>
+    new ChromiumResourceSearchService(new ChromiumResourceSearchProvider());

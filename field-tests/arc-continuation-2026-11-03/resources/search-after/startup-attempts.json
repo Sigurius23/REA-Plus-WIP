@@ -1,0 +1,21 @@
+{
+  "classification": "environment/artifact availability; not a DataPack search failure",
+  "attempts": [
+    {
+      "kind": "refactored acceptance rerun",
+      "result": "MCP connection closed before the first tool call",
+      "reason_observed": "compiled runtime absent during startup",
+      "public_records": 0
+    },
+    {
+      "kind": "CLI inspect selected14901",
+      "exit_code": 1,
+      "stdout_bytes": 0,
+      "stderr": "REA+ compiled runtime is missing. No record produced; the selected resource was not read in this attempt."
+    }
+  ],
+  "affected_completed_capture": false,
+  "completed_capture": "29/29calls and exports finished and closed before the runtime startup issue",
+  "next_action": "Wait for parent-coordinated rebuild; rerun the new acceptance journey and select14901.",
+  "diagnosed_by_owner": "npm run check had a compile prerequisite which cleaned dist; a source lint failure halted that build. Root fixed the lint failure and is performing a coordinated build/check before another public startup."
+}

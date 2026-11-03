@@ -27,7 +27,7 @@ const enhanced = <Name extends string, Schema extends z.ZodObject>(
 export const ENHANCED_TOOL_CONTRACTS = [
   enhanced(
     "inspect_native_dispatch_metadata",
-    "Inspect native Objective-C/Swift metadata using the bound provider. Select all families or only Objective-C, Swift conformances/witness slots, or Swift class vtables; max_records is one aggregate decode-admission budget, not a separate allowance per family. Unselected families are not_requested. A validated Apple binary reader supplies encoded metadata, addresses, fixups and per-record Evidence; other providers retain narrower symbol-only observations and mark requested binary facets unsupported. Includes target/provider identity, analysis-profile digest and explicit coverage. Static metadata does not prove runtime dispatch.",
+    "Inspect native Objective-C/Swift metadata using the bound provider. Select all families or only Objective-C, Swift conformances/witness slots, or Swift class vtables; max_records is one aggregate decode-admission budget, not a separate allowance per family. Unselected families are not_requested. A validated Apple binary reader supplies encoded metadata, addresses, fixups and per-record Evidence; other providers retain narrower symbol-only observations and mark requested binary facets unsupported. Includes target/provider identity, analysis-profile digest and explicit coverage. Static resilient requirement/witness records are separate from runtime slots. swift_conformance_address selects one descriptor only if indexed in the selected image and requires facet swift-conformances; symbol-only providers cannot satisfy this selector. Static metadata does not prove runtime dispatch.",
     enhancedInputSchemas.inspect_native_dispatch_metadata,
   ),
   enhanced(

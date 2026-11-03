@@ -22,6 +22,14 @@ export const nativeDispatchFacetSchema = z.enum([
   "swift-conformances",
   "swift-vtables",
 ]);
+/** Exact unslid descriptor address from the indexed Swift conformance section. */
+export const nativeSwiftConformanceAddressSchema = z
+  .string()
+  .regex(/^0x[0-9a-fA-F]{1,16}$/u)
+  .optional()
+  .describe(
+    "Decode only this indexed Swift conformance descriptor; requires facet swift-conformances. Runtime witness tables remain unknown.",
+  );
 export type NativeDispatchFacet = z.infer<typeof nativeDispatchFacetSchema>;
 
 /** Objective-C method type. */
@@ -236,6 +244,37 @@ export const swiftDispatchSlotSchema = z.strictObject({
   evidence: z.array(nativeMetadataEvidenceSchema).min(1),
 });
 
+/** An order-independent resilient conformance record, never a runtime table slot. */
+export const swiftResilientWitnessSchema = z.strictObject({
+  conformance: nativeMetadataLocationSchema,
+  type_name: z.string().min(1).nullable(),
+  protocol_name: z.string().min(1).nullable(),
+  type_reference: nativeExternalReferenceSchema.nullable(),
+  protocol_reference: nativeExternalReferenceSchema.nullable(),
+  record_ordinal: z
+    .number()
+    .int()
+    .nonnegative()
+    .describe(
+      "Zero-based ordinal in the conformance's static resilient records; this is not a runtime witness-table slot index.",
+    ),
+  requirement: nativeMetadataLocationSchema,
+  requirement_reference: nativeExternalReferenceSchema.nullable(),
+  requirement_flags: z.number().int().min(0).max(0xffffffff).nullable(),
+  implementation_address: z.string().nullable(),
+  implementation_location: nativeMetadataLocationSchema,
+  implementation_kind: z.enum([
+    "synchronous_function",
+    "executable_address",
+    "unresolved",
+  ]),
+  generic_witness_table: nativeMetadataLocationSchema.nullable(),
+  runtime_witness_table: z.literal("not_instantiated"),
+  location: nativeMetadataLocationSchema,
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+});
+
 /** Signed-relative pointer as stored in an Apple binary metadata structure. */
 export const relativePointerSchema = z.strictObject({
   field: nativeMetadataLocationSchema,
@@ -323,6 +362,9 @@ export const dbSaveResultSchema = z.strictObject({
 
 /** Result of deeper ObjC/Swift metadata extraction. */
 export const objcSwiftMetadataSchema = z.strictObject({
+  swift_conformance_selection: z
+    .strictObject({ address: z.string(), matched: z.boolean() })
+    .optional(),
   objc_classes: z.array(objcClassSchema).default([]),
   objc_protocols: z.array(objcProtocolSchema).default([]),
   objc_categories: z.array(objcCategorySchema).default([]),
@@ -334,6 +376,8 @@ export const objcSwiftMetadataSchema = z.strictObject({
     .default([]),
   swift_conformances: z.array(swiftConformanceSchema).default([]),
   swift_dispatch_slots: z.array(swiftDispatchSlotSchema).default([]),
+  // Historical/provider-only Evidence may omit this newer binary capability.
+  swift_resilient_witnesses: z.array(swiftResilientWitnessSchema).optional(),
   swift_symbols: z.array(swiftSymbolSchema).default([]),
   relative_pointers: z.array(relativePointerSchema).default([]),
   coverage: z.array(nativeMetadataCoverageSchema).default([]),

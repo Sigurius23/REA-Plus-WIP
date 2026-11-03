@@ -13,7 +13,12 @@ import {
   invalidateSemanticMutationPaths,
 } from "./javascriptSemanticMutationValues.js";
 
-import type { JavaScriptBindingProvenance } from "./javascriptSemanticIr.js";
+import type {
+  JavaScriptBindingProvenance,
+  JavaScriptSemanticReturnFieldSource,
+  JavaScriptSemanticReturnSite,
+} from "./javascriptSemanticIr.js";
+import { range } from "./javascriptStaticAnalysisHelpers.js";
 import type {
   JavaScriptSemanticProperty,
   JavaScriptSemanticResourceLimit,
@@ -57,6 +62,10 @@ interface EvaluationContext {
   readonly expressionDepth: number;
   readonly capturePoint?: t.Node;
   readonly primitiveBindingValues: Map<string, JavaScriptSemanticValue>;
+  readonly returnedObject?: {
+    readonly node: t.ObjectExpression;
+    readonly fields: Map<string, JavaScriptSemanticReturnFieldSource>;
+  };
 }
 
 const primitiveBindingValuesByState = new WeakMap<
@@ -120,12 +129,7 @@ export const evaluateSemanticExpression = (
   state: JavaScriptSemanticAnalysisState,
   capturePoint?: t.Node,
 ): JavaScriptSemanticValue => {
-  const context: EvaluationContext = {
-    state,
-    bindings: new Set(),
-    expressionDepth: 0,
-    primitiveBindingValues: primitiveBindingValuesFor(state),
-  };
+  const context = expressionContext(state);
   return evaluateExpression(
     node,
     capturePoint === undefined
@@ -133,6 +137,31 @@ export const evaluateSemanticExpression = (
       : (captureContextAt(capturePoint, context) ?? context),
   );
 };
+
+/** Capture selected direct object fields in the same pass that evaluates them. */
+export const evaluateSemanticReturnValue = (
+  node: t.Node,
+  state: JavaScriptSemanticAnalysisState,
+): Pick<JavaScriptSemanticReturnSite, "value" | "fieldSources"> => {
+  const object = unwrapJavaScriptExpression(node).node;
+  if (!t.isObjectExpression(object))
+    return { value: evaluateSemanticExpression(node, state) };
+  const fields = new Map<string, JavaScriptSemanticReturnFieldSource>();
+  const value = evaluateExpression(node, {
+    ...expressionContext(state),
+    returnedObject: { node: object, fields },
+  });
+  return { value, fieldSources: [...fields.values()] };
+};
+
+const expressionContext = (
+  state: JavaScriptSemanticAnalysisState,
+): EvaluationContext => ({
+  state,
+  bindings: new Set(),
+  expressionDepth: 0,
+  primitiveBindingValues: primitiveBindingValuesFor(state),
+});
 
 /** Follow module provenance through destructuring, members, and aliases. */
 export const evaluateSemanticProvenance = (
@@ -343,8 +372,12 @@ const evaluateObject = (
   const propertiesByName = new Map<string, JavaScriptSemanticProperty>();
   let unknownProperties = false;
   let omittedProperties: number | null = 0;
+  const sources =
+    context.returnedObject?.node === node
+      ? context.returnedObject.fields
+      : undefined;
   const invalidateEarlierProperties = (): void => {
-    for (const [name] of propertiesByName)
+    for (const [name] of propertiesByName) {
       propertiesByName.set(name, {
         name,
         presence: "present",
@@ -353,6 +386,16 @@ const evaluateObject = (
           reason: "A later property may overwrite this value.",
         },
       });
+      const source = sources?.get(name);
+      if (source !== undefined)
+        sources?.set(name, {
+          ...source,
+          expressionLocation: null,
+          expressionKind: "unsupported",
+          status: "ambiguous",
+          reason: "A later property may overwrite this field's source.",
+        });
+    }
   };
   for (const property of node.properties) {
     if (t.isSpreadElement(property)) {
@@ -389,6 +432,8 @@ const evaluateObject = (
             reason: "Object method or accessor value is not a primitive.",
           },
     });
+    if (sources !== undefined)
+      recordReturnedFieldSource(sources, name, property);
   }
   const properties = [...propertiesByName.values()].sort((left, right) =>
     compareUnicodeCodePoints(left.name, right.name),
@@ -406,6 +451,40 @@ const evaluateObject = (
         unknownProperties: false,
         omittedProperties: 0,
       };
+};
+
+/** Only the canonical object evaluator chooses which declaration supplies a field. */
+const recordReturnedFieldSource = (
+  sources: Map<string, JavaScriptSemanticReturnFieldSource>,
+  name: string,
+  property: t.ObjectProperty | t.ObjectMethod,
+): void => {
+  const expression = t.isObjectProperty(property)
+    ? unwrapJavaScriptExpression(property.value).node
+    : null;
+  const expressionKind =
+    expression === null
+      ? "unsupported"
+      : t.isIdentifier(expression)
+        ? "identifier"
+        : t.isMemberExpression(expression) ||
+            t.isOptionalMemberExpression(expression)
+          ? "property-read"
+          : readExactJavaScriptLiteral(expression).found
+            ? "literal"
+            : "unsupported";
+  const direct = !property.computed && expressionKind !== "unsupported";
+  sources.set(name, {
+    path: [name],
+    location: range(property),
+    expressionLocation:
+      direct && expression !== null ? range(expression) : null,
+    expressionKind: direct ? expressionKind : "unsupported",
+    status: direct ? "complete" : "unsupported",
+    reason: direct
+      ? null
+      : "Computed keys, methods, accessors and unsupported expressions do not establish a direct copied return-field source.",
+  });
 };
 
 const evaluateArray = (

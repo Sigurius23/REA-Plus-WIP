@@ -39,6 +39,7 @@ export const pushDispatchCoverage = (input: {
   readonly fixups: PointerFixups;
   readonly vtables: FacetDecodeFacts;
   readonly swift: FacetDecodeFacts;
+  readonly resilient?: FacetDecodeFacts;
 }): void => {
   const {
     result,
@@ -51,10 +52,21 @@ export const pushDispatchCoverage = (input: {
     fixups,
     vtables,
     swift,
+    resilient,
   } = input;
   const objcRequested = facet === "all" || facet === "objc";
   const swiftRequested = facet === "all" || facet === "swift-conformances";
   const vtablesRequested = facet === "all" || facet === "swift-vtables";
+  const conformanceSelection = result.swift_conformance_selection;
+  const selectionMatched = conformanceSelection?.matched !== false;
+  const selectionScope =
+    conformanceSelection === undefined
+      ? []
+      : [
+          conformanceSelection.matched
+            ? "Coverage is limited to the selected indexed conformance descriptor"
+            : "Selected conformance descriptor is not indexed in __swift5_proto; no descriptor was decoded",
+        ];
   const anyTruncated = Object.values(truncated).some(Boolean);
   result.coverage.push(
     objcRequested
@@ -146,7 +158,7 @@ export const pushDispatchCoverage = (input: {
           facet: "swift_generic_resilient_witnesses_overrides_async_coroutines",
           status: "unsupported",
           reason:
-            "This reader admits simple Swift conformance/static witness records and non-generic, non-resilient class vtables; generic/resilient tables and other Swift metadata families are not decoded",
+            "Static resilient requirement/witness records have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine dispatch and other unsupported Swift layouts are not decoded",
           examined: 0,
           decoded: 0,
         }
@@ -160,6 +172,7 @@ export const pushDispatchCoverage = (input: {
           facet: "swift_conformances_static_witness_slots",
           status:
             swift.exhaustive &&
+            selectionMatched &&
             !truncated.swift &&
             !result.swift_conformances.some(
               ({ decode }) => decode.status !== "decoded",
@@ -172,6 +185,7 @@ export const pushDispatchCoverage = (input: {
               : "partial",
           reason:
             [
+              ...selectionScope,
               ...swift.issues.map(formatIssue),
               ...(truncated.swift ? ["max_records_reached"] : []),
               ...(result.swift_conformances.some(
@@ -188,6 +202,25 @@ export const pushDispatchCoverage = (input: {
           decoded: swift.decoded,
         }
       : notRequested("swift_conformances_static_witness_slots"),
+  );
+  result.coverage.push(
+    swiftRequested && resilient !== undefined
+      ? {
+          facet: "swift_resilient_witness_records",
+          status:
+            resilient.exhaustive && selectionMatched && !truncated.swift
+              ? "complete"
+              : "partial",
+          reason:
+            [
+              ...selectionScope,
+              ...resilient.issues.map(formatIssue),
+              ...(truncated.swift ? ["max_records_reached"] : []),
+            ].join("; ") || null,
+          examined: resilient.examined,
+          decoded: resilient.decoded,
+        }
+      : notRequested("swift_resilient_witness_records"),
   );
   result.coverage.push(
     vtablesRequested

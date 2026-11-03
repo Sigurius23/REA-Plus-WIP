@@ -64,6 +64,7 @@ export const CLI_COMMANDS = Object.freeze({
   inspectRecordedCrash: "inspect-recorded-crash",
   inspectBinaryLayout: "inspect-binary-layout",
   inspectPeResources: "inspect-pe-resources",
+  searchChromiumResources: "search-chromium-resources",
   inspectChromiumResources: "inspect-chromium-resources",
   emulateFunction: "emulate-function",
   inspectAnalysisView: "inspect-analysis-view",

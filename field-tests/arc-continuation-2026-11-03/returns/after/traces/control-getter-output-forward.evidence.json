@@ -1,0 +1,254 @@
+{
+  "evidence_id": "ev_db97116ff6aa95e8456344dafa5e495549ace3be2db1b7c391703811eb959035",
+  "subject": null,
+  "provider": {
+    "id": "rea-javascript-application-workflows",
+    "name": "REA+ JavaScript application workflows",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.javascript-semantic-trace",
+  "operation": "trace_javascript_semantics",
+  "parameters": {
+    "application_evidence_id": "ev_82274ed66cb9ceb7331221311c05e25c8bfa351e6aa43acf99e105c24466beb6",
+    "query": {
+      "seed": {
+        "kind": "semantic-node",
+        "node_id": "jsrg_node_fd3c8ff32ab05e94df774a91cd1da512f20e08b0ebb6a0b6a204ac34c1a505d5"
+      },
+      "direction": "forward-influence",
+      "include_ambiguous_dynamic_edges": false,
+      "expected": {
+        "role": "sink",
+        "classes": [
+          "return-site"
+        ]
+      }
+    }
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "query_id": "jsrq_2e29c1a94c25856c97a357fa2a7b3e7787f0e270e0ed3fd88530df2c88edfa42",
+    "source_graph_id": "jsrg_e598238273df3a29fb9fe9dfc8ee4842f89d62e40b253a57c772d638fbf30612",
+    "seed": {
+      "kind": "semantic-node",
+      "node_id": "jsrg_node_fd3c8ff32ab05e94df774a91cd1da512f20e08b0ebb6a0b6a204ac34c1a505d5"
+    },
+    "direction": "forward-influence",
+    "status": "partial",
+    "seed_node_ids": [
+      "jsrg_node_fd3c8ff32ab05e94df774a91cd1da512f20e08b0ebb6a0b6a204ac34c1a505d5"
+    ],
+    "evidence_contexts": [
+      {
+        "authority": "ast-static-analysis",
+        "state": "observed",
+        "confidence": "exact",
+        "artifact": {
+          "available": true,
+          "artifact_id": "art_c137591e297935d576773809879ae919102b0239baae3b6b5531c9598381a71e",
+          "sha256": "c137591e297935d576773809879ae919102b0239baae3b6b5531c9598381a71e"
+        },
+        "extractor": {
+          "name": "rea-javascript-semantic-analysis",
+          "version": "1",
+          "operation": "analyze_javascript_application",
+          "executable_sha256": null
+        },
+        "coverage": {
+          "status": "complete",
+          "truncated": false,
+          "omitted_count": 0,
+          "limits": []
+        },
+        "limitations": [],
+        "evidence_ids": [],
+        "context_id": "jsrg_evidence_5aa155fe5c3025e24b251873fed9c6eff1cb11e89ca84e7e575c7994190be7dc"
+      },
+      {
+        "authority": "static-relationship-inference",
+        "state": "inferred",
+        "confidence": "high",
+        "artifact": {
+          "available": true,
+          "artifact_id": "art_c137591e297935d576773809879ae919102b0239baae3b6b5531c9598381a71e",
+          "sha256": "c137591e297935d576773809879ae919102b0239baae3b6b5531c9598381a71e"
+        },
+        "extractor": {
+          "name": "rea-javascript-semantic-analysis",
+          "version": "1",
+          "operation": "analyze_javascript_application",
+          "executable_sha256": null
+        },
+        "coverage": {
+          "status": "complete",
+          "truncated": false,
+          "omitted_count": 0,
+          "limits": []
+        },
+        "limitations": [
+          "This relationship is a conservative static candidate; it does not prove runtime execution or causal flow."
+        ],
+        "evidence_ids": [],
+        "context_id": "jsrg_evidence_c0c6b0eb74e90de7403987333c0b1444b8bd78ff07f2db9020947b682cb47c3b"
+      }
+    ],
+    "nodes": [
+      {
+        "kind": "expression",
+        "identity": {
+          "artifact_sha256": "c137591e297935d576773809879ae919102b0239baae3b6b5531c9598381a71e",
+          "module_path": "getter-output.js",
+          "source_range": {
+            "start": {
+              "line": 1,
+              "column": 79
+            },
+            "end": {
+              "line": 1,
+              "column": 90
+            }
+          },
+          "role_key": "object:read:79:90"
+        },
+        "function_node_id": "jsrg_node_58bc30ce06357790711e1dea11469edd71cf6cff3ccf7d1bd34bd706339d3465",
+        "application_node_ids": [],
+        "label": "read:/value",
+        "properties": {
+          "operation_kind": "read",
+          "property_path": [
+            "value"
+          ]
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_5aa155fe5c3025e24b251873fed9c6eff1cb11e89ca84e7e575c7994190be7dc",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "source-range",
+              "source": "getter-output.js",
+              "start": {
+                "line": 1,
+                "column": 79
+              },
+              "end": {
+                "line": 1,
+                "column": 90
+              }
+            }
+          }
+        },
+        "node_id": "jsrg_node_35ea4b4fc3b39619d01806c6cc0b5bb20a71b24b8d703a3b906be93ac2ff0c73"
+      },
+      {
+        "kind": "property-slot",
+        "identity": {
+          "artifact_sha256": "c137591e297935d576773809879ae919102b0239baae3b6b5531c9598381a71e",
+          "module_path": "getter-output.js",
+          "source_range": null,
+          "role_key": "property:[\"scope:function:7:135:binding:input\",[\"value\"]]"
+        },
+        "function_node_id": "jsrg_node_58bc30ce06357790711e1dea11469edd71cf6cff3ccf7d1bd34bd706339d3465",
+        "application_node_ids": [
+          "jag_node_f56d24f279b00b307baf8ba248dc1c00b6e8d65a2fdbac1ced2153a11681aaec"
+        ],
+        "label": "value",
+        "properties": {
+          "name": "value",
+          "object_binding_id": "scope:function:7:135:binding:input",
+          "presence": "present",
+          "property_path": [
+            "value"
+          ],
+          "property_pointer": "/value",
+          "value_coverage": null,
+          "value_status": "literal"
+        },
+        "evidence": {
+          "context_id": "jsrg_evidence_5aa155fe5c3025e24b251873fed9c6eff1cb11e89ca84e7e575c7994190be7dc",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "artifact-path",
+              "path": "getter-output.js"
+            }
+          }
+        },
+        "node_id": "jsrg_node_fd3c8ff32ab05e94df774a91cd1da512f20e08b0ebb6a0b6a204ac34c1a505d5"
+      }
+    ],
+    "relations": [
+      {
+        "source_node_id": "jsrg_node_fd3c8ff32ab05e94df774a91cd1da512f20e08b0ebb6a0b6a204ac34c1a505d5",
+        "target_node_id": "jsrg_node_35ea4b4fc3b39619d01806c6cc0b5bb20a71b24b8d703a3b906be93ac2ff0c73",
+        "relation": "reads-property",
+        "resolution": "resolved",
+        "properties": {},
+        "evidence": {
+          "context_id": "jsrg_evidence_c0c6b0eb74e90de7403987333c0b1444b8bd78ff07f2db9020947b682cb47c3b",
+          "location": {
+            "available": true,
+            "value": {
+              "kind": "artifact-path",
+              "path": "getter-output.js"
+            }
+          }
+        },
+        "relation_id": "jsrg_relation_63b5d499eaabc91104321ae68e5959620636654fa4d027921d9837fbc99ac242"
+      }
+    ],
+    "unknowns": [],
+    "expected_match_node_ids": [],
+    "summary": {
+      "total_seed_matches": 1,
+      "traversed_nodes": 2,
+      "traversed_relations": 1,
+      "traversed_functions": 1,
+      "traversed_modules": 1,
+      "relevant_unknowns": 0
+    },
+    "coverage": {
+      "status": "partial"
+    },
+    "limitations": [
+      "Boundary extraction covers unshadowed JSON/global coercions plus parse and validation method candidates.",
+      "Child-process extraction covers asynchronous node:child_process creation, literal argv/env/stdio options, exit/error listeners, and kill signals.",
+      "Configuration extraction covers process.env, process.argv, node:fs reads, and direct logical defaults.",
+      "Event extraction covers EventEmitter-style literal registrations, removals, and dispatch candidates; dynamic names remain unknown.",
+      "Function fingerprints are static candidates; equal digests can remain ambiguous and do not prove behavioral equivalence.",
+      "Local data flow does not claim control-flow-sensitive reaching definitions or arbitrary dynamic property resolution.",
+      "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+      "Request extraction covers fetch, WebSocket, node:http/node:https construction, direct option fields, and exact local response consumers.",
+      "Resource extraction covers built-in filesystem/network acquisition and exact local close/destroy/end handles.",
+      "Semantic graph reachability is a static inference and does not prove runtime execution.",
+      "The semantic graph contains static syntax observations and conservative relationship candidates; it does not claim runtime execution.",
+      "Timer extraction covers global or node:timers scheduling and exact local-handle cancellation."
+    ],
+    "source_evidence_id": "ev_82274ed66cb9ceb7331221311c05e25c8bfa351e6aa43acf99e105c24466beb6",
+    "evidence_links": [
+      "ev_82274ed66cb9ceb7331221311c05e25c8bfa351e6aa43acf99e105c24466beb6"
+    ]
+  },
+  "confidence": "inferred",
+  "authority": "analyst-inference",
+  "environment": null,
+  "limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "Boundary extraction covers unshadowed JSON/global coercions plus parse and validation method candidates.",
+    "Child-process extraction covers asynchronous node:child_process creation, literal argv/env/stdio options, exit/error listeners, and kill signals.",
+    "Configuration extraction covers process.env, process.argv, node:fs reads, and direct logical defaults.",
+    "Event extraction covers EventEmitter-style literal registrations, removals, and dispatch candidates; dynamic names remain unknown.",
+    "Function fingerprints are static candidates; equal digests can remain ambiguous and do not prove behavioral equivalence.",
+    "Local data flow does not claim control-flow-sensitive reaching definitions or arbitrary dynamic property resolution.",
+    "Promise ownership covers explicit unshadowed Promise construction, static factories, aggregation, chaining, and await syntax only.",
+    "Request extraction covers fetch, WebSocket, node:http/node:https construction, direct option fields, and exact local response consumers.",
+    "Resource extraction covers built-in filesystem/network acquisition and exact local close/destroy/end handles.",
+    "Semantic graph reachability is a static inference and does not prove runtime execution.",
+    "The semantic graph contains static syntax observations and conservative relationship candidates; it does not claim runtime execution.",
+    "Timer extraction covers global or node:timers scheduling and exact local-handle cancellation."
+  ],
+  "locations": [],
+  "evidence_links": [
+    "ev_82274ed66cb9ceb7331221311c05e25c8bfa351e6aa43acf99e105c24466beb6"
+  ]
+}

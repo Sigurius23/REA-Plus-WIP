@@ -363,6 +363,7 @@ const workflowAvailabilityFor = ({
   if (
     name === "inspect_pe_resources" ||
     name === "inspect_chromium_resources" ||
+    name === "search_chromium_resources" ||
     name === "inspect_coverage_log" ||
     name === "inspect_minidump" ||
     name === "inspect_logic_capture" ||

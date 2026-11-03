@@ -28,7 +28,7 @@ export function* projectSemanticObjects(
   );
   for (const [index, operation] of context.ir.objectOperations.entries()) {
     if (index % 64 === 0) yield;
-    const occurrence = addObjectOccurrence(context, operation);
+    const occurrence = semanticObjectOccurrence(context, operation);
     const target = objectTarget(context, values, operation);
     const ends = objectRelationEnds(context, operation, occurrence, target);
     const resolved =
@@ -136,7 +136,7 @@ const objectRelationEnds = (
   }
 };
 
-const addObjectOccurrence = (
+export const semanticObjectOccurrence = (
   context: SemanticFlowProjectionContext,
   operation: JavaScriptSemanticObjectOperation,
 ): JavaScriptSemanticGraphNode | null =>

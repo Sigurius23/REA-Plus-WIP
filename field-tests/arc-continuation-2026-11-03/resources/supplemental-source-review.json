@@ -1,0 +1,76 @@
+[
+  {
+    "authority": "Supplemental inert source interpretation after exact digest/range verification; not automatic REA+ behavior recovery.",
+    "logical_source": "rea-inline-script://ARC_EaselUI.bundle%2FContents%2FResources%2FEaselExportCollection.html?start=6038&end=7183&kind=classic",
+    "body_sha256": "073e34aa181d8eb55c968c240579add6738a0d6ba252419da2ba05906e01a7d7",
+    "body_bytes": 1145,
+    "inline_source": {
+      "base_href": null,
+      "end_offset": 7183,
+      "html_inventory_artifact_id": "art_cd4802b3f1dd62d4bf6d60db78410e128acd996e8fc91ac1ceaf4a022405e28f",
+      "html_path": "ARC_EaselUI.bundle/Contents/Resources/EaselExportCollection.html",
+      "html_sha256": "3a96aa34774eaf0cb20b8ea26b702833d3382de0293e16f80d7c5f9961366cb5",
+      "offset_encoding": "utf16-code-units",
+      "script_kind": "classic",
+      "source_range": {
+        "end": {
+          "column": 2,
+          "line": 196
+        },
+        "start": {
+          "column": 10,
+          "line": 170
+        }
+      },
+      "start_offset": 6038
+    },
+    "parse_status": "complete",
+    "findings": [
+      "A classic IIFE reads easels/empty/sort/filter elements and registers change callbacks.",
+      "refresh sorts title with localeCompare(sensitivity=base), otherwise descending numeric dataset values with zero fallback; filters all/shared/non-shared rows, reapplies DOM order and empty-state display.",
+      "The source registers two change handlers but contains no explicit initial refresh call. Native export population, initial DOM state, actual callback dispatch and visible result remain unknown."
+    ],
+    "placeholder": null
+  },
+  {
+    "authority": "Supplemental inert source interpretation after exact digest/range verification; not automatic REA+ behavior recovery.",
+    "logical_source": "rea-inline-script://YouTubePlayerKit_YouTubePlayerKit.bundle%2FContents%2FResources%2FYouTubePlayer.html?start=1256&end=3787&kind=classic",
+    "body_sha256": "99202e6d160b2facc61e698c194802307d32e1ef9d755fab6dfc29d9fd40953b",
+    "body_bytes": 2531,
+    "inline_source": {
+      "base_href": null,
+      "end_offset": 3787,
+      "html_inventory_artifact_id": "art_ec8b69300d18a08317ff594f713134da3354707d7b5dfa2c6f5a54432a971bad",
+      "html_path": "YouTubePlayerKit_YouTubePlayerKit.bundle/Contents/Resources/YouTubePlayer.html",
+      "html_sha256": "9ef9b2f6005f82e572f57d8692e3b668a62ee6ad87b10d757408c2642ab88e3b",
+      "offset_encoding": "utf16-code-units",
+      "script_kind": "classic",
+      "source_range": {
+        "end": {
+          "column": 4,
+          "line": 122
+        },
+        "start": {
+          "column": 12,
+          "line": 45
+        }
+      },
+      "start_offset": 1256
+    },
+    "parse_status": "failed",
+    "findings": [
+      "The source contains a literal Objective-C %@ format token as the second window.YT.Player argument and explicitly comments that runtime replaces it.",
+      "The parser failure is truthful for the raw template; supplied player options and native template expansion have not been observed.",
+      "Source defines youtubeplayer:// event URLs, but these are supplemental text observations; no JavaScript IR or native navigation-delegate attribution was recovered for this failed body."
+    ],
+    "placeholder": {
+      "token": "%@",
+      "decoded_html_utf16_offset": 1579,
+      "source_point": {
+        "line": 55,
+        "column": 16
+      },
+      "source_context": "w.YT.Player(\n                'player',\n                %@\n            );\n            // Se"
+    }
+  }
+]

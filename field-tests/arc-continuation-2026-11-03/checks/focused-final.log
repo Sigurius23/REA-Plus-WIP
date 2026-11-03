@@ -1,0 +1,59 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused src/native/AppleSwiftResilientWitnesses.test.ts src/native/AppleDispatchMetadata.test.ts src/native/AppleSwiftVtables.test.ts src/native/NativeMacOSProviderInput.test.ts src/domain/native/objcSwiftMetadata.test.ts src/application/javascript/JavaScriptSemanticGraphReturnProjection.test.ts src/application/javascript/JavaScriptSemanticGraphBuilder.test.ts src/application/javascript/JavaScriptSemanticGraphScope.test.ts src/domain/javascript/javascriptSemanticAnalysis.return_fields.test.ts src/domain/javascript/javascriptSemanticGraphQuery.test.ts src/domain/javascript/javascriptSemanticGraphTraversal.test.ts src/javascript/analysis/JavaScriptAnalysisWorkerSchemas.return_fields.test.ts tests/boundary/filesystem/chromiumResourceSearch.test.ts tests/boundary/filesystem/chromiumResources.test.ts tests/acceptance/applications/chromiumResourceSearch.test.ts tests/acceptance/applications/chromiumResources.test.ts
+
+Focused tests: src/native/AppleSwiftResilientWitnesses.test.ts, src/native/AppleDispatchMetadata.test.ts, src/native/AppleSwiftVtables.test.ts, src/native/NativeMacOSProviderInput.test.ts, src/domain/native/objcSwiftMetadata.test.ts, src/application/javascript/JavaScriptSemanticGraphReturnProjection.test.ts, src/application/javascript/JavaScriptSemanticGraphBuilder.test.ts, src/application/javascript/JavaScriptSemanticGraphScope.test.ts, src/domain/javascript/javascriptSemanticAnalysis.return_fields.test.ts, src/domain/javascript/javascriptSemanticGraphQuery.test.ts, src/domain/javascript/javascriptSemanticGraphTraversal.test.ts, src/javascript/analysis/JavaScriptAnalysisWorkerSchemas.return_fields.test.ts, tests/boundary/filesystem/chromiumResourceSearch.test.ts, tests/boundary/filesystem/chromiumResources.test.ts, tests/acceptance/applications/chromiumResourceSearch.test.ts, tests/acceptance/applications/chromiumResources.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 5c0ee695a475ff01
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing 675eee05c47128a4
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache miss, executing 14327197a97d13fe
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    1 cached, 3 total
+  Time:    9.083s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |acceptance| tests/acceptance/applications/chromiumResources.test.ts (1 test) 8664ms
+   ✓ inspects Chromium packs through compiled CLI and real stdio MCP with bounded decoding and recovery 8663ms
+ ✓ |adapters| src/native/AppleSwiftResilientWitnesses.test.ts (24 tests) 23ms
+ ✓ |adapters| src/native/AppleDispatchMetadata.test.ts (23 tests) 26ms
+ ✓ |adapters| src/javascript/analysis/JavaScriptAnalysisWorkerSchemas.return_fields.test.ts (2 tests) 23ms
+ ✓ |acceptance| tests/acceptance/applications/chromiumResourceSearch.test.ts (1 test) 10338ms
+   ✓ discovers decoded pack candidates through real MCP and identical CLI Evidence, preserving bounded resumable coverage 10337ms
+ ✓ |adapters| src/native/AppleSwiftVtables.test.ts (3 tests) 5ms
+ ✓ |adapters| src/native/NativeMacOSProviderInput.test.ts (2 tests) 8ms
+ ✓ |boundary| tests/boundary/filesystem/chromiumResourceSearch.test.ts (7 tests) 63ms
+ ✓ |boundary| tests/boundary/filesystem/chromiumResources.test.ts (3 tests) 33ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticGraphTraversal.test.ts (22 tests) 94ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.return_fields.test.ts (8 tests) 24ms
+ ✓ |domain| src/domain/native/objcSwiftMetadata.test.ts (5 tests) 4ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticGraphQuery.test.ts (16 tests) 78ms
+ ✓ |services| src/application/javascript/JavaScriptSemanticGraphReturnProjection.test.ts (13 tests) 105ms
+ ✓ |services| src/application/javascript/JavaScriptSemanticGraphScope.test.ts (5 tests) 16ms
+ ✓ |services| src/application/javascript/JavaScriptSemanticGraphBuilder.test.ts (54 tests) 6049ms
+   ✓ bounds semantic node projection and reports the ceiling in coverage 3515ms
+   ✓ does not mark a file truncated when it exactly fills its budget 2133ms
+
+ Test Files  16 passed (16)
+      Tests  189 passed (189)
+   Start at  17:58:56
+   Duration  20.39s (tests 76%, transform 14%, import 9%)
+

@@ -1,0 +1,79 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/returns/after",
+  "timeout_ms": 180000,
+  "idle_timeout_ms": 600000,
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/returns/after/trace-steps.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/returns/after/final-steps.json"
+  ],
+  "steps": [
+    {
+      "name": "import_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/returns/known/evidence-bundle.json"
+      },
+      "label": "legacy-import",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_1d40297e3298503fe2de5923c2fadf027a7635de0ec6992259722cff4c6eb75d"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_e15dfa9df35c67f1a1e89c2a7ac7c81a0e7afc87a37275fd9c377c729e5e3765"
+          },
+          "direction": "forward-influence",
+          "include_ambiguous_dynamic_edges": true,
+          "expected": {
+            "role": "sink",
+            "classes": [
+              "return-site"
+            ]
+          }
+        }
+      },
+      "label": "legacy-field-forward",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/returns/fixture-known"
+      },
+      "label": "known-analysis",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/returns/fixture"
+      },
+      "label": "arrows-unknown-analysis",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/returns/after/fixture-controls"
+      },
+      "label": "controls-analysis",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Applications/Arc.app/Contents/Resources",
+        "paths_include": [
+          "**/*.js"
+        ]
+      },
+      "label": "arc-analysis",
+      "expect_success": true
+    }
+  ]
+}

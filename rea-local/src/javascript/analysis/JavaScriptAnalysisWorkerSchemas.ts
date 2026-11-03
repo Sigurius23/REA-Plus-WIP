@@ -617,6 +617,23 @@ const callable = z.strictObject({
       location: range,
       identityReferenceLocation: range.nullable(),
       value: semanticValue,
+      fieldSources: z
+        .array(
+          z.strictObject({
+            path: z.array(z.string()).min(1),
+            location: range,
+            expressionLocation: range.nullable(),
+            expressionKind: z.enum([
+              "identifier",
+              "property-read",
+              "literal",
+              "unsupported",
+            ]),
+            status: z.enum(["complete", "ambiguous", "unsupported"]),
+            reason: z.string().nullable(),
+          }),
+        )
+        .optional(),
     }),
   ),
   returnCoverage: z.strictObject({

@@ -1,3 +1,4 @@
+import { registerChromiumResourceSearchTool } from "./registerChromiumResourceSearchTool.js";
 import type { WasmArtifactService } from "../application/wasm/WasmArtifactService.js";
 import type { JvmArtifactService } from "../application/jvm/JvmArtifactService.js";
 import type { Il2CppMetadataService } from "../application/il2cpp/Il2CppMetadataService.js";
@@ -50,6 +51,7 @@ import { snapshotEnvironment } from "../process/snapshotEnvironment.js";
 import {
   createPeResourcesService,
   createChromiumResourcesService,
+  createChromiumResourceSearchService,
 } from "../composition/binaryDiagnostics.js";
 import { createFunctionEmulationService } from "../composition/binaryDiagnostics.js";
 import type { FunctionEmulationService } from "../application/binaryDiagnostics/FunctionEmulationService.js";
@@ -539,6 +541,13 @@ const registerConfiguredAnalysisTools = (
   registerPeResourcesTool(
     server,
     createPeResourcesService(),
+    toolLogger,
+    recordEvidence,
+    withAdmittedAnalysis,
+  );
+  registerChromiumResourceSearchTool(
+    server,
+    createChromiumResourceSearchService(),
     toolLogger,
     recordEvidence,
     withAdmittedAnalysis,
