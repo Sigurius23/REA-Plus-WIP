@@ -1,0 +1,46 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/scan-coverage",
+  "timeout_ms": 60000,
+  "environment": {
+    "CLANG_MODULE_CACHE_PATH": "/private/tmp/rea-scan-coverage-wyyu4zn6/module-cache",
+    "SWIFT_MODULECACHE_PATH": "/private/tmp/rea-scan-coverage-wyyu4zn6/module-cache"
+  },
+  "steps": [
+    {
+      "name": "scan_byte_patterns",
+      "arguments": {
+        "path": "/private/tmp/rea-scan-coverage-wyyu4zn6/repeated-marker.raw",
+        "patterns": [
+          {
+            "pattern": "AA"
+          }
+        ],
+        "max_matches": 2
+      },
+      "label": "two-retained",
+      "expect_success": true
+    },
+    {
+      "name": "scan_byte_patterns",
+      "arguments": {
+        "path": "/private/tmp/rea-scan-coverage-wyyu4zn6/repeated-marker.raw",
+        "patterns": [
+          {
+            "pattern": "AA"
+          }
+        ],
+        "max_matches": 1000
+      },
+      "label": "maximum-retained",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/scan-coverage/evidence-bundle.json"
+      },
+      "label": "bundle-export",
+      "expect_success": true
+    }
+  ]
+}

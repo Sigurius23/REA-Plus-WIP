@@ -1,0 +1,112 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/script-activation",
+  "timeout_ms": 120000,
+  "idle_timeout_ms": 900000,
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/script-activation/continuation.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/script-activation/continuation-2.json"
+  ],
+  "steps": [
+    {
+      "name": "import_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/resources/search-after/feature-analysis/evidence-bundle.json"
+      },
+      "label": "import-prior",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_682b71d8ff5cbe32bfac2ca4d92963a4661ef4e59e0bc3b4c9abbd0d015911c5"
+        },
+        "view": {
+          "kind": "page",
+          "collection": "modules",
+          "offset": 0,
+          "limit": 16
+        }
+      },
+      "label": "modules",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_682b71d8ff5cbe32bfac2ca4d92963a4661ef4e59e0bc3b4c9abbd0d015911c5"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_20fd5c3c7432778a207840734a8dea143b33b115fceb4928ed91bc9de4947fe4"
+          },
+          "direction": "backward-provenance",
+          "include_ambiguous_dynamic_edges": true
+        }
+      },
+      "label": "injection-backward-candidates",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_682b71d8ff5cbe32bfac2ca4d92963a4661ef4e59e0bc3b4c9abbd0d015911c5"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_72b449957166439f8f00b31c1fabbf95fec77e79549245314643b189126409be"
+          },
+          "direction": "forward-influence",
+          "include_ambiguous_dynamic_edges": true
+        }
+      },
+      "label": "slack-style-forward-candidates",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_682b71d8ff5cbe32bfac2ca4d92963a4661ef4e59e0bc3b4c9abbd0d015911c5"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_ef40af24cd35724b09f7641cb3f56a4e3576633bec9709460d6186bcc5f155c1"
+          },
+          "direction": "forward-influence",
+          "include_ambiguous_dynamic_edges": true
+        }
+      },
+      "label": "listener-forward-candidates",
+      "expect_success": true
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "kind": "retained-evidence",
+          "evidence_id": "ev_682b71d8ff5cbe32bfac2ca4d92963a4661ef4e59e0bc3b4c9abbd0d015911c5"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_933ae3e237887df88b7aff7a3a39b008206059d2ec53aab2886e354b26d21ac3"
+          },
+          "direction": "callers",
+          "include_ambiguous_dynamic_edges": true
+        }
+      },
+      "label": "updated-callback-callers",
+      "expect_success": true
+    }
+  ]
+}

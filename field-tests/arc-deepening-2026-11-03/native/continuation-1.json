@@ -1,0 +1,137 @@
+{
+  "steps": [
+    {
+      "name": "scan_byte_patterns",
+      "arguments": {
+        "path": "/private/tmp/rea-arc-deepening-2026-11-03-rx4y1eh7/Arc-arm64",
+        "scope": "executable",
+        "max_matches": 1000,
+        "patterns": [
+          {
+            "name": "rects-header-rn-group-0",
+            "pattern": "?? 80 05 91"
+          },
+          {
+            "name": "rects-header-rn-group-1",
+            "pattern": "?? 81 05 91"
+          },
+          {
+            "name": "rects-header-rn-group-2",
+            "pattern": "?? 82 05 91"
+          },
+          {
+            "name": "rects-header-rn-group-3",
+            "pattern": "?? 83 05 91"
+          },
+          {
+            "name": "rects-bytes-rn-group-0",
+            "pattern": "?? 00 06 91"
+          },
+          {
+            "name": "rects-bytes-rn-group-1",
+            "pattern": "?? 01 06 91"
+          },
+          {
+            "name": "rects-bytes-rn-group-2",
+            "pattern": "?? 02 06 91"
+          },
+          {
+            "name": "rects-bytes-rn-group-3",
+            "pattern": "?? 03 06 91"
+          },
+          {
+            "name": "candidate-header-rn-group-0",
+            "pattern": "?? 00 07 91"
+          },
+          {
+            "name": "candidate-header-rn-group-1",
+            "pattern": "?? 01 07 91"
+          },
+          {
+            "name": "candidate-header-rn-group-2",
+            "pattern": "?? 02 07 91"
+          },
+          {
+            "name": "candidate-header-rn-group-3",
+            "pattern": "?? 03 07 91"
+          },
+          {
+            "name": "candidate-bytes-rn-group-0",
+            "pattern": "?? 80 07 91"
+          },
+          {
+            "name": "candidate-bytes-rn-group-1",
+            "pattern": "?? 81 07 91"
+          },
+          {
+            "name": "candidate-bytes-rn-group-2",
+            "pattern": "?? 82 07 91"
+          },
+          {
+            "name": "candidate-bytes-rn-group-3",
+            "pattern": "?? 83 07 91"
+          }
+        ]
+      },
+      "label": "selector-exact-low12-candidates",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100538248"
+      },
+      "label": "coding-key-init-helper"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1004cc948"
+      },
+      "label": "payload-coding-key-witness"
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x1041d1d30",
+        "length": 16
+      },
+      "label": "ui-delegate-symbolic-bind-slot",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x1041fdf80",
+        "length": 40
+      },
+      "label": "payload-coding-key-metadata",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103f04888",
+        "length": 87836
+      },
+      "label": "swift-conformance-index",
+      "expect_success": true
+    },
+    {
+      "name": "address_name",
+      "arguments": {
+        "address": "0x1041d1d30"
+      },
+      "label": "ui-delegate-symbolic-bind-name",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/native/phase-1-evidence-bundle.json"
+      },
+      "label": "phase-1-export",
+      "expect_success": true
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/native/async-selector-session",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "60",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/native/async-selector-session/caller-established-seeds.tsv"
+  },
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 600000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-arc-deepening-2026-11-03-rx4y1eh7/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012dfba8"
+      },
+      "label": "selector-evaluation-return",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012e047c"
+      },
+      "label": "selector-candidates-result",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012e0800"
+      },
+      "label": "selector-rectangles-result",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x10129b92c"
+      },
+      "label": "selector-bundle-initializer",
+      "expect_success": true
+    }
+  ],
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/native/async-selector-session/continuation-1.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/native/async-selector-session/continuation-2.json"
+  ]
+}

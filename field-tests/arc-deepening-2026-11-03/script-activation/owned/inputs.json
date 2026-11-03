@@ -1,0 +1,39 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/script-activation/owned",
+  "timeout_ms": 120000,
+  "idle_timeout_ms": 900000,
+  "environment": {
+    "CLANG_MODULE_CACHE_PATH": "/private/tmp/rea-arc-deepening-modulecache",
+    "SWIFT_MODULECACHE_PATH": "/private/tmp/rea-arc-deepening-modulecache"
+  },
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/script-activation/owned/continuation.json"
+  ],
+  "steps": [
+    {
+      "name": "import_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-continuation-2026-11-03/resources/search-after/feature-analysis/evidence-bundle.json"
+      },
+      "label": "import-prior",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/script-activation/fixtures",
+        "detail": "summary"
+      },
+      "label": "owned-summary",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/script-activation/owned/producer-bundle.json"
+      },
+      "label": "producer-export",
+      "expect_success": true
+    }
+  ]
+}

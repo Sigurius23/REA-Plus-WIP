@@ -1,0 +1,113 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/native",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "60",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/native/caller-established-seeds.tsv"
+  },
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 900000,
+  "steps": [
+    {
+      "name": "scan_byte_patterns",
+      "arguments": {
+        "path": "/private/tmp/rea-arc-deepening-2026-11-03-rx4y1eh7/Arc-arm64",
+        "scope": "executable",
+        "max_matches": 1000,
+        "patterns": [
+          {
+            "name": "rectsForSelector-header-ADD-low12",
+            "pattern": "?? 8? 05 91"
+          },
+          {
+            "name": "rectsForSelector-bytes-ADD-low12",
+            "pattern": "?? 0? 06 91"
+          },
+          {
+            "name": "getSelectorCandidates-header-ADD-low12",
+            "pattern": "?? 0? 07 91"
+          },
+          {
+            "name": "getSelectorCandidates-bytes-ADD-low12",
+            "pattern": "?? 8? 07 91"
+          }
+        ]
+      },
+      "label": "selector-address-candidates",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-arc-deepening-2026-11-03-rx4y1eh7/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100537d58"
+      },
+      "label": "coding-key-string-getter",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100537da4"
+      },
+      "label": "coding-key-string-init",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1004ca64c"
+      },
+      "label": "payload-decoder",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100537fac"
+      },
+      "label": "command-bridge-helper",
+      "expect_success": true
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x1005381a0"
+      },
+      "label": "command-objc-entry-xrefs",
+      "expect_success": true
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x104205aa0"
+      },
+      "label": "web-content-witness-anchor-xrefs",
+      "expect_success": true
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x103b30e58"
+      },
+      "label": "ui-delegate-symbolic-reference-xrefs",
+      "expect_success": true
+    }
+  ],
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/native/continuation-1.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/native/continuation-2.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/native/continuation-3.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-deepening-2026-11-03/native/continuation-4.json"
+  ]
+}

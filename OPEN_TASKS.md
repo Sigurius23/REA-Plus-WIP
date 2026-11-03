@@ -4,6 +4,15 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc deepening (2026-11-03):** New open items **45–47** have owned public
+  reproductions: caller return-field propagation, listener-handler continuation,
+  and Swift throwing-call guards omitted by decompiler-derived flow. Native
+  selector invocation, JSON result decoding and result processing are now traced;
+  Boost wire-key spellings are established. This analysis-only pass changes no
+  REA+ implementation source. It retains 106 driver calls / 95 successes,
+  three exact JavaScript CLI/MCP comparisons, source-built Swift reproduction,
+  authenticated Evidence and unchanged 782-file target identity. Full Arc
+  behavior remains partial. See [deepening report](field-tests/arc-deepening-2026-11-03.md).
 - **Arc continuation (2026-11-03):** Items **42–44 are implemented and
   publicly verified**: static resilient Swift witness records, bounded decoded
   Chromium-resource literal search, and returned-object field provenance.
@@ -107,6 +116,11 @@ Open work on `main` following PR #1 and the field tests.
      also passed with unchanged test budgets; see
      [HeyClicky fix verification](field-tests/heyclicky-fixes-2026-10-28.md).
 2. **Branch state and push:**
+   - **Arc deepening notes (2026-11-03):** findings, issues 45–47, owned
+     reproductions and complete captures are included together after
+     `cb8ed4db254e`. This pass does not claim those issues fixed or rerun the
+     earlier implementation suite. Source-built binaries and provider projects
+     remain outside Git; the two large Rize JSONs remain local and excluded.
    - **Items 42–44 publication batch (2026-11-03):** static resilient witness
      records, decoded-resource search, return-field provenance, tests, skill 42,
      feature notes and authenticated captures are included together after
@@ -885,3 +899,55 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     Default ambiguous-edge filtering is unchanged. Fresh Arc analysis retains
     21 returned-field slots (16 in SelectorPicker), with DOM values unknown.
     See [public verification](field-tests/arc-continuation-2026-11-03/returns/after/findings.md).
+
+45. **Returned own fields do not propagate through an exact local call result.**
+    Confirmed offline capability gap (2026-11-03), beyond item 44's return-owned
+    field projection. Owned fixture: `function known(){return {value:"owned-value"};}`
+    followed by `const result=known(); const output=result.value; consume(output);`.
+    REA+ retains the literal return field and resolved return-to-call relation,
+    but the caller's result/value property remains unknown. A candidate-enabled
+    backward trace from output has 2 nodes / 1 edge and no return-field/literal
+    source (`ev_ec6c69ba88f8808cf2f8ebaaba61fce4bc4760c403ce24ed3c6ac3febeff424b`);
+    the return-field forward trace stops at the result binding
+    (`ev_83fbc363cbd1b5691b4097f7decefe5d01bddcb057bf8451b563dd36d5565580`).
+    This blocks automatic field provenance across otherwise resolved local
+    wrappers. Extend field-sensitive caller projection for proved local return
+    ownership, preserving dynamic callees, aliases, mutations and unsupported
+    transformations as unknown. Reproduction, complete producer and traces are
+    retained under `field-tests/arc-deepening-2026-11-03/script-activation/owned/`.
+
+46. **Event registrations lack their locally resolvable handler continuation.**
+    Confirmed offline capability gap (2026-11-03). An owned `node:events`
+    EventEmitter, named local `receive` function, `.on("owned-event", receive)`
+    and matching `.emit(...)` produce event/registration/dispatch candidates,
+    but no listener-to-handler relation. Candidate-enabled listener-forward
+    trace is 1 node / 0 edges
+    (`ev_322778863d38b015f35d2b2d2c9da244bc410877e689a8c0c304c47811d3db3d`).
+    Resolve the registration's exact local callback binding while preserving
+    receiver/dispatch uncertainty; do not treat event execution as observed.
+    Arc's Chrome tab-update registration has the analogous continuation boundary.
+    DOM `addEventListener` and Chrome-specific event arguments require explicit
+    framework profiles and are not counted as separate regressions. Owned
+    sources, actual advertised schemas and complete public Evidence are under
+    `field-tests/arc-deepening-2026-11-03/script-activation/`.
+
+47. **Swift throwing calls can lose their error guard in decompiler-derived flow.**
+    Confirmed Ghidra integration/interpretation gap (2026-11-03), reproduced on
+    an owned 318-byte Swift Decodable source compiled with installed Swift 6.3.3
+    and never executed. The witness's machine assembly has
+    `0xefc: cbz x21, 0xf3c`; its machine basic-block successors preserve failure
+    `0xf00` and success `0xf3c`, with the output store only on success. Pseudocode
+    instead warns that `0xf00` is unreachable and emits the output assignment
+    after String decoding without the second error check. High p-code/effects
+    omit the conditional at `0xefc` despite `truncated:false`.
+    Evidence `ev_ed7af7ef81e435ae504cf6bfe8cb8aa37aaca115c22b3dd076dbf835f333343c`
+    and the analogous Arc payload decoder
+    `ev_5214eaaf9d918d2b0233b5dbe3016eda15db021c940ac5178300f6f32d47296b`
+    are retained respectively under `field-tests/arc-deepening-2026-11-03/swift-error-abi/`
+    and `field-tests/arc-deepening-2026-11-03/native/payload-decoder.evidence.json`.
+    The reported convention is already `__swiftcall`; do not assume a mere
+    convention-name change fixes it. Investigate throwing call-site/error-register
+    modeling, preserve machine-CFG corroboration, and expose relevant semantic
+    uncertainty in automatic value-flow consumers. `truncated:false` describes
+    retained p-code limits, not semantic correctness. The exact upstream cause
+    and a producing-layer repair remain open; the original machine CFG is intact.
