@@ -1,0 +1,52 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-06/dmg/after",
+  "timeout_ms": 240000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/Arc-1.172.1-90370.dmg"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "project_apple_application_graph",
+      "arguments": {
+        "inventory_evidence": [
+          {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-06/dmg/inventory.evidence.json",
+            "select": [
+              "normalized_result",
+              "substeps",
+              0,
+              "evidence"
+            ]
+          }
+        ]
+      },
+      "label": "apple-projection",
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "arguments": {},
+      "label": "extraction",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-06/dmg/after/evidence-bundle.json"
+      },
+      "label": "export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "close",
+      "expect_success": true
+    }
+  ]
+}

@@ -113,12 +113,41 @@ const collectMember = (
       kind: write ? "write" : "read",
       ownerCallableId,
       objectBindingId: identity.bindingId,
-      targetBindingId: null,
+      targetBindingId: write ? null : readResultBindingId(node, state),
       propertyPath: identity.path,
     },
     state,
     output,
   );
+};
+
+const readResultBindingId = (
+  node: t.Node,
+  state: JavaScriptSemanticAnalysisState,
+): string | null => {
+  let current = node;
+  let parent = state.parentsByNode.get(current);
+  while (
+    parent !== undefined &&
+    unwrapJavaScriptExpression(parent).node === current
+  ) {
+    current = parent;
+    parent = state.parentsByNode.get(current);
+  }
+  const identifier =
+    t.isVariableDeclarator(parent) &&
+    parent.init === current &&
+    t.isIdentifier(parent.id)
+      ? parent.id
+      : t.isAssignmentExpression(parent, { operator: "=" }) &&
+          parent.right === current &&
+          t.isIdentifier(parent.left)
+        ? parent.left
+        : null;
+  return identifier === null
+    ? null
+    : (resolveSemanticBindingState(state, identifier, identifier.name)
+        ?.bindingId ?? null);
 };
 
 const collectDestructuring = (

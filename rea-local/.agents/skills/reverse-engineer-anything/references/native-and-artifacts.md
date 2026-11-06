@@ -62,6 +62,14 @@ names, the native API record, and value-flow summaries. Pseudocode offsets and l
 code units; use the returned `next_offset` for continuation. Provider limitations
 and unavailable facts remain explicit; the complete parent Evidence is retained.
 
+For Swift throwing decoders, inspect `native_api.call_model_adjustments` and
+`native_value_flow.control_flow_uncertainties` when present. The supported
+ARM64 Swift repair models x21 as unknown after proved synchronous throwing
+callees in the private Program; it preserves explicit caller overrides and user
+signatures. Unproved error-register guards remain qualified by assembly and
+machine CFG. `truncated: false` describes retained p-code extent, not complete
+success/failure semantics. Historical dossiers can omit these newer facets.
+
 To see which functions or Objective-C methods a Mach-O actually calls in one
 run, use `observe_native_calls` with explicit breakpoints and a bounded
 `duration_ms`/`max_events`. It launches a new process under LLDB, so the target

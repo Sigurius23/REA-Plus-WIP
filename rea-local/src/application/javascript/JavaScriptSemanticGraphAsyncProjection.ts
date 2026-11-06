@@ -10,10 +10,13 @@ import {
   addSemanticGraphRelation,
   addSemanticGraphUnknown,
 } from "./JavaScriptSemanticGraphConstruction.js";
-import { unknownSemanticEvidence } from "./JavaScriptSemanticGraphEvidence.js";
+import {
+  inferredSemanticEvidenceAt,
+  unknownSemanticEvidence,
+} from "./JavaScriptSemanticGraphEvidence.js";
 import type { SemanticFlowProjectionContext } from "./JavaScriptSemanticGraphFlowProjection.js";
 
-/** Project literal EventEmitter registrations, removals, and dispatches. */
+/** Project event candidates and their separately proved local callback identities. */
 export const projectSemanticEvents = (
   context: SemanticFlowProjectionContext,
 ): void => {
@@ -45,6 +48,8 @@ export const projectSemanticEvents = (
         resolution:
           operation.resolution === "complete" ? "resolved" : "candidate",
       });
+      if (operation.kind === "register" && listener !== null)
+        projectListenerTarget(context, operation, listener);
     }
     if (operation.resolution !== "complete")
       addEventUnknown(context, operation, event, relation);
@@ -69,6 +74,9 @@ const addEventNode = (
     properties: {
       emitter_key: operation.emitterKey,
       event_name: operation.eventName,
+      ...(operation.eventProfile === undefined
+        ? {}
+        : { event_profile: operation.eventProfile }),
     },
   });
 
@@ -95,8 +103,70 @@ const addListenerNode = (
       emitter_key: operation.emitterKey,
       event_name: operation.eventName,
       method: operation.method,
+      ...(operation.eventProfile === undefined
+        ? {}
+        : { event_profile: operation.eventProfile }),
+      ...(operation.listenerTarget === undefined
+        ? {}
+        : {
+            handler_resolution:
+              operation.listenerTarget.callableId === null
+                ? "unresolved"
+                : "exact",
+            handler_reason: operation.listenerTarget.reason,
+          }),
     },
   });
+
+const projectListenerTarget = (
+  context: SemanticFlowProjectionContext,
+  operation: JavaScriptSemanticEventOperation,
+  listener: JavaScriptSemanticGraphNode,
+): void => {
+  const target = operation.listenerTarget;
+  if (target === undefined) return; // Historical IR did not measure callback identity.
+  const callable =
+    target.callableId === null
+      ? undefined
+      : context.callableNodes.get(target.callableId);
+  if (callable !== undefined) {
+    addSemanticGraphRelation(context.state, {
+      source: listener,
+      target: callable,
+      relation: "binds-handler",
+      resolution: "resolved",
+      properties: {
+        association: "local-callback-identity",
+        event_dispatch_resolution: operation.resolution,
+      },
+      evidence: inferredSemanticEvidenceAt(
+        context.file,
+        operation.listenerLocation ?? operation.location,
+      ),
+    });
+    return;
+  }
+  if (target.callableId !== null) return; // Node omission is owned by the graph budget.
+  addSemanticGraphUnknown(
+    context.state,
+    createJavaScriptSemanticGraphUnknown(
+      {
+        node_id: listener.node_id,
+        family: "event",
+        relation_kinds: ["binds-handler"],
+        reason: "ambiguous-target",
+        detail:
+          target.reason ?? "The local callback identity remains unresolved.",
+        candidate_node_ids: [],
+        evidence: unknownSemanticEvidence(
+          context.file,
+          operation.listenerLocation ?? operation.location,
+        ),
+      },
+      context.state.evidenceContexts,
+    ),
+  );
+};
 
 const eventEmitterNode = (
   context: SemanticFlowProjectionContext,

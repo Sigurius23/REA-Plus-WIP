@@ -1,0 +1,75 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/acceptance/applications/javascriptCallResultFields.test.ts tests/acceptance/applications/javascriptEventHandlers.test.ts tests/acceptance/applications/javascriptReturnedReferences.test.ts tests/boundary/providers/native/artifactProvider.extractionFormat.test.ts tests/boundary/providers/native/artifactProvider.extraction.test.ts tests/boundary/providers/native/nativeDmgArtifactReader.test.ts
+
+Focused tests: tests/acceptance/applications/javascriptCallResultFields.test.ts, tests/acceptance/applications/javascriptEventHandlers.test.ts, tests/acceptance/applications/javascriptReturnedReferences.test.ts, tests/boundary/providers/native/artifactProvider.extractionFormat.test.ts, tests/boundary/providers/native/artifactProvider.extraction.test.ts, tests/boundary/providers/native/nativeDmgArtifactReader.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 02b8e49587325695
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs 8c33ca5a372ad268
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache hit, replaying logs e28e6eea5d4ce6b0
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    3 cached, 3 total
+  Time:    526ms >>> FULL TURBO
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |acceptance| tests/acceptance/applications/javascriptCallResultFields.test.ts (1 test) 12990ms
+   ✓ traces proved local-call own fields through identical public CLI/MCP Evidence while escaped results remain unknown 12989ms
+ ✓ |acceptance| tests/acceptance/applications/javascriptEventHandlers.test.ts (1 test) 13807ms
+   ✓ retains local event callbacks through public CLI/MCP Evidence while dispatch and unsupported handlers stay unknown 13805ms
+stderr | tests/boundary/providers/native/nativeDmgArtifactReader.test.ts > DMG inventory reader ownership > lets inventory clean up a lazy reader after attach fails
+[xmldom fatalError]	missing root element 
+@#[line:0,col:undefined]
+
+stderr | tests/boundary/providers/native/nativeDmgArtifactReader.test.ts > native DMG command diagnostics > keeps unknown attach failures unavailable with command evidence
+[xmldom fatalError]	missing root element 
+@#[line:0,col:undefined]
+
+ ✓ |boundary| tests/boundary/providers/native/nativeDmgArtifactReader.test.ts (30 tests) 1263ms
+   ✓ native DMG real verification diagnostics (3)
+     ✓ classifies a checksum mismatch in an hdiutil-created DMG as an integrity failure 1084ms
+ ✓ |boundary| tests/boundary/providers/native/artifactProvider.extraction.test.ts (2 tests) 75ms
+ ✓ |boundary| tests/boundary/providers/native/artifactProvider.extractionFormat.test.ts (1 test) 23ms
+ ❯ |acceptance| tests/acceptance/applications/javascriptReturnedReferences.test.ts (2 tests | 1 failed) 134185ms
+   ✓ preserves mutation uncertainty for objects returned by local calls 13534ms
+   × analyzes wide receiver returns without losing escaped reference facts 120649ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |acceptance| tests/acceptance/applications/javascriptReturnedReferences.test.ts > analyzes wide receiver returns without losing escaped reference facts
+Error: Test timed out in 120000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ tests/acceptance/applications/javascriptReturnedReferences.test.ts:183:1
+    181| );
+    182|
+    183| cliTest(
+       | ^
+    184|   "analyzes wide receiver returns without losing escaped reference fac…
+    185|   ({ cli }) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  1 failed | 36 passed (37)
+   Start at  14:19:15
+   Duration  136.88s (tests 96%, transform 2%, import 2%)
+

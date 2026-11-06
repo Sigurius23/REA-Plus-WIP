@@ -67,6 +67,14 @@ export const nativeValueFlowSchema = z.discriminatedUnion("available", [
         input_index: z.number().int().nonnegative(),
       }),
     ),
+    control_flow_uncertainties: z
+      .array(
+        z.strictObject({
+          address: z.string().min(1),
+          reason: z.string().min(1),
+        }),
+      )
+      .exactOptional(),
     truncated: z.boolean(),
     omitted_operations_lower_bound: z.number().int().nonnegative(),
     known_omitted_inputs: z.number().int().nonnegative(),

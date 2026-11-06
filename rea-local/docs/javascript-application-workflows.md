@@ -103,6 +103,14 @@ candidate filtering can have no visible edges even when ambiguous edges exist;
 `include_ambiguous_dynamic_edges: true` exposes those candidates with their
 uncertainty. New producers are needed to recover newly supported facts.
 
+New producers also retain field-sensitive dependencies across proved local call
+results. A direct synchronous callable's returned own field can reach a matching
+caller property read without equating the returned aggregate with its input or
+interpreting the function. This narrower provenance fact does not replace an
+unknown caller value with a computed constant. Reassigned or ambiguous callees,
+unsupported return shapes, result aliases, and overlapping mutations or escapes
+remain unknown. Historical IR without these facts remains usable unchanged.
+
 Semantic literal nodes keep their complete value in `properties.value`; literal
 queries match that field. String labels use `string literal` when that is
 shorter than the complete JSON value. A literal's `identity.role_key` commits
@@ -140,6 +148,16 @@ dispatches keep one event per exact emitter/name pair. Long event labels use
 change hashed event IDs and longer event/listener labels; query the preserved
 name or select IDs from the parent graph. Previously stored graphs keep their
 original IDs and remain valid trace inputs.
+
+New event IR also retains exact local callback identity independently of event
+dispatch. A `binds-handler` edge connects a listener to a direct function or
+unchanged lexical alias. Use forward influence from the listener or backward
+provenance from the function; the callers query still describes calls. Explicit
+profiles cover EventEmitter-style methods, unshadowed `chrome.…onEvent` listeners,
+and direct `document`/`window` DOM listeners. Browser receiver/dispatch identity
+remains partial. The association does not map emitted arguments or prove an
+event fired. Reassigned, dynamic, imported and spread-position callbacks remain
+unknown, and historical IR without callback facts gains no invented association.
 
 ## Version comparison
 

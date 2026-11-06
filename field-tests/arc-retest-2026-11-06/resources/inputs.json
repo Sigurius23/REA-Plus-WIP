@@ -1,0 +1,113 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-06/resources",
+  "timeout_ms": 120000,
+  "steps": [
+    {
+      "name": "inspect_chromium_resources",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/Resources/resources.pak",
+        "limit": 64
+      },
+      "label": "inventory",
+      "expect_success": true
+    },
+    {
+      "name": "search_chromium_resources",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/Resources/resources.pak",
+        "query": "chrome.tabs.onUpdated.addListener",
+        "canonical_offset": 0,
+        "scan_limit": 1024,
+        "match_limit": 64,
+        "max_resource_bytes": 8388608,
+        "max_total_decoded_bytes": 268435456,
+        "expected_sha256": "69989f28e4c839975fbde1c300b32cc58e1dff332729432ddbd21a26e753a49f"
+      },
+      "label": "tab-updated-0",
+      "expect_success": true
+    },
+    {
+      "name": "search_chromium_resources",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/Resources/resources.pak",
+        "query": "chrome.tabs.onUpdated.addListener",
+        "canonical_offset": 1024,
+        "scan_limit": 1024,
+        "match_limit": 64,
+        "max_resource_bytes": 8388608,
+        "max_total_decoded_bytes": 268435456,
+        "expected_sha256": "69989f28e4c839975fbde1c300b32cc58e1dff332729432ddbd21a26e753a49f"
+      },
+      "label": "tab-updated-1024",
+      "expect_success": true
+    },
+    {
+      "name": "search_chromium_resources",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/Resources/resources.pak",
+        "query": "chrome.tabs.onUpdated.addListener",
+        "canonical_offset": 2048,
+        "scan_limit": 1024,
+        "match_limit": 64,
+        "max_resource_bytes": 8388608,
+        "max_total_decoded_bytes": 268435456,
+        "expected_sha256": "69989f28e4c839975fbde1c300b32cc58e1dff332729432ddbd21a26e753a49f"
+      },
+      "label": "tab-updated-2048",
+      "expect_success": true
+    },
+    {
+      "name": "search_chromium_resources",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/Resources/resources.pak",
+        "query": "chrome.tabs.onUpdated.addListener",
+        "canonical_offset": 3072,
+        "scan_limit": 1024,
+        "match_limit": 64,
+        "max_resource_bytes": 8388608,
+        "max_total_decoded_bytes": 268435456,
+        "expected_sha256": "69989f28e4c839975fbde1c300b32cc58e1dff332729432ddbd21a26e753a49f"
+      },
+      "label": "tab-updated-3072",
+      "expect_success": true
+    },
+    {
+      "name": "search_chromium_resources",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/Resources/resources.pak",
+        "query": "chrome.tabs.onUpdated.addListener",
+        "canonical_offset": 4096,
+        "scan_limit": 1024,
+        "match_limit": 64,
+        "max_resource_bytes": 8388608,
+        "max_total_decoded_bytes": 268435456,
+        "expected_sha256": "69989f28e4c839975fbde1c300b32cc58e1dff332729432ddbd21a26e753a49f"
+      },
+      "label": "tab-updated-4096",
+      "expect_success": true
+    },
+    {
+      "name": "search_chromium_resources",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/Resources/resources.pak",
+        "query": "chrome.tabs.onUpdated.addListener",
+        "canonical_offset": 5120,
+        "scan_limit": 1024,
+        "match_limit": 64,
+        "max_resource_bytes": 8388608,
+        "max_total_decoded_bytes": 268435456,
+        "expected_sha256": "69989f28e4c839975fbde1c300b32cc58e1dff332729432ddbd21a26e753a49f"
+      },
+      "label": "tab-updated-5120",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-06/resources/search-bundle.json"
+      },
+      "label": "export",
+      "expect_success": true
+    }
+  ]
+}

@@ -160,6 +160,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
     private DecompInterface decompiler;
     private final ReaGhidraExtensions analysisExtensions = new ReaGhidraExtensions();
     private ReaGhidraSwiftEnumSwitches swiftEnumSwitches;
+    private ReaGhidraSwiftErrorCalls swiftErrorCalls;
     private static AddressSpace sessionDefaultAddressSpace;
 
     @Override
@@ -223,7 +224,11 @@ public final class ReaGhidraBridge extends HeadlessScript {
                 decompiler.dispose();
                 decompiler = null;
             }
-            analysisExtensions.close();
+            try {
+                if (swiftErrorCalls != null) swiftErrorCalls.close();
+            } finally {
+                analysisExtensions.close();
+            }
         }
     }
 
@@ -655,7 +660,11 @@ public final class ReaGhidraBridge extends HeadlessScript {
         return result;
     }
 
-    private void initializeDecompiler() {
+    private void initializeDecompiler() throws Exception {
+        if (swiftErrorCalls == null) {
+            swiftErrorCalls = new ReaGhidraSwiftErrorCalls(currentProgram, monitor);
+            swiftErrorCalls.initialize();
+        }
         DecompileOptions options = new DecompileOptions();
         options.setMaxInstructions(Integer.MAX_VALUE);
         decompiler = new DecompInterface();
@@ -673,11 +682,13 @@ public final class ReaGhidraBridge extends HeadlessScript {
         requireDocument(params);
         Function function = resolveProcedure(requireString(params, "procedure"));
         String value = decompiledText(decompile(function));
+        List<String> limitations = new ArrayList<>(noReturnCallLimitations(
+            currentProgram.getListing().getInstructions(function.getBody(), true)
+        ));
+        limitations.addAll(swiftErrorCalls.limitations(function));
         return functionObservation(
             value == null ? JsonNull.INSTANCE : GSON.toJsonTree(value),
-            noReturnCallLimitations(
-                currentProgram.getListing().getInstructions(function.getBody(), true)
-            )
+            limitations
         );
     }
 
@@ -1223,7 +1234,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
             "native_api",
             nativeApiBoundary(function, decompilation)
         );
-        result.add("native_value_flow", nativeValueFlow(decompilation));
+        result.add("native_value_flow", nativeValueFlow(function, decompilation));
         JsonArray limitations = new JsonArray();
         limitations.add(
             "Unresolved computed or indirect flows without target addresses are not represented as reference edges."
@@ -1237,7 +1248,8 @@ public final class ReaGhidraBridge extends HeadlessScript {
         limitations.add(
             "Synthetic Ghidra entry-point references without actionable memory sources are omitted."
         );
-        List<String> boundaryLimitations = noReturnCallLimitations(scan.instructions);
+        List<String> boundaryLimitations = new ArrayList<>(noReturnCallLimitations(scan.instructions));
+        boundaryLimitations.addAll(swiftErrorCalls.limitations(function));
         for (String limitation : boundaryLimitations) {
             limitations.add(limitation);
         }
@@ -1249,7 +1261,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
         return new FunctionAnalysisObservation(result, boundaryLimitations);
     }
 
-    private JsonObject nativeValueFlow(DecompileResults decompilation) throws Exception {
+    private JsonObject nativeValueFlow(Function function, DecompileResults decompilation) throws Exception {
         HighFunction highFunction =
             decompilation == null ? null : decompilation.getHighFunction();
         if (highFunction == null) {
@@ -1357,6 +1369,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
         JsonObject result = new JsonObject();
         result.addProperty("available", true);
         result.addProperty("provenance", "ghidra-high-pcode");
+        result.add("control_flow_uncertainties", swiftErrorCalls.controlFlowUncertainties(function));
         result.add("operations", operationValues);
         result.add("def_use", defUse);
         result.add("parameters", parameterValues);
@@ -1854,6 +1867,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
         result.addProperty("available", true);
         result.addProperty("provenance", "ghidra-high-function");
         result.addProperty("signature_source", signatureSource);
+        result.add("call_model_adjustments", swiftErrorCalls.observations(function));
         String callingConvention = prototype.getModelName();
         result.addProperty(
             "calling_convention",
@@ -2899,10 +2913,11 @@ public final class ReaGhidraBridge extends HeadlessScript {
         return signatureSource.equals("analysis") ? "medium" : "low";
     }
 
-    private DecompileResults decompile(Function function) {
+    private DecompileResults decompile(Function function) throws Exception {
         if (function.isExternal() || function.getBody().isEmpty()) {
             return null;
         }
+        if (swiftErrorCalls.prepare(function)) decompiler.flushCache();
         DecompileResults results = decompiler.decompileFunction(
             function,
             0,

@@ -166,6 +166,15 @@ export interface JavaScriptSemanticCallResultFlow {
   readonly definitionLocation: JavaScriptSourceRange;
 }
 
+/** One proved own-field dependency from a synchronous local call result. */
+export interface JavaScriptSemanticCallResultFieldFlow {
+  readonly callSiteId: string;
+  readonly returnSiteId: string;
+  readonly objectOperationId: string;
+  readonly propertyPath: readonly string[];
+  readonly resolution: "complete" | "partial";
+}
+
 /** One resolved outer lexical binding referenced by a nested callable. */
 export interface JavaScriptSemanticClosureCapture {
   readonly callableId: string;
@@ -231,7 +240,13 @@ export interface JavaScriptSemanticFunctionFingerprint {
   readonly limitations: readonly string[];
 }
 
-/** One EventEmitter-style registration, removal, or dispatch candidate. */
+/** Exact local callback identity, separately from event dispatch or activation. */
+export interface JavaScriptSemanticListenerTarget {
+  readonly callableId: string | null;
+  readonly reason: string | null;
+}
+
+/** One static event registration, removal, or dispatch candidate. */
 export interface JavaScriptSemanticEventOperation {
   readonly eventId: string;
   readonly kind: "register" | "remove" | "dispatch";
@@ -244,6 +259,8 @@ export interface JavaScriptSemanticEventOperation {
     | "off"
     | "removeListener"
     | "removeAllListeners"
+    | "addEventListener"
+    | "removeEventListener"
     | "emit";
   readonly location: JavaScriptSourceRange;
   readonly ownerCallableId: string | null;
@@ -252,6 +269,9 @@ export interface JavaScriptSemanticEventOperation {
   readonly eventName: string | null;
   readonly listenerBindingId: string | null;
   readonly listenerLocation: JavaScriptSourceRange | null;
+  /** Omitted by historical producers; never infer a measured empty target. */
+  readonly listenerTarget?: JavaScriptSemanticListenerTarget;
+  readonly eventProfile?: "event-emitter" | "chrome-event" | "dom-event-target";
   readonly resolution: "complete" | "partial" | "unresolved";
 }
 
@@ -436,6 +456,10 @@ export interface JavaScriptSemanticIr {
   readonly argumentFlows: readonly JavaScriptSemanticArgumentFlow[];
   readonly callReturnFlows: readonly JavaScriptSemanticCallReturnFlow[];
   readonly callResultFlows: readonly JavaScriptSemanticCallResultFlow[];
+  /** Absent in historical IR; no caller field recovery is inferred from omission. */
+  readonly callResultFieldFlows?:
+    | readonly JavaScriptSemanticCallResultFieldFlow[]
+    | undefined;
   readonly closureCaptures: readonly JavaScriptSemanticClosureCapture[];
   readonly promiseOperations: readonly JavaScriptSemanticPromiseOperation[];
   readonly eventOperations: readonly JavaScriptSemanticEventOperation[];

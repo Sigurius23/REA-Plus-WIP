@@ -1,0 +1,3567 @@
+{
+  "procedure": {
+    "address": "0x1028",
+    "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+    "classification": {
+      "external": false,
+      "thunk": false,
+      "provenance": "ghidra-function-manager"
+    },
+    "body": {
+      "available": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "start": "0x1028",
+          "end": "0x114f"
+        }
+      ],
+      "total_bytes": 296,
+      "span_bytes": 296,
+      "non_contiguous": false,
+      "contains_entry": true
+    },
+    "signature": "undefined $$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI()",
+    "locals": [
+      {
+        "description": "undefined8 local_10 @ Stack[-0x10]:8",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined8 local_20 @ Stack[-0x20]:8",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined8 local_30 @ Stack[-0x30]:8",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined8 local_40 @ Stack[-0x40]:8",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined8 local_50 @ Stack[-0x50]:8",
+        "provenance": "ghidra-function-database"
+      },
+      {
+        "description": "undefined8 local_60 @ Stack[-0x60]:8",
+        "provenance": "ghidra-function-database"
+      }
+    ]
+  },
+  "pseudocode": "\n/* WARNING: Removing unreachable block (ram,0x000010ec) */\n\nvoid __protocol_witness_for_Swift_Decodable_init_from__Swift_Decoder__throws__\u003e_A_in_conformance_OwnedErrorABI_OwnedPayload___Swift_Decodable_in_OwnedErrorABI\n               (String *param_1,long param_2)\n\n{\n  long lVar1;\n  KeyedDecodingContainer\u003cundefined\u003e KVar2;\n  long extraout_x8;\n  long extraout_x21;\n  long lVar3;\n  String SVar4;\n  \n  lVar1 \u003d 0x8000;\n  ___swift_instantiateConcreteTypeFromMangledNameV2\n            (0x8000,\u0026\n                    __mangled_name_ref_for_type_metadata_for_Swift_KeyedDecodingContainer\u003cOwnedErrorABI_OwnedPayload_CodingKeys\u003e\n            );\n  lVar3 \u003d *(long *)(lVar1 + -8);\n  (*(code *)PTR____chkstk_darwin_00004000)(*(long *)(lVar3 + 0x40) + 0xfU \u0026 0xfffffffffffffff0);\n  ___swift_project_boxed_opaque_existential_1(param_2,*(undefined8 *)(param_2 + 0x18));\n  OwnedErrorABI::OwnedPayload::CodingKeys::_lazy_protocol_witness_table_accessor();\n  KVar2 \u003d Swift::Decoder::_container();\n  if (extraout_x21 \u003d\u003d 0) {\n    SVar4 \u003d Swift::KeyedDecodingContainer::_decode(KVar2.unknown,lVar1);\n    (**(code **)(lVar3 + 8))(\u0026stack0xffffffffffffffa0 + -extraout_x8,lVar1);\n    ___swift_destroy_boxed_opaque_existential_1(param_2);\n    *param_1 \u003d SVar4;\n  }\n  else {\n    ___swift_destroy_boxed_opaque_existential_1(param_2);\n  }\n  return;\n}\n\n",
+  "assembly": [
+    "0x1028: str x28, [sp, #-0x60]!",
+    "0x102c: stp x27, x26, [sp, #0x10]",
+    "0x1030: stp x25, x24, [sp, #0x20]",
+    "0x1034: stp x23, x22, [sp, #0x30]",
+    "0x1038: stp x20, x19, [sp, #0x40]",
+    "0x103c: stp x29, x30, [sp, #0x50]",
+    "0x1040: add x29, sp, #0x50",
+    "0x1044: mov x25, x21",
+    "0x1048: mov x19, x0",
+    "0x104c: mov x22, x8",
+    "0x1050: adrp x0, 0x8000",
+    "0x1054: add x0, x0, #0x0",
+    "0x1058: adrp x1, 0x1000",
+    "0x105c: add x1, x1, #0x720",
+    "0x1060: bl 0x00000f54",
+    "0x1064: mov x23, x0",
+    "0x1068: ldur x28, [x0, #-0x8]",
+    "0x106c: ldr x9, [x28, #0x40]",
+    "0x1070: add x8, x9, #0xf",
+    "0x1074: and x8, x8, #-0x10",
+    "0x1078: adrp x16, 0x4000",
+    "0x107c: ldr x16, [x16]",
+    "0x1080: blr x16",
+    "0x1084: mov x9, sp",
+    "0x1088: sub x24, x9, x8",
+    "0x108c: mov sp, x24",
+    "0x1090: ldp x26, x27, [x19, #0x18]",
+    "0x1094: mov x0, x19",
+    "0x1098: mov x1, x26",
+    "0x109c: bl 0x00000fa4",
+    "0x10a0: mov x20, x0",
+    "0x10a4: bl 0x00000fc8",
+    "0x10a8: mov x2, x0",
+    "0x10ac: adrp x0, 0x4000",
+    "0x10b0: add x0, x0, #0x228",
+    "0x10b4: mov x8, x24",
+    "0x10b8: mov x1, x0",
+    "0x10bc: mov x21, x25",
+    "0x10c0: mov x3, x26",
+    "0x10c4: mov x4, x27",
+    "0x10c8: bl 0x00001630",
+    "0x10cc: mov x25, x21",
+    "0x10d0: cbnz x21, 0x000010fc",
+    "0x10d4: mov x1, x23",
+    "0x10d8: mov x20, x24",
+    "0x10dc: mov x21, x25",
+    "0x10e0: bl 0x0000160c",
+    "0x10e4: mov x25, x21",
+    "0x10e8: cbz x21, 0x00001128",
+    "0x10ec: ldr x8, [x28, #0x8]",
+    "0x10f0: mov x0, x24",
+    "0x10f4: mov x1, x23",
+    "0x10f8: blr x8",
+    "0x10fc: mov x0, x19",
+    "0x1100: bl 0x00001008",
+    "0x1104: mov x21, x25",
+    "0x1108: sub sp, x29, #0x50",
+    "0x110c: ldp x29, x30, [sp, #0x50]",
+    "0x1110: ldp x20, x19, [sp, #0x40]",
+    "0x1114: ldp x23, x22, [sp, #0x30]",
+    "0x1118: ldp x25, x24, [sp, #0x20]",
+    "0x111c: ldp x27, x26, [sp, #0x10]",
+    "0x1120: ldr x28, [sp], #0x60",
+    "0x1124: ret",
+    "0x1128: mov x20, x0",
+    "0x112c: mov x26, x1",
+    "0x1130: ldr x8, [x28, #0x8]",
+    "0x1134: mov x0, x24",
+    "0x1138: mov x1, x23",
+    "0x113c: blr x8",
+    "0x1140: mov x0, x19",
+    "0x1144: bl 0x00001008",
+    "0x1148: stp x20, x26, [x22]",
+    "0x114c: b 0x00001104"
+  ],
+  "comments": [],
+  "callers": [],
+  "callees": [
+    {
+      "address": "0xf54",
+      "name": "___swift_instantiateConcreteTypeFromMangledNameV2",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0xf54",
+            "end": "0xfa3"
+          }
+        ],
+        "total_bytes": 80,
+        "span_bytes": 80,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0xfa4",
+      "name": "___swift_project_boxed_opaque_existential_1",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0xfa4",
+            "end": "0xfc7"
+          }
+        ],
+        "total_bytes": 36,
+        "span_bytes": 36,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0xfc8",
+      "name": "OwnedErrorABI::OwnedPayload::CodingKeys::$lazy_protocol_witness_table_accessor",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0xfc8",
+            "end": "0x1007"
+          }
+        ],
+        "total_bytes": 64,
+        "span_bytes": 64,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x1008",
+      "name": "___swift_destroy_boxed_opaque_existential_1",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x1008",
+            "end": "0x1027"
+          }
+        ],
+        "total_bytes": 32,
+        "span_bytes": 32,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x160c",
+      "name": "/usr/lib/swift/libswiftCore.dylib::Swift::KeyedDecodingContainer::$decode",
+      "classification": {
+        "external": false,
+        "thunk": true,
+        "thunk_target": "EXTERNAL:0x6",
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x160c",
+            "end": "0x1617"
+          }
+        ],
+        "total_bytes": 12,
+        "span_bytes": 12,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x1630",
+      "name": "/usr/lib/swift/libswiftCore.dylib::Swift::Decoder::$container",
+      "classification": {
+        "external": false,
+        "thunk": true,
+        "thunk_target": "EXTERNAL:0x9",
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x1630",
+            "end": "0x163b"
+          }
+        ],
+        "total_bytes": 12,
+        "span_bytes": 12,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    {
+      "address": "0x11b00",
+      "name": "/usr/lib/libSystem.B.dylib::___chkstk_darwin",
+      "classification": {
+        "external": false,
+        "thunk": true,
+        "thunk_target": "EXTERNAL:0x31",
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x11b00",
+            "end": "0x11b00"
+          }
+        ],
+        "total_bytes": 1,
+        "span_bytes": 1,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    }
+  ],
+  "incoming_references": [
+    {
+      "source_address": "0xc8f6",
+      "target_address": "0x1028",
+      "target_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "DATA",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    }
+  ],
+  "outgoing_references": [
+    {
+      "source_address": "0x1028",
+      "target_address": "stack:0xffffffffffffffa0",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "WRITE",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": false,
+        "write": true,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 1,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x102c",
+      "target_address": "stack:0xffffffffffffffb0",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "WRITE",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": false,
+        "write": true,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 2,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x1030",
+      "target_address": "stack:0xffffffffffffffc0",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "WRITE",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": false,
+        "write": true,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 2,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x1034",
+      "target_address": "stack:0xffffffffffffffd0",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "WRITE",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": false,
+        "write": true,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 2,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x1038",
+      "target_address": "stack:0xffffffffffffffe0",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "WRITE",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": false,
+        "write": true,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 2,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x103c",
+      "target_address": "stack:0xfffffffffffffff0",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "WRITE",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": false,
+        "write": true,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 2,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x1054",
+      "target_address": "0x8000",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "PARAM",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x105c",
+      "target_address": "0x1720",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "PARAM",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x1060",
+      "target_address": "0xf54",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "target_procedure": {
+        "address": "0xf54",
+        "name": "___swift_instantiateConcreteTypeFromMangledNameV2",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0xf54",
+              "end": "0xfa3"
+            }
+          ],
+          "total_bytes": 80,
+          "span_bytes": 80,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "UNCONDITIONAL_CALL",
+        "flow": true,
+        "call": true,
+        "jump": false,
+        "data": false,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x107c",
+      "target_address": "0x4000",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "READ",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": true,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 1,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x1080",
+      "target_address": "0x11b00",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "target_procedure": {
+        "address": "0x11b00",
+        "name": "/usr/lib/libSystem.B.dylib::___chkstk_darwin",
+        "classification": {
+          "external": false,
+          "thunk": true,
+          "thunk_target": "EXTERNAL:0x31",
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x11b00",
+              "end": "0x11b00"
+            }
+          ],
+          "total_bytes": 1,
+          "span_bytes": 1,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "COMPUTED_CALL",
+        "flow": true,
+        "call": true,
+        "jump": false,
+        "data": false,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": true,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x109c",
+      "target_address": "0xfa4",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "target_procedure": {
+        "address": "0xfa4",
+        "name": "___swift_project_boxed_opaque_existential_1",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0xfa4",
+              "end": "0xfc7"
+            }
+          ],
+          "total_bytes": 36,
+          "span_bytes": 36,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "UNCONDITIONAL_CALL",
+        "flow": true,
+        "call": true,
+        "jump": false,
+        "data": false,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x10a4",
+      "target_address": "0xfc8",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "target_procedure": {
+        "address": "0xfc8",
+        "name": "OwnedErrorABI::OwnedPayload::CodingKeys::$lazy_protocol_witness_table_accessor",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0xfc8",
+              "end": "0x1007"
+            }
+          ],
+          "total_bytes": 64,
+          "span_bytes": 64,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "UNCONDITIONAL_CALL",
+        "flow": true,
+        "call": true,
+        "jump": false,
+        "data": false,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x10b0",
+      "target_address": "0x4228",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "PARAM",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x10b8",
+      "target_address": "0x4228",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "PARAM",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x10c8",
+      "target_address": "0x1630",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "target_procedure": {
+        "address": "0x1630",
+        "name": "/usr/lib/swift/libswiftCore.dylib::Swift::Decoder::$container",
+        "classification": {
+          "external": false,
+          "thunk": true,
+          "thunk_target": "EXTERNAL:0x9",
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1630",
+              "end": "0x163b"
+            }
+          ],
+          "total_bytes": 12,
+          "span_bytes": 12,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "UNCONDITIONAL_CALL",
+        "flow": true,
+        "call": true,
+        "jump": false,
+        "data": false,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x10d0",
+      "target_address": "0x10fc",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "target_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "CONDITIONAL_JUMP",
+        "flow": true,
+        "call": false,
+        "jump": true,
+        "data": false,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": true,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 1,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x10e0",
+      "target_address": "0x160c",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "target_procedure": {
+        "address": "0x160c",
+        "name": "/usr/lib/swift/libswiftCore.dylib::Swift::KeyedDecodingContainer::$decode",
+        "classification": {
+          "external": false,
+          "thunk": true,
+          "thunk_target": "EXTERNAL:0x6",
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x160c",
+              "end": "0x1617"
+            }
+          ],
+          "total_bytes": 12,
+          "span_bytes": 12,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "UNCONDITIONAL_CALL",
+        "flow": true,
+        "call": true,
+        "jump": false,
+        "data": false,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x10e8",
+      "target_address": "0x1128",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "target_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "CONDITIONAL_JUMP",
+        "flow": true,
+        "call": false,
+        "jump": true,
+        "data": false,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": true,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 1,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x1100",
+      "target_address": "0x1008",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "target_procedure": {
+        "address": "0x1008",
+        "name": "___swift_destroy_boxed_opaque_existential_1",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1008",
+              "end": "0x1027"
+            }
+          ],
+          "total_bytes": 32,
+          "span_bytes": 32,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "UNCONDITIONAL_CALL",
+        "flow": true,
+        "call": true,
+        "jump": false,
+        "data": false,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x110c",
+      "target_address": "stack:0xfffffffffffffff0",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "DATA",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x1110",
+      "target_address": "stack:0xffffffffffffffe0",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "READ",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": true,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 2,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x1114",
+      "target_address": "stack:0xffffffffffffffd0",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "READ",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": true,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 2,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x1118",
+      "target_address": "stack:0xffffffffffffffc0",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "READ",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": true,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 2,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x111c",
+      "target_address": "stack:0xffffffffffffffb0",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "READ",
+        "flow": false,
+        "call": false,
+        "jump": false,
+        "data": true,
+        "read": true,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 2,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x1144",
+      "target_address": "0x1008",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "target_procedure": {
+        "address": "0x1008",
+        "name": "___swift_destroy_boxed_opaque_existential_1",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1008",
+              "end": "0x1027"
+            }
+          ],
+          "total_bytes": 32,
+          "span_bytes": 32,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "UNCONDITIONAL_CALL",
+        "flow": true,
+        "call": true,
+        "jump": false,
+        "data": false,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    },
+    {
+      "source_address": "0x114c",
+      "target_address": "0x1104",
+      "source_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "target_procedure": {
+        "address": "0x1028",
+        "name": "$$protocol_witness_for_Swift.Decodable.init(from:_Swift.Decoder)_throws_-\u003e_A_in_conformance_OwnedErrorABI.OwnedPayload_:_Swift.Decodable_in_OwnedErrorABI",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1028",
+              "end": "0x114f"
+            }
+          ],
+          "total_bytes": 296,
+          "span_bytes": 296,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "kind": {
+        "available": true,
+        "provenance": "ghidra-reference-manager",
+        "type": "UNCONDITIONAL_JUMP",
+        "flow": true,
+        "call": false,
+        "jump": true,
+        "data": false,
+        "read": false,
+        "write": false,
+        "indirect": false,
+        "computed": false,
+        "conditional": false,
+        "terminal": false,
+        "primary": true,
+        "operand_index": 0,
+        "external": false
+      }
+    }
+  ],
+  "referenced_strings": [],
+  "referenced_names": [
+    {
+      "address": "0x1008",
+      "value": "___swift_destroy_boxed_opaque_existential_1",
+      "source_address": "0x1100"
+    },
+    {
+      "address": "0x1008",
+      "value": "___swift_destroy_boxed_opaque_existential_1",
+      "source_address": "0x1144"
+    },
+    {
+      "address": "0x10fc",
+      "value": "LAB_000010fc",
+      "source_address": "0x10d0"
+    },
+    {
+      "address": "0x1104",
+      "value": "LAB_00001104",
+      "source_address": "0x114c"
+    },
+    {
+      "address": "0x1128",
+      "value": "LAB_00001128",
+      "source_address": "0x10e8"
+    },
+    {
+      "address": "0x11b00",
+      "value": "/usr/lib/libSystem.B.dylib::___chkstk_darwin",
+      "source_address": "0x1080"
+    },
+    {
+      "address": "0x160c",
+      "value": "/usr/lib/swift/libswiftCore.dylib::Swift::KeyedDecodingContainer::$decode",
+      "source_address": "0x10e0"
+    },
+    {
+      "address": "0x1630",
+      "value": "/usr/lib/swift/libswiftCore.dylib::Swift::Decoder::$container",
+      "source_address": "0x10c8"
+    },
+    {
+      "address": "0x1720",
+      "value": "$$mangled_name_ref_for_type_metadata_for_Swift.KeyedDecodingContainer\u003cOwnedErrorABI.OwnedPayload.CodingKeys\u003e",
+      "source_address": "0x105c"
+    },
+    {
+      "address": "0x4000",
+      "value": "PTR____chkstk_darwin_00004000",
+      "source_address": "0x107c"
+    },
+    {
+      "address": "0x4228",
+      "value": "$$type_metadata_for_OwnedErrorABI.OwnedPayload.CodingKeys",
+      "source_address": "0x10b0"
+    },
+    {
+      "address": "0x4228",
+      "value": "$$type_metadata_for_OwnedErrorABI.OwnedPayload.CodingKeys",
+      "source_address": "0x10b8"
+    },
+    {
+      "address": "0x8000",
+      "value": "$$demangling_cache_variable_for_type_metadata_for_Swift.KeyedDecodingContainer\u003cOwnedErrorABI.OwnedPayload.CodingKeys\u003e",
+      "source_address": "0x1054"
+    },
+    {
+      "address": "0xf54",
+      "value": "___swift_instantiateConcreteTypeFromMangledNameV2",
+      "source_address": "0x1060"
+    },
+    {
+      "address": "0xfa4",
+      "value": "___swift_project_boxed_opaque_existential_1",
+      "source_address": "0x109c"
+    },
+    {
+      "address": "0xfc8",
+      "value": "OwnedErrorABI::OwnedPayload::CodingKeys::$lazy_protocol_witness_table_accessor",
+      "source_address": "0x10a4"
+    }
+  ],
+  "basic_blocks": [
+    {
+      "start": "0x1028",
+      "end": "0x10d4",
+      "successors": [
+        "0x10d4",
+        "0x10fc"
+      ]
+    },
+    {
+      "start": "0x10d4",
+      "end": "0x10ec",
+      "successors": [
+        "0x10ec",
+        "0x1128"
+      ]
+    },
+    {
+      "start": "0x10ec",
+      "end": "0x10fc",
+      "successors": [
+        "0x10fc"
+      ]
+    },
+    {
+      "start": "0x10fc",
+      "end": "0x1104",
+      "successors": [
+        "0x1104"
+      ]
+    },
+    {
+      "start": "0x1104",
+      "end": "0x1128",
+      "successors": []
+    },
+    {
+      "start": "0x1128",
+      "end": "0x1150",
+      "successors": [
+        "0x1104"
+      ]
+    }
+  ],
+  "native_api": {
+    "available": true,
+    "provenance": "ghidra-high-function",
+    "signature_source": "default",
+    "call_model_adjustments": [
+      {
+        "call_address": "0x10c8",
+        "callee_address": "0x9",
+        "callee_address_space": "EXTERNAL",
+        "original_symbol": "_$ss7DecoderP9container7keyedBys22KeyedDecodingContainerVyqd__Gqd__m_tKs9CodingKeyRd__lFTj",
+        "demangled_signature": "dispatch thunk of Swift.Decoder.container\u003cA where A1: Swift.CodingKey\u003e(keyedBy: A1.Type) throws -\u003e Swift.KeyedDecodingContainer\u003cA1\u003e",
+        "demangler_output_sha256": "271a543233261fff0dbfa45779202bc3a14815f48e5c038f485b2cd2722eeca9",
+        "original_calling_convention": "default",
+        "effective_calling_convention": "__rea_swiftcall_throws_x21",
+        "register": "x21",
+        "previous_effect": "preserved",
+        "effective_effect": "unknown-after-call",
+        "provenance": "swift-synchronous-throws-abi",
+        "proof": "The original symbol\u0027s outer FunctionType has a direct ThrowsAnnotation and no AsyncAnnotation; ARM64 Swift uses x21 for synchronous error returns."
+      }
+    ],
+    "calling_convention": "__swiftcall",
+    "return_type": {
+      "role": "return",
+      "data_type": "void",
+      "size_bytes": 0,
+      "storage": "\u003cVOID\u003e",
+      "confidence": "low",
+      "evidence": [
+        {
+          "kind": "signature-source",
+          "source": "ghidra-function-manager",
+          "detail": "Function signature source is default."
+        },
+        {
+          "kind": "decompiler-type",
+          "source": "ghidra-high-function",
+          "detail": "HighFunction recovered data type void."
+        }
+      ],
+      "decompiler_artifacts": [
+        "recovered-signature",
+        "register-or-stack-storage"
+      ]
+    },
+    "parameters": [
+      {
+        "role": "parameter",
+        "ordinal": 0,
+        "name": "param_1",
+        "data_type": "String *",
+        "size_bytes": 8,
+        "storage": "x8:8",
+        "confidence": "low",
+        "evidence": [
+          {
+            "kind": "signature-source",
+            "source": "ghidra-function-manager",
+            "detail": "Function signature source is default."
+          },
+          {
+            "kind": "decompiler-type",
+            "source": "ghidra-high-function",
+            "detail": "HighFunction recovered data type String *."
+          }
+        ],
+        "decompiler_artifacts": [
+          "recovered-signature",
+          "register-or-stack-storage",
+          "compiler-generated-variable"
+        ]
+      },
+      {
+        "role": "parameter",
+        "ordinal": 1,
+        "name": "param_2",
+        "data_type": "long",
+        "size_bytes": 8,
+        "storage": "x0:8",
+        "confidence": "low",
+        "evidence": [
+          {
+            "kind": "signature-source",
+            "source": "ghidra-function-manager",
+            "detail": "Function signature source is default."
+          },
+          {
+            "kind": "decompiler-type",
+            "source": "ghidra-high-function",
+            "detail": "HighFunction recovered data type long."
+          }
+        ],
+        "decompiler_artifacts": [
+          "recovered-signature",
+          "register-or-stack-storage",
+          "compiler-generated-variable"
+        ]
+      }
+    ],
+    "jump_tables": [],
+    "pseudocode": {
+      "classification": "decompiler-generated-non-source",
+      "compilable": false
+    },
+    "decompiler_artifacts": [
+      "recovered-signature",
+      "register-and-stack-variables",
+      "compiler-generated-control-flow",
+      "pointer-arithmetic",
+      "pseudocode"
+    ],
+    "limitations": [
+      "Types and calling conventions are Ghidra decompiler observations, not source declarations.",
+      "Register variables, compiler-generated blocks, and pointer arithmetic remain decompiler artifacts.",
+      "Pseudocode is neither original source nor guaranteed to compile.",
+      "On supported non-Windows AArch64 Mach-O inputs, REA+ can restore signed-word Swift enum dispatches from verified ABI metadata, accessor and instruction flow. Generated switch overrides are analysis metadata. Recovery budgets are 4096 cases, 100000 CFG/reaching-definition work units per candidate function and 256 nested queries; unsupported or exhausted paths remain unrecovered, not complete."
+    ]
+  },
+  "native_value_flow": {
+    "available": true,
+    "provenance": "ghidra-high-pcode",
+    "control_flow_uncertainties": [
+      {
+        "address": "0x10a4",
+        "reason": "The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved."
+      },
+      {
+        "address": "0x10e8",
+        "reason": "The proved throwing callee retains an explicit or unsupported calling model; x21 effects were not changed."
+      }
+    ],
+    "operations": [
+      {
+        "id": "0x1054#47",
+        "address": "0x1054",
+        "sequence": 47,
+        "opcode": "COPY",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "8000"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0x23800"
+        }
+      },
+      {
+        "id": "0x1060#60",
+        "address": "0x1060",
+        "sequence": 60,
+        "opcode": "CALL",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0xf54"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "8000"
+          },
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0x10000063"
+          }
+        ]
+      },
+      {
+        "id": "0x1060#279",
+        "address": "0x1060",
+        "sequence": 279,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0x23800"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "3c"
+          }
+        ],
+        "output": {
+          "kind": "register",
+          "size_bytes": 8,
+          "location": "register:0x4000"
+        }
+      },
+      {
+        "id": "0x1060#386",
+        "address": "0x1060",
+        "sequence": 386,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "3c"
+          }
+        ],
+        "output": {
+          "kind": "address",
+          "size_bytes": 8,
+          "location": "0x4000"
+        }
+      },
+      {
+        "id": "0x1060#533",
+        "address": "0x1060",
+        "sequence": 533,
+        "opcode": "PTRSUB",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "0"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "1720"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0x10000063"
+        }
+      },
+      {
+        "id": "0x1068#62",
+        "address": "0x1068",
+        "sequence": 62,
+        "opcode": "INT_ADD",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4000"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "fffffffffffffff8"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0x1000008b"
+        }
+      },
+      {
+        "id": "0x1068#63",
+        "address": "0x1068",
+        "sequence": 63,
+        "opcode": "LOAD",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "1b1"
+          },
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0xcc00"
+          }
+        ],
+        "output": {
+          "kind": "register",
+          "size_bytes": 8,
+          "location": "register:0x40e0"
+        }
+      },
+      {
+        "id": "0x1068#538",
+        "address": "0x1068",
+        "sequence": 538,
+        "opcode": "CAST",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0x1000008b"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0xcc00"
+        }
+      },
+      {
+        "id": "0x106c#64",
+        "address": "0x106c",
+        "sequence": 64,
+        "opcode": "INT_ADD",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x40e0"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "40"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0x10000093"
+        }
+      },
+      {
+        "id": "0x106c#65",
+        "address": "0x106c",
+        "sequence": 65,
+        "opcode": "LOAD",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "1b1"
+          },
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0xc300"
+          }
+        ],
+        "output": {
+          "kind": "register",
+          "size_bytes": 8,
+          "location": "register:0x4048"
+        }
+      },
+      {
+        "id": "0x106c#539",
+        "address": "0x106c",
+        "sequence": 539,
+        "opcode": "CAST",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0x10000093"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0xc300"
+        }
+      },
+      {
+        "id": "0x1070#69",
+        "address": "0x1070",
+        "sequence": 69,
+        "opcode": "INT_ADD",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4048"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "f"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0x23800"
+        }
+      },
+      {
+        "id": "0x1074#73",
+        "address": "0x1074",
+        "sequence": 73,
+        "opcode": "INT_AND",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0x23800"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "fffffffffffffff0"
+          }
+        ],
+        "output": {
+          "kind": "register",
+          "size_bytes": 8,
+          "location": "register:0x4040"
+        }
+      },
+      {
+        "id": "0x1080#79",
+        "address": "0x1080",
+        "sequence": 79,
+        "opcode": "CALLIND",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0x1000009b"
+          },
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4040"
+          }
+        ]
+      },
+      {
+        "id": "0x1080#339",
+        "address": "0x1080",
+        "sequence": 339,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "0"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "4f"
+          }
+        ],
+        "output": {
+          "kind": "register",
+          "size_bytes": 8,
+          "location": "register:0x4040"
+        }
+      },
+      {
+        "id": "0x1080#387",
+        "address": "0x1080",
+        "sequence": 387,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "4f"
+          }
+        ],
+        "output": {
+          "kind": "address",
+          "size_bytes": 8,
+          "location": "0x4000"
+        }
+      },
+      {
+        "id": "0x1080#540",
+        "address": "0x1080",
+        "sequence": 540,
+        "opcode": "CAST",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0x1000009b"
+        }
+      },
+      {
+        "id": "0x1088#384",
+        "address": "0x1088",
+        "sequence": 384,
+        "opcode": "INT_2COMP",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4040"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0x1000005a"
+        }
+      },
+      {
+        "id": "0x1088#536",
+        "address": "0x1088",
+        "sequence": 536,
+        "opcode": "PTRSUB",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x8"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "ffffffffffffffa0"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0x1000007b"
+        }
+      },
+      {
+        "id": "0x1088#537",
+        "address": "0x1088",
+        "sequence": 537,
+        "opcode": "PTRADD",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0x1000007b"
+          },
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0x1000005a"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "1"
+          }
+        ],
+        "output": {
+          "kind": "register",
+          "size_bytes": 8,
+          "location": "register:0x40c0"
+        }
+      },
+      {
+        "id": "0x1090#83",
+        "address": "0x1090",
+        "sequence": 83,
+        "opcode": "INT_ADD",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4000"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "18"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0x100000a3"
+        }
+      },
+      {
+        "id": "0x1090#84",
+        "address": "0x1090",
+        "sequence": 84,
+        "opcode": "LOAD",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "1b1"
+          },
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0xf000"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0x48500"
+        }
+      },
+      {
+        "id": "0x1090#541",
+        "address": "0x1090",
+        "sequence": 541,
+        "opcode": "CAST",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0x100000a3"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0xf000"
+        }
+      },
+      {
+        "id": "0x109c#92",
+        "address": "0x109c",
+        "sequence": 92,
+        "opcode": "CALL",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0xfa4"
+          },
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4000"
+          },
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0x48500"
+          }
+        ]
+      },
+      {
+        "id": "0x109c#388",
+        "address": "0x109c",
+        "sequence": 388,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "5c"
+          }
+        ],
+        "output": {
+          "kind": "address",
+          "size_bytes": 8,
+          "location": "0x4000"
+        }
+      },
+      {
+        "id": "0x10a4#95",
+        "address": "0x10a4",
+        "sequence": 95,
+        "opcode": "CALL",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0xfc8"
+          }
+        ]
+      },
+      {
+        "id": "0x10a4#389",
+        "address": "0x10a4",
+        "sequence": 389,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "5f"
+          }
+        ],
+        "output": {
+          "kind": "address",
+          "size_bytes": 8,
+          "location": "0x4000"
+        }
+      },
+      {
+        "id": "0x10c8#111",
+        "address": "0x10c8",
+        "sequence": 111,
+        "opcode": "CALL",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x1630"
+          }
+        ],
+        "output": {
+          "kind": "register",
+          "size_bytes": 8,
+          "location": "register:0x4000"
+        }
+      },
+      {
+        "id": "0x10c8#376",
+        "address": "0x10c8",
+        "sequence": 376,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "0"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "6f"
+          }
+        ],
+        "output": {
+          "kind": "register",
+          "size_bytes": 8,
+          "location": "register:0x40a8"
+        }
+      },
+      {
+        "id": "0x10c8#390",
+        "address": "0x10c8",
+        "sequence": 390,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "6f"
+          }
+        ],
+        "output": {
+          "kind": "address",
+          "size_bytes": 8,
+          "location": "0x4000"
+        }
+      },
+      {
+        "id": "0x10d0#113",
+        "address": "0x10d0",
+        "sequence": 113,
+        "opcode": "INT_EQUAL",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x40a8"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "0"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 1,
+          "location": "unique:0x31500"
+        }
+      },
+      {
+        "id": "0x10d0#114",
+        "address": "0x10d0",
+        "sequence": 114,
+        "opcode": "CBRANCH",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 1,
+            "location": "0x10fc"
+          },
+          {
+            "kind": "unique",
+            "size_bytes": 1,
+            "location": "unique:0x31500"
+          }
+        ]
+      },
+      {
+        "id": "0x10e0#119",
+        "address": "0x10e0",
+        "sequence": 119,
+        "opcode": "CALL",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x160c"
+          },
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4000"
+          },
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4000"
+          }
+        ],
+        "output": {
+          "kind": "other",
+          "size_bytes": 16,
+          "location": "VARIABLE:0x0"
+        }
+      },
+      {
+        "id": "0x10e0#391",
+        "address": "0x10e0",
+        "sequence": 391,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "77"
+          }
+        ],
+        "output": {
+          "kind": "address",
+          "size_bytes": 8,
+          "location": "0x4000"
+        }
+      },
+      {
+        "id": "0x1100#132",
+        "address": "0x1100",
+        "sequence": 132,
+        "opcode": "CALL",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x1008"
+          },
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4000"
+          }
+        ]
+      },
+      {
+        "id": "0x1100#395",
+        "address": "0x1100",
+        "sequence": 395,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "84"
+          }
+        ],
+        "output": {
+          "kind": "address",
+          "size_bytes": 8,
+          "location": "0x4000"
+        }
+      },
+      {
+        "id": "0x1104#399",
+        "address": "0x1104",
+        "sequence": 399,
+        "opcode": "MULTIEQUAL",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          },
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          }
+        ],
+        "output": {
+          "kind": "address",
+          "size_bytes": 8,
+          "location": "0x4000"
+        }
+      },
+      {
+        "id": "0x1124#169",
+        "address": "0x1124",
+        "sequence": 169,
+        "opcode": "RETURN",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "0"
+          }
+        ]
+      },
+      {
+        "id": "0x1124#396",
+        "address": "0x1124",
+        "sequence": 396,
+        "opcode": "COPY",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          }
+        ],
+        "output": {
+          "kind": "address",
+          "size_bytes": 8,
+          "location": "0x4000"
+        }
+      },
+      {
+        "id": "0x1130#172",
+        "address": "0x1130",
+        "sequence": 172,
+        "opcode": "INT_ADD",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x40e0"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 8,
+            "constant_hex": "8"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0x100000ab"
+        }
+      },
+      {
+        "id": "0x1130#173",
+        "address": "0x1130",
+        "sequence": 173,
+        "opcode": "LOAD",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "1b1"
+          },
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0xc300"
+          }
+        ],
+        "output": {
+          "kind": "register",
+          "size_bytes": 8,
+          "location": "register:0x4040"
+        }
+      },
+      {
+        "id": "0x1130#542",
+        "address": "0x1130",
+        "sequence": 542,
+        "opcode": "CAST",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "unique",
+            "size_bytes": 8,
+            "location": "unique:0x100000ab"
+          }
+        ],
+        "output": {
+          "kind": "unique",
+          "size_bytes": 8,
+          "location": "unique:0xc300"
+        }
+      },
+      {
+        "id": "0x113c#178",
+        "address": "0x113c",
+        "sequence": 178,
+        "opcode": "CALLIND",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4040"
+          },
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x40c0"
+          },
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4000"
+          }
+        ]
+      },
+      {
+        "id": "0x113c#392",
+        "address": "0x113c",
+        "sequence": 392,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "b2"
+          }
+        ],
+        "output": {
+          "kind": "address",
+          "size_bytes": 8,
+          "location": "0x4000"
+        }
+      },
+      {
+        "id": "0x1144#181",
+        "address": "0x1144",
+        "sequence": 181,
+        "opcode": "CALL",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x1008"
+          },
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4000"
+          }
+        ]
+      },
+      {
+        "id": "0x1144#393",
+        "address": "0x1144",
+        "sequence": 393,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "b5"
+          }
+        ],
+        "output": {
+          "kind": "address",
+          "size_bytes": 8,
+          "location": "0x4000"
+        }
+      },
+      {
+        "id": "0x1148#385",
+        "address": "0x1148",
+        "sequence": 385,
+        "opcode": "STORE",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "1b1"
+          },
+          {
+            "kind": "register",
+            "size_bytes": 8,
+            "location": "register:0x4040"
+          },
+          {
+            "kind": "other",
+            "size_bytes": 16,
+            "location": "VARIABLE:0x0"
+          }
+        ]
+      },
+      {
+        "id": "0x1148#397",
+        "address": "0x1148",
+        "sequence": 397,
+        "opcode": "INDIRECT",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 8,
+            "location": "0x4000"
+          },
+          {
+            "kind": "constant",
+            "size_bytes": 4,
+            "constant_hex": "181"
+          }
+        ],
+        "output": {
+          "kind": "address",
+          "size_bytes": 8,
+          "location": "0x4000"
+        }
+      },
+      {
+        "id": "0x114c#188",
+        "address": "0x114c",
+        "sequence": 188,
+        "opcode": "BRANCH",
+        "is_dead": true,
+        "block_membership": "member",
+        "inputs": [
+          {
+            "kind": "address",
+            "size_bytes": 1,
+            "location": "0x1104"
+          }
+        ]
+      }
+    ],
+    "def_use": [
+      {
+        "definition": "0x1060#533",
+        "use": "0x1060#60",
+        "input_index": 2
+      },
+      {
+        "definition": "0x1054#47",
+        "use": "0x1060#279",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1060#279",
+        "use": "0x1068#62",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1068#538",
+        "use": "0x1068#63",
+        "input_index": 1
+      },
+      {
+        "definition": "0x1068#62",
+        "use": "0x1068#538",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1068#63",
+        "use": "0x106c#64",
+        "input_index": 0
+      },
+      {
+        "definition": "0x106c#539",
+        "use": "0x106c#65",
+        "input_index": 1
+      },
+      {
+        "definition": "0x106c#64",
+        "use": "0x106c#539",
+        "input_index": 0
+      },
+      {
+        "definition": "0x106c#65",
+        "use": "0x1070#69",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1070#69",
+        "use": "0x1074#73",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1080#540",
+        "use": "0x1080#79",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1074#73",
+        "use": "0x1080#79",
+        "input_index": 1
+      },
+      {
+        "definition": "0x1060#386",
+        "use": "0x1080#387",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1060#386",
+        "use": "0x1080#540",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1080#339",
+        "use": "0x1088#384",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1088#536",
+        "use": "0x1088#537",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1088#384",
+        "use": "0x1088#537",
+        "input_index": 1
+      },
+      {
+        "definition": "0x1090#541",
+        "use": "0x1090#84",
+        "input_index": 1
+      },
+      {
+        "definition": "0x1090#83",
+        "use": "0x1090#541",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1090#84",
+        "use": "0x109c#92",
+        "input_index": 2
+      },
+      {
+        "definition": "0x1080#387",
+        "use": "0x109c#388",
+        "input_index": 0
+      },
+      {
+        "definition": "0x109c#388",
+        "use": "0x10a4#389",
+        "input_index": 0
+      },
+      {
+        "definition": "0x10a4#389",
+        "use": "0x10c8#390",
+        "input_index": 0
+      },
+      {
+        "definition": "0x10c8#376",
+        "use": "0x10d0#113",
+        "input_index": 0
+      },
+      {
+        "definition": "0x10d0#113",
+        "use": "0x10d0#114",
+        "input_index": 1
+      },
+      {
+        "definition": "0x10c8#111",
+        "use": "0x10e0#119",
+        "input_index": 1
+      },
+      {
+        "definition": "0x1060#279",
+        "use": "0x10e0#119",
+        "input_index": 2
+      },
+      {
+        "definition": "0x10c8#390",
+        "use": "0x10e0#391",
+        "input_index": 0
+      },
+      {
+        "definition": "0x10c8#390",
+        "use": "0x1100#395",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1100#395",
+        "use": "0x1104#399",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1148#397",
+        "use": "0x1104#399",
+        "input_index": 1
+      },
+      {
+        "definition": "0x1104#399",
+        "use": "0x1124#396",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1068#63",
+        "use": "0x1130#172",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1130#542",
+        "use": "0x1130#173",
+        "input_index": 1
+      },
+      {
+        "definition": "0x1130#172",
+        "use": "0x1130#542",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1130#173",
+        "use": "0x113c#178",
+        "input_index": 0
+      },
+      {
+        "definition": "0x1088#537",
+        "use": "0x113c#178",
+        "input_index": 1
+      },
+      {
+        "definition": "0x1060#279",
+        "use": "0x113c#178",
+        "input_index": 2
+      },
+      {
+        "definition": "0x10e0#391",
+        "use": "0x113c#392",
+        "input_index": 0
+      },
+      {
+        "definition": "0x113c#392",
+        "use": "0x1144#393",
+        "input_index": 0
+      },
+      {
+        "definition": "0x10e0#119",
+        "use": "0x1148#385",
+        "input_index": 2
+      },
+      {
+        "definition": "0x1144#393",
+        "use": "0x1148#397",
+        "input_index": 0
+      }
+    ],
+    "parameters": [
+      {
+        "ordinal": 0,
+        "name": "param_1",
+        "data_type": "/Demangler/Swift/String *"
+      },
+      {
+        "ordinal": 1,
+        "name": "param_2",
+        "data_type": "/long"
+      }
+    ],
+    "parameter_uses": [
+      {
+        "ordinal": 1,
+        "use": "0x1090#83",
+        "input_index": 0
+      },
+      {
+        "ordinal": 1,
+        "use": "0x109c#92",
+        "input_index": 1
+      },
+      {
+        "ordinal": 1,
+        "use": "0x1100#132",
+        "input_index": 1
+      },
+      {
+        "ordinal": 1,
+        "use": "0x1144#181",
+        "input_index": 1
+      },
+      {
+        "ordinal": 0,
+        "use": "0x1148#385",
+        "input_index": 1
+      }
+    ],
+    "effects": [
+      {
+        "operation": "0x1060#60",
+        "kind": "direct_call",
+        "operand_input": 0
+      },
+      {
+        "operation": "0x1068#63",
+        "kind": "memory_read",
+        "operand_input": 1
+      },
+      {
+        "operation": "0x106c#65",
+        "kind": "memory_read",
+        "operand_input": 1
+      },
+      {
+        "operation": "0x1080#79",
+        "kind": "indirect_call",
+        "operand_input": 0
+      },
+      {
+        "operation": "0x1090#84",
+        "kind": "memory_read",
+        "operand_input": 1
+      },
+      {
+        "operation": "0x109c#92",
+        "kind": "direct_call",
+        "operand_input": 0
+      },
+      {
+        "operation": "0x10a4#95",
+        "kind": "direct_call",
+        "operand_input": 0
+      },
+      {
+        "operation": "0x10c8#111",
+        "kind": "direct_call",
+        "operand_input": 0
+      },
+      {
+        "operation": "0x10d0#114",
+        "kind": "conditional_branch",
+        "value_input": 1
+      },
+      {
+        "operation": "0x10e0#119",
+        "kind": "direct_call",
+        "operand_input": 0
+      },
+      {
+        "operation": "0x1100#132",
+        "kind": "direct_call",
+        "operand_input": 0
+      },
+      {
+        "operation": "0x1130#173",
+        "kind": "memory_read",
+        "operand_input": 1
+      },
+      {
+        "operation": "0x113c#178",
+        "kind": "indirect_call",
+        "operand_input": 0
+      },
+      {
+        "operation": "0x1144#181",
+        "kind": "direct_call",
+        "operand_input": 0
+      },
+      {
+        "operation": "0x1148#385",
+        "kind": "memory_write",
+        "operand_input": 1,
+        "value_input": 2
+      }
+    ],
+    "truncated": false,
+    "omitted_operations_lower_bound": 0,
+    "known_omitted_inputs": 0,
+    "known_omitted_edges": 0,
+    "limitations": [
+      "High p-code is decompiler-derived, not original source or runtime behavior. is_dead preserves the Java AST flag; decoded block members can retain that flag, so block_membership separately reports actual syntax-tree membership.",
+      "Def-use links do not cross function boundaries and may omit memory aliasing, call side effects, or unresolved indirect flow.",
+      "Memory read/write effects include stack and temporary memory operations; they do not identify persistent state or business meaning.",
+      "Operation, input, and def-use limits can truncate large functions; inspect truncation, omitted lower bounds, and known omitted counts before drawing conclusions.",
+      "Known omitted-edge counts cover links omitted from retained operations; omitted operations may contain additional uncounted links."
+    ]
+  },
+  "limitations": [
+    "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+    "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+    "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+    "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+    "REA+ models x21 as unknown after proved synchronous Swift throwing callees in this private Program. Original parameters, return types and bytes are preserved; this is static ABI modeling, not observed execution.",
+    "Swift control-flow uncertainty at 0x10a4: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+    "Swift control-flow uncertainty at 0x10e8: The proved throwing callee retains an explicit or unsupported calling model; x21 effects were not changed. Consult assembly and machine CFG before inferring success/failure paths."
+  ]
+}

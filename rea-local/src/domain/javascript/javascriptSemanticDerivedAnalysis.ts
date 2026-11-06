@@ -2,6 +2,7 @@ import type * as t from "@babel/types";
 
 import { collectJavaScriptSemanticAsyncEffects } from "./javascriptSemanticAsyncEffects.js";
 import { collectJavaScriptSemanticCalls } from "./javascriptSemanticCalls.js";
+import { collectSemanticCallResultFields } from "./javascriptSemanticCallResultFields.js";
 import { collectJavaScriptSemanticChildProcesses } from "./javascriptSemanticChildProcesses.js";
 import { collectJavaScriptSemanticFingerprintsSteps } from "./javascriptSemanticFingerprints.js";
 import { collectJavaScriptSemanticDataEffects } from "./javascriptSemanticDataEffects.js";
@@ -18,6 +19,7 @@ type DerivedSemanticAnalysis = Pick<
   JavaScriptSemanticIr,
   | "argumentFlows"
   | "callResultFlows"
+  | "callResultFieldFlows"
   | "callReturnFlows"
   | "callSites"
   | "boundaryOperations"
@@ -106,6 +108,13 @@ export function* collectJavaScriptDerivedSemanticsSteps(
     ...dataEffects,
     resourceOperations,
     objectOperations,
+    callResultFieldFlows: collectSemanticCallResultFields(
+      state,
+      callables,
+      calls,
+      objectOperations,
+      parserPartial,
+    ),
     functionFingerprints,
   };
 }

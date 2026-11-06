@@ -21,7 +21,10 @@ import {
 } from "./javascriptSemanticObjectReferences.js";
 import { semanticIterationSources } from "./javascriptSemanticIterationSources.js";
 import { semanticCallableResultExpressions } from "./javascriptSemanticCallableResults.js";
-import { createSemanticReturnedReferences } from "./javascriptSemanticReturnedReferences.js";
+import {
+  createSemanticReturnedReferences,
+  type SemanticReturnedReference,
+} from "./javascriptSemanticReturnedReferences.js";
 import { semanticMutationInitializers } from "./javascriptSemanticMutationInitializers.js";
 import {
   semanticArrayIndex,
@@ -46,8 +49,8 @@ export function* collectSemanticMemberMutationsSteps(
   state: JavaScriptSemanticAnalysisState,
 ): Generator<void, void> {
   const parents = state.parentsByNode;
-  const observablePaths = observableMutationPaths(state);
   const returnedReferences = createSemanticReturnedReferences(state);
+  const observablePaths = observableMutationPaths(state, returnedReferences);
   const recordedEffects = new Set<string>();
   const selections = new Map<string, readonly string[]>();
   const coveringPaths = new Map<string, SemanticPropertyPathCoverage>();
@@ -735,6 +738,7 @@ interface MutationObserverNode {
 
 const observableMutationPaths = (
   state: JavaScriptSemanticAnalysisState,
+  returnedReferences: (callee: t.Node) => readonly SemanticReturnedReference[],
 ): {
   readonly normalize: (
     bindingId: string,
@@ -866,7 +870,22 @@ const observableMutationPaths = (
             ]),
             observer,
           );
-        else
+        else if (
+          t.isCallExpression(expression) ||
+          t.isOptionalCallExpression(expression)
+        ) {
+          // A call result can own a fresh returned object even when its value
+          // lattice remains unknown. Retain that single direct object's
+          // effects without expanding all candidate returns at every call.
+          const references = returnedReferences(expression.callee);
+          const returned = references.length === 1 ? references[0] : undefined;
+          if (
+            returned !== undefined &&
+            returned.projection.length === 0 &&
+            t.isObjectExpression(unwrapJavaScriptExpression(returned.node).node)
+          )
+            link(expressionNode(returned.node), observer);
+        } else
           for (const reference of referencedValues(
             expression,
             [],

@@ -5,6 +5,7 @@ import { semanticBuiltinNamespacePath } from "./javascriptSemanticProvenance.js"
 import type {
   JavaScriptSemanticCallable,
   JavaScriptSemanticEventOperation,
+  JavaScriptSemanticListenerTarget,
   JavaScriptSemanticTimerOperation,
 } from "./javascriptSemanticIr.js";
 import { semanticCallableIdForNode } from "./javascriptSemanticProjection.js";
@@ -24,6 +25,8 @@ import {
   scalarAssignedResultBinding,
   semanticProjectedBindingFacts,
 } from "./javascriptSemanticDataEffectHelpers.js";
+import { createSemanticEventHandlerResolver } from "./javascriptSemanticEventHandlers.js";
+import { semanticBrowserEventProfile } from "./javascriptSemanticEventProfiles.js";
 
 const EVENT_REGISTER_METHODS = [
   "on",
@@ -79,6 +82,14 @@ interface TimerCollectionInput {
   readonly ancestors: readonly t.Node[];
 }
 
+interface EventCollectionContext {
+  readonly state: JavaScriptSemanticAnalysisState;
+  readonly output: JavaScriptSemanticEventOperation[];
+  readonly resolveHandler: ReturnType<
+    typeof createSemanticEventHandlerResolver
+  >;
+}
+
 /** Recover explicit EventEmitter and Node timer candidates from inert syntax. */
 export const collectJavaScriptSemanticAsyncEffects = (
   program: t.Program,
@@ -88,6 +99,7 @@ export const collectJavaScriptSemanticAsyncEffects = (
   const events: JavaScriptSemanticEventOperation[] = [];
   const timers: TimerCandidate[] = [];
   const callableIds = new Set(callables.map(({ callableId }) => callableId));
+  const resolveHandler = createSemanticEventHandlerResolver(state, callables);
   const callableStack: string[] = [];
   const ancestors: t.Node[] = [];
   traverseJavaScriptAst(program, {
@@ -97,7 +109,11 @@ export const collectJavaScriptSemanticAsyncEffects = (
         callableStack.push(callableId);
       if (t.isCallExpression(node) || t.isOptionalCallExpression(node)) {
         const ownerCallableId = callableStack.at(-1) ?? null;
-        collectEvent(node, ownerCallableId, state, events);
+        collectEvent(node, ownerCallableId, {
+          state,
+          output: events,
+          resolveHandler,
+        });
         collectTimer({
           node,
           ownerCallableId,
@@ -124,42 +140,87 @@ export const collectJavaScriptSemanticAsyncEffects = (
 const collectEvent = (
   node: t.CallExpression | t.OptionalCallExpression,
   ownerCallableId: string | null,
-  state: JavaScriptSemanticAnalysisState,
-  output: JavaScriptSemanticEventOperation[],
+  context: EventCollectionContext,
 ): void => {
+  const { state, output, resolveHandler } = context;
   const member = dataEffectMemberCallee(node);
   if (member === null) return;
-  const method = EVENT_METHODS.find(
-    (candidate) =>
-      candidate ===
-      semanticStaticPropertyName(member.property, member.computed),
-  );
+  const browser = semanticBrowserEventProfile(member, state);
+  const method =
+    browser?.method ??
+    EVENT_METHODS.find(
+      (candidate) =>
+        candidate ===
+        semanticStaticPropertyName(member.property, member.computed),
+    );
   if (method === undefined) return;
-  const kind = eventKind(method);
+  const kind = browser?.kind ?? eventKind(method);
   const eventArgument = node.arguments[0];
-  const listenerArgument = node.arguments[1];
+  const callbackIndex = browser?.callbackIndex ?? 1;
+  const listenerArgument = node.arguments[callbackIndex];
   const emitter = emitterIdentity(member.object, state);
-  const eventName = dataEffectLiteralString(eventArgument);
+  const eventName =
+    browser?.eventName ?? dataEffectLiteralString(eventArgument);
+  const listenerTarget = eventListenerTarget({
+    node,
+    callbackIndex,
+    kind,
+    method,
+    resolveHandler,
+  });
   output.push({
     eventId: `event:${kind}:${String(node.start ?? -1)}:${String(node.end ?? -1)}`,
     kind,
     method,
     location: range(node),
     ownerCallableId,
-    emitterKey: emitter.key,
-    emitterBindingId: emitter.bindingId,
+    emitterKey: browser?.emitterKey ?? emitter.key,
+    emitterBindingId: browser === null ? emitter.bindingId : null,
     eventName,
     listenerBindingId: bindingId(listenerArgument, state),
     listenerLocation: t.isNode(listenerArgument)
       ? range(listenerArgument)
       : null,
-    resolution:
-      eventName === null
-        ? "unresolved"
-        : emitter.complete
-          ? "complete"
-          : "partial",
+    eventProfile: browser?.eventProfile ?? "event-emitter",
+    ...(listenerTarget === undefined ? {} : { listenerTarget }),
+    resolution: eventResolution(eventName, browser !== null, emitter.complete),
   });
+};
+
+/** Browser method syntax never establishes the effective target or activation. */
+const eventResolution = (
+  eventName: string | null,
+  browserProfile: boolean,
+  emitterComplete: boolean,
+): JavaScriptSemanticEventOperation["resolution"] =>
+  eventName === null
+    ? "unresolved"
+    : !browserProfile && emitterComplete
+      ? "complete"
+      : "partial";
+
+/** A syntactic argument after a spread has no proved positional callback role. */
+const eventListenerTarget = (input: {
+  readonly node: t.CallExpression | t.OptionalCallExpression;
+  readonly callbackIndex: number;
+  readonly kind: JavaScriptSemanticEventOperation["kind"];
+  readonly method: JavaScriptSemanticEventOperation["method"];
+  readonly resolveHandler: ReturnType<
+    typeof createSemanticEventHandlerResolver
+  >;
+}): JavaScriptSemanticListenerTarget | undefined => {
+  if (input.kind === "dispatch" || input.method === "removeAllListeners")
+    return undefined;
+  if (
+    input.node.arguments
+      .slice(0, input.callbackIndex + 1)
+      .some((argument) => t.isSpreadElement(argument))
+  )
+    return {
+      callableId: null,
+      reason: "A spread argument leaves the callback position unresolved.",
+    };
+  return input.resolveHandler(input.node.arguments[input.callbackIndex]);
 };
 
 const eventKind = (

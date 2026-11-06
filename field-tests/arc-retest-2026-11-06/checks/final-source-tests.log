@@ -1,0 +1,36 @@
+
+> rea-agents@6.4.0 test:local
+> node scripts/run-development-tests.mjs local src/application/javascript/JavaScriptSemanticGraphCallResultFields.test.ts src/application/javascript/JavaScriptSemanticGraphReturnProjection.test.ts src/application/javascript/JavaScriptSemanticGraphEventHandlers.test.ts src/domain/javascript/javascriptSemanticAnalysis.event_handlers.test.ts src/application/javascript/JavaScriptSemanticGraphResources.test.ts src/domain/javascript/javascriptSemanticAnalysis.runtime_boundaries.test.ts src/domain/javascript/javascriptSemanticAnalysis.member_mutations.test.ts src/domain/javascript/javascriptSemanticAnalysis.reference_lifetimes.test.ts src/domain/javascript/javascriptSemanticAnalysis.getter_receivers.test.ts src/domain/javascript/javascriptSemanticAnalysis.member_depth.test.ts src/domain/javascript/javascriptSemanticAnalysis.empty_keys.test.ts src/application/native/NativeValueTrace.test.ts src/ghidra/GhidraFunctionValues.test.ts src/ghidra/GhidraProvider.behavior.test.ts
+
+Source-test feedback; compiled boundaries and real providers need explicit verification.
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |adapters| src/ghidra/GhidraFunctionValues.test.ts (39 tests) 59ms
+ ✓ |adapters| src/ghidra/GhidraProvider.behavior.test.ts (42 tests) 607ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.member_depth.test.ts (14 tests) 1630ms
+   ✓ preserves a 12,000-member native import through both analyzers 1545ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.member_mutations.test.ts (185 tests) 4467ms
+   ✓ property mutation collection on minified bundles (2)
+     ✓ records each write to one object without replaying earlier writes 458ms
+     ✓ indexes many returned object methods instead of rescanning the object 1339ms
+   ✓ results of methods on an escaped receiver (2)
+     ✓ keeps a shared result uncertain across a wide escaped receiver (#1495) 2080ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.event_handlers.test.ts (31 tests) 57ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.reference_lifetimes.test.ts (109 tests) 1056ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.getter_receivers.test.ts (25 tests) 129ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.empty_keys.test.ts (9 tests) 13ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.runtime_boundaries.test.ts (4 tests) 63ms
+ ✓ |services| src/application/javascript/JavaScriptSemanticGraphResources.test.ts (12 tests) 854ms
+ ✓ |services| src/application/javascript/JavaScriptSemanticGraphReturnProjection.test.ts (13 tests) 131ms
+ ✓ |services| src/application/javascript/JavaScriptSemanticGraphCallResultFields.test.ts (23 tests) 169ms
+ ✓ |services| src/application/javascript/JavaScriptSemanticGraphEventHandlers.test.ts (3 tests) 47ms
+ ✓ |services| src/application/native/NativeValueTrace.test.ts (6 tests) 2758ms
+   ✓ native value parameter-use node membership (2)
+     ✓ retains only parameter uses whose parameter nodes fit the node budget 2642ms
+
+ Test Files  14 passed (14)
+      Tests  515 passed (515)
+   Start at  14:47:51
+   Duration  11.97s (tests 55%, transform 32%, import 10%, worker 3%)
+

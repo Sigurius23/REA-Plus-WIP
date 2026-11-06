@@ -76,6 +76,39 @@ flag and affected callers are repaired in the same pass. Unknown imports and
 genuine no-return imports keep their flags. Analysis profiles version this repair
 so snapshots produced before it are not reused. Windows P0 does not run it.
 
+### Swift synchronous throwing calls
+
+For supported non-Windows ARM64 little-endian Mach-O Swift Programs, REA+ can
+correct the error-register effects of a proved synchronous throwing callee.
+Ghidra's Swift convention preserves x21 across calls; synchronous Swift throws
+use x21 as an error return. Preserving it can incorrectly remove a subsequent
+error guard from pseudocode and high p-code, even when the machine CFG retains it.
+
+The repair requires an original Swift symbol whose expanded outer function type
+declares `throws` without `async`. The effect belongs to the callee and remains
+valid when callers copy the error register or run cleanup before checking it. It
+clones the existing convention inside the ephemeral Program and changes only
+x21 from preserved to unknown after the proved callee. Parameters, return types,
+storage rules and executable bytes remain unchanged. Explicit caller prototype
+overrides and user signatures are preserved. The native API result records
+`call_model_adjustments`, including the original symbol, demangled signature,
+output digest, call address and exact convention/effect change.
+
+The proof reads the native declaration's own signature, excluding function types
+inside generic constraints, callbacks and return values. Only admitted native
+function/initializer and dispatch/static wrapper layouts qualify; Objective-C or
+other ABI-changing thunks remain unsupported rather than inheriting the original
+declaration's Swift error-return convention.
+
+Expanded demangling uses the installed `/usr/bin/swift` or caller-selected
+`GHIDRA_SWIFT_DEMANGLER`, without installing a toolchain. Symbol, output, cache
+and subprocess deadline budgets bound this optional analysis; unavailable or
+unproved guarded calls retain `control_flow_uncertainties` and limitations.
+`trace_native_values` carries these uncertainties forward independently of
+truncation. An empty retained operation-omission count does not prove semantic
+correctness. This profile is verified on macOS arm64; other hosts remain
+unverified. Historical dossiers can omit the new optional facets.
+
 ### Swift enum dispatch recovery
 
 On non-Windows hosts, AArch64 little-endian Mach-O imports also run a

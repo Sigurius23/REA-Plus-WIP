@@ -1,6 +1,14 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
+import {
+  access,
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  symlink,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
@@ -68,6 +76,7 @@ const EXPECTED_BUNDLES = [
 ];
 
 let report;
+const extractionRoots = [];
 try {
   const { app, executable } = await buildMacosBundleFixture(root);
   const nativeProvenance = await verifyNativeProvenance(app, executable);
@@ -143,6 +152,54 @@ try {
       "Versions/Current symlink was not reported",
     );
     anatomies.push(observed);
+    if (format === "dmg") {
+      const cliExtraction = (
+        await artifactCliEvidence("extract-artifact", target)
+      ).normalized_result;
+      extractionRoots.push(cliExtraction.output_root);
+      await withArtifactMcp(target, async (client) => {
+        const mcpExtraction = await artifactMcpResult(
+          client,
+          "extract_artifact",
+        );
+        extractionRoots.push(mcpExtraction.output_root);
+        assert.deepEqual(
+          mcpExtraction.extraction_manifest,
+          cliExtraction.extraction_manifest,
+          "DMG extraction CLI/MCP file commitments differ",
+        );
+        for (const extraction of [cliExtraction, mcpExtraction]) {
+          assert.equal(extraction.containment_verified, true);
+          assert.deepEqual(extraction.integrity_contradictions, []);
+          assert.deepEqual(
+            await readFile(
+              join(
+                extraction.output_root,
+                applicationRoot,
+                "Contents/MacOS/MacFixture",
+              ),
+            ),
+            await readFile(executable),
+          );
+          assert.ok(
+            extraction.provenance.some(
+              ({ arguments: args }) =>
+                args.includes("attach") && args.includes("-readonly"),
+            ),
+            "DMG extraction omitted read-only mount provenance",
+          );
+          await assert.rejects(
+            access(
+              join(
+                extraction.output_root,
+                "MacFixture.dmg/ReaFixture/Applications",
+              ),
+            ),
+            "DMG extraction followed the Applications symlink",
+          );
+        }
+      });
+    }
     if (format === "directory")
       await withArtifactMcp(app, async (client) => {
         assert.deepEqual(
@@ -168,12 +225,15 @@ try {
     containers: containers.map(({ format }) => format),
     bundles: EXPECTED_BUNDLES.length,
     dmg_detached: true,
+    dmg_extraction_cli_mcp: true,
     native_provenance: nativeProvenance,
     macho_occurrences: machoOccurrences,
     dylib_resolution: dylibs,
     dyld_environment: dyldEnvironment,
   };
 } finally {
+  for (const path of extractionRoots)
+    await rm(path, { recursive: true, force: true });
   await rm(root, { recursive: true, force: true });
 }
 process.stdout.write(`${JSON.stringify(report)}\n`);

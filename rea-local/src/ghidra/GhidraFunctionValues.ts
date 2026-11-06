@@ -216,6 +216,8 @@ const ghidraNativeApiBoundary = nativeApiBoundarySchema.superRefine(
       ...table.mappings.map(({ target_address }) => target_address),
       ...table.default_targets.map(({ target_address }) => target_address),
     ]);
+    for (const adjustment of value.call_model_adjustments ?? [])
+      addresses.push(adjustment.call_address, adjustment.callee_address);
     if (
       addresses.some(
         (address) => !ghidraCanonicalAddressSchema.safeParse(address).success,
@@ -242,6 +244,8 @@ const ghidraNativeValueFlow = nativeValueFlowSchema.superRefine(
         ? []
         : [operation.output.location]),
     ]);
+    for (const uncertainty of value.control_flow_uncertainties ?? [])
+      addresses.push(uncertainty.address);
     if (
       addresses.some(
         (address) => !ghidraCanonicalAddressSchema.safeParse(address).success,

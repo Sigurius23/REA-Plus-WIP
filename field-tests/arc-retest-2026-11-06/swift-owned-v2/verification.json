@@ -1,0 +1,205 @@
+{
+  "status": "passed",
+  "compiler": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0\n",
+  "source_sha256": "3c4d80ec8817b907b09a2a29078b39bae2acdb4f9da285131f77eb246e061cc6",
+  "binary_sha256": "e760995271ff4d6442e2b3668fce55eb3ff8f9577bad6873808004275f119453",
+  "witness_address": "0x1028",
+  "target_executed": false,
+  "probes": [
+    {
+      "mode": "positive",
+      "status": "passed",
+      "checks": [
+        "owned_machine_guard",
+        "baseline_reproduces_missing_guard",
+        "guard_restored_in_high_pcode",
+        "error_cleanup_not_unreachable",
+        "structured_model_proof",
+        "error_register_output",
+        "cleanup_call_precedes_error_guard",
+        "cleanup_baseline_reproduces_missing_guard",
+        "cleanup_error_guard_restored",
+        "cleanup_throws_proof",
+        "parameter_return_storage_and_source_preserved",
+        "source_digest_available",
+        "nonthrowing_not_synchronous_throwing",
+        "nonthrowing_tree_classified",
+        "callback_not_synchronous_throwing",
+        "callback_tree_classified",
+        "async_not_synchronous_throwing",
+        "async_tree_classified"
+      ]
+    },
+    {
+      "mode": "override",
+      "status": "passed",
+      "checks": [
+        "owned_machine_guard",
+        "baseline_reproduces_missing_guard",
+        "explicit_model_preserved",
+        "uncertainty_not_hidden",
+        "parameter_return_storage_and_source_preserved",
+        "source_digest_available",
+        "nonthrowing_not_synchronous_throwing",
+        "nonthrowing_tree_classified",
+        "callback_not_synchronous_throwing",
+        "callback_tree_classified",
+        "async_not_synchronous_throwing",
+        "async_tree_classified"
+      ]
+    },
+    {
+      "mode": "user-signature",
+      "status": "passed",
+      "checks": [
+        "owned_machine_guard",
+        "baseline_reproduces_missing_guard",
+        "explicit_model_preserved",
+        "uncertainty_not_hidden",
+        "parameter_return_storage_and_source_preserved",
+        "source_digest_available",
+        "nonthrowing_not_synchronous_throwing",
+        "nonthrowing_tree_classified",
+        "callback_not_synchronous_throwing",
+        "callback_tree_classified",
+        "async_not_synchronous_throwing",
+        "async_tree_classified"
+      ]
+    }
+  ],
+  "cli_mcp_exact_evidence": true,
+  "commands": [
+    {
+      "program": "/usr/bin/swiftc",
+      "args": [
+        "--version"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "/usr/bin/swiftc",
+      "args": [
+        "-O",
+        "-emit-library",
+        "-module-name",
+        "OwnedErrorABI",
+        "-module-cache-path",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-swift-errors-wS8B32/module-cache",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/tests/conformance/ghidra/swift-errors.swift",
+        "-o",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-swift-errors-wS8B32/OwnedErrorABI.dylib"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "/usr/bin/nm",
+      "args": [
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-swift-errors-wS8B32/OwnedErrorABI.dylib"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "/usr/bin/swift",
+      "args": [
+        "demangle",
+        "--compact",
+        "--expand",
+        "--",
+        "_$s13OwnedErrorABI16ownedNonthrowingyS2iF"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "/usr/bin/swift",
+      "args": [
+        "demangle",
+        "--compact",
+        "--expand",
+        "--",
+        "_$s13OwnedErrorABI21ownedThrowingCallbackyS2iyKXEF"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "/usr/bin/swift",
+      "args": [
+        "demangle",
+        "--compact",
+        "--expand",
+        "--",
+        "_$s13OwnedErrorABI18ownedAsyncThrowingyS2iYaKF"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec/support/analyzeHeadless",
+      "args": [
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-swift-errors-wS8B32",
+        "positive-project",
+        "-import",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-swift-errors-wS8B32/OwnedErrorABI.dylib",
+        "-scriptPath",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/ghidra;/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/tests/conformance/ghidra",
+        "-postScript",
+        "ReaSwiftErrorProbe.java",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/ghidra",
+        "0x1028",
+        "positive",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-06/swift-owned-v2",
+        "-deleteProject"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec/support/analyzeHeadless",
+      "args": [
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-swift-errors-wS8B32",
+        "override-project",
+        "-import",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-swift-errors-wS8B32/OwnedErrorABI.dylib",
+        "-scriptPath",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/ghidra;/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/tests/conformance/ghidra",
+        "-postScript",
+        "ReaSwiftErrorProbe.java",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/ghidra",
+        "0x1028",
+        "override",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-06/swift-owned-v2",
+        "-deleteProject"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec/support/analyzeHeadless",
+      "args": [
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-swift-errors-wS8B32",
+        "user-signature-project",
+        "-import",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-swift-errors-wS8B32/OwnedErrorABI.dylib",
+        "-scriptPath",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/ghidra;/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/tests/conformance/ghidra",
+        "-postScript",
+        "ReaSwiftErrorProbe.java",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/ghidra",
+        "0x1028",
+        "user-signature",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-06/swift-owned-v2",
+        "-deleteProject"
+      ],
+      "exit_code": 0
+    },
+    {
+      "program": "/Users/sigur/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "args": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/scripts/rea.mjs",
+        "function",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-swift-errors-wS8B32/OwnedErrorABI.dylib",
+        "0x1028",
+        "--provider",
+        "ghidra",
+        "--json"
+      ],
+      "exit_code": 0
+    }
+  ]
+}

@@ -74,6 +74,13 @@ macOS mounting adapter. When a DMG has only its root identity, the projection is
 `partial` and says that bundle absence is unknown. Other inventory formats, such
 as APK or ASAR, are rejected as input errors.
 
+On macOS, `extract_artifact` / `rea extract-artifact <image.dmg>` also uses the
+native read-only mounting adapter. It verifies each extracted regular file
+against its inventory and retains mount/detach command provenance. Symlinks,
+including an installer's `Applications` link, are not followed or materialized.
+The fresh output directory remains available after the session closes; the
+temporary mounted image is detached through the reader's owned cleanup.
+
 An inventoried directory whose name ends in `.app` is its own root even when its
 inventory is partial or lacks `Contents/`. For directory, ZIP, and DMG
 inventories, components outside every application root are not attributed to

@@ -4,6 +4,19 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc DMG repairs and retest (2026-11-06):** Items **45–47 are fixed for
+  their documented profiles** and retested on the supplied Arc **1.172.1 /
+  build 90370** DMG. Return-field provenance reaches the literal; five shipped
+  callback associations are recovered; Swift decoding preserves the missing
+  error branches, including a cleanup-before-check variant. Three additional
+  issues found during verification, **48–50**, are also fixed: DMG extraction,
+  quadratic return-field slot lookup and package-verifier archive parsing.
+  **515 source tests / 14 files**,
+  **38 distinct public/boundary cases / seven files**, real Ghidra/compiler and
+  macOS-bundle lanes, repository/docs checks and isolated packaging verify
+  the batch. All **1,113 extracted regular files** match their commitments.
+  Full Arc behavior remains partial. See the
+  [DMG retest](field-tests/arc-retest-2026-11-06.md).
 - **Arc deepening (2026-11-03):** New open items **45–47** have owned public
   reproductions: caller return-field propagation, listener-handler continuation,
   and Swift throwing-call guards omitted by decompiler-derived flow. Native
@@ -116,6 +129,12 @@ Open work on `main` following PR #1 and the field tests.
      also passed with unchanged test budgets; see
      [HeyClicky fix verification](field-tests/heyclicky-fixes-2026-10-28.md).
 2. **Branch state and push:**
+   - **Items 45–50 verification batch (2026-11-06):** implementation, tests,
+     skill 43, DMG retest and complete small captures are included together
+     after `14855891c323`. The fixed user DMG, source-built binaries,
+     Ghidra projects and two large local Rize JSONs remain outside this batch.
+     Historical receipts describe intermediate source profiles and failed
+     attempts; the final Swift profile is `proved-native-synchronous-callee-x21-v3`.
    - **Arc deepening notes (2026-11-03):** findings, issues 45–47, owned
      reproductions and complete captures are included together after
      `cb8ed4db254e`. This pass does not claim those issues fixed or rerun the
@@ -160,7 +179,7 @@ Open work on `main` following PR #1 and the field tests.
      `field-tests/rize-macos-1.1.52/evidence.json` and `summary-view.json`.
      Historical reports' “no commit or push” statements describe their original
      verification sessions. The full `check:pr` gate still predates items
-     36–37, 16 and 38–40; their focused and real-provider
+     36–37, 16 and 38–50; their focused and real-provider
      verification is recorded below.
 
    **Remaining work:** item 12 (Consensus HAR), optional item 13 (Consensus
@@ -171,10 +190,11 @@ Open work on `main` following PR #1 and the field tests.
    records the remaining tracing and runtime questions. Rize's admitted offline
    engineering scope (17–29) is complete with the documented dynamic/coverage
    limits; those limits do not establish full runtime understanding. Arc's
-   tool gaps 38–40 are done and pass the fresh retest, while its broader
-   feature/design investigation remains incomplete. Item 41 is also done;
-   the [feature follow-up](field-tests/arc-feature-followup-2026-11-02.md#remaining-questions)
-   records the remaining runtime, native and semantic boundaries.
+   tool gaps 38–50 are done within their documented profiles, while its broader
+   feature/design investigation remains incomplete. The latest
+   [DMG retest](field-tests/arc-retest-2026-11-06.md#remaining-arc-questions)
+   records the remaining evaluator/delegate receivers, overlay coordinates
+   and rendering, extension loading and Boost state/persistence questions.
 
 ## DEX support
 
@@ -900,7 +920,7 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     21 returned-field slots (16 in SelectorPicker), with DOM values unknown.
     See [public verification](field-tests/arc-continuation-2026-11-03/returns/after/findings.md).
 
-45. **Returned own fields do not propagate through an exact local call result.**
+45. **Returned own fields do not propagate through an exact local call result.** Done (2026-11-06).
     Confirmed offline capability gap (2026-11-03), beyond item 44's return-owned
     field projection. Owned fixture: `function known(){return {value:"owned-value"};}`
     followed by `const result=known(); const output=result.value; consume(output);`.
@@ -910,28 +930,37 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     source (`ev_ec6c69ba88f8808cf2f8ebaaba61fce4bc4760c403ce24ed3c6ac3febeff424b`);
     the return-field forward trace stops at the result binding
     (`ev_83fbc363cbd1b5691b4097f7decefe5d01bddcb057bf8451b563dd36d5565580`).
-    This blocks automatic field provenance across otherwise resolved local
-    wrappers. Extend field-sensitive caller projection for proved local return
-    ownership, preserving dynamic callees, aliases, mutations and unsupported
-    transformations as unknown. Reproduction, complete producer and traces are
-    retained under `field-tests/arc-deepening-2026-11-03/script-activation/owned/`.
+    The original reproduction remains under
+    `field-tests/arc-deepening-2026-11-03/script-activation/owned/`. The new
+    optional `callResultFieldFlows` producer proves direct synchronous own-field
+    dependencies while lexical lifetime and mutation ownership are available.
+    It rejects unsupported aliases, reassignments, accessor/prototype returns,
+    overlapping mutations and escapes; no general function interpreter or
+    invented caller constant is introduced. The fresh default backward trace
+    now has **5 nodes / 4 edges** and reaches the returned literal
+    (`ev_78388b79d4c183b6619955b78c04def0ebc923504344428807a27113d43f60ee`).
+    Public CLI/MCP parity and positive/negative cases pass. See the
+    [DMG retest](field-tests/arc-retest-2026-11-06.md).
 
-46. **Event registrations lack their locally resolvable handler continuation.**
+46. **Event registrations lack their locally resolvable handler continuation.** Done (2026-11-06).
     Confirmed offline capability gap (2026-11-03). An owned `node:events`
     EventEmitter, named local `receive` function, `.on("owned-event", receive)`
     and matching `.emit(...)` produce event/registration/dispatch candidates,
     but no listener-to-handler relation. Candidate-enabled listener-forward
     trace is 1 node / 0 edges
     (`ev_322778863d38b015f35d2b2d2c9da244bc410877e689a8c0c304c47811d3db3d`).
-    Resolve the registration's exact local callback binding while preserving
-    receiver/dispatch uncertainty; do not treat event execution as observed.
-    Arc's Chrome tab-update registration has the analogous continuation boundary.
-    DOM `addEventListener` and Chrome-specific event arguments require explicit
-    framework profiles and are not counted as separate regressions. Owned
-    sources, actual advertised schemas and complete public Evidence are under
-    `field-tests/arc-deepening-2026-11-03/script-activation/`.
+    New optional callback facts and `binds-handler` relations preserve exact
+    local function/unchanged lexical-alias identity separately from event
+    dispatch. Explicit Chrome Event and direct document/window DOM profiles
+    retain their correct callback positions. Dynamic/reassigned/imported and
+    spread-position handlers remain unknown; historical IR is unchanged.
+    The owned listener trace is now **2 nodes / 1 edge**; fresh Arc analysis
+    recovers five callback associations (one loose-script resize handler and
+    four in decoded resource 15901). These are static associations, not observed
+    event execution or argument forwarding. See the
+    [DMG retest](field-tests/arc-retest-2026-11-06.md).
 
-47. **Swift throwing calls can lose their error guard in decompiler-derived flow.**
+47. **Swift throwing calls can lose their error guard in decompiler-derived flow.** Done for the proved ARM64 synchronous profile (2026-11-06).
     Confirmed Ghidra integration/interpretation gap (2026-11-03), reproduced on
     an owned 318-byte Swift Decodable source compiled with installed Swift 6.3.3
     and never executed. The witness's machine assembly has
@@ -945,9 +974,58 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     `ev_5214eaaf9d918d2b0233b5dbe3016eda15db021c940ac5178300f6f32d47296b`
     are retained respectively under `field-tests/arc-deepening-2026-11-03/swift-error-abi/`
     and `field-tests/arc-deepening-2026-11-03/native/payload-decoder.evidence.json`.
-    The reported convention is already `__swiftcall`; do not assume a mere
-    convention-name change fixes it. Investigate throwing call-site/error-register
-    modeling, preserve machine-CFG corroboration, and expose relevant semantic
-    uncertainty in automatic value-flow consumers. `truncated:false` describes
-    retained p-code limits, not semantic correctness. The exact upstream cause
-    and a producing-layer repair remain open; the original machine CFG is intact.
+    The reported convention was already `__swiftcall`. The confirmed cause is
+    its preserved x21 effect across synchronous throwing calls. A private-Program
+    convention clone changes only that effect for an original symbol whose own
+    declaration's expanded function type proves synchronous throws. Nested
+    callback/return/generic-constraint function types cannot qualify it. The
+    callee effect remains valid across intervening cleanup calls; an immediate
+    guard is not required. Parameters, return storage and user/caller overrides
+    are preserved.
+    Structured model adjustments and unproved control-flow uncertainties survive
+    CLI/MCP and native-value tracing. Owned real-Ghidra positive, override and
+    nonthrowing/callback/generic-context/async controls pass, with exact public
+    CLI/MCP Evidence and a separate cleanup-before-check reproduction.
+    Fresh Arc payload decoding retains both post-call guards at
+    `0x1004cab40` and `0x1004cab58`
+    (`ev_39a755888baca922cc1753faeac569382a8c07bdd49422ab83eb4e5168df11c2`).
+    The command helper also retains `0x10053c7b0`, localized-error handling
+    and its response path after JSONDecoder and cleanup calls
+    (`ev_75d2743fbca847e8d5aecdb6bdeffe82d3704189e88213d57d400f013133031f`).
+    Unproved local calls stay uncertain; other ABI/host profiles are unverified.
+    `truncated:false` still describes retention, not semantic correctness. See
+    [verification and DMG retest](field-tests/arc-retest-2026-11-06.md).
+
+48. **DMG inventory succeeds while extraction rejects the same format.** Done (2026-11-06).
+    The supplied Arc DMG reproduced `unsupported_target` / "Artifact format has
+    no extraction reader: dmg" after successful read-only inventory. Extraction
+    now reuses `NativeDmgArtifactReader`, verifies observed entry hashes and
+    preserves mount/detach provenance and owned cleanup. The real source-built
+    macOS bundle lane passes CLI/MCP extraction, identical file commitments,
+    executable-byte checks, Applications-symlink exclusion and final detach.
+    Arc DMG extraction verifies **1,113 regular files / 916,318,369 bytes**;
+    its artifact session closes with verified empty descendants. Unsupported PKG
+    refusal and cancellation remain covered. See the
+    [DMG retest](field-tests/arc-retest-2026-11-06.md).
+
+49. **Repeated return-field slot lookup is quadratic for wide returned objects.** Done (2026-11-06).
+    Field projection repeatedly searched the same immutable container's entire
+    slot array. Shared weakly owned indexes now perform each container scan
+    once, preserving first-slot, absence, array-length and unknown semantics.
+    The existing two 160,000-entry receiver-return cases pass under their
+    original timeout. Their complete retained IR exceeds the inline MCP frame
+    budget; the public test verifies that typed transport boundary, exports and
+    authenticates the original parent, and compares full CLI/MCP Evidence.
+    This supported transport stop is not counted as an additional product bug.
+
+50. **Package verifier treats lifecycle diagnostics as an archive filename.** Done (2026-11-06).
+    The final isolated package refresh reproduced `.git can't be found` from
+    the prepare hook before npm's archive filename. The verifier treated all
+    stdout as that filename and failed at `tar`, despite a successful pack.
+    It now requests structured npm pack metadata with lifecycle output piped
+    separately, validates exactly one archive basename and checks its existence.
+    Lifecycle scripts still run; the existing real-pack isolation case now
+    proves a noisy prepare hook executes while package validation reaches its
+    intended failure and preserves the caller-owned archive. The complete
+    isolated package lane is rerun afterward; this is a verification-tooling
+    defect, separate from target-analysis correctness.

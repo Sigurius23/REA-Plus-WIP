@@ -27,6 +27,7 @@ it("keeps npm pack output in the owned workspace when package validation fails",
   const archiveName = "rea-agents-6.0.0.tgz";
   const archivePath = join(packageRoot, archiveName);
   const sentinel = Buffer.from("caller-owned archive\n");
+  const prepareReceipt = join(testRoot, "prepare-receipt.txt");
   await Promise.all([mkdir(packageRoot), mkdir(workspace), mkdir(npmCache)]);
   await Promise.all([
     writeFile(
@@ -37,9 +38,14 @@ it("keeps npm pack output in the owned workspace when package validation fails",
         mcpName: "invalid-owner",
         bin: { rea: "scripts/rea.mjs", "rea-agents": "scripts/rea.mjs" },
         dependencies: { "@lydell/node-pty": "1.1.0" },
+        scripts: { prepare: "node prepare.cjs" },
       }),
     ),
     writeFile(archivePath, sentinel),
+    writeFile(
+      join(packageRoot, "prepare.cjs"),
+      `process.stdout.write("owned prepare diagnostic\\n"); require("node:fs").writeFileSync(process.env.REA_PACK_TEST_RECEIPT, "prepared");`,
+    ),
   ]);
   const packageContentsBefore = (await readdir(packageRoot)).sort();
   const packerUrl = pathToFileURL(
@@ -72,6 +78,7 @@ process.stdout.write(JSON.stringify({ failure }));
         TEMP: npmCache,
         TMP: npmCache,
         TMPDIR: npmCache,
+        REA_PACK_TEST_RECEIPT: prepareReceipt,
       },
       maxBuffer: 1_024 * 1_024,
     },
@@ -80,5 +87,6 @@ process.stdout.write(JSON.stringify({ failure }));
   expect(JSON.parse(stdout)).toEqual({ failure: expectedFailure });
   expect((await readdir(packageRoot)).sort()).toEqual(packageContentsBefore);
   expect(await readFile(archivePath)).toEqual(sentinel);
+  expect(await readFile(prepareReceipt, "utf8")).toBe("prepared");
   await expect(access(workspace)).rejects.toMatchObject({ code: "ENOENT" });
 });

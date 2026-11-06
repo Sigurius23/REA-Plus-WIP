@@ -1,0 +1,65 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-06/native",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "60",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-06/native/caller-established-seeds.tsv"
+  },
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 900000,
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-06/native/continuation.json"
+  ],
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "binary_overview",
+      "arguments": {},
+      "label": "overview",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1004caa98"
+      },
+      "label": "BoostIDEData-decoder",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x10053c56c"
+      },
+      "label": "BoostIDERequest-decoder",
+      "expect_success": true
+    },
+    {
+      "name": "search_procedures",
+      "arguments": {
+        "pattern": "boostIDE:didRequestExecuteCommand",
+        "mode": "literal"
+      },
+      "label": "command-search",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-retest-2026-11-06/native/initial-bundle.json"
+      },
+      "label": "initial-export",
+      "expect_success": true
+    }
+  ]
+}

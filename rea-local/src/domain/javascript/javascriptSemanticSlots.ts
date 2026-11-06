@@ -41,6 +41,29 @@ export function semanticContainer(
   return null;
 }
 
+/** Indexes follow the lifetime of the immutable container they describe. */
+const ownSlotIndexes = new WeakMap<
+  JavaScriptSemanticValue,
+  ReadonlyMap<string, JavaScriptSemanticProperty>
+>();
+
+/** Semantic values are immutable; index each observed container once. */
+const ownSlot = (
+  value: JavaScriptSemanticValue,
+  container: JavaScriptSemanticContainer,
+  name: string,
+): JavaScriptSemanticProperty | undefined => {
+  let index = ownSlotIndexes.get(value);
+  if (index === undefined) {
+    const slots = new Map<string, JavaScriptSemanticProperty>();
+    for (const slot of container.slots)
+      if (!slots.has(slot.name)) slots.set(slot.name, slot);
+    index = slots;
+    ownSlotIndexes.set(value, index);
+  }
+  return index.get(name);
+};
+
 /** Resolve a full static own-property path without conflating missing siblings. */
 export const semanticSlotAtPath = (
   value: JavaScriptSemanticValue,
@@ -82,7 +105,7 @@ export const semanticSlotAtPath = (
       };
       continue;
     }
-    const observed = container.slots.find((slot) => slot.name === name);
+    const observed = ownSlot(current.value, container, name);
     current = observed ?? {
       name,
       presence:

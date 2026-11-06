@@ -131,6 +131,12 @@ export const traceNativeValues = async (
         reason: "Provider p-code was truncated",
       });
     }
+    for (const uncertainty of flow.control_flow_uncertainties ?? [])
+      unknowns.push({
+        procedure: address,
+        address: uncertainty.address,
+        reason: uncertainty.reason,
+      });
     const ids = new Set<string>();
     const qualified = (id: string) => `${address}/${id}`;
     for (const operation of flow.operations) {

@@ -316,6 +316,53 @@ const callBindingAnalysis = (
   },
 });
 
+it("preserves provider control-flow uncertainty independently of output truncation", async () => {
+  const base = functionDossierSchema.parse(ghidraFunctionDossier());
+  const flow = base.native_value_flow;
+  if (flow === null || !flow.available)
+    throw new Error("Missing fixture p-code");
+  const result = await traceNativeValues(
+    {
+      execute: async () =>
+        ok(
+          createAnalysisExecution(
+            jsonValueSchema.parse({
+              ...base,
+              native_value_flow: {
+                ...flow,
+                operations: [],
+                def_use: [],
+                effects: [],
+                parameter_uses: [],
+                truncated: false,
+                control_flow_uncertainties: [
+                  {
+                    address: "0x1004",
+                    reason: "Throwing call effects remain unproved.",
+                  },
+                ],
+              },
+            }),
+            provider,
+            { subject },
+          ),
+        ),
+    },
+    { procedure: base.procedure.address },
+  );
+  if (!result.ok) throw result.error;
+  expect(nativeValueTraceSchema.parse(result.value)).toMatchObject({
+    truncated: false,
+    unknowns: [
+      {
+        procedure: base.procedure.address,
+        address: "0x1004",
+        reason: "Throwing call effects remain unproved.",
+      },
+    ],
+  });
+});
+
 describe("native value call-binding fan-out", () => {
   it("preserves binding order and edge-budget behavior for repeated callees", async () => {
     const callCount = 128;

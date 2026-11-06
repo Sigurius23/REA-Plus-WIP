@@ -1,0 +1,80 @@
+
+> rea-agents@6.4.0 verify:package
+> npm run build:cached && node scripts/verify-package.mjs
+
+
+> rea-agents@6.4.0 build:cached
+> node scripts/check-dependency-install.mjs && node scripts/run-exclusive.mjs artifacts turbo run artifacts:skills
+
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 422ea3968d7ecbd1
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs 533678b9c88d6a17
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache hit, replaying logs 7f579754345f7c37
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    3 cached, 3 total
+  Time:    433ms >>> FULL TURBO
+
+[verify:package] repository skill: start
+[verify:package] repository skill: complete (2513 ms)
+[verify:package] package archive: start
+[verify:package] package archive: complete (3533 ms)
+[verify:package] package environment: start
+[verify:package] package environment: complete (6 ms)
+[verify:package] package install: start
+[verify:package] package install: complete (14587 ms)
+[verify:package] package update: start
+[verify:package] package update: complete (9141 ms)
+[verify:package] MCP startup: start
+[verify:package] MCP startup: complete (1522 ms)
+[verify:package] MCP module loading: start
+[verify:package] MCP module loading: complete (5523 ms)
+[verify:package] package discovery: start
+[verify:package] package discovery: complete (2908 ms)
+[verify:package] artifact and Electron CLI: start
+[verify:package] workspace cleanup: start
+[verify:package] workspace cleanup: complete (1803 ms)
+node:internal/errors:986
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-package-cdyan5/prefix/bin/rea analyze /var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-package-cdyan5/electron-app --json
+{"rea_progress":{"phase":"analyze_javascript_application","completed":0,"total":1,"message":"Inventorying and parsing application artifacts","sequence":1}}
+{"rea_progress":{"phase":"read_javascript_artifacts","completed":0,"total":1,"message":"Reading inventoried JavaScript application sources","sequence":2}}
+{"rea_progress":{"phase":"parse_javascript_sources","completed":0,"total":1,"message":"Parsing and projecting 3 application source files","sequence":3}}
+{"rea_progress":{"phase":"parse_javascript_source","completed":0,"total":1,"message":"Parsing and projecting preload.js (1/3)","sequence":4}}
+
+    at genericNodeError (node:internal/errors:986:15)
+    at wrappedFn (node:internal/errors:540:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1172:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:335:5) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: '/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-package-cdyan5/prefix/bin/rea analyze /var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-package-cdyan5/electron-app --json',
+  stdout: '{"error":"JavaScript application analysis failed","code":"execution_failure","category":"execution_failure","message":"Analysis could not complete. Retry once; if it continues, run `rea doctor`.","retryable":false,"remediation":{"action":"Analysis could not complete. Retry once; if it continues, run `rea doctor`."},"details":{"provider_id":"javascript-static-analysis","operation":"analyze_javascript_application","diagnostics":{"source_path":"preload.js","phase":"startup","message":"macOS process ownership helper compilation failed via xcrun (compiler result: ETIMEDOUT): Command timed out after 60000 ms: /usr/bin/xcrun"},"captured_output":{"stdout":"","stderr":"","truncated":false,"stderr_bytes":0,"exit_code":null,"signal":null},"partial_observation":{"evidence_id":"ev_2230896e89353f0958ef8f87a4224409016ab6aeaa3e2cf09b71b472f6b67c36","subject":{"name":"electron-app","digest":{"sha256":"13ff0cebf7a831f19b95757d7cf935f437edd50d4a9f86bf53d5a22b8c22422f"},"format":"directory","architecture":null,"local_path":"/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-package-cdyan5/electron-app"},"provider":{"id":"rea-javascript-application","name":"REA+ JavaScript application analyzer","version":"1"},"analysis_profile":null,"predicate_type":"rea.javascript-application-analysis","operation":"analyze_javascript_application","parameters":{"format":"auto","integrity_policy":"fail"},"raw_result":null,"normalized_result":{"input_path":"/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-package-cdyan5/electron-app","format":"directory","root_artifact_sha256":"13ff0cebf7a831f19b95757d7cf935f437edd50d4a9f86bf53d5a22b8c22422f","inventory_manifest_id":"agm_3a2098bd2c8d28b7fec4d035b3e08d81be7bd291b00f7dedcb305360663eedf6","inventory_graph_sha256":"a09dc3ce8800a16e792e9420ab0cda7116eda5f50ba383dc547c25c99f6f13ff","integrity_contradictions":[],"graph":{"schema":"JavaScriptApplicationGraph","root_node_ids":["jag_node_2234bd0f5e4af515af85cc6986e30f67bc9503a36326d72f010d5258f3be18ac"],"nodes":[{"node_id":"jag_node_1d32b2c07b2dd63b485e61640a9b4ab1d2aab3a586f7eafeb1f4114be9585782","kind":"javascript-asset","identity":{"strategy":"content-digest","stability":"global-exact","sha256":"b8f8bd5bbbdb0bb8ea86d6084eab6b2576fe3f4ec3bc32d3b1c009cbb4f192c1"},"observations":[{"label":"main.js","source_map_reference":null,"properties":{"path":"main.js","bytes":208,"inventory_artifact_id":"art_74f73385409962363a1eec31c48dc4d92f7c8a7f18c6366c60c89101dcbf3d11","unpacked":false,"file_kind":"javascript","text_status":"included","parse_status":null,"parse_error_count":null,"module_ir_status":"not-retained","module_ir_coverage":null,"semantic_graph_status":null,"semantic_graph_node_budget":null,"json_parse_status":null,"json_top_level_keys":[],"omitted_json_top_level_keys":0,"vendor_markers":[]},"evidence":{"authority":"artifact-bytes","state":"observed","confidence":"exact","artifact":{"available":true,"artifact_id":"art_b8f8bd5bbbdb0bb8ea86d6084eab6b2576fe3f4ec3bc32d3b1c009cbb4f192c1","sha256":"b8f8bd5bbbdb0bb8ea86d6084eab6b2576fe3f4ec3bc32d3b1c009cbb4f192c1"},"location":{"available":true,"value":{"kind":"artifact-path","path":"main.js"}},"extractor":{"name":"rea-javascript-artifact-reconstruction","version":"1","operation":"inventory-relevant-file","executable_sha256":null},"coverage":{"status":"complete","truncated":false,"omitted_count":0,"limits":[]},"limitations":[],"evidence_ids":[]},"observation_id":"jag_observation_44106603a89db363f880c73902631e1c5cf1dea72aa03b8d2a0f3c66e7b139a5","identifier_strategy":{"strategy":"semantic-content-sha256","stability":"observation-exact"}}]},{"node_id":"jag_node_2234bd0f5e4af515af85cc6986e30f67bc9503a36326d72f010d5258f3be18ac","kind":"artifact","identity":{"strategy":"content-digest","stability":"global-exact","sha256":"13ff0cebf7a831f19b95757d7cf935f437edd50d4a9f86bf53d5a22b8c22422f"},"observations":[{"label":"artifact root","source_map_reference":null,"properties":{"format":"directory","bytes":0,"inventory_manifest_id":"agm_3a2098bd2c8d28b7fec4d035b3e08d81be7bd291b00f7dedcb305360663eedf6","inventory_graph_sha256":"a09dc3ce8800a16e792e9420ab0cda7116eda5f50ba383dc547c25c99f6f13ff","inventory_artifact_id":"art_55c4847a495733a087a67e4949230291b3f95e9b749715974aa7fca829becf10"},"evidence":{"authority":"artifact-bytes","state":"observed","confidence":"exact","artifact":{"available":true,"artifact_id":"art_13ff0cebf7a831f19b95757d7cf935f437edd50d4a9f86bf53d5a22b8c22422f","sha256":"13ff0cebf7a831f19b95757d7cf935f437edd50d4a9f86bf53d5a22b8c22422f"},"location":{"available":true,"value":{"kind":"artifact-path","path":"artifact-root"}},"extractor":{"name":"rea-javascript-artifact-reconstruction","version":"1","operation":"inventory-root","executable_sha256":null},"coverage":{"status":"complete","truncated":false,"omitted_count":0,"limits":[]},"limitations":["artifact-root is a path-independent alias; the application result retains the canonical local input path."],"evidence_ids":[]},"observation_id":"jag_observation_b15f9b34e530986575d120cfd4a35168524ecc4acca0c4d06519cf0700fbc6ff","identifier_strategy":{"strategy":"semantic-content-sha256","stability":"observation-exact"}}]},{"node_id":"jag_node_294cbf8333fdc4c73f2440e5f318e680fcfa873d737ca60e143c42fc8e7f29e4","kind":"unknown","identity":{"strategy":"artifact-local-key","stability":"artifact-version","artifact_sha256":"a1ce83b83309a029916ab87be81e36de3a28ea83b8948f03b8e92d4a415c7e06","namespace":"static-parse-scope","key":"analyze-javascript-source:package.json"},"observations":[{"label":"package.json parse scope","source_map_reference":null,"properties":{"path":"package.json","operation":"analyze-javascript-source","limitation":"Source analysis was interrupted: Provider javascript-static-analysis adapter failed during analyze_javascript_application","analysis_failure":{"code":"execution_failure","category":"execution_failure","message":"Analysis could not complete. Retry once; if it continues, run `rea doctor`.","retryable":false,"remediation":{"action":"Analysis could not complete. Retry once; if it continues, run `rea doctor`."},"details":{"provider_id":"javascript-static-analysis","operation":"analyze_javascript_application","diagnostics":{"source_path":"preload.js","phase":"startup","message":"macOS process ownership helper compilation failed via xcrun (compiler result: ETIMEDOUT): Command timed out after 60000 ms: /usr/bin/xcrun"},"captured_output":{"stdout":"","stderr":"","truncated":false,"stderr_bytes":0,"exit_code":null,"signal":null}}}},"evidence":{"authority":"ast-static-analysis","state":"unavailable","confidence":"unknown","artifact":{"available":true,"artifact_id":"art_a1ce83b83309a029916ab87be81e36de3a28ea83b8948f03b8e92d4a415c7e06","sha256":"a1ce83b83309a029916ab87be81e36de3a28ea83b8948f03b8e92d4a415c7e06"},"location":{"available":true,"value":{"kind":"artifact-path","path":"package.json"}},"extractor":{"name":"rea-javascript-artifact-reconstruction","version":"1","operation":"analyze-javascript-source","executable_sha256":null},"coverage":{"status":"partial","truncated":false,"omitted_count":null,"limits":[]},"limitations":["Source analysis was interrupted: Provider javascript-static-analysis adapter failed during analyze_javascript_application"],"evidence_ids":[]},"observation_id":"jag_observation_e2d05975b1476c9ef0dd0021eb7b7c7269d6189e9f2ee37bc3cb249151b1c9e3","identifier_strategy":{"strategy":"semantic-content-sha256","stability":"observation-exact"}}]},{"node_id":"jag_node_4a6531ec5655f9d6e7836e8f3d5bd929738f91be35f038e9f2a8ec6c73c41cf1","kind":"artifact","identity":{"strategy":"content-digest","stability":"global-exact","sha256":"a1ce83b83309a029916ab87be81e36de3a28ea83b8948f03b8e92d4a415c7e06"},"observations":[{"label":"package.json","source_map_reference":null,"properties":{"path":"package.json","bytes":54,"inventory_artifact_id":"art_2d3b1c82958f3c6b21012ba1efdf5311665623ca54285fdb7f757fd2c0da0bf1","unpacked":false,"file_kind":"package-json","text_status":"included","parse_status":null,"parse_error_count":null,"json_parse_status":null,"json_top_level_keys":[],"omitted_json_top_level_keys":0,"vendor_markers":[]},"evidence":{"authority":"artifact-bytes","state":"observed","confidence":"exact","artifact":{"available":true,"artifact_id":"art_a1ce83b83309a029916ab87be81e36de3a28ea83b8948f03b8e92d4a415c7e06","sha256":"a1ce83b83309a029916ab87be81e36de3a28ea83b8948f03b8e92d4a415c7e06"},"location":{"available":true,"value":{"kind":"artifact-path","path":"package.json"}},"extractor":{"name":"rea-javascript-artifact-reconstruction","version":"1","operation":"inventory-relevant-file","executable_sha256":null},"coverage":{"status":"complete","truncated":false,"omitted_count":0,"limits":[]},"limitations":[],"evidence_ids":[]},"observation_id":"jag_observation_43483fa7bdbd3dec38e958da6b0eba60ff3a6c9ed248024de5e576ea550f5dff","identifier_strategy":{"strategy":"semantic-content-sha256","stability":"observation-exact"}}]},{"node_id":"jag_node_c5f2d64ceb3850ffbeab853d6c9a63dd0dd96b4eb56e3f9a1cec270fa15a0dc7","kind":"unknown","identity":{"strategy":"artifact-local-key","stability":"artifact-version","artifact_sha256":"b8f8bd5bbbdb0bb8ea86d6084eab6b2576fe3f4ec3bc32d3b1c009cbb4f192c1","namespace":"static-parse-scope","key":"analyze-javascript-source:main.js"},"observations":[{"label":"main.js parse scope","source_map_reference":null,"properties":{"path":"main.js","operation":"analyze-javascript-source","limitation":"Source analysis was interrupted: Provider javascript-static-analysis adapter failed during analyze_javascript_application","analysis_failure":{"code":"execution_failure","category":"execution_failure","message":"Analysis could not complete. Retry once; if it continues, run `rea doctor`.","retryable":false,"remediation":{"action":"Analysis could not complete. Retry once; if it continues, run `rea doctor`."},"details":{"provider_id":"javascript-static-analysis","operation":"analyze_javascript_application","diagnostics":{"source_path":"preload'... 39995 more characters,
+  stderr: '{"rea_progress":{"phase":"analyze_javascript_application","completed":0,"total":1,"message":"Inventorying and parsing application artifacts","sequence":1}}\n' +
+    '{"rea_progress":{"phase":"read_javascript_artifacts","completed":0,"total":1,"message":"Reading inventoried JavaScript application sources","sequence":2}}\n' +
+    '{"rea_progress":{"phase":"parse_javascript_sources","completed":0,"total":1,"message":"Parsing and projecting 3 application source files","sequence":3}}\n' +
+    '{"rea_progress":{"phase":"parse_javascript_source","completed":0,"total":1,"message":"Parsing and projecting preload.js (1/3)","sequence":4}}\n'
+}
+
+Node.js v24.22.1

@@ -12,6 +12,7 @@ export async function verifyPackedBridge({ workspace, tarball, packedFiles }) {
     packedHopperBridge,
     packedGhidraBridge,
     "package/bridge/ghidra/ReaGhidraSwiftEnumSwitches.java",
+    "package/bridge/ghidra/ReaGhidraSwiftErrorCalls.java",
     "package/bridge/unicorn/emulate.py",
   ]) {
     if (!packedFiles.includes(path)) throw new Error(`package omitted ${path}`);

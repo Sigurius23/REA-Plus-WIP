@@ -1,0 +1,26 @@
+
+> rea-agents@6.4.0 test:local
+> node scripts/run-development-tests.mjs local src/application/javascript/JavaScriptSemanticGraphCallResultFields.test.ts src/application/javascript/JavaScriptSemanticGraphReturnProjection.test.ts src/domain/javascript/javascriptSemanticAnalysis.return_fields.test.ts src/domain/javascript/javascriptSemanticAnalysis.member_mutations.test.ts src/domain/javascript/javascriptSemanticAnalysis.getter_receivers.test.ts src/domain/javascript/javascriptSemanticAnalysis.reference_lifetimes.test.ts src/domain/javascript/javascriptSemanticAnalysis.member_depth.test.ts
+
+Source-test feedback; compiled boundaries and real providers need explicit verification.
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.member_depth.test.ts (14 tests) 511ms
+   ✓ preserves a 12,000-member native import through both analyzers 484ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.reference_lifetimes.test.ts (109 tests) 183ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.return_fields.test.ts (8 tests) 6ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.getter_receivers.test.ts (25 tests) 28ms
+ ✓ |domain| src/domain/javascript/javascriptSemanticAnalysis.member_mutations.test.ts (185 tests) 1200ms
+   ✓ property mutation collection on minified bundles (2)
+     ✓ indexes many returned object methods instead of rescanning the object 434ms
+   ✓ results of methods on an escaped receiver (2)
+     ✓ keeps a shared result uncertain across a wide escaped receiver (#1495) 394ms
+ ✓ |services| src/application/javascript/JavaScriptSemanticGraphReturnProjection.test.ts (13 tests) 119ms
+ ✓ |services| src/application/javascript/JavaScriptSemanticGraphCallResultFields.test.ts (23 tests) 98ms
+
+ Test Files  7 passed (7)
+      Tests  377 passed (377)
+   Start at  14:10:23
+   Duration  1.98s (tests 66%, transform 20%, import 12%, worker 2%)
+

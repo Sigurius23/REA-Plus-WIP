@@ -1,5 +1,5 @@
-import { mkdir } from "node:fs/promises";
-import { join } from "node:path";
+import { access, mkdir } from "node:fs/promises";
+import { basename, join } from "node:path";
 import { CATALOG_IDENTITY } from "../dist/catalogIdentity.js";
 
 import { exec } from "./lib/verify-package-core.mjs";
@@ -9,18 +9,34 @@ import { verifyPackedBridge } from "./verify-packed-bridge.mjs";
 export async function verifyPackagePack({ root, workspace }) {
   const packDirectory = join(workspace, "pack");
   await mkdir(packDirectory);
-  const tarball = join(
-    packDirectory,
+  const packed = JSON.parse(
     (
       await exec(
         "npm",
-        ["pack", "--silent", "--pack-destination", packDirectory],
+        [
+          "pack",
+          "--json",
+          "--silent",
+          "--foreground-scripts=false",
+          "--pack-destination",
+          packDirectory,
+        ],
         {
           cwd: root,
         },
       )
-    ).stdout.trim(),
+    ).stdout,
   );
+  if (
+    !Array.isArray(packed) ||
+    packed.length !== 1 ||
+    typeof packed[0]?.filename !== "string" ||
+    basename(packed[0].filename) !== packed[0].filename ||
+    !packed[0].filename.endsWith(".tgz")
+  )
+    throw new Error("npm pack did not return one owned archive filename");
+  const tarball = join(packDirectory, packed[0].filename);
+  await access(tarball);
   const packedFiles = (await exec("tar", ["-tf", tarball])).stdout.split("\n");
   const packedManifest = JSON.parse(
     (await exec("tar", ["-xOf", tarball, "package/package.json"])).stdout,

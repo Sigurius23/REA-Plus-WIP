@@ -97,6 +97,27 @@ const availableNativeApiBoundarySchema = z
     return_type: inferredReturnTypeSchema,
     parameters: z.array(inferredParameterTypeSchema),
     jump_tables: z.array(inferredJumpTableSchema),
+    // Omission preserves historical/provider observations; an empty measured
+    // array is distinct from an adapter that never supplied this facet.
+    call_model_adjustments: z
+      .array(
+        z.strictObject({
+          call_address: z.string().min(1),
+          callee_address: z.string().min(1),
+          callee_address_space: z.string().min(1),
+          original_symbol: z.string().min(1),
+          demangled_signature: z.string().min(1),
+          demangler_output_sha256: z.string().regex(/^[a-f0-9]{64}$/u),
+          original_calling_convention: z.string().min(1),
+          effective_calling_convention: z.string().min(1),
+          register: z.string().min(1),
+          previous_effect: z.literal("preserved"),
+          effective_effect: z.literal("unknown-after-call"),
+          provenance: z.literal("swift-synchronous-throws-abi"),
+          proof: z.string().min(1),
+        }),
+      )
+      .exactOptional(),
     pseudocode: z
       .object({
         classification: z.literal("decompiler-generated-non-source"),

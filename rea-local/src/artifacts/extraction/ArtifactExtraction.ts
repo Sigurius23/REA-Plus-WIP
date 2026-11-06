@@ -18,12 +18,14 @@ import { SafeOutputTree } from "../SafeOutputTree.js";
 import { SafeOutputTreeCreationFailure } from "../SafeOutputTreeCreationFailure.js";
 import { ZipArtifactReader } from "../ZipArtifactReader.js";
 import { MachOSliceArtifactReader } from "../MachOSliceArtifactReader.js";
+import { NativeDmgArtifactReader } from "../NativeDmgArtifactReader.js";
 import {
   artifactExtractionResultSchema,
   type ArtifactExtractionResult,
   type ArtifactGraphManifest,
   type ArtifactNode,
   type ArtifactOccurrence,
+  type ArtifactCommand,
   type IntegrityContradiction,
 } from "../../domain/artifactGraph.js";
 import { AnalysisUnsupportedTargetError } from "../../domain/analysisErrorCore.js";
@@ -244,7 +246,13 @@ const materializeSelection = async ({
     extracted.sort((left, right) =>
       compareUnicodeCodePoints(left.relative_path, right.relative_path),
     );
-    completed = createExtractionResult(input, inventory, selected, extracted);
+    completed = createExtractionResult(
+      input,
+      inventory,
+      selected,
+      extracted,
+      reader.provenance(),
+    );
     await output.commit();
     return completed;
   } catch (cause: unknown) {
@@ -360,6 +368,7 @@ const createExtractionResult = (
   inventory: ExtractionInventory,
   selected: readonly SelectedOccurrence[],
   extracted: readonly ExtractedOccurrence[],
+  provenance: readonly ArtifactCommand[],
 ): ArtifactExtractionResult => {
   const extractionSemantic = {
     source_manifest_id: inventory.manifest.manifest_id,
@@ -379,7 +388,7 @@ const createExtractionResult = (
     artifacts: extracted,
     containment_verified: true,
     cleanup: { attempted: false, verified: true, residual_paths: [] },
-    provenance: [],
+    provenance,
     integrity_contradictions: inventory.integrityContradictions,
     limitations: [
       "All regular files in the active artifact were materialized; nested archive contents remain represented by their containing file.",
@@ -428,6 +437,7 @@ const requireExtractableFormat = async (
     !directory &&
     format !== "asar" &&
     format !== "mach-o" &&
+    format !== "dmg" &&
     !isZipFormat(format)
   )
     throw new AnalysisUnsupportedTargetError(
@@ -449,6 +459,8 @@ const createReader = async (
   if (await requireExtractableFormat(path, input))
     return new DirectoryArtifactReader(path);
   if (format === "asar") return new AsarArtifactReader(path);
+  if (format === "dmg")
+    return new NativeDmgArtifactReader(path, input.environment);
   if (isZipFormat(format)) return new ZipArtifactReader(path, format);
   return new MachOSliceArtifactReader(path, input.environment);
 };

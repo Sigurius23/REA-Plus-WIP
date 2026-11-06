@@ -1,8 +1,10 @@
 import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { expect } from "vitest";
+import { parseEvidenceBundle } from "../../src/domain/evidenceBundle.js";
+import { parseMcpToolError } from "./mcpToolError.js";
 
 import { toolContract } from "../../src/contracts/toolContracts.js";
 import { javascriptApplicationAnalysisResultSchema } from "../../src/domain/javascript/javascriptApplicationAnalysis.js";
@@ -72,17 +74,52 @@ export const verifyJavaScriptReturnShapes = async (
       name: "analyze_javascript_application",
       arguments: { input_path: root, format: "directory" },
     });
-    expect(response.isError).not.toBe(true);
-    const evidence = contract.outputSchema.parse(response.structuredContent);
+    let evidence: typeof cliEvidence;
+    if (response.isError) {
+      // Wide retained IR can exceed the inline MCP frame budget. Verify the
+      // named transport boundary and recover the complete original record.
+      expect(parseMcpToolError(response).error).toMatchObject({
+        code: "resource_constraint",
+        details: {
+          resource: "transport",
+          reported_limits: {
+            evidence_reference: {
+              kind: "retained-evidence",
+              evidence_id: cliEvidence.evidence_id,
+            },
+          },
+        },
+      });
+      const path = join(root, "retained-bundle.json");
+      const exported = await client.callTool({
+        name: "export_evidence_bundle",
+        arguments: { path },
+      });
+      expect(exported.isError).not.toBe(true);
+      toolContract("export_evidence_bundle").outputSchema.parse(
+        exported.structuredContent,
+      );
+      const bundle = parseEvidenceBundle(
+        JSON.parse(await readFile(path, "utf8")),
+      );
+      evidence = contract.outputSchema.parse(
+        bundle.records.find(
+          (record) => record.evidence_id === cliEvidence.evidence_id,
+        ),
+      );
+      expect(evidence).toEqual(cliEvidence);
+    } else evidence = contract.outputSchema.parse(response.structuredContent);
     expect(evidence.evidence_id).toBe(cliEvidence.evidence_id);
     check(exportedReturnFields(evidence.normalized_result));
-    const text = response.content.find((item) => item.type === "text");
-    if (text?.type !== "text") throw new Error("Missing MCP text result");
-    check(
-      exportedReturnFields(
-        contract.outputSchema.parse(JSON.parse(text.text)).normalized_result,
-      ),
-    );
+    if (!response.isError) {
+      const text = response.content.find((item) => item.type === "text");
+      if (text?.type !== "text") throw new Error("Missing MCP text result");
+      check(
+        exportedReturnFields(
+          contract.outputSchema.parse(JSON.parse(text.text)).normalized_result,
+        ),
+      );
+    }
     await client.ping();
   } finally {
     await client.close();

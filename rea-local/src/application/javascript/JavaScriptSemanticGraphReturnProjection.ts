@@ -10,6 +10,7 @@ import type {
   JavaScriptSemanticObjectOperation,
 } from "../../domain/javascript/javascriptSemanticIr.js";
 import type { JavaScriptSemanticProperty } from "../../domain/javascript/javascriptSemanticValueTypes.js";
+import type { JavaScriptSemanticGraphNode } from "../../domain/javascript/javascriptSemanticGraphSchemas.js";
 import {
   retainSemanticGraphNode,
   addSemanticGraphRelation,
@@ -26,6 +27,7 @@ import type { SemanticFlowProjectionContext } from "./JavaScriptSemanticGraphFlo
 export function* projectSemanticReturnFields(
   context: SemanticFlowProjectionContext,
 ): Generator<void, void> {
+  const returnedFields = new Map<string, JavaScriptSemanticGraphNode>();
   const propertyReads = new Map(
     context.ir.objectOperations
       .filter((operation) => operation.kind === "read")
@@ -57,6 +59,11 @@ export function* projectSemanticReturnFields(
             source_reason: field.reason,
           },
         });
+        if (slot !== null)
+          returnedFields.set(
+            JSON.stringify([site.returnSiteId, field.path]),
+            slot,
+          );
         addSemanticGraphRelation(context.state, {
           source: slot,
           target: returned,
@@ -110,6 +117,43 @@ export function* projectSemanticReturnFields(
           reason: "ambiguous-target",
         });
     }
+  }
+  const operations = new Map(
+    context.ir.objectOperations.map((operation) => [
+      operation.objectOperationId,
+      operation,
+    ]),
+  );
+  for (const flow of context.ir.callResultFieldFlows ?? []) {
+    yield;
+    const operation = operations.get(flow.objectOperationId);
+    if (operation === undefined) continue;
+    addSemanticGraphRelation(context.state, {
+      source: returnedFields.get(
+        JSON.stringify([flow.returnSiteId, flow.propertyPath]),
+      ),
+      target:
+        operation.kind === "destructure" && operation.targetBindingId !== null
+          ? context.bindingNodes.get(operation.targetBindingId)
+          : semanticObjectOccurrence(context, operation),
+      relation:
+        operation.kind === "destructure" ? "destructures" : "reads-property",
+      resolution: flow.resolution === "complete" ? "resolved" : "candidate",
+      properties: {
+        call_site_id: flow.callSiteId,
+        return_site_id: flow.returnSiteId,
+        return_property_path: [...flow.propertyPath],
+      },
+      evidence: inferredSemanticEvidenceAt(context.file, operation.location),
+    });
+    if (operation.kind === "read" && operation.targetBindingId !== null)
+      addSemanticGraphRelation(context.state, {
+        source: semanticObjectOccurrence(context, operation),
+        target: context.bindingNodes.get(operation.targetBindingId),
+        relation: "defines",
+        resolution: "resolved",
+        evidence: inferredSemanticEvidenceAt(context.file, operation.location),
+      });
   }
 }
 
