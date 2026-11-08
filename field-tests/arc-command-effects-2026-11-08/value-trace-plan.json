@@ -1,0 +1,49 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/value-trace",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/core-seeds.tsv"
+  },
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 180000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "trace_native_values",
+      "arguments": {
+        "procedure": "0x10088d940",
+        "max_depth": 0,
+        "max_functions": 1,
+        "max_call_sites": 256,
+        "max_nodes": 5000,
+        "max_edges": 10000,
+        "offset": 0,
+        "limit": 200
+      },
+      "label": "core-value-trace"
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/value-trace/evidence-bundle.json"
+      },
+      "label": "export"
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "close"
+    }
+  ]
+}

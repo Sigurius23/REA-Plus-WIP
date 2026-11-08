@@ -4,6 +4,17 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc store handoff and editor lifecycle (2026-11-08):** Offline tracing now
+  connects the editor's `_viewStore` initialization to its installed send
+  closure and captured store-send routine. The concrete stored witness target
+  remains unresolved; high-pcode truncation and a bounded value trace are
+  explicit. Editor CSS/JavaScript URL selection, a conditional cache-release
+  path and the separate Combine notification pipeline are recovered. **77
+  public calls / 73 successes**, 48 authenticated Evidence records, 9 bundles,
+  19 finding checks and eight cleanly closed sessions verify this pass. No new
+  product defect is established; concrete reducer effects, persistence and
+  broader Arc behavior remain open. See the
+  [store/lifecycle report](field-tests/arc-command-effects-2026-11-08.md).
 - **Ghidra disk-capacity diagnostics, item 53 (2026-11-08):** Fixed. Confirmed
   local `ENOSPC` or supported startup Java disk-exhaustion exceptions now return
   `resource_constraint`, resource `disk`, and `retryable: false`, preserving the
@@ -236,9 +247,11 @@ Open work on `main` following PR #1 and the field tests.
    limits; those limits do not establish full runtime understanding. Arc's
    tool gaps 38–53 are done within their documented profiles. Its broader
    feature/design investigation remains incomplete. The latest
-   [delegate/evaluator follow-up](field-tests/arc-dispatch-2026-11-06.md#evidence-boundaries-and-remaining-work)
-   records the remaining command-dispatch effects, overlay coordinates and
-   rendering, extension loading and Boost state/persistence questions.
+   [store/lifecycle follow-up](field-tests/arc-command-effects-2026-11-08.md#verification-issues-and-next-questions)
+   narrows the command route to the captured store's unresolved witness call.
+   Concrete reducer installation/effects, internal CSS/JavaScript URL handlers,
+   overlay coordinates/rendering, bootstrap/injection, extension loading and
+   Boost state/persistence remain open research questions.
 
 ## DEX support
 

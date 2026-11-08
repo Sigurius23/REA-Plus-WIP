@@ -1,0 +1,31 @@
+{
+  "source_parent": "c748850e8ab2fe9b54e11d48bc08fd306d02b452",
+  "date": "2026-11-08",
+  "target_version": "Arc 1.172.1 / 90370",
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "authority": "offline shipped-artifact observations and explicitly separate analyst selector derivations",
+  "recorder": "../arc-dispatch-2026-11-06/method-driver.mjs",
+  "recorder_sha256": "5425c99b70ee5884af7b6362e2225ace85db129238d54cad0b04e6ef463a5d06",
+  "toolchain": {
+    "node": "24.22.1",
+    "npm": "10.9.2",
+    "ghidra": "12.1.4",
+    "jdk": "27"
+  },
+  "analysis_policy": {
+    "analysis_timeout_seconds": 1,
+    "analysis_complete": false,
+    "analysis_timed_out": true,
+    "function_seeds": "explicit per-session files; caller assertions"
+  },
+  "target_executed": false,
+  "runtime_ui_or_profile_access": false,
+  "implementation_changes": false,
+  "limitations": [
+    "Store-instance witness identity and concrete command effects remain unresolved",
+    "Core high-pcode retains truncation, known omitted edges and Swift call-effect uncertainties",
+    "Value trace explicitly uses depth zero and returns a first page; it is not an exhaustive multi-function dependency graph",
+    "Initial function-missing errors retained; new seed profiles recover selected methods without claiming global discovery",
+    "No new owned compiler fixture or implementation test suite was run in this research-only pass"
+  ]
+}

@@ -272,3 +272,10 @@ in the [conformance discovery report](arc-conformance-discovery-2026-11-08.md).
 Item 52 is also subsequently fixed in the
 [witness-template report](arc-witness-templates-2026-11-08.md). Item 53 is subsequently
 repaired in the [disk-diagnostics report](arc-disk-diagnostics-2026-11-08.md).
+
+**Subsequent store tracing (2026-11-08):** the
+[store/lifecycle report](arc-command-effects-2026-11-08.md) identifies the
+editor's dispatch field as `_viewStore`, recovers its installed send closure and
+follows it to a captured store's unresolved witness call. It also records the
+editor URL and conditional cache-release paths; concrete command effects remain
+open.

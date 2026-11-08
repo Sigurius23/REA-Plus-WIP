@@ -1,0 +1,230 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"evidence_id\":\"ev_5c09b1dfcb38201d2ec5a19157a40f2f386b66f77cb4dea6df5c97c69ab673c1\",\"subject\":{\"name\":\"Arc-arm64\",\"digest\":{\"sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"},\"format\":\"mach-o\",\"architecture\":\"arm64\",\"local_path\":\"/private/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-arm64\"},\"provider\":{\"id\":\"ghidra\",\"name\":\"Ghidra\",\"version\":\"12.1.4\"},\"analysis_profile\":{\"provider\":{\"id\":\"ghidra\",\"name\":\"Ghidra\",\"version\":\"12.1.4\"},\"parameters\":{\"target_kind\":\"executable\",\"target_format\":\"mach-o\",\"architecture\":\"arm64\",\"available_architectures\":[\"arm64\"],\"import_mode\":\"ephemeral-source-immutable\",\"annotation_policy\":\"atomic-function-entry-metadata-v1\",\"load_image_observations\":\"source-mappings-entry-context-v2\",\"function_body_evidence\":\"complete-inclusive-ranges-v1\",\"function_references\":\"complete-body-and-entry-reference-manager-v2\",\"string_inventory_evidence\":\"defined-data-coverage-v1\",\"location_resolution\":\"explicit-address-exact-entry-symbol-first-v3\",\"instruction_flow_evidence\":\"decoded-return-pcode-v1\",\"instruction_references\":\"exact-address-incoming-v1\",\"function_boundary_observations\":\"ghidra-terminal-call-limitations-v1\",\"no_return_repair\":\"returning-imports-decoded-return-v2\",\"process_launch\":\"inspected-jvm-launch-support-v1\",\"jump_table_evidence\":\"typed-case-default-blocks-v1\",\"swift_enum_switch_recovery\":\"abi-signed-word-cfg-v1\",\"swift_error_register_model\":\"proved-native-synchronous-callee-x21-v3\",\"decompiler_jump_loads\":true,\"loader\":\"auto-from-header\",\"language_id\":\"auto-from-header\",\"compiler_spec_id\":\"auto-default\",\"analyzer_preset\":\"ghidra-default\",\"analysis_policy\":\"bounded-autoanalysis-v1\",\"analysis_timeout_seconds\":1,\"analysis_seeds\":{\"format\":\"rea-ghidra-seeds-v1\",\"path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/store-seeds.tsv\",\"configured_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/store-seeds.tsv\",\"sha256\":\"b681777fbf202f2d8c5ba389ba8bd037b345ed0a2621cc94262ecd10ed5ad752\",\"entries\":{\"function\":4,\"code\":0,\"label\":0}}},\"digest\":\"aef3d40b6d06333b7a66abd130280f9101652c69406d70e9a6593c57e666d79f\"},\"predicate_type\":\"rea.analysis\",\"operation\":\"read_function_instructions\",\"parameters\":{\"procedure\":\"0x1012d3200\"},\"raw_result\":{\"value\":{\"procedure\":{\"address\":\"0x1012d3200\",\"name\":\"selected_store_helper_1\",\"classification\":{\"external\":false,\"thunk\":false,\"thunk_target\":null,\"provenance\":\"ghidra-function-manager\"},\"body\":{\"available\":true,\"provenance\":\"ghidra-function-body-address-set\",\"ranges\":[{\"start\":\"0x1012d3200\",\"end\":\"0x1012d3283\"}],\"total_bytes\":132,\"span_bytes\":132,\"non_contiguous\":false,\"contains_entry\":true}},\"instructions\":[\"0x1012d3200: stp d9, d8, [sp, #-0x50]!\",\"0x1012d3204: stp x24, x23, [sp, #0x10]\",\"0x1012d3208: stp x22, x21, [sp, #0x20]\",\"0x1012d320c: stp x20, x19, [sp, #0x30]\",\"0x1012d3210: stp x29, x30, [sp, #0x40]\",\"0x1012d3214: add x29, sp, #0x40\",\"0x1012d3218: mov x19, x0\",\"0x1012d321c: mov x20, x8\",\"0x1012d3220: mov x0, #0x0\",\"0x1012d3224: bl 0x1012b05e8\",\"0x1012d3228: ldrsw x8, [x0, #0x4c]\",\"0x1012d322c: add x8, x19, x8\",\"0x1012d3230: ldp x22, x21, [x8]\",\"0x1012d3234: ldrsw x8, [x0, #0x18]\",\"0x1012d3238: ldrb w23, [x19, x8]\",\"0x1012d323c: ldrsw x8, [x0, #0x28]\",\"0x1012d3240: add x8, x19, x8\",\"0x1012d3244: ldp d8, d9, [x8]\",\"0x1012d3248: mov x0, #0x0\",\"0x1012d324c: bl 0x1012bb9dc\",\"0x1012d3250: ldrsw x8, [x0, #0x18]\",\"0x1012d3254: ldrb w8, [x19, x8]\",\"0x1012d3258: stp x22, x21, [x20]\",\"0x1012d325c: strb w23, [x20, #0x10]\",\"0x1012d3260: stp d8, d9, [x20, #0x18]\",\"0x1012d3264: strb w8, [x20, #0x28]\",\"0x1012d3268: mov x0, x21\",\"0x1012d326c: ldp x29, x30, [sp, #0x40]\",\"0x1012d3270: ldp x20, x19, [sp, #0x30]\",\"0x1012d3274: ldp x22, x21, [sp, #0x20]\",\"0x1012d3278: ldp x24, x23, [sp, #0x10]\",\"0x1012d327c: ldp d9, d8, [sp], #0x50\",\"0x1012d3280: b 0x103640090\"],\"limitations\":[\"Instruction text and ordering are Ghidra-specific representations.\",\"The fast path does not invoke the decompiler or scan whole-program names and strings.\"]},\"limitations\":[]},\"normalized_result\":{\"procedure\":{\"address\":\"0x1012d3200\",\"name\":\"selected_store_helper_1\",\"classification\":{\"external\":false,\"thunk\":false,\"thunk_target\":null,\"provenance\":\"ghidra-function-manager\"},\"body\":{\"available\":true,\"provenance\":\"ghidra-function-body-address-set\",\"ranges\":[{\"start\":\"0x1012d3200\",\"end\":\"0x1012d3283\"}],\"total_bytes\":132,\"span_bytes\":132,\"non_contiguous\":false,\"contains_entry\":true}},\"instructions\":[\"0x1012d3200: stp d9, d8, [sp, #-0x50]!\",\"0x1012d3204: stp x24, x23, [sp, #0x10]\",\"0x1012d3208: stp x22, x21, [sp, #0x20]\",\"0x1012d320c: stp x20, x19, [sp, #0x30]\",\"0x1012d3210: stp x29, x30, [sp, #0x40]\",\"0x1012d3214: add x29, sp, #0x40\",\"0x1012d3218: mov x19, x0\",\"0x1012d321c: mov x20, x8\",\"0x1012d3220: mov x0, #0x0\",\"0x1012d3224: bl 0x1012b05e8\",\"0x1012d3228: ldrsw x8, [x0, #0x4c]\",\"0x1012d322c: add x8, x19, x8\",\"0x1012d3230: ldp x22, x21, [x8]\",\"0x1012d3234: ldrsw x8, [x0, #0x18]\",\"0x1012d3238: ldrb w23, [x19, x8]\",\"0x1012d323c: ldrsw x8, [x0, #0x28]\",\"0x1012d3240: add x8, x19, x8\",\"0x1012d3244: ldp d8, d9, [x8]\",\"0x1012d3248: mov x0, #0x0\",\"0x1012d324c: bl 0x1012bb9dc\",\"0x1012d3250: ldrsw x8, [x0, #0x18]\",\"0x1012d3254: ldrb w8, [x19, x8]\",\"0x1012d3258: stp x22, x21, [x20]\",\"0x1012d325c: strb w23, [x20, #0x10]\",\"0x1012d3260: stp d8, d9, [x20, #0x18]\",\"0x1012d3264: strb w8, [x20, #0x28]\",\"0x1012d3268: mov x0, x21\",\"0x1012d326c: ldp x29, x30, [sp, #0x40]\",\"0x1012d3270: ldp x20, x19, [sp, #0x30]\",\"0x1012d3274: ldp x22, x21, [sp, #0x20]\",\"0x1012d3278: ldp x24, x23, [sp, #0x10]\",\"0x1012d327c: ldp d9, d8, [sp], #0x50\",\"0x1012d3280: b 0x103640090\"],\"limitations\":[\"Instruction text and ordering are Ghidra-specific representations.\",\"The fast path does not invoke the decompiler or scan whole-program names and strings.\"]},\"confidence\":\"observed\",\"authority\":\"shipped-artifact\",\"environment\":null,\"limitations\":[\"The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.\",\"The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.\",\"Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.\",\"Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.\",\"This fast path reads only the requested function and does not invoke the decompiler or whole-program string/name inventories.\",\"Instruction text is Ghidra-specific and does not claim textual equivalence with Hopper output.\",\"Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.\",\"The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.\",\"macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.\",\"Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/store-seeds.tsv (sha256 b681777fbf202f2d8c5ba389ba8bd037b345ed0a2621cc94262ecd10ed5ad752: 4 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.\",\"Seed outcome: 4 functions created, 0 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory.\"],\"locations\":[],\"evidence_links\":[]}"
+    }
+  ],
+  "structuredContent": {
+    "evidence_id": "ev_5c09b1dfcb38201d2ec5a19157a40f2f386b66f77cb4dea6df5c97c69ab673c1",
+    "subject": {
+      "name": "Arc-arm64",
+      "digest": {
+        "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+      },
+      "format": "mach-o",
+      "architecture": "arm64",
+      "local_path": "/private/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-arm64"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "analysis_profile": {
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "parameters": {
+        "target_kind": "executable",
+        "target_format": "mach-o",
+        "architecture": "arm64",
+        "available_architectures": [
+          "arm64"
+        ],
+        "import_mode": "ephemeral-source-immutable",
+        "annotation_policy": "atomic-function-entry-metadata-v1",
+        "load_image_observations": "source-mappings-entry-context-v2",
+        "function_body_evidence": "complete-inclusive-ranges-v1",
+        "function_references": "complete-body-and-entry-reference-manager-v2",
+        "string_inventory_evidence": "defined-data-coverage-v1",
+        "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+        "instruction_flow_evidence": "decoded-return-pcode-v1",
+        "instruction_references": "exact-address-incoming-v1",
+        "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+        "no_return_repair": "returning-imports-decoded-return-v2",
+        "process_launch": "inspected-jvm-launch-support-v1",
+        "jump_table_evidence": "typed-case-default-blocks-v1",
+        "swift_enum_switch_recovery": "abi-signed-word-cfg-v1",
+        "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+        "decompiler_jump_loads": true,
+        "loader": "auto-from-header",
+        "language_id": "auto-from-header",
+        "compiler_spec_id": "auto-default",
+        "analyzer_preset": "ghidra-default",
+        "analysis_policy": "bounded-autoanalysis-v1",
+        "analysis_timeout_seconds": 1,
+        "analysis_seeds": {
+          "format": "rea-ghidra-seeds-v1",
+          "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/store-seeds.tsv",
+          "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/store-seeds.tsv",
+          "sha256": "b681777fbf202f2d8c5ba389ba8bd037b345ed0a2621cc94262ecd10ed5ad752",
+          "entries": {
+            "function": 4,
+            "code": 0,
+            "label": 0
+          }
+        }
+      },
+      "digest": "aef3d40b6d06333b7a66abd130280f9101652c69406d70e9a6593c57e666d79f"
+    },
+    "predicate_type": "rea.analysis",
+    "operation": "read_function_instructions",
+    "parameters": {
+      "procedure": "0x1012d3200"
+    },
+    "raw_result": {
+      "value": {
+        "procedure": {
+          "address": "0x1012d3200",
+          "name": "selected_store_helper_1",
+          "classification": {
+            "external": false,
+            "thunk": false,
+            "thunk_target": null,
+            "provenance": "ghidra-function-manager"
+          },
+          "body": {
+            "available": true,
+            "provenance": "ghidra-function-body-address-set",
+            "ranges": [
+              {
+                "start": "0x1012d3200",
+                "end": "0x1012d3283"
+              }
+            ],
+            "total_bytes": 132,
+            "span_bytes": 132,
+            "non_contiguous": false,
+            "contains_entry": true
+          }
+        },
+        "instructions": [
+          "0x1012d3200: stp d9, d8, [sp, #-0x50]!",
+          "0x1012d3204: stp x24, x23, [sp, #0x10]",
+          "0x1012d3208: stp x22, x21, [sp, #0x20]",
+          "0x1012d320c: stp x20, x19, [sp, #0x30]",
+          "0x1012d3210: stp x29, x30, [sp, #0x40]",
+          "0x1012d3214: add x29, sp, #0x40",
+          "0x1012d3218: mov x19, x0",
+          "0x1012d321c: mov x20, x8",
+          "0x1012d3220: mov x0, #0x0",
+          "0x1012d3224: bl 0x1012b05e8",
+          "0x1012d3228: ldrsw x8, [x0, #0x4c]",
+          "0x1012d322c: add x8, x19, x8",
+          "0x1012d3230: ldp x22, x21, [x8]",
+          "0x1012d3234: ldrsw x8, [x0, #0x18]",
+          "0x1012d3238: ldrb w23, [x19, x8]",
+          "0x1012d323c: ldrsw x8, [x0, #0x28]",
+          "0x1012d3240: add x8, x19, x8",
+          "0x1012d3244: ldp d8, d9, [x8]",
+          "0x1012d3248: mov x0, #0x0",
+          "0x1012d324c: bl 0x1012bb9dc",
+          "0x1012d3250: ldrsw x8, [x0, #0x18]",
+          "0x1012d3254: ldrb w8, [x19, x8]",
+          "0x1012d3258: stp x22, x21, [x20]",
+          "0x1012d325c: strb w23, [x20, #0x10]",
+          "0x1012d3260: stp d8, d9, [x20, #0x18]",
+          "0x1012d3264: strb w8, [x20, #0x28]",
+          "0x1012d3268: mov x0, x21",
+          "0x1012d326c: ldp x29, x30, [sp, #0x40]",
+          "0x1012d3270: ldp x20, x19, [sp, #0x30]",
+          "0x1012d3274: ldp x22, x21, [sp, #0x20]",
+          "0x1012d3278: ldp x24, x23, [sp, #0x10]",
+          "0x1012d327c: ldp d9, d8, [sp], #0x50",
+          "0x1012d3280: b 0x103640090"
+        ],
+        "limitations": [
+          "Instruction text and ordering are Ghidra-specific representations.",
+          "The fast path does not invoke the decompiler or scan whole-program names and strings."
+        ]
+      },
+      "limitations": []
+    },
+    "normalized_result": {
+      "procedure": {
+        "address": "0x1012d3200",
+        "name": "selected_store_helper_1",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1012d3200",
+              "end": "0x1012d3283"
+            }
+          ],
+          "total_bytes": 132,
+          "span_bytes": 132,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instructions": [
+        "0x1012d3200: stp d9, d8, [sp, #-0x50]!",
+        "0x1012d3204: stp x24, x23, [sp, #0x10]",
+        "0x1012d3208: stp x22, x21, [sp, #0x20]",
+        "0x1012d320c: stp x20, x19, [sp, #0x30]",
+        "0x1012d3210: stp x29, x30, [sp, #0x40]",
+        "0x1012d3214: add x29, sp, #0x40",
+        "0x1012d3218: mov x19, x0",
+        "0x1012d321c: mov x20, x8",
+        "0x1012d3220: mov x0, #0x0",
+        "0x1012d3224: bl 0x1012b05e8",
+        "0x1012d3228: ldrsw x8, [x0, #0x4c]",
+        "0x1012d322c: add x8, x19, x8",
+        "0x1012d3230: ldp x22, x21, [x8]",
+        "0x1012d3234: ldrsw x8, [x0, #0x18]",
+        "0x1012d3238: ldrb w23, [x19, x8]",
+        "0x1012d323c: ldrsw x8, [x0, #0x28]",
+        "0x1012d3240: add x8, x19, x8",
+        "0x1012d3244: ldp d8, d9, [x8]",
+        "0x1012d3248: mov x0, #0x0",
+        "0x1012d324c: bl 0x1012bb9dc",
+        "0x1012d3250: ldrsw x8, [x0, #0x18]",
+        "0x1012d3254: ldrb w8, [x19, x8]",
+        "0x1012d3258: stp x22, x21, [x20]",
+        "0x1012d325c: strb w23, [x20, #0x10]",
+        "0x1012d3260: stp d8, d9, [x20, #0x18]",
+        "0x1012d3264: strb w8, [x20, #0x28]",
+        "0x1012d3268: mov x0, x21",
+        "0x1012d326c: ldp x29, x30, [sp, #0x40]",
+        "0x1012d3270: ldp x20, x19, [sp, #0x30]",
+        "0x1012d3274: ldp x22, x21, [sp, #0x20]",
+        "0x1012d3278: ldp x24, x23, [sp, #0x10]",
+        "0x1012d327c: ldp d9, d8, [sp], #0x50",
+        "0x1012d3280: b 0x103640090"
+      ],
+      "limitations": [
+        "Instruction text and ordering are Ghidra-specific representations.",
+        "The fast path does not invoke the decompiler or scan whole-program names and strings."
+      ]
+    },
+    "confidence": "observed",
+    "authority": "shipped-artifact",
+    "environment": null,
+    "limitations": [
+      "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "This fast path reads only the requested function and does not invoke the decompiler or whole-program string/name inventories.",
+      "Instruction text is Ghidra-specific and does not claim textual equivalence with Hopper output.",
+      "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.",
+      "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.",
+      "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/store-seeds.tsv (sha256 b681777fbf202f2d8c5ba389ba8bd037b345ed0a2621cc94262ecd10ed5ad752: 4 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+      "Seed outcome: 4 functions created, 0 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+    ],
+    "locations": [],
+    "evidence_links": []
+  }
+}

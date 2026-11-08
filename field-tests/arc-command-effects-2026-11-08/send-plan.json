@@ -1,0 +1,57 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/send",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/send-seeds.tsv"
+  },
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 180000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1008ca400"
+      },
+      "label": "send-0x1008ca400"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1008c7c34"
+      },
+      "label": "send-0x1008c7c34"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1008ca458"
+      },
+      "label": "send-0x1008ca458"
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1008c7ce8"
+      },
+      "label": "send-0x1008c7ce8"
+    }
+  ],
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/send-continuation-1.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/send-continuation-2.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/send-continuation-3.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-command-effects-2026-11-08/send-continuation-4.json"
+  ]
+}
