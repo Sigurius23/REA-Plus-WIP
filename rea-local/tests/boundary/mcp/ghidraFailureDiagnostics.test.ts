@@ -9,6 +9,7 @@ import {
   bindGhidraSessionFailure,
 } from "../../../src/ghidra/GhidraSessionError.js";
 import { silentLogger } from "../../../src/logger.js";
+import { ProviderCleanupError } from "../../../src/domain/providerCleanupError.js";
 import { connectGhidraMcp } from "./ghidraMcpHarness.js";
 
 it("preserves queue failure diagnostics through the provider, CLI adapter and SDK MCP transport", async () => {
@@ -134,6 +135,151 @@ it("preserves the public overview operation and bounded startup diagnostics thro
       "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS",
     );
     expect(error.remediation.action).toContain("Unchanged settings");
+  } finally {
+    await harness.close();
+  }
+});
+
+it.each(["stdout", "stderr"] as const)(
+  "projects explicit disk exhaustion from %s consistently through CLI and MCP",
+  async (stream) => {
+    const text = "Caused by: java.io.IOException: No space left on device\n";
+    const diagnostics = {
+      phase: "startup",
+      stage: "awaiting-post-analysis-bridge",
+      runtime_root: "/tmp/owned-projected-runtime",
+      exit_code: 0,
+      diagnostic_truncated: true,
+      [stream]: { text, bytes: 4000, retained_bytes: Buffer.byteLength(text) },
+    };
+    const failure = new GhidraSessionError(
+      "process",
+      "Ghidra exited before bridge startup",
+      diagnostics,
+    );
+    const harness = await connectGhidraMcp(
+      "disk-capacity-diagnostics",
+      undefined,
+      { startupFailure: failure },
+    );
+    const previousExitCode = process.exitCode;
+    try {
+      const cli = analysisErrorProjectionSchema.parse(
+        await logCliCommand(silentLogger, "inspect", async () => {
+          const result = await harness.session.execute("list_procedures", {});
+          if (!result.ok) throw result.error;
+          return result.value.result;
+        }),
+      );
+      expect(cli).toMatchObject({
+        code: "resource_constraint",
+        category: "resource_constraint",
+        retryable: false,
+        details: {
+          resource: "disk",
+          reported_limits: null,
+          provider_id: "ghidra",
+          provider_operation: "list_procedures",
+          diagnostics,
+          resource_observation: {
+            source: stream,
+            signal: "java.io.IOException",
+          },
+        },
+      });
+      expect(cli.message).toContain("disk exhaustion");
+      expect(cli.remediation.action).toContain("Restore free space");
+      expect(cli.remediation.action).toContain(
+        "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS",
+      );
+      expect(cli.remediation.action).toContain("Unchanged capacity");
+      expect(cli.remediation.action).not.toContain("Retry once");
+      const reply = await harness.mcp.callTool({
+        name: "list_procedures",
+        arguments: {},
+      });
+      expect(reply.isError).toBe(true);
+      expect(parseMcpToolError(reply).error).toEqual(cli);
+      const overview = await harness.mcp.callTool({
+        name: "binary_overview",
+        arguments: {},
+      });
+      expect(parseMcpToolError(overview).error).toMatchObject({
+        code: "resource_constraint",
+        retryable: false,
+        details: {
+          operation: "binary_overview",
+          provider_operation: "list_documents",
+          diagnostics,
+        },
+      });
+    } finally {
+      process.exitCode = previousExitCode;
+      await harness.close();
+    }
+  },
+);
+
+it("preserves capacity failure and incomplete cleanup together", async () => {
+  const cleanup = new ProviderCleanupError("ghidra", ["owned-ghidra-process"], {
+    reason: "cleanup unconfirmed",
+  });
+  const failure = new GhidraSessionError(
+    "start",
+    "Runtime write failed",
+    { phase: "startup", failure_cause: { code: "ENOSPC" } },
+    { cleanupFailure: cleanup },
+  );
+  const harness = await connectGhidraMcp("disk-capacity-cleanup", undefined, {
+    startupFailure: failure,
+  });
+  try {
+    const reply = await harness.mcp.callTool({
+      name: "list_procedures",
+      arguments: {},
+    });
+    expect(parseMcpToolError(reply).error).toMatchObject({
+      code: "cleanup_incomplete",
+      retryable: false,
+      details: {
+        diagnostics: {
+          primary_error: {
+            code: "resource_constraint",
+            retryable: false,
+            details: {
+              resource: "disk",
+              diagnostics: { failure_cause: { code: "ENOSPC" } },
+            },
+          },
+          cleanup_error: { code: "cleanup_incomplete" },
+        },
+      },
+    });
+  } finally {
+    await harness.close();
+  }
+});
+
+it("keeps a remote request rejection distinct from stale startup capacity text", async () => {
+  const failure = new GhidraSessionError(
+    "remote",
+    "Invalid address",
+    {
+      phase: "operation",
+      stdout: { text: "java.io.IOException: No space left on device" },
+    },
+    { remoteCode: "invalid_request" },
+  );
+  const harness = await connectGhidraMcp("disk-capacity-stale", async () => ({
+    ok: false,
+    error: failure,
+  }));
+  try {
+    const reply = await harness.mcp.callTool({
+      name: "list_procedures",
+      arguments: {},
+    });
+    expect(parseMcpToolError(reply).error.code).toBe("invalid_request");
   } finally {
     await harness.close();
   }

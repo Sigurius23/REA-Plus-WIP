@@ -77,6 +77,7 @@ import {
   limitationsFor,
 } from "./GhidraProviderCapabilities.js";
 import type { GhidraSessionError } from "./GhidraSessionError.js";
+import { ghidraDiskExhaustion } from "./GhidraDiskExhaustion.js";
 import type { GhidraSessionInfo } from "./GhidraSessionValues.js";
 import { ghidraExtensionFailure } from "./extensions/GhidraExtensionFailures.js";
 import {
@@ -871,6 +872,25 @@ const projectPrimarySessionError = (
     ]);
   if (failure.kind === "cancelled")
     return new AnalysisCancelledError(operation);
+  const diskExhaustion = ghidraDiskExhaustion(failure);
+  if (diskExhaustion !== undefined)
+    return new AnalysisResourceConstraintError(
+      operation,
+      "disk",
+      "Ghidra reported disk exhaustion before completing the analysis operation.",
+      null,
+      {
+        cause: failure,
+        context: {
+          providerId: "ghidra",
+          providerOperation: operation,
+          diagnostics: failure.diagnostics,
+          observation: diskExhaustion,
+        },
+        remediationAction:
+          "Restore free space on the volume containing the reported Ghidra runtime_root/project_root, then reopen the target. Explicitly lowering REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS may reduce auto-analysis demand; it does not reduce import storage requirements or guarantee a smaller project. Unchanged capacity and analysis policy can reproduce the failure.",
+      },
+    );
   if (failure.kind === "timeout" || failure.kind === "analysis_timeout") {
     const startup =
       failure.diagnostics.phase === "startup" ||

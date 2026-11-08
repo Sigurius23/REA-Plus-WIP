@@ -4,6 +4,16 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Ghidra disk-capacity diagnostics, item 53 (2026-11-08):** Fixed. Confirmed
+  local `ENOSPC` or supported startup Java disk-exhaustion exceptions now return
+  `resource_constraint`, resource `disk`, and `retryable: false`, preserving the
+  original diagnostics and public/provider operation names. The retained real
+  Arc failure reprojects correctly with identical diagnostics/profile identity;
+  a fresh real-Ghidra one-second partial profile returns 89 evaluator
+  instructions and closes cleanly. SDK CLI/MCP and worker-boundary checks pass.
+  Arc's recorded tool gaps **38–53 are addressed within their documented
+  profiles**; broader feature/design recovery remains incomplete. See the
+  [repair/retest report](field-tests/arc-disk-diagnostics-2026-11-08.md).
 - **Swift witness templates, item 52 (2026-11-08):** Fixed within the documented
   static metadata scope and retested on Arc 1.172.1. `swift_witness_templates`
   preserves shipped words, holes, conditional/pack metadata, generic controls
@@ -11,7 +21,7 @@ Open work on `main` following PR #1 and the field tests.
   adaptor now returns its four-word pattern and three entries; private runtime
   storage remains explicitly unobserved/partial. Owned generic and conditional
   Swift fixtures, including stripped binaries, pass real CLI/MCP checks.
-  **53 remains open**. See the
+  Item 53 is subsequently fixed above. See the
   [repair/retest report](field-tests/arc-witness-templates-2026-11-08.md).
 - **Swift conformance discovery, item 51 (2026-11-08):** Fixed and retested on
   the supplied Arc 1.172.1 DMG. Exact protocol/type name filters scan all 22,066
@@ -20,7 +30,7 @@ Open work on `main` following PR #1 and the field tests.
   descriptor preparation. Six compiled CLI/MCP comparisons agree; imported or
   malformed requested identities remain unresolved, and omitted matches/records
   retain explicit budget accounting. Item 52 is subsequently fixed above;
-  **53 remains open**. See the
+  item 53 is now fixed above. See the
   [repair/retest report](field-tests/arc-conformance-discovery-2026-11-08.md).
 - **Arc delegate/evaluator follow-up (2026-11-06, continued 2026-11-08):** On the fixed 1.172.1 DMG,
   selected public metadata identifies `BoostsEditorWindowContent` as the
@@ -34,7 +44,8 @@ Open work on `main` following PR #1 and the field tests.
   Capability
   gaps **51–52** recorded the missing protocol-scoped discovery and generic
   witness-template observations; the latter has an owned source-built
-  CLI/MCP reproduction. Items 51–52 are subsequently fixed above. **53** records misleading disk-capacity diagnostics.
+  CLI/MCP reproduction. Items 51–53 are subsequently fixed above, including the
+  misleading disk-capacity diagnostics recorded by 53.
   Full feature behavior remains partial. See the
   [follow-up report](field-tests/arc-dispatch-2026-11-06.md) and its captures.
 - **Arc DMG repairs and retest (2026-11-06):** Items **45–47 are fixed for
@@ -212,7 +223,7 @@ Open work on `main` following PR #1 and the field tests.
      `field-tests/rize-macos-1.1.52/evidence.json` and `summary-view.json`.
      Historical reports' “no commit or push” statements describe their original
      verification sessions. The full `check:pr` gate still predates items
-     36–37, 16 and 38–50; their focused and real-provider
+     36–37, 16 and 38–53; their focused and real-provider
      verification is recorded below.
 
    **Remaining work:** item 12 (Consensus HAR), optional item 13 (Consensus
@@ -223,8 +234,7 @@ Open work on `main` following PR #1 and the field tests.
    records the remaining tracing and runtime questions. Rize's admitted offline
    engineering scope (17–29) is complete with the documented dynamic/coverage
    limits; those limits do not establish full runtime understanding. Arc's
-   tool gaps 38–50 are done within their documented profiles; new capability
-   gaps 51–52 are now fixed, while 53 remains open. Its broader
+   tool gaps 38–53 are done within their documented profiles. Its broader
    feature/design investigation remains incomplete. The latest
    [delegate/evaluator follow-up](field-tests/arc-dispatch-2026-11-06.md#evidence-boundaries-and-remaining-work)
    records the remaining command-dispatch effects, overlay coordinates and
@@ -1134,7 +1144,26 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     Owned source, compiler/input hashes and public CLI Evidence are retained
     under `field-tests/arc-dispatch-2026-11-06/owned/`; its library was not run.
 
-53. **Report explicit Ghidra disk exhaustion as a capacity failure.** Open diagnostics gap (2026-11-06).
+53. **Report explicit Ghidra disk exhaustion as a capacity failure.** Done (2026-11-08), for the documented diagnostic forms.
+    The provider recognizes current structured `ENOSPC` and supported complete
+    Java capacity exception lines during startup. It returns
+    `resource_constraint` / resource `disk`, preserves bounded token-redacted
+    diagnostics and truncation markers, and keeps `retryable: false`.
+    Remediation names restoring the runtime/project volume's capacity and the
+    optional `REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS` demand knob, explaining its
+    import-storage limitation and that unchanged conditions can reproduce the
+    failure. No free-space amount or quota is invented. Ambiguous I/O text,
+    quoted target strings and stale remote-operation logs are not reclassified;
+    cancellation and incomplete cleanup retain their semantics. Resource kinds
+    now have one canonical definition shared with the JavaScript worker wire
+    schema. Source, SDK error and real worker checks pass. The complete retained
+    Arc failure reprojects with the same diagnostics/profile; a fresh real
+    Ghidra bounded healthy run returns 89 instructions across the evaluator's
+    two observed body ranges and closes with verified empty descendants. No
+    fresh disk-exhaustion event was induced. Details and captures:
+    `field-tests/arc-disk-diagnostics-2026-11-08.md`.
+
+    Original reproduction (2026-11-06):
     The Arc evaluator binding failed while Ghidra wrote its temporary database.
     Retained diagnostics explicitly contain `java.io.IOException: No space left
     on device`, but the public result is generic `execution_failure` with

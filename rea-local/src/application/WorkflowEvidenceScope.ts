@@ -3,7 +3,10 @@ import type {
   AnalysisOperationPort,
   ExecutionOptions,
 } from "./AnalysisProvider.js";
-import { AnalysisTimeoutError } from "../domain/analysisErrorCore.js";
+import {
+  AnalysisTimeoutError,
+  AnalysisResourceConstraintError,
+} from "../domain/analysisErrorCore.js";
 import type { JsonValue } from "../domain/jsonValue.js";
 import { compareUnicodeCodePoints } from "../domain/unicodeCodePointOrder.js";
 import { err } from "../domain/result.js";
@@ -41,6 +44,11 @@ export class WorkflowEvidenceScope implements AnalysisOperationPort {
       );
       return err(result.error.forOperation(this.operation));
     }
+    if (
+      result.error instanceof AnalysisResourceConstraintError &&
+      result.error.context !== undefined
+    )
+      return err(result.error.forOperation(this.operation));
     return result;
   }
 }

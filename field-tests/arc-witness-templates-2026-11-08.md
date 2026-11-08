@@ -101,3 +101,7 @@ generic-condition satisfaction, async/coroutine execution and runtime dispatch
 remain unobserved. Arc's command closure effects, bootstrap/injection,
 persistence, rendering/coordinates and extension loading remain separate
 research questions; this repair does not complete Arc's behavioral analysis.
+
+Subsequent same-day update: item **53** is now repaired and verified in the
+[disk-diagnostics report](arc-disk-diagnostics-2026-11-08.md). The observations
+above describe the issue-52 build at capture time.

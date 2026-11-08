@@ -270,4 +270,5 @@ open at capture time; this analysis pass does not claim to repair them or comple
 Arc recovery. **Subsequent 2026-11-08 update:** issue 51 is now fixed and retested
 in the [conformance discovery report](arc-conformance-discovery-2026-11-08.md).
 Item 52 is also subsequently fixed in the
-[witness-template report](arc-witness-templates-2026-11-08.md). Item 53 remains open.
+[witness-template report](arc-witness-templates-2026-11-08.md). Item 53 is subsequently
+repaired in the [disk-diagnostics report](arc-disk-diagnostics-2026-11-08.md).

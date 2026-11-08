@@ -623,3 +623,56 @@ it("names result capacity without promising that an unchanged retry or worker he
   );
   expect(projected.remediation.action).not.toContain("sufficient memory");
 });
+
+it("retains provider capacity context and observations when rebinding the public operation", () => {
+  const diagnostics = {
+    phase: "startup",
+    stdout: { text: "java.io.IOException: No space left on device" },
+    diagnostic_truncated: true,
+  };
+  const context = {
+    providerId: "ghidra",
+    providerOperation: "list_documents",
+    diagnostics,
+    observation: {
+      source: "stdout",
+      signal: "java.io.IOException",
+      character_offset: 0,
+    },
+  };
+  const failure = new AnalysisResourceConstraintError(
+    "list_documents",
+    "disk",
+    "Disk exhaustion observed",
+    null,
+    {
+      context,
+      capturedOutput: { stdout: "bounded output", stderr: "", truncated: true },
+      cleanup: { reason: "unconfirmed", resources: ["owned-resource"] },
+    },
+  );
+  diagnostics.stdout.text = "mutated after capture";
+  const projected = projectAnalysisError(
+    failure.forOperation("binary_overview"),
+  );
+  expect(projected).toMatchObject({
+    code: "cleanup_incomplete",
+    retryable: false,
+    details: {
+      operation: "binary_overview",
+      resource: "disk",
+      provider_operation: "list_documents",
+      reported_limits: null,
+      diagnostics: {
+        stdout: { text: "java.io.IOException: No space left on device" },
+        diagnostic_truncated: true,
+      },
+      resource_observation: { source: "stdout" },
+      captured_output: { stdout: "bounded output", truncated: true },
+      resources: ["owned-resource"],
+    },
+  });
+  expect(projected.remediation.action).toContain("Restore free space");
+  expect(projected.remediation.action).toContain("unchanged capacity");
+  expect(analysisErrorProjectionSchema.parse(projected)).toEqual(projected);
+});

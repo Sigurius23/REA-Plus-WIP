@@ -4,6 +4,15 @@ import {
   type AnalysisErrorOptions,
 } from "./analysisErrorBase.js";
 
+/** Canonical resource identities shared with worker failure transports. */
+export const ANALYSIS_RESOURCE_KINDS = [
+  "memory",
+  "cpu",
+  "file-size",
+  "transport",
+  "disk",
+] as const;
+
 /** A readable supplied artifact lies outside this operation's supported target formats. */
 export class AnalysisUnsupportedTargetError extends AnalysisError {
   readonly _tag = "AnalysisUnsupportedTargetError";
@@ -20,20 +29,60 @@ export class AnalysisUnsupportedTargetError extends AnalysisError {
   }
 }
 
+/** Provider-owned capacity observations retained through public workflow projection. */
+export interface AnalysisResourceConstraintContext {
+  readonly providerId: string;
+  readonly providerOperation: string;
+  readonly diagnostics: Readonly<Record<string, JsonValue>>;
+  readonly observation: Readonly<Record<string, JsonValue>>;
+}
+
 /** An analysis or transport resource failure, distinct from malformed input or unsupported coverage. */
 export class AnalysisResourceConstraintError extends AnalysisError {
   readonly _tag = "AnalysisResourceConstraintError";
   readonly remediationAction: string | undefined;
+  readonly context: AnalysisResourceConstraintContext | undefined;
 
   constructor(
     readonly operation: string,
-    readonly resource: "memory" | "cpu" | "file-size" | "transport",
+    readonly resource: (typeof ANALYSIS_RESOURCE_KINDS)[number],
     readonly reason: string,
     readonly reportedLimits: Readonly<Record<string, JsonValue>> | null,
-    options?: AnalysisErrorOptions & { readonly remediationAction?: string },
+    options?: AnalysisErrorOptions & {
+      readonly remediationAction?: string;
+      readonly context?: AnalysisResourceConstraintContext;
+    },
   ) {
     super(`Resource constraint during ${operation}: ${reason}`, options);
     this.remediationAction = options?.remediationAction;
+    this.context =
+      options?.context === undefined
+        ? undefined
+        : structuredClone(options.context);
+  }
+
+  /** Retain the provider's internal operation while naming the public workflow. */
+  forOperation(operation: string): AnalysisResourceConstraintError {
+    return new AnalysisResourceConstraintError(
+      operation,
+      this.resource,
+      this.reason,
+      this.reportedLimits,
+      {
+        cause: this,
+        ...(this.remediationAction === undefined
+          ? {}
+          : { remediationAction: this.remediationAction }),
+        ...(this.context === undefined ? {} : { context: this.context }),
+        ...(this.capturedOutput === undefined
+          ? {}
+          : { capturedOutput: this.capturedOutput }),
+        ...(this.cleanup === undefined ? {} : { cleanup: this.cleanup }),
+        ...(this.partialObservation === undefined
+          ? {}
+          : { partialObservation: this.partialObservation }),
+      },
+    );
   }
 }
 

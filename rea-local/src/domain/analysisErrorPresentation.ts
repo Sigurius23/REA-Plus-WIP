@@ -46,13 +46,15 @@ export const analysisErrorRemediationAction = (
   if (error instanceof AnalysisResourceConstraintError)
     return (
       error.remediationAction ??
-      (error.resource === "transport"
-        ? "Discover retained records with get_evidence_bundle and detail: summary, then inspect compatible records through inspect_analysis_view using an exact Evidence reference. Export complete retained session evidence through export_evidence_bundle to a caller-selected path, or use complete CLI JSON output. The connection remains usable."
-        : error.resource === "cpu"
-          ? "Review the reported worker CPU limits and observed signal. Retry with sufficient CPU time or a smaller artifact; REA+ retains tighter inherited limits."
-          : error.resource === "file-size"
-            ? "Review the reported worker file-size limits and write failure. Retry with a sufficient file-size allowance for the evidence reply; REA+ retains tighter inherited limits."
-            : memoryConstraintRemediation(error))
+      (error.resource === "disk"
+        ? "Restore free space on the volume used by the analysis runtime/project, then reopen the target. An unchanged capacity and analysis demand can reproduce the failure."
+        : error.resource === "transport"
+          ? "Discover retained records with get_evidence_bundle and detail: summary, then inspect compatible records through inspect_analysis_view using an exact Evidence reference. Export complete retained session evidence through export_evidence_bundle to a caller-selected path, or use complete CLI JSON output. The connection remains usable."
+          : error.resource === "cpu"
+            ? "Review the reported worker CPU limits and observed signal. Retry with sufficient CPU time or a smaller artifact; REA+ retains tighter inherited limits."
+            : error.resource === "file-size"
+              ? "Review the reported worker file-size limits and write failure. Retry with a sufficient file-size allowance for the evidence reply; REA+ retains tighter inherited limits."
+              : memoryConstraintRemediation(error))
     );
   if (
     error instanceof AnalysisTimeoutError &&

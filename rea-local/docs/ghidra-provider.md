@@ -21,6 +21,26 @@ provider stays bound to the target; runtime failure never selects another
 provider automatically. The contracts below describe Ghidra observations,
 not equivalence with another engine's pseudocode or analysis database.
 
+## Disk-capacity failures
+
+Explicit local `ENOSPC` failures and supported Java `No space left on device`
+exception lines during startup produce `resource_constraint` with
+`details.resource: "disk"` and `retryable: false`. The error retains the provider
+operation, target/profile/runtime coordinates, bounded token-redacted diagnostics
+and their truncation markers. `resource_observation` identifies the positive
+signal and its source; character offsets are UTF-16 positions in the retained
+diagnostic text.
+No free-space amount or quota is inferred. Unrelated text, ambiguous I/O failures
+and stale startup output during a remote request do not establish disk exhaustion.
+Cancellation and incomplete cleanup retain their own semantics.
+
+Restore capacity on the volume containing the reported runtime/project before
+reopening the target. Explicitly lowering `REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS`
+may reduce auto-analysis demand; it does not reduce import storage requirements
+or guarantee a smaller project. Unchanged capacity and analysis policy can
+reproduce the failure. Composed workflows retain their public operation and the
+provider's internal operation separately.
+
 ## Admitted inventory semantics
 
 | Concern          | Ghidra contract                                                                                                                                                                                                                                                                                                                                                 |

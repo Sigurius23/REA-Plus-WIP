@@ -249,6 +249,14 @@ const requestErrorDetails = (
       resource: error.resource,
       reason: error.reason,
       reported_limits: error.reportedLimits,
+      ...(error.context === undefined
+        ? {}
+        : {
+            provider_id: error.context.providerId,
+            provider_operation: error.context.providerOperation,
+            diagnostics: { ...error.context.diagnostics },
+            resource_observation: { ...error.context.observation },
+          }),
     };
   if (error instanceof AnalysisArtifactChangedError)
     return {
