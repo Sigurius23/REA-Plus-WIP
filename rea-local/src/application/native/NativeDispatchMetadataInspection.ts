@@ -3,6 +3,7 @@ import {
   nativeDispatchMetadataResultSchema,
   inspectNativeDispatchMetadata,
   type NativeDispatchFacet,
+  type NativeSwiftConformanceFilter,
 } from "../../domain/native/objcSwiftMetadata.js";
 import {
   AnalysisInputError,
@@ -20,15 +21,26 @@ export const inspectNativeDispatch = async (
   facet: NativeDispatchFacet = "all",
   maxFileBytes?: number,
   swiftConformanceAddress?: string,
+  swiftConformanceFilter?: NativeSwiftConformanceFilter,
 ): EnhancedResult => {
-  if (swiftConformanceAddress !== undefined && facet !== "swift-conformances")
+  if (
+    (swiftConformanceAddress !== undefined ||
+      swiftConformanceFilter !== undefined) &&
+    (facet !== "swift-conformances" ||
+      (swiftConformanceAddress !== undefined &&
+        swiftConformanceFilter !== undefined))
+  )
     return err(
       new AnalysisInputError("inspect_native_dispatch_metadata", undefined, [
         {
-          path: ["swift_conformance_address"],
+          path: [
+            swiftConformanceFilter === undefined
+              ? "swift_conformance_address"
+              : "swift_conformance_filter",
+          ],
           reason: "invalid_value",
           message:
-            "Exact conformance selection requires facet swift-conformances.",
+            "Conformance selection requires facet swift-conformances and either an address or a name filter, not both.",
         },
       ]),
     );
@@ -40,6 +52,9 @@ export const inspectNativeDispatch = async (
       ...(swiftConformanceAddress === undefined
         ? {}
         : { swift_conformance_address: swiftConformanceAddress }),
+      ...(swiftConformanceFilter === undefined
+        ? {}
+        : { swift_conformance_filter: swiftConformanceFilter }),
       ...(maxFileBytes === undefined ? {} : { max_file_bytes: maxFileBytes }),
     },
     signal === undefined ? {} : { signal },
@@ -52,6 +67,7 @@ export const inspectNativeDispatch = async (
     );
   if (
     swiftConformanceAddress !== undefined ||
+    swiftConformanceFilter !== undefined ||
     binaryMetadata.error._tag !== "AnalysisCapabilityUnavailableError"
   )
     return err(binaryMetadata.error);

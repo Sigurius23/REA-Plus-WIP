@@ -269,6 +269,20 @@ const registerNativeDispatchMetadataCommand = (
     options: z.object({
       maxFileBytes: nativeDispatchFileBudgetSchema,
       swiftConformanceAddress: nativeSwiftConformanceAddressSchema,
+      swiftProtocolName: z
+        .string()
+        .min(1)
+        .optional()
+        .describe(
+          "Exact local protocol metadata name; requires --facet swift-conformances",
+        ),
+      swiftTypeName: z
+        .string()
+        .min(1)
+        .optional()
+        .describe(
+          "Exact local type metadata name; ANDed with --swift-protocol-name when supplied",
+        ),
       maxRecords: z
         .number()
         .int()
@@ -302,6 +316,15 @@ const registerNativeDispatchMetadataCommand = (
             ...(options.swiftConformanceAddress === undefined
               ? {}
               : { swift_conformance_address: options.swiftConformanceAddress }),
+            ...(options.swiftProtocolName === undefined &&
+            options.swiftTypeName === undefined
+              ? {}
+              : {
+                  swift_conformance_filter: {
+                    protocol_name: options.swiftProtocolName ?? null,
+                    type_name: options.swiftTypeName ?? null,
+                  },
+                }),
           },
           directAnalysisOptions(logger, {
             snapshotPath: options.snapshot,

@@ -14,6 +14,8 @@ import {
   withArtifactMcp,
 } from "../../lib/artifact-e2e.mjs";
 import { nativeDispatchMetadataResultSchema } from "../../../dist/domain/native/objcSwiftMetadata.js";
+import { parseEvidence } from "../../../dist/domain/evidence.js";
+import { toolContract } from "../../../dist/contracts/toolContracts.js";
 
 if (process.platform !== "darwin")
   throw new Error(
@@ -290,7 +292,96 @@ const checkSelectedSwiftFacet = (metadata, facet) => {
   );
 };
 
+const verifyConformanceDiscovery = async (client, path, advertised, ajv) => {
+  const validateInput = ajv.compile(advertised.inputSchema);
+  for (const filter of [
+    {},
+    { protocol_name: null, type_name: null },
+    { protocol_name: "" },
+    { type_name: "", extra: true },
+  ])
+    assert.equal(
+      validateInput({
+        facet: "swift-conformances",
+        swift_conformance_filter: filter,
+      }),
+      false,
+    );
+  const checks = [];
+  for (const [protocol, type, expected] of [
+    ["ReaWitnessFixtureProtocol", null, "ReaWitnessFixture"],
+    [null, "ReaWitnessFixture", "ReaWitnessFixture"],
+    ["ReaWitnessFixtureProtocol", "ReaWitnessFixture", "ReaWitnessFixture"],
+    [null, "ReaArrayFixture", "ReaArrayFixture"],
+    [null, "MissingType", null],
+  ]) {
+    const input = {
+      facet: "swift-conformances",
+      max_records: 64,
+      swift_conformance_filter: { protocol_name: protocol, type_name: type },
+    };
+    assert.equal(
+      validateInput(input),
+      true,
+      JSON.stringify(validateInput.errors),
+    );
+    const options = ["--facet", "swift-conformances", "--max-records", "64"];
+    if (protocol !== null) options.push("--swift-protocol-name", protocol);
+    if (type !== null) options.push("--swift-type-name", type);
+    const cli = parseEvidence(
+      await artifactCliEvidence(
+        "inspect-native-dispatch-metadata",
+        path,
+        options,
+      ),
+    );
+    const response = await client.callTool({
+      name: advertised.name,
+      arguments: input,
+    });
+    assert.notEqual(response.isError, true, JSON.stringify(response));
+    assert.equal(
+      ajv.validate(advertised.outputSchema, response.structuredContent),
+      true,
+      JSON.stringify(ajv.errors),
+    );
+    toolContract(advertised.name).outputSchema.parse(
+      response.structuredContent,
+    );
+    const mcp = parseEvidence(response.structuredContent);
+    assert.deepEqual(
+      JSON.parse(response.content.find(({ type }) => type === "text").text),
+      mcp,
+    );
+    assert.deepEqual(mcp.normalized_result, cli.normalized_result);
+    assert.deepEqual(mcp.parameters, cli.parameters);
+    const metadata = nativeDispatchMetadataResultSchema.parse(
+      mcp.normalized_result,
+    ).result;
+    const discovery = metadata.swift_conformance_discovery;
+    assert.ok(discovery);
+    assert.equal(discovery.examined, discovery.index_entries);
+    assert.equal(discovery.matched, expected === null ? 0 : 1);
+    assert.deepEqual(
+      metadata.swift_conformances.map(({ type_name }) => type_name),
+      expected === null ? [] : [expected],
+    );
+    if (type === "ReaArrayFixture")
+      assert.ok(metadata.swift_conformances[0].protocol_reference?.symbol);
+    if (expected === null) assert.equal(discovery.unresolved, 0);
+    checks.push({
+      filter: discovery.filter,
+      matched: discovery.matched,
+      unresolved: discovery.unresolved,
+      examined: discovery.examined,
+      cli_mcp_equal: true,
+    });
+  }
+  return checks;
+};
+
 const root = await mkdtemp(join(tmpdir(), "rea-dispatch-"));
+const discoveryChecks = [];
 let report;
 try {
   const results = [];
@@ -345,6 +436,8 @@ try {
       "swiftc",
       "-emit-library",
       "-O",
+      "-module-cache-path",
+      join(root, "swift-module-cache"),
       ...mode.flags
         .map((flag) => flag.replace(/^-Wl,/u, "-Xlinker\0"))
         .flatMap((flag) => flag.split("\0")),
@@ -436,6 +529,14 @@ try {
               checkResilientSwift(mcpResult.result, oracle);
             assert.deepEqual(mcpResult, cliResult);
           }
+          discoveryChecks.push(
+            ...(await verifyConformanceDiscovery(
+              client,
+              swiftPath,
+              advertised,
+              ajv,
+            )),
+          );
         });
       }
       results.push({
@@ -449,7 +550,12 @@ try {
       });
     }
   }
-  report = { ok: true, target_executed: false, fixtures: results };
+  report = {
+    ok: true,
+    target_executed: false,
+    fixtures: results,
+    conformance_discovery: discoveryChecks,
+  };
 } finally {
   await rm(root, { recursive: true, force: true });
 }

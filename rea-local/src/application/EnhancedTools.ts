@@ -28,7 +28,10 @@ import {
   discoverObjcProtocols,
 } from "../domain/symbolAnalysis.js";
 import { inspectNativeDispatch } from "./native/NativeDispatchMetadataInspection.js";
-import type { NativeDispatchFacet } from "../domain/native/objcSwiftMetadata.js";
+import type {
+  NativeDispatchFacet,
+  NativeSwiftConformanceFilter,
+} from "../domain/native/objcSwiftMetadata.js";
 import { traceNativeValues } from "./native/NativeValueTrace.js";
 import { traceNativeUiAction } from "./native/NativeUiActionTrace.js";
 import { jsonValueSchema, type JsonValue } from "../domain/jsonValue.js";
@@ -139,6 +142,7 @@ export class EnhancedTools {
           call.input.facet,
           call.input.max_file_bytes,
           call.input.swift_conformance_address,
+          call.input.swift_conformance_filter,
         );
       case "get_objc_classes":
         return this.#objcClasses(call.input.pattern, signal);
@@ -244,6 +248,7 @@ export class EnhancedTools {
     facet: NativeDispatchFacet = "all",
     maxFileBytes?: number,
     swiftConformanceAddress?: string,
+    swiftConformanceFilter?: NativeSwiftConformanceFilter,
   ): EnhancedResult {
     return inspectNativeDispatch(
       this.analysis,
@@ -252,6 +257,7 @@ export class EnhancedTools {
       facet,
       maxFileBytes,
       swiftConformanceAddress,
+      swiftConformanceFilter,
     );
   }
 

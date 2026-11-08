@@ -58,6 +58,7 @@ export const pushDispatchCoverage = (input: {
   const swiftRequested = facet === "all" || facet === "swift-conformances";
   const vtablesRequested = facet === "all" || facet === "swift-vtables";
   const conformanceSelection = result.swift_conformance_selection;
+  const discovery = result.swift_conformance_discovery;
   const selectionMatched = conformanceSelection?.matched !== false;
   const selectionScope =
     conformanceSelection === undefined
@@ -67,7 +68,20 @@ export const pushDispatchCoverage = (input: {
             ? "Coverage is limited to the selected indexed conformance descriptor"
             : "Selected conformance descriptor is not indexed in __swift5_proto; no descriptor was decoded",
         ];
+  if (discovery !== undefined)
+    selectionScope.push(
+      "Coverage is limited to conformances matching the exact local metadata name filter",
+      ...(discovery.unresolved > 0
+        ? ["conformance_filter_identities_unresolved"]
+        : []),
+    );
   const anyTruncated = Object.values(truncated).some(Boolean);
+  const relativePointers = [
+    ...result.relative_pointers,
+    ...(discovery?.unresolved_records.flatMap(
+      ({ relative_pointers }) => relative_pointers,
+    ) ?? []),
+  ];
   result.coverage.push(
     objcRequested
       ? {
@@ -88,20 +102,17 @@ export const pushDispatchCoverage = (input: {
     facet: "binary_relative_pointers",
     status:
       anyTruncated ||
-      result.relative_pointers.some((item) => item.decode.status !== "decoded")
+      relativePointers.some((item) => item.decode.status !== "decoded")
         ? "partial"
         : "complete",
     reason: anyTruncated
       ? "max_records_reached"
-      : result.relative_pointers.some(
-            (item) => item.decode.status !== "decoded",
-          )
+      : relativePointers.some((item) => item.decode.status !== "decoded")
         ? "relative_pointer_targets_unresolved"
         : null,
-    examined: result.relative_pointers.length,
-    decoded: result.relative_pointers.filter(
-      (item) => item.decode.status === "decoded",
-    ).length,
+    examined: relativePointers.length,
+    decoded: relativePointers.filter((item) => item.decode.status === "decoded")
+      .length,
   });
   const categoryFailures = categoryIssues.map(
     ({ code, location, message }) =>
@@ -167,6 +178,24 @@ export const pushDispatchCoverage = (input: {
         ),
   );
   result.coverage.push(
+    ...(discovery === undefined
+      ? []
+      : [
+          {
+            facet: "swift_conformance_index_discovery",
+            status:
+              discovery.unresolved === 0 &&
+              discovery.examined === discovery.index_entries
+                ? ("complete" as const)
+                : ("partial" as const),
+            reason:
+              discovery.unresolved === 0
+                ? null
+                : `${String(discovery.unresolved)} index identities could not be classified against the filter; ${String(discovery.unresolved_records.length)} unresolved records retained within max_records`,
+            examined: discovery.examined,
+            decoded: discovery.examined - discovery.unresolved,
+          },
+        ]),
     swiftRequested
       ? {
           facet: "swift_conformances_static_witness_slots",

@@ -125,6 +125,7 @@ describe("Swift witness coverage facts", () => {
         [0x208n, 0x380n],
       ]).get(field) ?? 0n;
     const facts = decodeSwiftDispatchFacets({
+      maxRecords: 1000,
       sections: [{ name: "__swift5_proto", address: 0x100n, size: 4 }],
       segments: [],
       readers: {
@@ -153,6 +154,11 @@ describe("Swift witness coverage facts", () => {
         offset: (address) => Number(address),
       },
       relative: {
+        inspect: () => {
+          throw new Error(
+            "Conformance discovery is not modeled in this vtable scenario",
+          );
+        },
         local: relative,
         resolve: (field) => ({ kind: "local", address: relative(field) }),
       },

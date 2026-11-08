@@ -1,0 +1,111 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-conformance-discovery-2026-11-08/mcp-final",
+  "environment": {
+    "REA_ANALYSIS_PROVIDER": "auto",
+    "HOPPER_LAUNCHER_PATH": "/rea-unconfigured-deep-provider/hopper"
+  },
+  "timeout_ms": 180000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "open",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-arm64"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "ui-protocol",
+      "arguments": {
+        "facet": "swift-conformances",
+        "max_file_bytes": 100000000,
+        "max_records": 512,
+        "swift_conformance_filter": {
+          "protocol_name": "WebContentUIDelegate"
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "adaptor-protocol",
+      "arguments": {
+        "facet": "swift-conformances",
+        "max_file_bytes": 100000000,
+        "max_records": 512,
+        "swift_conformance_filter": {
+          "protocol_name": "SelectorPickerWebContents"
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "editor-type",
+      "arguments": {
+        "facet": "swift-conformances",
+        "max_file_bytes": 100000000,
+        "max_records": 512,
+        "swift_conformance_filter": {
+          "type_name": "BoostsEditorWindowContent"
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "editor-and-protocol",
+      "arguments": {
+        "facet": "swift-conformances",
+        "max_file_bytes": 100000000,
+        "max_records": 512,
+        "swift_conformance_filter": {
+          "protocol_name": "WebContentUIDelegate",
+          "type_name": "BoostsEditorWindowContent"
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "absent-type",
+      "arguments": {
+        "facet": "swift-conformances",
+        "max_file_bytes": 100000000,
+        "max_records": 512,
+        "swift_conformance_filter": {
+          "type_name": "REAPlusMissingConformanceType20261108"
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "ui-protocol-budget-16",
+      "arguments": {
+        "facet": "swift-conformances",
+        "max_file_bytes": 100000000,
+        "max_records": 16,
+        "swift_conformance_filter": {
+          "protocol_name": "WebContentUIDelegate"
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "export",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-conformance-discovery-2026-11-08/mcp-final/evidence-bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "close",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}

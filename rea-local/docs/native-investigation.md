@@ -122,6 +122,19 @@ complete observation.
   coverage is explicitly scoped to that selection, and an unmatched address is
   partial. Historical unselected results may omit the selection record. Other
   facets reject this selector, and symbol-only fallback cannot satisfy it.
+  Alternatively, `swift_conformance_filter` accepts `protocol_name`, `type_name`
+  or both (CLI `--swift-protocol-name` / `--swift-type-name`). Names are exact,
+  case-sensitive local descriptor names; both constraints are ANDed. All matching
+  declarations are considered without assuming module uniqueness. The reader
+  scans every conformance index entry and resolves indirect pointer aliases
+  before admitting matching decodes. `swift_conformance_discovery` separates
+  index coverage, matches, admitted decodes and uncertain identities. Imported
+  or malformed requested names remain unresolved, with bounded pointer/bind
+  evidence; a known mismatching constraint excludes a row. Known matches receive
+  admission before unresolved records, and omitted decodes/records remain
+  explicit. Index completeness does not imply complete witness decoding.
+  This filter cannot be combined with an exact conformance address and cannot
+  be satisfied by symbol-only fallback.
   Select `facet: "objc"`, `"swift-conformances"` or `"swift-vtables"` to direct
   the aggregate `max_records` decode-admission budget to that family; the
   default `"all"` preserves the combined pass. CLI callers use `--facet`.

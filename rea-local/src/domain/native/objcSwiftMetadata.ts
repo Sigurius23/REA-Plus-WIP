@@ -30,6 +30,20 @@ export const nativeSwiftConformanceAddressSchema = z
   .describe(
     "Decode only this indexed Swift conformance descriptor; requires facet swift-conformances. Runtime witness tables remain unknown.",
   );
+/** Exact local metadata names; all matching declarations are retained, without module uniqueness claims. */
+export const nativeSwiftConformanceFilterSchema = z.union([
+  z.strictObject({
+    protocol_name: z.string().min(1),
+    type_name: z.string().min(1).nullable().default(null),
+  }),
+  z.strictObject({
+    protocol_name: z.null().default(null),
+    type_name: z.string().min(1),
+  }),
+]);
+export type NativeSwiftConformanceFilter = z.infer<
+  typeof nativeSwiftConformanceFilterSchema
+>;
 export type NativeDispatchFacet = z.infer<typeof nativeDispatchFacetSchema>;
 
 /** Objective-C method type. */
@@ -362,6 +376,27 @@ export const dbSaveResultSchema = z.strictObject({
 
 /** Result of deeper ObjC/Swift metadata extraction. */
 export const objcSwiftMetadataSchema = z.strictObject({
+  swift_conformance_discovery: z
+    .strictObject({
+      filter: nativeSwiftConformanceFilterSchema,
+      index_entries: z.number().int().nonnegative(),
+      examined: z.number().int().nonnegative(),
+      matched: z.number().int().nonnegative(),
+      admitted: z.number().int().nonnegative(),
+      unresolved: z.number().int().nonnegative(),
+      unresolved_records: z.array(
+        z.strictObject({
+          index_entry: nativeMetadataLocationSchema,
+          conformance_address: z.string().nullable(),
+          protocol_name: z.string().nullable(),
+          type_name: z.string().nullable(),
+          relative_pointers: z.array(relativePointerSchema),
+          reason: z.string(),
+          evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+        }),
+      ),
+    })
+    .optional(),
   swift_conformance_selection: z
     .strictObject({ address: z.string(), matched: z.boolean() })
     .optional(),

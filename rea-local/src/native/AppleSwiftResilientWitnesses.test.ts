@@ -364,3 +364,160 @@ it("selects one indexed conformance before unrelated admission and labels absent
     }),
   ).toThrow(AnalysisInputError);
 });
+
+const discovered = (
+  bytes: Buffer,
+  filter = {
+    protocol_name: "DecodableFixture",
+    type_name: null as string | null,
+  },
+  maxRecords = 100,
+) =>
+  decodeAppleDispatchMetadata(bytes, maxRecords, provenance, {
+    facet: "swift-conformances",
+    swiftConformanceFilter: filter,
+  });
+const discoveryCoverage = (result: ReturnType<typeof discovered>) =>
+  result.coverage.find(
+    ({ facet }) => facet === "swift_conformance_index_discovery",
+  );
+
+describe("Swift conformance identity discovery before decode admission", () => {
+  it("finds a late match without decoding the preceding unrelated entries", () => {
+    const bytes = fixture();
+    bytes.writeBigUInt64LE(64n, 216);
+    bytes.writeInt32LE(0xb40 - 0xa40, 0xa40);
+    bytes.writeInt32LE(0xc88 - 0xa44, 0xa44);
+    bytes.writeUInt32LE(8, 0xa4c);
+    bytes.writeUInt32LE(3, 0xb40);
+    bytes.writeInt32LE(0xc60 - 0xb48, 0xb48);
+    bytes.write("OtherProtocol\0", 0xc60);
+    for (let i = 0; i < 15; i++)
+      bytes.writeInt32LE(0xa40 - (0x900 + i * 4), 0x900 + i * 4);
+    bytes.writeInt32LE(0xa00 - 0x93c, 0x93c);
+    const result = discovered(bytes, undefined, 20);
+    expect(
+      result.swift_conformances.map(({ protocol_name }) => protocol_name),
+    ).toEqual(["DecodableFixture"]);
+    expect(result.swift_conformance_discovery).toMatchObject({
+      index_entries: 16,
+      examined: 16,
+      matched: 1,
+      admitted: 1,
+      unresolved: 0,
+    });
+    expect(discoveryCoverage(result)).toMatchObject({
+      status: "complete",
+      examined: 16,
+    });
+    expect(
+      result.relative_pointers.some(
+        ({ target }) => target.address === "0x100000a40",
+      ),
+    ).toBe(false);
+  });
+
+  it("resolves distinct indirect aliases and ANDs exact names", () => {
+    const bytes = fixture();
+    bytes.writeBigUInt64LE(8n, 216);
+    bytes.writeInt32LE(0xa40 - 0x904, 0x904);
+    bytes.writeInt32LE((0xc90 - 0xa00) | 1, 0xa00);
+    bytes.writeInt32LE((0xc98 - 0xa40) | 1, 0xa40);
+    bytes.writeBigUInt64LE(base + 0xb80n, 0xc90);
+    bytes.writeBigUInt64LE(base + 0xb80n, 0xc98);
+    bytes.writeInt32LE(0xc88 - 0xa44, 0xa44);
+    bytes.writeUInt32LE(8, 0xa4c);
+    const result = discovered(bytes, {
+      protocol_name: "DecodableFixture",
+      type_name: "Request",
+    });
+    expect(
+      result.swift_conformances.map(({ location }) => location.address),
+    ).toEqual(["0x100000a00", "0x100000a40"]);
+    expect(
+      result.relative_pointers
+        .filter(({ indirect_slot }) => indirect_slot !== null)
+        .map(({ indirect_slot }) => indirect_slot?.address),
+    ).toEqual(expect.arrayContaining(["0x100000c90", "0x100000c98"]));
+    expect(result.swift_conformance_discovery).toMatchObject({
+      matched: 2,
+      unresolved: 0,
+    });
+    const absent = discovered(bytes, {
+      protocol_name: "decodablefixture",
+      type_name: "Request",
+    });
+    expect(absent.swift_conformances).toEqual([]);
+    expect(absent.swift_conformance_discovery).toMatchObject({
+      examined: 2,
+      matched: 0,
+      unresolved: 0,
+    });
+    expect(discoveryCoverage(absent)?.status).toBe("complete");
+  });
+
+  it("prioritizes known matches over uncertain entries and reports omitted identities", () => {
+    const bytes = fixture();
+    bytes.writeBigUInt64LE(12n, 216);
+    bytes.writeInt32LE(0, 0x900);
+    bytes.writeInt32LE(0xf80 - 0x904, 0x904);
+    bytes.writeInt32LE(0xa00 - 0x908, 0x908);
+    const result = discovered(bytes, undefined, 1);
+    expect(result.swift_conformances).toHaveLength(1);
+    expect(result.swift_conformance_discovery).toMatchObject({
+      examined: 3,
+      matched: 1,
+      admitted: 1,
+      unresolved: 2,
+      unresolved_records: [],
+    });
+    expect(discoveryCoverage(result)?.status).toBe("partial");
+    expect(coverage(result)?.reason).toContain("max_records_reached");
+  });
+
+  it("preserves imported bind identity and excludes only a known mismatching requested name", () => {
+    const bytes = fixture(true);
+    const result = discovered(bytes);
+    expect(result.swift_conformance_discovery).toMatchObject({
+      examined: 1,
+      matched: 0,
+      unresolved: 1,
+    });
+    expect(
+      result.swift_conformance_discovery?.unresolved_records[0]
+        ?.relative_pointers,
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          indirect_slot: { address: "0x100000c78", file_offset: 0xc78 },
+          external_reference: {
+            symbol: "_$sSeMp",
+            library: "/usr/lib/swift/libswiftCore.dylib",
+            weak: true,
+            addend: "-3",
+          },
+        }),
+      ]),
+    );
+    expect(discoveryCoverage(result)?.status).toBe("partial");
+    const excluded = discovered(bytes, {
+      protocol_name: "DecodableFixture",
+      type_name: "OtherType",
+    });
+    expect(excluded.swift_conformance_discovery).toMatchObject({
+      matched: 0,
+      unresolved: 0,
+    });
+    expect(discoveryCoverage(excluded)?.status).toBe("complete");
+    expect(() =>
+      decodeAppleDispatchMetadata(bytes, 20, provenance, {
+        facet: "swift-conformances",
+        swiftConformanceAddress: "0x100000a00",
+        swiftConformanceFilter: {
+          protocol_name: "DecodableFixture",
+          type_name: null,
+        },
+      }),
+    ).toThrow(AnalysisInputError);
+  });
+});

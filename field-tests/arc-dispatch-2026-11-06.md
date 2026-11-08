@@ -266,4 +266,7 @@ The broader investigation still needs the command dispatch closure's effects,
 full Boost state/persistence, final overlay rendering/coordinates, extension
 loader/name substitution and unrelated Arc subsystems. Runtime activation and
 concrete object instances remain unobserved. The recorded tool gaps 51–53 are
-open; this analysis pass does not claim to repair them or complete Arc recovery.
+open at capture time; this analysis pass does not claim to repair them or complete
+Arc recovery. **Subsequent 2026-11-08 update:** issue 51 is now fixed and retested
+in the [conformance discovery report](arc-conformance-discovery-2026-11-08.md).
+Issues 52–53 remain open.

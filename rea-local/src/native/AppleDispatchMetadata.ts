@@ -4,6 +4,7 @@ import {
   nativeDispatchMetadataResultSchema,
   type ObjcSwiftMetadata,
   type NativeDispatchFacet,
+  type NativeSwiftConformanceFilter,
   nativeDispatchFileBudgetSchema,
 } from "../domain/native/objcSwiftMetadata.js";
 import type { BinaryTarget } from "../domain/binaryTargetTypes.js";
@@ -36,23 +37,35 @@ export const decodeAppleDispatchMetadata = (
     readonly architecture?: string;
     readonly facet?: NativeDispatchFacet;
     readonly swiftConformanceAddress?: string;
+    readonly swiftConformanceFilter?: NativeSwiftConformanceFilter;
   } = {},
 ): ObjcSwiftMetadata => {
   const {
     architecture = "arm64",
     facet = "all",
     swiftConformanceAddress,
+    swiftConformanceFilter,
   } = selection;
-  if (swiftConformanceAddress !== undefined && facet !== "swift-conformances")
+  if (
+    (swiftConformanceAddress !== undefined ||
+      swiftConformanceFilter !== undefined) &&
+    (facet !== "swift-conformances" ||
+      (swiftConformanceAddress !== undefined &&
+        swiftConformanceFilter !== undefined))
+  )
     throw new AnalysisInputError(
       "inspect_native_dispatch_metadata",
       undefined,
       [
         {
-          path: ["swift_conformance_address"],
+          path: [
+            swiftConformanceFilter === undefined
+              ? "swift_conformance_address"
+              : "swift_conformance_filter",
+          ],
           reason: "invalid_value",
           message:
-            "Exact conformance selection requires facet swift-conformances.",
+            "Conformance selection requires facet swift-conformances and either an address or a name filter, not both.",
         },
       ],
     );
@@ -180,10 +193,14 @@ export const decodeAppleDispatchMetadata = (
           relative: swiftRelative,
           budget: swiftBudget,
           result,
+          maxRecords,
           ...(resilient === undefined ? {} : { resilient }),
           ...(swiftConformanceAddress === undefined
             ? {}
             : { conformanceAddress: BigInt(swiftConformanceAddress) }),
+          ...(swiftConformanceFilter === undefined
+            ? {}
+            : { conformanceFilter: swiftConformanceFilter }),
         })
       : {
           facet: "swift_conformances_static_witness_slots" as const,
@@ -269,6 +286,7 @@ export const inspectAppleDispatchMetadata = async (
   facet: NativeDispatchFacet = "all",
   maxFileBytes?: number,
   swiftConformanceAddress?: string,
+  swiftConformanceFilter?: NativeSwiftConformanceFilter,
 ) => {
   if (target.kind !== "executable" || target.format !== "mach-o")
     throw new TypeError("Apple dispatch metadata requires a Mach-O target");
@@ -318,6 +336,9 @@ export const inspectAppleDispatchMetadata = async (
           ...(swiftConformanceAddress === undefined
             ? {}
             : { swiftConformanceAddress }),
+          ...(swiftConformanceFilter === undefined
+            ? {}
+            : { swiftConformanceFilter }),
         },
       ),
     });

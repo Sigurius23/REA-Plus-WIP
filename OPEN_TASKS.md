@@ -4,6 +4,14 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Swift conformance discovery, item 51 (2026-11-08):** Fixed and retested on
+  the supplied Arc 1.172.1 DMG. Exact protocol/type name filters scan all 22,066
+  index entries before matching decode admission, recovering both UI delegates,
+  the selector adaptor and the editor's four local conformances without manual
+  descriptor preparation. Six compiled CLI/MCP comparisons agree; imported or
+  malformed requested identities remain unresolved, and omitted matches/records
+  retain explicit budget accounting. Issues **52–53 remain open**. See the
+  [repair/retest report](field-tests/arc-conformance-discovery-2026-11-08.md).
 - **Arc delegate/evaluator follow-up (2026-11-06, continued 2026-11-08):** On the fixed 1.172.1 DMG,
   selected public metadata identifies `BoostsEditorWindowContent` as the
   substantive Boost-command delegate and `WebContentFrame`'s corresponding
@@ -13,10 +21,10 @@ Open work on `main` following PR #1 and the field tests.
   `SelectorPickerWebContents` identity, a main-actor/callback route to
   `executeJavascript:reason:completion:`, and a fixed-version String/JSON
   return continuation. The separate async DevTools route is distinguished.
-  New capability
-  gaps **51–52** record the missing protocol-scoped discovery and generic
+  Capability
+  gaps **51–52** recorded the missing protocol-scoped discovery and generic
   witness-template observations; the latter has an owned source-built
-  CLI/MCP reproduction. **53** records misleading disk-capacity diagnostics.
+  CLI/MCP reproduction. Item 51 is subsequently fixed above. **53** records misleading disk-capacity diagnostics.
   Full feature behavior remains partial. See the
   [follow-up report](field-tests/arc-dispatch-2026-11-06.md) and its captures.
 - **Arc DMG repairs and retest (2026-11-06):** Items **45–47 are fixed for
@@ -206,7 +214,7 @@ Open work on `main` following PR #1 and the field tests.
    engineering scope (17–29) is complete with the documented dynamic/coverage
    limits; those limits do not establish full runtime understanding. Arc's
    tool gaps 38–50 are done within their documented profiles; new capability
-   gaps 51–53 remain open. Its broader
+   gap 51 is now fixed, while 52–53 remain open. Its broader
    feature/design investigation remains incomplete. The latest
    [delegate/evaluator follow-up](field-tests/arc-dispatch-2026-11-06.md#evidence-boundaries-and-remaining-work)
    records the remaining command-dispatch effects, overlay coordinates and
@@ -1046,7 +1054,26 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     isolated package lane is rerun afterward; this is a verification-tooling
     defect, separate from target-analysis correctness.
 
-51. **Discover Swift conformances by protocol before spending decode admission.** Open capability gap (2026-11-06).
+51. **Discover Swift conformances by protocol before spending decode admission.** Done (2026-11-08), within the documented static metadata profile.
+    `swift_conformance_filter` now accepts exact local `protocol_name` and/or
+    `type_name` constraints (ANDed); CLI exposes `--swift-protocol-name` and
+    `--swift-type-name`. Discovery scans the full index before admitting matching
+    decodes, resolving all indirect aliases through the existing fixup reader.
+    Counts distinguish examined index entries, matches, admitted decodes and
+    unresolved identities. Known matches receive admission before bounded
+    uncertain records, whose relative pointers retain alias/import evidence.
+    Aggregate record limits include those records and their pointers. Exact
+    address/filter conflicts and other facets are rejected; unavailable binary
+    discovery cannot silently fall back to names. Imported metadata names and
+    unsupported layouts remain unknown, and local names do not establish module
+    uniqueness. Six Arc compiled CLI/MCP comparisons recover the two delegates,
+    adaptor and four editor conformances; a 16-record query retains two matches
+    versus one admitted decode. Owned stripped Swift verification exercises
+    protocol/type/intersection/imported-type/negative queries and advertised
+    schemas. Details and captures:
+    `field-tests/arc-conformance-discovery-2026-11-08.md`.
+
+    Original reproduction (2026-11-06):
     `inspect_native_dispatch_metadata` selects a facet or one already-known
     conformance address, but cannot select a protocol/type and discover its
     conformances. Arc's 20,000-record conformance pass retains 1,435 rows and

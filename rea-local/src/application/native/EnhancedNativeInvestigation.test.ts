@@ -348,6 +348,40 @@ describe("bounded native UI tracing", () => {
       ),
     ).toMatchObject({ status: "unsupported" });
   });
+
+  it("does not replace requested conformance discovery with symbol-only names", async () => {
+    const result = await new EnhancedTools(testAnalysis()).execute(
+      "inspect_native_dispatch_metadata",
+      {
+        facet: "swift-conformances",
+        swift_conformance_filter: { type_name: "Request" },
+      },
+    );
+    expect(result).toMatchObject({
+      ok: false,
+      error: { _tag: "AnalysisCapabilityUnavailableError" },
+    });
+  });
+
+  it.each([
+    { swift_conformance_filter: {} },
+    { swift_conformance_filter: { protocol_name: null, type_name: null } },
+    { facet: "objc", swift_conformance_filter: { type_name: "Request" } },
+    {
+      facet: "swift-conformances",
+      swift_conformance_address: "0x1000",
+      swift_conformance_filter: { type_name: "Request" },
+    },
+  ])("rejects invalid conformance discovery requests: %j", async (input) => {
+    const result = await new EnhancedTools(testAnalysis()).execute(
+      "inspect_native_dispatch_metadata",
+      input,
+    );
+    expect(result).toMatchObject({
+      ok: false,
+      error: { _tag: "AnalysisInputError" },
+    });
+  });
 });
 
 describe("native UI query outcomes", () => {

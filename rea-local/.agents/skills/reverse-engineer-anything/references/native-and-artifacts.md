@@ -113,6 +113,15 @@ executable address is recovered. With `facet: "swift-conformances"`,
 `swift_conformance_address` selects an exact indexed descriptor before spending
 decode admission on unrelated records; preserve its explicit selection scope
 and matched status. Runtime table ordering and instantiation remain unobserved.
+Use `swift_conformance_filter` with exact `protocol_name` and/or `type_name`
+(CLI `--swift-protocol-name` / `--swift-type-name`) when the descriptor address
+is unknown. The full identity index is scanned before matching decode admission;
+both names are ANDed, and names do not establish module uniqueness. Preserve
+`swift_conformance_discovery`'s examined/matched/admitted counts and unresolved
+pointer/bind records. Imported or malformed names are unknown; complete index
+selection does not establish complete witness decoding. Do not combine this
+filter with `swift_conformance_address` or use a symbol-only fallback to claim
+binary discovery.
 
 `inspect_native_dispatch_metadata` with `facet: "objc"`, `"swift-conformances"`
 or `"swift-vtables"` instead of spending its aggregate `max_records` budget on

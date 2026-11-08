@@ -1,8 +1,12 @@
-import type { ObjcSwiftMetadata } from "../domain/native/objcSwiftMetadata.js";
+import type {
+  ObjcSwiftMetadata,
+  NativeSwiftConformanceFilter,
+} from "../domain/native/objcSwiftMetadata.js";
 import type { DecodedPointer } from "./AppleMachoFixups.js";
 import type { Segment, Section } from "./AppleMachoSelection.js";
 import { issue, type FacetDecodeFacts } from "./AppleDispatchDecodeFacts.js";
 import type { SwiftResilientWitnessObserver } from "./AppleSwiftResilientWitnesses.js";
+import { discoverSwiftConformances } from "./AppleSwiftConformanceDiscovery.js";
 
 /** Resolved file-backed metadata location from the Mach-O layout. */
 export interface ResolvedMetadataLocation {
@@ -69,10 +73,13 @@ export const createSwiftRelativeReader = (input: {
   result: ObjcSwiftMetadata;
 }) => {
   const { bytes, readers: read, budget, result } = input;
-  const resolve = (
+  const inspect = (
     field: bigint,
     mode: RelativeMode = "direct",
-  ): RelativeTarget => {
+  ): {
+    target: RelativeTarget;
+    record: ObjcSwiftMetadata["relative_pointers"][number];
+  } => {
     const displacement = bytes.readInt32LE(read.offset(field, 4));
     const indirectable = mode === "indirectable";
     const indirect =
@@ -118,8 +125,9 @@ export const createSwiftRelativeReader = (input: {
       reason = cause instanceof Error ? cause.message : String(cause);
       target = { kind: "unsupported", reason };
     }
-    if (budget.admit())
-      result.relative_pointers.push({
+    return {
+      target,
+      record: {
         field: read.location(field),
         target: {
           address:
@@ -144,10 +152,19 @@ export const createSwiftRelativeReader = (input: {
           field,
           "Swift ABI signed-relative metadata pointer",
         ),
-      });
-    return target;
+      } satisfies ObjcSwiftMetadata["relative_pointers"][number],
+    };
   };
-  return { resolve, local: (field: bigint) => requireLocal(resolve(field)) };
+  const resolve = (field: bigint, mode: RelativeMode = "direct") => {
+    const observation = inspect(field, mode);
+    if (budget.admit()) result.relative_pointers.push(observation.record);
+    return observation.target;
+  };
+  return {
+    inspect,
+    resolve,
+    local: (field: bigint) => requireLocal(resolve(field)),
+  };
 };
 
 /** Decode `__swift5_proto` conformances and static witness slots into `result`. */
@@ -160,6 +177,8 @@ export const decodeSwiftDispatchFacets = (input: {
   result: ObjcSwiftMetadata;
   resilient?: SwiftResilientWitnessObserver;
   conformanceAddress?: bigint;
+  conformanceFilter?: NativeSwiftConformanceFilter;
+  maxRecords: number;
 }): FacetDecodeFacts => {
   const {
     sections,
@@ -170,6 +189,8 @@ export const decodeSwiftDispatchFacets = (input: {
     result,
     resilient,
     conformanceAddress,
+    conformanceFilter,
+    maxRecords,
   } = input;
   const swiftFailures: string[] = [];
   const issues = [] as ReturnType<typeof issue>[];
@@ -180,6 +201,17 @@ export const decodeSwiftDispatchFacets = (input: {
       address: hex(conformanceAddress),
       matched: false,
     };
+  const discovery =
+    conformanceFilter === undefined
+      ? undefined
+      : discoverSwiftConformances({
+          sections,
+          read,
+          relative,
+          filter: conformanceFilter,
+          maxRecords,
+          result,
+        });
   for (const section of sections.filter(
     ({ name }) => name === "__swift5_proto",
   )) {
@@ -187,6 +219,7 @@ export const decodeSwiftDispatchFacets = (input: {
       throw new RangeError("Misaligned Swift conformance section");
     for (let index = 0; index < section.size / 4; index++) {
       const field = section.address + BigInt(index * 4);
+      if (discovery !== undefined && !discovery.matches.has(field)) continue;
       // Section membership is checked without spending decode admission on unrelated
       // descriptors. Arbitrary addresses are never treated as conformance entries.
       if (conformanceAddress !== undefined) {
@@ -198,6 +231,8 @@ export const decodeSwiftDispatchFacets = (input: {
           result.swift_conformance_selection.matched = true;
       }
       if (!budget.admit()) break;
+      if (result.swift_conformance_discovery)
+        result.swift_conformance_discovery.admitted++;
       swiftExamined++;
       try {
         const descriptor = relative.local(field);
@@ -366,11 +401,15 @@ export const decodeSwiftDispatchFacets = (input: {
       }
     }
   }
+  discovery?.retainUnresolved(budget);
   return {
     facet: "swift_conformances_static_witness_slots",
     examined: swiftExamined,
     decoded: decodedRecords,
-    exhaustive: !budget.truncated && issues.length === 0,
+    exhaustive:
+      !budget.truncated &&
+      issues.length === 0 &&
+      (result.swift_conformance_discovery?.unresolved ?? 0) === 0,
     issues,
   };
 };

@@ -3,6 +3,7 @@ import { nativeValueTraceInputSchema } from "../domain/native/nativeValueTrace.j
 import {
   nativeDispatchFacetSchema,
   nativeSwiftConformanceAddressSchema,
+  nativeSwiftConformanceFilterSchema,
   nativeDispatchFileBudgetSchema,
 } from "../domain/native/objcSwiftMetadata.js";
 const traceLiteralInputSchema = z.strictObject({
@@ -15,6 +16,11 @@ export const enhancedInputSchemas = {
   trace_native_values: nativeValueTraceInputSchema,
   inspect_native_dispatch_metadata: z.strictObject({
     swift_conformance_address: nativeSwiftConformanceAddressSchema,
+    swift_conformance_filter: nativeSwiftConformanceFilterSchema
+      .optional()
+      .describe(
+        "Discover conformances by exact case-sensitive local protocol/type metadata names before decode admission; both names are ANDed. Requires facet swift-conformances; cannot combine with swift_conformance_address. Imported or malformed identities remain unresolved, not absent.",
+      ),
     max_file_bytes: nativeDispatchFileBudgetSchema,
     max_records: z
       .number()
