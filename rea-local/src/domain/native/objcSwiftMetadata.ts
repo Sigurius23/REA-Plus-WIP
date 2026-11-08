@@ -289,6 +289,78 @@ export const swiftResilientWitnessSchema = z.strictObject({
   evidence: z.array(nativeMetadataEvidenceSchema).min(1),
 });
 
+/** Shipped generic witness bytes, never an observed instantiated runtime table. */
+export const swiftWitnessTemplateSchema = z.strictObject({
+  conformance: nativeMetadataLocationSchema,
+  conformance_flags: z.number().int().min(0).max(0xffffffff),
+  type_name: z.string().nullable(),
+  protocol_name: z.string().nullable(),
+  pattern: nativeMetadataLocationSchema,
+  generic_control: nativeMetadataLocationSchema.nullable(),
+  template_words: z.number().int().nonnegative().nullable(),
+  extent_source: z.enum(["generic_control", "local_protocol", "unresolved"]),
+  private_words: z.number().int().nonnegative().nullable(),
+  instantiation_flag: z.boolean().nullable(),
+  instantiator: nativeMetadataLocationSchema.nullable(),
+  private_data: nativeMetadataLocationSchema.nullable(),
+  retroactive_context: nativeMetadataLocationSchema.nullable(),
+  conditional_requirement_count: z.number().int().nonnegative(),
+  conditional_requirements: z.array(
+    z.strictObject({
+      location: nativeMetadataLocationSchema,
+      flags: z.number().int().min(0).max(0xffffffff),
+      parameter_encoding: z.number().int().min(0).max(0xffffffff),
+      constraint_encoding: z.number().int().min(0).max(0xffffffff),
+      parameter: nativeMetadataLocationSchema,
+      constraint: nativeMetadataLocationSchema.nullable(),
+      constraint_reference: nativeExternalReferenceSchema.nullable(),
+      decode: nativeMetadataDecodeSchema,
+      evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+    }),
+  ),
+  conditional_pack_count: z.number().int().nonnegative(),
+  conditional_packs: z.array(
+    z.strictObject({
+      location: nativeMetadataLocationSchema,
+      kind: z.number().int().nonnegative(),
+      index: z.number().int().nonnegative(),
+      shape_class: z.number().int().nonnegative(),
+      reserved: z.number().int().nonnegative(),
+      decode: nativeMetadataDecodeSchema,
+      evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+    }),
+  ),
+  entries: z.array(
+    z.strictObject({
+      word_index: z
+        .number()
+        .int()
+        .positive()
+        .describe(
+          "Word index in the shipped pattern after its header; not a runtime table slot.",
+        ),
+      location: nativeMetadataLocationSchema,
+      stored_value: z.string().regex(/^0x[0-9a-f]{16}$/u),
+      requirement: nativeMetadataLocationSchema.nullable(),
+      requirement_flags: z.number().int().min(0).max(0xffffffff).nullable(),
+      kind: z.enum([
+        "hole",
+        "function",
+        "async_descriptor",
+        "non_function",
+        "unresolved",
+      ]),
+      target: nativeMetadataLocationSchema,
+      target_reference: nativeExternalReferenceSchema.nullable(),
+      decode: nativeMetadataDecodeSchema,
+      evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+    }),
+  ),
+  runtime_witness_table: z.literal("not_observed"),
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+});
+
 /** Signed-relative pointer as stored in an Apple binary metadata structure. */
 export const relativePointerSchema = z.strictObject({
   field: nativeMetadataLocationSchema,
@@ -413,6 +485,7 @@ export const objcSwiftMetadataSchema = z.strictObject({
   swift_dispatch_slots: z.array(swiftDispatchSlotSchema).default([]),
   // Historical/provider-only Evidence may omit this newer binary capability.
   swift_resilient_witnesses: z.array(swiftResilientWitnessSchema).optional(),
+  swift_witness_templates: z.array(swiftWitnessTemplateSchema).optional(),
   swift_symbols: z.array(swiftSymbolSchema).default([]),
   relative_pointers: z.array(relativePointerSchema).default([]),
   coverage: z.array(nativeMetadataCoverageSchema).default([]),
@@ -459,6 +532,17 @@ export const inspectNativeDispatchMetadata = (
           reason:
             facet === "swift-conformances"
               ? "provider_name_inventory_does_not_decode_swift_conformances_or_witness_tables"
+              : null,
+          examined: 0,
+          decoded: 0,
+        },
+        {
+          facet: "swift_witness_template_records",
+          status:
+            facet === "swift-conformances" ? "unsupported" : "not_requested",
+          reason:
+            facet === "swift-conformances"
+              ? "provider_name_inventory_does_not_decode_swift_witness_templates"
               : null,
           examined: 0,
           decoded: 0,
@@ -625,6 +709,16 @@ export const inspectNativeDispatchMetadata = (
           facet === "objc"
             ? null
             : "provider_name_inventory_does_not_decode_witness_or_class_vtables",
+        examined: 0,
+        decoded: 0,
+      },
+      {
+        facet: "swift_witness_template_records",
+        status: facet === "objc" ? "not_requested" : "unsupported",
+        reason:
+          facet === "objc"
+            ? null
+            : "provider_name_inventory_does_not_decode_swift_witness_templates",
         examined: 0,
         decoded: 0,
       },

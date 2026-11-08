@@ -269,4 +269,5 @@ concrete object instances remain unobserved. The recorded tool gaps 51–53 are
 open at capture time; this analysis pass does not claim to repair them or complete
 Arc recovery. **Subsequent 2026-11-08 update:** issue 51 is now fixed and retested
 in the [conformance discovery report](arc-conformance-discovery-2026-11-08.md).
-Issues 52–53 remain open.
+Item 52 is also subsequently fixed in the
+[witness-template report](arc-witness-templates-2026-11-08.md). Item 53 remains open.

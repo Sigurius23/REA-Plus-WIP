@@ -1,6 +1,7 @@
 import type { ObjcSwiftMetadata } from "../domain/native/objcSwiftMetadata.js";
 import { issue, type FacetDecodeFacts } from "./AppleDispatchDecodeFacts.js";
 import type { Segment } from "./AppleMachoSelection.js";
+import type { SwiftConformanceTailReader } from "./AppleSwiftConformanceTail.js";
 import type {
   createSwiftRelativeReader,
   DispatchRecordBudget,
@@ -20,6 +21,7 @@ interface Readers {
   readers: SwiftDispatchReaders;
   relative: Relative;
   segments: readonly Segment[];
+  tail: SwiftConformanceTailReader;
 }
 
 /** Tail observation is separate from static runtime witness-table slot decoding. */
@@ -44,28 +46,18 @@ const executable = (address: bigint, segments: readonly Segment[]) =>
 
 /**
  * Swift swift-5.9-RELEASE ABI/Metadata.h and MetadataValues.h: a 16-byte
- * conformance, NumWitnesses, eight-byte requirement/witness pairs, then optional
- * 12-byte GenericWitnessTable. Only the nonconditional/nonretroactive layout is
- * admitted. On supported 64-bit Mach-O, both union alternatives are relative
+ * conformance tails and eight-byte requirement/witness pairs. Shared tail
+ * parsing accounts for retroactive/conditional/pack prefixes and optional
+ * generic control data. On supported 64-bit Mach-O, both union alternatives are relative
  * pointers; unavailable imported requirement flags never imply a function kind.
  */
 const readTail = (input: Readers & { descriptor: bigint; flags: number }) => {
-  const { descriptor, flags, readers: read, relative, segments } = input;
-  if ((flags & ~0x30038) !== 0)
-    throw new TypeError(
-      "Unsupported resilient conformance flags or preceding tail layout",
-    );
-  const count = read.u32(descriptor + 16n);
-  const generic =
-    (flags & 0x20000) === 0 ? null : descriptor + 20n + BigInt(count * 8);
-  // Validate the entire declared span before emitting any record. A huge count
-  // cannot allocate storage or consume an unbounded loop before admission.
-  read.offset(descriptor + 16n, 4 + count * 8 + (generic === null ? 0 : 12));
+  const { descriptor, flags, segments } = input;
+  const layout = input.tail(descriptor, flags);
+  const { control } = layout;
   const limitations: string[] = [];
-  if (generic !== null) {
-    read.u32(generic); // two uint16 size/control words, not a requirement count
-    const instantiator = relative.resolve(generic + 4n);
-    const privateData = relative.resolve(generic + 8n);
+  if (control !== null) {
+    const { instantiator, privateData } = control;
     if (
       instantiator.kind !== "local" ||
       (instantiator.address !== 0n &&
@@ -79,12 +71,12 @@ const readTail = (input: Readers & { descriptor: bigint; flags: number }) => {
         "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected",
       );
   }
-  return { count, generic, limitations };
+  return { ...layout, limitations };
 };
 
 const readRecord = (
   input: Readers & {
-    descriptor: bigint;
+    records: bigint;
     conformance: Conformance;
     ordinal: number;
     generic: bigint | null;
@@ -92,14 +84,14 @@ const readRecord = (
   },
 ): Witness => {
   const {
-    descriptor,
+    records,
     conformance,
     ordinal,
     generic,
     readers: read,
     relative,
   } = input;
-  const record = descriptor + 20n + BigInt(ordinal * 8);
+  const record = records + BigInt(ordinal * 8);
   const problems = [...input.limitations];
   const requirement = relative.resolve(record, "indirectable");
   let requirementLocation: Witness["requirement"] = absent;
@@ -194,7 +186,7 @@ export const createSwiftResilientWitnessReader = (
       if ((flags & 0x10000) === 0) return;
       examined++;
       try {
-        const { count, generic, limitations } = readTail({
+        const { count, generic, limitations, resilient } = readTail({
           ...input,
           descriptor,
           flags,
@@ -203,7 +195,7 @@ export const createSwiftResilientWitnessReader = (
           if (!budget.admit()) break;
           const record = readRecord({
             ...input,
-            descriptor,
+            records: resilient,
             conformance,
             ordinal,
             generic,

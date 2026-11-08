@@ -27,6 +27,8 @@ import {
 } from "./AppleSwiftDispatchFacets.js";
 import { decodeSwiftClassVtables } from "./AppleSwiftVtables.js";
 import { createSwiftResilientWitnessReader } from "./AppleSwiftResilientWitnesses.js";
+import { createSwiftConformanceTailReader } from "./AppleSwiftConformanceTail.js";
+import { createSwiftWitnessTemplateReader } from "./AppleSwiftWitnessTemplates.js";
 
 /** Decode validated little-endian 64-bit Apple Objective-C metadata without loading target code. */
 export const decodeAppleDispatchMetadata = (
@@ -174,6 +176,10 @@ export const decodeAppleDispatchMetadata = (
     budget: swiftBudget,
     result,
   });
+  const conformanceTail = createSwiftConformanceTailReader({
+    readers: { ...readers, pointer: decodePointer },
+    relative: swiftRelative,
+  });
   const resilient =
     facet === "all" || facet === "swift-conformances"
       ? createSwiftResilientWitnessReader({
@@ -182,6 +188,18 @@ export const decodeAppleDispatchMetadata = (
           segments,
           budget: swiftBudget,
           result,
+          tail: conformanceTail,
+        })
+      : undefined;
+  const templates =
+    facet === "all" || facet === "swift-conformances"
+      ? createSwiftWitnessTemplateReader({
+          readers: { ...readers, pointer: decodePointer },
+          relative: swiftRelative,
+          segments,
+          budget: swiftBudget,
+          result,
+          tail: conformanceTail,
         })
       : undefined;
   const swift =
@@ -195,6 +213,7 @@ export const decodeAppleDispatchMetadata = (
           result,
           maxRecords,
           ...(resilient === undefined ? {} : { resilient }),
+          ...(templates === undefined ? {} : { templates }),
           ...(swiftConformanceAddress === undefined
             ? {}
             : { conformanceAddress: BigInt(swiftConformanceAddress) }),
@@ -274,6 +293,7 @@ export const decodeAppleDispatchMetadata = (
     vtables,
     swift,
     ...(resilient === undefined ? {} : { resilient: resilient.facts() }),
+    ...(templates === undefined ? {} : { templates: templates.facts() }),
   });
   return objcSwiftMetadataSchema.parse(result);
 };

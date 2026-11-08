@@ -11,6 +11,7 @@ describe("ObjC/Swift metadata", () => {
     expect(historical).not.toHaveProperty("swift_resilient_witnesses");
     expect(historical).not.toHaveProperty("swift_conformance_selection");
     expect(historical).not.toHaveProperty("swift_conformance_discovery");
+    expect(historical).not.toHaveProperty("swift_witness_templates");
     expect(
       objcSwiftMetadataSchema.parse(JSON.parse(JSON.stringify(historical))),
     ).toEqual(historical);

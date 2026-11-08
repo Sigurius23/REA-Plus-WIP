@@ -95,8 +95,8 @@ complete observation.
   layout decoding is unsupported. Local type names and conformance locations
   remain available without claiming to decode another image's metadata.
   `swift_resilient_witnesses` separately reports static, order-independent
-  requirement/witness pairs for the proved nonconditional, nonretroactive
-  conformance-tail layout. `record_ordinal` identifies the record in that
+  requirement/witness pairs after checked retroactive, conditional-requirement
+  and pack-shape prefixes. `record_ordinal` identifies the record in that
   conformance, not a runtime table slot. Imported requirement binds retain their
   symbol/library/weak/addend identity with null flags. A mapped executable target
   then has kind `executable_address` and partial decode; a locally decoded,
@@ -114,6 +114,24 @@ complete observation.
   generic-control header does not require its runtime private storage to be
   file-backed: unavailable control targets retain partial limitations without
   erasing independently valid static requirement/witness records.
+  `swift_witness_templates` separately retains shipped generic/resilient patterns
+  and their conformance tails, with `runtime_witness_table: "not_observed"`.
+  Template extent comes from the generic control's copy-size word or a local
+  stable protocol's requirement count; an unproved extent never scans adjacent
+  data as extra entries. Entries preserve raw words, holes, pointer/bind identity
+  and available requirement flags. An async requirement identifies an
+  `async_descriptor` location, not an invoked function entry. Only a proved
+  synchronous requirement and executable target is classified as `function`.
+  Resilient ordering, unknown flags, imported layouts and coroutine interpretation
+  remain explicit limitations. Template word indexes are not runtime slot indexes,
+  and these records do not populate `swift_dispatch_slots`.
+  Encoded conditional requirements and pack descriptors are retained without
+  evaluating generic arguments, demangling symbolic type strings or invoking an
+  instantiator. Their layouts follow the
+  [Swift generic-context declarations](https://github.com/swiftlang/swift/blob/swift-6.0-RELEASE/include/swift/ABI/GenericContext.h).
+  Templates, nested records and relative-pointer observations share `max_records`;
+  omitted entries are partial. Historical Evidence and symbol-only providers may
+  omit this array; binary conformance inspection includes it even when empty.
   With `facet: "swift-conformances"`, optional `swift_conformance_address`
   (CLI `--swift-conformance-address`) selects one exact unslid descriptor from
   the image's indexed conformance section before spending admission on unrelated

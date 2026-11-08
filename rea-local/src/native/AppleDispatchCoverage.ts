@@ -40,6 +40,7 @@ export const pushDispatchCoverage = (input: {
   readonly vtables: FacetDecodeFacts;
   readonly swift: FacetDecodeFacts;
   readonly resilient?: FacetDecodeFacts;
+  readonly templates?: FacetDecodeFacts;
 }): void => {
   const {
     result,
@@ -53,13 +54,16 @@ export const pushDispatchCoverage = (input: {
     vtables,
     swift,
     resilient,
+    templates,
   } = input;
   const objcRequested = facet === "all" || facet === "objc";
   const swiftRequested = facet === "all" || facet === "swift-conformances";
   const vtablesRequested = facet === "all" || facet === "swift-vtables";
   const conformanceSelection = result.swift_conformance_selection;
   const discovery = result.swift_conformance_discovery;
-  const selectionMatched = conformanceSelection?.matched !== false;
+  const selectionMatched =
+    conformanceSelection?.matched !== false &&
+    (discovery?.unresolved ?? 0) === 0;
   const selectionScope =
     conformanceSelection === undefined
       ? []
@@ -169,7 +173,7 @@ export const pushDispatchCoverage = (input: {
           facet: "swift_generic_resilient_witnesses_overrides_async_coroutines",
           status: "unsupported",
           reason:
-            "Static resilient requirement/witness records have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine dispatch and other unsupported Swift layouts are not decoded",
+            "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
           examined: 0,
           decoded: 0,
         }
@@ -250,6 +254,25 @@ export const pushDispatchCoverage = (input: {
           decoded: resilient.decoded,
         }
       : notRequested("swift_resilient_witness_records"),
+  );
+  result.coverage.push(
+    swiftRequested && templates !== undefined
+      ? {
+          facet: "swift_witness_template_records",
+          status:
+            templates.exhaustive && selectionMatched && !truncated.swift
+              ? "complete"
+              : "partial",
+          reason:
+            [
+              ...selectionScope,
+              ...templates.issues.map(formatIssue),
+              ...(truncated.swift ? ["max_records_reached"] : []),
+            ].join("; ") || null,
+          examined: templates.examined,
+          decoded: templates.decoded,
+        }
+      : notRequested("swift_witness_template_records"),
   );
   result.coverage.push(
     vtablesRequested

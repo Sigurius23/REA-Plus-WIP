@@ -230,8 +230,44 @@ const checkResilientSwift = (metadata, oracle) => {
   }
 };
 
+const checkWitnessTemplates = (
+  metadata,
+  types = ["ReaGenericAdaptor", "ReaConditionalBox"],
+) => {
+  for (const type of types) {
+    const record = metadata.swift_witness_templates.find(
+      (x) => x.type_name === type,
+    );
+    assert.ok(record, `Missing ${type} witness template`);
+    assert.equal(record.runtime_witness_table, "not_observed");
+    assert.equal(record.template_words, 3);
+    assert.deepEqual(
+      record.entries.map((x) => x.kind),
+      ["async_descriptor", "function"],
+    );
+    assert.equal(record.entries[0].requirement_flags, 0x31);
+    assert.equal(record.entries[1].requirement_flags, 0x13);
+    assert.equal(
+      metadata.swift_dispatch_slots.some((x) => x.owner.startsWith(type + ":")),
+      false,
+    );
+    if (type === "ReaConditionalBox") {
+      assert.equal(record.extent_source, "generic_control");
+      assert.equal(record.conditional_requirement_count, 1);
+      assert.equal(record.conditional_requirements.length, 1);
+      assert.equal(record.conditional_requirements[0].flags & 31, 0);
+      assert.ok(record.conditional_requirements[0].constraint.address);
+      assert.ok(record.private_words >= 1);
+    } else {
+      assert.equal(record.extent_source, "local_protocol");
+      assert.equal(record.generic_control, null);
+    }
+  }
+};
+
 const checkSwift = (metadata, mode) => {
   checkExternalSwift(metadata);
+  checkWitnessTemplates(metadata);
   if (
     !metadata.swift_dispatch_slots.some(
       (slot) =>
@@ -267,7 +303,10 @@ const checkSwift = (metadata, mode) => {
 };
 
 const checkSelectedSwiftFacet = (metadata, facet) => {
-  if (facet === "swift-conformances") checkExternalSwift(metadata);
+  if (facet === "swift-conformances") {
+    checkExternalSwift(metadata);
+    checkWitnessTemplates(metadata);
+  }
   const selected = facet === "swift-vtables" ? "class_vtable" : "witness_table";
   assert.equal(metadata.objc_classes.length, 0);
   assert.ok(
@@ -313,6 +352,8 @@ const verifyConformanceDiscovery = async (client, path, advertised, ajv) => {
     [null, "ReaWitnessFixture", "ReaWitnessFixture"],
     ["ReaWitnessFixtureProtocol", "ReaWitnessFixture", "ReaWitnessFixture"],
     [null, "ReaArrayFixture", "ReaArrayFixture"],
+    [null, "ReaGenericAdaptor", "ReaGenericAdaptor"],
+    [null, "ReaConditionalBox", "ReaConditionalBox"],
     [null, "MissingType", null],
   ]) {
     const input = {
@@ -369,6 +410,8 @@ const verifyConformanceDiscovery = async (client, path, advertised, ajv) => {
     if (type === "ReaArrayFixture")
       assert.ok(metadata.swift_conformances[0].protocol_reference?.symbol);
     if (expected === null) assert.equal(discovery.unresolved, 0);
+    if (type === "ReaGenericAdaptor" || type === "ReaConditionalBox")
+      checkWitnessTemplates(metadata, [type]);
     checks.push({
       filter: discovery.filter,
       matched: discovery.matched,
@@ -545,6 +588,11 @@ try {
         conformances: metadata.swift_conformances.length,
         slots: metadata.swift_dispatch_slots.length,
         resilient_records: metadata.swift_resilient_witnesses.length,
+        witness_templates: metadata.swift_witness_templates.filter(
+          (x) =>
+            x.type_name === "ReaGenericAdaptor" ||
+            x.type_name === "ReaConditionalBox",
+        ),
         resilient_compiler_oracle: oracle,
         fixups: fixupCoverage(metadata)?.reason,
       });

@@ -7,6 +7,7 @@ import type { Segment, Section } from "./AppleMachoSelection.js";
 import { issue, type FacetDecodeFacts } from "./AppleDispatchDecodeFacts.js";
 import type { SwiftResilientWitnessObserver } from "./AppleSwiftResilientWitnesses.js";
 import { discoverSwiftConformances } from "./AppleSwiftConformanceDiscovery.js";
+import type { SwiftWitnessTemplateObserver } from "./AppleSwiftWitnessTemplates.js";
 
 /** Resolved file-backed metadata location from the Mach-O layout. */
 export interface ResolvedMetadataLocation {
@@ -176,6 +177,7 @@ export const decodeSwiftDispatchFacets = (input: {
   budget: DispatchRecordBudget;
   result: ObjcSwiftMetadata;
   resilient?: SwiftResilientWitnessObserver;
+  templates?: SwiftWitnessTemplateObserver;
   conformanceAddress?: bigint;
   conformanceFilter?: NativeSwiftConformanceFilter;
   maxRecords: number;
@@ -188,6 +190,7 @@ export const decodeSwiftDispatchFacets = (input: {
     budget,
     result,
     resilient,
+    templates,
     conformanceAddress,
     conformanceFilter,
     maxRecords,
@@ -310,6 +313,14 @@ export const decodeSwiftDispatchFacets = (input: {
         };
         result.swift_conformances.push(conformance);
         resilient?.decodeConformance({ descriptor, flags, conformance });
+        if (!staticWitness)
+          templates?.decodeConformance({
+            descriptor,
+            flags,
+            conformance,
+            protocol,
+            pattern: witness,
+          });
         if (conformanceDecode.status === "decoded") decodedRecords++;
         if (witnessReason !== null) {
           swiftFailures.push(`${typeName}: ${witnessReason}`);
@@ -389,6 +400,7 @@ export const decodeSwiftDispatchFacets = (input: {
       } catch (cause) {
         const message = cause instanceof Error ? cause.message : String(cause);
         resilient?.failedConformance(field, message);
+        templates?.failedConformance(field, message);
         swiftFailures.push(`${hex(field)}: ${message}`);
         issues.push(
           issue(

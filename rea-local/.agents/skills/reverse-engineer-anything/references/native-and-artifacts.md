@@ -105,7 +105,6 @@ Null class/meta flags, ivar counts, atomicity, or read-only values mean the
 selected provider did not establish that fact. Symbol names alone do not prove
 that a class is a root class or has no ivars.
 
-For a budget-limited native metadata investigation, select
 `inspect_native_dispatch_metadata` can retain static resilient Swift
 requirement/witness pairs independently of instantiated runtime witness slots.
 Imported requirement flags and signatures can remain unknown even when a local
@@ -113,6 +112,12 @@ executable address is recovered. With `facet: "swift-conformances"`,
 `swift_conformance_address` selects an exact indexed descriptor before spending
 decode admission on unrelated records; preserve its explicit selection scope
 and matched status. Runtime table ordering and instantiation remain unobserved.
+`swift_witness_templates` retains shipped generic pattern words, holes,
+conditional requirement/pack metadata and async-descriptor locations separately
+from dispatch slots. Preserve `extent_source`, raw flags/words, partial decode
+and `runtime_witness_table: "not_observed"`. A template word index is not an
+observed runtime slot, and an `async_descriptor` target is not a function entry.
+Generic conditions are not evaluated; no instantiator or target is executed.
 Use `swift_conformance_filter` with exact `protocol_name` and/or `type_name`
 (CLI `--swift-protocol-name` / `--swift-type-name`) when the descriptor address
 is unknown. The full identity index is scanned before matching decode admission;
@@ -123,8 +128,8 @@ selection does not establish complete witness decoding. Do not combine this
 filter with `swift_conformance_address` or use a symbol-only fallback to claim
 binary discovery.
 
-`inspect_native_dispatch_metadata` with `facet: "objc"`, `"swift-conformances"`
-or `"swift-vtables"` instead of spending its aggregate `max_records` budget on
+For a budget-limited investigation, select `facet: "objc"`, `"swift-conformances"`
+or `"swift-vtables"` instead of spending the aggregate `max_records` budget on
 all families. CLI uses `--facet`; omitted selection remains `"all"`.
 Unselected families are `not_requested`, and unavailable binary decoders remain
 unsupported. Selection does not raise the input-byte budget or prove that

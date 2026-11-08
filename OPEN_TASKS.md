@@ -4,13 +4,23 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Swift witness templates, item 52 (2026-11-08):** Fixed within the documented
+  static metadata scope and retested on Arc 1.172.1. `swift_witness_templates`
+  preserves shipped words, holes, conditional/pack metadata, generic controls
+  and async-descriptor locations separately from runtime dispatch slots. Arc's
+  adaptor now returns its four-word pattern and three entries; private runtime
+  storage remains explicitly unobserved/partial. Owned generic and conditional
+  Swift fixtures, including stripped binaries, pass real CLI/MCP checks.
+  **53 remains open**. See the
+  [repair/retest report](field-tests/arc-witness-templates-2026-11-08.md).
 - **Swift conformance discovery, item 51 (2026-11-08):** Fixed and retested on
   the supplied Arc 1.172.1 DMG. Exact protocol/type name filters scan all 22,066
   index entries before matching decode admission, recovering both UI delegates,
   the selector adaptor and the editor's four local conformances without manual
   descriptor preparation. Six compiled CLI/MCP comparisons agree; imported or
   malformed requested identities remain unresolved, and omitted matches/records
-  retain explicit budget accounting. Issues **52–53 remain open**. See the
+  retain explicit budget accounting. Item 52 is subsequently fixed above;
+  **53 remains open**. See the
   [repair/retest report](field-tests/arc-conformance-discovery-2026-11-08.md).
 - **Arc delegate/evaluator follow-up (2026-11-06, continued 2026-11-08):** On the fixed 1.172.1 DMG,
   selected public metadata identifies `BoostsEditorWindowContent` as the
@@ -24,7 +34,7 @@ Open work on `main` following PR #1 and the field tests.
   Capability
   gaps **51–52** recorded the missing protocol-scoped discovery and generic
   witness-template observations; the latter has an owned source-built
-  CLI/MCP reproduction. Item 51 is subsequently fixed above. **53** records misleading disk-capacity diagnostics.
+  CLI/MCP reproduction. Items 51–52 are subsequently fixed above. **53** records misleading disk-capacity diagnostics.
   Full feature behavior remains partial. See the
   [follow-up report](field-tests/arc-dispatch-2026-11-06.md) and its captures.
 - **Arc DMG repairs and retest (2026-11-06):** Items **45–47 are fixed for
@@ -214,7 +224,7 @@ Open work on `main` following PR #1 and the field tests.
    engineering scope (17–29) is complete with the documented dynamic/coverage
    limits; those limits do not establish full runtime understanding. Arc's
    tool gaps 38–50 are done within their documented profiles; new capability
-   gap 51 is now fixed, while 52–53 remain open. Its broader
+   gaps 51–52 are now fixed, while 53 remains open. Its broader
    feature/design investigation remains incomplete. The latest
    [delegate/evaluator follow-up](field-tests/arc-dispatch-2026-11-06.md#evidence-boundaries-and-remaining-work)
    records the remaining command-dispatch effects, overlay coordinates and
@@ -1089,7 +1099,26 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     the existing partial overview. Captures:
     `field-tests/arc-dispatch-2026-11-06/`.
 
-52. **Retain static generic/runtime-instantiated Swift witness templates.** Open capability gap (2026-11-06).
+52. **Retain static generic/runtime-instantiated Swift witness templates.** Done (2026-11-08), within the documented static metadata profile.
+    `swift_witness_templates` now retains pattern/control addresses, bounded
+    template extent, raw words, holes, available requirement flags, pointer/bind
+    identities, conditional requirement/pack records and async-descriptor
+    locations. Generic control copy size or a local stable protocol bounds the
+    pattern; unknown/resilient ordering is not guessed. Shared conformance-tail
+    parsing handles checked retroactive/conditional/pack prefixes and preserves
+    resilient pairs without decoding the same control pointers twice. Headers,
+    entries, conditions, packs and pointers share `max_records`; missing context,
+    malformed spans, unknown flags and omitted records remain partial. Templates
+    do not populate runtime dispatch slots, and no condition or instantiator is
+    evaluated. Arc retesting recovers the adaptor's hole, async descriptor
+    `0x10378c758` and synchronous target `0x1012fa5e0`; private storage remains
+    unobserved. The unchanged original owned fixture now returns two entries
+    within its three-word pattern, and real generic/conditional stripped Swift
+    fixtures pass CLI/MCP checks. Async/coroutine execution and actual runtime
+    tables remain outside this static capability. Details:
+    `field-tests/arc-witness-templates-2026-11-08.md`.
+
+    Original reproduction (2026-11-06):
     Exact selected metadata identifies Arc's `WebContentsAdaptor` conformance
     to `SelectorPickerWebContents` and its shipped witness-template address,
     but emits no dispatch slots, reporting conditional/generic/resilient
