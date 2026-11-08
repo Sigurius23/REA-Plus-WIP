@@ -1,0 +1,57 @@
+{
+  "steps": [
+    {
+      "name": "scan_byte_patterns",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-arm64",
+        "patterns": [
+          {
+            "name": "ui-delegate-protocol-name",
+            "pattern": "57 65 62 43 6f 6e 74 65 6e 74 55 49 44 65 6c 65 67 61 74 65 00"
+          },
+          {
+            "name": "selector-evaluator-name-candidate",
+            "pattern": "4a 61 76 61 53 63 72 69 70 74 45 76 61 6c 75 61 74 6f 72"
+          }
+        ],
+        "scope": "all",
+        "max_matches": 1000
+      },
+      "label": "dispatch-type-name-bytes",
+      "expect_success": true
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x1012e6bc8"
+      },
+      "label": "selector-callback-xrefs",
+      "expect_success": true
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x10054aec8"
+      },
+      "label": "delegate-setter-xrefs",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x1039cd520",
+        "length": 176
+      },
+      "label": "response-encoder-failure-literal",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/seeded/phase-3-bundle.json"
+      },
+      "label": "phase-3-export",
+      "expect_success": true
+    }
+  ]
+}

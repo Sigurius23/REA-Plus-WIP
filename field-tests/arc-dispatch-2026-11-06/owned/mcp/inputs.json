@@ -1,0 +1,52 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/owned/mcp",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "120000"
+  },
+  "timeout_ms": 180000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-arc-generic-witness-_rw1oliv/OwnedGenericWitness.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-conformances",
+        "max_records": 20000
+      },
+      "label": "generic-witness-metadata",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x4040",
+        "length": 32
+      },
+      "label": "generic-witness-template-bytes",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/owned/mcp/evidence-bundle.json"
+      },
+      "label": "export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "close",
+      "expect_success": true
+    }
+  ]
+}

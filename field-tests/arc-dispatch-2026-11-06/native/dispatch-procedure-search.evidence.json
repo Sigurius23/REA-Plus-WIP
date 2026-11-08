@@ -1,0 +1,670 @@
+{
+  "evidence_id": "ev_b5f716629bd7b24eb68d2b0e1b78f5379556d4aefcca18d7ff85e4a54f06c1e7",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/private/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-arm64"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "mach-o",
+      "architecture": "arm64",
+      "available_architectures": [
+        "arm64"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "swift_enum_switch_recovery": "abi-signed-word-cfg-v1",
+      "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default",
+      "analysis_policy": "bounded-autoanalysis-v1",
+      "analysis_timeout_seconds": 60,
+      "analysis_seeds": {
+        "format": "rea-ghidra-seeds-v1",
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/caller-established-seeds.tsv",
+        "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/caller-established-seeds.tsv",
+        "sha256": "488578a73a7569b1fdcf2289fd591b5e1cd64ea3868177a7439e0a57d5f6cae5",
+        "entries": {
+          "function": 5,
+          "code": 0,
+          "label": 0
+        }
+      }
+    },
+    "digest": "12106fa0984547f6dd8e271b3cdd264abf7f038a095af4732e1e8572ccedec0e"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "search_procedures",
+  "parameters": {
+    "pattern": "uiDelegate|BoostIDE|WebContentUIDelegate|evaluateJavaScript|SelectorPicker|rectsForSelector",
+    "mode": "regex",
+    "case_sensitive": false
+  },
+  "raw_result": [
+    {
+      "address": "0x10053c5b0",
+      "value": "_TtC3ADK18WebContentChromium::boostIDEDidOpen:"
+    },
+    {
+      "address": "0x10053c658",
+      "value": "_TtC3ADK18WebContentChromium::boostIDEWillClose:"
+    },
+    {
+      "address": "0x10053c8f4",
+      "value": "_TtC3ADK18WebContentChromium::boostIDE:didRequestExecuteCommand:jsonString:"
+    },
+    {
+      "address": "0x100566cb0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::init"
+    },
+    {
+      "address": "0x100566d1c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsRenderViewReady:"
+    },
+    {
+      "address": "0x100566d20",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didChangePointerLock:requestingOrigin:"
+    },
+    {
+      "address": "0x100566d24",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willRunJavaScriptAlertPanel:withMessage:completion:"
+    },
+    {
+      "address": "0x100566d28",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willRunJavaScriptConfirmPanel:withMessage:completion:"
+    },
+    {
+      "address": "0x100566d2c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willRunJavaScriptTextInputPanel:withMessage:withDefaultText:completion:"
+    },
+    {
+      "address": "0x100566d30",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:runJavaScriptApplicationModalBeforeUnloadPanel:withMessage:withPrimaryButtonLabel:completion:"
+    },
+    {
+      "address": "0x100566d34",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:finalizeDiscardRequest:"
+    },
+    {
+      "address": "0x100566d38",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsWillCloseJavaScriptPanel:"
+    },
+    {
+      "address": "0x100566d3c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onShareThisTabStateChanged:"
+    },
+    {
+      "address": "0x100566d40",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didConsumeKey:withModifierFlags:underlyingEventType:"
+    },
+    {
+      "address": "0x100566d44",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didChangeAudibleState:"
+    },
+    {
+      "address": "0x100566d48",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didChangeMuteState:"
+    },
+    {
+      "address": "0x100566d4c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willShowContextMenu:withElement:"
+    },
+    {
+      "address": "0x100566d54",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didSubmitCredentials:"
+    },
+    {
+      "address": "0x100566d58",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsClosingImminent:withSessionID:"
+    },
+    {
+      "address": "0x100566d5c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showWebUIDialog:"
+    },
+    {
+      "address": "0x100566d60",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didCloseWebUIDialog:"
+    },
+    {
+      "address": "0x100566d64",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didAutoFillWebLoginDialog:"
+    },
+    {
+      "address": "0x100566d68",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsDidCloseWebLoginDialog:"
+    },
+    {
+      "address": "0x100566d6c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showExternalProtocolDialog:"
+    },
+    {
+      "address": "0x100566d70",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showWebLoginDialog:"
+    },
+    {
+      "address": "0x100566d74",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didSubmitAddressEntry:"
+    },
+    {
+      "address": "0x100566d78",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didSubmitCreditCardInfo:"
+    },
+    {
+      "address": "0x100566d7c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onHighCPUUsageWhileInBackground:intervalDurationSeconds:"
+    },
+    {
+      "address": "0x100566d80",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showDevToolsToolbox:"
+    },
+    {
+      "address": "0x100566d84",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:updateDevToolsToolbox:"
+    },
+    {
+      "address": "0x100566d88",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsCloseJavaScriptApplicationModalBeforeUnloadPanel:"
+    },
+    {
+      "address": "0x100566d8c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsWantsOverscrollSwipeEvents:"
+    },
+    {
+      "address": "0x100566d94",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showTranslateBubble:withTargetLanguage:"
+    },
+    {
+      "address": "0x100566d98",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showTranslateError:"
+    },
+    {
+      "address": "0x100566d9c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsShowTranslateInProgress:"
+    },
+    {
+      "address": "0x100566da0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didDetermineSourceLanguage:isTranslateEnabled:targetLanguage:isTranslationPending:"
+    },
+    {
+      "address": "0x100566da4",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onTranslateError:"
+    },
+    {
+      "address": "0x100566da8",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsHideHungRendererDialog:"
+    },
+    {
+      "address": "0x100566dac",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsProcessGone:"
+    },
+    {
+      "address": "0x100566db0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showHungRendererDialog:"
+    },
+    {
+      "address": "0x100566db8",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsActivate:"
+    },
+    {
+      "address": "0x100566dbc",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsSelect:shouldActivate:"
+    },
+    {
+      "address": "0x100566dc0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didCloseWithSessionID:"
+    },
+    {
+      "address": "0x100566dc4",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didCreateNewWebContent:targetURL:disposition:"
+    },
+    {
+      "address": "0x100566e80",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willAskForPermission:withRequests:withQuietUIReason:completion:"
+    },
+    {
+      "address": "0x100566e84",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsClosePermission:"
+    },
+    {
+      "address": "0x100566e88",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:canExternallyNavigate:"
+    },
+    {
+      "address": "0x100566e90",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willExternallyNavigate:"
+    },
+    {
+      "address": "0x100566e94",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsDidRequestEnterFullscreen:withDisplayId:requestingOrigin:"
+    },
+    {
+      "address": "0x100566e98",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsDidRequestExitFullscreen:"
+    },
+    {
+      "address": "0x100566e9c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:askForExtensionInstallationConsent:completion:"
+    },
+    {
+      "address": "0x100566ea0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:askForExtensionUninstallationConsent:completion:"
+    },
+    {
+      "address": "0x100566ea4",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didChangeVisibleSecurityState:"
+    },
+    {
+      "address": "0x100566ea8",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didChangeStatusText:"
+    },
+    {
+      "address": "0x100566eac",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onCopyLinkToContextMenu:"
+    },
+    {
+      "address": "0x100566eb0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showTranslateComplete:"
+    },
+    {
+      "address": "0x100566eb4",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onTranslateCompleteToLanguage:"
+    },
+    {
+      "address": "0x100566eb8",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didCaptureImage:"
+    },
+    {
+      "address": "0x100566ebc",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showsAuxiliaryWindow:"
+    },
+    {
+      "address": "0x100566ec0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didFinishPDFRendering:"
+    },
+    {
+      "address": "0x100566ec4",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:hasBlockedPopupWindowsChanged:"
+    },
+    {
+      "address": "0x100566ec8",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didShowWebUI:"
+    },
+    {
+      "address": "0x100566f84",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didDestroyWebUI:newURL:"
+    },
+    {
+      "address": "0x1005670ec",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:promptForArtifactLinkPermissionToURL:willNavigate:forSessionID:folderName:completion:"
+    },
+    {
+      "address": "0x100567184",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willShowConfirmInfobar:"
+    },
+    {
+      "address": "0x100567188",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willCloseConfirmInfobar:"
+    },
+    {
+      "address": "0x1005671f4",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onFrameToChatAssociationRequestForChatId:frameId:updateCallback:completion:"
+    },
+    {
+      "address": "0x1005673dc",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onFrameToChatDisassociationRequestForChatId:frameId:completion:"
+    },
+    {
+      "address": "0x100567618",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onSendChatDataToFrameForChatId:frameId:data:completion:"
+    },
+    {
+      "address": "0x10119b2a4",
+      "value": "FIRAuth::signInWithProvider:UIDelegate:completion:"
+    },
+    {
+      "address": "0x1011ba420",
+      "value": "FIRUser::reauthenticateWithProvider:UIDelegate:completion:"
+    },
+    {
+      "address": "0x1011bce4c",
+      "value": "FIRUser::linkWithProvider:UIDelegate:completion:"
+    }
+  ],
+  "normalized_result": [
+    {
+      "address": "0x10053c5b0",
+      "value": "_TtC3ADK18WebContentChromium::boostIDEDidOpen:"
+    },
+    {
+      "address": "0x10053c658",
+      "value": "_TtC3ADK18WebContentChromium::boostIDEWillClose:"
+    },
+    {
+      "address": "0x10053c8f4",
+      "value": "_TtC3ADK18WebContentChromium::boostIDE:didRequestExecuteCommand:jsonString:"
+    },
+    {
+      "address": "0x100566cb0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::init"
+    },
+    {
+      "address": "0x100566d1c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsRenderViewReady:"
+    },
+    {
+      "address": "0x100566d20",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didChangePointerLock:requestingOrigin:"
+    },
+    {
+      "address": "0x100566d24",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willRunJavaScriptAlertPanel:withMessage:completion:"
+    },
+    {
+      "address": "0x100566d28",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willRunJavaScriptConfirmPanel:withMessage:completion:"
+    },
+    {
+      "address": "0x100566d2c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willRunJavaScriptTextInputPanel:withMessage:withDefaultText:completion:"
+    },
+    {
+      "address": "0x100566d30",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:runJavaScriptApplicationModalBeforeUnloadPanel:withMessage:withPrimaryButtonLabel:completion:"
+    },
+    {
+      "address": "0x100566d34",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:finalizeDiscardRequest:"
+    },
+    {
+      "address": "0x100566d38",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsWillCloseJavaScriptPanel:"
+    },
+    {
+      "address": "0x100566d3c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onShareThisTabStateChanged:"
+    },
+    {
+      "address": "0x100566d40",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didConsumeKey:withModifierFlags:underlyingEventType:"
+    },
+    {
+      "address": "0x100566d44",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didChangeAudibleState:"
+    },
+    {
+      "address": "0x100566d48",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didChangeMuteState:"
+    },
+    {
+      "address": "0x100566d4c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willShowContextMenu:withElement:"
+    },
+    {
+      "address": "0x100566d54",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didSubmitCredentials:"
+    },
+    {
+      "address": "0x100566d58",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsClosingImminent:withSessionID:"
+    },
+    {
+      "address": "0x100566d5c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showWebUIDialog:"
+    },
+    {
+      "address": "0x100566d60",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didCloseWebUIDialog:"
+    },
+    {
+      "address": "0x100566d64",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didAutoFillWebLoginDialog:"
+    },
+    {
+      "address": "0x100566d68",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsDidCloseWebLoginDialog:"
+    },
+    {
+      "address": "0x100566d6c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showExternalProtocolDialog:"
+    },
+    {
+      "address": "0x100566d70",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showWebLoginDialog:"
+    },
+    {
+      "address": "0x100566d74",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didSubmitAddressEntry:"
+    },
+    {
+      "address": "0x100566d78",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didSubmitCreditCardInfo:"
+    },
+    {
+      "address": "0x100566d7c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onHighCPUUsageWhileInBackground:intervalDurationSeconds:"
+    },
+    {
+      "address": "0x100566d80",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showDevToolsToolbox:"
+    },
+    {
+      "address": "0x100566d84",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:updateDevToolsToolbox:"
+    },
+    {
+      "address": "0x100566d88",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsCloseJavaScriptApplicationModalBeforeUnloadPanel:"
+    },
+    {
+      "address": "0x100566d8c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsWantsOverscrollSwipeEvents:"
+    },
+    {
+      "address": "0x100566d94",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showTranslateBubble:withTargetLanguage:"
+    },
+    {
+      "address": "0x100566d98",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showTranslateError:"
+    },
+    {
+      "address": "0x100566d9c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsShowTranslateInProgress:"
+    },
+    {
+      "address": "0x100566da0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didDetermineSourceLanguage:isTranslateEnabled:targetLanguage:isTranslationPending:"
+    },
+    {
+      "address": "0x100566da4",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onTranslateError:"
+    },
+    {
+      "address": "0x100566da8",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsHideHungRendererDialog:"
+    },
+    {
+      "address": "0x100566dac",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsProcessGone:"
+    },
+    {
+      "address": "0x100566db0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showHungRendererDialog:"
+    },
+    {
+      "address": "0x100566db8",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsActivate:"
+    },
+    {
+      "address": "0x100566dbc",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsSelect:shouldActivate:"
+    },
+    {
+      "address": "0x100566dc0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didCloseWithSessionID:"
+    },
+    {
+      "address": "0x100566dc4",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didCreateNewWebContent:targetURL:disposition:"
+    },
+    {
+      "address": "0x100566e80",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willAskForPermission:withRequests:withQuietUIReason:completion:"
+    },
+    {
+      "address": "0x100566e84",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsClosePermission:"
+    },
+    {
+      "address": "0x100566e88",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:canExternallyNavigate:"
+    },
+    {
+      "address": "0x100566e90",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willExternallyNavigate:"
+    },
+    {
+      "address": "0x100566e94",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsDidRequestEnterFullscreen:withDisplayId:requestingOrigin:"
+    },
+    {
+      "address": "0x100566e98",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContentsDidRequestExitFullscreen:"
+    },
+    {
+      "address": "0x100566e9c",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:askForExtensionInstallationConsent:completion:"
+    },
+    {
+      "address": "0x100566ea0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:askForExtensionUninstallationConsent:completion:"
+    },
+    {
+      "address": "0x100566ea4",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didChangeVisibleSecurityState:"
+    },
+    {
+      "address": "0x100566ea8",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didChangeStatusText:"
+    },
+    {
+      "address": "0x100566eac",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onCopyLinkToContextMenu:"
+    },
+    {
+      "address": "0x100566eb0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showTranslateComplete:"
+    },
+    {
+      "address": "0x100566eb4",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onTranslateCompleteToLanguage:"
+    },
+    {
+      "address": "0x100566eb8",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didCaptureImage:"
+    },
+    {
+      "address": "0x100566ebc",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:showsAuxiliaryWindow:"
+    },
+    {
+      "address": "0x100566ec0",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didFinishPDFRendering:"
+    },
+    {
+      "address": "0x100566ec4",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:hasBlockedPopupWindowsChanged:"
+    },
+    {
+      "address": "0x100566ec8",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didShowWebUI:"
+    },
+    {
+      "address": "0x100566f84",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:didDestroyWebUI:newURL:"
+    },
+    {
+      "address": "0x1005670ec",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:promptForArtifactLinkPermissionToURL:willNavigate:forSessionID:folderName:completion:"
+    },
+    {
+      "address": "0x100567184",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willShowConfirmInfobar:"
+    },
+    {
+      "address": "0x100567188",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:willCloseConfirmInfobar:"
+    },
+    {
+      "address": "0x1005671f4",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onFrameToChatAssociationRequestForChatId:frameId:updateCallback:completion:"
+    },
+    {
+      "address": "0x1005673dc",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onFrameToChatDisassociationRequestForChatId:frameId:completion:"
+    },
+    {
+      "address": "0x100567618",
+      "value": "_TtC3ADK28TablessWebContentsUIDelegate::webContents:onSendChatDataToFrameForChatId:frameId:data:completion:"
+    },
+    {
+      "address": "0x10119b2a4",
+      "value": "FIRAuth::signInWithProvider:UIDelegate:completion:"
+    },
+    {
+      "address": "0x1011ba420",
+      "value": "FIRUser::reauthenticateWithProvider:UIDelegate:completion:"
+    },
+    {
+      "address": "0x1011bce4c",
+      "value": "FIRUser::linkWithProvider:UIDelegate:completion:"
+    }
+  ],
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Regex mode uses Java Pattern semantics. Matcher or compiler stack exhaustion returns a resource constraint without closing the session; literal mode avoids regex recursion and returns complete matching values.",
+    "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=60.",
+    "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/caller-established-seeds.tsv (sha256 488578a73a7569b1fdcf2289fd591b5e1cd64ea3868177a7439e0a57d5f6cae5: 5 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+    "Seed outcome: 5 functions created, 0 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

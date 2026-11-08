@@ -1,0 +1,62 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/resolved",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "60",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/resolved/caller-established-seeds.tsv"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012d3c7c"
+      },
+      "label": "boost-editor-delegate-assignment",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100e47b8c"
+      },
+      "label": "frame-delegate-assignment",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012fa578"
+      },
+      "label": "selector-adaptor-evaluator-entry",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012fa5e0"
+      },
+      "label": "selector-adaptor-zoom-getter",
+      "expect_success": true
+    }
+  ],
+  "idle_timeout_ms": 600000,
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/resolved/continuation-1.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/resolved/continuation-2.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/resolved/continuation-3.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/resolved/continuation-4.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dispatch-2026-11-06/resolved/continuation-5.json"
+  ]
+}

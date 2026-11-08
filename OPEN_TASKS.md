@@ -4,6 +4,21 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc delegate/evaluator follow-up (2026-11-06, continued 2026-11-08):** On the fixed 1.172.1 DMG,
+  selected public metadata identifies `BoostsEditorWindowContent` as the
+  substantive Boost-command delegate and `WebContentFrame`'s corresponding
+  slot as a four-byte return stub. The editor's lazy web-content creation path
+  installs its delegate witness; command handling reaches its captured dispatch
+  closure. Selector evaluation now has the concrete `WebContentsAdaptor` /
+  `SelectorPickerWebContents` identity, a main-actor/callback route to
+  `executeJavascript:reason:completion:`, and a fixed-version String/JSON
+  return continuation. The separate async DevTools route is distinguished.
+  New capability
+  gaps **51–52** record the missing protocol-scoped discovery and generic
+  witness-template observations; the latter has an owned source-built
+  CLI/MCP reproduction. **53** records misleading disk-capacity diagnostics.
+  Full feature behavior remains partial. See the
+  [follow-up report](field-tests/arc-dispatch-2026-11-06.md) and its captures.
 - **Arc DMG repairs and retest (2026-11-06):** Items **45–47 are fixed for
   their documented profiles** and retested on the supplied Arc **1.172.1 /
   build 90370** DMG. Return-field provenance reaches the literal; five shipped
@@ -190,11 +205,12 @@ Open work on `main` following PR #1 and the field tests.
    records the remaining tracing and runtime questions. Rize's admitted offline
    engineering scope (17–29) is complete with the documented dynamic/coverage
    limits; those limits do not establish full runtime understanding. Arc's
-   tool gaps 38–50 are done within their documented profiles, while its broader
+   tool gaps 38–50 are done within their documented profiles; new capability
+   gaps 51–53 remain open. Its broader
    feature/design investigation remains incomplete. The latest
-   [DMG retest](field-tests/arc-retest-2026-11-06.md#remaining-arc-questions)
-   records the remaining evaluator/delegate receivers, overlay coordinates
-   and rendering, extension loading and Boost state/persistence questions.
+   [delegate/evaluator follow-up](field-tests/arc-dispatch-2026-11-06.md#evidence-boundaries-and-remaining-work)
+   records the remaining command-dispatch effects, overlay coordinates and
+   rendering, extension loading and Boost state/persistence questions.
 
 ## DEX support
 
@@ -1029,3 +1045,49 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     intended failure and preserves the caller-owned archive. The complete
     isolated package lane is rerun afterward; this is a verification-tooling
     defect, separate from target-analysis correctness.
+
+51. **Discover Swift conformances by protocol before spending decode admission.** Open capability gap (2026-11-06).
+    `inspect_native_dispatch_metadata` selects a facet or one already-known
+    conformance address, but cannot select a protocol/type and discover its
+    conformances. Arc's 20,000-record conformance pass retains 1,435 rows and
+    omits the needed `WebContentUIDelegate` and `SelectorPickerWebContents`
+    conformances. Supplemental preparation over the complete 22,066-entry
+    public index, accounting for distinct chained-pointer alias slots, found
+    exact selectors at indices 6,632, 10,138 and 10,205. Public selected metadata
+    then recovers `WebContentFrame`, `BoostsEditorWindowContent` and
+    `WebContentsAdaptor`. Add protocol/type discovery at the owning metadata
+    boundary, preserving observed index coverage, alias/import identities and
+    unresolved records; filtering only after the same budget is spent would
+    leave the admission problem. Do not infer global conformance absence from
+    the existing partial overview. Captures:
+    `field-tests/arc-dispatch-2026-11-06/`.
+
+52. **Retain static generic/runtime-instantiated Swift witness templates.** Open capability gap (2026-11-06).
+    Exact selected metadata identifies Arc's `WebContentsAdaptor` conformance
+    to `SelectorPickerWebContents` and its shipped witness-template address,
+    but emits no dispatch slots, reporting conditional/generic/resilient
+    witness decoding as unsupported. Public bytes preserve an async descriptor
+    and zoom-getter entry that require supplemental interpretation to select
+    their code. The owned `GenericWitness.swift` reproduction also returns an
+    `OwnedAdaptor: OwnedSurface` row with a template address and zero slots
+    (`ev_583c14deb472b8cb44ecd03c46b9b563bf2229e3666451f9dbb0bf422ac920f4`).
+    Preserve shipped template entries separately from instantiated runtime
+    witness tables, including conditional requirements, holes, async-descriptor
+    locations and uncertainty. This extends item 42's static resilient-record
+    support; it must not invent runtime slot population or concrete instances.
+    Owned source, compiler/input hashes and public CLI Evidence are retained
+    under `field-tests/arc-dispatch-2026-11-06/owned/`; its library was not run.
+
+53. **Report explicit Ghidra disk exhaustion as a capacity failure.** Open diagnostics gap (2026-11-06).
+    The Arc evaluator binding failed while Ghidra wrote its temporary database.
+    Retained diagnostics explicitly contain `java.io.IOException: No space left
+    on device`, but the public result is generic `execution_failure` with
+    "Retry once" remediation. Preserve the underlying diagnostic and classify
+    positively identified disk exhaustion as a resource/capacity condition;
+    name freeing workspace space or reducing analysis demand as the remedy,
+    without suggesting an unchanged retry will repair it or marking it
+    automatically retryable. Unidentified failures must retain their uncertainty.
+    The failed binding closed with verified empty descendants. The follow-up
+    uses a fresh explicit 15-second profile and the same established seeds,
+    rather than repeating the same 60-second resource demand. Capture:
+    `field-tests/arc-dispatch-2026-11-06/evaluator/selector-evaluator-main-actor.reply.json`.

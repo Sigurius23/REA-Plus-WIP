@@ -1,0 +1,41 @@
+{
+  "wrong_selector_slot_candidate": {
+    "address": "0x104550a88",
+    "capture": "native/response-selector-slots.evidence.json",
+    "status": "discarded analyst arithmetic error; not a REA+ defect"
+  },
+  "correct_selector_slots": {
+    "success": "0x104547a88",
+    "other": "0x104547b20",
+    "authority": "ADRP/LDR calculation from public response stubs, followed by public byte validation"
+  },
+  "response_other_name_correction": {
+    "discarded_name_address": "0x103fcb354",
+    "correct_name_address": "0x103fcb306",
+    "slot": "0x104547b20",
+    "source_evidence_id": "ev_a1e3a186f46c1e19792dde61e186eddf6e42fa54fd66cdd87682b47c00a480f5",
+    "reason": "Copying the final word rather than the selected slot was an analyst selection error; corrected by indexing the public slot bytes."
+  },
+  "javascript_template_slot_correction": {
+    "incorrect_capture_label": "evaluator-15s/chromium-javascript-async-descriptor.evidence.json",
+    "actual_address": "0x100575594",
+    "qualification": "First inherited-protocol slot is code, not an async descriptor. It is not used to derive an async entry.",
+    "selected_async_slot": 3,
+    "descriptor": "0x1036d31f0",
+    "correct_capture": "evaluator-15s/chromium-javascript-slot3-async-descriptor.evidence.json"
+  },
+  "javascript_slot1_role": {
+    "capture": "backend/chromium-javascript-owner-projection.evidence.json",
+    "status": "Historical hypothesis label discarded. The body returns an optional unavailability-reason String based on web-content state; it does not project a web-content owner."
+  },
+  "getter_roles": {
+    "backend/chromium-execution-frame-getter-selector-name.evidence.json": "devTools; historical frame-getter hypothesis discarded",
+    "backend/chromium-execution-context-getter-selector-name.evidence.json": "emitFreezingVote:; historical context-getter label does not name its role",
+    "backend/chromium-command-context-getter-selector-name.evidence.json": "boostIDE; command-context getter role now identified"
+  },
+  "javascript_execution_paths": {
+    "selector": "Shared executor invokes JavaScriptExecuting witness slot 2, the callback-based WebContentChromium path at 0x10054eb6c -> 0x100548344.",
+    "separate_async_api": "Witness slot 3 at 0x10054eb8c follows the DevTools async route. It must not be substituted for the selector callback route.",
+    "status": "Earlier commentary conflated the two; final findings distinguish them."
+  }
+}
