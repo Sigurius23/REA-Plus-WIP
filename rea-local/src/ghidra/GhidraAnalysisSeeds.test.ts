@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import {
   mkdtemp,
+  open,
   readFile,
   realpath,
   rm,
@@ -17,6 +18,7 @@ import { silentLogger } from "../logger.js";
 import {
   ghidraSeedFailure,
   ghidraSeedLimitations,
+  MAX_GHIDRA_SEED_BYTES,
   parseGhidraSeeds,
   resolveGhidraAnalysisSeeds,
   snapshotGhidraAnalysisSeeds,
@@ -137,13 +139,87 @@ describe("Ghidra seed commitment", () => {
     expect(resolved.value.path).toBe(await realpath(path));
   });
 
-  it("reports an unreadable seed file as a provider error", async () => {
-    const resolved = await resolveGhidraAnalysisSeeds(
-      join(await workspace(), "absent.tsv"),
-    );
+  it("reports a missing configured seed path with its exact correction setting", async () => {
+    const path = join(await workspace(), "absent seeds.tsv");
+    const resolved = await resolveGhidraAnalysisSeeds(path);
     if (resolved.ok) throw new Error("Expected an error");
+    const error = projectAnalysisError(resolved.error);
+    expect(error).toMatchObject({
+      code: "configuration_invalid",
+      retryable: false,
+      details: {
+        settings: [
+          {
+            setting: "REA_GHIDRA_SEED_FILE",
+            constraint: expect.stringContaining(path),
+          },
+        ],
+      },
+    });
+    expect(error.message).toContain("ENOENT");
+    expect(error.remediation.action).toContain("Correct REA_GHIDRA_SEED_FILE");
+    expect(error.remediation.action).not.toContain("Retry once");
+  });
+
+  it("preserves the configured alias when its symbolic-link target is missing", async () => {
+    const directory = await workspace();
+    const path = join(directory, "selected-link.tsv");
+    await symlink(join(directory, "absent-target.tsv"), path);
+    const resolved = await resolveGhidraAnalysisSeeds(path);
+    if (resolved.ok) throw new Error("Expected a configuration error");
     expect(projectAnalysisError(resolved.error)).toMatchObject({
-      details: { diagnostics: { setting: "REA_GHIDRA_SEED_FILE" } },
+      code: "configuration_invalid",
+      details: {
+        settings: [
+          {
+            setting: "REA_GHIDRA_SEED_FILE",
+            constraint: expect.stringContaining(path),
+          },
+        ],
+      },
+    });
+  });
+
+  it("rejects a selected directory as a configuration problem", async () => {
+    const path = await workspace();
+    const resolved = await resolveGhidraAnalysisSeeds(path);
+    if (resolved.ok) throw new Error("Expected a configuration error");
+    expect(projectAnalysisError(resolved.error)).toMatchObject({
+      code: "configuration_invalid",
+      details: {
+        settings: [
+          {
+            setting: "REA_GHIDRA_SEED_FILE",
+            constraint: expect.stringContaining("regular file"),
+          },
+        ],
+      },
+    });
+    expect(projectAnalysisError(resolved.error).message).toContain(path);
+  });
+
+  it("reports the seed byte limit before allocating or decoding an oversized file", async () => {
+    const path = join(await workspace(), "oversized.tsv");
+    const file = await open(path, "wx");
+    try {
+      await file.truncate(MAX_GHIDRA_SEED_BYTES + 1);
+    } finally {
+      await file.close();
+    }
+    const resolved = await resolveGhidraAnalysisSeeds(path);
+    if (resolved.ok) throw new Error("Expected a configuration error");
+    expect(projectAnalysisError(resolved.error)).toMatchObject({
+      code: "configuration_invalid",
+      details: {
+        settings: [
+          {
+            setting: "REA_GHIDRA_SEED_FILE",
+            constraint: expect.stringContaining(
+              `supported maximum is ${MAX_GHIDRA_SEED_BYTES} bytes`,
+            ),
+          },
+        ],
+      },
     });
   });
 });

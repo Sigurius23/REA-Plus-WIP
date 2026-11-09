@@ -1,0 +1,40 @@
+{
+  "source_parent": "5d194de15e0dc1aba06229fee0241659bd6a0338",
+  "issue": 54,
+  "scope": "Ghidra configured seed-file diagnostics at the profile-resolution boundary",
+  "before": {
+    "source": "field-tests/arc-persistence-routes-2026-11-08/native/open.reply.json",
+    "sha256": "07a89812992612ecef9ee34d9b8efafe0bf09b095d547a3b7d43748b5aac6284",
+    "code": "execution_failure",
+    "caller_cause": "The seed file was absent because the caller orchestration started after its preparation assertion failed. The separate product issue is the generic execution_failure and unchanged-retry guidance."
+  },
+  "after": {
+    "verification": "public-verification.json",
+    "public_cli_cases": 3,
+    "public_mcp_cases": 3,
+    "mcp_tool_calls": 6,
+    "canonical_error_schema_validated": true,
+    "successful_close_named_contract_and_advertised_schema_validated": true,
+    "cli_mcp_errors_equal": true,
+    "source_tests": 29,
+    "source_test_files": 2
+  },
+  "source_sha256": {
+    "rea-local/src/ghidra/GhidraAnalysisSeeds.ts": "8bca4bccce59de8347556fae98874c2a62bb173ae89db54178b540822b611e7b",
+    "rea-local/src/ghidra/GhidraAnalysisSeeds.test.ts": "76ef508f0e2fa9cd6f53e554342072e5bc8070d4de5e473644bfa9b727f4426b",
+    "rea-local/src/ghidra/GhidraAnalysisSeeds.io.test.ts": "3edfdd35ee8b1047b77935fd90e33954db2fff8005f267ad3757840e62575c6e"
+  },
+  "compiled_module_sha256": "05ca9483669d3b11db622a8dca9698c4ffce7c80845c2a8f17b1d45c6071c823",
+  "target_executed": false,
+  "permission_capacity_events": "EACCES/EPERM/ENOSPC preservation is injected source-boundary coverage; public checks do not induce host capacity or permission failures",
+  "verification_commands": [
+    "npm run test:local -- src/ghidra/GhidraAnalysisSeeds.test.ts src/ghidra/GhidraAnalysisSeeds.io.test.ts",
+    "npm run typecheck",
+    "npm run build:cached",
+    "node field-tests/arc-seed-diagnostics-2026-11-08/verify-public.mjs",
+    "npm run check:fast",
+    "npm run docs:check:built"
+  ],
+  "docs_check_scope": "Direct built documentation checks passed; the Turbo wrapper was not invoked again while other agents used dist. No second rebuild was performed.",
+  "lineage_scope": "Three verified-empty point-in-time observations under one verifier run identity; not proof that no children were launched earlier."
+}

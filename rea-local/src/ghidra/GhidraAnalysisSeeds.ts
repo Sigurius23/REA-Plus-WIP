@@ -5,6 +5,10 @@ import { isAbsolute, join } from "node:path";
 import { z } from "zod";
 
 import type { AnalysisOperation } from "../application/AnalysisProvider.js";
+import {
+  AnalysisAccessDeniedError,
+  AnalysisResourceConstraintError,
+} from "../domain/analysisErrorCore.js";
 import { ConfigurationError } from "../domain/configurationErrors.js";
 import { ProviderAdapterError } from "../domain/providerAdapterError.js";
 import { err, ok, type Result } from "../domain/result.js";
@@ -58,6 +62,21 @@ const seedLineError = (line: number, constraint: string) =>
       {
         setting: "REA_GHIDRA_SEED_FILE",
         constraint: `line ${line}: ${constraint}`,
+      },
+    ],
+  });
+
+const seedFileConfigurationError = (
+  configured: string,
+  constraint: string,
+  cause?: unknown,
+) =>
+  new ConfigurationError("Invalid REA+ environment configuration", {
+    cause,
+    settings: [
+      {
+        setting: "REA_GHIDRA_SEED_FILE",
+        constraint: `${constraint}. Configured path: ${configured}; select an existing regular seed file or unset REA_GHIDRA_SEED_FILE`,
       },
     ],
   });
@@ -133,16 +152,25 @@ const normalizedSeeds = (entries: readonly SeedEntry[]): string =>
     .join("");
 
 /** Read a bounded regular file through one handle without following links. */
-const readSeedFile = async (path: string): Promise<Buffer> => {
+const readSeedFile = async (
+  path: string,
+  configured = path,
+): Promise<Buffer> => {
   const file = await open(
     path,
     constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK,
   );
   try {
     const stat = await file.stat();
-    if (!stat.isFile() || stat.size > MAX_GHIDRA_SEED_BYTES)
-      throw new Error(
-        `Ghidra seed file must be a regular file of at most ${MAX_GHIDRA_SEED_BYTES} bytes: ${path}`,
+    if (!stat.isFile())
+      throw seedFileConfigurationError(
+        configured,
+        `Resolved seed path is not a regular file: ${path}`,
+      );
+    if (stat.size > MAX_GHIDRA_SEED_BYTES)
+      throw seedFileConfigurationError(
+        configured,
+        `Seed file has ${stat.size} bytes; the supported maximum is ${MAX_GHIDRA_SEED_BYTES} bytes`,
       );
     const bytes = Buffer.alloc(stat.size);
     let offset = 0;
@@ -177,7 +205,10 @@ export const resolveGhidraAnalysisSeeds = async (
 ): Promise<
   Result<
     GhidraSeedCommitment | undefined,
-    ConfigurationError | ProviderAdapterError
+    | ConfigurationError
+    | AnalysisAccessDeniedError
+    | AnalysisResourceConstraintError
+    | ProviderAdapterError
   >
 > => {
   if (configured === undefined) return ok(undefined);
@@ -185,16 +216,63 @@ export const resolveGhidraAnalysisSeeds = async (
   let path: string;
   try {
     path = await realpath(configured);
-    bytes = await readSeedFile(path);
+    bytes = await readSeedFile(path, configured);
   } catch (cause: unknown) {
+    if (cause instanceof ConfigurationError) return err(cause);
+    const systemCode: unknown =
+      cause instanceof Error ? Reflect.get(cause, "code") : undefined;
+    if (systemCode === "EACCES" || systemCode === "EPERM")
+      return err(
+        new AnalysisAccessDeniedError(
+          "resolve_analysis_profile",
+          configured,
+          systemCode,
+          { cause },
+        ),
+      );
+    if (
+      systemCode === "ENOENT" ||
+      systemCode === "ENOTDIR" ||
+      systemCode === "ELOOP" ||
+      systemCode === "EISDIR"
+    )
+      return err(
+        seedFileConfigurationError(
+          configured,
+          `Seed path cannot resolve to a readable regular file (${systemCode})`,
+          cause,
+        ),
+      );
+    const diagnostics = {
+      setting: "REA_GHIDRA_SEED_FILE",
+      path: configured,
+      reason: cause instanceof Error ? cause.message : String(cause),
+      ...(typeof systemCode === "string" ? { system_code: systemCode } : {}),
+    };
+    if (systemCode === "ENOSPC")
+      return err(
+        new AnalysisResourceConstraintError(
+          "resolve_analysis_profile",
+          "disk",
+          "The host reported disk exhaustion while reading the configured Ghidra seed file.",
+          null,
+          {
+            cause,
+            context: {
+              providerId: "ghidra",
+              providerOperation: "resolve_analysis_profile",
+              diagnostics,
+              observation: { source: "cause.code", signal: "ENOSPC" },
+            },
+            remediationAction:
+              "Restore capacity on the volume holding the configured REA_GHIDRA_SEED_FILE, then reopen the target. Unchanged capacity and configuration can reproduce this failure.",
+          },
+        ),
+      );
     return err(
       new ProviderAdapterError("ghidra", "resolve_analysis_profile", {
         cause,
-        diagnostics: {
-          setting: "REA_GHIDRA_SEED_FILE",
-          path: configured,
-          reason: cause instanceof Error ? cause.message : String(cause),
-        },
+        diagnostics,
       }),
     );
   }
@@ -227,7 +305,9 @@ export const snapshotGhidraAnalysisSeeds = async (
     throw new Error(
       "Ghidra seed file resolved path differs from explicit configuration",
     );
-  const parsed = decodeSeeds(await readSeedFile(commitment.path));
+  const parsed = decodeSeeds(
+    await readSeedFile(commitment.path, commitment.configured_path),
+  );
   if (!parsed.ok) throw parsed.error;
   const normalized = normalizedSeeds(parsed.value);
   if (sha256(normalized) !== commitment.sha256)
