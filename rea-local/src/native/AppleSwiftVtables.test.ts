@@ -43,6 +43,7 @@ describe("Swift vtable coverage facts: unresolved Swift dispatch slots", () => {
         ],
         executable: () => false,
         admit: () => true,
+        markTruncated: () => {},
       },
     });
 

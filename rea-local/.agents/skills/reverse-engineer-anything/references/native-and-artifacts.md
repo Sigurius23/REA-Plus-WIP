@@ -128,6 +128,17 @@ selection does not establish complete witness decoding. Do not combine this
 filter with `swift_conformance_address` or use a symbol-only fallback to claim
 binary discovery.
 
+For one already-known nominal Swift class descriptor, select
+`facet: "swift-vtables"` and `swift_class_address` (CLI
+`--swift-class-address`). The reader proves membership across the complete
+type index before spending decode admission on that class. Preserve
+`swift_vtable_selection`'s examined/matching/unresolved counts, bounded source
+pointers and selected-scope coverage; aliases do not establish distinct classes.
+An unindexed or non-class address is not decoded, unresolved index identities
+prevent absence claims, and symbol-only names cannot satisfy the selector.
+This does not instantiate class metadata or extend unsupported vtable layouts.
+Do not combine class selection with a conformance selector or another facet.
+
 For a budget-limited investigation, select `facet: "objc"`, `"swift-conformances"`
 or `"swift-vtables"` instead of spending the aggregate `max_records` budget on
 all families. CLI uses `--facet`; omitted selection remains `"all"`.

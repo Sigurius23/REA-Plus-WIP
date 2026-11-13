@@ -12,6 +12,7 @@ import {
   AnalysisCancelledError,
   AnalysisInputError,
   AnalysisResourceConstraintError,
+  AnalysisUnsupportedTargetError,
 } from "../domain/analysisErrorCore.js";
 import { openRegularFile } from "../filesystem/RegularFile.js";
 import { readBoundedFileBytes } from "../process/BoundedFileBytes.js";
@@ -40,6 +41,7 @@ export const decodeAppleDispatchMetadata = (
     readonly facet?: NativeDispatchFacet;
     readonly swiftConformanceAddress?: string;
     readonly swiftConformanceFilter?: NativeSwiftConformanceFilter;
+    readonly swiftClassAddress?: string;
   } = {},
 ): ObjcSwiftMetadata => {
   const {
@@ -47,7 +49,26 @@ export const decodeAppleDispatchMetadata = (
     facet = "all",
     swiftConformanceAddress,
     swiftConformanceFilter,
+    swiftClassAddress,
   } = selection;
+  if (
+    swiftClassAddress !== undefined &&
+    (facet !== "swift-vtables" ||
+      swiftConformanceAddress !== undefined ||
+      swiftConformanceFilter !== undefined)
+  )
+    throw new AnalysisInputError(
+      "inspect_native_dispatch_metadata",
+      undefined,
+      [
+        {
+          path: ["swift_class_address"],
+          reason: "invalid_value",
+          message:
+            "Class selection requires facet swift-vtables and cannot combine with conformance selectors.",
+        },
+      ],
+    );
   if (
     (swiftConformanceAddress !== undefined ||
       swiftConformanceFilter !== undefined) &&
@@ -73,6 +94,42 @@ export const decodeAppleDispatchMetadata = (
     );
   const layout = parseMachoLayout(bytes, architecture);
   const { segments, sections, offset } = layout;
+  const invalidIndex = (reason: string, cause?: unknown) =>
+    new AnalysisUnsupportedTargetError(
+      "inspect_native_dispatch_metadata",
+      provenance.path,
+      reason,
+      {
+        cause,
+        remediationAction:
+          "Select an intact Mach-O artifact whose Swift index fits one file-backed mapped range. Unchanged artifact bytes reproduce this failure.",
+      },
+    );
+  // Selection may scan an entire index before spending decode admission.
+  // Validate that extent once, before either full-index reader can enumerate
+  // it; per-entry catch/recovery must not amplify a bogus section size.
+  for (const section of sections) {
+    const requested =
+      (section.name === "__swift5_types" &&
+        (facet === "all" || facet === "swift-vtables")) ||
+      (section.name === "__swift5_proto" &&
+        (facet === "all" || facet === "swift-conformances"));
+    if (!requested || section.size === 0) continue;
+    if (section.address % 4n !== 0n || section.size % 4 !== 0)
+      throw invalidIndex(`Misaligned Swift metadata index ${section.name}`);
+    if (section.address + BigInt(section.size) > 1n << 64n)
+      throw invalidIndex(
+        `Swift metadata index ${section.name} wraps its address space`,
+      );
+    try {
+      offset(section.address, section.size);
+    } catch (cause) {
+      throw invalidIndex(
+        `Swift metadata index ${section.name} must lie wholly within one file-backed mapped range`,
+        cause,
+      );
+    }
+  }
   const fixups = parsePointerFixups(
     bytes,
     layout.fixups,
@@ -228,38 +285,51 @@ export const decodeAppleDispatchMetadata = (
           exhaustive: true,
           issues: [],
         };
-  const typeEntries: bigint[] = [];
-  if (facet === "all" || facet === "swift-vtables")
+  function* typeEntries(): Iterable<bigint> {
+    let retained = 0;
     for (const section of sections.filter(
       ({ name }) => name === "__swift5_types",
     )) {
       if (section.size % 4 !== 0)
         throw new RangeError("Misaligned Swift type section");
-      const entries = Math.min(
-        section.size / 4,
-        maxRecords - typeEntries.length,
-      );
+      const entries =
+        swiftClassAddress === undefined
+          ? Math.min(section.size / 4, maxRecords - retained)
+          : section.size / 4;
       for (let index = 0; index < entries; index++)
-        typeEntries.push(section.address + BigInt(index * 4));
+        yield section.address + BigInt(index * 4);
+      retained += entries;
       if (section.size / 4 > entries) vtableBudget.markTruncated();
     }
+  }
+  const vtableRelative = createSwiftRelativeReader({
+    bytes,
+    readers: { ...readers, pointer: decodePointer },
+    budget: vtableBudget,
+    result,
+  });
   const vtables =
     facet === "all" || facet === "swift-vtables"
       ? decodeSwiftClassVtables({
-          entries: typeEntries,
+          entries: typeEntries(),
           result,
+          ...(swiftClassAddress === undefined
+            ? {}
+            : {
+                selection: {
+                  address: BigInt(swiftClassAddress),
+                  maxRecords,
+                  inspect: vtableRelative.inspect,
+                },
+              }),
           readers: {
             u32,
-            relative: createSwiftRelativeReader({
-              bytes,
-              readers: { ...readers, pointer: decodePointer },
-              budget: vtableBudget,
-              result,
-            }).local,
+            relative: vtableRelative.local,
             string,
             location,
             evidence,
             admit: () => vtableBudget.admit(),
+            markTruncated: () => vtableBudget.markTruncated(),
             executable: (address) =>
               segments.some(
                 (segment) =>
@@ -307,6 +377,7 @@ export const inspectAppleDispatchMetadata = async (
   maxFileBytes?: number,
   swiftConformanceAddress?: string,
   swiftConformanceFilter?: NativeSwiftConformanceFilter,
+  swiftClassAddress?: string,
 ) => {
   if (target.kind !== "executable" || target.format !== "mach-o")
     throw new TypeError("Apple dispatch metadata requires a Mach-O target");
@@ -359,6 +430,7 @@ export const inspectAppleDispatchMetadata = async (
           ...(swiftConformanceFilter === undefined
             ? {}
             : { swiftConformanceFilter }),
+          ...(swiftClassAddress === undefined ? {} : { swiftClassAddress }),
         },
       ),
     });

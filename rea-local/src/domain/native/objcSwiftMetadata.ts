@@ -22,10 +22,15 @@ export const nativeDispatchFacetSchema = z.enum([
   "swift-conformances",
   "swift-vtables",
 ]);
+const nativeMetadataAddressSchema = z.string().regex(/^0x[0-9a-fA-F]{1,16}$/u);
+/** Exact unslid class descriptor address from the indexed Swift type section. */
+export const nativeSwiftClassAddressSchema = nativeMetadataAddressSchema
+  .optional()
+  .describe(
+    "Decode only this indexed nominal Swift class descriptor; requires facet swift-vtables and cannot combine with conformance selectors. Index membership is checked before decode admission. Runtime class metadata and unsupported layouts remain unknown.",
+  );
 /** Exact unslid descriptor address from the indexed Swift conformance section. */
-export const nativeSwiftConformanceAddressSchema = z
-  .string()
-  .regex(/^0x[0-9a-fA-F]{1,16}$/u)
+export const nativeSwiftConformanceAddressSchema = nativeMetadataAddressSchema
   .optional()
   .describe(
     "Decode only this indexed Swift conformance descriptor; requires facet swift-conformances. Runtime witness tables remain unknown.",
@@ -448,6 +453,16 @@ export const dbSaveResultSchema = z.strictObject({
 
 /** Result of deeper ObjC/Swift metadata extraction. */
 export const objcSwiftMetadataSchema = z.strictObject({
+  swift_vtable_selection: z
+    .strictObject({
+      address: z.string(),
+      index_entries: z.number().int().nonnegative(),
+      examined: z.number().int().nonnegative(),
+      matching_index_entries: z.number().int().nonnegative(),
+      matched: z.boolean(),
+      unresolved: z.number().int().nonnegative(),
+    })
+    .optional(),
   swift_conformance_discovery: z
     .strictObject({
       filter: nativeSwiftConformanceFilterSchema,

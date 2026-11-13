@@ -289,6 +289,13 @@ export const pushDispatchCoverage = (input: {
               : "partial",
           reason:
             [
+              ...(result.swift_vtable_selection === undefined
+                ? []
+                : [
+                    result.swift_vtable_selection.matched
+                      ? "Coverage is limited to the selected indexed Swift class descriptor"
+                      : "Selected indexed Swift class identity was not established; consult swift_vtable_selection index coverage",
+                  ]),
               ...vtables.issues.map(formatIssue),
               ...(truncated.vtables ? ["max_records_reached"] : []),
               ...(result.swift_dispatch_slots.some(

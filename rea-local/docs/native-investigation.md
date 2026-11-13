@@ -153,6 +153,23 @@ complete observation.
   explicit. Index completeness does not imply complete witness decoding.
   This filter cannot be combined with an exact conformance address and cannot
   be satisfied by symbol-only fallback.
+  With `facet: "swift-vtables"`, `swift_class_address` (CLI
+  `--swift-class-address`) selects one exact nominal class descriptor. The
+  reader scans the complete `__swift5_types` index before admitting its decode,
+  proving direct or indirect indexed identity and class kind. Multiple index
+  aliases do not duplicate class slots. `swift_vtable_selection` separates index
+  entries examined, matching aliases and unresolved identities from the class
+  decode coverage. A missing match with unresolved entries is not absence.
+  Selected-index pointers, aliases and unresolved pointer records share the
+  existing decode budget; unsupported generic/resilient/async layouts remain
+  partial. Other facets, conformance selectors and symbol-only fallback cannot
+  satisfy or combine with this selector. Historical unselected Evidence may
+  omit the new selection record.
+  Before scanning either Swift index, the reader validates its complete aligned
+  span within one file-backed mapped range, including address-space overflow.
+  Malformed extents fail as `unsupported_target` with an intact-artifact remedy;
+  they cannot produce an absent-class result or an unbounded per-entry loop.
+  Unrequested index families are not inspected.
   Select `facet: "objc"`, `"swift-conformances"` or `"swift-vtables"` to direct
   the aggregate `max_records` decode-admission budget to that family; the
   default `"all"` preserves the combined pass. CLI callers use `--facet`.

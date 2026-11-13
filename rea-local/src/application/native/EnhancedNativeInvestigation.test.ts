@@ -304,7 +304,9 @@ describe("bounded native UI tracing", () => {
         .nodes.map(({ id }) => id),
     ).toContain("native:function:0x2000");
   });
+});
 
+describe("native dispatch metadata requests", () => {
   it("returns a typed input error for malformed direct metadata requests", async () => {
     const result = await new EnhancedTools(testAnalysis()).execute(
       "inspect_native_dispatch_metadata",
@@ -363,8 +365,32 @@ describe("bounded native UI tracing", () => {
     });
   });
 
+  it("does not replace an indexed Swift class selection with symbol-only names", async () => {
+    const result = await new EnhancedTools(testAnalysis()).execute(
+      "inspect_native_dispatch_metadata",
+      { facet: "swift-vtables", swift_class_address: "0x1000" },
+    );
+    expect(result).toMatchObject({
+      ok: false,
+      error: { _tag: "AnalysisCapabilityUnavailableError" },
+    });
+  });
+
   it.each([
     { swift_conformance_filter: {} },
+    { swift_class_address: "0x1000" },
+    { facet: "objc", swift_class_address: "0x1000" },
+    { facet: "swift-vtables", swift_class_address: "0xnothex" },
+    {
+      facet: "swift-vtables",
+      swift_class_address: "0x1000",
+      swift_conformance_address: "0x2000",
+    },
+    {
+      facet: "swift-vtables",
+      swift_class_address: "0x1000",
+      swift_conformance_filter: { type_name: "Request" },
+    },
     { swift_conformance_filter: { protocol_name: null, type_name: null } },
     { facet: "objc", swift_conformance_filter: { type_name: "Request" } },
     {

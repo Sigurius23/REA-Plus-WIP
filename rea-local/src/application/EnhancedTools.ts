@@ -28,10 +28,6 @@ import {
   discoverObjcProtocols,
 } from "../domain/symbolAnalysis.js";
 import { inspectNativeDispatch } from "./native/NativeDispatchMetadataInspection.js";
-import type {
-  NativeDispatchFacet,
-  NativeSwiftConformanceFilter,
-} from "../domain/native/objcSwiftMetadata.js";
 import { traceNativeValues } from "./native/NativeValueTrace.js";
 import { traceNativeUiAction } from "./native/NativeUiActionTrace.js";
 import { jsonValueSchema, type JsonValue } from "../domain/jsonValue.js";
@@ -136,13 +132,15 @@ export class EnhancedTools {
   ): EnhancedResult {
     switch (call.name) {
       case "inspect_native_dispatch_metadata":
-        return this.#inspectNativeDispatchMetadata(
+        return inspectNativeDispatch(
+          this.analysis,
           call.input.max_records,
           signal,
           call.input.facet,
           call.input.max_file_bytes,
           call.input.swift_conformance_address,
           call.input.swift_conformance_filter,
+          call.input.swift_class_address,
         );
       case "get_objc_classes":
         return this.#objcClasses(call.input.pattern, signal);
@@ -240,25 +238,6 @@ export class EnhancedTools {
   async #objcClasses(pattern: string, signal?: AbortSignal): EnhancedResult {
     const names = await this.#allAddressed("list_names", signal);
     return names.ok ? ok(discoverObjcClasses(names.value, pattern)) : names;
-  }
-
-  #inspectNativeDispatchMetadata(
-    maxRecords: number,
-    signal?: AbortSignal,
-    facet: NativeDispatchFacet = "all",
-    maxFileBytes?: number,
-    swiftConformanceAddress?: string,
-    swiftConformanceFilter?: NativeSwiftConformanceFilter,
-  ): EnhancedResult {
-    return inspectNativeDispatch(
-      this.analysis,
-      maxRecords,
-      signal,
-      facet,
-      maxFileBytes,
-      swiftConformanceAddress,
-      swiftConformanceFilter,
-    );
   }
 
   async #objcProtocols(signal?: AbortSignal): EnhancedResult {

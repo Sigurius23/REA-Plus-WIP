@@ -4,6 +4,7 @@ import type {
   NativeMetadataLocation,
 } from "../domain/native/objcSwiftMetadata.js";
 import { issue, type FacetDecodeFacts } from "./AppleDispatchDecodeFacts.js";
+import type { createSwiftRelativeReader } from "./AppleSwiftDispatchFacets.js";
 
 /** Byte readers shared with the validated Mach-O metadata boundary. */
 export interface SwiftMetadataReaders {
@@ -14,20 +15,124 @@ export interface SwiftMetadataReaders {
   evidence(address: bigint, description: string): NativeMetadataEvidence[];
   executable(address: bigint): boolean;
   admit(): boolean;
+  markTruncated(): void;
 }
 
 /** Decode non-generic, non-resilient Swift class vtable descriptors without instantiating metadata. */
 export const decodeSwiftClassVtables = (input: {
   readers: SwiftMetadataReaders;
-  entries: readonly bigint[];
+  entries: Iterable<bigint>;
   result: ObjcSwiftMetadata;
+  selection?: {
+    address: bigint;
+    maxRecords: number;
+    inspect: ReturnType<typeof createSwiftRelativeReader>["inspect"];
+  };
 }): FacetDecodeFacts => {
   const { readers: read, result } = input;
   const failures: string[] = [];
   const issues = [] as ReturnType<typeof issue>[];
   let examined = 0;
   let decoded = 0;
-  for (const field of input.entries) {
+  let entries = input.entries;
+  let selectedDescriptor: bigint | undefined;
+  const retainedIndexPointers: ObjcSwiftMetadata["relative_pointers"] = [];
+  if (input.selection !== undefined) {
+    const { address, maxRecords, inspect } = input.selection;
+    const summary = {
+      address: `0x${address.toString(16)}`,
+      index_entries: 0,
+      examined: 0,
+      matching_index_entries: 0,
+      matched: false,
+      unresolved: 0,
+    };
+    result.swift_vtable_selection = summary;
+    let firstMatch: bigint | undefined;
+    let firstPointer:
+      | ObjcSwiftMetadata["relative_pointers"][number]
+      | undefined;
+    let firstIndexFailure: ReturnType<typeof issue> | undefined;
+    const unknown: ObjcSwiftMetadata["relative_pointers"] = [];
+    // Scan identities before admitting a class or any unrelated pointer. Keep
+    // only bounded aliases/unknowns; do not allocate once per full-index entry.
+    for (const field of entries) {
+      summary.index_entries++;
+      summary.examined++;
+      try {
+        const referenceKind = read.u32(field) & 3;
+        // Kinds 2/3 name Objective-C class references, not nominal descriptors.
+        if (referenceKind >= 2) continue;
+        const observation = inspect(
+          field,
+          referenceKind === 1 ? "indirectable" : "direct",
+        );
+        if (
+          observation.target.kind !== "local" ||
+          observation.target.address === 0n
+        ) {
+          summary.unresolved++;
+          if (unknown.length < maxRecords) unknown.push(observation.record);
+          continue;
+        }
+        if (observation.target.address !== address) continue;
+        if ((read.u32(address) & 31) !== 16) continue;
+        summary.matching_index_entries++;
+        summary.matched = true;
+        if (firstMatch === undefined) {
+          firstMatch = field;
+          firstPointer = observation.record;
+        } else if (retainedIndexPointers.length < maxRecords) {
+          retainedIndexPointers.push(observation.record);
+        }
+      } catch (cause) {
+        summary.unresolved++;
+        firstIndexFailure ??= issue(
+          "swift_class_vtable_descriptors",
+          "selected_class_index_unresolved",
+          cause instanceof Error ? cause.message : String(cause),
+          `0x${field.toString(16)}`,
+        );
+      }
+    }
+    if (firstMatch === undefined) {
+      entries = [];
+      issues.push(
+        issue(
+          "swift_class_vtable_descriptors",
+          "selected_class_not_indexed",
+          summary.unresolved === 0
+            ? "Selected address is not an indexed nominal Swift class descriptor; no class was decoded"
+            : "Selected class was not established; unresolved type-index entries prevent an absence claim",
+          summary.address,
+        ),
+      );
+    } else {
+      entries = [firstMatch];
+      selectedDescriptor = address;
+      // The exact indexed identity has a retained source pointer before any
+      // class slots. If that proof cannot be admitted, preserve a partial stop.
+      if (firstPointer !== undefined && read.admit())
+        result.relative_pointers.push(firstPointer);
+      else entries = [];
+    }
+    retainedIndexPointers.push(...unknown);
+    if (firstIndexFailure !== undefined) issues.push(firstIndexFailure);
+    if (summary.unresolved > 0)
+      issues.push(
+        issue(
+          "swift_class_vtable_descriptors",
+          "selected_class_index_unresolved",
+          `${summary.unresolved} type-index identities remain unresolved`,
+        ),
+      );
+    if (
+      summary.matching_index_entries > maxRecords + 1 ||
+      summary.unresolved > maxRecords
+    )
+      read.markTruncated();
+  }
+  for (const field of entries) {
     if (!read.admit()) {
       failures.push("max_records_reached");
       issues.push(
@@ -42,7 +147,7 @@ export const decodeSwiftClassVtables = (input: {
     }
     examined++;
     try {
-      const descriptor = read.relative(field);
+      const descriptor = selectedDescriptor ?? read.relative(field);
       const flags = read.u32(descriptor);
       if ((flags & 31) !== 16) continue;
       const specific = flags >>> 16;
@@ -145,6 +250,10 @@ export const decodeSwiftClassVtables = (input: {
         ),
       );
     }
+  }
+  for (const pointer of retainedIndexPointers) {
+    if (!read.admit()) break;
+    result.relative_pointers.push(pointer);
   }
   return {
     facet: "swift_class_vtable_descriptors",

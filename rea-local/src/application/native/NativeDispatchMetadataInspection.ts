@@ -22,7 +22,24 @@ export const inspectNativeDispatch = async (
   maxFileBytes?: number,
   swiftConformanceAddress?: string,
   swiftConformanceFilter?: NativeSwiftConformanceFilter,
+  swiftClassAddress?: string,
 ): EnhancedResult => {
+  if (
+    swiftClassAddress !== undefined &&
+    (facet !== "swift-vtables" ||
+      swiftConformanceAddress !== undefined ||
+      swiftConformanceFilter !== undefined)
+  )
+    return err(
+      new AnalysisInputError("inspect_native_dispatch_metadata", undefined, [
+        {
+          path: ["swift_class_address"],
+          reason: "invalid_value",
+          message:
+            "Class selection requires facet swift-vtables and cannot combine with conformance selectors.",
+        },
+      ]),
+    );
   if (
     (swiftConformanceAddress !== undefined ||
       swiftConformanceFilter !== undefined) &&
@@ -49,6 +66,9 @@ export const inspectNativeDispatch = async (
     {
       max_records: maxRecords,
       facet,
+      ...(swiftClassAddress === undefined
+        ? {}
+        : { swift_class_address: swiftClassAddress }),
       ...(swiftConformanceAddress === undefined
         ? {}
         : { swift_conformance_address: swiftConformanceAddress }),
@@ -66,6 +86,7 @@ export const inspectNativeDispatch = async (
       ),
     );
   if (
+    swiftClassAddress !== undefined ||
     swiftConformanceAddress !== undefined ||
     swiftConformanceFilter !== undefined ||
     binaryMetadata.error._tag !== "AnalysisCapabilityUnavailableError"
