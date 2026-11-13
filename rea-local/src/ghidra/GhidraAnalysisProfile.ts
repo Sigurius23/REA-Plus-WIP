@@ -171,7 +171,7 @@ export const resolveGhidraAnalysisProfile = async (
         target.format === "mach-o" &&
         target.architecture === "arm64"
           ? {
-              swift_enum_switch_recovery: "abi-signed-word-cfg-v1",
+              swift_enum_switch_recovery: "abi-signed-word-cfg-v7",
               swift_error_register_model:
                 "proved-native-synchronous-callee-x21-v3",
             }

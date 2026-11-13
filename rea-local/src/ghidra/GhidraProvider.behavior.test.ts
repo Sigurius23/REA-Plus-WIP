@@ -192,7 +192,7 @@ describe("Ghidra Mach-O slice support", () => {
       if (!resolved.ok) throw resolved.error;
       expect(
         resolved.value.profile?.parameters.swift_enum_switch_recovery,
-      ).toBe(enabled ? "abi-signed-word-cfg-v1" : undefined);
+      ).toBe(enabled ? "abi-signed-word-cfg-v7" : undefined);
       expect(
         resolved.value.profile?.parameters.swift_error_register_model,
       ).toBe(enabled ? "proved-native-synchronous-callee-x21-v3" : undefined);

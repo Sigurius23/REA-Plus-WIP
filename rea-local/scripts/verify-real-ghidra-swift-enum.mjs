@@ -15,6 +15,7 @@ import { createVerifierRun, completeVerifierRun } from "./lib/verifier-run.mjs";
 import {
   swiftEnumOracle,
   swiftEnumNegativeCopies,
+  swiftProjectionNegativeCopies,
 } from "../tests/conformance/ghidra/swift-enum-oracle.mjs";
 
 const { values } = parseArgs({
@@ -67,31 +68,66 @@ const compiler = (await exec("/usr/bin/swiftc", ["--version"])).stdout;
 await save(join(root, "run-start.json"), {
   run,
   compiler,
+  producer: await identity(
+    fileURLToPath(
+      new URL(
+        "../bridge/ghidra/ReaGhidraSwiftEnumSwitches.java",
+        import.meta.url,
+      ),
+    ),
+  ),
   target_executed: false,
 });
 
-async function compile(payloads, empty, label) {
+async function compile(
+  payloads,
+  empty,
+  label,
+  dispatchLoad = false,
+  foreignSuffix = false,
+  projectionCase,
+) {
   const directory = join(root, label);
   await mkdir(directory);
-  let text = await readFile(fixture("swift-enum-switch.swift"), "utf8");
-  text = text
-    .replace(/^    case payload(\d+)\(ReaPayload\)\n/gm, (line, index) =>
-      Number(index) < payloads ? line : "",
-    )
-    .replace(/^    case empty(\d+)\n/gm, (line, index) =>
-      Number(index) < empty ? line : "",
-    )
-    .replace(
-      /^    case \.payload(\d+): return reaCase\d+\(value\)\n/gm,
-      (line, index) => (Number(index) < payloads ? line : ""),
-    )
-    .replace(
-      /^    case \.empty(\d+): return reaCase\d+\(value\)\n/gm,
-      (_, index) =>
-        Number(index) < empty
-          ? `    case .empty${index}: return reaCase${payloads + Number(index)}(value)\n`
-          : "",
-    );
+  let text = await readFile(
+    fixture(
+      projectionCase === undefined
+        ? "swift-enum-switch.swift"
+        : "swift-enum-fixed-projection.swift",
+    ),
+    "utf8",
+  );
+  if (projectionCase !== undefined) {
+    assert.equal(payloads, 11);
+    assert.equal(empty, 13);
+    assert.ok(projectionCase === 0 || projectionCase === 1);
+    if (projectionCase === 1) {
+      const before = "    case child(FixedChild)\n    case load(ReaPayload)";
+      assert.ok(text.includes(before), "Missing owned outer-case declarations");
+      text = text.replace(
+        before,
+        "    case load(ReaPayload)\n    case child(FixedChild)",
+      );
+    }
+  } else
+    text = text
+      .replace(/^    case payload(\d+)\(ReaPayload\)\n/gm, (line, index) =>
+        Number(index) < payloads ? line : "",
+      )
+      .replace(/^    case empty(\d+)\n/gm, (line, index) =>
+        Number(index) < empty ? line : "",
+      )
+      .replace(
+        /^    case \.payload(\d+): return reaCase\d+\(value\)\n/gm,
+        (line, index) => (Number(index) < payloads ? line : ""),
+      )
+      .replace(
+        /^    case \.empty(\d+): return reaCase\d+\(value\)\n/gm,
+        (_, index) =>
+          Number(index) < empty
+            ? `    case .empty${index}: return reaCase${payloads + Number(index)}(value)\n`
+            : "",
+      );
   const source = join(directory, "switch.swift");
   await writeFile(source, text);
   const module = join(directory, "ReaResilientPayload.swiftmodule");
@@ -147,8 +183,88 @@ async function compile(payloads, empty, label) {
       exit_code: 0,
     });
   }
+  if (dispatchLoad) {
+    const assembly = join(directory, "switch.s");
+    const args = [
+      ...common,
+      "-I",
+      directory,
+      "-Onone",
+      "-module-name",
+      "ReaSwiftRelativeSwitch",
+      "-emit-assembly",
+      "-o",
+      assembly,
+      source,
+    ];
+    const reply = await exec("/usr/bin/swiftc", args, {
+      maxBuffer: 8 * 1024 * 1024,
+    });
+    commands.push({ command: "/usr/bin/swiftc", args, ...reply, exit_code: 0 });
+    const original = await readFile(assembly, "utf8");
+    const start = original.indexOf(
+      "_$s22ReaSwiftRelativeSwitch03reacD0ySiAA0A9LiveEventO_SitF:",
+    );
+    assert.ok(start >= 0, "Missing owned switch assembly entry");
+    const end = original.indexOf(".cfi_endproc", start);
+    assert.ok(end > start);
+    const body = original.slice(start, end);
+    assert.equal([...body.matchAll(/\tbr\tx8\n/g)].length, 1);
+    // Reassemble owned source; never patch the caller's shipped artifact.
+    let modified =
+      original.slice(0, start) +
+      body.replace(
+        /\tbr\tx8\n/,
+        (foreignSuffix ? "Lrea_foreign_suffix_read:\n" : "") +
+          "\tldr\txzr, [sp]\n\tbr\tx8\n",
+      ) +
+      original.slice(end);
+    if (foreignSuffix)
+      modified +=
+        "\n\t.section\t__TEXT,__text,regular,pure_instructions\n" +
+        "\t.globl\t_rea_foreign_suffix_entry\n\t.p2align\t2\n_rea_foreign_suffix_entry:\n" +
+        "\tb\tLrea_foreign_suffix_read\n";
+    await writeFile(assembly, modified);
+    const sdk = (
+      await exec("/usr/bin/xcrun", ["--show-sdk-path"])
+    ).stdout.trim();
+    const linkArgs = [
+      "--sdk",
+      "macosx",
+      "clang",
+      "-dynamiclib",
+      "-arch",
+      "arm64",
+      "-Wl,-undefined,dynamic_lookup",
+      "-L",
+      directory,
+      "-L",
+      join(sdk, "usr/lib/swift"),
+      "-lReaResilientPayload",
+      "-o",
+      path,
+      assembly,
+    ];
+    const linked = await exec("/usr/bin/xcrun", linkArgs, {
+      maxBuffer: 8 * 1024 * 1024,
+    });
+    commands.push({
+      command: "/usr/bin/xcrun",
+      args: linkArgs,
+      ...linked,
+      exit_code: 0,
+    });
+  }
   const bytes = await readFile(path);
-  const oracle = swiftEnumOracle(bytes, payloads, empty);
+  const oracle = swiftEnumOracle(
+    bytes,
+    payloads,
+    empty,
+    dispatchLoad,
+    projectionCase !== undefined,
+  );
+  if (projectionCase !== undefined)
+    assert.equal(oracle.projection.selected.index, projectionCase);
   await save(join(directory, "oracle.json"), {
     target_executed: false,
     source: await identity(source),
@@ -294,7 +410,7 @@ async function inspect(target, positive, cliParity = false) {
     check(evidence.normalized_result, oracle, positive);
     assert.equal(
       evidence.analysis_profile.parameters.swift_enum_switch_recovery,
-      "abi-signed-word-cfg-v1",
+      "abi-signed-word-cfg-v7",
     );
     assert.ok(
       evidence.limitations.some((text) =>
@@ -359,9 +475,67 @@ let failure;
 try {
   const large = await compile(18, 12, "thirty-cases");
   const small = await compile(8, 4, "twelve-cases");
+  const dispatchLoad = await compile(18, 12, "dispatch-load", true);
+  const foreignSuffix = await compile(
+    18,
+    12,
+    "dispatch-foreign-entry",
+    true,
+    true,
+  );
+  const projected = await compile(
+    11,
+    13,
+    "fixed-projection-case-zero",
+    false,
+    false,
+    0,
+  );
+  const projectedOne = await compile(
+    11,
+    13,
+    "fixed-projection-case-one",
+    false,
+    false,
+    1,
+  );
   if (!values["compiler-oracle-only"]) {
     await inspect(large, true, true);
     await inspect(small, true);
+    await inspect(dispatchLoad, true, true);
+    await inspect(foreignSuffix, false);
+    await inspect(projected, true, true);
+    await inspect(projectedOne, true);
+    for (const [label, bytes] of Object.entries(
+      swiftProjectionNegativeCopies(projected.bytes, projected.oracle),
+    )) {
+      const directory = join(root, label);
+      await mkdir(directory);
+      const path = join(directory, "mutated.dylib");
+      await writeFile(path, bytes);
+      await inspect(
+        { path, oracle: projected.oracle, directory, label },
+        false,
+      );
+    }
+    const clobbered = Buffer.from(dispatchLoad.bytes);
+    clobbered.writeUInt32LE(
+      0xf94003e8,
+      dispatchLoad.oracle.offsets.dispatch_load,
+    );
+    const directory = join(root, "dispatch-load-clobber");
+    await mkdir(directory);
+    const path = join(directory, "mutated.dylib");
+    await writeFile(path, clobbered);
+    await inspect(
+      {
+        path,
+        oracle: dispatchLoad.oracle,
+        directory,
+        label: "dispatch-load-clobber",
+      },
+      false,
+    );
     for (const [label, bytes] of Object.entries(
       swiftEnumNegativeCopies(large.bytes, large.oracle),
     )) {

@@ -139,6 +139,12 @@ the matching non-generic enum descriptor and reflection field count. A verified
 cached singleton accessor joins that descriptor to the call's metadata argument;
 its cache address must match the descriptor's initialization-cache reference.
 Enum names or the distance to neighboring code cannot establish the bound.
+Descriptors may be indexed or identified by an actual singleton-runtime call
+inside the complete supported `-Onone` accessor shape. The latter requires the
+descriptor's accessor back-pointer to match; it supports noncopyable outer enums
+that the compiler omits from the type index. Reflection field kinds 2 and 3 are
+admitted only with matching enum counts and the supported twelve-byte records.
+The additional accessor-discovery walk is bounded to 100,000 reference probes.
 
 Reaching definitions must agree on every incoming path. Modified indices,
 ambiguous metadata, escaped frame storage, unsupported accessor layouts, invalid
@@ -150,6 +156,41 @@ The pass
 uses budgets of 4,096 cases, 100,000 CFG/reaching-definition work units per candidate
 function and 256 nested queries; these are recovery budgets, not Swift format
 limits. It assumes the normal AArch64 ABI and private, non-escaped frame storage.
+The original runtime-tag route retains that private-frame assumption for
+entry-relative spills when a dynamic SP value is unknown; it rejects known
+stack transitions that retire a queried slot. This is not the exact all-path
+stack-liveness proof required by the fixed-payload route below.
+Unsupported SP-writing loads kill spill facts even when their loaded result
+is discarded; a known writeback pop cannot use the dynamic-allocation fallback.
+The signed-word suffix also permits one simple non-writeback 64-bit integer
+load between destination addition and `BR`, when it leaves the branch register
+unchanged and both intervening CFG edges have a single predecessor. Loads that
+overwrite the destination, write back their base, or introduce another incoming
+edge remain unsupported. These suffix checks apply to both supported tag routes.
+Known incoming flows from outside the owner also reject each instruction in
+the suffix, including the branch itself; owned predecessor counts alone cannot
+establish the reaching definitions on those paths.
+
+A bounded fixed-payload route also accepts a dominating runtime outer-enum tag
+whose CFG selects one reflected payload type. A direct symbolic reflection
+reference must identify a non-generic fixed enum; its field count, static metadata
+back-pointer, value-witness size and complete declared tag getter must agree.
+The unchanged incoming first argument must reach that getter through one exact
+whole-value `libSystem` `memcpy` into a statically bounded private frame interval
+on every path. Unknown calls, escaping frame addresses, overlapping later writes,
+ambiguous outer cases, unsupported reflection forms and dynamic stack intervals
+reject recovery. Shared or equal getter code never selects a type or case count.
+The complete reachable prefix rejects unmodeled memory effects (including
+release/atomic/non-temporal writes), writes outside the live private frame and
+unresolved control transfers. Getter ancestors require exact, non-increasing
+SP; deallocation followed by reallocation cannot revive earlier spill facts.
+Load writeback cannot substitute a loaded value for its updated base register.
+The fixed child value is limited to 4,096 bytes as a recovery budget. Only the
+complete four-instruction constant accessor or its five-instruction temporary-
+register/header-offset variant is admitted; its returned metadata must point
+back to the reflected child descriptor. Indirect payload fields and unknown
+field flags are rejected before inline copying is considered.
+Inline SIMD projections and other copy-witness paths remain unsupported.
 
 Verified destinations receive computed-flow references and are disassembled into
 the existing function body without stealing independent function entries. The
@@ -162,7 +203,7 @@ for values outside the valid enum. This recovers control flow, not state
 reachability, original source declarations or every Swift calling convention.
 
 The analysis profile commits `swift_enum_switch_recovery:
-"abi-signed-word-cfg-v1"` for supported targets. Earlier snapshots cannot replay
+"abi-signed-word-cfg-v7"` for supported targets. Earlier snapshots cannot replay
 as this recovery. Windows P0 retains its no-database-mutation boundary.
 
 `npm run verify:ghidra` compiles the versioned C oracle into debug and stripped
