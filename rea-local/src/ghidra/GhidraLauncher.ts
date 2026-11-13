@@ -23,6 +23,7 @@ import { err, ok, type Result } from "../domain/result.js";
 import {
   cleanupOwnedProcessGroup,
   cleanupWindowsProcessTree,
+  type OwnedProcessCleanupOptions,
   type ProcessCleanupResult,
 } from "../process/ProcessOwnership.js";
 import {
@@ -348,7 +349,7 @@ const ownedGhidraProcess = (
   process: spawned.process,
   ownsProcessLifetime: true,
   ownership: spawned.ownership,
-  cleanup: () => cleanupStartedProcess(spawned, platform),
+  cleanup: (options) => cleanupStartedProcess(spawned, platform, options),
 });
 
 /** Exact executable and argv passed to shell-free process creation. */
@@ -403,12 +404,13 @@ const ghidraBatchStep = <T>(step: () => T): T => {
 const cleanupStartedProcess = (
   started: SpawnedOwnedProviderProcess,
   platform: NodeJS.Platform,
+  options: OwnedProcessCleanupOptions = {},
 ): Promise<ProcessCleanupResult> =>
   started.cleanup !== undefined
-    ? started.cleanup()
+    ? started.cleanup(options)
     : platform === "win32"
       ? cleanupWindowsProcessTree(started.ownership.leaderPid)
-      : cleanupOwnedProcessGroup(started.ownership);
+      : cleanupOwnedProcessGroup(started.ownership, undefined, options);
 
 /** Paths encoded into one bounded analyzeHeadless invocation. */
 export interface GhidraHeadlessArgumentOptions {

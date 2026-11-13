@@ -13,6 +13,7 @@ import { ok } from "../../../../src/domain/result.js";
 import { GhidraClient } from "../../../../src/ghidra/GhidraClient.js";
 import { GHIDRA_PROCESS_DIAGNOSTIC_BYTES } from "../../../../src/ghidra/GhidraDiagnostics.js";
 import { GhidraHeadlessLauncher } from "../../../../src/ghidra/GhidraLauncher.js";
+import type { OwnedProcessCleanupOptions } from "../../../../src/process/ProcessOwnership.js";
 import type { GhidraDiagnostic } from "../../../../src/ghidra/GhidraClientTypes.js";
 import type {
   GhidraLaunchSession,
@@ -866,6 +867,7 @@ describe.skipIf(process.platform === "win32")(
 
         const controller = new AbortController();
         let cleanupAllowed = false;
+        const cleanupDeadlines: (number | undefined)[] = [];
         let child: ChildProcess | undefined;
         let runtimeRoot: string | undefined;
         const headless = new GhidraHeadlessLauncher({
@@ -896,7 +898,8 @@ describe.skipIf(process.platform === "win32")(
                 processGroupId: pid,
                 expectedParentPid: process.pid,
               },
-              cleanup: async () => {
+              cleanup: async (options?: OwnedProcessCleanupOptions) => {
+                cleanupDeadlines.push(options?.settlementDeadlineMs);
                 if (!cleanupAllowed)
                   return {
                     cleaned: false as const,
@@ -950,9 +953,13 @@ describe.skipIf(process.platform === "win32")(
         await access(runtimeRoot);
         expect(child.exitCode).toBeNull();
         expect(child.signalCode).toBeNull();
+        expect(
+          cleanupDeadlines.some((deadline) => Number.isSafeInteger(deadline)),
+        ).toBe(true);
 
         cleanupAllowed = true;
         await expect(client.close()).resolves.toEqual(ok(null));
+        expect(Number.isSafeInteger(cleanupDeadlines.at(-1))).toBe(true);
         await expect(access(runtimeRoot)).rejects.toMatchObject({
           code: "ENOENT",
         });

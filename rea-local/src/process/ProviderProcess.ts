@@ -6,6 +6,7 @@ import { WindowsOwnedProcess } from "../windows/WindowsOwnedProcess.js";
 
 import type {
   OwnedProcessGroup,
+  OwnedProcessCleanupOptions,
   ProcessCleanupResult,
 } from "./ProcessOwnership.js";
 import { prepareProcessOwnershipInspection } from "./ProcessOwnershipObservation.js";
@@ -43,7 +44,9 @@ export interface OwnedProviderProcessSpawnOptions {
 export interface SpawnedOwnedProviderProcess {
   readonly process: ProviderProcessHandle;
   readonly ownership: OwnedProcessGroup;
-  readonly cleanup?: () => Promise<ProcessCleanupResult>;
+  readonly cleanup?: (
+    options?: OwnedProcessCleanupOptions,
+  ) => Promise<ProcessCleanupResult>;
 }
 
 /** Process events and streams required by provider lifecycle supervision. */
@@ -74,7 +77,9 @@ export type ProviderProcessLaunch =
       readonly process: ProviderProcessHandle;
       readonly ownsProcessLifetime: true;
       readonly ownership?: OwnedProcessGroup;
-      readonly cleanup?: () => Promise<ProcessCleanupResult>;
+      readonly cleanup?: (
+        options?: OwnedProcessCleanupOptions,
+      ) => Promise<ProcessCleanupResult>;
     };
 
 /** Detached diagnostics captured for one supervised provider process. */
@@ -371,16 +376,33 @@ export class ProviderProcessSupervisor {
     try {
       if (!this.launch.ownsProcessLifetime) return { status: "not-owned" };
       if (this.launch.cleanup !== undefined) {
-        const cleanup = await this.#ownedCleanup(options.cleanupResult);
+        const graceMs = options.killGraceMs ?? DEFAULT_KILL_GRACE_MS;
+        const settlementDeadlineMs = Date.now() + graceMs;
+        if (
+          !Number.isSafeInteger(graceMs) ||
+          graceMs < 0 ||
+          !Number.isSafeInteger(settlementDeadlineMs)
+        )
+          return {
+            status: "incomplete",
+            reason:
+              "owned provider process kill grace must be a non-negative safe integer",
+          };
+        const cleanupOptions = { settlementDeadlineMs };
+        const remainingGraceMs = () =>
+          Math.max(0, settlementDeadlineMs - Date.now());
+        const cleanup = await this.#ownedCleanup(
+          options.cleanupResult,
+          cleanupOptions,
+        );
         if (!cleanup.cleaned)
           return { status: "incomplete", reason: cleanup.reason };
-        const graceMs = options.killGraceMs ?? DEFAULT_KILL_GRACE_MS;
-        if (await this.waitForExit(graceMs))
+        if (await this.waitForExit(remainingGraceMs()))
           return { status: "verified-cleanup" };
-        const retried = await this.launch.cleanup();
+        const retried = await this.launch.cleanup(cleanupOptions);
         if (!retried.cleaned)
           return { status: "incomplete", reason: retried.reason };
-        if (await this.waitForExit(graceMs))
+        if (await this.waitForExit(remainingGraceMs()))
           return { status: "verified-cleanup" };
         return {
           status: "incomplete",
@@ -418,6 +440,7 @@ export class ProviderProcessSupervisor {
 
   #ownedCleanup(
     supplied: ProcessCleanupResult | undefined,
+    options: OwnedProcessCleanupOptions,
   ): Promise<ProcessCleanupResult> {
     if (supplied !== undefined) return Promise.resolve(supplied);
     const cleanup = this.launch.cleanup;
@@ -426,7 +449,7 @@ export class ProviderProcessSupervisor {
           cleaned: false,
           reason: "owned provider process has no cleanup capability",
         })
-      : cleanup();
+      : cleanup(options);
   }
 
   #signal(signal: NodeJS.Signals): void {
