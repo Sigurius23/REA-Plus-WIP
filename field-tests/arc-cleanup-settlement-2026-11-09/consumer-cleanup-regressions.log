@@ -1,0 +1,45 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/boundary/providers/hopper/hopperClient.cleanupRetry.test.ts tests/boundary/providers/hopper/bridgeLauncher.test.ts tests/boundary/providers/native/LldbCallTracer.cleanup.test.ts
+
+Focused tests: tests/boundary/providers/hopper/hopperClient.cleanupRetry.test.ts, tests/boundary/providers/hopper/bridgeLauncher.test.ts, tests/boundary/providers/native/LldbCallTracer.cleanup.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 422ea3968d7ecbd1
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs ec18c5845f1415b9
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache hit, replaying logs e875d4c32269b37a
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    3 cached, 3 total
+  Time:    315ms >>> FULL TURBO
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |boundary| tests/boundary/providers/hopper/bridgeLauncher.test.ts (8 tests) 1009ms
+   ✓ launches Hopper helpers with the caller-selected environment without restoring ambient values 908ms
+ ✓ |boundary| tests/boundary/providers/hopper/hopperClient.cleanupRetry.test.ts (11 tests) 750ms
+ ✓ |boundary| tests/boundary/providers/native/LldbCallTracer.cleanup.test.ts (4 tests) 5301ms
+   ✓ retains a real LLDB process owner and runtime until a later cleanup retry succeeds 1134ms
+   ✓ retains an unidentified debuggee and runtime until exit can be confirmed 4113ms
+
+ Test Files  3 passed (3)
+      Tests  23 passed (23)
+   Start at  20:57:53
+   Duration  7.14s (tests 77%, transform 15%, import 7%)
+

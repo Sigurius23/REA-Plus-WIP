@@ -1,0 +1,57 @@
+{
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open-ready",
+      "expect_success": true
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x1012d2e2c"
+      },
+      "label": "editor-allocator-callers-ready"
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x1012d2e5c"
+      },
+      "label": "editor-initializer-callers-ready"
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x1008c7378"
+      },
+      "label": "store-send-bridge-callers-ready"
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x103a1de40"
+      },
+      "label": "js-prefix-references-ready"
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x103a1de60"
+      },
+      "label": "css-prefix-references-ready"
+    },
+    {
+      "name": "search_strings",
+      "arguments": {
+        "pattern": "boost/v2|BoostsEditor|selectorScript|selector_library",
+        "mode": "regex",
+        "case_sensitive": false
+      },
+      "label": "route-and-bootstrap-strings-ready"
+    }
+  ]
+}

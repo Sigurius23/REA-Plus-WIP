@@ -1,0 +1,1023 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/boundary/process/providerProcess.test.ts tests/boundary/providers/ghidra/ghidraClient.test.ts
+
+Focused tests: tests/boundary/process/providerProcess.test.ts, tests/boundary/providers/ghidra/ghidraClient.test.ts
+(node:22619) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 422ea3968d7ecbd1
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs a02bc44017b995fd
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache hit, replaying logs bd3f76593fa386ea
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    3 cached, 3 total
+  Time:    365ms >>> FULL TURBO
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ❯ |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts (33 tests | 27 failed) 11525ms
+   ❯ GhidraClient captured source snapshot (1)
+     × exposes the immutable import snapshot only during the live session 69ms
+   ❯ GhidraClient (11)
+     × completes an exact, fragmented post-analysis handshake 57ms
+     × accepts an owned-socket result above the former 64 MiB ceiling 58ms
+     × completes the same authenticated handshake over loopback TCP 55ms
+     × correlates an admitted inventory request after startup 56ms
+     × preserves an authenticated operation failure code and diagnostics 56ms
+     × projects wrong_identity startup as protocol 55ms
+     × projects malformed startup as protocol 54ms
+     × projects contradictory startup as protocol 56ms
+     × projects future_id startup as protocol 57ms
+     × projects analysis_timeout startup as analysis_timeout 56ms
+     ✓ projects exit startup as process 55ms
+   ✓ GhidraClient startup lifecycle (2)
+     ✓ applies one startup deadline and removes the private runtime 486ms
+     ✓ cancels startup promptly and leaves no project or process 516ms
+   × serves an explicitly bounded stable partial Program and retains the exact budget 57ms
+   ❯ GhidraClient established requests (2)
+     × fails an established function request when the provider process exits 54ms
+     × cancels queued work and stops active provider work on cancellation 55ms
+   ❯ GhidraClient runtime removal failures (1)
+     × reports a runtime root it could not remove and removes it on a later close 55ms
+   ❯ GhidraClient cleanup and diagnostics (4)
+     × makes double close idempotent and releases its process runtime 55ms
+     × retains actionable runtime coordinates after successful cleanup 56ms
+     × bounds long-lived launcher diagnostics without interrupting the session 56ms
+     ✓ retains actionable diagnostics without retaining its token 54ms
+   ❯ GhidraClient rejected requests (2)
+     × redacts authentication after failed startup cleanup and retry 58ms
+     × retains an unexpected wire rejection and continues serial requests 57ms
+   ❯ GhidraClient shutdown diagnostics (3)
+     × logs an unexpected shutdown rejection and still removes its process and runtime 56ms
+     × keeps cleanup best effort for shutdown_error 55ms
+     × keeps cleanup best effort for invalid_shutdown_ack 56ms
+   × preserves failed startup and retained Ghidra cleanup capabilities until a verified retry 56ms
+   ✓ Ghidra launcher rollback ownership (2)
+     ✓ retains the original process and runtime roots after ownership manifest write failure until cleanup succeeds 1563ms
+     ✓ retains the original process and runtime roots after cancellation after process creation until cleanup succeeds 1246ms
+   × retains spawned rollback-discovered foreign detached processes and runtime roots across later closes 3755ms
+   × retains injected rollback-discovered foreign detached processes and runtime roots across later closes 2438ms
+   × rejects results from a restarted run instead of attributing the earlier analysis state 55ms
+ ❯ |process-boundary| tests/boundary/process/providerProcess.test.ts (23 tests | 7 failed) 15896ms
+   ✓ provider process runtime and wait primitives (7)
+     ✓ allocates a private runtime root and removes it idempotently 5ms
+     ✓ fails closed for a Windows runtime root without native DACL authority 0ms
+     ✓ classifies external cancellation during startup 2ms
+     ✓ releases the owned timer and abort listener when disposed 1ms
+     ✓ uses one absolute startup deadline across interval waits 1ms
+     ✓ does not reclassify an elapsed deadline as later cancellation 0ms
+     ✓ settles pending requests once on cancellation, timeout, and failure 1ms
+   ✓ provider process output and cleanup primitives (6)
+     ✓ retains complete stdout and stderr beyond the former fixed ceiling 31ms
+     ✓ shares double-stop and escalates a stubborn child from TERM to KILL 49ms
+     ✓ detaches its process listeners when disposed 30ms
+     ✓ honors verified group cleanup instead of direct process signaling 29ms
+     ✓ cleans an owned group even after its launcher leader has exited 28ms
+     ✓ retains a live child after incomplete cleanup and permits a later stop 50ms
+   ❯ provider process host injection (1)
+     × uses injected host platform and environment when spawning 2394ms
+   ❯ provider process memory limits (1)
+     × refuses a memory limit that the selected launcher cannot enforce 2201ms
+   ✓ provider startup cancellation (2)
+     ✓ rejects an already cancelled launch before preparing or spawning 0ms
+     ✓ forwards cancellation through native ownership preparation before spawning 0ms
+   ❯ provider process spawning primitives (5)
+     × spawns an owned process group with exact identity coordinates 2215ms
+     × cleans a real descendant that starts a distinct process group 2234ms
+     ✓ stops a detached fixture descendant when its launcher receives SIGTERM 43ms
+     × allows interpreter launchers to rely on parent and run-token identity 2152ms
+     × rejects deterministic spawn failures without producing a process 2199ms
+   ❯ provider process configured-platform spawning (1)
+     × uses the configured platform when establishing process-group identity 2229ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 34 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |process-boundary| tests/boundary/process/providerProcess.test.ts > provider process host injection > uses injected host platform and environment when spawning
+DarwinProcessOwnershipInspectionError: macOS process ownership helper compilation failed via xcrun (compiler result: 1): Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-dxB3ed/reader
+2026-11-13 21:40:43.954 xcodebuild[22784:166343]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:44.193 xcodebuild[22784:166342] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:44.789 xcodebuild[22794:166441]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:44.967 xcodebuild[22794:166440] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+
+ ❯ runCompilation src/process/DarwinProcessRunTokenReader.ts:187:15
+    185|             ? String(cause.code)
+    186|             : "unknown";
+    187|         throw new DarwinProcessOwnershipInspectionError(
+       |               ^
+    188|           code === "ENOENT"
+    189|             ? `macOS process ownership inspection requires the Apple S…
+ ❯ Object.compile src/process/DarwinProcessRunTokenReader.ts:247:16
+ ❯ Object.prepare src/process/ProcessOwnershipObservation.ts:344:7
+ ❯ prepareProcessOwnershipInspection src/process/ProcessOwnershipObservation.ts:516:3
+ ❯ spawnOwnedProviderProcess src/process/ProviderProcess.ts:182:3
+ ❯ tests/boundary/process/providerProcess.test.ts:363:21
+
+Caused by: Error: Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-dxB3ed/reader
+2026-11-13 21:40:43.954 xcodebuild[22784:166343]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:44.193 xcodebuild[22784:166342] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:44.789 xcodebuild[22794:166441]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:44.967 xcodebuild[22794:166440] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 1, killed: false, signal: null, cmd: '/usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-dxB3ed/reader', stdout: '', stderr: '2026-11-13 21:40:43.954 xcodebuild[22784:166343]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:44.193 xcodebuild[22784:166342] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:44.789 xcodebuild[22794:166441]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:44.967 xcodebuild[22794:166440] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/34]⎯
+
+ FAIL  |process-boundary| tests/boundary/process/providerProcess.test.ts > provider process memory limits > refuses a memory limit that the selected launcher cannot enforce
+AssertionError: expected [Function] to throw error including 'require the Windows Job Object launch…' but got 'macOS process ownership helper compil…'
+
+- Expected
++ Received
+
+- require the Windows Job Object launcher
++ macOS process ownership helper compilation failed via xcrun (compiler result: 1): Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-kulyfb/reader
++ 2026-11-13 21:40:46.351 xcodebuild[22838:166600]  DVTFilePathFSEvents: Failed to start fs event stream.
++ 2026-11-13 21:40:46.531 xcodebuild[22838:166590] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
++ 2026-11-13 21:40:47.007 xcodebuild[22853:166628]  DVTFilePathFSEvents: Failed to start fs event stream.
++ 2026-11-13 21:40:47.167 xcodebuild[22853:166627] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
++ <unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
++ <unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
++
+
+ ❯ tests/boundary/process/providerProcess.test.ts:397:6
+    395|         memoryLimitBytes: 704 * 1024 * 1024,
+    396|       }),
+    397|     ).rejects.toThrow("require the Windows Job Object launcher");
+       |      ^
+    398|   });
+    399| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/34]⎯
+
+ FAIL  |process-boundary| tests/boundary/process/providerProcess.test.ts > provider process spawning primitives > spawns an owned process group with exact identity coordinates
+DarwinProcessOwnershipInspectionError: macOS process ownership helper compilation failed via xcrun (compiler result: 1): Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-rRpegU/reader
+2026-11-13 21:40:48.547 xcodebuild[22862:166686]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:48.722 xcodebuild[22862:166685] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:49.207 xcodebuild[22864:166697]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:49.382 xcodebuild[22864:166696] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+
+ ❯ runCompilation src/process/DarwinProcessRunTokenReader.ts:187:15
+    185|             ? String(cause.code)
+    186|             : "unknown";
+    187|         throw new DarwinProcessOwnershipInspectionError(
+       |               ^
+    188|           code === "ENOENT"
+    189|             ? `macOS process ownership inspection requires the Apple S…
+ ❯ Object.compile src/process/DarwinProcessRunTokenReader.ts:247:16
+ ❯ Object.prepare src/process/ProcessOwnershipObservation.ts:344:7
+ ❯ prepareProcessOwnershipInspection src/process/ProcessOwnershipObservation.ts:516:3
+ ❯ spawnOwnedProviderProcess src/process/ProviderProcess.ts:182:3
+ ❯ tests/boundary/process/providerProcess.test.ts:450:21
+
+Caused by: Error: Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-rRpegU/reader
+2026-11-13 21:40:48.547 xcodebuild[22862:166686]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:48.722 xcodebuild[22862:166685] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:49.207 xcodebuild[22864:166697]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:49.382 xcodebuild[22864:166696] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 1, killed: false, signal: null, cmd: '/usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-rRpegU/reader', stdout: '', stderr: '2026-11-13 21:40:48.547 xcodebuild[22862:166686]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:48.722 xcodebuild[22862:166685] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:49.207 xcodebuild[22864:166697]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:49.382 xcodebuild[22864:166696] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/34]⎯
+
+ FAIL  |process-boundary| tests/boundary/process/providerProcess.test.ts > provider process spawning primitives > cleans a real descendant that starts a distinct process group
+DarwinProcessOwnershipInspectionError: macOS process ownership helper compilation failed via xcrun (compiler result: 1): Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-PzQEZe/reader
+2026-11-13 21:40:50.754 xcodebuild[22870:166740]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:50.932 xcodebuild[22870:166737] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:51.431 xcodebuild[22873:166772]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:51.618 xcodebuild[22873:166771] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+
+ ❯ runCompilation src/process/DarwinProcessRunTokenReader.ts:187:15
+    185|             ? String(cause.code)
+    186|             : "unknown";
+    187|         throw new DarwinProcessOwnershipInspectionError(
+       |               ^
+    188|           code === "ENOENT"
+    189|             ? `macOS process ownership inspection requires the Apple S…
+ ❯ Object.compile src/process/DarwinProcessRunTokenReader.ts:247:16
+ ❯ Object.prepare src/process/ProcessOwnershipObservation.ts:344:7
+ ❯ prepareProcessOwnershipInspection src/process/ProcessOwnershipObservation.ts:516:3
+ ❯ spawnOwnedProviderProcess src/process/ProviderProcess.ts:182:3
+ ❯ tests/boundary/process/providerProcess.test.ts:473:23
+
+Caused by: Error: Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-PzQEZe/reader
+2026-11-13 21:40:50.754 xcodebuild[22870:166740]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:50.932 xcodebuild[22870:166737] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:51.431 xcodebuild[22873:166772]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:51.618 xcodebuild[22873:166771] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 1, killed: false, signal: null, cmd: '/usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-PzQEZe/reader', stdout: '', stderr: '2026-11-13 21:40:50.754 xcodebuild[22870:166740]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:50.932 xcodebuild[22870:166737] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:51.431 xcodebuild[22873:166772]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:51.618 xcodebuild[22873:166771] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/34]⎯
+
+ FAIL  |process-boundary| tests/boundary/process/providerProcess.test.ts > provider process spawning primitives > allows interpreter launchers to rely on parent and run-token identity
+DarwinProcessOwnershipInspectionError: macOS process ownership helper compilation failed via xcrun (compiler result: 1): Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-JcpVDt/reader
+2026-11-13 21:40:53.039 xcodebuild[22883:166837]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:53.221 xcodebuild[22883:166836] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:53.709 xcodebuild[22885:166852]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:53.882 xcodebuild[22885:166851] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+
+ ❯ runCompilation src/process/DarwinProcessRunTokenReader.ts:187:15
+    185|             ? String(cause.code)
+    186|             : "unknown";
+    187|         throw new DarwinProcessOwnershipInspectionError(
+       |               ^
+    188|           code === "ENOENT"
+    189|             ? `macOS process ownership inspection requires the Apple S…
+ ❯ Object.compile src/process/DarwinProcessRunTokenReader.ts:247:16
+ ❯ Object.prepare src/process/ProcessOwnershipObservation.ts:344:7
+ ❯ prepareProcessOwnershipInspection src/process/ProcessOwnershipObservation.ts:516:3
+ ❯ spawnOwnedProviderProcess src/process/ProviderProcess.ts:182:3
+ ❯ tests/boundary/process/providerProcess.test.ts:563:21
+
+Caused by: Error: Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-JcpVDt/reader
+2026-11-13 21:40:53.039 xcodebuild[22883:166837]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:53.221 xcodebuild[22883:166836] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:53.709 xcodebuild[22885:166852]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:53.882 xcodebuild[22885:166851] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 1, killed: false, signal: null, cmd: '/usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-JcpVDt/reader', stdout: '', stderr: '2026-11-13 21:40:53.039 xcodebuild[22883:166837]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:53.221 xcodebuild[22883:166836] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:53.709 xcodebuild[22885:166852]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:53.882 xcodebuild[22885:166851] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/34]⎯
+
+ FAIL  |process-boundary| tests/boundary/process/providerProcess.test.ts > provider process spawning primitives > rejects deterministic spawn failures without producing a process
+AssertionError: expected DarwinProcessOwnershipInspectionError: ma… to match object { code: 'ENOENT' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "ENOENT",
++ DarwinProcessOwnershipInspectionError {
++   "message": "macOS process ownership helper compilation failed via xcrun (compiler result: 1): Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-YJzXuf/reader
++ 2026-11-13 21:40:55.188 xcodebuild[22891:166888]  DVTFilePathFSEvents: Failed to start fs event stream.
++ 2026-11-13 21:40:55.367 xcodebuild[22891:166886] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \"Input/output error\". Using NSCachesDirectory instead.
++ 2026-11-13 21:40:55.851 xcodebuild[22893:166896]  DVTFilePathFSEvents: Failed to start fs event stream.
++ 2026-11-13 21:40:56.031 xcodebuild[22893:166895] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \"Input/output error\". Using NSCachesDirectory instead.
++ <unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
++ <unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
++ ",
++   "cause": Error {
++     "message": "Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-YJzXuf/reader
++ 2026-11-13 21:40:55.188 xcodebuild[22891:166888]  DVTFilePathFSEvents: Failed to start fs event stream.
++ 2026-11-13 21:40:55.367 xcodebuild[22891:166886] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \"Input/output error\". Using NSCachesDirectory instead.
++ 2026-11-13 21:40:55.851 xcodebuild[22893:166896]  DVTFilePathFSEvents: Failed to start fs event stream.
++ 2026-11-13 21:40:56.031 xcodebuild[22893:166895] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \"Input/output error\". Using NSCachesDirectory instead.
++ <unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
++ <unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
++ ",
++     "code": 1,
++     "killed": false,
++     "signal": null,
++     "cmd": "/usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-YJzXuf/reader",
++     "stdout": "",
++     "stderr": "2026-11-13 21:40:55.188 xcodebuild[22891:166888]  DVTFilePathFSEvents: Failed to start fs event stream.
++ 2026-11-13 21:40:55.367 xcodebuild[22891:166886] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \"Input/output error\". Using NSCachesDirectory instead.
++ 2026-11-13 21:40:55.851 xcodebuild[22893:166896]  DVTFilePathFSEvents: Failed to start fs event stream.
++ 2026-11-13 21:40:56.031 xcodebuild[22893:166895] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \"Input/output error\". Using NSCachesDirectory instead.
++ <unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
++ <unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
++ ",
++   },
++   "name": "DarwinProcessOwnershipInspectionError",
+  }
+
+ ❯ tests/boundary/process/providerProcess.test.ts:587:6
+    585|         runId: "missing-provider",
+    586|       }),
+    587|     ).rejects.toMatchObject({ code: "ENOENT" });
+       |      ^
+    588|   });
+    589| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/34]⎯
+
+ FAIL  |process-boundary| tests/boundary/process/providerProcess.test.ts > provider process configured-platform spawning > uses the configured platform when establishing process-group identity
+DarwinProcessOwnershipInspectionError: macOS process ownership helper compilation failed via xcrun (compiler result: 1): Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-pvO1Lm/reader
+2026-11-13 21:40:57.378 xcodebuild[22900:166936]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:57.548 xcodebuild[22900:166935] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:58.053 xcodebuild[22924:166995]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:58.249 xcodebuild[22924:166994] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+
+ ❯ runCompilation src/process/DarwinProcessRunTokenReader.ts:187:15
+    185|             ? String(cause.code)
+    186|             : "unknown";
+    187|         throw new DarwinProcessOwnershipInspectionError(
+       |               ^
+    188|           code === "ENOENT"
+    189|             ? `macOS process ownership inspection requires the Apple S…
+ ❯ Object.compile src/process/DarwinProcessRunTokenReader.ts:247:16
+ ❯ Object.prepare src/process/ProcessOwnershipObservation.ts:344:7
+ ❯ prepareProcessOwnershipInspection src/process/ProcessOwnershipObservation.ts:516:3
+ ❯ spawnOwnedProviderProcess src/process/ProviderProcess.ts:182:3
+ ❯ tests/boundary/process/providerProcess.test.ts:595:33
+
+Caused by: Error: Command failed: /usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-pvO1Lm/reader
+2026-11-13 21:40:57.378 xcodebuild[22900:166936]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:57.548 xcodebuild[22900:166935] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:58.053 xcodebuild[22924:166995]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:58.249 xcodebuild[22924:166994] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { code: 1, killed: false, signal: null, cmd: '/usr/bin/xcrun swiftc /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReader.swift /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/bridge/process/ProcessRunTokenReaderMain.swift -o /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-process-token-pvO1Lm/reader', stdout: '', stderr: '2026-11-13 21:40:57.378 xcodebuild[22900:166936]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:57.548 xcodebuild[22900:166935] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+2026-11-13 21:40:58.053 xcodebuild[22924:166995]  DVTFilePathFSEvents: Failed to start fs event stream.
+2026-11-13 21:40:58.249 xcodebuild[22924:166994] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 "Input/output error". Using NSCachesDirectory instead.
+<unknown>:0: error: error opening '/Users/sigur/.cache/clang/ModuleCache/Swift-1IEYM950OGIQC.swiftmodule' for output: /Users/sigur/.cache/clang/ModuleCache: Operation not permitted
+<unknown>:0: error: unable to load standard library for target 'arm64-apple-macosx26.0'
+' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient captured source snapshot > exposes the immutable import snapshot only during the live session
+AssertionError: expected { ok: false, …(1) } to match object { ok: true }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:168:33
+    166|       error: { kind: "protocol" },
+    167|     });
+    168|     await expect(client.start()).resolves.toMatchObject({ ok: true });
+       |                                 ^
+    169|     const abortedRead = new AbortController();
+    170|     abortedRead.abort();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient > completes an exact, fragmented post-analysis handshake
+AssertionError: expected { ok: false, …(1) } to match object { ok: true, value: { …(7) } }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
+-   "value": {
+-     "analysis_complete": true,
+-     "analysis_timed_out": false,
+-     "capabilities": [
+-       "ping",
+-       "shutdown",
+-       "inspect_native_load_image",
+-       "read_bytes",
+-       "address_to_file_offset",
+-       "address_name",
+-       "list_documents",
+-       "list_names",
+-       "list_procedures",
+-       "list_segments",
+-       "list_strings",
+-       "procedure_address",
+-       "resolve_containing_procedure",
+-       "search_procedures",
+-       "search_strings",
+-       "set_address_name",
+-       "set_addresses_names",
+-       "annotate_native_function",
+-       "inspect_native_data_type",
+-       "inspect_native_instruction",
+-       "resolve_native_call_targets",
+-       "analyze_function",
+-       "procedure_assembly",
+-       "procedure_callees",
+-       "procedure_callers",
+-       "procedure_info",
+-       "procedure_pseudo_code",
+-       "read_function_instructions",
+-       "procedure_references",
+-       "xrefs",
+-     ],
+-     "profile_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+-     "provider": {
+-       "id": "ghidra",
+-       "version": "12.1.4",
+-     },
+-     "read_only": false,
+-     "target": {
+-       "default_address_space": "ram",
+-       "image_base": "0x1000",
+-     },
+-   },
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:211:21
+    209|
+    210|     const started = await client.start();
+    211|     expect(started).toMatchObject({
+       |                     ^
+    212|       ok: true,
+    213|       value: {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient > accepts an owned-socket result above the former 64 MiB ceiling
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > serves an explicitly bounded stable partial Program and retains the exact budget
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > rejects results from a restarted run instead of attributing the earlier analysis state
+GhidraSessionError: Ghidra exited before bridge startup
+ ❯ createGhidraSessionError src/ghidra/GhidraSessionError.ts:53:3
+     51|   readonly redact: (value: string) => string;
+     52| }): GhidraSessionError =>
+     53|   new GhidraSessionError(
+       |   ^
+     54|     failure.kind,
+     55|     failure.message,
+ ❯ Object.failure src/ghidra/GhidraSessionError.ts:90:5
+ ❯ connectGhidraSocket src/ghidra/GhidraSocketConnection.ts:71:17
+ ❯ GhidraClient.#connect src/ghidra/GhidraClient.ts:599:23
+ ❯ GhidraClient.#startWithin src/ghidra/GhidraClient.ts:571:23
+ ❯ GhidraClient.#start src/ghidra/GhidraClient.ts:455:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient > completes the same authenticated handshake over loopback TCP
+AssertionError: expected { ok: false, …(1) } to match object { ok: true, …(1) }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
+-   "value": {
+-     "target": {
+-       "sha256": "fa39b74e616b12bdaca4a53253b260133d614e8e977fe93dc7be0bc3e0582c20",
+-     },
+-   },
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:269:33
+    267|     });
+    268|
+    269|     await expect(client.start()).resolves.toMatchObject({
+       |                                 ^
+    270|       ok: true,
+    271|       value: {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient > correlates an admitted inventory request after startup
+AssertionError: expected { ok: false, …(1) } to match object { ok: true, value: [ { …(3) } ] }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
+-   "value": [
+-     {
+-       "address": "0x1000",
+-       "procedure": {
+-         "external": false,
+-         "thunk": false,
+-       },
+-       "value": "fixture_main",
+-     },
+-   ],
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:285:6
+    283|         document: null,
+    284|       }),
+    285|     ).resolves.toMatchObject({
+       |      ^
+    286|       ok: true,
+    287|       value: [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient > preserves an authenticated operation failure code and diagnostics
+AssertionError: expected { ok: false, …(1) } to match object { ok: false, error: { …(3) } }
+(32 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": {
++   "error": GhidraSessionError {
+      "diagnostics": {
+-       "remote_code": "not_found",
+-       "remote_message": "Unknown Ghidra procedure name",
++       "analysis_timeout_seconds": null,
++       "diagnostic_truncated": false,
++       "endpoint_path": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-LEYnue/bridge.sock",
++       "exit_code": 1,
++       "exit_signal": null,
++       "failure_kind": "process",
++       "failure_message": "Ghidra exited before bridge startup",
++       "ghidra_log_path": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-LEYnue/ghidra.log",
++       "phase": "startup",
++       "process_id": 22653,
++       "profile_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
++       "project_root": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-LEYnue/project",
++       "provider_version": "12.1.4",
++       "run_id": "b0647e36-1275-40ce-b6b7-8cb80ec70e64",
++       "runtime_root": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-LEYnue",
++       "script_log_path": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-LEYnue/script.log",
++       "stage": "awaiting-post-analysis-bridge",
++       "startup_timeout_ms": 1000,
++       "stderr": {
++         "bytes": 855,
++         "retained_bytes": 855,
++         "text": "node:events:496
++       throw er; // Unhandled 'error' event
++       ^
++
++ Error: listen EPERM: operation not permitted /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-LEYnue/bridge.sock
++     at Server.setupListenHandle [as _listen2] (node:net:1918:21)
++     at listenInCluster (node:net:1997:12)
++     at Server.listen (node:net:2119:5)
++     at file:///Users/sigur/Desktop/projekte/reverse%20engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/tests/fixtures/fakeGhidra.mjs:49:43
++ Emitted 'error' event on Server instance at:
++     at emitErrorNT (node:net:1976:8)
++     at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
++   code: 'EPERM',
++   errno: -1,
++   syscall: 'listen',
++   address: '/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-LEYnue/bridge.sock',
++   port: -1
++ }
++
++ Node.js v22.17.0
++ ",
++       },
++       "stdout": {
++         "bytes": 0,
++         "retained_bytes": 0,
++         "text": "",
+        },
+-     "kind": "remote",
+-     "remoteCode": "not_found",
++       "target_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/tests/fixtures/fakeGhidra.mjs",
++       "target_sha256": "fa39b74e616b12bdaca4a53253b260133d614e8e977fe93dc7be0bc3e0582c20",
++       "transport": "unix-socket",
++     },
++     "kind": "process",
++     "remoteCode": undefined,
+    },
+    "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:306:20
+    304|     });
+    305|
+    306|     expect(result).toMatchObject({
+       |                    ^
+    307|       ok: false,
+    308|       error: {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient > projects wrong_identity startup as protocol
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient > projects malformed startup as protocol
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient > projects contradictory startup as protocol
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient > projects future_id startup as protocol
+AssertionError: expected 'process' to be 'protocol' // Object.is equality
+
+Expected: "protocol"
+Received: "process"
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:330:47
+    328|     const result = await client.start();
+    329|     expect(result.ok).toBe(false);
+    330|     if (!result.ok) expect(result.error.kind).toBe(expectedKind);
+       |                                               ^
+    331|   });
+    332| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient > projects analysis_timeout startup as analysis_timeout
+AssertionError: expected 'process' to be 'analysis_timeout' // Object.is equality
+
+Expected: "analysis_timeout"
+Received: "process"
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:330:47
+    328|     const result = await client.start();
+    329|     expect(result.ok).toBe(false);
+    330|     if (!result.ok) expect(result.error.kind).toBe(expectedKind);
+       |                                               ^
+    331|   });
+    332| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient established requests > fails an established function request when the provider process exits
+AssertionError: expected { ok: false, …(1) } to match object { ok: true }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:395:33
+    393|   it("fails an established function request when the provider process …
+    394|     const client = clientFor(new FixtureLauncher("exit_tools"));
+    395|     await expect(client.start()).resolves.toMatchObject({ ok: true });
+       |                                 ^
+    396|
+    397|     await expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient established requests > cancels queued work and stops active provider work on cancellation
+AssertionError: expected { ok: false, …(1) } to match object { ok: true }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:408:33
+    406|     const launcher = new FixtureLauncher("hang_tools");
+    407|     const client = clientFor(launcher);
+    408|     await expect(client.start()).resolves.toMatchObject({ ok: true });
+       |                                 ^
+    409|     const activeController = new AbortController();
+    410|     const active = client.callTool(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient runtime removal failures > reports a runtime root it could not remove and removes it on a later close
+AssertionError: expected { ok: false, …(1) } to match object { ok: true }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:455:35
+    453|       const launcher = new FixtureLauncher();
+    454|       const client = clientFor(launcher);
+    455|       await expect(client.start()).resolves.toMatchObject({ ok: true }…
+       |                                   ^
+    456|       const runtimeRoot = launcher.runtimeRoots[0] ?? "";
+    457|       // Without write permission its entries cannot be removed.
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient cleanup and diagnostics > makes double close idempotent and releases its process runtime
+AssertionError: expected { ok: false, …(1) } to match object { ok: true }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:485:33
+    483|     const launcher = new FixtureLauncher();
+    484|     const client = clientFor(launcher);
+    485|     await expect(client.start()).resolves.toMatchObject({ ok: true });
+       |                                 ^
+    486|
+    487|     await Promise.all([client.close(), client.close()]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient cleanup and diagnostics > retains actionable runtime coordinates after successful cleanup
+AssertionError: expected { ok: false, …(1) } to match object { ok: true }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:504:33
+    502|       runId: "11111111-1111-4111-8111-111111111111",
+    503|     });
+    504|     await expect(client.start()).resolves.toMatchObject({ ok: true });
+       |                                 ^
+    505|
+    506|     await client.close();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient cleanup and diagnostics > bounds long-lived launcher diagnostics without interrupting the session
+AssertionError: expected { ok: false, …(1) } to match object { ok: true }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:524:33
+    522|     const launcher = new FixtureLauncher("diagnostic_output");
+    523|     const client = clientFor(launcher);
+    524|     await expect(client.start()).resolves.toMatchObject({ ok: true });
+       |                                 ^
+    525|     await expect(
+    526|       client.callTool("list_strings", { document: null }),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient rejected requests > redacts authentication after failed startup cleanup and retry
+AssertionError: expected { ok: false, …(1) } to match object { ok: true }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:638:33
+    636|       error: { kind: "start" },
+    637|     });
+    638|     await expect(client.start()).resolves.toMatchObject({ ok: true });
+       |                                 ^
+    639|     expect(tokens).toHaveLength(2);
+    640|     rejectCompletion = true;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient rejected requests > retains an unexpected wire rejection and continues serial requests
+AssertionError: expected { ok: false, …(1) } to match object { ok: false, error: { …(2) } }
+(33 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": {
++   "error": GhidraSessionError {
+      "diagnostics": {
+-       "failure_cause": {
+-         "code": "ECOMPLETION",
+-         "message": "Request completion rejected",
+-         "name": "TypeError",
++       "analysis_timeout_seconds": null,
++       "diagnostic_truncated": false,
++       "endpoint_path": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-XTw6Gf/bridge.sock",
++       "exit_code": 1,
++       "exit_signal": null,
++       "failure_kind": "process",
++       "failure_message": "Ghidra exited before bridge startup",
++       "ghidra_log_path": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-XTw6Gf/ghidra.log",
++       "phase": "startup",
++       "process_id": 22672,
++       "profile_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
++       "project_root": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-XTw6Gf/project",
++       "provider_version": "12.1.4",
++       "run_id": "020cc9e6-a9fe-4130-969d-6432e1ab7ca8",
++       "runtime_root": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-XTw6Gf",
++       "script_log_path": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-XTw6Gf/script.log",
++       "stage": "awaiting-post-analysis-bridge",
++       "startup_timeout_ms": 1000,
++       "stderr": {
++         "bytes": 855,
++         "retained_bytes": 855,
++         "text": "node:events:496
++       throw er; // Unhandled 'error' event
++       ^
++
++ Error: listen EPERM: operation not permitted /private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-XTw6Gf/bridge.sock
++     at Server.setupListenHandle [as _listen2] (node:net:1918:21)
++     at listenInCluster (node:net:1997:12)
++     at Server.listen (node:net:2119:5)
++     at file:///Users/sigur/Desktop/projekte/reverse%20engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/tests/fixtures/fakeGhidra.mjs:49:43
++ Emitted 'error' event on Server instance at:
++     at emitErrorNT (node:net:1976:8)
++     at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
++   code: 'EPERM',
++   errno: -1,
++   syscall: 'listen',
++   address: '/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-ghidra-XTw6Gf/bridge.sock',
++   port: -1
++ }
++
++ Node.js v22.17.0
++ ",
+        },
++       "stdout": {
++         "bytes": 0,
++         "retained_bytes": 0,
++         "text": "",
+        },
+-     "kind": "protocol",
++       "target_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/tests/fixtures/fakeGhidra.mjs",
++       "target_sha256": "fa39b74e616b12bdaca4a53253b260133d614e8e977fe93dc7be0bc3e0582c20",
++       "transport": "unix-socket",
++     },
++     "kind": "process",
+    },
+    "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:689:20
+    687|     const second = client.callTool("list_procedures", { document: null…
+    688|     const result = await first;
+    689|     expect(result).toMatchObject({
+       |                    ^
+    690|       ok: false,
+    691|       error: {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient shutdown diagnostics > logs an unexpected shutdown rejection and still removes its process and runtime
+AssertionError: expected { ok: false, …(1) } to match object { ok: true }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:741:33
+    739|     );
+    740|     const client = clientFor(launcher, { logger });
+    741|     await expect(client.start()).resolves.toMatchObject({ ok: true });
+       |                                 ^
+    742|     await expect(client.close()).resolves.toEqual({ ok: true, value: n…
+    743|     const warning: unknown[] = logs.map((line) => JSON.parse(line));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient shutdown diagnostics > keeps cleanup best effort for shutdown_error
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > GhidraClient shutdown diagnostics > keeps cleanup best effort for invalid_shutdown_ack
+AssertionError: expected { ok: false, …(1) } to match object { ok: true }
+(7 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "ok": true,
++   "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:779:35
+    777|       );
+    778|       const client = clientFor(launcher, { logger });
+    779|       await expect(client.start()).resolves.toMatchObject({ ok: true }…
+       |                                   ^
+    780|       await expect(client.close()).resolves.toEqual({ ok: true, value:…
+    781|       const warning: unknown[] = logs.map((line) => JSON.parse(line));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > preserves failed startup and retained Ghidra cleanup capabilities until a verified retry
+AssertionError: expected { ok: false, …(1) } to match object { ok: false, error: { …(2) } }
+(27 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": {
++   "error": GhidraSessionError {
+      "cleanupFailure": {
+        "cleanupIncomplete": true,
+      },
+-     "kind": "protocol",
++     "kind": "process",
+    },
+    "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:837:32
+    835|     await client.close();
+    836|   });
+    837|   expect(await client.start()).toMatchObject({
+       |                                ^
+    838|     ok: false,
+    839|     error: { kind: "protocol", cleanupFailure: { cleanupIncomplete: tr…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/34]⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > retains spawned rollback-discovered foreign detached processes and runtime roots across later closes
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts > retains injected rollback-discovered foreign detached processes and runtime roots across later closes
+AssertionError: expected { ok: false, …(1) } to match object { ok: false, error: { …(1) } }
+(20 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": {
+-     "cleanupFailure": {
+-       "cleanupIncomplete": true,
+-     },
++   "error": GhidraSessionError {
++     "cleanupFailure": undefined,
+    },
+    "ok": false,
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraClient.test.ts:1047:34
+    1045|     });
+    1046|
+    1047|     expect(await client.start()).toMatchObject({
+       |                                  ^
+    1048|       ok: false,
+    1049|       error: { cleanupFailure: { cleanupIncomplete: true } },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/34]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  34 failed | 22 passed (56)
+   Start at  21:40:31
+   Duration  28.00s (tests 98%, transform 1%, import 1%)
+

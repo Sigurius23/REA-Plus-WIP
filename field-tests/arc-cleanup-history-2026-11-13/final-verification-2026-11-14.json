@@ -1,0 +1,175 @@
+{
+  "status": "passed",
+  "observed_at": "2026-11-14T00:27:13.814265+00:00",
+  "source_commit": "076c706c6e06257190c5303fa8aec5de1d2e649f",
+  "scope": "Cleanup ownership and radare2 startup regression verification; offline Arc analysis, no target execution",
+  "source_suite": {
+    "passed": 105,
+    "skipped": 1,
+    "files": 11
+  },
+  "final_consumer_matrix": {
+    "passed": 132,
+    "skipped": 3,
+    "files": 12,
+    "skip_note": "Three Linux-only FirmwareCommand executable/limiter configuration cases skipped on macOS; source history cases overlap the source suite."
+  },
+  "package": {
+    "mcp_tools": 205,
+    "mcp_prompts": 6,
+    "empty_owned_lineage": true
+  },
+  "arc": {
+    "successful_calls": 15,
+    "sessions": 1,
+    "target_sha256_after": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+    "target_size": 80498448,
+    "closes": [
+      {
+        "label": "close.reply.json",
+        "elapsed_ms": 795
+      },
+      {
+        "label": "repeat-close.reply.json",
+        "elapsed_ms": 1
+      }
+    ],
+    "empty_owned_lineage": true,
+    "producer_profile": "abi-signed-word-cfg-v7",
+    "full_dispatch_recovery": false
+  },
+  "prior_attempts": {
+    "boundary.log": "Restricted sandbox and unpinned Node22 run failed; not used to verify product behavior. Host/pinned rerun passes.",
+    "consumer-boundaries-2026-11-14.log": "One test assertion used the cleanup subclass name as tagged error; corrected to ProviderAdapterError with cleanupIncomplete=true.",
+    "fast-2026-11-14.log": "New test pushed a describe callback above its line budget; moved test to top level. Final gate passes.",
+    "boundary-plan.json": "Npm console preamble made the original capture a log; retained as boundary-plan.log, with the parsed plan alone now in boundary-plan.json. Canonical artifact audit passes."
+  },
+  "full_check_pr_rerun": false,
+  "sources": [
+    {
+      "path": "rea-local/src/android/JadxMcpTransport.ts",
+      "sha256": "9d443a9ccf33478a20c7e3e8f0c44e34c6b6aab780a04df0acf731473c4e5879",
+      "bytes": 8208
+    },
+    {
+      "path": "rea-local/src/firmware/FirmwareCommand.ts",
+      "sha256": "f624ed89b2a576daca14f4811b346392282db7d95eb57b28544288925512013f",
+      "bytes": 9702
+    },
+    {
+      "path": "rea-local/src/ghidra/GhidraLauncher.ts",
+      "sha256": "3c9da82faa4a5f47370078ec09ef749e5975fe103be6bef82192a374b541fdd5",
+      "bytes": 23127
+    },
+    {
+      "path": "rea-local/src/hopper/BridgeLauncher.ts",
+      "sha256": "27243aed1c1fd22fbbb916677612150d150d47ddceaaa58bc412a2a3976e5e6d",
+      "bytes": 17636
+    },
+    {
+      "path": "rea-local/src/hopper/LinuxPrivateDisplayProbe.ts",
+      "sha256": "6d40ff8237237eaf029c2234e1394af2c28c92b3ed9e9a4bdac841ea04ed6434",
+      "bytes": 10695
+    },
+    {
+      "path": "rea-local/src/javascript/analysis/JavaScriptAnalysisWorker.ts",
+      "sha256": "e62eacfc28a953741913e0bcc8dd27c13b237e4cc2fee3d3263979a0b25f48ae",
+      "bytes": 32786
+    },
+    {
+      "path": "rea-local/src/javascript/recovery/WakaruCommand.ts",
+      "sha256": "6456f0ed0d8ab934ca4f266eaa60b1f8ac3d8a4bf8ab48b6c5f8b45dc4e3df95",
+      "bytes": 6799
+    },
+    {
+      "path": "rea-local/src/javascript/sourceMaps/SourceMapCommand.ts",
+      "sha256": "c462a4fecb55be0fdbdce2819c514c0fb8c3ea50109e3c770823e79c7b70ae6e",
+      "bytes": 10891
+    },
+    {
+      "path": "rea-local/src/native/LldbCallTracer.ts",
+      "sha256": "bdd8602f0a57ca460dc302ce8d9ca70586a8c52485e509909cb1635b0d6fe11b",
+      "bytes": 33971
+    },
+    {
+      "path": "rea-local/src/process/OwnedCommand.ts",
+      "sha256": "d3118b2cc3a5568e12faa2b6aaef804a3b785cb5613a34ade41c8f86cf710797",
+      "bytes": 6589
+    },
+    {
+      "path": "rea-local/src/process/ProcessOwnership.history.test.ts",
+      "sha256": "bbb3fd0c6cf24ddba3fd5068dc7a0f92760627ffc748e9b79b35b5f2b7aeebe5",
+      "bytes": 6301
+    },
+    {
+      "path": "rea-local/src/process/ProcessOwnership.ts",
+      "sha256": "f75c9a2fc37b861de368b0229dab79f75896e176b633b41655b72443946387f6",
+      "bytes": 45722
+    },
+    {
+      "path": "rea-local/src/process/ProviderProcess.ts",
+      "sha256": "eb63627a45fb89ad1909b7851b31909450803a8715ae585d56d8a1dc2d8bae40",
+      "bytes": 20683
+    },
+    {
+      "path": "rea-local/src/radare2/Radare2AnalysisClient.ts",
+      "sha256": "66b6a5e17dbc39eeb1604217d3b090a6ef60449a9644b76ec85d9edc206f6a7c",
+      "bytes": 12574
+    },
+    {
+      "path": "rea-local/src/radare2/Radare2Pipe.ts",
+      "sha256": "270279028a6ec6de101d3e7cf85ff3bcaf4c8d62f2dcc4228a266e4294525198",
+      "bytes": 8892
+    },
+    {
+      "path": "rea-local/tests/boundary/providers/ghidra/ghidraClient.test.ts",
+      "sha256": "05259e6570432d5f25d45ad0d5f110bac409198a9bb8c032e990374bec1b19d4",
+      "bytes": 38805
+    },
+    {
+      "path": "rea-local/tests/boundary/providers/radare2/radare2Provider.process.test.ts",
+      "sha256": "c1b18f55ebc0e438178b6f2995456c42419d3642f5388c74b25a67f5efffec3a",
+      "bytes": 14486
+    },
+    {
+      "path": "rea-local/tests/fixtures/fakeRadare2.mjs",
+      "sha256": "5911c6bdf10bbc57b7f728eabf6df5efa6f82f6c03d0b6345586c0cddc5144ff",
+      "bytes": 3579
+    },
+    {
+      "path": "rea-local/tests/fixtures/providerProcess.mjs",
+      "sha256": "ca870b832a2aed2ab143b2273d4cc67c1380e20a458c91b30e0c1dbb095e2a54",
+      "bytes": 2155
+    }
+  ],
+  "checks": {
+    "source-tests.log": {
+      "sha256": "04f9da127d8d88d9b8d2275b93ce59d18ec8f23812867d355bfe796b27a07898",
+      "bytes": 1790
+    },
+    "boundary-host.log": {
+      "sha256": "cfeb32f59076d5aa8020517c985b5e9b754bc72da73a15dbd1536399ec1692ae",
+      "bytes": 2805
+    },
+    "consumer-boundaries-final-2026-11-14.log": {
+      "sha256": "23a527eb757639c29529b1ce1a726e24f51b06c066749e7ed9febb326684fb78",
+      "bytes": 6611
+    },
+    "fast-final-2026-11-14.log": {
+      "sha256": "1d8c4388eb8b6cb5e49171fe2b6324ea4a1c2504951416449458ffdd274bb4c1",
+      "bytes": 384
+    },
+    "docs.log": {
+      "sha256": "d663a23ddd90bc21b4c1a53640a6a9461b61033ced5d81c7dcc7f10a60cf59bf",
+      "bytes": 536
+    },
+    "package-final-2026-11-14.log": {
+      "sha256": "52a1db018b74202702f9e87694b8af870e1e7022d078464458054bfe419f5717",
+      "bytes": 4560
+    },
+    "arc-retest-2026-11-14.log": {
+      "sha256": "77b62538835204c4db19f216e75e193753ae1da3eebd3bf31538676d2ca62a15",
+      "bytes": 2627
+    }
+  }
+}

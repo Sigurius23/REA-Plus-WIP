@@ -1,0 +1,69 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-core-loader-2026-11-08/loader-final",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-core-loader-2026-11-08/loader-final-seeds.tsv"
+  },
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 900000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/tmp/rea-arc-1.172.1-core-arm64.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x4444f4c"
+      },
+      "label": "bundled-resource-loader"
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x31e5204"
+      },
+      "label": "manifest-identifier"
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x32f233c"
+      },
+      "label": "component-activation"
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x962984"
+      },
+      "label": "datapack-entry-reader"
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x4444f4c"
+      },
+      "label": "bundled-resource-loader-instructions"
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x4446094"
+      },
+      "label": "bundled-resource-relative-path-instructions"
+    }
+  ],
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-core-loader-2026-11-08/loader-final-continuation-1.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-core-loader-2026-11-08/loader-final-continuation-2.json"
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "observed_at": "2026-11-13T20:39:50.176Z",
+  "node": "v24.22.1",
+  "executable": "/Users/sigur/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "revision": "retained-process-group-cleanup-capability",
+  "production_source_frozen": true,
+  "scope": "Process cleanup capability and source/owned-Node boundary tests; no actual provider or application executed",
+  "before": {
+    "receipt": "before-host-seam.json",
+    "authority": "controlled host seam against preceding compiled runtime",
+    "result": "regression reproduced: second stop verified cleanup with detached candidate still live and no signal"
+  },
+  "after": {
+    "receipt": "after-host-seam.log",
+    "authority": "source tests through production cleanup factory and supervisor with a controlled host",
+    "cases_passed": 7,
+    "verified_behaviors": [
+      "incomplete stop retains unreadable detached survivor after root exit on another stop",
+      "incomplete rollback before supervisor construction retains the same candidate on later stop",
+      "fresh matching token and unchanged start identity allow later cleanup",
+      "foreign token and reused native identity remain unowned",
+      "group migration remains uncertain until candidate disappears",
+      "injected cleanup capabilities preserve their function identity",
+      "groups first discovered during pre-signal validation force incomplete and are retained for retry"
+    ]
+  },
+  "checks": {
+    "source_tests": {
+      "passed": 105,
+      "skipped": 1,
+      "files": 11,
+      "skip_reason": "Linux /proc start identity is unavailable on macOS",
+      "receipt": "source-tests.log"
+    },
+    "typecheck": {
+      "status": "passed",
+      "receipt": "typecheck.log"
+    },
+    "lint": {
+      "status": "passed",
+      "errors": 0,
+      "warnings": 24,
+      "receipt": "lint.log"
+    },
+    "format": {
+      "status": "passed",
+      "files": 10,
+      "receipt": "format.log"
+    },
+    "module_boundaries": {
+      "status": "passed",
+      "source_files_checked": 1978,
+      "receipt": "module-boundaries.log"
+    },
+    "boundary": {
+      "status": "pending_parent_build_and_run",
+      "plan": "boundary-plan.json",
+      "needs_build": true,
+      "command": "npm run test:focused -- tests/boundary/process/providerProcess.test.ts tests/boundary/providers/ghidra/ghidraClient.test.ts",
+      "new_cases": [
+        "production spawned cleanup survives Ghidra manifest rollback and repeated close with foreign-token detached Node process",
+        "injected spawn without cleanup is normalized before rollback and retains the same history across repeated close"
+      ],
+      "teardown_authority": "Separate child-specific run token and fresh native process inspection through its own cleanup capability; no PID-only child signaling"
+    },
+    "real_provider": {
+      "status": "not_run_by_this_worker",
+      "owner": "parent task"
+    }
+  },
+  "sources": [
+    {
+      "path": "src/process/ProcessOwnership.ts",
+      "sha256": "f75c9a2fc37b861de368b0229dab79f75896e176b633b41655b72443946387f6"
+    },
+    {
+      "path": "src/process/ProcessOwnership.history.test.ts",
+      "sha256": "bbb3fd0c6cf24ddba3fd5068dc7a0f92760627ffc748e9b79b35b5f2b7aeebe5"
+    },
+    {
+      "path": "src/process/ProviderProcess.ts",
+      "sha256": "eb63627a45fb89ad1909b7851b31909450803a8715ae585d56d8a1dc2d8bae40"
+    },
+    {
+      "path": "src/process/OwnedCommand.ts",
+      "sha256": "d3118b2cc3a5568e12faa2b6aaef804a3b785cb5613a34ade41c8f86cf710797"
+    },
+    {
+      "path": "src/ghidra/GhidraLauncher.ts",
+      "sha256": "3c9da82faa4a5f47370078ec09ef749e5975fe103be6bef82192a374b541fdd5"
+    },
+    {
+      "path": "src/hopper/BridgeLauncher.ts",
+      "sha256": "27243aed1c1fd22fbbb916677612150d150d47ddceaaa58bc412a2a3976e5e6d"
+    },
+    {
+      "path": "src/hopper/LinuxPrivateDisplayProbe.ts",
+      "sha256": "6d40ff8237237eaf029c2234e1394af2c28c92b3ed9e9a4bdac841ea04ed6434"
+    },
+    {
+      "path": "src/native/LldbCallTracer.ts",
+      "sha256": "bdd8602f0a57ca460dc302ce8d9ca70586a8c52485e509909cb1635b0d6fe11b"
+    },
+    {
+      "path": "tests/fixtures/providerProcess.mjs",
+      "sha256": "ca870b832a2aed2ab143b2273d4cc67c1380e20a458c91b30e0c1dbb095e2a54"
+    },
+    {
+      "path": "tests/boundary/providers/ghidra/ghidraClient.test.ts",
+      "sha256": "05259e6570432d5f25d45ad0d5f110bac409198a9bb8c032e990374bec1b19d4"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+
+> rea-agents@6.4.0 precheck:fast
+> npm run deps:check
+
+
+> rea-agents@6.4.0 deps:check
+> node scripts/check-dependency-install.mjs
+
+
+> rea-agents@6.4.0 check:fast
+> turbo run typecheck lint --output-logs=errors-only
+
+
+   • turbo 2.11.7
+   • Running typecheck, lint
+   • Remote caching disabled
+
+typecheck: cache miss, executing b2a8636964df131f
+typecheck: 
+typecheck: > rea-agents@6.4.0 typecheck
+typecheck: > tsc --noEmit
+typecheck: 
+typecheck: src/native/AppleSwiftClassSelection.test.ts(203,9): error TS2322: Type '{ protocol_name: string; }' is not assignable to type '{ protocol_name: string; type_name: string | null; } | { protocol_name: null; type_name: string; } | undefined'.
+typecheck:   Property 'type_name' is missing in type '{ protocol_name: string; }' but required in type '{ protocol_name: string; type_name: string | null; }'.
+typecheck:  ERROR  command (/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/) /usr/local/bin/npm run typecheck exited (1)
+
+ Tasks:    1 successful, 2 total
+Cached:    0 cached, 2 total
+  Time:    9.828s 
+Failed:    //#typecheck
+
+ ERROR  run failed: command  exited (1)

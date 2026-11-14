@@ -1,0 +1,750 @@
+{
+  "classification": "supplemental-local-implementation-proof-not-rea-evidence",
+  "observed_date": "2026-11-13",
+  "target_executed": false,
+  "provider_run": false,
+  "network_used": false,
+  "installed_software": false,
+  "baseline": {
+    "index_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-projection-2026-11-13/offline-artifact-index.json",
+    "index_sha256": "5f7741abb46f5e11c66cec9bc25564be81231b09cfa57d4dc8b70ae511ea5af3",
+    "indexed_files_unchanged": true
+  },
+  "host_os": {
+    "product_version": "26.5.2",
+    "build_version": "25F84"
+  },
+  "installed_pthread": {
+    "classification": "supplemental-installed-implementation-observation-not-runtime-execution",
+    "source_file": "/usr/lib/system/libsystem_pthread.dylib",
+    "source_file_size": 494064,
+    "source_file_sha256": "0571f04d3545d307e4a1c1f674d16c3347c22e7e4c74dc4ffe93d62b4564f38b",
+    "architectures": [
+      {
+        "architecture": "arm64",
+        "uuid": "1E522024-387B-3D18-81CA-F4559198954B",
+        "slice_offset": 131072,
+        "slice_size": 166176,
+        "slice_sha256": "43756d45392a07e265a4a2a772fa30e992dc048069be110c49c959462a864877",
+        "text_section": {
+          "virtual_address": 2160,
+          "size": 41604,
+          "slice_file_offset": 2160
+        },
+        "function": {
+          "symbol": "____chkstk_darwin",
+          "next_symbol": "_pthread_getspecific",
+          "start": "0x1a38",
+          "end_exclusive": "0x1aa4",
+          "instruction_count": 27,
+          "size": 108,
+          "file_offset": 137784,
+          "sha256": "ddd4554e5a02372157751809c47b011a319814d1d14770fff1fa1b9316b9fd31",
+          "bytes_hex": "ea2f3fa96ad03bd54b015df8eb632beb820100544b815df8ea0300915f010beb090100544a0109eba30000545f010beb63000054ea2f7fa9c0035fd66b815ff8ea0300913f0540f1c30000544a0540d14b0140f9290540d13f0540f188ffff544a0109cb4b0140f9f3ffff17",
+          "instructions": [
+            "0x000001A38   stp      x10, x11, [sp, #-0x10] ",
+            "0x000001A3C   mrs      x10, TPIDRRO_EL0     ",
+            "0x000001A40   ldur     x11, [x10, #-0x30]   ",
+            "0x000001A44   subs     x11, sp, x11         ",
+            "0x000001A48   b.hs     0x1a78               ",
+            "0x000001A4C   ldur     x11, [x10, #-0x28]   ",
+            "0x000001A50   mov      x10, sp              ",
+            "0x000001A54   cmp      x10, x11             ",
+            "0x000001A58   b.ls     0x1a78               ",
+            "0x000001A5C   subs     x10, x10, x9         ",
+            "0x000001A60   b.lo     0x1a74               ",
+            "0x000001A64   cmp      x10, x11             ",
+            "0x000001A68   b.lo     0x1a74               ",
+            "0x000001A6C   ldp      x10, x11, [sp, #-0x10] ",
+            "0x000001A70   ret                           ",
+            "0x000001A74   ldur     x11, [x11, #-0x8]    ",
+            "0x000001A78   mov      x10, sp              ",
+            "0x000001A7C   cmp      x9, #0x1, lsl #12    ",
+            "0x000001A80   b.lo     0x1a98               ",
+            "0x000001A84   sub      x10, x10, #0x1, lsl #12 ",
+            "0x000001A88   ldr      x11, [x10]           ",
+            "0x000001A8C   sub      x9, x9, #0x1, lsl #12 ",
+            "0x000001A90   cmp      x9, #0x1, lsl #12    ",
+            "0x000001A94   b.hi     0x1a84               ",
+            "0x000001A98   sub      x10, x10, x9         ",
+            "0x000001A9C   ldr      x11, [x10]           ",
+            "0x000001AA0   b        0x1a6c               "
+          ],
+          "cfg_relative_offsets": [
+            {
+              "start": "0x0",
+              "end_exclusive": "0x14",
+              "successors": [
+                "0x40",
+                "0x14"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x14",
+              "end_exclusive": "0x24",
+              "successors": [
+                "0x40",
+                "0x24"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x24",
+              "end_exclusive": "0x2c",
+              "successors": [
+                "0x3c",
+                "0x2c"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x2c",
+              "end_exclusive": "0x34",
+              "successors": [
+                "0x3c",
+                "0x34"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x34",
+              "end_exclusive": "0x3c",
+              "successors": [],
+              "returns": true
+            },
+            {
+              "start": "0x3c",
+              "end_exclusive": "0x40",
+              "successors": [
+                "0x40"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x40",
+              "end_exclusive": "0x4c",
+              "successors": [
+                "0x60",
+                "0x4c"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x4c",
+              "end_exclusive": "0x60",
+              "successors": [
+                "0x4c",
+                "0x60"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x60",
+              "end_exclusive": "0x6c",
+              "successors": [
+                "0x34"
+              ],
+              "returns": false
+            }
+          ]
+        }
+      },
+      {
+        "architecture": "arm64e",
+        "uuid": "4F33683C-18C8-39A1-800B-2E3BD43BCC13",
+        "slice_offset": 311296,
+        "slice_size": 182768,
+        "slice_sha256": "e3bf184c17401e6c7cbc90f93c1df3c07bab784b1fc969d28a4371036b3fa415",
+        "text_section": {
+          "virtual_address": 2312,
+          "size": 43776,
+          "slice_file_offset": 2312
+        },
+        "function": {
+          "symbol": "____chkstk_darwin",
+          "next_symbol": "_pthread_getspecific",
+          "start": "0x1c20",
+          "end_exclusive": "0x1c8c",
+          "instruction_count": 27,
+          "size": 108,
+          "file_offset": 318496,
+          "sha256": "ddd4554e5a02372157751809c47b011a319814d1d14770fff1fa1b9316b9fd31",
+          "bytes_hex": "ea2f3fa96ad03bd54b015df8eb632beb820100544b815df8ea0300915f010beb090100544a0109eba30000545f010beb63000054ea2f7fa9c0035fd66b815ff8ea0300913f0540f1c30000544a0540d14b0140f9290540d13f0540f188ffff544a0109cb4b0140f9f3ffff17",
+          "instructions": [
+            "0x000001C20   stp      x10, x11, [sp, #-0x10] ",
+            "0x000001C24   mrs      x10, TPIDRRO_EL0     ",
+            "0x000001C28   ldur     x11, [x10, #-0x30]   ",
+            "0x000001C2C   subs     x11, sp, x11         ",
+            "0x000001C30   b.hs     0x1c60               ",
+            "0x000001C34   ldur     x11, [x10, #-0x28]   ",
+            "0x000001C38   mov      x10, sp              ",
+            "0x000001C3C   cmp      x10, x11             ",
+            "0x000001C40   b.ls     0x1c60               ",
+            "0x000001C44   subs     x10, x10, x9         ",
+            "0x000001C48   b.lo     0x1c5c               ",
+            "0x000001C4C   cmp      x10, x11             ",
+            "0x000001C50   b.lo     0x1c5c               ",
+            "0x000001C54   ldp      x10, x11, [sp, #-0x10] ",
+            "0x000001C58   ret                           ",
+            "0x000001C5C   ldur     x11, [x11, #-0x8]    ",
+            "0x000001C60   mov      x10, sp              ",
+            "0x000001C64   cmp      x9, #0x1, lsl #12    ",
+            "0x000001C68   b.lo     0x1c80               ",
+            "0x000001C6C   sub      x10, x10, #0x1, lsl #12 ",
+            "0x000001C70   ldr      x11, [x10]           ",
+            "0x000001C74   sub      x9, x9, #0x1, lsl #12 ",
+            "0x000001C78   cmp      x9, #0x1, lsl #12    ",
+            "0x000001C7C   b.hi     0x1c6c               ",
+            "0x000001C80   sub      x10, x10, x9         ",
+            "0x000001C84   ldr      x11, [x10]           ",
+            "0x000001C88   b        0x1c54               "
+          ],
+          "cfg_relative_offsets": [
+            {
+              "start": "0x0",
+              "end_exclusive": "0x14",
+              "successors": [
+                "0x40",
+                "0x14"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x14",
+              "end_exclusive": "0x24",
+              "successors": [
+                "0x40",
+                "0x24"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x24",
+              "end_exclusive": "0x2c",
+              "successors": [
+                "0x3c",
+                "0x2c"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x2c",
+              "end_exclusive": "0x34",
+              "successors": [
+                "0x3c",
+                "0x34"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x34",
+              "end_exclusive": "0x3c",
+              "successors": [],
+              "returns": true
+            },
+            {
+              "start": "0x3c",
+              "end_exclusive": "0x40",
+              "successors": [
+                "0x40"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x40",
+              "end_exclusive": "0x4c",
+              "successors": [
+                "0x60",
+                "0x4c"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x4c",
+              "end_exclusive": "0x60",
+              "successors": [
+                "0x4c",
+                "0x60"
+              ],
+              "returns": false
+            },
+            {
+              "start": "0x60",
+              "end_exclusive": "0x6c",
+              "successors": [
+                "0x34"
+              ],
+              "returns": false
+            }
+          ]
+        }
+      }
+    ],
+    "target_executed": false,
+    "provider_run": false
+  },
+  "physical_effects": {
+    "general_registers_read": [
+      "x9",
+      "x10",
+      "x11",
+      "sp",
+      "x30"
+    ],
+    "special_registers_read": [
+      "NZCV",
+      "TPIDRRO_EL0"
+    ],
+    "general_registers_written": [
+      "x9",
+      "x10",
+      "x11"
+    ],
+    "special_registers_written": [
+      "NZCV"
+    ],
+    "sp_written": false,
+    "simd_written": false,
+    "calls": [],
+    "only_external_control_transfer": "RET"
+  },
+  "normal_return_effects": {
+    "may_clobber": [
+      "x9",
+      "NZCV"
+    ],
+    "restored": [
+      "x10",
+      "x11"
+    ],
+    "preserved": "x0..x8,x10..x30,SP,all SIMD/FP registers; caller BLR writes x30 separately",
+    "memory_write": "[entry_SP-16,entry_SP),16bytes scratch; prior contents not restored",
+    "pointer_escape": false,
+    "possible_fault": true
+  },
+  "memory_reads": [
+    {
+      "location": "[entry_SP-16,entry_SP)",
+      "size": 16,
+      "purpose": "restore x10/x11"
+    },
+    {
+      "location": "[TPIDRRO_EL0-0x30,TPIDRRO_EL0-0x28)",
+      "size": 8
+    },
+    {
+      "location": "[TPIDRRO_EL0-0x28,TPIDRRO_EL0-0x20)",
+      "size": 8,
+      "conditional": true
+    },
+    {
+      "location": "[value_loaded_from_T_minus_0x28-8,value_loaded_from_T_minus_0x28)",
+      "size": 8,
+      "conditional": true
+    },
+    {
+      "location": "successive 4096-byte steps below entry_SP,then entry_SP-N",
+      "size_per_read": 8,
+      "conditional": true,
+      "input_size_register": "x9",
+      "input_size_unit": "bytes"
+    }
+  ],
+  "archives": [
+    {
+      "label": "clt14",
+      "archive_path": "/Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/lib/darwin/libclang_rt.osx.a",
+      "archive_size": 535304,
+      "archive_sha256": "9626666d468bb42fd09244fcb0dc0d3ededa9d2fcacb40a6e36a18a2adee179a",
+      "arm64_slice": {
+        "offset": 96528,
+        "size": 219368,
+        "cpu_type": 16777228,
+        "cpu_subtype": 0
+      },
+      "members": [
+        {
+          "member": "chkstk_darwin.S.o",
+          "archive_member_header_offset": 314712,
+          "data_offset": 314800,
+          "size": 560,
+          "sha256": "cceb3b3726ac83306d073ffa5dd971214532311e9c2e1fe73847775e633b7775",
+          "object_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt14.chkstk_darwin.S.o",
+          "disassembly_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt14.chkstk_darwin.S.o.objdump.txt",
+          "command": [
+            "/usr/bin/xcrun",
+            "llvm-objdump",
+            "--macho",
+            "--disassemble",
+            "--reloc",
+            "--syms",
+            "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt14.chkstk_darwin.S.o"
+          ]
+        },
+        {
+          "member": "chkstk_darwin2.S.o",
+          "archive_member_header_offset": 315360,
+          "data_offset": 315448,
+          "size": 448,
+          "sha256": "0b34a7d19a29e08b5e5905623b402fbd978d0021741f1daf68bacbf33e94a0e2",
+          "object_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt14.chkstk_darwin2.S.o",
+          "disassembly_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt14.chkstk_darwin2.S.o.objdump.txt",
+          "command": [
+            "/usr/bin/xcrun",
+            "llvm-objdump",
+            "--macho",
+            "--disassemble",
+            "--reloc",
+            "--syms",
+            "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt14.chkstk_darwin2.S.o"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "clt17",
+      "archive_path": "/Library/Developer/CommandLineTools/usr/lib/clang/17/lib/darwin/libclang_rt.osx.a",
+      "archive_size": 833616,
+      "archive_sha256": "e2017ca76ae4f1d190a9a00f721c503f97bca4869a5f78613122153191e5d687",
+      "arm64_slice": {
+        "offset": 343200,
+        "size": 244608,
+        "cpu_type": 16777228,
+        "cpu_subtype": 0
+      },
+      "members": [
+        {
+          "member": "chkstk_darwin.S.o",
+          "archive_member_header_offset": 584048,
+          "data_offset": 584136,
+          "size": 560,
+          "sha256": "b4507dd5ec45ebd032989d54da4000a916c293ecd0c761b02537121f68beda1a",
+          "object_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt17.chkstk_darwin.S.o",
+          "disassembly_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt17.chkstk_darwin.S.o.objdump.txt",
+          "command": [
+            "/usr/bin/xcrun",
+            "llvm-objdump",
+            "--macho",
+            "--disassemble",
+            "--reloc",
+            "--syms",
+            "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt17.chkstk_darwin.S.o"
+          ]
+        },
+        {
+          "member": "chkstk_darwin2.S.o",
+          "archive_member_header_offset": 584696,
+          "data_offset": 584784,
+          "size": 448,
+          "sha256": "04dd6f3b9f76d513c449894d462cb776ac09981ab1a07e42ff7d6ef460452094",
+          "object_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt17.chkstk_darwin2.S.o",
+          "disassembly_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt17.chkstk_darwin2.S.o.objdump.txt",
+          "command": [
+            "/usr/bin/xcrun",
+            "llvm-objdump",
+            "--macho",
+            "--disassemble",
+            "--reloc",
+            "--syms",
+            "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt17.chkstk_darwin2.S.o"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "xcode21",
+      "archive_path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/lib/darwin/libclang_rt.osx.a",
+      "archive_size": 853384,
+      "archive_sha256": "041502ce699c8eddffb92c7313701371f80a2b3a9eefc921ac58232d4390fc84",
+      "arm64_slice": {
+        "offset": 355384,
+        "size": 248400,
+        "cpu_type": 16777228,
+        "cpu_subtype": 0
+      },
+      "members": [
+        {
+          "member": "chkstk_darwin.S.o",
+          "archive_member_header_offset": 599128,
+          "data_offset": 599216,
+          "size": 560,
+          "sha256": "e6bed1874995aca54a9b8f591298f0822775a2d25bc280b65f0a73674b2f3f0c",
+          "object_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/xcode21.chkstk_darwin.S.o",
+          "disassembly_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/xcode21.chkstk_darwin.S.o.objdump.txt",
+          "command": [
+            "/usr/bin/xcrun",
+            "llvm-objdump",
+            "--macho",
+            "--disassemble",
+            "--reloc",
+            "--syms",
+            "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/xcode21.chkstk_darwin.S.o"
+          ]
+        },
+        {
+          "member": "chkstk_darwin2.S.o",
+          "archive_member_header_offset": 599776,
+          "data_offset": 599864,
+          "size": 448,
+          "sha256": "0e65505ddd44230eeb93348c9964af7e3bce609d42fcee95b724fe53fc365396",
+          "object_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/xcode21.chkstk_darwin2.S.o",
+          "disassembly_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/xcode21.chkstk_darwin2.S.o.objdump.txt",
+          "command": [
+            "/usr/bin/xcrun",
+            "llvm-objdump",
+            "--macho",
+            "--disassemble",
+            "--reloc",
+            "--syms",
+            "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/xcode21.chkstk_darwin2.S.o"
+          ]
+        }
+      ]
+    }
+  ],
+  "archive_text": [
+    {
+      "archive_label": "clt14",
+      "member": "chkstk_darwin.S.o",
+      "text_size": 64,
+      "text_sha256": "a215bfb56057874d8175a8b65945676ae2808b84acb1aaac3b5f7df32175e135",
+      "text_hex": "10000090100240f9500000b50000001400021fd63f0540f1ea030091c30000544a0540d15f014039290540d13f0540f188ffff544a0109cb5f014039c0035fd6",
+      "probe_only": {
+        "offset": 20,
+        "size": 44,
+        "sha256": "13d3083c6d10e7ab49d73e93c6f1045f8a5d67ee8f22d8ddadef872528e17b2a"
+      }
+    },
+    {
+      "archive_label": "clt14",
+      "member": "chkstk_darwin2.S.o",
+      "text_size": 4,
+      "text_sha256": "a7911cdfdc28e6a1867e359ba426081aacfa692fdeb3e978d2a68dd924fa8c3e",
+      "text_hex": "00000014"
+    },
+    {
+      "archive_label": "clt17",
+      "member": "chkstk_darwin.S.o",
+      "text_size": 64,
+      "text_sha256": "a215bfb56057874d8175a8b65945676ae2808b84acb1aaac3b5f7df32175e135",
+      "text_hex": "10000090100240f9500000b50000001400021fd63f0540f1ea030091c30000544a0540d15f014039290540d13f0540f188ffff544a0109cb5f014039c0035fd6",
+      "probe_only": {
+        "offset": 20,
+        "size": 44,
+        "sha256": "13d3083c6d10e7ab49d73e93c6f1045f8a5d67ee8f22d8ddadef872528e17b2a"
+      }
+    },
+    {
+      "archive_label": "clt17",
+      "member": "chkstk_darwin2.S.o",
+      "text_size": 4,
+      "text_sha256": "a7911cdfdc28e6a1867e359ba426081aacfa692fdeb3e978d2a68dd924fa8c3e",
+      "text_hex": "00000014"
+    },
+    {
+      "archive_label": "xcode21",
+      "member": "chkstk_darwin.S.o",
+      "text_size": 64,
+      "text_sha256": "a215bfb56057874d8175a8b65945676ae2808b84acb1aaac3b5f7df32175e135",
+      "text_hex": "10000090100240f9500000b50000001400021fd63f0540f1ea030091c30000544a0540d15f014039290540d13f0540f188ffff544a0109cb5f014039c0035fd6",
+      "probe_only": {
+        "offset": 20,
+        "size": 44,
+        "sha256": "13d3083c6d10e7ab49d73e93c6f1045f8a5d67ee8f22d8ddadef872528e17b2a"
+      }
+    },
+    {
+      "archive_label": "xcode21",
+      "member": "chkstk_darwin2.S.o",
+      "text_size": 4,
+      "text_sha256": "a7911cdfdc28e6a1867e359ba426081aacfa692fdeb3e978d2a68dd924fa8c3e",
+      "text_hex": "00000014"
+    }
+  ],
+  "linkage_observations": [
+    {
+      "path": "/usr/lib/libSystem.B.dylib",
+      "source": "selected cached image; no physical file",
+      "architecture": "arm64e",
+      "uuid": "BA6A669A-3BB9-3BC7-85E8-8F0C1E68351E",
+      "reexports": [
+        "/usr/lib/system/libcompiler_rt.dylib",
+        "/usr/lib/system/libsystem_pthread.dylib"
+      ]
+    },
+    {
+      "path": "/usr/lib/system/libcompiler_rt.dylib",
+      "source": "selected cached image; no physical file",
+      "architecture": "arm64e",
+      "uuid": "AA79151F-C19D-3C7C-92F8-B10F04D82C1C",
+      "symbol": "___chkstk_darwin",
+      "reexport_target_symbol": "____chkstk_darwin",
+      "reexport_target_library": "libsystem_pthread"
+    }
+  ],
+  "binding_limitations": [
+    "Inspected physical pthread image is not asserted byte-identical to the pthread image in dyld cache.",
+    "Arc GOT/import association is supplied by retained root investigation, not reverified through execution here.",
+    "No assertion that Arc on another OS resolves to these installed bytes.",
+    "Archive wrapper tail-calls a weak nonzero target; that target needs an implementation binding or explicit trusted ABI contract.",
+    "Preservation is conditional on normal return and ordinary unmodified private red-zone scratch; probe memory reads can fault."
+  ],
+  "arc_summary_requirements": [
+    "Exact Darwin import and GOT/relocation identity,including literal underscore counts and reexports.",
+    "Explicit versioned ABI trust policy or exact implementation binding; arbitrary BLR remains unknown.",
+    "Preserve x2,x8,x12,SP on normal return.",
+    "Account for red-zone scratch write and stack/thread-state reads; do not model memory-free or allocation-performing.",
+    "Keep caller BLR x30 effect and wrapper x16 clobber distinct."
+  ],
+  "tool_identities": [
+    {
+      "path": "/usr/bin/dyld_info",
+      "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+    },
+    {
+      "path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/llvm-objdump",
+      "sha256": "3cccdd0dad838d2130d7fc6237aa176c8c13a593a56b79c64fd980ddb89c670c"
+    }
+  ],
+  "local_artifacts": [
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/archive-text-hashes.json",
+      "size": 2065,
+      "sha256": "25aa1add116b2f2b62cf37186bd936bd173431fb8a44524865c786b03b674ae1"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt14.chkstk_darwin.S.o",
+      "size": 560,
+      "sha256": "cceb3b3726ac83306d073ffa5dd971214532311e9c2e1fe73847775e633b7775"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt14.chkstk_darwin.S.o.objdump.txt",
+      "size": 1452,
+      "sha256": "7af0cd7488636c33df2bf7d65d3f0d9740ea39aa9a0d31f34109fe6de5bb53d3"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt14.chkstk_darwin2.S.o",
+      "size": 448,
+      "sha256": "0b34a7d19a29e08b5e5905623b402fbd978d0021741f1daf68bacbf33e94a0e2"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt14.chkstk_darwin2.S.o.objdump.txt",
+      "size": 620,
+      "sha256": "47e0598c7e4057e1c408813a10060648f281c95188a06186d65d862ea027612c"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt17.chkstk_darwin.S.o",
+      "size": 560,
+      "sha256": "b4507dd5ec45ebd032989d54da4000a916c293ecd0c761b02537121f68beda1a"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt17.chkstk_darwin.S.o.objdump.txt",
+      "size": 1452,
+      "sha256": "40d45f55aaa31178943bd4107c4b6ba0c77826451cc1cb594f602a871436e87c"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt17.chkstk_darwin2.S.o",
+      "size": 448,
+      "sha256": "04dd6f3b9f76d513c449894d462cb776ac09981ab1a07e42ff7d6ef460452094"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/clt17.chkstk_darwin2.S.o.objdump.txt",
+      "size": 620,
+      "sha256": "8a5a1c34a366dc1aa0b4adaf88b6ecf03daf45a1d267a229726bf6c58765f288"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/extraction-receipt.json",
+      "size": 7685,
+      "sha256": "6309b379851c2ba78576bee39a0e32bc28fad6d4ebae3732d0f315099d11f57f"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/installed-pthread-implementation.json",
+      "size": 5491,
+      "sha256": "550a4e7ac1812027c5029ecdb75a24fcbaab18170c270ab0080e6e8e686ad59b"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/libSystem.B.arm64e.dyld-info.txt",
+      "size": 2730,
+      "sha256": "578fb332f4e3a9d28a2c1807e1706f3df03f522f34f859af62b878d17736916f"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/libcompiler_rt.arm64e.dyld-info.txt",
+      "size": 133411,
+      "sha256": "a4d2adc144537c3347a3267e4666b1017c7268baf0a55103dd0bf3e9f77be804"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/libsystem_pthread.arm64.body-source.txt",
+      "size": 517118,
+      "sha256": "f3b835cea0c2d7abc18a50bbc7053275e68ce6d1211fc125f31662852a257f18"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/libsystem_pthread.arm64.chkstk.asm",
+      "size": 1223,
+      "sha256": "f372b2cf5f84734e5cb3ffdfe3ad27dbf24d26a93644af6ac1067668ec4823de"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/libsystem_pthread.arm64.chkstk.bin",
+      "size": 108,
+      "sha256": "ddd4554e5a02372157751809c47b011a319814d1d14770fff1fa1b9316b9fd31"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/libsystem_pthread.arm64e.body-source.txt",
+      "size": 544760,
+      "sha256": "697ce229ba513464ce2e7f9f9b2dfb80f4ac9e811d5874f22e10b686cd2ecf90"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/libsystem_pthread.arm64e.chkstk.asm",
+      "size": 1223,
+      "sha256": "dd21debe5589ee5090815232a96cc6baecffe4f31a28a0bdccbb74a0e235d1e9"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/libsystem_pthread.arm64e.chkstk.bin",
+      "size": 108,
+      "sha256": "ddd4554e5a02372157751809c47b011a319814d1d14770fff1fa1b9316b9fd31"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/libsystem_pthread.arm64e.dyld-info.txt",
+      "size": 555033,
+      "sha256": "b887b26fb76b058156eb906a1318778e22073112fe445719394bef9de0678413"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/libsystem_pthread.arm64e.text-bytes.txt",
+      "size": 178934,
+      "sha256": "e773bcd26a52d0d17c541f63700ccdcc0dcba5ef8e69876a54d64b3ffe06c639"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/xcode21.chkstk_darwin.S.o",
+      "size": 560,
+      "sha256": "e6bed1874995aca54a9b8f591298f0822775a2d25bc280b65f0a73674b2f3f0c"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/xcode21.chkstk_darwin.S.o.objdump.txt",
+      "size": 1454,
+      "sha256": "ff745a3bf445b46f301dbceeb86d1e67f0fa90ad4b4e329f58f730c63b6dff4e"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/xcode21.chkstk_darwin2.S.o",
+      "size": 448,
+      "sha256": "0e65505ddd44230eeb93348c9964af7e3bce609d42fcee95b724fe53fc365396"
+    },
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/darwin-stackprobe-2026-11-13/xcode21.chkstk_darwin2.S.o.objdump.txt",
+      "size": 622,
+      "sha256": "ab1e15d873815aa99461b63ece9f59b4ab06ddcfac9e909f2514d4712068b248"
+    }
+  ],
+  "followup_markdown": {
+    "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-projection-2026-11-13/darwin-stackprobe-followup.md",
+    "sha256": "222f397419bf68c054c90f802e22b3c8aa7c1f4d509a9de8d3693e3963c99bfd"
+  },
+  "checks": [
+    "both exact bodies108bytes/27instructions",
+    "arm64/arm64e byte equality",
+    "all direct CFG edges inside body",
+    "no calls,SP writes or SIMD writes",
+    "arm64e raw Mach-O bytes equal dyld_info section dump",
+    "three archive text bodies equal",
+    "earlier indexed files unchanged"
+  ]
+}

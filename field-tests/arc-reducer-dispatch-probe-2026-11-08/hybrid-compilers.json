@@ -1,0 +1,99 @@
+{
+  "workspace": "/tmp/rea55-owned-36vcsfbc",
+  "target_executed": false,
+  "commands": [
+    {
+      "arguments": [
+        "/usr/bin/swiftc",
+        "-module-cache-path",
+        "/tmp/rea55-owned-36vcsfbc/module-cache",
+        "-parse-as-library",
+        "-enable-library-evolution",
+        "-O",
+        "-module-name",
+        "ProbePayloadModule",
+        "-emit-module",
+        "-emit-module-path",
+        "/tmp/rea55-owned-36vcsfbc/ProbePayloadModule.swiftmodule",
+        "-emit-library",
+        "-o",
+        "/tmp/rea55-owned-36vcsfbc/libProbePayloadModule.dylib",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-reducer-dispatch-probe-2026-11-08/Payload.swift"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/usr/bin/swiftc",
+        "-module-cache-path",
+        "/tmp/rea55-owned-36vcsfbc/module-cache",
+        "-parse-as-library",
+        "-I",
+        "/tmp/rea55-owned-36vcsfbc",
+        "-L",
+        "/tmp/rea55-owned-36vcsfbc",
+        "-lProbePayloadModule",
+        "-Onone",
+        "-module-name",
+        "HybridProbe",
+        "-emit-library",
+        "-Xlinker",
+        "-undefined",
+        "-Xlinker",
+        "dynamic_lookup",
+        "-o",
+        "/tmp/rea55-owned-36vcsfbc/hybrid-onone.dylib",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-reducer-dispatch-probe-2026-11-08/Hybrid.swift"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/usr/bin/swiftc",
+        "-module-cache-path",
+        "/tmp/rea55-owned-36vcsfbc/module-cache",
+        "-parse-as-library",
+        "-I",
+        "/tmp/rea55-owned-36vcsfbc",
+        "-L",
+        "/tmp/rea55-owned-36vcsfbc",
+        "-lProbePayloadModule",
+        "-O",
+        "-module-name",
+        "HybridProbe",
+        "-emit-library",
+        "-Xlinker",
+        "-undefined",
+        "-Xlinker",
+        "dynamic_lookup",
+        "-o",
+        "/tmp/rea55-owned-36vcsfbc/hybrid-optimized.dylib",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-reducer-dispatch-probe-2026-11-08/Hybrid.swift"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "binaries": [
+    {
+      "path": "/tmp/rea55-owned-36vcsfbc/libProbePayloadModule.dylib",
+      "sha256": "5270ec32b42cbcdad84dc61fb000c1c8242ea6b31bd8cadaf3053def4d65e2f9",
+      "bytes": 34408
+    },
+    {
+      "path": "/tmp/rea55-owned-36vcsfbc/hybrid-onone.dylib",
+      "sha256": "b9c166720af028aef03004e4b752c975bb2f593fbc99263a4c339cfd2c55d627",
+      "bytes": 67392
+    },
+    {
+      "path": "/tmp/rea55-owned-36vcsfbc/hybrid-optimized.dylib",
+      "sha256": "371f8c0ede6e9da9a1ab81a2540894b56259739cde58cdb2daaa1dcc1e4f0792",
+      "bytes": 67128
+    }
+  ]
+}

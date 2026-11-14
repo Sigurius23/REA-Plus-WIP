@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-08",
+  "source_parent": "5d194de15e0dc1aba06229fee0241659bd6a0338",
+  "question": "Does the current Swift recovery cover Arc\u2019s fixed-layout outlined enum-tag/signed-word dispatch?",
+  "compiler": "Apple Swift6.3.3; see compiler.json for exact output",
+  "provider": "Ghidra12.1.4 / JDK27",
+  "current_profile": "abi-signed-word-cfg-v1",
+  "provider_java_sha256": "4520f00964d20cfb920dc9efbacf48a2584e8e6933edf19d550cb7eaa27ba6fc",
+  "sources": [
+    {
+      "path": "Probe.swift",
+      "bytes": 4862,
+      "sha256": "6f8bcf00966f6f361606a6d40b5199651c344ee50556e1e75390e79c103a66f1"
+    },
+    {
+      "path": "Payload.swift",
+      "bytes": 110,
+      "sha256": "06cfbfed4554fc0982ac07c2be26472ee7d07fd2fc3d166d4dd090f79ad49341"
+    },
+    {
+      "path": "FixedLayout.swift",
+      "bytes": 4730,
+      "sha256": "e2d69116a9e9c200a03b354ea12c841045efb444d618de6283c9849f491b0eed"
+    },
+    {
+      "path": "Ambiguous.swift",
+      "bytes": 5460,
+      "sha256": "2aad43156bc9aa3b185a882190549129e5d089dd95da3820cdae5dbe2bae179c"
+    }
+  ],
+  "authority": "Source-built owned inputs, real public REA+ analysis, independent static layout oracle, no target execution",
+  "target_executed": false,
+  "implementation_changed": false,
+  "public_variants": [
+    "resilient nested -Onone",
+    "fixed-layout nested -Onone",
+    "fixed-layout nested -O"
+  ],
+  "compile_only_variants": [
+    "resilient nested -O",
+    "resilient nested -Osize",
+    "two-enum ambiguity -O"
+  ],
+  "remaining_dependency": "Establish caller enum identity through typed outer-case/payload/copy provenance; helper implementation sharing does not establish total count. Prior frame-copy/projection calls require proven non-escape rather than a bypass."
+}

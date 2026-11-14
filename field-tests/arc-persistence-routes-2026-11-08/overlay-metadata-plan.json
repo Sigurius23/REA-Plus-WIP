@@ -1,0 +1,68 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-routes-2026-11-08/overlay-metadata",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1"
+  },
+  "timeout_ms": 120000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-conformances",
+        "swift_conformance_filter": {
+          "type_name": "BoostsEditorOverlayController"
+        },
+        "max_file_bytes": 100663296,
+        "max_records": 5000
+      },
+      "label": "type-BoostsEditorOverlayController"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-conformances",
+        "swift_conformance_filter": {
+          "type_name": "BoostsEditorShelfController"
+        },
+        "max_file_bytes": 100663296,
+        "max_records": 5000
+      },
+      "label": "type-BoostsEditorShelfController"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-conformances",
+        "swift_conformance_filter": {
+          "type_name": "HoveredElementTracker"
+        },
+        "max_file_bytes": 100663296,
+        "max_records": 5000
+      },
+      "label": "type-HoveredElementTracker"
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-routes-2026-11-08/overlay-metadata/evidence-bundle.json"
+      },
+      "label": "export"
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "close"
+    }
+  ]
+}

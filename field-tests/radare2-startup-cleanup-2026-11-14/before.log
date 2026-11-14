@@ -1,0 +1,75 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/boundary/providers/radare2/radare2Provider.process.test.ts
+
+Focused tests: tests/boundary/providers/radare2/radare2Provider.process.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 422ea3968d7ecbd1
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing b85fc5385cd30d26
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache miss, executing ebbdf28f009d5fe9
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    1 cached, 3 total
+  Time:    7.336s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ❯ |boundary| tests/boundary/providers/radare2/radare2Provider.process.test.ts (11 tests | 1 failed) 5760ms
+   ❯ radare2 provider process lifecycle (7)
+     ✓ stops a hung analysis on cancellation, removes its private copy and restarts on the next call 3101ms
+     ✓ reports a crashed radare2 with its stderr and recovers with a fresh process 363ms
+     ✓ enforces the configured analysis deadline 554ms
+     × retains the process and private root when startup rollback cleanup fails 459ms
+     ✓ refuses an executable whose version changed after profile resolution 288ms
+     ✓ rejects radare2 releases outside the supported 6.x line before any session 94ms
+     ✓ commits the engine version and analysis level in its profile 94ms
+   ✓ radare2 provider with Rizin's dialect (4)
+     ✓ commits the Rizin engine and arguments without radare2-only settings 94ms
+     ✓ rejects Rizin releases outside the supported 0.9 line 92ms
+     ✓ refuses a Rizin whose ver reply drifted from the profile 298ms
+     ✓ normalizes Rizin's replies into the provider's results 319ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |boundary| tests/boundary/providers/radare2/radare2Provider.process.test.ts > radare2 provider process lifecycle > retains the process and private root when startup rollback cleanup fails
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ tests/boundary/providers/radare2/radare2Provider.process.test.ts:198:36
+    196|       error: { _tag: "AnalysisTimeoutError", timeoutMs: 300 },
+    197|     });
+    198|     expect(await readdir(runtime)).toHaveLength(1);
+       |                                    ^
+    199|     expect(await session.close()).toMatchObject({
+    200|       ok: false,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  01:17:35
+   Duration  8.05s (tests 72%, transform 18%, import 9%)
+

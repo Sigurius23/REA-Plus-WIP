@@ -1,0 +1,39 @@
+[
+  {
+    "name": "scan_byte_patterns",
+    "arguments": {
+      "path": "/tmp/rea-arc-1.172.1-core-arm64.dylib",
+      "patterns": [
+        {
+          "name": "internal-background-path",
+          "pattern": "08 df 54 0d ?? ?? ?? ??"
+        },
+        {
+          "name": "gdocs-page-path",
+          "pattern": "69 de 54 0d ?? ?? ?? ??"
+        },
+        {
+          "name": "gdocs-content-path",
+          "pattern": "44 de 54 0d ?? ?? ?? ??"
+        }
+      ],
+      "scope": "all",
+      "max_matches": 64
+    },
+    "reply": "resource-path-pointer-words.reply.json",
+    "elapsed_ms": 2561,
+    "is_error": true,
+    "thrown": null
+  },
+  {
+    "name": "open_binary",
+    "arguments": {
+      "path": "/tmp/rea-arc-1.172.1-core-arm64.dylib",
+      "provider_id": "ghidra"
+    },
+    "reply": "open.reply.json",
+    "elapsed_ms": 3,
+    "is_error": true,
+    "thrown": null
+  }
+]

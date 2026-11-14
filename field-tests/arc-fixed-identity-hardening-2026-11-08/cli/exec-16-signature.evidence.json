@@ -1,0 +1,115 @@
+{
+  "evidence_id": "ev_6fe5ad94155fa79b061a75744e1bd8ab7281db98d31ef3ab4c44b5409ff63283",
+  "subject": {
+    "name": "Autoupdate",
+    "digest": {
+      "sha256": "1d3bb29017fb9101c7b20860d9632bee9044f8299cdf037426aefed81ab12f8e"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/Sparkle.framework/Versions/B/Autoupdate"
+  },
+  "provider": {
+    "id": "native-macos",
+    "name": "macOS native inspection utilities",
+    "version": null
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_signature",
+  "parameters": {},
+  "raw_result": null,
+  "normalized_result": {
+    "signed": true,
+    "identifier": "Autoupdate-555549442401fd215d503466a26c3d081e5a8443",
+    "team_identifier": "S6N382Y83G",
+    "format": "Mach-O universal (x86_64 arm64)",
+    "cdhashes": [
+      "774b49166f2ec62fccd1883a78c9ec76bebca343"
+    ],
+    "hash_algorithms": [
+      "sha256"
+    ],
+    "authorities": [
+      "Developer ID Application: The Browser Company of New York Inc. (S6N382Y83G)",
+      "Developer ID Certification Authority",
+      "Apple Root CA"
+    ],
+    "designated_requirement": "anchor apple generic and identifier \"Autoupdate-555549442401fd215d503466a26c3d081e5a8443\" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = S6N382Y83G)",
+    "entitlements": {
+      "com.apple.application-identifier": "org.sparkle-project.Sparkle.Autoupdate"
+    },
+    "timestamp": "5. Nov 2026 at 20:35:21",
+    "hardened_runtime": true,
+    "provenance": [
+      {
+        "tool": "codesign",
+        "command": [
+          "/usr/bin/codesign",
+          "-d",
+          "--verbose=4",
+          "$ARTIFACT"
+        ],
+        "tool_version": null,
+        "version_reason": "Tool exposes no uniform stable version flag; executable SHA-256 is a prelaunch file sample and does not prove atomic OS image binding.",
+        "executable_sha256": "214d455584d19abc0d74d02b9cbc7d3da6bdcb0596c235e6156dd9ed2f4e1ba7",
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "stdout_bytes": 0,
+        "stderr_bytes": 1083
+      },
+      {
+        "tool": "codesign",
+        "command": [
+          "/usr/bin/codesign",
+          "-d",
+          "-r-",
+          "$ARTIFACT"
+        ],
+        "tool_version": null,
+        "version_reason": "Tool exposes no uniform stable version flag; executable SHA-256 is a prelaunch file sample and does not prove atomic OS image binding.",
+        "executable_sha256": "214d455584d19abc0d74d02b9cbc7d3da6bdcb0596c235e6156dd9ed2f4e1ba7",
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "stdout_bytes": 347,
+        "stderr_bytes": 56
+      },
+      {
+        "tool": "codesign",
+        "command": [
+          "/usr/bin/codesign",
+          "-d",
+          "--entitlements",
+          ":-",
+          "$ARTIFACT"
+        ],
+        "tool_version": null,
+        "version_reason": "Tool exposes no uniform stable version flag; executable SHA-256 is a prelaunch file sample and does not prove atomic OS image binding.",
+        "executable_sha256": "214d455584d19abc0d74d02b9cbc7d3da6bdcb0596c235e6156dd9ed2f4e1ba7",
+        "exit": {
+          "code": 0,
+          "signal": null
+        },
+        "stdout_bytes": 282,
+        "stderr_bytes": 144
+      }
+    ],
+    "limitations": [
+      "Entitlements and designated requirements require separate bounded commands.",
+      "Inspected a digest-verified Mach-O byte snapshot; filesystem-bound signing context and trust validation are not examined."
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Entitlements and designated requirements require separate bounded commands.",
+    "Inspected a digest-verified Mach-O byte snapshot; filesystem-bound signing context and trust validation are not examined."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

@@ -1,0 +1,128 @@
+{
+  "authority": "Supplemental slice preparation from the separately selected installed OS library, not an Arc runtime binding",
+  "source_path": "/usr/lib/system/libsystem_pthread.dylib",
+  "source_sha256": "0571f04d3545d307e4a1c1f674d16c3347c22e7e4c74dc4ffe93d62b4564f38b",
+  "source_offset": 131072,
+  "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-stackprobe-2026-11-13/libsystem_pthread-arm64.dylib",
+  "bytes": 166176,
+  "sha256": "43756d45392a07e265a4a2a772fa30e992dc048069be110c49c959462a864877",
+  "function": {
+    "symbol": "____chkstk_darwin",
+    "next_symbol": "_pthread_getspecific",
+    "start": "0x1a38",
+    "end_exclusive": "0x1aa4",
+    "instruction_count": 27,
+    "size": 108,
+    "file_offset": 137784,
+    "sha256": "ddd4554e5a02372157751809c47b011a319814d1d14770fff1fa1b9316b9fd31",
+    "bytes_hex": "ea2f3fa96ad03bd54b015df8eb632beb820100544b815df8ea0300915f010beb090100544a0109eba30000545f010beb63000054ea2f7fa9c0035fd66b815ff8ea0300913f0540f1c30000544a0540d14b0140f9290540d13f0540f188ffff544a0109cb4b0140f9f3ffff17",
+    "instructions": [
+      "0x000001A38   stp      x10, x11, [sp, #-0x10] ",
+      "0x000001A3C   mrs      x10, TPIDRRO_EL0     ",
+      "0x000001A40   ldur     x11, [x10, #-0x30]   ",
+      "0x000001A44   subs     x11, sp, x11         ",
+      "0x000001A48   b.hs     0x1a78               ",
+      "0x000001A4C   ldur     x11, [x10, #-0x28]   ",
+      "0x000001A50   mov      x10, sp              ",
+      "0x000001A54   cmp      x10, x11             ",
+      "0x000001A58   b.ls     0x1a78               ",
+      "0x000001A5C   subs     x10, x10, x9         ",
+      "0x000001A60   b.lo     0x1a74               ",
+      "0x000001A64   cmp      x10, x11             ",
+      "0x000001A68   b.lo     0x1a74               ",
+      "0x000001A6C   ldp      x10, x11, [sp, #-0x10] ",
+      "0x000001A70   ret                           ",
+      "0x000001A74   ldur     x11, [x11, #-0x8]    ",
+      "0x000001A78   mov      x10, sp              ",
+      "0x000001A7C   cmp      x9, #0x1, lsl #12    ",
+      "0x000001A80   b.lo     0x1a98               ",
+      "0x000001A84   sub      x10, x10, #0x1, lsl #12 ",
+      "0x000001A88   ldr      x11, [x10]           ",
+      "0x000001A8C   sub      x9, x9, #0x1, lsl #12 ",
+      "0x000001A90   cmp      x9, #0x1, lsl #12    ",
+      "0x000001A94   b.hi     0x1a84               ",
+      "0x000001A98   sub      x10, x10, x9         ",
+      "0x000001A9C   ldr      x11, [x10]           ",
+      "0x000001AA0   b        0x1a6c               "
+    ],
+    "cfg_relative_offsets": [
+      {
+        "start": "0x0",
+        "end_exclusive": "0x14",
+        "successors": [
+          "0x40",
+          "0x14"
+        ],
+        "returns": false
+      },
+      {
+        "start": "0x14",
+        "end_exclusive": "0x24",
+        "successors": [
+          "0x40",
+          "0x24"
+        ],
+        "returns": false
+      },
+      {
+        "start": "0x24",
+        "end_exclusive": "0x2c",
+        "successors": [
+          "0x3c",
+          "0x2c"
+        ],
+        "returns": false
+      },
+      {
+        "start": "0x2c",
+        "end_exclusive": "0x34",
+        "successors": [
+          "0x3c",
+          "0x34"
+        ],
+        "returns": false
+      },
+      {
+        "start": "0x34",
+        "end_exclusive": "0x3c",
+        "successors": [],
+        "returns": true
+      },
+      {
+        "start": "0x3c",
+        "end_exclusive": "0x40",
+        "successors": [
+          "0x40"
+        ],
+        "returns": false
+      },
+      {
+        "start": "0x40",
+        "end_exclusive": "0x4c",
+        "successors": [
+          "0x60",
+          "0x4c"
+        ],
+        "returns": false
+      },
+      {
+        "start": "0x4c",
+        "end_exclusive": "0x60",
+        "successors": [
+          "0x4c",
+          "0x60"
+        ],
+        "returns": false
+      },
+      {
+        "start": "0x60",
+        "end_exclusive": "0x6c",
+        "successors": [
+          "0x34"
+        ],
+        "returns": false
+      }
+    ]
+  },
+  "target_executed": false
+}

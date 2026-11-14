@@ -1,0 +1,204 @@
+{
+  "evidence_id": "ev_c00539f97477fd9dfdef391bed5274a407bc2ac205eed0d87c15bd9957882fd2",
+  "subject": {
+    "name": "types.dylib",
+    "digest": {
+      "sha256": "8db15539619a130d0ffbf5dde6182908c7916af56c62dbb74a1758e5fac23c6d"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/private/tmp/rea-selector-vtable-range-2026-11-09/types.dylib"
+  },
+  "provider": {
+    "id": "rea-workflow",
+    "name": "REA+ composed investigation workflow",
+    "version": "1"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "rea-workflow",
+      "name": "REA+ composed investigation workflow",
+      "version": "1"
+    },
+    "parameters": {
+      "upstream_analysis_profile": {
+        "provider": {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        },
+        "parameters": {
+          "target_kind": "executable",
+          "target_format": "mach-o",
+          "architecture": "arm64",
+          "available_architectures": [
+            "arm64"
+          ],
+          "import_mode": "ephemeral-source-immutable",
+          "annotation_policy": "atomic-function-entry-metadata-v1",
+          "load_image_observations": "source-mappings-entry-context-v2",
+          "function_body_evidence": "complete-inclusive-ranges-v1",
+          "function_references": "complete-body-and-entry-reference-manager-v2",
+          "string_inventory_evidence": "defined-data-coverage-v1",
+          "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+          "instruction_flow_evidence": "decoded-return-pcode-v1",
+          "instruction_references": "exact-address-incoming-v1",
+          "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+          "no_return_repair": "returning-imports-decoded-return-v2",
+          "process_launch": "inspected-jvm-launch-support-v1",
+          "jump_table_evidence": "typed-case-default-blocks-v1",
+          "swift_enum_switch_recovery": "abi-signed-word-cfg-v4",
+          "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+          "decompiler_jump_loads": true,
+          "loader": "auto-from-header",
+          "language_id": "auto-from-header",
+          "compiler_spec_id": "auto-default",
+          "analyzer_preset": "ghidra-default"
+        },
+        "digest": "8328c4a52fd241aee64c69c93556ec4d7e7d983cb68a2372ca40099a9bd17c45"
+      },
+      "workflow_evidence_revision": 1
+    },
+    "digest": "5713a06fc6eda525c524ce07d46c0baee2e76076325b72a29050a80f561765e3"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_native_dispatch_metadata",
+  "parameters": {
+    "max_file_bytes": 67108864,
+    "max_records": 1,
+    "facet": "objc"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "target_sha256": "8db15539619a130d0ffbf5dde6182908c7916af56c62dbb74a1758e5fac23c6d",
+    "provider": {
+      "id": "native-macos",
+      "name": "macOS native inspection utilities",
+      "version": "apple-metadata-reader-1"
+    },
+    "analysis_profile_digest": null,
+    "result": {
+      "objc_classes": [
+        {
+          "name": "_TtC15ReaVtableBudget11BudgetFirst",
+          "super_class": "_TtCs12_SwiftObject",
+          "is_meta_class": false,
+          "is_root_class": false,
+          "methods": [],
+          "properties": [],
+          "protocols": [],
+          "ivar_count": 1,
+          "instance_size": 24,
+          "location": {
+            "address": "0x8268",
+            "file_offset": 33384
+          },
+          "superclass_address": null,
+          "metaclass_address": "0x8228",
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Objective-C class and class_ro_t records",
+              "location": {
+                "address": "0x8268",
+                "file_offset": 33384
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-range-2026-11-09/types.dylib",
+              "artifact_sha256": "8db15539619a130d0ffbf5dde6182908c7916af56c62dbb74a1758e5fac23c6d"
+            }
+          ]
+        }
+      ],
+      "objc_protocols": [],
+      "objc_categories": [],
+      "swift_decls": [],
+      "objc_ivars": [],
+      "objc_protocol_records": [],
+      "objc_dispatch_implementations": [],
+      "swift_conformances": [],
+      "swift_dispatch_slots": [],
+      "swift_symbols": [],
+      "relative_pointers": [],
+      "coverage": [
+        {
+          "facet": "objc_class_method_ivar_metadata",
+          "status": "partial",
+          "reason": "max_records_reached",
+          "examined": 1,
+          "decoded": 1
+        },
+        {
+          "facet": "binary_relative_pointers",
+          "status": "partial",
+          "reason": "max_records_reached",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "objc_properties_categories",
+          "status": "partial",
+          "reason": "max_records_reached",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "pointer_fixups",
+          "status": "complete",
+          "reason": "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+          "examined": 2,
+          "decoded": 2
+        },
+        {
+          "facet": "swift_generic_resilient_witnesses_overrides_async_coroutines",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_conformances_static_witness_slots",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_resilient_witness_records",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_witness_template_records",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_class_vtable_descriptors",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        }
+      ],
+      "db_save_result": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Derived by an REA+ composed workflow.",
+    "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+    "max_records_reached"
+  ],
+  "locations": [],
+  "evidence_links": []
+}

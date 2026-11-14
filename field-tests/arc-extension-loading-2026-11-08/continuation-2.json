@@ -1,0 +1,90 @@
+{
+  "steps": [
+    {
+      "name": "analyze_javascript_application",
+      "arguments": {
+        "input_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-extension-loading-2026-11-08/decoded",
+        "format": "directory",
+        "detail": "complete",
+        "max_heap_mb": 256
+      },
+      "label": "scripts-analysis"
+    },
+    {
+      "name": "trace_application_feature",
+      "arguments": {
+        "application": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-extension-loading-2026-11-08/discovery/scripts-analysis.evidence.json"
+        },
+        "seed": {
+          "kind": "string",
+          "value": "gdocs_script.js",
+          "match": "contains"
+        },
+        "direction": "outgoing"
+      },
+      "label": "gdocs-path-trace"
+    },
+    {
+      "name": "trace_application_feature",
+      "arguments": {
+        "application": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-extension-loading-2026-11-08/discovery/scripts-analysis.evidence.json"
+        },
+        "seed": {
+          "kind": "string",
+          "value": "_docs_annotate_canvas_by_ext",
+          "match": "contains"
+        },
+        "direction": "outgoing"
+      },
+      "label": "docs-canvas-property-trace"
+    },
+    {
+      "name": "trace_application_feature",
+      "arguments": {
+        "application": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-extension-loading-2026-11-08/discovery/scripts-analysis.evidence.json"
+        },
+        "seed": {
+          "kind": "api",
+          "value": "getManifest",
+          "match": "contains"
+        },
+        "direction": "outgoing"
+      },
+      "label": "branding-input-trace"
+    },
+    {
+      "name": "inspect_data_blob",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/ArcCore",
+        "range_offset": 489899100,
+        "range_length": 768,
+        "layers": [],
+        "view": "strings",
+        "limit": 1000
+      },
+      "label": "core-placeholder-context"
+    },
+    {
+      "name": "inspect_data_blob",
+      "arguments": {
+        "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/ArcCore",
+        "range_offset": 489119120,
+        "range_length": 768,
+        "layers": [],
+        "view": "strings",
+        "limit": 1000
+      },
+      "label": "core-loader-file-context"
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-extension-loading-2026-11-08/discovery/evidence-bundle.json"
+      },
+      "label": "export"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/boundary/process/providerProcess.test.ts tests/boundary/providers/ghidra/ghidraClient.test.ts tests/boundary/providers/hopper/bridgeLauncher.test.ts tests/boundary/providers/hopper/hopperClient.cleanupRetry.test.ts tests/boundary/providers/native/LldbCallTracer.cleanup.test.ts tests/boundary/android/jadxMcpTransport.test.ts tests/boundary/javascript/javascriptSourceAnalysisWorker.test.ts tests/boundary/javascript/sourceMapDecoder.test.ts tests/boundary/providers/radare2/radare2Provider.process.test.ts src/firmware/FirmwareCommand.test.ts src/javascript/recovery/WakaruCommand.test.ts src/process/ProcessOwnership.history.test.ts
+
+Focused tests: tests/boundary/process/providerProcess.test.ts, tests/boundary/providers/ghidra/ghidraClient.test.ts, tests/boundary/providers/hopper/bridgeLauncher.test.ts, tests/boundary/providers/hopper/hopperClient.cleanupRetry.test.ts, tests/boundary/providers/native/LldbCallTracer.cleanup.test.ts, tests/boundary/android/jadxMcpTransport.test.ts, tests/boundary/javascript/javascriptSourceAnalysisWorker.test.ts, tests/boundary/javascript/sourceMapDecoder.test.ts, tests/boundary/providers/radare2/radare2Provider.process.test.ts, src/firmware/FirmwareCommand.test.ts, src/javascript/recovery/WakaruCommand.test.ts, src/process/ProcessOwnership.history.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 422ea3968d7ecbd1
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs 92d47368acbb9fce
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache hit, replaying logs 20e3ce024939b1d7
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    3 cached, 3 total
+  Time:    452ms >>> FULL TURBO
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |adapters| src/process/ProcessOwnership.history.test.ts (7 tests) 12ms
+ ✓ |adapters| src/firmware/FirmwareCommand.test.ts (4 tests | 3 skipped) 3ms
+ ✓ |adapters| src/javascript/recovery/WakaruCommand.test.ts (7 tests) 213ms
+ ✓ |boundary| tests/boundary/javascript/javascriptSourceAnalysisWorker.test.ts (9 tests) 5965ms
+   ✓ reuses one real owned analyzer while retaining distinct source identities and exported returns 1522ms
+   ✓ keeps static facts and skips semantic analysis above max_semantic_source_bytes 467ms
+   ✓ reports an actual startup deadline and closes its owned resources before subsequent analysis 578ms
+   ✓ preserves a failed owned cleanup retry when the next caller cancels before acquisition 793ms
+   ✓ admits semantic module facts for every small source past the reserve cliff 1968ms
+ ✓ |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts (33 tests) 12135ms
+   ✓ GhidraClient (11)
+     ✓ accepts an owned-socket result above the former 64 MiB ceiling 335ms
+     ✓ projects malformed startup as protocol 560ms
+     ✓ projects contradictory startup as protocol 561ms
+     ✓ projects future_id startup as protocol 560ms
+   ✓ GhidraClient startup lifecycle (2)
+     ✓ applies one startup deadline and removes the private runtime 466ms
+     ✓ cancels startup promptly and leaves no project or process 509ms
+   ✓ GhidraClient established requests (2)
+     ✓ cancels queued work and stops active provider work on cancellation 612ms
+   ✓ Ghidra launcher rollback ownership (2)
+     ✓ retains the original process and runtime roots after ownership manifest write failure until cleanup succeeds 1320ms
+     ✓ retains the original process and runtime roots after cancellation after process creation until cleanup succeeds 1329ms
+   ✓ retains spawned rollback-discovered foreign detached processes and runtime roots across later closes 2770ms
+   ✓ retains injected rollback-discovered foreign detached processes and runtime roots across later closes 1510ms
+ ✓ |boundary| tests/boundary/providers/native/LldbCallTracer.cleanup.test.ts (4 tests) 5361ms
+   ✓ retains a real LLDB process owner and runtime until a later cleanup retry succeeds 1253ms
+   ✓ retains an unidentified debuggee and runtime until exit can be confirmed 4042ms
+ ✓ |boundary| tests/boundary/javascript/sourceMapDecoder.test.ts (14 tests) 3679ms
+   ✓ runs the real pinned codec with an independent heap and removes its private request directory 1121ms
+   ✓ cancels a real owned process and removes the runtime request 460ms
+   ✓ reports complete evidence amplification as a resource failure before serializing an oversized reply 304ms
+   ✓ rejects a codec report from a runtime other than the launching one 430ms
+ ✓ |boundary| tests/boundary/providers/radare2/radare2Provider.process.test.ts (11 tests) 4632ms
+   ✓ radare2 provider process lifecycle (6)
+     ✓ stops a hung analysis on cancellation, removes its private copy and restarts on the next call 1849ms
+     ✓ reports a crashed radare2 with its stderr and recovers with a fresh process 377ms
+     ✓ enforces the configured analysis deadline 551ms
+   ✓ retains the process and private root when startup rollback cleanup fails 507ms
+   ✓ radare2 provider with Rizin's dialect (4)
+     ✓ refuses a Rizin whose ver reply drifted from the profile 317ms
+     ✓ normalizes Rizin's replies into the provider's results 336ms
+ ✓ |boundary| tests/boundary/providers/hopper/bridgeLauncher.test.ts (8 tests) 1053ms
+   ✓ launches Hopper helpers with the caller-selected environment without restoring ambient values 963ms
+ ✓ |boundary| tests/boundary/providers/hopper/hopperClient.cleanupRetry.test.ts (11 tests) 760ms
+ ✓ |boundary| tests/boundary/android/jadxMcpTransport.test.ts (4 tests) 31ms
+ ✓ |process-boundary| tests/boundary/process/providerProcess.test.ts (23 tests) 2045ms
+   ✓ provider process host injection (1)
+     ✓ uses injected host platform and environment when spawning 895ms
+   ✓ provider process spawning primitives (5)
+     ✓ cleans a real descendant that starts a distinct process group 614ms
+
+ Test Files  12 passed (12)
+      Tests  132 passed | 3 skipped (135)
+   Start at  01:22:07
+   Duration  22.03s (tests 89%, transform 6%, import 5%)
+

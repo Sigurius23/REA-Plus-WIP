@@ -1,0 +1,53 @@
+{
+  "steps": [
+    {
+      "name": "scan_byte_patterns",
+      "arguments": {
+        "path": "/tmp/rea-arc-1.172.1-core-arm64.dylib",
+        "patterns": [
+          {
+            "name": "gdocs-manifest-mov-w0",
+            "pattern": "80 97 87 52"
+          },
+          {
+            "name": "gdocs-manifest-mov-w1",
+            "pattern": "81 97 87 52"
+          },
+          {
+            "name": "gdocs-manifest-mov-w2",
+            "pattern": "82 97 87 52"
+          },
+          {
+            "name": "gdocs-manifest-mov-w3",
+            "pattern": "83 97 87 52"
+          }
+        ],
+        "scope": "executable",
+        "max_matches": 100
+      },
+      "label": "gdocs-manifest-id-candidates"
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x4445d24"
+      },
+      "label": "bundled-resource-data-route"
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x4445ec0"
+      },
+      "label": "extension-root-path-builder"
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0xc9fa5fa",
+        "length": 4
+      },
+      "label": "manifest-key-name"
+    }
+  ]
+}

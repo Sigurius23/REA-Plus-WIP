@@ -1,0 +1,46 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/boundary/providers/radare2/radare2Provider.process.test.ts
+
+Focused tests: tests/boundary/providers/radare2/radare2Provider.process.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 422ea3968d7ecbd1
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs 92d47368acbb9fce
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache hit, replaying logs 20e3ce024939b1d7
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    3 cached, 3 total
+  Time:    421ms >>> FULL TURBO
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |boundary| tests/boundary/providers/radare2/radare2Provider.process.test.ts (11 tests) 4797ms
+   ✓ radare2 provider process lifecycle (6)
+     ✓ stops a hung analysis on cancellation, removes its private copy and restarts on the next call 2170ms
+     ✓ reports a crashed radare2 with its stderr and recovers with a fresh process 375ms
+     ✓ enforces the configured analysis deadline 538ms
+     ✓ refuses an executable whose version changed after profile resolution 301ms
+   ✓ retains the process and private root when startup rollback cleanup fails 486ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  01:20:54
+   Duration  11.42s (transform 47%, tests 42%, import 10%, worker 1%)
+

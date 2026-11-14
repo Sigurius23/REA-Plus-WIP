@@ -1,0 +1,160 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-selector-rendering-2026-11-09/selection-after",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home"
+  },
+  "timeout_ms": 120000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "open-owned"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-vtables",
+        "max_file_bytes": 67108864,
+        "max_records": 10
+      },
+      "label": "broad-10"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-vtables",
+        "max_file_bytes": 67108864,
+        "max_records": 10,
+        "swift_class_address": "0x1130"
+      },
+      "label": "selected-10"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-vtables",
+        "max_file_bytes": 67108864,
+        "max_records": 100,
+        "swift_class_address": "0x1130"
+      },
+      "label": "selected-100"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-vtables",
+        "max_file_bytes": 67108864,
+        "max_records": 1,
+        "swift_class_address": "0x1130"
+      },
+      "label": "selected-budget-one"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-vtables",
+        "max_file_bytes": 67108864,
+        "max_records": 100,
+        "swift_class_address": "0x0"
+      },
+      "label": "not-indexed"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-conformances",
+        "swift_class_address": "0x1130"
+      },
+      "label": "wrong-facet"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-vtables",
+        "max_file_bytes": 67108864,
+        "swift_class_address": "0x1130",
+        "swift_conformance_address": "0x1078"
+      },
+      "label": "conflicting-selectors"
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/tmp/rea-selector-vtable-range-2026-11-09/types.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "open-malformed-types"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-vtables",
+        "max_file_bytes": 67108864,
+        "max_records": 1,
+        "swift_class_address": "0x1130"
+      },
+      "label": "malformed-types"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "objc",
+        "max_records": 1
+      },
+      "label": "unrequested-malformed-types"
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/tmp/rea-selector-vtable-range-2026-11-09/proto.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "open-malformed-proto"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-conformances",
+        "max_records": 1,
+        "swift_conformance_filter": {
+          "protocol_name": "BudgetProtocol"
+        }
+      },
+      "label": "malformed-proto"
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open-arc"
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-vtables",
+        "max_records": 500,
+        "max_file_bytes": 134217728,
+        "swift_class_address": "0x103d7bcb4"
+      },
+      "label": "arc-hover-class"
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-selector-rendering-2026-11-09/selection-after/evidence-bundle.json"
+      },
+      "label": "export"
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "close"
+    }
+  ]
+}

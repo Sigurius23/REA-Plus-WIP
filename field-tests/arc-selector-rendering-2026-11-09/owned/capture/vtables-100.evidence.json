@@ -1,0 +1,1259 @@
+{
+  "evidence_id": "ev_32da279aac3860bbbecd1ec071460f6494168c4c843bd20a0a3f25f5edfa763c",
+  "subject": {
+    "name": "rea-selector-vtable-budget-2026-11-09.dylib",
+    "digest": {
+      "sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib"
+  },
+  "provider": {
+    "id": "rea-workflow",
+    "name": "REA+ composed investigation workflow",
+    "version": "1"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "rea-workflow",
+      "name": "REA+ composed investigation workflow",
+      "version": "1"
+    },
+    "parameters": {
+      "upstream_analysis_profile": {
+        "provider": {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        },
+        "parameters": {
+          "target_kind": "executable",
+          "target_format": "mach-o",
+          "architecture": "arm64",
+          "available_architectures": [
+            "arm64"
+          ],
+          "import_mode": "ephemeral-source-immutable",
+          "annotation_policy": "atomic-function-entry-metadata-v1",
+          "load_image_observations": "source-mappings-entry-context-v2",
+          "function_body_evidence": "complete-inclusive-ranges-v1",
+          "function_references": "complete-body-and-entry-reference-manager-v2",
+          "string_inventory_evidence": "defined-data-coverage-v1",
+          "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+          "instruction_flow_evidence": "decoded-return-pcode-v1",
+          "instruction_references": "exact-address-incoming-v1",
+          "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+          "no_return_repair": "returning-imports-decoded-return-v2",
+          "process_launch": "inspected-jvm-launch-support-v1",
+          "jump_table_evidence": "typed-case-default-blocks-v1",
+          "swift_enum_switch_recovery": "abi-signed-word-cfg-v2",
+          "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+          "decompiler_jump_loads": true,
+          "loader": "auto-from-header",
+          "language_id": "auto-from-header",
+          "compiler_spec_id": "auto-default",
+          "analyzer_preset": "ghidra-default"
+        },
+        "digest": "c4e00df48b6e917975f756374468585e4e7fc8b34b7ba388d41e6010fb3219cb"
+      },
+      "workflow_evidence_revision": 1
+    },
+    "digest": "6c62df990efccfa0a70a2bdaf63357e8f526b76837898fe9fec35196636231f2"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_native_dispatch_metadata",
+  "parameters": {
+    "max_file_bytes": 67108864,
+    "max_records": 100,
+    "facet": "swift-vtables"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "target_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142",
+    "provider": {
+      "id": "native-macos",
+      "name": "macOS native inspection utilities",
+      "version": "apple-metadata-reader-1"
+    },
+    "analysis_profile_digest": null,
+    "result": {
+      "objc_classes": [],
+      "objc_protocols": [],
+      "objc_categories": [],
+      "swift_decls": [],
+      "objc_ivars": [],
+      "objc_protocol_records": [],
+      "objc_dispatch_implementations": [],
+      "swift_conformances": [],
+      "swift_dispatch_slots": [
+        {
+          "owner": "BudgetFirst",
+          "table_kind": "class_vtable",
+          "slot_index": 11,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": "0x8b0",
+          "thunk_address": null,
+          "location": {
+            "address": "0x10ac",
+            "file_offset": 4268
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x10ac",
+                "file_offset": 4268
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetFirst",
+          "table_kind": "class_vtable",
+          "slot_index": 12,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": "0x8f8",
+          "thunk_address": null,
+          "location": {
+            "address": "0x10b4",
+            "file_offset": 4276
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x10b4",
+                "file_offset": 4276
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetFirst",
+          "table_kind": "class_vtable",
+          "slot_index": 13,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": null,
+          "thunk_address": null,
+          "location": {
+            "address": "0x10bc",
+            "file_offset": 4284
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Async, coroutine, external or unmapped vtable implementation is unresolved"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x10bc",
+                "file_offset": 4284
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetFirst",
+          "table_kind": "class_vtable",
+          "slot_index": 14,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": "0x994",
+          "thunk_address": null,
+          "location": {
+            "address": "0x10c4",
+            "file_offset": 4292
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x10c4",
+                "file_offset": 4292
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetFirst",
+          "table_kind": "class_vtable",
+          "slot_index": 15,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": "0xa10",
+          "thunk_address": null,
+          "location": {
+            "address": "0x10cc",
+            "file_offset": 4300
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x10cc",
+                "file_offset": 4300
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetMiddle",
+          "table_kind": "class_vtable",
+          "slot_index": 11,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": "0xabc",
+          "thunk_address": null,
+          "location": {
+            "address": "0x1108",
+            "file_offset": 4360
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x1108",
+                "file_offset": 4360
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetMiddle",
+          "table_kind": "class_vtable",
+          "slot_index": 12,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": "0xb04",
+          "thunk_address": null,
+          "location": {
+            "address": "0x1110",
+            "file_offset": 4368
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x1110",
+                "file_offset": 4368
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetMiddle",
+          "table_kind": "class_vtable",
+          "slot_index": 13,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": null,
+          "thunk_address": null,
+          "location": {
+            "address": "0x1118",
+            "file_offset": 4376
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Async, coroutine, external or unmapped vtable implementation is unresolved"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x1118",
+                "file_offset": 4376
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetMiddle",
+          "table_kind": "class_vtable",
+          "slot_index": 14,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": "0xba0",
+          "thunk_address": null,
+          "location": {
+            "address": "0x1120",
+            "file_offset": 4384
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x1120",
+                "file_offset": 4384
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetMiddle",
+          "table_kind": "class_vtable",
+          "slot_index": 15,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": "0xc1c",
+          "thunk_address": null,
+          "location": {
+            "address": "0x1128",
+            "file_offset": 4392
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x1128",
+                "file_offset": 4392
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetTarget",
+          "table_kind": "class_vtable",
+          "slot_index": 11,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": "0xcc8",
+          "thunk_address": null,
+          "location": {
+            "address": "0x1164",
+            "file_offset": 4452
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x1164",
+                "file_offset": 4452
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetTarget",
+          "table_kind": "class_vtable",
+          "slot_index": 12,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": "0xd10",
+          "thunk_address": null,
+          "location": {
+            "address": "0x116c",
+            "file_offset": 4460
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x116c",
+                "file_offset": 4460
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetTarget",
+          "table_kind": "class_vtable",
+          "slot_index": 13,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": null,
+          "thunk_address": null,
+          "location": {
+            "address": "0x1174",
+            "file_offset": 4468
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Async, coroutine, external or unmapped vtable implementation is unresolved"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x1174",
+                "file_offset": 4468
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetTarget",
+          "table_kind": "class_vtable",
+          "slot_index": 14,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": "0xdac",
+          "thunk_address": null,
+          "location": {
+            "address": "0x117c",
+            "file_offset": 4476
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x117c",
+                "file_offset": 4476
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "owner": "BudgetTarget",
+          "table_kind": "class_vtable",
+          "slot_index": 15,
+          "requirement": null,
+          "implementation": null,
+          "implementation_address": "0xe28",
+          "thunk_address": null,
+          "location": {
+            "address": "0x1184",
+            "file_offset": 4484
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+              "location": {
+                "address": "0x1184",
+                "file_offset": 4484
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        }
+      ],
+      "swift_symbols": [],
+      "relative_pointers": [
+        {
+          "field": {
+            "address": "0x11fc",
+            "file_offset": 4604
+          },
+          "target": {
+            "address": "0x1078",
+            "file_offset": 4216
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -388,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x11fc",
+                "file_offset": 4604
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1080",
+            "file_offset": 4224
+          },
+          "target": {
+            "address": "0xfa0",
+            "file_offset": 4000
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -224,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1080",
+                "file_offset": 4224
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10b0",
+            "file_offset": 4272
+          },
+          "target": {
+            "address": "0x8b0",
+            "file_offset": 2224
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -2048,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x10b0",
+                "file_offset": 4272
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10b8",
+            "file_offset": 4280
+          },
+          "target": {
+            "address": "0x8f8",
+            "file_offset": 2296
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -1984,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x10b8",
+                "file_offset": 4280
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10c0",
+            "file_offset": 4288
+          },
+          "target": {
+            "address": "0x940",
+            "file_offset": 2368
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -1920,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x10c0",
+                "file_offset": 4288
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10c8",
+            "file_offset": 4296
+          },
+          "target": {
+            "address": "0x994",
+            "file_offset": 2452
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -1844,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x10c8",
+                "file_offset": 4296
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10d0",
+            "file_offset": 4304
+          },
+          "target": {
+            "address": "0xa10",
+            "file_offset": 2576
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -1728,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x10d0",
+                "file_offset": 4304
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1200",
+            "file_offset": 4608
+          },
+          "target": {
+            "address": "0x10d4",
+            "file_offset": 4308
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -300,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1200",
+                "file_offset": 4608
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10dc",
+            "file_offset": 4316
+          },
+          "target": {
+            "address": "0xfb8",
+            "file_offset": 4024
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -292,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x10dc",
+                "file_offset": 4316
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x110c",
+            "file_offset": 4364
+          },
+          "target": {
+            "address": "0xabc",
+            "file_offset": 2748
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -1616,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x110c",
+                "file_offset": 4364
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1114",
+            "file_offset": 4372
+          },
+          "target": {
+            "address": "0xb04",
+            "file_offset": 2820
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -1552,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1114",
+                "file_offset": 4372
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x111c",
+            "file_offset": 4380
+          },
+          "target": {
+            "address": "0xb4c",
+            "file_offset": 2892
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -1488,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x111c",
+                "file_offset": 4380
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1124",
+            "file_offset": 4388
+          },
+          "target": {
+            "address": "0xba0",
+            "file_offset": 2976
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -1412,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1124",
+                "file_offset": 4388
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x112c",
+            "file_offset": 4396
+          },
+          "target": {
+            "address": "0xc1c",
+            "file_offset": 3100
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -1296,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x112c",
+                "file_offset": 4396
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1204",
+            "file_offset": 4612
+          },
+          "target": {
+            "address": "0x1130",
+            "file_offset": 4400
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -212,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1204",
+                "file_offset": 4612
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1138",
+            "file_offset": 4408
+          },
+          "target": {
+            "address": "0xfd0",
+            "file_offset": 4048
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -360,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1138",
+                "file_offset": 4408
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1168",
+            "file_offset": 4456
+          },
+          "target": {
+            "address": "0xcc8",
+            "file_offset": 3272
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -1184,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1168",
+                "file_offset": 4456
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1170",
+            "file_offset": 4464
+          },
+          "target": {
+            "address": "0xd10",
+            "file_offset": 3344
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -1120,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1170",
+                "file_offset": 4464
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1178",
+            "file_offset": 4472
+          },
+          "target": {
+            "address": "0xd58",
+            "file_offset": 3416
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -1056,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1178",
+                "file_offset": 4472
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1180",
+            "file_offset": 4480
+          },
+          "target": {
+            "address": "0xdac",
+            "file_offset": 3500
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -980,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1180",
+                "file_offset": 4480
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1188",
+            "file_offset": 4488
+          },
+          "target": {
+            "address": "0xe28",
+            "file_offset": 3624
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -864,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1188",
+                "file_offset": 4488
+              },
+              "artifact_path": "/private/tmp/rea-selector-vtable-budget-2026-11-09.dylib",
+              "artifact_sha256": "9a4d69d773cfaedcd0aa74010ed5fc92934f2e7ef15e874579446631e45a9142"
+            }
+          ]
+        }
+      ],
+      "coverage": [
+        {
+          "facet": "objc_class_method_ivar_metadata",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "binary_relative_pointers",
+          "status": "complete",
+          "reason": null,
+          "examined": 21,
+          "decoded": 21
+        },
+        {
+          "facet": "objc_properties_categories",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "pointer_fixups",
+          "status": "complete",
+          "reason": "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+          "examined": 2,
+          "decoded": 2
+        },
+        {
+          "facet": "swift_generic_resilient_witnesses_overrides_async_coroutines",
+          "status": "unsupported",
+          "reason": "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_conformances_static_witness_slots",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_resilient_witness_records",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_witness_template_records",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_class_vtable_descriptors",
+          "status": "partial",
+          "reason": "vtable_implementation_unresolved at 0x10bc: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x1118: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x1174: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementations_unresolved",
+          "examined": 3,
+          "decoded": 12
+        }
+      ],
+      "db_save_result": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Derived by an REA+ composed workflow.",
+    "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
+    "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+    "vtable_implementation_unresolved at 0x10bc: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x1118: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x1174: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementations_unresolved"
+  ],
+  "locations": [],
+  "evidence_links": []
+}

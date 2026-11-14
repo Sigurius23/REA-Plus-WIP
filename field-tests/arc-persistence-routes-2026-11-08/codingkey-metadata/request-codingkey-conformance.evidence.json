@@ -1,0 +1,1268 @@
+{
+  "evidence_id": "ev_845d95c81db65ca821994cde4f375706bdf59cd79d16967b15d7067541c46fe8",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64"
+  },
+  "provider": {
+    "id": "rea-workflow",
+    "name": "REA+ composed investigation workflow",
+    "version": "1"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "rea-workflow",
+      "name": "REA+ composed investigation workflow",
+      "version": "1"
+    },
+    "parameters": {
+      "upstream_analysis_profile": {
+        "provider": {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        },
+        "parameters": {
+          "target_kind": "executable",
+          "target_format": "mach-o",
+          "architecture": "arm64",
+          "available_architectures": [
+            "arm64"
+          ],
+          "import_mode": "ephemeral-source-immutable",
+          "annotation_policy": "atomic-function-entry-metadata-v1",
+          "load_image_observations": "source-mappings-entry-context-v2",
+          "function_body_evidence": "complete-inclusive-ranges-v1",
+          "function_references": "complete-body-and-entry-reference-manager-v2",
+          "string_inventory_evidence": "defined-data-coverage-v1",
+          "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+          "instruction_flow_evidence": "decoded-return-pcode-v1",
+          "instruction_references": "exact-address-incoming-v1",
+          "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+          "no_return_repair": "returning-imports-decoded-return-v2",
+          "process_launch": "inspected-jvm-launch-support-v1",
+          "jump_table_evidence": "typed-case-default-blocks-v1",
+          "swift_enum_switch_recovery": "abi-signed-word-cfg-v1",
+          "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+          "decompiler_jump_loads": true,
+          "loader": "auto-from-header",
+          "language_id": "auto-from-header",
+          "compiler_spec_id": "auto-default",
+          "analyzer_preset": "ghidra-default",
+          "analysis_policy": "bounded-autoanalysis-v1",
+          "analysis_timeout_seconds": 1
+        },
+        "digest": "d40b42d9a4e58b0677d30cc4cb04855a12f7d252c7c35c677a6db53495de8d5a"
+      },
+      "workflow_evidence_revision": 1
+    },
+    "digest": "b231214d838497ef5f094aeb9ff5cfcbb4df8057fbf1f0eb6ea9530656747fc7"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_native_dispatch_metadata",
+  "parameters": {
+    "swift_conformance_address": "0x1036d2e6c",
+    "max_file_bytes": 100663296,
+    "max_records": 5000,
+    "facet": "swift-conformances"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+    "provider": {
+      "id": "native-macos",
+      "name": "macOS native inspection utilities",
+      "version": "apple-metadata-reader-1"
+    },
+    "analysis_profile_digest": null,
+    "result": {
+      "swift_conformance_selection": {
+        "address": "0x1036d2e6c",
+        "matched": true
+      },
+      "objc_classes": [],
+      "objc_protocols": [],
+      "objc_categories": [],
+      "swift_decls": [],
+      "objc_ivars": [],
+      "objc_protocol_records": [],
+      "objc_dispatch_implementations": [],
+      "swift_conformances": [
+        {
+          "type_name": "CodingKeys",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$ss9CodingKeyMp",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "module": null,
+          "witness_table": {
+            "address": null,
+            "file_offset": null
+          },
+          "location": {
+            "address": "0x1036d2e6c",
+            "file_offset": 57486956
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "External Swift metadata layout is unsupported; local names and bind identities are retained separately"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift protocol conformance descriptor, local names and external bind identities",
+              "location": {
+                "address": "0x1036d2e6c",
+                "file_offset": 57486956
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "swift_dispatch_slots": [],
+      "swift_resilient_witnesses": [
+        {
+          "conformance": {
+            "address": "0x1036d2e6c",
+            "file_offset": 57486956
+          },
+          "type_name": "CodingKeys",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$ss9CodingKeyMp",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 0,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$ss9CodingKeyPs28CustomDebugStringConvertibleTb",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x103b8b8c7",
+          "implementation_location": {
+            "address": "0x103b8b8c7",
+            "file_offset": 62437575
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x1036d2eb0",
+            "file_offset": 57487024
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x1036d2e80",
+            "file_offset": 57486976
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x1036d2e80",
+                "file_offset": 57486976
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x1036d2e6c",
+            "file_offset": 57486956
+          },
+          "type_name": "CodingKeys",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$ss9CodingKeyMp",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 1,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$ss9CodingKeyPs23CustomStringConvertibleTb",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x103b8b8cf",
+          "implementation_location": {
+            "address": "0x103b8b8cf",
+            "file_offset": 62437583
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x1036d2eb0",
+            "file_offset": 57487024
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x1036d2e88",
+            "file_offset": 57486984
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x1036d2e88",
+                "file_offset": 57486984
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x1036d2e6c",
+            "file_offset": 57486956
+          },
+          "type_name": "CodingKeys",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$ss9CodingKeyMp",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 2,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$ss9CodingKeyP11stringValueSSvgTq",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x10053c4ac",
+          "implementation_location": {
+            "address": "0x10053c4ac",
+            "file_offset": 5489836
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x1036d2eb0",
+            "file_offset": 57487024
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x1036d2e90",
+            "file_offset": 57486992
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x1036d2e90",
+                "file_offset": 57486992
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x1036d2e6c",
+            "file_offset": 57486956
+          },
+          "type_name": "CodingKeys",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$ss9CodingKeyMp",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 3,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$ss9CodingKeyP11stringValuexSgSS_tcfCTq",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x10053c4f8",
+          "implementation_location": {
+            "address": "0x10053c4f8",
+            "file_offset": 5489912
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x1036d2eb0",
+            "file_offset": 57487024
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x1036d2e98",
+            "file_offset": 57487000
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x1036d2e98",
+                "file_offset": 57487000
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x1036d2e6c",
+            "file_offset": 57486956
+          },
+          "type_name": "CodingKeys",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$ss9CodingKeyMp",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 4,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$ss9CodingKeyP8intValueSiSgvgTq",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x1000bfef0",
+          "implementation_location": {
+            "address": "0x1000bfef0",
+            "file_offset": 786160
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x1036d2eb0",
+            "file_offset": 57487024
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x1036d2ea0",
+            "file_offset": 57487008
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x1036d2ea0",
+                "file_offset": 57487008
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x1036d2e6c",
+            "file_offset": 57486956
+          },
+          "type_name": "CodingKeys",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$ss9CodingKeyMp",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 5,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$ss9CodingKeyP8intValuexSgSi_tcfCTq",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x1001ef6d8",
+          "implementation_location": {
+            "address": "0x1001ef6d8",
+            "file_offset": 2029272
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x1036d2eb0",
+            "file_offset": 57487024
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x1036d2ea8",
+            "file_offset": 57487016
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x1036d2ea8",
+                "file_offset": 57487016
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "swift_witness_templates": [
+        {
+          "conformance": {
+            "address": "0x1036d2e6c",
+            "file_offset": 57486956
+          },
+          "conformance_flags": 196608,
+          "type_name": "CodingKeys",
+          "protocol_name": null,
+          "pattern": {
+            "address": null,
+            "file_offset": null
+          },
+          "generic_control": {
+            "address": "0x1036d2eb0",
+            "file_offset": 57487024
+          },
+          "template_words": 0,
+          "extent_source": "generic_control",
+          "private_words": 0,
+          "instantiation_flag": true,
+          "instantiator": {
+            "address": null,
+            "file_offset": null
+          },
+          "private_data": {
+            "address": "0x104737210",
+            "file_offset": null
+          },
+          "retroactive_context": null,
+          "conditional_requirement_count": 0,
+          "conditional_requirements": [],
+          "conditional_pack_count": 0,
+          "conditional_packs": [],
+          "entries": [],
+          "runtime_witness_table": "not_observed",
+          "decode": {
+            "status": "partial",
+            "reason": "Generic private storage is not file-backed or unresolved; runtime storage was not read"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Static Swift witness template and conformance tails; no runtime table is instantiated or observed",
+              "location": {
+                "address": "0x1036d2e6c",
+                "file_offset": 57486956
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "swift_symbols": [],
+      "relative_pointers": [
+        {
+          "field": {
+            "address": "0x103f62694",
+            "file_offset": 66463380
+          },
+          "target": {
+            "address": "0x1036d2e6c",
+            "file_offset": 57486956
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -8976424,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103f62694",
+                "file_offset": 66463380
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2e6c",
+            "file_offset": 57486956
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x104266350",
+            "file_offset": 69624656
+          },
+          "external_reference": {
+            "symbol": "_$ss9CodingKeyMp",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12137701,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2e6c",
+                "file_offset": 57486956
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2e70",
+            "file_offset": 57486960
+          },
+          "target": {
+            "address": "0x103d3ec74",
+            "file_offset": 64220276
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 6733316,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2e70",
+                "file_offset": 57486960
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103d3ec7c",
+            "file_offset": 64220284
+          },
+          "target": {
+            "address": "0x1036d2da8",
+            "file_offset": 57486760
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -6733524,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103d3ec7c",
+                "file_offset": 64220284
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2e74",
+            "file_offset": 57486964
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 0,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2e74",
+                "file_offset": 57486964
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2eb4",
+            "file_offset": 57487028
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 0,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2eb4",
+                "file_offset": 57487028
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2eb8",
+            "file_offset": 57487032
+          },
+          "target": {
+            "address": "0x104737210",
+            "file_offset": null
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 17187672,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "partial",
+            "reason": "Unmapped or ambiguous metadata pointer 0x104737210"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2eb8",
+                "file_offset": 57487032
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2e80",
+            "file_offset": 57486976
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x104266358",
+            "file_offset": 69624664
+          },
+          "external_reference": {
+            "symbol": "_$ss9CodingKeyPs28CustomDebugStringConvertibleTb",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12137689,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2e80",
+                "file_offset": 57486976
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2e84",
+            "file_offset": 57486980
+          },
+          "target": {
+            "address": "0x103b8b8c7",
+            "file_offset": 62437575
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 4950595,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2e84",
+                "file_offset": 57486980
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2e88",
+            "file_offset": 57486984
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x104266360",
+            "file_offset": 69624672
+          },
+          "external_reference": {
+            "symbol": "_$ss9CodingKeyPs23CustomStringConvertibleTb",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12137689,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2e88",
+                "file_offset": 57486984
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2e8c",
+            "file_offset": 57486988
+          },
+          "target": {
+            "address": "0x103b8b8cf",
+            "file_offset": 62437583
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 4950595,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2e8c",
+                "file_offset": 57486988
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2e90",
+            "file_offset": 57486992
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x104266368",
+            "file_offset": 69624680
+          },
+          "external_reference": {
+            "symbol": "_$ss9CodingKeyP11stringValueSSvgTq",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12137689,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2e90",
+                "file_offset": 57486992
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2e94",
+            "file_offset": 57486996
+          },
+          "target": {
+            "address": "0x10053c4ac",
+            "file_offset": 5489836
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -51997160,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2e94",
+                "file_offset": 57486996
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2e98",
+            "file_offset": 57487000
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x104266370",
+            "file_offset": 69624688
+          },
+          "external_reference": {
+            "symbol": "_$ss9CodingKeyP11stringValuexSgSS_tcfCTq",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12137689,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2e98",
+                "file_offset": 57487000
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2e9c",
+            "file_offset": 57487004
+          },
+          "target": {
+            "address": "0x10053c4f8",
+            "file_offset": 5489912
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -51997092,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2e9c",
+                "file_offset": 57487004
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2ea0",
+            "file_offset": 57487008
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x104266378",
+            "file_offset": 69624696
+          },
+          "external_reference": {
+            "symbol": "_$ss9CodingKeyP8intValueSiSgvgTq",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12137689,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2ea0",
+                "file_offset": 57487008
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2ea4",
+            "file_offset": 57487012
+          },
+          "target": {
+            "address": "0x1000bfef0",
+            "file_offset": 786160
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -56700852,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2ea4",
+                "file_offset": 57487012
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2ea8",
+            "file_offset": 57487016
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x104266380",
+            "file_offset": 69624704
+          },
+          "external_reference": {
+            "symbol": "_$ss9CodingKeyP8intValuexSgSi_tcfCTq",
+            "library": "/usr/lib/swift/libswiftCore.dylib",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12137689,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2ea8",
+                "file_offset": 57487016
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x1036d2eac",
+            "file_offset": 57487020
+          },
+          "target": {
+            "address": "0x1001ef6d8",
+            "file_offset": 2029272
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -55457748,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x1036d2eac",
+                "file_offset": 57487020
+              },
+              "artifact_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "coverage": [
+        {
+          "facet": "objc_class_method_ivar_metadata",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "binary_relative_pointers",
+          "status": "partial",
+          "reason": "relative_pointer_targets_unresolved",
+          "examined": 19,
+          "decoded": 11
+        },
+        {
+          "facet": "objc_properties_categories",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "pointer_fixups",
+          "status": "complete",
+          "reason": "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+          "examined": 2,
+          "decoded": 2
+        },
+        {
+          "facet": "swift_generic_resilient_witnesses_overrides_async_coroutines",
+          "status": "unsupported",
+          "reason": "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_conformances_static_witness_slots",
+          "status": "partial",
+          "reason": "Coverage is limited to the selected indexed conformance descriptor; conformance_decode_partial at 0x1036d2e6c: External Swift metadata layout is unsupported; local names and bind identities are retained separately; swift_records_unresolved",
+          "examined": 1,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_resilient_witness_records",
+          "status": "partial",
+          "reason": "Coverage is limited to the selected indexed conformance descriptor; resilient_record_partial at 0x1036d2e80: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x1036d2e88: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x1036d2e90: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x1036d2e98: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x1036d2ea0: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x1036d2ea8: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable",
+          "examined": 1,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_witness_template_records",
+          "status": "partial",
+          "reason": "Coverage is limited to the selected indexed conformance descriptor; template_conformance_unresolved at 0x1036d2e6c: Generic private storage is not file-backed or unresolved; runtime storage was not read",
+          "examined": 1,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_class_vtable_descriptors",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        }
+      ],
+      "db_save_result": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Derived by an REA+ composed workflow.",
+    "Coverage is limited to the selected indexed conformance descriptor; conformance_decode_partial at 0x1036d2e6c: External Swift metadata layout is unsupported; local names and bind identities are retained separately; swift_records_unresolved",
+    "Coverage is limited to the selected indexed conformance descriptor; resilient_record_partial at 0x1036d2e80: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x1036d2e88: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x1036d2e90: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x1036d2e98: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x1036d2ea0: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x1036d2ea8: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable",
+    "Coverage is limited to the selected indexed conformance descriptor; template_conformance_unresolved at 0x1036d2e6c: Generic private storage is not file-backed or unresolved; runtime storage was not read",
+    "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
+    "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+    "relative_pointer_targets_unresolved"
+  ],
+  "locations": [],
+  "evidence_links": []
+}

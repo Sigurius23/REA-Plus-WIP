@@ -1,0 +1,70 @@
+
+> rea-agents@6.4.0 verify:package
+> npm run build:cached && node scripts/verify-package.mjs
+
+
+> rea-agents@6.4.0 build:cached
+> node scripts/check-dependency-install.mjs && node scripts/run-exclusive.mjs artifacts turbo run artifacts:skills
+
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs 422ea3968d7ecbd1
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs a02bc44017b995fd
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache hit, replaying logs bd3f76593fa386ea
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    3 cached, 3 total
+  Time:    264ms >>> FULL TURBO
+
+[verify:package] repository skill: start
+[verify:package] repository skill: complete (2114 ms)
+[verify:package] package archive: start
+[verify:package] package archive: complete (2807 ms)
+[verify:package] package environment: start
+[verify:package] package environment: complete (4 ms)
+[verify:package] package install: start
+[verify:package] package install: complete (11437 ms)
+[verify:package] package update: start
+[verify:package] package update: complete (9358 ms)
+[verify:package] MCP startup: start
+[verify:package] MCP startup: complete (1221 ms)
+[verify:package] MCP module loading: start
+[verify:package] MCP module loading: complete (4357 ms)
+[verify:package] package discovery: start
+[verify:package] package discovery: complete (2360 ms)
+[verify:package] artifact and Electron CLI: start
+[verify:package] artifact and Electron CLI: complete (6156 ms)
+[verify:package] managed analysis CLI: start
+[verify:package] managed analysis CLI: complete (4460 ms)
+[verify:package] unknown provider CLI: start
+[verify:package] unknown provider CLI: complete (900 ms)
+[verify:package] platform CLI: start
+[verify:package] platform CLI: complete (10970 ms)
+[verify:package] capabilities and search CLI: start
+[verify:package] capabilities and search CLI: complete (4628 ms)
+[verify:package] evidence CLI: start
+[verify:package] evidence CLI: complete (2274 ms)
+[verify:package] setup and uninstall CLI: start
+[verify:package] setup and uninstall CLI: complete (13139 ms)
+[verify:package] MCP tools and evidence: start
+[verify:package] MCP tools and evidence: complete (7684 ms)
+[verify:package] workspace cleanup: start
+[verify:package] workspace cleanup: complete (1147 ms)
+[verify:package] verifier lineage: start
+[verify:package] verifier lineage: complete (18 ms)
+{"verifier_run":{"run_id":"98710d8c-ffaf-4732-9454-93596c022a23","verifier_pid":24052,"parent_pid":24019,"process_lineage":{"status":"verified","observed_at":"2026-11-13T20:43:50.894Z","launcher_pid":24052,"launcher_parent_pid":24019,"process_group_id":24004,"descendants":[]}},"cli":true,"analysisCli":true,"artifactCli":true,"managedCli":true,"managedReconstructionCli":true,"managedNativeVerificationCli":true,"managedApplicationGraphCli":true,"evidenceCli":true,"incurMcpCommand":"npx -y rea-agents@6.4.0 mcp","lifecycleScriptsRequired":false,"doctor":"platform-appropriate","setup":"planned-then-idempotent","setupPlanReadOnly":true,"existingHopperPreserved":true,"clients":4,"backupReadback":true,"failureRecovery":true,"configSymlinkLifecycle":true,"skill":true,"skillReferences":true,"repositorySkill":{"skillsVersion":"1.7.2","files":["SKILL.md","references/android-applications.md","references/connection-and-recovery.md","references/evidence-workflows.md","references/javascript-applications.md","references/native-and-artifacts.md","references/runtime-observation.md"]},"mcpTools":205,"mcpPrompts":6,"promptCompletion":true,"promptCompletionLifecycle":true,"evidenceMcp":true,"targetFree":true,"targetLifecycle":true,"boundedRegexBridge":true,"update":{"installed_version":"6.4.0","exact_release":true,"maintenance_read_only":true},"mcpStartup":{"process_started_to_initialized_ms":986.8,"initialized_to_tools_list_ms":213.71,"process_started_to_tools_list_ms":1200.51,"listed_tool_count":205,"rss":{"supported":false,"method":null,"peak_bytes":null}},"mcpModuleLoading":{"supported":true,"method":"node-debug-esm","unique_file_modules":507,"unique_package_modules":506,"unique_dependency_modules":0,"debug_lines":3271,"truncated":false}}

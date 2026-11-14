@@ -1,0 +1,94 @@
+{
+  "evidence_id": "ev_7f736417a77f9e58afa211fd8f33492627a4873637bc8f335ba1a4da831567d0",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/private/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-arm64"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "mach-o",
+      "architecture": "arm64",
+      "available_architectures": [
+        "arm64"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "swift_enum_switch_recovery": "abi-signed-word-cfg-v1",
+      "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default",
+      "analysis_policy": "bounded-autoanalysis-v1",
+      "analysis_timeout_seconds": 1,
+      "analysis_seeds": {
+        "format": "rea-ghidra-seeds-v1",
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-routes-2026-11-08/factory-seeds.tsv",
+        "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-routes-2026-11-08/factory-seeds.tsv",
+        "sha256": "aa4990dabf09ebd19f5c6970985e742f1dc226863684ad4ea395d448ac4d5a3d",
+        "entries": {
+          "function": 1941,
+          "code": 0,
+          "label": 0
+        }
+      }
+    },
+    "digest": "fd15df7c09a66087457711b7079269c5ab3c4900df06cf7844e5264bf79db125"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "procedure_pseudo_code",
+  "parameters": {
+    "procedure": "0x10150478c"
+  },
+  "raw_result": {
+    "value": "\nvoid FUN_10150478c(void)\n\n{\n  undefined *puVar1;\n  undefined *puVar2;\n  undefined8 uVar3;\n  undefined8 uVar4;\n  undefined *puVar5;\n  undefined8 uVar6;\n  undefined *puVar7;\n  undefined8 uVar8;\n  undefined8 extraout_x8;\n  undefined1 auStack_1bb0 [1304];\n  undefined *puStack_1698;\n  undefined *puStack_1690;\n  undefined1 auStack_1180 [808];\n  undefined1 auStack_e58 [960];\n  undefined1 auStack_a98 [1304];\n  undefined1 auStack_580 [1312];\n  \n  (*(code *)PTR____chkstk_darwin_104237440)();\n  puVar1 = &UNK_104333fa8;\n  _swift_allocObject(&UNK_104333fa8,0x2e0,7);\n  _memcpy(puVar1 + 0x10);\n  puVar2 = &UNK_1037a43e0;\n  _swift_getKeyPath(&UNK_1037a43e0);\n  func_0x00010150b32c();\n  uVar3 = 0;\n  func_0x00010150b360();\n  uVar4 = 0;\n  FUN_1012b284c(0);\n  puVar5 = &DAT_10150b30c;\n  uVar8 = 0;\n  uVar6 = uVar3;\n  func_0x00010084fdd0(&DAT_10150b30c,0,uVar3,uVar4);\n  puStack_1698 = &DAT_10150b304;\n  puStack_1690 = puVar1;\n  _swift_retain(puVar1);\n  FUN_1012a5544(auStack_580);\n  func_0x000100005134(0x10463a2e8,&UNK_1037a4400);\n  func_0x00010000a9c8(0x10463a2f0,0x10463a2e8,&UNK_1037a4400,&DAT_1036f45d0);\n  func_0x000100876de8(auStack_a98,&puStack_1698,auStack_580,puVar2,puVar5,uVar8,uVar6,uVar4,\n                      \"WebContent/WebContentFeature.swift\",0x22,2);\n  _swift_release(puVar1);\n  _swift_getKeyPath(&UNK_1037a4408);\n  puVar1 = &UNK_104333fd0;\n  _swift_allocObject(&UNK_104333fd0,0x20,7);\n  *(undefined **)(puVar1 + 0x10) = &DAT_10150b3bc;\n  *(undefined8 *)(puVar1 + 0x18) = 0;\n  func_0x00010084fdd0(&DAT_10150b3e4,puVar1,uVar3,&UNK_10431f408);\n  _swift_release(puVar1);\n  _memcpy(auStack_1180,auStack_a98,0x328);\n  _memcpy(&puStack_1698,auStack_a98,0x328);\n  func_0x000100008168(auStack_1180,auStack_580,0x10463a2f8,&UNK_1037a4430);\n  func_0x000100005134(0x10463a2f8,&UNK_1037a4430);\n  func_0x00010000a9c8(0x10463a300,0x10463a2f8,&UNK_1037a4430,&DAT_1036f3c28);\n  func_0x000100876de8(auStack_580,&puStack_1698);\n  func_0x00010000733c(auStack_a98,0x10463a2f8,&UNK_1037a4430);\n  puVar1 = &UNK_1037a4438;\n  _swift_getKeyPath(&UNK_1037a4438);\n  uVar6 = 0;\n  func_0x0001013d224c(0);\n  puVar2 = &DAT_10150b410;\n  uVar4 = 0;\n  func_0x00010084fdd0(&DAT_10150b410,0,uVar3,uVar6);\n  _memcpy(auStack_e58,auStack_580,0x3c0);\n  _memcpy(auStack_a98,auStack_580,0x3c0);\n  puVar5 = &UNK_104333ff8;\n  _swift_allocObject(&UNK_104333ff8,0x2e0,7);\n  _memcpy(puVar5 + 0x10);\n  puVar7 = &UNK_104334020;\n  _swift_allocObject(&UNK_104334020,0x2e0,7);\n  _memcpy(puVar7 + 0x10);\n  func_0x00010150b32c();\n  func_0x00010150b32c();\n  func_0x000100008168(auStack_e58,&puStack_1698,0x10463a308,&UNK_1037a4458);\n  func_0x0001013cd0bc(auStack_1bb0,&DAT_10150b430,puVar5,&DAT_10150b52c,puVar7);\n  func_0x000100005134(0x10463a308,&UNK_1037a4458);\n  func_0x00010000a9c8(0x10463a310,0x10463a308,&UNK_1037a4458,&DAT_1036f3c28);\n  func_0x000100876de8(&puStack_1698,auStack_a98,auStack_1bb0,puVar1,puVar2,uVar4,uVar3,uVar6,\n                      \"WebContent/WebContentFeature.swift\",0x22,2);\n  func_0x00010000733c(auStack_580,0x10463a308,&UNK_1037a4458);\n  _memcpy(auStack_a98,&puStack_1698,0x518);\n  _memcpy(auStack_580,&puStack_1698,0x518);\n  func_0x000100008168(auStack_a98,auStack_1bb0,0x10463a318,&UNK_1037a4460);\n  func_0x00010000733c(auStack_580,0x10463a318,&UNK_1037a4460);\n  _memcpy(extraout_x8,auStack_a98,0x518);\n  return;\n}\n\n",
+    "limitations": []
+  },
+  "normalized_result": "\nvoid FUN_10150478c(void)\n\n{\n  undefined *puVar1;\n  undefined *puVar2;\n  undefined8 uVar3;\n  undefined8 uVar4;\n  undefined *puVar5;\n  undefined8 uVar6;\n  undefined *puVar7;\n  undefined8 uVar8;\n  undefined8 extraout_x8;\n  undefined1 auStack_1bb0 [1304];\n  undefined *puStack_1698;\n  undefined *puStack_1690;\n  undefined1 auStack_1180 [808];\n  undefined1 auStack_e58 [960];\n  undefined1 auStack_a98 [1304];\n  undefined1 auStack_580 [1312];\n  \n  (*(code *)PTR____chkstk_darwin_104237440)();\n  puVar1 = &UNK_104333fa8;\n  _swift_allocObject(&UNK_104333fa8,0x2e0,7);\n  _memcpy(puVar1 + 0x10);\n  puVar2 = &UNK_1037a43e0;\n  _swift_getKeyPath(&UNK_1037a43e0);\n  func_0x00010150b32c();\n  uVar3 = 0;\n  func_0x00010150b360();\n  uVar4 = 0;\n  FUN_1012b284c(0);\n  puVar5 = &DAT_10150b30c;\n  uVar8 = 0;\n  uVar6 = uVar3;\n  func_0x00010084fdd0(&DAT_10150b30c,0,uVar3,uVar4);\n  puStack_1698 = &DAT_10150b304;\n  puStack_1690 = puVar1;\n  _swift_retain(puVar1);\n  FUN_1012a5544(auStack_580);\n  func_0x000100005134(0x10463a2e8,&UNK_1037a4400);\n  func_0x00010000a9c8(0x10463a2f0,0x10463a2e8,&UNK_1037a4400,&DAT_1036f45d0);\n  func_0x000100876de8(auStack_a98,&puStack_1698,auStack_580,puVar2,puVar5,uVar8,uVar6,uVar4,\n                      \"WebContent/WebContentFeature.swift\",0x22,2);\n  _swift_release(puVar1);\n  _swift_getKeyPath(&UNK_1037a4408);\n  puVar1 = &UNK_104333fd0;\n  _swift_allocObject(&UNK_104333fd0,0x20,7);\n  *(undefined **)(puVar1 + 0x10) = &DAT_10150b3bc;\n  *(undefined8 *)(puVar1 + 0x18) = 0;\n  func_0x00010084fdd0(&DAT_10150b3e4,puVar1,uVar3,&UNK_10431f408);\n  _swift_release(puVar1);\n  _memcpy(auStack_1180,auStack_a98,0x328);\n  _memcpy(&puStack_1698,auStack_a98,0x328);\n  func_0x000100008168(auStack_1180,auStack_580,0x10463a2f8,&UNK_1037a4430);\n  func_0x000100005134(0x10463a2f8,&UNK_1037a4430);\n  func_0x00010000a9c8(0x10463a300,0x10463a2f8,&UNK_1037a4430,&DAT_1036f3c28);\n  func_0x000100876de8(auStack_580,&puStack_1698);\n  func_0x00010000733c(auStack_a98,0x10463a2f8,&UNK_1037a4430);\n  puVar1 = &UNK_1037a4438;\n  _swift_getKeyPath(&UNK_1037a4438);\n  uVar6 = 0;\n  func_0x0001013d224c(0);\n  puVar2 = &DAT_10150b410;\n  uVar4 = 0;\n  func_0x00010084fdd0(&DAT_10150b410,0,uVar3,uVar6);\n  _memcpy(auStack_e58,auStack_580,0x3c0);\n  _memcpy(auStack_a98,auStack_580,0x3c0);\n  puVar5 = &UNK_104333ff8;\n  _swift_allocObject(&UNK_104333ff8,0x2e0,7);\n  _memcpy(puVar5 + 0x10);\n  puVar7 = &UNK_104334020;\n  _swift_allocObject(&UNK_104334020,0x2e0,7);\n  _memcpy(puVar7 + 0x10);\n  func_0x00010150b32c();\n  func_0x00010150b32c();\n  func_0x000100008168(auStack_e58,&puStack_1698,0x10463a308,&UNK_1037a4458);\n  func_0x0001013cd0bc(auStack_1bb0,&DAT_10150b430,puVar5,&DAT_10150b52c,puVar7);\n  func_0x000100005134(0x10463a308,&UNK_1037a4458);\n  func_0x00010000a9c8(0x10463a310,0x10463a308,&UNK_1037a4458,&DAT_1036f3c28);\n  func_0x000100876de8(&puStack_1698,auStack_a98,auStack_1bb0,puVar1,puVar2,uVar4,uVar3,uVar6,\n                      \"WebContent/WebContentFeature.swift\",0x22,2);\n  func_0x00010000733c(auStack_580,0x10463a308,&UNK_1037a4458);\n  _memcpy(auStack_a98,&puStack_1698,0x518);\n  _memcpy(auStack_580,&puStack_1698,0x518);\n  func_0x000100008168(auStack_a98,auStack_1bb0,0x10463a318,&UNK_1037a4460);\n  func_0x00010000733c(auStack_580,0x10463a318,&UNK_1037a4460);\n  _memcpy(extraout_x8,auStack_a98,0x518);\n  return;\n}\n\n",
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+    "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+    "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.",
+    "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-routes-2026-11-08/factory-seeds.tsv (sha256 aa4990dabf09ebd19f5c6970985e742f1dc226863684ad4ea395d448ac4d5a3d: 1941 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+    "Seed outcome: 1845 functions created, 96 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

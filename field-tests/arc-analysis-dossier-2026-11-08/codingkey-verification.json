@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "authority": "analyst-derivation-from-retained-shipped-artifact-Evidence",
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "scope": "Arc 1.172.1 / build 90370; named static CodingKey.stringValue witness implementations; no runtime witness instantiation or message execution",
+  "source_preparation": {
+    "public_driver": "field-tests/arc-dispatch-2026-11-06/method-driver.mjs",
+    "plan": "field-tests/arc-analysis-dossier-2026-11-08/codingkey-plan.json",
+    "advertised_schemas": "field-tests/arc-analysis-dossier-2026-11-08/codingkey-getters/catalog.json",
+    "seed_file": "field-tests/arc-analysis-dossier-2026-11-08/codingkey-seeds.tsv",
+    "seed_sha256": "0b202a424d1f61b0ab40253e172b91f8fad6d3ad1df2bb4d2c2640c6aff8489b",
+    "seed_basis": [
+      {
+        "address": "0x10053c4ac",
+        "source": "E38",
+        "conformance": "0x1036d2e6c",
+        "requirement": "_$ss9CodingKeyP11stringValueSSvgTq",
+        "record_ordinal": 2,
+        "runtime_witness_table": "not_instantiated"
+      },
+      {
+        "address": "0x1004ca7a8",
+        "source": "E39",
+        "conformance": "0x1036cbb18",
+        "requirement": "_$ss9CodingKeyP11stringValueSSvgTq",
+        "record_ordinal": 2,
+        "runtime_witness_table": "not_instantiated"
+      }
+    ],
+    "analysis_timeout_seconds": 1,
+    "seeded_functions_are_caller_assertions": true,
+    "complete_program_claim": false
+  },
+  "decoding": "Return x0 and x1 are the two Swift small-String words. Read each word little endian; the low nibble of the high byte of x1 is the character count. Named CodingKey requirement identity comes from static imported-requirement metadata, not from the instruction shape alone.",
+  "request_getter": {
+    "address": "0x10053c4ac",
+    "instruction_evidence": "E41",
+    "pseudocode_evidence": "E40",
+    "body_bytes": 76,
+    "instruction_count": 19,
+    "selector": "ldrb w8,[x20]; tag0 selects boostId, tag1 selects type, other byte values select data. Only admitted CodingKey cases are interpreted as valid keys.",
+    "results": [
+      {
+        "admitted_key_tag": 0,
+        "x0": "0x00644974736f6f62",
+        "x1": "0xe700000000000000",
+        "length": 7,
+        "value": "boostId"
+      },
+      {
+        "admitted_key_tag": 1,
+        "x0": "0x0000000065707974",
+        "x1": "0xe400000000000000",
+        "length": 4,
+        "value": "type"
+      },
+      {
+        "admitted_key_tag": 2,
+        "x0": "0x0000000061746164",
+        "x1": "0xe400000000000000",
+        "length": 4,
+        "value": "data"
+      }
+    ]
+  },
+  "payload_getter": {
+    "address": "0x1004ca7a8",
+    "instruction_evidence": "E43",
+    "pseudocode_evidence": "E42",
+    "body_bytes": 24,
+    "instruction_count": 6,
+    "x0": "0x73746e65746e6f63",
+    "x1": "0xe800000000000000",
+    "length": 8,
+    "value": "contents"
+  },
+  "execution_receipt": {
+    "status": "completed",
+    "tools": 205,
+    "calls": 7,
+    "successful": 7,
+    "errors": 0,
+    "verifier_run": {
+      "run_id": "f9fd841a-d2ec-4daf-94d7-0b167b493387",
+      "verifier_pid": 4691,
+      "parent_pid": 1140,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-08T22:31:33.302Z",
+        "launcher_pid": 4691,
+        "launcher_parent_pid": 1140,
+        "process_group_id": 4691,
+        "descendants": []
+      }
+    }
+  },
+  "limitations": [
+    "Static strings do not prove a live message was submitted or accepted.",
+    "Imported resilient metadata explicitly retains runtime_witness_table=not_instantiated; ordinal2 is a resilient metadata record ordinal, not a populated runtime slot.",
+    "The bounded Program is partial; only the two positively observed getter bodies are claimed."
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-extension-loading-2026-11-08/semantic-traces",
+  "environment": {},
+  "timeout_ms": 60000,
+  "steps": [
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-extension-loading-2026-11-08/discovery/scripts-analysis.evidence.json"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_69c5247a6ee3ec33fd955a07193685689949b85e7140bdc6668f4fad6883745c"
+          },
+          "direction": "forward-influence",
+          "include_ambiguous_dynamic_edges": true
+        }
+      },
+      "label": "branding-semantic-forward"
+    },
+    {
+      "name": "trace_javascript_semantics",
+      "arguments": {
+        "application": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-extension-loading-2026-11-08/discovery/scripts-analysis.evidence.json"
+        },
+        "query": {
+          "seed": {
+            "kind": "semantic-node",
+            "node_id": "jsrg_node_c18ee6a9f434c054a0db37affeebd23daa238b5db20fb4ae62649e04b8c965fb"
+          },
+          "direction": "backward-provenance",
+          "include_ambiguous_dynamic_edges": true
+        }
+      },
+      "label": "eval-semantic-backward"
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-extension-loading-2026-11-08/semantic-traces/evidence-bundle.json"
+      },
+      "label": "export"
+    }
+  ]
+}

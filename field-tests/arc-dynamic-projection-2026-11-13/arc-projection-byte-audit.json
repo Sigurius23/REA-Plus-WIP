@@ -1,0 +1,141 @@
+{
+  "classification": "supplemental-offline-text-audit-not-rea-evidence",
+  "source_evidence_id": "ev_427c44e10e2a911991608c50c37c420fe140e6b7ca53a0e57dbaf76a2d80041e",
+  "source_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "range": {
+    "start": "0x1012a5b14",
+    "end_exclusive": "0x1012a5ba8"
+  },
+  "assumptions": [
+    "X19 is a live private fixed-frame base with size 0x9e0",
+    "X25 initially denotes an unchanged 156-byte outer payload snapshot",
+    "This block is entered only after exact outer tag call selected reflected case 1",
+    "No concurrent writes, pointer escapes or foreign control-flow entry"
+  ],
+  "positive": {
+    "accepted": true,
+    "copied_byte_count": 156,
+    "wrong_or_missing_bytes": []
+  },
+  "negative_controls": {
+    "wrong_tail_source": {
+      "accepted": false,
+      "copied_byte_count": 140,
+      "wrong_or_missing_bytes": [
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155
+      ]
+    },
+    "wrong_tail_destination": {
+      "accepted": false,
+      "copied_byte_count": 136,
+      "wrong_or_missing_bytes": [
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155
+      ]
+    },
+    "missing_tail": {
+      "accepted": false,
+      "copied_byte_count": 144,
+      "wrong_or_missing_bytes": [
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152,
+        153,
+        154,
+        155
+      ]
+    },
+    "unknown_call": {
+      "accepted": false,
+      "reason": "unsupported instruction: bl 0x1234"
+    },
+    "vector_clobber": {
+      "accepted": false,
+      "reason": "unsupported instruction: mov v0.16b, v17.16b"
+    },
+    "unknown_branch": {
+      "accepted": false,
+      "reason": "unsupported instruction: br x15"
+    },
+    "pointer_name_reuse": {
+      "accepted": false,
+      "reason": "unproved pointer: [x25]"
+    },
+    "overlapping_wrong_bytes": {
+      "accepted": false,
+      "copied_byte_count": 140,
+      "wrong_or_missing_bytes": [
+        136,
+        137,
+        138,
+        139,
+        140,
+        141,
+        142,
+        143,
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151
+      ]
+    }
+  },
+  "getter_reads": [
+    [
+      0,
+      4
+    ],
+    [
+      152,
+      156
+    ]
+  ],
+  "limitations": [
+    "Does not prove the assumptions, descriptor identity, metadata initialization, or complete CFG.",
+    "Does not analyze helpers, calls, dynamic allocations, or target execution.",
+    "No REA+ fields are modified and no provider recovery is claimed."
+  ]
+}

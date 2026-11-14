@@ -4,6 +4,80 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Cleanup history across attempts, item 58 (2026-11-14):** Fixed and verified.
+  Review reproduced a false successful second close after an incomplete stop:
+  the launcher exits and a detached, unreadable child is forgotten. The repair
+  gives each launch one cleanup capability shared by rollback and later stops;
+  it retains candidate groups and original identities, with fresh ownership
+  checks before every signal. The final consumer matrix passes **132 tests / three
+  platform skips across 12 files**, including both real owned-process rollback
+  cases and six normalized custom-launch consumers. A fresh Arc session passes
+  **15/15 calls**, two successful closes and verified empty owned lineage. Fast,
+  built-doc and package checks pass. Published in **`076c706c6`**. Item 57 covers
+  settlement within one attempt. See the
+  [ownership repair/retest](field-tests/arc-cleanup-history-2026-11-13.md).
+- **Radare2 startup rollback ownership, item 59 (2026-11-14):** Fixed and verified.
+  The pipe waits for its startup NUL before returning its handle. If startup
+  fails and its internal stop is incomplete, the client never receives that
+  handle and can delete the private root. Acquisition now transfers ownership
+  before protocol readiness is awaited. The owned-Node regression fails before
+  the repair and passes afterward, including repeated failed close and eventual
+  verified removal. Included in **`076c706c6`** and the same final consumer matrix.
+- **Provider cleanup settlement, item 57 (2026-11-13):** Done within the owned
+  single-attempt stop-deadline profile. The supervisor's existing grace now funds token
+  settlement, sweeps and exit waits through one retained cleanup plan; group
+  membership is revalidated before signaling. **91 source tests / one Linux
+  skip**, **70 boundary tests / one Windows skip**, and **20/20 real Arc calls
+  across three cleanly closed sessions** pass. Uncertainty within that attempt
+  remains incomplete; item 58 repairs retention across attempts. Published in
+  **`72fcdbe8c`**. See the
+  [cleanup report](field-tests/arc-cleanup-settlement-2026-11-09.md).
+- **Selected Swift vtable admission, item 56 (2026-11-09):** Done within the
+  static indexed-class profile. Exact `swift_class_address` / CLI
+  `--swift-class-address` selection scans the type index before class decode
+  admission, preserving indirect aliases, unresolved identities and shared
+  budgets. Requested Swift index spans are validated before enumeration.
+  **151 source cases / seven files**, **17 MCP calls (13 successes / four
+  expected rejections)** and **nine CLI/MCP comparisons** pass. Arc's selected
+  hover class returns 17 rows with two resolved targets; unsupported rows and
+  runtime dispatch remain unproved. See item 56 and the
+  [repair/retest report](field-tests/arc-selector-rendering-2026-11-09.md).
+  Implementation published in **`8a5efd668`**.
+- **Arc native registration and consolidated analysis (2026-11-09):** New
+  fixed-build getter observations confirm `boostId`, `type`, `data`, `contents`.
+  Native loaded pointers associate the three selected extension filenames with
+  resources 15865, 15866 and 15901. The internal-extension route now reaches
+  override-aware manifest supply, first placeholder replacement, parsing,
+  registration checks and a conditional activation handoff. The final Core
+  session completes **15/15 public calls**, exports and closes cleanly;
+  44 canonical Evidence records and five bundles authenticate. Runtime
+  activation and Google Docs registration remain unobserved. See the
+  [Core report](field-tests/arc-core-loader-2026-11-08.md),
+  [reducer/persistence pass](field-tests/arc-persistence-routes-2026-11-08.md)
+  and [feature coverage dossier](field-tests/arc-analysis-dossier-2026-11-08.md).
+- **Ghidra seed-file diagnostics, item 54 (2026-11-08):** Fixed. Missing,
+  unresolvable, non-regular and oversized selected seed files now produce
+  actionable `configuration_invalid` errors preserving the selected path and
+  `REA_GHIDRA_SEED_FILE`; permission, disk-capacity and incidental failures
+  retain their distinct classifications. **29 source checks** and **three real
+  CLI/MCP comparisons**, including Arc, pass. Published to WIP `main` in
+  **`a74006bbe`**, with the remote SHA checked on 2026-11-09. See the
+  [repair report](field-tests/arc-seed-diagnostics-2026-11-08.md).
+- **Fixed-layout Swift reducer dispatch, item 55 (2026-11-13):** Open for Arc's
+  dynamic-stack copy and inline SIMD projection. A bounded typed private-copy
+  lane now recovers all 24 case callees in two owned fixed-frame fixtures;
+  the existing resilient controls also pass. Review added memory-effect,
+  lifetime, writeback and unknown-flow rejection controls. Profile v7 passes
+  **44 real Ghidra cases / 176 MCP calls / three CLI comparisons** and is
+  published in **`f2cdb96ba`**. The unchanged Arc reducer still reports 2,024 observed
+  bytes across an 8,608-byte span and no recovered nested table. Shared getter
+  code never supplies enum identity or count. See item 55 below.
+- **Arc selector follow-up (2026-11-13):** The selected path now proves
+  reciprocal input scaling, the exact `getHoveredElement({x: …, y: …})`
+  command, and forward rectangle scaling on successful completion. Error and
+  publication paths stay explicit. The dossier authenticates **88 Evidence
+  anchors**. Final drawing, page/world identity and broader feature coverage
+  remain open; see the [dossier](field-tests/arc-analysis-dossier-2026-11-08.md).
 - **Arc store handoff and editor lifecycle (2026-11-08):** Offline tracing now
   connects the editor's `_viewStore` initialization to its installed send
   closure and captured store-send routine. The concrete stored witness target
@@ -184,6 +258,14 @@ Open work on `main` following PR #1 and the field tests.
      also passed with unchanged test budgets; see
      [HeyClicky fix verification](field-tests/heyclicky-fixes-2026-10-28.md).
 2. **Branch state and push:**
+   - **Implementation checkpoint (2026-11-14):** `076c706c6e06257190c5303fa8aec5de1d2e649f`
+     is pushed and matched the WIP remote `main` by direct SSH `ls-remote`.
+     It includes class selection `8a5efd668`, bounded Swift dispatch
+     `f2cdb96ba`, single-attempt settlement `72fcdbe8c`, and retained cleanup/
+     startup ownership `076c706c6`. This registry update
+     adds the supporting Arc synthesis and retained captures. The supplied DMG,
+     compiled probe outputs, provider projects and two large Rize JSONs remain
+     local. Item 55's exact Arc projection and broader feature recovery stay open.
    - **Items 45–50 verification batch (2026-11-06):** implementation, tests,
      skill 43, DMG retest and complete small captures are included together
      after `14855891c323`. The fixed user DMG, source-built binaries,
@@ -245,7 +327,8 @@ Open work on `main` following PR #1 and the field tests.
    records the remaining tracing and runtime questions. Rize's admitted offline
    engineering scope (17–29) is complete with the documented dynamic/coverage
    limits; those limits do not establish full runtime understanding. Arc's
-   tool gaps 38–53 are done within their documented profiles. Its broader
+   tool gaps 38–54 and 56 are done within their documented profiles. Item 55
+   remains in progress. Its broader
    feature/design investigation remains incomplete. The latest
    [store/lifecycle follow-up](field-tests/arc-command-effects-2026-11-08.md#verification-issues-and-next-questions)
    narrows the command route to the captured store's unresolved witness call.
@@ -1189,3 +1272,186 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     uses a fresh explicit 15-second profile and the same established seeds,
     rather than repeating the same 60-second resource demand. Capture:
     `field-tests/arc-dispatch-2026-11-06/evaluator/selector-evaluator-main-actor.reply.json`.
+
+54. **Classify invalid Ghidra seed-file selections as configuration errors.** Done (2026-11-08).
+    The caller's failed seed preparation exposed generic `execution_failure`
+    and unchanged-retry advice for a missing `REA_GHIDRA_SEED_FILE` path.
+    Classification now belongs to the seed-file reader: missing/unresolvable,
+    non-regular and oversized files use `configuration_invalid` with the exact
+    selected path and setting guidance. Valid symlinks and commitment/snapshot
+    checks remain supported; access denial, confirmed disk exhaustion and
+    incidental failures remain distinct. **29 source cases** and **three real
+    CLI/MCP comparisons** pass, including an owned C fixture and the unchanged
+    Arc artifact. Source/typecheck/build/fast/built-doc checks pass. See
+    [repair and receipts](field-tests/arc-seed-diagnostics-2026-11-08.md).
+
+55. **Recover fixed-layout Swift enum dispatch from proved caller type.** Open (2026-11-08).
+    Arc's `BoostsEditor: Reducer` witness at `0x1012a9870` reaches
+    `0x1012a571c`, whose nested outlined tag getter is `0x1012b2860` and whose
+    signed-word dispatch at `0x1012a5bc8` remains unrecovered. The observed
+    function body is only 2,024 bytes across an 8,608-byte span; missing case
+    code must not be treated as complete decompilation.
+
+    An owned fixed-layout `-Onone` nested reducer reproduces the omission:
+    zero tables and zero of 24 known case callees, versus all 30 recovered for
+    the existing resilient control. The optimized fixture also emits Arc's
+    exact seven-instruction tag-helper shape but uses a byte table; that is a
+    separate unsupported table profile. These controls establish a capability
+    extension beyond item 37, not a regression of its supported case.
+
+    A second owned enum with the same payload layout but a different empty-case
+    count can share/fold its getter through a thunk. A helper signature, address
+    or equal bytes therefore cannot establish the caller's enum identity/count.
+    The repair must bind the active outer enum case to its reflected payload
+    type and prove private-frame memcpy/projection/non-escape before assigning
+    cases or growing function ownership. Preserve ambiguity and budgets;
+    do not weaken the existing guards or guess a case count from tag bits.
+    Sources, compiler records and public before/control captures are retained
+    under `field-tests/arc-reducer-dispatch-probe-2026-11-08/`.
+
+    Independent suffix prerequisites are repaired on 2026-11-09: a simple
+    non-clobbering load between destination addition and `BR` now preserves
+    the proven edge. Review also reproduced a false recovery when an external
+    function jumps into that suffix; all known foreign entries into its
+    instructions now reject recovery. Exact unchanged-fixture before/after
+    captures verify both changes. The typed private-frame copy profile and its
+    memory/lifetime/unknown-flow rejection controls are implemented. Final v7
+    verification passes **44 cases / 176 MCP calls**, three exact CLI/MCP
+    comparisons, source/fast/built-doc checks and package verification. These
+    repairs do not yet establish Arc's dynamic-stack
+    copy and inline SIMD projection. See
+    [suffix and foreign-entry report](field-tests/arc-dispatch-load-2026-11-09.md).
+
+    The follow-up owned probe now reproduces a second-argument action, dynamic
+    outer storage, 156-byte SIMD projection and a shared getter for 28/29-case
+    child types. Four exact native helpers are retained: the copy wrapper
+    forwards VWT `initializeWithCopy`, while outer metadata uses the existing
+    cached/shared accessor shape. A conditional byte audit covers all 156 bytes
+    and rejects eight altered controls. Those supplemental checks are not
+    public recovery. Required residuals include a typed snapshot/copy-effect
+    rule, complete extent/disjointness and escape proofs, and explicit Darwin
+    stack-probe ABI handling. See
+    [proof obligations and probe](field-tests/arc-dynamic-projection-2026-11-13/design.md).
+    The selected installed ARM64 stack-probe body is now confirmed through
+    public REA+: **108 bytes / 27 instructions / nine blocks**, matching an
+    independent local byte proof. Normal-return X2/X8/X12/SP preservation is
+    established for that image; integration and Arc runtime binding remain
+    separate obligations. See
+    [dependency verification](field-tests/arc-dynamic-projection-2026-11-13/stackprobe-rea-verification.md).
+
+    The 2026-11-14 public follow-up confirms the complete 1,016-byte outer
+    copy witness, its 120-byte completion callback and both small retention
+    tails. The selected installed Swift runtime preserves the incoming VWT
+    pointer and copy slot +16 for the observed callback/layout flags, while
+    changing other slots. That supplemental implementation proof remains
+    conditional: Arc's runtime binding and singleton-instance identity are
+    unproved. Case-restricted copy effects, symbolic stack separation and
+    complete SIMD provenance still need producing support. See the
+    [runtime and public corroboration](field-tests/arc-dynamic-projection-2026-11-13/swift-runtime-vwt-followup.md).
+
+56. **Select an indexed Swift vtable class before decode admission.** Done (2026-11-09), within the static indexed-class profile.
+    Arc's `HoveredElementTracker` descriptor at `0x103d7bcb4` is established by
+    public conformance metadata. The facet-only 20,000-record vtable query
+    retains 5,097 slots / 507 owners and 10,267 relative pointers, with the
+    decode exhaustion recorded at `0x103d772c0`; the requested hover owner is later.
+    This is bounded admission, not a wrong count or global class absence.
+
+    An owned three-class Swift fixture reproduces the analyst problem:
+    `max_records: 10` retains four slots from `BudgetFirst`; a 100-record
+    query retains 15 slots across all three classes, including `BudgetTarget`.
+    Both are real public MCP observations, with an unchanged compiled fixture,
+    exported bundle, explicit close and verified empty descendants. Captures:
+    `field-tests/arc-selector-rendering-2026-11-09/owned/`.
+
+    The implemented `swift_class_address` / CLI `--swift-class-address` selects
+    one unslid indexed nominal class descriptor for `swift-vtables`. It scans
+    the full type index before class decode admission, accounts for indirect
+    aliases and unresolved entries, deduplicates the descriptor, and preserves
+    selected-scope coverage and shared record limits. Wrong facets, conflicting
+    conformance selectors and nonindexed/nonclass addresses cannot fall back to
+    names. Unsupported class layouts and runtime instantiation remain unknown.
+
+    The final source run passes **151 cases / seven files**, including indirect
+    aliases, unresolved/nonclass/nonindexed identities, tight budgets,
+    conflicting selectors and existing cancellation coverage. Review also
+    identified malformed-section work amplification in full-index scans.
+    Requested `__swift5_types` and `__swift5_proto` spans now require proper
+    alignment, no unsigned address wrap and one complete file-backed mapped
+    range before enumeration; empty indexes and unrequested families retain
+    their scope. Two owned 55,752-byte copies declaring a **2^44-byte** index
+    are rejected as `unsupported_target`, with `retryable: false` and truthful
+    unchanged-bytes remediation. No worst-case enumeration was run.
+
+    The final real MCP matrix completes **17 calls: 13 successful results and
+    four expected rejections**, exports its bundle and closes with verified
+    empty descendants. **Nine actual CLI/MCP comparisons** agree: five
+    canonical Evidence records and four canonical error projections, including
+    wrong-facet/conflict and malformed-index controls. All selected input hashes
+    remain unchanged. Arc's exact hover-class query examines **11,125 / 11,125**
+    index entries, finds one matching descriptor and returns **17 vtable rows /
+    two resolved native targets** (`0x1012e4cec`, `0x1012e4d6c`); the other 15
+    rows remain partial. These metadata word slots are not source method
+    ordinals or proof of a concrete runtime receiver. Final selector rendering
+    and the separate item 55 reducer work remain open. The uncached fast gate
+    and built-documentation checks pass. See
+    [repair/retest and retained boundaries](field-tests/arc-selector-rendering-2026-11-09.md).
+
+57. **Settle a retiring provider process before declaring cleanup incomplete.** Done (2026-11-13), within one caller stop-deadline attempt.
+    Real Arc Ghidra closes can report `sysctl_errno_22` for a process already
+    exiting, followed by verified empty descendants at MCP shutdown. The
+    supervisor returns immediately on the first incomplete group cleanup,
+    before spending its existing grace interval. The retained failure remains
+    truthful at that instant; child exit alone cannot establish group cleanup
+    or authorize signaling a reused/unverified PID.
+
+    One retained cleanup plan now spends the supervisor's existing absolute
+    stop deadline across token settlement, sweeps and exit waits, with a fresh
+    pre-signal membership check. Persistent unreadable tokens,
+    surviving unverified group members and identity mismatches must still
+    report incomplete. **91 source tests / one Linux-only skip**, **70
+    process/Ghidra callback boundary tests / one Windows-only skip**, and **20/20 public
+    Arc calls across three clean closes** pass. A further selector-return
+    pass completes 5/5 and the four-helper pass completes 7/7, both closing
+    cleanly. The original failed close and later
+    empty-lineage receipt remain under
+    `field-tests/arc-dispatch-load-2026-11-09/arc-v6-retest/`.
+    Fast, built-documentation and package verification pass; source is published
+    in `72fcdbe8c`. See the
+    [repair and final verification](field-tests/arc-cleanup-settlement-2026-11-09.md).
+
+58. **Retain detached cleanup candidates across failed close and rollback attempts.** P1, fixed and verified (2026-11-14).
+    A controlled host reproduction against `72fcdbe8c` returns `incomplete`
+    on its first stop, then `verified-cleanup` after the launcher exits even
+    though an unreadable detached child remains live. A fresh one-shot plan
+    loses the previously observed group; the recorded launcher exit can then
+    release the provider's runtime roots. Item 57's deadline does not repair
+    this cross-attempt ownership loss.
+
+    The repair creates one cleanup capability at spawn, retaining candidate
+    groups and original PID/start identities across rollback and later stops.
+    Retention supplies candidates, never signal authority: each attempt still
+    requires fresh matching run tokens, identities and group membership.
+    Ghidra normalizes injected launches before ownership-manifest rollback;
+    other provider consumers reuse the spawn capability. Source regressions
+    cover unreadable orphans, later verified ownership, foreign/reused/migrated
+    processes, and groups discovered during validation. Production-boundary
+    tests pass, including both production-spawn and cap-less injected rollback
+    cases with real owned Node processes. The final 12-file consumer matrix
+    passes 132 tests with three platform skips; a fresh real Arc session passes
+    15 calls, closes twice successfully and verifies empty owned descendants.
+    Fast, built-doc and package checks pass. Published in `076c706c6`. See the
+    [report and receipts](field-tests/arc-cleanup-history-2026-11-13.md).
+
+59. **Retain the radare2 pipe when startup rollback cleanup fails.** P1, fixed and verified (2026-11-14).
+    `Radare2Pipe.start` waits for the startup NUL before returning. On failure
+    it calls `stop()` and discards an incomplete result, then throws before
+    the client can assign its `pipe` reference. The client's release path sees
+    no process handle and removes the private target/runtime root. Separate
+    process acquisition from protocol readiness: the client now owns the pipe
+    before any handshake or stream validation can fail. The owned-Node startup
+    regression fails before the repair and passes afterward; failed cleanup
+    retains both the handle and root across repeated closes, then releases them
+    after successful verification. All 11 radare2 process-fixture tests pass,
+    included in the final item 58 matrix. Published in `076c706c6`. See the
+    [ownership report](field-tests/arc-cleanup-history-2026-11-13.md) and
+    `field-tests/radare2-startup-cleanup-2026-11-14/`.

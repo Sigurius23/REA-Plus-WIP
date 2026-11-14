@@ -1,0 +1,97 @@
+{
+  "evidence_id": "ev_1e9a31cd734108d3c9ce24ed14120923b087e26f72fc418c1f196a7174eea96d",
+  "subject": {
+    "name": "resources.pak",
+    "digest": {
+      "sha256": "69989f28e4c839975fbde1c300b32cc58e1dff332729432ddbd21a26e753a49f"
+    },
+    "format": "file",
+    "architecture": null,
+    "local_path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/Resources/resources.pak"
+  },
+  "provider": {
+    "id": "chromium-datapack-reader",
+    "name": "REA+ Chromium resource reader",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "search_chromium_resources",
+  "parameters": {
+    "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/Resources/resources.pak",
+    "query": "<APP_NAME>",
+    "query_encoding": "utf8",
+    "canonical_offset": 5120,
+    "scan_limit": 1024,
+    "match_limit": 1024,
+    "max_file_bytes": 67108864,
+    "max_resource_bytes": 8388608,
+    "max_total_decoded_bytes": 268435456,
+    "expected_sha256": "69989f28e4c839975fbde1c300b32cc58e1dff332729432ddbd21a26e753a49f"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "artifact": {
+      "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/Resources/resources.pak",
+      "bytes": 24999244,
+      "sha256": "69989f28e4c839975fbde1c300b32cc58e1dff332729432ddbd21a26e753a49f"
+    },
+    "format": "chromium-datapack",
+    "version": 5,
+    "encoding": "utf8",
+    "canonical_resources": 5439,
+    "alias_resources": 382,
+    "query": {
+      "literal": "<APP_NAME>",
+      "encoding": "utf8",
+      "bytes": 10,
+      "sha256": "e73c95e91e25fe96f0e5c50efbff426127f1a2aef6e15289a1100966f3790638"
+    },
+    "page": {
+      "canonical_offset": 5120,
+      "scan_limit": 1024,
+      "match_limit": 1024,
+      "examined": 319,
+      "decoded": 319,
+      "next_canonical_offset": null,
+      "stop_reason": "end"
+    },
+    "budgets": {
+      "max_resource_bytes": 8388608,
+      "max_total_decoded_bytes": 268435456,
+      "observed_decoded_bytes": 12100045,
+      "charged_decoded_bytes": 12100045
+    },
+    "matches": [],
+    "skipped": [],
+    "coverage": {
+      "index": "complete",
+      "window": "complete",
+      "pack": "partial"
+    },
+    "limitations": [
+      "First case-sensitive literal byte occurrence per canonical payload; aliases share one decode. No filename, MIME type or runtime use is inferred.",
+      "Query encoding encodes the needle only. Binary and invalid-text payloads are searched; text ranges require a lossless whole-payload decode and proven match boundaries. BOMs are preserved.",
+      "Continue next_canonical_offset against expected_sha256. A complete window is not complete pack coverage. Skipped resources remain unknown.",
+      "Unknown compressed expansion reserves max_resource_bytes before admission. Failed decoder attempts charge their reservation; observed bytes exclude unobservable failed output.",
+      "For decoded_budget, resume at the unchanged next cursor with a larger max_total_decoded_bytes or smaller max_resource_bytes. Unchanged budgets reproduce the stop. Cancellation returns a typed error, not partial Evidence."
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "First case-sensitive literal byte occurrence per canonical payload; aliases share one decode. No filename, MIME type or runtime use is inferred.",
+    "Query encoding encodes the needle only. Binary and invalid-text payloads are searched; text ranges require a lossless whole-payload decode and proven match boundaries. BOMs are preserved.",
+    "Continue next_canonical_offset against expected_sha256. A complete window is not complete pack coverage. Skipped resources remain unknown.",
+    "Unknown compressed expansion reserves max_resource_bytes before admission. Failed decoder attempts charge their reservation; observed bytes exclude unobservable failed output.",
+    "For decoded_budget, resume at the unchanged next cursor with a larger max_total_decoded_bytes or smaller max_resource_bytes. Unchanged budgets reproduce the stop. Cancellation returns a typed error, not partial Evidence."
+  ],
+  "locations": [
+    {
+      "kind": "artifact-path",
+      "path": "/tmp/rea-extracted-6e261ab1-e59f-429d-aace-fd76dc4aa364/Arc-1.172.1-90370.dmg/Arc/Arc.app/Contents/Frameworks/ArcCore.framework/Versions/A/Resources/resources.pak"
+    }
+  ],
+  "evidence_links": []
+}

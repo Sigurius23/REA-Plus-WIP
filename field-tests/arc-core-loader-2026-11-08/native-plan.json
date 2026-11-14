@@ -1,0 +1,85 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-core-loader-2026-11-08/native",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-core-loader-2026-11-08/loader-function-seeds.tsv"
+  },
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 180000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/tmp/rea-arc-1.172.1-core-arm64.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x4448490"
+      },
+      "label": "brand-placeholder-substitution-pseudocode"
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x4448490"
+      },
+      "label": "brand-placeholder-substitution-instructions"
+    },
+    {
+      "name": "procedure_info",
+      "arguments": {
+        "procedure": "0x4448490"
+      },
+      "label": "brand-placeholder-substitution-info"
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x4446538"
+      },
+      "label": "component-extension-loader-pseudocode"
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x4446538"
+      },
+      "label": "component-extension-loader-instructions"
+    },
+    {
+      "name": "procedure_info",
+      "arguments": {
+        "procedure": "0x4446538"
+      },
+      "label": "component-extension-loader-info"
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0xd60c55c",
+        "length": 10
+      },
+      "label": "brand-placeholder-bytes"
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-core-loader-2026-11-08/native/phase-1-bundle.json"
+      },
+      "label": "phase-1-export"
+    }
+  ],
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-core-loader-2026-11-08/continuation-1.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-core-loader-2026-11-08/continuation-2.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-core-loader-2026-11-08/continuation-3.json"
+  ]
+}

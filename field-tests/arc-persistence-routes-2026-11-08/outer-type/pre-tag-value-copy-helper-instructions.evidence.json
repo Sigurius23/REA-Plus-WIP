@@ -1,0 +1,190 @@
+{
+  "evidence_id": "ev_1972cf8a0797ca9bec443c54f6102949aa1d62edcb5f762eddef73ff1a758aae",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/private/tmp/rea-extracted-73e043bc-3ba3-408c-8261-3d3c6496e7c1/Arc-arm64"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "mach-o",
+      "architecture": "arm64",
+      "available_architectures": [
+        "arm64"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "swift_enum_switch_recovery": "abi-signed-word-cfg-v1",
+      "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default",
+      "analysis_policy": "bounded-autoanalysis-v1",
+      "analysis_timeout_seconds": 1,
+      "analysis_seeds": {
+        "format": "rea-ghidra-seeds-v1",
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-routes-2026-11-08/outer-type-seeds.tsv",
+        "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-routes-2026-11-08/outer-type-seeds.tsv",
+        "sha256": "3d4a7c7bf05ccc61a579877dee188ec6701ad59a691175f8bfc617609e390923",
+        "entries": {
+          "function": 2,
+          "code": 0,
+          "label": 0
+        }
+      }
+    },
+    "digest": "120c0c852dc5da6453f1a0cf6404081bf4e0852ba5ee66e7533ff505759b7db2"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "read_function_instructions",
+  "parameters": {
+    "procedure": "0x10000828c"
+  },
+  "raw_result": {
+    "value": {
+      "procedure": {
+        "address": "0x10000828c",
+        "name": "FUN_10000828c",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x10000828c",
+              "end": "0x1000082cf"
+            }
+          ],
+          "total_bytes": 68,
+          "span_bytes": 68,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instructions": [
+        "0x10000828c: stp x20, x19, [sp, #-0x20]!",
+        "0x100008290: stp x29, x30, [sp, #0x10]",
+        "0x100008294: add x29, sp, #0x10",
+        "0x100008298: mov x19, x1",
+        "0x10000829c: mov x20, x0",
+        "0x1000082a0: mov x0, #0x0",
+        "0x1000082a4: blr x2",
+        "0x1000082a8: mov x2, x0",
+        "0x1000082ac: ldur x8, [x0, #-0x8]",
+        "0x1000082b0: ldr x8, [x8, #0x10]",
+        "0x1000082b4: mov x0, x19",
+        "0x1000082b8: mov x1, x20",
+        "0x1000082bc: blr x8",
+        "0x1000082c0: mov x0, x19",
+        "0x1000082c4: ldp x29, x30, [sp, #0x10]",
+        "0x1000082c8: ldp x20, x19, [sp], #0x20",
+        "0x1000082cc: ret"
+      ],
+      "limitations": [
+        "Instruction text and ordering are Ghidra-specific representations.",
+        "The fast path does not invoke the decompiler or scan whole-program names and strings."
+      ]
+    },
+    "limitations": []
+  },
+  "normalized_result": {
+    "procedure": {
+      "address": "0x10000828c",
+      "name": "FUN_10000828c",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x10000828c",
+            "end": "0x1000082cf"
+          }
+        ],
+        "total_bytes": 68,
+        "span_bytes": 68,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    "instructions": [
+      "0x10000828c: stp x20, x19, [sp, #-0x20]!",
+      "0x100008290: stp x29, x30, [sp, #0x10]",
+      "0x100008294: add x29, sp, #0x10",
+      "0x100008298: mov x19, x1",
+      "0x10000829c: mov x20, x0",
+      "0x1000082a0: mov x0, #0x0",
+      "0x1000082a4: blr x2",
+      "0x1000082a8: mov x2, x0",
+      "0x1000082ac: ldur x8, [x0, #-0x8]",
+      "0x1000082b0: ldr x8, [x8, #0x10]",
+      "0x1000082b4: mov x0, x19",
+      "0x1000082b8: mov x1, x20",
+      "0x1000082bc: blr x8",
+      "0x1000082c0: mov x0, x19",
+      "0x1000082c4: ldp x29, x30, [sp, #0x10]",
+      "0x1000082c8: ldp x20, x19, [sp], #0x20",
+      "0x1000082cc: ret"
+    ],
+    "limitations": [
+      "Instruction text and ordering are Ghidra-specific representations.",
+      "The fast path does not invoke the decompiler or scan whole-program names and strings."
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "This fast path reads only the requested function and does not invoke the decompiler or whole-program string/name inventories.",
+    "Instruction text is Ghidra-specific and does not claim textual equivalence with Hopper output.",
+    "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.",
+    "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-routes-2026-11-08/outer-type-seeds.tsv (sha256 3d4a7c7bf05ccc61a579877dee188ec6701ad59a691175f8bfc617609e390923: 2 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+    "Seed outcome: 2 functions created, 0 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+  ],
+  "locations": [],
+  "evidence_links": []
+}
