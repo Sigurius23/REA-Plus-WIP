@@ -45,14 +45,21 @@ switch (mode) {
     await write(process.stdout, "ready\n");
     keepAlive();
     break;
-  case "detached-child": {
+  case "detached-child":
+  case "detached-foreign-child": {
     detachedChild = spawn(
       process.execPath,
       [
         "-e",
         "setInterval(() => undefined, 1000); setTimeout(() => process.exit(0), 10000)",
       ],
-      { detached: true, stdio: "ignore" },
+      {
+        detached: true,
+        stdio: "ignore",
+        ...(mode === "detached-foreign-child"
+          ? { env: { ...process.env, REA_PROCESS_RUN_ID: value } }
+          : {}),
+      },
     );
     await new Promise((resolve, reject) => {
       detachedChild.once("spawn", resolve);

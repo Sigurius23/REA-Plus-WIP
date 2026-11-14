@@ -22,10 +22,10 @@ import {
 } from "../../process/PrivateRuntimeRoot.js";
 import { ProviderStartupDeadline } from "../../process/ProviderDeadline.js";
 import { javaScriptWorkerMemoryLimitBytes } from "../../process/JavaScriptWorkerMemoryLimit.js";
-import { cleanupOwnedProcessGroup } from "../../process/ProcessOwnership.js";
 import {
   ProviderProcessSupervisor,
   spawnOwnedProviderProcess,
+  withOwnedProviderProcessCleanup,
   type OwnedProviderProcessSpawnOptions,
   type SpawnedOwnedProviderProcess,
 } from "../../process/ProviderProcess.js";
@@ -170,11 +170,8 @@ class OwnedCodec implements SourceMapCleanupOwner {
     });
     this.#supervisor = new ProviderProcessSupervisor(
       {
-        ...spawned,
+        ...withOwnedProviderProcessCleanup(spawned),
         ownsProcessLifetime: true,
-        cleanup:
-          spawned.cleanup ??
-          (() => cleanupOwnedProcessGroup(spawned.ownership)),
       },
       {
         onDiagnostic: (event) => {

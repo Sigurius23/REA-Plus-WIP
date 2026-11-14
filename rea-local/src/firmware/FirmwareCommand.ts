@@ -12,11 +12,11 @@ import { ProviderAdapterError } from "../domain/providerAdapterError.js";
 import { ProviderCleanupError } from "../domain/providerCleanupError.js";
 import {
   spawnOwnedProviderProcess,
+  withOwnedProviderProcessCleanup,
   ProviderProcessSupervisor,
   type OwnedProviderProcessSpawnOptions,
   type SpawnedOwnedProviderProcess,
 } from "../process/ProviderProcess.js";
-import { cleanupOwnedProcessGroup } from "../process/ProcessOwnership.js";
 import { FIRMWARE_LIMITS } from "./FirmwareRelease.js";
 import {
   hashFirmwareFile,
@@ -145,10 +145,8 @@ export const runFirmwareCommand = async (context: {
   let diagnosticTruncated = false;
   const supervisor = new ProviderProcessSupervisor(
     {
-      ...spawned,
+      ...withOwnedProviderProcessCleanup(spawned),
       ownsProcessLifetime: true,
-      cleanup:
-        spawned.cleanup ?? (() => cleanupOwnedProcessGroup(spawned.ownership)),
     },
     {
       maxDiagnosticBytes: FIRMWARE_LIMITS.diagnosticBytes,

@@ -13,8 +13,8 @@ import type {
 import {
   ProviderProcessSupervisor,
   spawnOwnedProviderProcess,
+  withOwnedProviderProcessCleanup,
 } from "../process/ProviderProcess.js";
-import { cleanupOwnedProcessGroup } from "../process/ProcessOwnership.js";
 import { ProviderCleanupError } from "../domain/providerCleanupError.js";
 
 const MAX_FRAME_BYTES = 8 * 1024 * 1024;
@@ -65,11 +65,8 @@ export class JadxMcpTransport implements Transport {
     this.#spawned = spawned;
     this.#supervisor = new ProviderProcessSupervisor(
       {
-        ...spawned,
+        ...withOwnedProviderProcessCleanup(spawned, this.options.platform),
         ownsProcessLifetime: true,
-        cleanup:
-          spawned.cleanup ??
-          (() => cleanupOwnedProcessGroup(spawned.ownership)),
       },
       { captureStdout: false },
     );

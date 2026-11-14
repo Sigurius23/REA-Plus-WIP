@@ -10,6 +10,10 @@ import type {
   ProcessCleanupResult,
 } from "./ProcessOwnership.js";
 import { prepareProcessOwnershipInspection } from "./ProcessOwnershipObservation.js";
+import {
+  cleanupWindowsProcessTree,
+  createOwnedProcessGroupCleanup,
+} from "./ProcessOwnership.js";
 
 const DEFAULT_TERMINATION_GRACE_MS = 250;
 const DEFAULT_KILL_GRACE_MS = 1_000;
@@ -48,6 +52,21 @@ export interface SpawnedOwnedProviderProcess {
     options?: OwnedProcessCleanupOptions,
   ) => Promise<ProcessCleanupResult>;
 }
+
+/** Give injected and native launches one cleanup owner before rollback can run. */
+export const withOwnedProviderProcessCleanup = (
+  spawned: SpawnedOwnedProviderProcess,
+  platform: NodeJS.Platform = process.platform,
+): SpawnedOwnedProviderProcess & {
+  readonly cleanup: NonNullable<SpawnedOwnedProviderProcess["cleanup"]>;
+} => ({
+  ...spawned,
+  cleanup:
+    spawned.cleanup ??
+    (platform === "win32"
+      ? () => cleanupWindowsProcessTree(spawned.ownership.leaderPid)
+      : createOwnedProcessGroupCleanup(spawned.ownership)),
+});
 
 /** Process events and streams required by provider lifecycle supervision. */
 export interface ProviderProcessHandle extends Pick<
@@ -219,7 +238,10 @@ export const spawnOwnedProviderProcess = async (
       ? {}
       : { expectedCommand: options.expectedCommand ?? options.command }),
   };
-  return { process: child, ownership };
+  return withOwnedProviderProcessCleanup(
+    { process: child, ownership },
+    platform,
+  );
 };
 
 /**

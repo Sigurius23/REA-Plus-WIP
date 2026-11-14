@@ -204,7 +204,7 @@ export class Radare2AnalysisClient implements AnalysisClient {
       );
       const fileName = basename(snapshot.path);
       const { dialect } = this.options;
-      pipe = await Radare2Pipe.start(
+      pipe = await Radare2Pipe.acquire(
         {
           executable: this.options.executable,
           arguments: [...dialect.processArguments, fileName],
@@ -217,6 +217,7 @@ export class Radare2AnalysisClient implements AnalysisClient {
         },
         deadline.signal,
       );
+      await pipe.start(deadline.signal);
       const version = parseSessionVersion(
         dialect,
         await pipe.command(dialect.versionCommand, deadline.signal),

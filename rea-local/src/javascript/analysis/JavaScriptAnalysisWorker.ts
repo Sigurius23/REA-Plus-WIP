@@ -36,8 +36,8 @@ import { javaScriptWorkerMemoryLimitBytes } from "../../process/JavaScriptWorker
 import {
   ProviderProcessSupervisor,
   spawnOwnedProviderProcess,
+  withOwnedProviderProcessCleanup,
 } from "../../process/ProviderProcess.js";
-import { cleanupOwnedProcessGroup } from "../../process/ProcessOwnership.js";
 import { prepareProcessOwnershipInspection } from "../../process/ProcessOwnershipObservation.js";
 import {
   ProviderStartupDeadline,
@@ -499,11 +499,8 @@ export class JavaScriptAnalysisWorker {
     });
     this.#supervisor = new ProviderProcessSupervisor(
       {
-        ...spawned,
+        ...withOwnedProviderProcessCleanup(spawned),
         ownsProcessLifetime: true,
-        cleanup:
-          spawned.cleanup ??
-          (() => cleanupOwnedProcessGroup(spawned.ownership)),
       },
       { captureStdout: false, maxDiagnosticBytes: 256 * 1024 },
     );

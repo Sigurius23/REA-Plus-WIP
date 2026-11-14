@@ -183,6 +183,62 @@ export interface OwnedProcessCleanupOptions {
   readonly settlementDeadlineMs?: number;
 }
 
+interface OwnedProcessCleanupHistory {
+  readonly processGroupIds: Set<number>;
+  readonly processGroupIdsByPid: Map<number, number>;
+  readonly identities: Map<number, string | null>;
+}
+
+/** Retain cleanup candidates across attempts without retaining signal authority. */
+export const createOwnedProcessGroupCleanup = (
+  ownership: OwnedProcessGroup,
+  host: ProcessOwnershipHost = systemHost,
+): ((
+  options?: OwnedProcessCleanupOptions,
+) => Promise<ProcessCleanupResult>) => {
+  const history: OwnedProcessCleanupHistory = {
+    processGroupIds: new Set([ownership.processGroupId]),
+    processGroupIdsByPid: new Map(),
+    identities: new Map(),
+  };
+  const trackedHost: ProcessOwnershipHost = {
+    ...host,
+    environment: host.environment.bind(host),
+    ...(host.runTokens === undefined
+      ? {}
+      : { runTokens: host.runTokens.bind(host) }),
+    ...(host.processIdentities === undefined
+      ? {}
+      : { processIdentities: host.processIdentities.bind(host) }),
+    async listProcesses(signal) {
+      const processes =
+        signal === undefined
+          ? await host.listProcesses()
+          : await host.listProcesses(signal);
+      const failure = await retainCleanupCandidates(
+        ownership,
+        liveProcesses(processes),
+        host,
+        history,
+      );
+      if (failure !== undefined) throw new Error(failure.reason);
+      return processes;
+    },
+  };
+  let pending: Promise<ProcessCleanupResult> | undefined;
+  return (options = {}) => {
+    pending ??= cleanupOwnedProcessGroupWithin(
+      ownership,
+      trackedHost,
+      options,
+      history,
+    ).finally(() => {
+      pending = undefined;
+    });
+    return pending;
+  };
+};
+
 /**
  * Terminate one Windows process tree through the platform utility.
  *
@@ -240,6 +296,14 @@ export const cleanupOwnedProcessGroup = async (
   ownership: OwnedProcessGroup,
   host: ProcessOwnershipHost = systemHost,
   options: OwnedProcessCleanupOptions = {},
+): Promise<ProcessCleanupResult> =>
+  cleanupOwnedProcessGroupWithin(ownership, host, options);
+
+const cleanupOwnedProcessGroupWithin = async (
+  ownership: OwnedProcessGroup,
+  host: ProcessOwnershipHost,
+  options: OwnedProcessCleanupOptions,
+  history?: OwnedProcessCleanupHistory,
 ): Promise<ProcessCleanupResult> => {
   const tokenSettlementDeadline =
     options.settlementDeadlineMs ??
@@ -260,6 +324,7 @@ export const cleanupOwnedProcessGroup = async (
     processTable.processes,
     host,
     tokenSettlementDeadline,
+    history,
   );
   if ("cleaned" in plan) return plan;
   let signaled = false;
@@ -287,6 +352,16 @@ export const cleanupOwnedProcessGroup = async (
   }
   if (plan.unresolved.length > 0)
     return cleanupValidationFailure(plan.unresolved, plan.unverified);
+  if (
+    history !== undefined &&
+    [...history.processGroupIds].some(
+      (processGroupId) => !plan.retainedProcessGroupIds.has(processGroupId),
+    )
+  )
+    return {
+      cleaned: false,
+      reason: "additional process groups were discovered during cleanup",
+    };
   return {
     cleaned: true,
     signaled,
@@ -355,10 +430,65 @@ interface ProcessOwnershipValidationContext {
 
 interface OwnedCleanupPlan extends ProcessOwnershipValidationContext {
   readonly signalOrder: readonly number[];
+  readonly retainedProcessGroupIds: ReadonlySet<number>;
   readonly processGroupIdsByPid: ReadonlyMap<number, number>;
   readonly unresolved: readonly ProcessOwnershipValidationFailure[];
   readonly unverified: readonly OwnershipSweepUnverifiedProcess[];
 }
+
+const retainCleanupCandidates = async (
+  ownership: OwnedProcessGroup,
+  processes: readonly ProcessTableEntry[],
+  host: ProcessOwnershipHost,
+  history: OwnedProcessCleanupHistory,
+  additionalGroups: readonly number[] = [],
+): Promise<Extract<ProcessCleanupResult, { cleaned: false }> | undefined> => {
+  if (
+    processes.some(
+      ({ pid, processGroupId }) =>
+        history.processGroupIdsByPid.has(pid) &&
+        history.processGroupIdsByPid.get(pid) !== processGroupId,
+    )
+  )
+    return {
+      cleaned: false,
+      reason: "observed process changed groups during cleanup",
+    };
+  const descendants = descendantsOf(
+    [ownership.leaderPid, ...history.processGroupIdsByPid.keys()],
+    processes,
+  );
+  for (const processGroupId of [
+    ...additionalGroups,
+    ...descendants.map((process) => process.processGroupId),
+  ])
+    history.processGroupIds.add(processGroupId);
+  const discovered = processes.filter(
+    ({ pid, processGroupId }) =>
+      history.processGroupIds.has(processGroupId) &&
+      !history.processGroupIdsByPid.has(pid),
+  );
+  for (const { pid, processGroupId } of discovered) {
+    history.processGroupIdsByPid.set(pid, processGroupId);
+    history.identities.set(pid, null);
+  }
+  if (discovered.length === 0 || host.processIdentities === undefined)
+    return undefined;
+  try {
+    const identities = await host.processIdentities(discovered);
+    for (const { pid } of discovered) {
+      const observed = identities.get(pid);
+      if (observed?.state === "readable")
+        history.identities.set(pid, observed.identity);
+    }
+    return undefined;
+  } catch (cause: unknown) {
+    return {
+      cleaned: false,
+      reason: `process cleanup candidate identities could not be inspected: ${errorMessage(cause)}`,
+    };
+  }
+};
 
 // A process-table read can race exit and retain the old state with an altered
 // command. Only a fresh table proving that PID is no longer live can settle
@@ -413,6 +543,7 @@ const createOwnedCleanupPlan = async (
   initialProcesses: readonly ProcessTableEntry[],
   host: ProcessOwnershipHost,
   tokenSettlementDeadline: number,
+  history?: OwnedProcessCleanupHistory,
 ): Promise<OwnedCleanupPlan | ProcessCleanupResult> => {
   const processes = await settleLauncherExit(ownership, initialProcesses, host);
   if ("cleaned" in processes) return processes;
@@ -442,6 +573,21 @@ const createOwnedCleanupPlan = async (
   const tokenOwnedGroupIds = new Set(
     tokenOwned.owned.map(({ processGroupId }) => processGroupId),
   );
+  if (history !== undefined) {
+    const failure = await retainCleanupCandidates(
+      ownership,
+      processes,
+      host,
+      history,
+      [...tokenOwnedGroupIds],
+    );
+    if (failure !== undefined) return failure;
+  }
+  const retainedProcessGroupIds = new Set(history?.processGroupIds);
+  const expectedIdentities = new Map([
+    ...tokenOwned.identities,
+    ...(history?.identities ?? []),
+  ]);
   const launcher = processes.find(({ pid }) => pid === ownership.leaderPid);
   const rootMembers = processes.filter(
     ({ processGroupId }) => processGroupId === ownership.processGroupId,
@@ -450,14 +596,17 @@ const createOwnedCleanupPlan = async (
     launcher === undefined &&
     rootMembers.length === 0 &&
     tokenOwned.owned.length === 0 &&
-    !processes.some(({ processGroupId }) =>
-      sampledProcessGroupIds.has(processGroupId),
+    !processes.some(
+      ({ processGroupId }) =>
+        sampledProcessGroupIds.has(processGroupId) ||
+        retainedProcessGroupIds.has(processGroupId),
     )
   )
     return tokenOwned.failures.length > 0
       ? {
           signalOrder: [],
-          tokenOwnedIdentities: tokenOwned.identities,
+          retainedProcessGroupIds,
+          tokenOwnedIdentities: expectedIdentities,
           tokenSettlementDeadline,
           processGroupIdsByPid: new Map(),
           unresolved: tokenOwned.failures,
@@ -482,6 +631,8 @@ const createOwnedCleanupPlan = async (
     processGroupIds.add(process.processGroupId);
   for (const processGroupId of sampledProcessGroupIds)
     processGroupIds.add(processGroupId);
+  for (const processGroupId of retainedProcessGroupIds)
+    processGroupIds.add(processGroupId);
   const signalableGroups = new Set<number>();
   const unresolved = [...tokenOwned.failures];
   const unverifiableSampledGroups = new Set<number>();
@@ -494,7 +645,8 @@ const createOwnedCleanupPlan = async (
     if (
       (groupLeader === undefined || !descendantPids.has(groupLeader.pid)) &&
       !tokenOwnedGroupIds.has(processGroupId) &&
-      !sampledProcessGroupIds.has(processGroupId)
+      !sampledProcessGroupIds.has(processGroupId) &&
+      !retainedProcessGroupIds.has(processGroupId)
     )
       return {
         cleaned: false,
@@ -503,7 +655,8 @@ const createOwnedCleanupPlan = async (
       };
     if (
       (groupLeader === undefined || !descendantPids.has(groupLeader.pid)) &&
-      !tokenOwnedGroupIds.has(processGroupId)
+      !tokenOwnedGroupIds.has(processGroupId) &&
+      !retainedProcessGroupIds.has(processGroupId)
     )
       unverifiableSampledGroups.add(processGroupId);
   }
@@ -515,12 +668,16 @@ const createOwnedCleanupPlan = async (
       ({ processGroupId: observedGroupId }) =>
         observedGroupId === processGroupId,
     );
-    if (members.length === 0) continue;
+    if (members.length === 0) {
+      if (retainedProcessGroupIds.has(processGroupId))
+        signalableGroups.add(processGroupId);
+      continue;
+    }
     const { failures } = await processOwnershipFailures(
       members,
       ownership.runId,
       host,
-      { tokenOwnedIdentities: tokenOwned.identities, tokenSettlementDeadline },
+      { tokenOwnedIdentities: expectedIdentities, tokenSettlementDeadline },
     );
     if (failures.length === 0 && unverifiableSampledGroups.has(processGroupId))
       unresolved.push(
@@ -545,6 +702,7 @@ const createOwnedCleanupPlan = async (
   if (ownership.sweepTokenOwnedProcesses !== true && unresolved.length > 0)
     return cleanupValidationFailure(unresolved, tokenOwned.unverified);
   return {
+    retainedProcessGroupIds,
     signalOrder: [...signalableGroups]
       .filter((groupId) => processGroupIds.has(groupId))
       .sort((left, right) =>
@@ -554,11 +712,14 @@ const createOwnedCleanupPlan = async (
             ? 1
             : left - right,
       ),
-    tokenOwnedIdentities: tokenOwned.identities,
+    tokenOwnedIdentities: expectedIdentities,
     tokenSettlementDeadline,
-    processGroupIdsByPid: new Map(
-      liveMembers.map(({ pid, processGroupId }) => [pid, processGroupId]),
-    ),
+    processGroupIdsByPid: new Map([
+      ...(history?.processGroupIdsByPid ?? []),
+      ...liveMembers.map(
+        ({ pid, processGroupId }) => [pid, processGroupId] as const,
+      ),
+    ]),
     unresolved,
     unverified: tokenOwned.unverified,
   };
@@ -619,7 +780,8 @@ const revalidateOwnedProcessGroup = async (
       processGroupId !== ownership.processGroupId &&
       members.length > 0 &&
       !members.some(({ pid }) => pid === processGroupId) &&
-      ownership.sweepTokenOwnedProcesses !== true
+      ownership.sweepTokenOwnedProcesses !== true &&
+      !plan.retainedProcessGroupIds.has(processGroupId)
     )
       return {
         cleaned: false,

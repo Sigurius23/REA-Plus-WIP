@@ -21,15 +21,9 @@ import {
 import { AnalysisCancelledError } from "../domain/analysisErrorCore.js";
 import { err, ok, type Result } from "../domain/result.js";
 import {
-  cleanupOwnedProcessGroup,
-  cleanupWindowsProcessTree,
-  type OwnedProcessCleanupOptions,
-  type ProcessCleanupResult,
-} from "../process/ProcessOwnership.js";
-import {
   type ProviderProcessLaunch,
-  type SpawnedOwnedProviderProcess,
   spawnOwnedProviderProcess,
+  withOwnedProviderProcessCleanup,
 } from "../process/ProviderProcess.js";
 import { ghidraJavaEnvironment } from "./GhidraInstallation.js";
 import { ghidraJavaLaunch } from "./GhidraJavaLaunch.js";
@@ -134,7 +128,7 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
       return err(new AnalysisCancelledError("open_binary"));
     const paths = ghidraRuntimePaths(session.runtimeRoot);
     const platform = this.options.platform ?? process.platform;
-    let started: SpawnedOwnedProviderProcess | undefined;
+    let started: ReturnType<typeof withOwnedProviderProcessCleanup> | undefined;
     try {
       const psp = this.options.pspExtension;
       if (psp !== undefined) {
@@ -253,20 +247,23 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
                 : { signal: options.signal }),
             })
           : { ...scriptCommand, environment };
-      started = await (this.options.spawnProcess ?? spawnOwnedProviderProcess)({
-        command: command.command,
-        arguments: command.arguments,
-        runId: session.runId,
-        // POSIX launches the inspected JVM directly; script wrappers cannot
-        // preserve JVM property paths containing spaces as single arguments.
-        expectedCommand: platform !== "win32" ? command.command : null,
-        windowsVerbatimArguments: platform === "win32",
+      started = withOwnedProviderProcessCleanup(
+        await (this.options.spawnProcess ?? spawnOwnedProviderProcess)({
+          command: command.command,
+          arguments: command.arguments,
+          runId: session.runId,
+          // POSIX launches the inspected JVM directly; script wrappers cannot
+          // preserve JVM property paths containing spaces as single arguments.
+          expectedCommand: platform !== "win32" ? command.command : null,
+          windowsVerbatimArguments: platform === "win32",
+          platform,
+          env: command.environment,
+          hostEnvironment: {},
+          ...(options.signal === undefined ? {} : { signal: options.signal }),
+        }),
         platform,
-        env: command.environment,
-        hostEnvironment: {},
-        ...(options.signal === undefined ? {} : { signal: options.signal }),
-      });
-      const partialLaunch = ownedGhidraLaunch(started, paths, platform);
+      );
+      const partialLaunch = ownedGhidraLaunch(started, paths);
       await writeGhidraRuntimeFile(
         paths.ownershipPath,
         `${JSON.stringify({
@@ -296,7 +293,7 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
 
       let cleanupFailure: unknown;
       try {
-        const cleanup = await cleanupStartedProcess(started, platform);
+        const cleanup = await started.cleanup();
         if (!cleanup.cleaned)
           cleanupFailure = new Error(
             `Ghidra process cleanup was incomplete: ${cleanup.reason}`,
@@ -305,7 +302,7 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
         cleanupFailure = failure;
       }
       if (cleanupFailure !== undefined) {
-        const partialLaunch = ownedGhidraLaunch(started, paths, platform);
+        const partialLaunch = ownedGhidraLaunch(started, paths);
         const primaryMessage = isAborted(options.signal)
           ? primary.message
           : `Ghidra headless launch failed: ${cause instanceof Error ? cause.message : String(cause)}`;
@@ -329,19 +326,17 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
 }
 
 const ownedGhidraLaunch = (
-  spawned: SpawnedOwnedProviderProcess,
+  spawned: ReturnType<typeof withOwnedProviderProcessCleanup>,
   paths: ReturnType<typeof ghidraRuntimePaths>,
-  platform: NodeJS.Platform,
 ): GhidraLaunch => ({
-  ...ownedGhidraProcess(spawned, platform),
+  ...ownedGhidraProcess(spawned),
   projectRoot: paths.projectRoot,
   ghidraLogPath: paths.ghidraLogPath,
   scriptLogPath: paths.scriptLogPath,
 });
 
 const ownedGhidraProcess = (
-  spawned: SpawnedOwnedProviderProcess,
-  platform: NodeJS.Platform,
+  spawned: ReturnType<typeof withOwnedProviderProcessCleanup>,
 ): Pick<
   Extract<ProviderProcessLaunch, { readonly ownsProcessLifetime: true }>,
   "process" | "ownsProcessLifetime" | "ownership" | "cleanup"
@@ -349,7 +344,7 @@ const ownedGhidraProcess = (
   process: spawned.process,
   ownsProcessLifetime: true,
   ownership: spawned.ownership,
-  cleanup: (options) => cleanupStartedProcess(spawned, platform, options),
+  cleanup: spawned.cleanup,
 });
 
 /** Exact executable and argv passed to shell-free process creation. */
@@ -400,17 +395,6 @@ const ghidraBatchStep = <T>(step: () => T): T => {
     );
   }
 };
-
-const cleanupStartedProcess = (
-  started: SpawnedOwnedProviderProcess,
-  platform: NodeJS.Platform,
-  options: OwnedProcessCleanupOptions = {},
-): Promise<ProcessCleanupResult> =>
-  started.cleanup !== undefined
-    ? started.cleanup(options)
-    : platform === "win32"
-      ? cleanupWindowsProcessTree(started.ownership.leaderPid)
-      : cleanupOwnedProcessGroup(started.ownership, undefined, options);
 
 /** Paths encoded into one bounded analyzeHeadless invocation. */
 export interface GhidraHeadlessArgumentOptions {

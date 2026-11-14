@@ -1,5 +1,5 @@
-import { spawn, type ChildProcess } from "node:child_process";
-import { createHash } from "node:crypto";
+import { spawn, ChildProcess } from "node:child_process";
+import { createHash, randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { access, chmod, mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -13,7 +13,11 @@ import { ok } from "../../../../src/domain/result.js";
 import { GhidraClient } from "../../../../src/ghidra/GhidraClient.js";
 import { GHIDRA_PROCESS_DIAGNOSTIC_BYTES } from "../../../../src/ghidra/GhidraDiagnostics.js";
 import { GhidraHeadlessLauncher } from "../../../../src/ghidra/GhidraLauncher.js";
-import type { OwnedProcessCleanupOptions } from "../../../../src/process/ProcessOwnership.js";
+import {
+  createOwnedProcessGroupCleanup,
+  readProcessRunId,
+  type OwnedProcessCleanupOptions,
+} from "../../../../src/process/ProcessOwnership.js";
 import type { GhidraDiagnostic } from "../../../../src/ghidra/GhidraClientTypes.js";
 import type {
   GhidraLaunchSession,
@@ -26,6 +30,8 @@ import {
 } from "../../../../src/ghidra/GhidraSessionValues.js";
 import { waitForExit as waitForChildExit } from "../../../support/process/processFixture.js";
 import { createTestTempDirectory } from "../../../fixtures/temporaryDirectory.js";
+import { waitForDetachedProviderChild } from "../../../fixtures/providerProcess.js";
+import { spawnOwnedProviderProcess } from "../../../../src/process/ProviderProcess.js";
 
 const fixturePath = fileURLToPath(
   new URL("../../../fixtures/fakeGhidra.mjs", import.meta.url),
@@ -966,6 +972,103 @@ describe.skipIf(process.platform === "win32")(
         await expect(waitForExit(child)).resolves.toBe(true);
       },
     );
+  },
+);
+
+it.skipIf(process.platform === "win32").each(["spawned", "injected"] as const)(
+  "retains %s rollback-discovered foreign detached processes and runtime roots across later closes",
+  async (launchKind) => {
+    const root = await createTestTempDirectory("rea-ghidra-history-");
+    const java = join(root, "jdk", "bin", "java");
+    await mkdir(join(root, "jdk", "bin"), { recursive: true });
+    await writeFile(java, "#!/usr/bin/env node\n// LaunchSupport fixture.\n");
+    await chmod(java, 0o755);
+    const foreignRunId = randomUUID();
+    let child: ChildProcess | undefined;
+    let detachedPid: number | undefined;
+    let detachedCleanup:
+      | ReturnType<typeof createOwnedProcessGroupCleanup>
+      | undefined;
+    let runtimeRoot: string | undefined;
+    const headless = new GhidraHeadlessLauncher({
+      environment: process.env,
+      javaHome: join(root, "jdk"),
+      analyzeHeadlessPath: "/unused/ghidra/support/analyzeHeadless",
+      bridgeScriptPath: "/unused/rea/ReaGhidraBridge.java",
+      spawnProcess: async ({ runId }) => {
+        const owned = await spawnOwnedProviderProcess({
+          command: process.execPath,
+          arguments: [
+            fileURLToPath(
+              new URL("../../../fixtures/providerProcess.mjs", import.meta.url),
+            ),
+            "detached-foreign-child",
+            foreignRunId,
+          ],
+          runId,
+        });
+        const spawned = owned.process;
+        if (!(spawned instanceof ChildProcess))
+          throw new Error("POSIX fixture did not return a native child handle");
+        child = spawned;
+        detachedPid = await waitForDetachedProviderChild(spawned);
+        expect(await readProcessRunId(detachedPid)).toBe(foreignRunId);
+        detachedCleanup = createOwnedProcessGroupCleanup({
+          runId: foreignRunId,
+          leaderPid: detachedPid,
+          processGroupId: detachedPid,
+          expectedCommand: process.execPath,
+        });
+        // Omitting cleanup exercises normalization before manifest rollback.
+        return launchKind === "spawned"
+          ? owned
+          : { process: spawned, ownership: owned.ownership };
+      },
+    });
+    const launcher: GhidraLauncher = {
+      async launch(session, options) {
+        runtimeRoot = session.runtimeRoot;
+        await mkdir(join(session.runtimeRoot, "ownership.json"));
+        return headless.launch(session, options);
+      },
+    };
+    const client = clientFor(launcher, { startupTimeoutMs: 10_000 });
+    onTestFinished(async () => {
+      if (child !== undefined && !exited(child)) child.kill("SIGTERM");
+      if (child !== undefined && !(await waitForExit(child)))
+        throw new Error("owned fixture launcher did not exit");
+      const detached = await detachedCleanup?.();
+      if (detached !== undefined && !detached.cleaned)
+        throw new Error(detached.reason);
+      const closed = await client.close();
+      if (!closed.ok) throw closed.error;
+    });
+
+    expect(await client.start()).toMatchObject({
+      ok: false,
+      error: { cleanupFailure: { cleanupIncomplete: true } },
+    });
+    if (
+      child === undefined ||
+      detachedPid === undefined ||
+      runtimeRoot === undefined ||
+      detachedCleanup === undefined
+    )
+      throw new Error("rollback fixture ownership was not captured");
+    await access(runtimeRoot);
+    child.kill("SIGKILL");
+    await expect(waitForExit(child)).resolves.toBe(true);
+    expect(await readProcessRunId(detachedPid)).toBe(foreignRunId);
+    expect(await client.close()).toMatchObject({
+      ok: false,
+      error: { cleanupIncomplete: true },
+    });
+    await access(runtimeRoot);
+    expect(await readProcessRunId(detachedPid)).toBe(foreignRunId);
+
+    await expect(detachedCleanup()).resolves.toMatchObject({ cleaned: true });
+    await expect(client.close()).resolves.toEqual(ok(null));
+    await expect(access(runtimeRoot)).rejects.toMatchObject({ code: "ENOENT" });
   },
 );
 

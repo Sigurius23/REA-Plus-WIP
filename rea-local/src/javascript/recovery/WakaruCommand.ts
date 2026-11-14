@@ -9,10 +9,10 @@ import {
 } from "../../domain/analysisErrorCore.js";
 import { ProviderAdapterError } from "../../domain/providerAdapterError.js";
 import { ProviderCleanupError } from "../../domain/providerCleanupError.js";
-import { cleanupOwnedProcessGroup } from "../../process/ProcessOwnership.js";
 import {
   ProviderProcessSupervisor,
   spawnOwnedProviderProcess,
+  withOwnedProviderProcessCleanup,
   type OwnedProviderProcessSpawnOptions,
   type SpawnedOwnedProviderProcess,
 } from "../../process/ProviderProcess.js";
@@ -147,10 +147,8 @@ export const runWakaruCommand = async (context: WakaruCommandContext) => {
   let oversized = false;
   const supervisor = new ProviderProcessSupervisor(
     {
-      ...spawned,
+      ...withOwnedProviderProcessCleanup(spawned),
       ownsProcessLifetime: true,
-      cleanup:
-        spawned.cleanup ?? (() => cleanupOwnedProcessGroup(spawned.ownership)),
     },
     {
       onDiagnostic: (event) => {

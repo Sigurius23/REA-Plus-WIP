@@ -2,7 +2,7 @@ import { mkdir, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, onTestFinished } from "vitest";
 
 import { AnalysisProviderRegistry } from "../../../../src/application/binary/AnalysisProviderRegistry.js";
 import { composeBinarySession } from "../../../../src/application/binary/BinarySessionComposition.js";
@@ -13,6 +13,7 @@ import {
   type OwnedProviderProcessSpawnOptions,
 } from "../../../../src/process/ProviderProcess.js";
 import { Radare2Provider } from "../../../../src/radare2/Radare2Provider.js";
+import type { Radare2Launcher } from "../../../../src/radare2/Radare2Pipe.js";
 import {
   createRadare2Elf,
   RADARE2_ELF_LAYOUT as LAYOUT,
@@ -61,6 +62,8 @@ const createFixture = async (
   settings: Readonly<Record<string, string>> = {},
   environment: Readonly<Record<string, string>> = {},
   fake = FAKE_RADARE2,
+  wrapLauncher: (launcher: Radare2Launcher) => Radare2Launcher = (value) =>
+    value,
 ) => {
   const root = await createTestTempDirectory("rea-radare2-process-");
   const runtime = join(root, "runtime");
@@ -75,7 +78,7 @@ const createFixture = async (
   if (!config.ok) throw config.error;
   const launcher = fakeLauncher(scenarios, environment, fake);
   const provider = new Radare2Provider(config.value, process.env, {
-    launcher: launcher.launch,
+    launcher: wrapLauncher(launcher.launch),
     runtimeParent: runtime,
   });
   const session = composeBinarySession(
@@ -205,6 +208,59 @@ describe("radare2 provider process lifecycle", () => {
       },
     });
   });
+});
+
+it("retains the process and private root when startup rollback cleanup fails", async () => {
+  let allowCleanup = false;
+  let acquiredCleanup:
+    | Awaited<ReturnType<Radare2Launcher>>["cleanup"]
+    | undefined;
+  const { path, runtime, session } = await createFixture(
+    ["silent-startup"],
+    { REA_RADARE2_ANALYSIS_TIMEOUT_MS: "300" },
+    {},
+    FAKE_RADARE2,
+    (launcher) => async (options) => {
+      const spawned = await launcher(options);
+      if (!options.arguments.includes("-q0")) return spawned;
+      const cleanup = spawned.cleanup;
+      if (cleanup === undefined) throw new Error("fixture cleanup missing");
+      acquiredCleanup = cleanup;
+      return {
+        ...spawned,
+        cleanup: (limits) =>
+          allowCleanup
+            ? cleanup(limits)
+            : Promise.resolve({
+                cleaned: false,
+                reason: "fixture blocked cleanup",
+              }),
+      };
+    },
+  );
+  onTestFinished(async () => {
+    allowCleanup = true;
+    const stopped = await acquiredCleanup?.();
+    if (stopped !== undefined && !stopped.cleaned)
+      throw new Error(stopped.reason);
+    const closed = await session.close();
+    if (!closed.ok) throw closed.error;
+  });
+  const opened = await session.open(path);
+  if (!opened.ok) throw opened.error;
+  expect(await session.execute("list_procedures", {})).toMatchObject({
+    ok: false,
+    error: { _tag: "AnalysisTimeoutError", timeoutMs: 300 },
+  });
+  expect(await readdir(runtime)).toHaveLength(1);
+  expect(await session.close()).toMatchObject({
+    ok: false,
+    error: { _tag: "ProviderAdapterError", cleanupIncomplete: true },
+  });
+  expect(await readdir(runtime)).toHaveLength(1);
+  allowCleanup = true;
+  expect((await session.close()).ok).toBe(true);
+  await expect(readdir(runtime)).resolves.toEqual([]);
 });
 
 describe("radare2 provider with Rizin's dialect", () => {

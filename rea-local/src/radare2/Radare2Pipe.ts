@@ -1,9 +1,9 @@
 import { finished } from "node:stream/promises";
 
-import { cleanupOwnedProcessGroup } from "../process/ProcessOwnership.js";
 import {
   ProviderProcessSupervisor,
   spawnOwnedProviderProcess,
+  withOwnedProviderProcessCleanup,
   type OwnedProviderProcessSpawnOptions,
   type ProviderProcessStopResult,
   type SpawnedOwnedProviderProcess,
@@ -79,8 +79,8 @@ export class Radare2Pipe {
     private readonly supervisor: ProviderProcessSupervisor,
   ) {}
 
-  /** Launch radare2 and wait for the NUL that ends its startup output. */
-  static async start(
+  /** Acquire a process handle before protocol readiness can fail. */
+  static async acquire(
     options: Radare2PipeOptions,
     signal: AbortSignal,
   ): Promise<Radare2Pipe> {
@@ -95,23 +95,28 @@ export class Radare2Pipe {
     });
     const supervisor = new ProviderProcessSupervisor(
       {
-        ...spawned,
+        ...withOwnedProviderProcessCleanup(spawned),
         ownsProcessLifetime: true,
-        cleanup:
-          spawned.cleanup ??
-          (() => cleanupOwnedProcessGroup(spawned.ownership)),
       },
       { captureStdout: false, maxDiagnosticBytes: MAX_DIAGNOSTIC_BYTES },
     );
-    const pipe = new Radare2Pipe(spawned, supervisor);
-    pipe.#attach();
+    return new Radare2Pipe(spawned, supervisor);
+  }
+
+  /** Wait for the startup NUL after the client has retained cleanup ownership. */
+  async start(signal: AbortSignal): Promise<void> {
+    const ready = this.#await(STARTUP_COMMAND, signal);
     try {
-      await pipe.#await(STARTUP_COMMAND, signal);
+      this.#attach();
     } catch (cause: unknown) {
-      await pipe.stop();
-      throw cause;
+      this.#fail(
+        "protocol",
+        "radare2 protocol streams are unavailable",
+        STARTUP_COMMAND,
+        cause,
+      );
     }
-    return pipe;
+    await ready;
   }
 
   /** The terminal failure, once one occurred. */

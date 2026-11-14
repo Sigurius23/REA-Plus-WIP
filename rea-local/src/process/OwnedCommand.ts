@@ -6,8 +6,8 @@ import type {
 import {
   ProviderProcessSupervisor,
   spawnOwnedProviderProcess,
+  withOwnedProviderProcessCleanup,
 } from "./ProviderProcess.js";
-import { cleanupOwnedProcessGroup } from "./ProcessOwnership.js";
 import {
   ProviderStartupDeadline,
   waitForAbortableDelay,
@@ -78,12 +78,15 @@ const collectOwnedCommand = async (
   callerSignal?: AbortSignal,
 ): Promise<ProviderProcessSnapshot> => {
   const signal = deadline.signal;
-  let launched: SpawnedOwnedProviderProcess;
+  let launched: ReturnType<typeof withOwnedProviderProcessCleanup>;
   try {
-    launched = await launcher({
-      ...spawn,
-      signal,
-    });
+    launched = withOwnedProviderProcessCleanup(
+      await launcher({
+        ...spawn,
+        signal,
+      }),
+      spawn.platform ?? process.platform,
+    );
   } catch (cause: unknown) {
     const interruption = deadline.interruption;
     if (interruption !== undefined)
@@ -104,9 +107,6 @@ const collectOwnedCommand = async (
     {
       ...launched,
       ownsProcessLifetime: true,
-      cleanup:
-        launched.cleanup ??
-        (() => cleanupOwnedProcessGroup(launched.ownership)),
     },
     {
       maxDiagnosticBytes: limits.diagnosticBytes,

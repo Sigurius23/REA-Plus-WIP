@@ -9,11 +9,11 @@ import {
   HopperStartError,
 } from "../domain/hopperErrors.js";
 import { err, ok, type Result } from "../domain/result.js";
-import { cleanupOwnedProcessGroup } from "../process/ProcessOwnership.js";
 import { execFileOutput } from "../process/ExecFileOutput.js";
 import {
   type ProviderProcessLaunch,
   spawnOwnedProviderProcess,
+  withOwnedProviderProcessCleanup,
 } from "../process/ProviderProcess.js";
 import { waitForAbortableDelay } from "../process/ProviderDeadline.js";
 import {
@@ -232,7 +232,7 @@ export class HopperApplicationLauncher implements BridgeLauncher {
         signal,
       });
       if (started === null) return err(new HopperCancelledError());
-      const cleanup = () => cleanupOwnedProcessGroup(started.ownership);
+      const { cleanup } = withOwnedProviderProcessCleanup(started);
       const ownedLauncher = {
         ...(this.options.preparedImage === undefined
           ? {}

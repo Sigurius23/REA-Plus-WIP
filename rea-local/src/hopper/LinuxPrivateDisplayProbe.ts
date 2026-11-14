@@ -8,10 +8,10 @@ import {
   type HopperStartupFailureCode,
   type HopperStartupReadyDiagnostic,
 } from "../domain/hopperStartupFailure.js";
-import { cleanupOwnedProcessGroup } from "../process/ProcessOwnership.js";
 import {
   ProviderProcessSupervisor,
   spawnOwnedProviderProcess,
+  withOwnedProviderProcessCleanup,
   type ProviderProcessLaunch,
 } from "../process/ProviderProcess.js";
 import { parseLinuxPrivateDisplayDiagnostic } from "./LinuxPrivateDisplayDiagnostic.js";
@@ -130,7 +130,7 @@ export const runLinuxPrivateDisplayProbe: LinuxPrivateDisplayProbeRunner =
     const launch: ProviderProcessLaunch = {
       process: started.process,
       ownsProcessLifetime: true,
-      cleanup: () => cleanupOwnedProcessGroup(started.ownership),
+      cleanup: withOwnedProviderProcessCleanup(started).cleanup,
     };
     const supervisor = new ProviderProcessSupervisor(launch);
     const outcome = await waitForProbeOutputClose(

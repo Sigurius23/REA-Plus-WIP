@@ -29,7 +29,6 @@ import {
   ProviderProcessSupervisor,
   spawnOwnedProviderProcess,
 } from "../process/ProviderProcess.js";
-import { cleanupOwnedProcessGroup } from "../process/ProcessOwnership.js";
 import {
   observeProcessStartIdentity,
   signalProcessWithStartIdentity,
@@ -873,7 +872,6 @@ const runLldb = async (
       {
         ...launched,
         ownsProcessLifetime: true,
-        cleanup: () => cleanupOwnedProcessGroup(launched.ownership),
       },
       { maxDiagnosticBytes: DIAGNOSTIC_BYTES },
     );

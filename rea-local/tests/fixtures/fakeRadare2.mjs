@@ -69,4 +69,4 @@ process.stdin.on("data", (chunk) => {
   }
 });
 process.stdin.on("end", () => process.exit(0));
-reply("");
+if (scenario !== "silent-startup") reply("");
