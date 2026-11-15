@@ -70,6 +70,17 @@ signatures. Unproved error-register guards remain qualified by assembly and
 machine CFG. `truncated: false` describes retained p-code extent, not complete
 success/failure semantics. Historical dossiers can omit these newer facets.
 
+Swift enum-table recovery may cite `trusted-darwin-arm64-chkstk-v1` for an
+exact imported Darwin stack probe. Treat that as a normal-return ABI
+assumption, not proof of the target's runtime library binding or a completed
+allocation. The narrow profile requires a known private SP, models the
+16-byte scratch write below it, and preserves only X2/X8/X12/SP beyond ordinary
+callee-saved handling. The first lane requires an applied chained import with
+an original positive library ordinal matching the exact system install name;
+classic or ambiguous bindings remain unsupported. Dynamic stack, typed-copy and SIMD projection paths
+remain separate unsupported obligations unless their own Evidence establishes
+them. See the [Ghidra guide](https://github.com/morluto/rea/blob/main/docs/ghidra-provider.md#swift-enum-dispatch-recovery).
+
 To see which functions or Objective-C methods a Mach-O actually calls in one
 run, use `observe_native_calls` with explicit breakpoints and a bounded
 `duration_ms`/`max_events`. It launches a new process under LLDB, so the target

@@ -192,6 +192,40 @@ back to the reflected child descriptor. Indirect payload fields and unknown
 field flags are rejected before inline copying is considered.
 Inline SIMD projections and other copy-witness paths remain unsupported.
 
+The versioned `trusted-darwin-arm64-chkstk-v1` effect policy additionally admits
+the literal imported Mach-O symbol `___chkstk_darwin` from the system install
+names `/usr/lib/libSystem.B.dylib` or `/usr/lib/system/libcompiler_rt.dylib`.
+Direct calls require that exact external or a verified three-instruction import
+stub. The indirect lane requires an adjacent `ADRP X16; LDR X16; BLR X16` chain
+with one incoming path through its load and a unique imported pointer-slot
+binding. Local functions, lookalike names, other underscore counts and foreign
+libraries receive no special effects. The existing complete private-prefix
+proof must exclude unknown calls, visible import-slot writes and foreign flows.
+The first profile admits only successfully applied eight-byte Ghidra chained
+binds (`0x8888`) with the exact symbol and one retained positive library ordinal.
+That ordinal must select the same full system install name in the original
+bounded Mach-O load-command order; the loaded pointer and its unique default
+data reference must agree with the imported external association. Classic
+bindings that discard the ordinal, conflicting same-name library ordinals and
+ambiguous or changed pointer targets remain unsupported.
+
+On normal return this narrow summary preserves X2, X8, X12 and SP in addition
+to ordinary callee-saved handling. Other volatile registers, including X9,
+X10, X16, X17 and X30, and condition flags remain unknown. The probe can read
+stack/thread state and fault. Its possible 16-byte scratch write immediately
+below the incoming SP is modeled explicitly; it must be disjoint from any
+retained spill or copied child interval. An unknown SP rejects this summary,
+including when the original scalar-spill route could otherwise use its legacy
+dynamic-SP assumption. The summary neither allocates storage nor proves that
+allocation completed.
+
+This is an explicit trusted Darwin ABI assumption, supported by inspected
+versioned implementations, rather than a byte binding to the OS image a target
+will load. Recovery provenance records admitted call/import/slot identities,
+the scratch interval and that limitation. It does not establish Arc's runtime
+binding or extend recovery to Arc's dynamic allocations, typed copy witnesses
+or SIMD projections.
+
 Verified destinations receive computed-flow references and are disassembled into
 the existing function body without stealing independent function entries. The
 ephemeral database receives a generated Ghidra switch override before any
@@ -203,7 +237,8 @@ for values outside the valid enum. This recovers control flow, not state
 reachability, original source declarations or every Swift calling convention.
 
 The analysis profile commits `swift_enum_switch_recovery:
-"abi-signed-word-cfg-v7"` for supported targets. Earlier snapshots cannot replay
+"abi-signed-word-cfg-v8"` and `darwin_stack_probe_call_summary:
+"trusted-darwin-arm64-chkstk-v1"` for supported targets. Earlier snapshots cannot replay
 as this recovery. Windows P0 retains its no-database-mutation boundary.
 
 `npm run verify:ghidra` compiles the versioned C oracle into debug and stripped

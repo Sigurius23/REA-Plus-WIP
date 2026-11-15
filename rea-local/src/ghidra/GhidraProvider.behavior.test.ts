@@ -192,7 +192,10 @@ describe("Ghidra Mach-O slice support", () => {
       if (!resolved.ok) throw resolved.error;
       expect(
         resolved.value.profile?.parameters.swift_enum_switch_recovery,
-      ).toBe(enabled ? "abi-signed-word-cfg-v7" : undefined);
+      ).toBe(enabled ? "abi-signed-word-cfg-v8" : undefined);
+      expect(
+        resolved.value.profile?.parameters.darwin_stack_probe_call_summary,
+      ).toBe(enabled ? "trusted-darwin-arm64-chkstk-v1" : undefined);
       expect(
         resolved.value.profile?.parameters.swift_error_register_model,
       ).toBe(enabled ? "proved-native-synchronous-callee-x21-v3" : undefined);
@@ -205,6 +208,9 @@ describe("Ghidra Mach-O slice support", () => {
     if (!windows.ok) throw windows.error;
     expect(
       windows.value.profile?.parameters.swift_enum_switch_recovery,
+    ).toBeUndefined();
+    expect(
+      windows.value.profile?.parameters.darwin_stack_probe_call_summary,
     ).toBeUndefined();
     expect(
       windows.value.profile?.parameters.swift_error_register_model,

@@ -10,6 +10,7 @@ import ghidra.program.model.listing.*;
 import ghidra.program.model.mem.MemoryBlock;
 import ghidra.program.model.pcode.JumpTable;
 import ghidra.program.model.pcode.PcodeOp;
+import ghidra.program.model.reloc.Relocation;
 import ghidra.program.model.symbol.*;
 import ghidra.util.task.TaskMonitor;
 import java.util.*;
@@ -26,6 +27,7 @@ final class ReaGhidraSwiftEnumSwitches {
     // declared counts. This is a recovery budget, not a Swift format limit.
     private static final int MAX_CASES = 4096;
     private static final int MAX_QUERIES = 100000;
+    private static final String DARWIN_PROBE_ABI = "trusted-darwin-arm64-chkstk-v1";
     private final Program program;
     private final TaskMonitor monitor;
     private final Map<Address, EnumInfo> accessors = new HashMap<>();
@@ -35,6 +37,9 @@ final class ReaGhidraSwiftEnumSwitches {
     private final Map<Address, Recovery> recovered = new LinkedHashMap<>();
     private final Set<Address> tagCallees = new HashSet<>();
     private final Set<Address> singletonCallees = new HashSet<>();
+    private final Map<Address,ProbeImport> probeImports = new HashMap<>();
+    private List<String> probeLibraries = List.of();
+    private ProbeImport uniqueProbeImport;
     private record EnumInfo(Address descriptor, Address fields, Address accessor, Address cache,
                             int payloads, int empty, List<String> names) {
         int count() { return payloads + empty; }
@@ -44,10 +49,13 @@ final class ReaGhidraSwiftEnumSwitches {
     private record MemoryOperand(String base, long offset) {}
     private record Recovery(Function owner, Address dispatch, Address table, Address anchor,
                             Address tagCall, Address limit, EnumInfo type, List<Address> targets,
-                            Address interveningLoad) {}
+                            Address interveningLoad, String probeProof) {}
     private record FixedEnum(EnumInfo type, Address metadata, Address witness, Address getter, long size) {}
     private record ProjectionQuery(Address before, boolean copied) {}
     private record FrameWrite(long start, int size) {}
+    private record ProbeImport(Address external, String library) {}
+    private record ProbeTarget(ProbeImport binding, Address slot) {}
+    private record ProbeEffect(ProbeTarget target, FrameWrite scratch) {}
     private static final Pattern MEMORY = Pattern.compile(
         "(?i)^\\[([xw]\\d+|sp)(?:,\\s*#?(-?0x[0-9a-f]+|-?\\d+))?\\]!?$");
     private static final Pattern INDEXED = Pattern.compile(
@@ -65,6 +73,7 @@ final class ReaGhidraSwiftEnumSwitches {
         collectImports("swift_getEnumCaseMultiPayload", tagCallees);
         collectImports("swift_getSingletonMetadata", singletonCallees);
         collectMemcpyImports();
+        collectProbeImports();
         if (tagCallees.isEmpty() || singletonCallees.isEmpty()) return;
         readEnums();
         readAccessorEnums();
@@ -177,6 +186,152 @@ final class ReaGhidraSwiftEnumSwitches {
             Address[] thunks = external.getFunctionThunkAddresses(true);
             if (thunks != null) Collections.addAll(memcpyCallees, thunks);
         }
+    }
+
+    /** Literal imported Mach-O spelling and system install names only. This is
+     * a named normal-return ABI assumption, not an Arc/runtime byte binding.
+     */
+    private void collectProbeImports() throws Exception {
+        probeLibraries=probeLibraryOrder();
+        if (probeLibraries.isEmpty()) return;
+        Set<Long> ordinals=new HashSet<>();
+        int examined=0;
+        Iterator<Relocation> relocations=program.getRelocationTable().getRelocations();
+        while (relocations.hasNext()) {
+            monitor.checkCancelled();
+            if (++examined>MAX_QUERIES) return;
+            Relocation relocation=relocations.next();
+            if (!"___chkstk_darwin".equals(relocation.getSymbolName())) continue;
+            Long ordinal=probeOrdinal(relocation);
+            // Classic binds discard the ordinal; mixed same-name imports may
+            // collapse in the loader. Neither representation grants authority.
+            if (ordinal==null) return;
+            ordinals.add(ordinal);
+        }
+        if (ordinals.size()!=1) return;
+        String library=probeLibraries.get(ordinals.iterator().next().intValue()-1);
+        if (!Set.of("/usr/lib/libSystem.B.dylib", "/usr/lib/system/libcompiler_rt.dylib").contains(library)) return;
+        ExternalLocation selected=null;
+        for (String name:program.getExternalManager().getExternalLibraryNames()) {
+            ExternalLocationIterator locations=program.getExternalManager().getExternalLocations(name);
+            while (locations.hasNext()) {
+                monitor.checkCancelled();
+                if (++examined>MAX_QUERIES) return;
+                ExternalLocation location=locations.next();
+                if (location.getSource()!=SourceType.IMPORTED || !"___chkstk_darwin".equals(importedName(location))) continue;
+                if (selected!=null || !library.equals(location.getLibraryName())) return;
+                selected=location;
+            }
+        }
+        if (selected==null || selected.getExternalSpaceAddress()==null) return;
+        uniqueProbeImport=new ProbeImport(selected.getExternalSpaceAddress(),library);
+        probeImports.put(selected.getExternalSpaceAddress(),uniqueProbeImport);
+    }
+
+    private static String importedName(ExternalLocation location) {
+        String original=location.getOriginalImportedName();
+        return original==null?location.getLabel():original;
+    }
+
+    /** Original Mach-O load-command order, not ExternalManager enumeration. */
+    private List<String> probeLibraryOrder() throws Exception {
+        Address header=program.getImageBase();
+        if (!initialized(header,32) || program.getMemory().getInt(header)!=0xfeedfacf ||
+            program.getMemory().getInt(header.add(4))!=0x100000c ||
+            (program.getMemory().getInt(header.add(24))&0x80)==0) return List.of();
+        long count=Integer.toUnsignedLong(program.getMemory().getInt(header.add(16)));
+        long size=Integer.toUnsignedLong(program.getMemory().getInt(header.add(20)));
+        if (count>MAX_CASES || size>4L*MAX_QUERIES || !initialized(header,32+size)) return List.of();
+        List<String> libraries=new ArrayList<>();
+        long offset=32, end=32+size;
+        for (long index=0;index<count;index++) {
+            monitor.checkCancelled();
+            if (offset+8>end) return List.of();
+            Address command=header.add(offset);
+            int kind=program.getMemory().getInt(command);
+            long length=Integer.toUnsignedLong(program.getMemory().getInt(command.add(4)));
+            if (length<8 || (length&7)!=0 || length>end-offset) return List.of();
+            if (Set.of(0x10,0x15,0x20).contains(kind)) return List.of();
+            if (Set.of(0xc,0x80000018,0x8000001f,0x80000023).contains(kind)) {
+                if (length<24) return List.of();
+                long nameOffset=Integer.toUnsignedLong(program.getMemory().getInt(command.add(8)));
+                if (nameOffset<24 || nameOffset>=length) return List.of();
+                String name=cString(command.add(nameOffset));
+                if (name==null || name.getBytes(java.nio.charset.StandardCharsets.UTF_8).length+1>length-nameOffset) return List.of();
+                libraries.add(name);
+            }
+            offset+=length;
+        }
+        return offset==end?libraries:List.of();
+    }
+
+    private Long probeOrdinal(Relocation relocation) {
+        long[] values=relocation.getValues();
+        return relocation.getStatus()==Relocation.Status.APPLIED && relocation.getType()==0x8888 &&
+            relocation.getLength()==8 && values!=null && values.length==1 &&
+            values[0]>0 && values[0]<=probeLibraries.size()?values[0]:null;
+    }
+
+    private boolean probePlaceholder(Address target) {
+        if (uniqueProbeImport==null) return false;
+        if (probeImports.containsKey(target)) return true;
+        MemoryBlock block=program.getMemory().getBlock(target);
+        if (block==null) return false;
+        boolean placeholder=block.getName().equals("EXTERNAL") && (block.getFlags()&MemoryBlock.ARTIFICIAL)!=0;
+        if (!placeholder && !block.getName().endsWith("__stubs")) return false;
+        // Ghidra may turn an imported data placeholder into a DEFAULT-source
+        // function thunk. Its canonical imported destination, never that local
+        // symbol's spelling or source, supplies the binding in this form.
+        Function function=program.getFunctionManager().getFunctionAt(target);
+        Function external=function==null || !function.isThunk()?null:function.getThunkedFunction(true);
+        if (external!=null && probeImports.containsKey(external.getEntryPoint())) return true;
+        if (placeholder) {
+            Symbol[] symbols=program.getSymbolTable().getSymbols(target);
+            return symbols.length==1 && symbols[0].getSource()==SourceType.IMPORTED &&
+                symbols[0].getName().equals("___chkstk_darwin");
+        }
+        return false;
+    }
+
+    private ProbeTarget probeSlot(Address slot) throws Exception {
+        MemoryBlock block=program.getMemory().getBlock(slot);
+        if (block==null || (!block.getName().endsWith("__got") &&
+            !block.getName().endsWith("__la_symbol_ptr")) || (slot.getOffset()&7)!=0 || !initialized(slot,8)) return null;
+        List<Relocation> relocations=program.getRelocationTable().getRelocations(slot);
+        if (uniqueProbeImport==null || relocations.size()!=1) return null;
+        Relocation relocation=relocations.get(0);
+        Long ordinal=probeOrdinal(relocation);
+        if (ordinal==null || !"___chkstk_darwin".equals(relocation.getSymbolName()) ||
+            !probeLibraries.get(ordinal.intValue()-1).equals(uniqueProbeImport.library)) return null;
+        Address target=address(program.getMemory().getLong(slot));
+        Reference[] references=program.getReferenceManager().getReferencesFrom(slot);
+        if (references.length!=1 || references[0].getSource()!=SourceType.DEFAULT ||
+            !references[0].getReferenceType().equals(RefType.DATA) || !references[0].getToAddress().equals(target) ||
+            !probePlaceholder(target)) return null;
+        return new ProbeTarget(uniqueProbeImport,slot);
+    }
+
+    private ProbeTarget probeLoad(Instruction page,Instruction load) throws Exception {
+        if (page==null || load==null || !name(page).equals("ADRP") || !op(page,0).equals("x16") ||
+            !name(load).equals("LDR") || !op(load,0).equals("x16") || load.getNumOperands()!=2 ||
+            !op(load,1).endsWith("]")) return null;
+        MemoryOperand memory=memory(load,1);
+        Long base=immediate(page,1);
+        if (memory==null || !memory.base.equals("r16") || memory.offset<0 || memory.offset>=4096 ||
+            base==null || (base&4095)!=0) return null;
+        try { return probeSlot(address(Math.addExact(base,memory.offset))); }
+        catch (ArithmeticException overflow) { return null; }
+    }
+
+    private ProbeTarget probeStub(Address target) throws Exception {
+        MemoryBlock block=target==null?null:program.getMemory().getBlock(target);
+        if (block==null || !block.getName().endsWith("__stubs")) return null;
+        Instruction[] code=decode(target,"ADRP","LDR","BR");
+        if (code==null || !op(code[2],0).equals("x16")) return null;
+        for (int index=1;index<3;index++)
+            for (Reference ref:program.getReferenceManager().getReferencesTo(code[index].getAddress()))
+                if (ref.getReferenceType().isFlow() && !ref.getFromAddress().equals(code[index-1].getAddress())) return null;
+        return probeLoad(code[0],code[1]);
     }
 
     private Instruction[] decode(Address start, String... shape) throws Exception {
@@ -479,7 +634,7 @@ final class ReaGhidraSwiftEnumSwitches {
             targets.add(target);
         }
         return new Recovery(graph.owner, branch.getAddress(), tableAddress, anchorAddress, tag.origin, end, tag.type, targets,
-            interveningLoad == null ? null : interveningLoad.getAddress());
+            interveningLoad == null ? null : interveningLoad.getAddress(), graph.probeProof());
     }
 
     private boolean repair(Recovery recovery) throws Exception {
@@ -538,7 +693,7 @@ final class ReaGhidraSwiftEnumSwitches {
                 (item.interveningLoad == null ? "" : "; the simple non-writeback LDR at " + hex(item.interveningLoad) +
                     " does not overwrite the computed branch register and has a single fallthrough predecessor/successor in this suffix") +
                 ". REA+ restored computed edges, disassembled destinations and extended the owning function before observations;" +
-                " generated override labels are analysis metadata, not source/caller declarations.";
+                " generated override labels are analysis metadata, not source/caller declarations." + item.probeProof;
             source.add("evidence",evidence(proof));
             sources.add(source);
             table.add("data_sources",sources);
@@ -558,6 +713,8 @@ final class ReaGhidraSwiftEnumSwitches {
             JsonArray limitations = new JsonArray();
             limitations.add("Case values are Swift ABI runtime tags, with payload cases before empty cases; field names are reflection metadata. Valid enum values supply the bound; this does not establish state reachability or original source order.");
             limitations.add("Control-flow recovery assumes the normal AArch64 ABI and private non-escaped frame storage. It does not execute the target or prove each case's high-level semantics.");
+            if (!item.probeProof.isEmpty()) limitations.add("Darwin stack-probe effects assume " + DARWIN_PROBE_ABI +
+                " on normal return. Import identity does not establish Arc's runtime binding, absence of interposition, nonfaulting reads or completed allocation.");
             table.add("limitations",limitations);
             result.add(table);
         }
@@ -588,6 +745,8 @@ final class ReaGhidraSwiftEnumSwitches {
         final Set<Query> active = new HashSet<>();
         final Set<Address> foreignEntries = new HashSet<>();
         final List<Instruction> runtimeTags = new ArrayList<>();
+        final Map<Address,ProbeEffect> probeEffects = new LinkedHashMap<>();
+        final Set<Address> activeProbes = new HashSet<>();
         int work;
         Graph(Function owner) throws Exception {
             this.owner = owner;
@@ -720,10 +879,15 @@ final class ReaGhidraSwiftEnumSwitches {
                     boolean copied=query.copied;
                     if (previous.equals(runtime.getAddress())) { pending.add(new ProjectionQuery(previous,copied));continue; }
                     if (instruction.getFlowType().isCall()) {
-                        if (copied || !callIs(instruction,memcpyCallees) ||
-                            !destination.equals(register("r0",previous)) || !input.equals(register("r1",previous)) ||
-                            !Objects.equals(constant(register("r2",previous)),size)) return false;
-                        copied=true;
+                        ProbeEffect probe=probeEffect(instruction);
+                        if (probe!=null) {
+                            if (overlaps(probe.scratch.start,probe.scratch.size,destination.number,size)) return false;
+                        } else {
+                            if (copied || !callIs(instruction,memcpyCallees) ||
+                                !destination.equals(register("r0",previous)) || !input.equals(register("r1",previous)) ||
+                                !Objects.equals(constant(register("r2",previous)),size)) return false;
+                            copied=true;
+                        }
                     } else if (hasMemoryEffect(instruction)) {
                         FrameWrite write=privateStore(instruction);
                         if (write==null || (!copied && overlaps(write.start,write.size,destination.number,size))) return false;
@@ -790,7 +954,67 @@ final class ReaGhidraSwiftEnumSwitches {
         boolean nonEscapingCall(Instruction call) throws Exception {
             Address target=directTarget(call);
             return tagCallees.contains(target) || privateMemcpy(call) ||
-                (accessors.containsKey(target) && Objects.equals(constant(register("r0",call.getAddress())),0L));
+                (accessors.containsKey(target) && Objects.equals(constant(register("r0",call.getAddress())),0L)) ||
+                probeEffect(call)!=null;
+        }
+
+        /** The first lane deliberately requires the adjacent X16 GOT sequence.
+         * No general indirect-call name inference or pointer-memory evaluation.
+         */
+        ProbeTarget probeTarget(Instruction call) throws Exception {
+            if (!call.getFlowType().isCall()) return null;
+            if (name(call).equals("BL")) {
+                Address target=directTarget(call);
+                if (target==null) return null;
+                ProbeImport binding=probeImports.get(target);
+                return binding==null?probeStub(target):new ProbeTarget(binding,null);
+            }
+            if (!name(call).equals("BLR") || call.getNumOperands()!=1 || !op(call,0).equals("x16")) return null;
+            Instruction load=instructions.get(call.getAddress().subtract(4));
+            Instruction page=instructions.get(call.getAddress().subtract(8));
+            if (load==null || page==null || foreignEntries.contains(call.getAddress()) ||
+                foreignEntries.contains(load.getAddress()) || foreignEntries.contains(page.getAddress()) ||
+                !predecessors.getOrDefault(call.getAddress(),List.of()).equals(List.of(load.getAddress())) ||
+                !predecessors.getOrDefault(load.getAddress(),List.of()).equals(List.of(page.getAddress()))) return null;
+            return probeLoad(page,load);
+        }
+
+        ProbeEffect probeEffect(Instruction call) throws Exception {
+            Address at=call.getAddress();
+            if (probeEffects.containsKey(at)) return probeEffects.get(at);
+            if (!activeProbes.add(at)) return null;
+            ProbeEffect effect=null;
+            try {
+                ProbeTarget target=probeTarget(call);
+                if (target!=null) {
+                    Value stack=register("sp",at);
+                    // This existing prefix proof excludes visible GOT writes,
+                    // unknown calls, foreign entries, escapes and retired frames.
+                    if (kind(stack,"frame") && privateHistoryBefore(at)) {
+                        try { effect=new ProbeEffect(target,new FrameWrite(Math.subtractExact(stack.number,16),16)); }
+                        catch (ArithmeticException overflow) { effect=null; }
+                    }
+                }
+            } finally { activeProbes.remove(at); }
+            probeEffects.put(at,effect);
+            return effect;
+        }
+
+        String probeProof() {
+            StringBuilder result=new StringBuilder();
+            for (Map.Entry<Address,ProbeEffect> entry:probeEffects.entrySet()) {
+                ProbeEffect effect=entry.getValue();
+                if (effect==null) continue;
+                result.append(" Under ").append(DARWIN_PROBE_ABI).append(
+                    ", normal-return call at ").append(hex(entry.getKey())).append(" binds exact ___chkstk_darwin from ")
+                    .append(effect.target.binding.library).append(" (external ").append(hex(effect.target.binding.external))
+                    .append(effect.target.slot==null?", direct external":", import slot " + hex(effect.target.slot))
+                    .append("). X2/X8/X12/SP retain reaching values; other volatile registers, including X9/X10/X16/X17/X30, and flags remain unknown. ")
+                    .append("The probe may read stack/thread state and fault; its 16-byte scratch write is [")
+                    .append(effect.scratch.start).append(",").append(effect.scratch.start+16)
+                    .append(") relative to function-entry SP, disjoint from admitted live private storage. No allocation or exact runtime binding is inferred.");
+            }
+            return result.toString();
         }
         /** Prove the whole reachable prefix before a projected getter. Unknown
          * calls, writes and control transfers cannot be silently dropped from
@@ -918,6 +1142,9 @@ final class ReaGhidraSwiftEnumSwitches {
         }
         boolean defines(Query query, Instruction instruction) throws Exception {
             if (query.slot != null) return hasMemoryEffect(instruction) || instruction.getFlowType().isCall() || writesRegister(instruction,"sp");
+            if (instruction.getFlowType().isCall() && Set.of("nzcv","n","z","c","v").contains(query.register)) return true;
+            if (instruction.getFlowType().isCall() && Set.of("r2","r8","r12","sp").contains(query.register) &&
+                probeEffect(instruction)!=null) return false;
             if (instruction.getFlowType().isCall() && volatileRegister(query.register)) return true;
             for (Object object : instruction.getResultObjects())
                 if (object instanceof Register written && reg(written.getBaseRegister().getName()).equals(query.register)) return true;
@@ -927,6 +1154,10 @@ final class ReaGhidraSwiftEnumSwitches {
             Address at = instruction.getAddress(); String mnemonic = name(instruction);
             if (query.slot != null) {
                 if (instruction.getFlowType().isCall()) {
+                    ProbeEffect probe=probeEffect(instruction);
+                    if (probe!=null) return overlaps(probe.scratch.start,probe.scratch.size,query.slot,
+                        "slot32".equals(query.register)?4:8)?null:priorSlot(query,at);
+                    if (probeTarget(instruction)!=null) return null;
                     if (privateMemcpy(instruction)) {
                         Value destination=register("r0",at);
                         long size=constant(register("r2",at));

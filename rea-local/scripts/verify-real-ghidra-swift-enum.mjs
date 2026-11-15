@@ -17,13 +17,30 @@ import {
   swiftEnumNegativeCopies,
   swiftProjectionNegativeCopies,
 } from "../tests/conformance/ghidra/swift-enum-oracle.mjs";
+import {
+  swiftProbeCases,
+  swiftProbeAssembly,
+  swiftProbeOracle,
+  swiftProbePatch,
+} from "../tests/conformance/ghidra/swift-stack-probe-fixtures.mjs";
 
 const { values } = parseArgs({
   options: {
     "output-dir": { type: "string" },
     "compiler-oracle-only": { type: "boolean", default: false },
+    "probe-only": { type: "boolean", default: false },
+    "baseline-only": { type: "boolean", default: false },
+    "baseline-start-at": { type: "string" },
   },
 });
+assert.ok(
+  !(values["probe-only"] && values["baseline-only"]),
+  "Select either probe-only or baseline-only",
+);
+assert.ok(
+  values["baseline-start-at"] === undefined || values["baseline-only"],
+  "baseline-start-at requires baseline-only",
+);
 assert.ok(
   process.platform === "darwin" && process.arch === "arm64",
   "This compiler-shape lane requires macOS arm64 and the installed Swift compiler",
@@ -64,6 +81,8 @@ const env = {
 const records = [];
 const commands = [];
 const results = [];
+const skipped = [];
+let startAt = values["baseline-start-at"];
 const compiler = (await exec("/usr/bin/swiftc", ["--version"])).stdout;
 await save(join(root, "run-start.json"), {
   run,
@@ -77,6 +96,13 @@ await save(join(root, "run-start.json"), {
     ),
   ),
   target_executed: false,
+  baseline_start_at: startAt ?? null,
+  verifier: await identity(fileURLToPath(import.meta.url)),
+  selection: values["probe-only"]
+    ? "darwin-probe-effects"
+    : values["baseline-only"]
+      ? "baseline-swift-enum-matrix"
+      : "complete-swift-enum-matrix",
 });
 
 async function compile(
@@ -86,6 +112,7 @@ async function compile(
   dispatchLoad = false,
   foreignSuffix = false,
   projectionCase,
+  probe,
 ) {
   const directory = join(root, label);
   await mkdir(directory);
@@ -183,7 +210,7 @@ async function compile(
       exit_code: 0,
     });
   }
-  if (dispatchLoad) {
+  if (dispatchLoad || probe !== undefined) {
     const assembly = join(directory, "switch.s");
     const args = [
       ...common,
@@ -203,7 +230,9 @@ async function compile(
     commands.push({ command: "/usr/bin/swiftc", args, ...reply, exit_code: 0 });
     const original = await readFile(assembly, "utf8");
     const start = original.indexOf(
-      "_$s22ReaSwiftRelativeSwitch03reacD0ySiAA0A9LiveEventO_SitF:",
+      probe === undefined
+        ? "_$s22ReaSwiftRelativeSwitch03reacD0ySiAA0A9LiveEventO_SitF:"
+        : "_$s22ReaSwiftRelativeSwitch11fixedReduceySiAA11FixedActionO_SitF:",
     );
     assert.ok(start >= 0, "Missing owned switch assembly entry");
     const end = original.indexOf(".cfi_endproc", start);
@@ -211,14 +240,21 @@ async function compile(
     const body = original.slice(start, end);
     assert.equal([...body.matchAll(/\tbr\tx8\n/g)].length, 1);
     // Reassemble owned source; never patch the caller's shipped artifact.
+    const transformed =
+      probe === undefined ? null : swiftProbeAssembly(body, probe);
     let modified =
-      original.slice(0, start) +
-      body.replace(
-        /\tbr\tx8\n/,
-        (foreignSuffix ? "Lrea_foreign_suffix_read:\n" : "") +
-          "\tldr\txzr, [sp]\n\tbr\tx8\n",
-      ) +
-      original.slice(end);
+      transformed === null
+        ? original.slice(0, start) +
+          body.replace(
+            /\tbr\tx8\n/,
+            (foreignSuffix ? "Lrea_foreign_suffix_read:\n" : "") +
+              "\tldr\txzr, [sp]\n\tbr\tx8\n",
+          ) +
+          original.slice(end)
+        : original.slice(0, start) +
+          transformed.body +
+          original.slice(end) +
+          transformed.suffix;
     if (foreignSuffix)
       modified +=
         "\n\t.section\t__TEXT,__text,regular,pure_instructions\n" +
@@ -228,16 +264,50 @@ async function compile(
     const sdk = (
       await exec("/usr/bin/xcrun", ["--show-sdk-path"])
     ).stdout.trim();
+    const extraLibraries = [];
+    if (["foreign-library", "library-collision"].includes(probe?.change)) {
+      const foreign = join(directory, "foreign.s");
+      await writeFile(
+        foreign,
+        probe.change === "foreign-library"
+          ? ".text\n.globl ___chkstk_darwin\n.p2align 2\n___chkstk_darwin:\nret\n"
+          : ".text\n.globl _rea_foreign_probe_slot\n.p2align 2\n_rea_foreign_probe_slot:\nret\n",
+      );
+      const foreignArgs = [
+        "--sdk",
+        "macosx",
+        "clang",
+        "-dynamiclib",
+        "-arch",
+        "arm64",
+        "-Wl,-install_name,/rea/foreign/libSystem.B.dylib",
+        "-o",
+        join(directory, "libReaForeignProbe.dylib"),
+        foreign,
+      ];
+      const linked = await exec("/usr/bin/xcrun", foreignArgs);
+      commands.push({
+        command: "/usr/bin/xcrun",
+        args: foreignArgs,
+        ...linked,
+        exit_code: 0,
+      });
+      extraLibraries.push("-lReaForeignProbe");
+    }
     const linkArgs = [
       "--sdk",
       "macosx",
       "clang",
       "-dynamiclib",
+      ...(probe === undefined || probe.change === "classic-binding"
+        ? []
+        : ["-Wl,-fixup_chains"]),
       "-arch",
       "arm64",
       "-Wl,-undefined,dynamic_lookup",
       "-L",
       directory,
+      ...extraLibraries,
       "-L",
       join(sdk, "usr/lib/swift"),
       "-lReaResilientPayload",
@@ -255,14 +325,21 @@ async function compile(
       exit_code: 0,
     });
   }
-  const bytes = await readFile(path);
-  const oracle = swiftEnumOracle(
+  let bytes = await readFile(path);
+  let oracle = swiftEnumOracle(
     bytes,
     payloads,
     empty,
     dispatchLoad,
     projectionCase !== undefined,
+    probe !== undefined,
   );
+  if (probe !== undefined) {
+    bytes = swiftProbePatch(bytes, oracle, probe);
+    await writeFile(path, bytes);
+    oracle = swiftEnumOracle(bytes, payloads, empty, dispatchLoad, true, true);
+    oracle.probe = swiftProbeOracle(bytes, oracle, probe);
+  }
   if (projectionCase !== undefined)
     assert.equal(oracle.projection.selected.index, projectionCase);
   await save(join(directory, "oracle.json"), {
@@ -304,6 +381,26 @@ function check(result, oracle, positive) {
     })),
   );
   assert.deepEqual(table.default_targets, []);
+  if (oracle.probe !== undefined) {
+    assert.ok(
+      table.limitations.some(
+        (text) =>
+          text.includes("trusted-darwin-arm64-chkstk-v1") &&
+          text.includes("normal return"),
+      ),
+    );
+    for (const call of oracle.probe.calls)
+      assert.ok(
+        table.data_sources.some((source) =>
+          source.evidence.some(
+            ({ detail }) =>
+              detail.includes(`0x${call.address.toString(16)}`) &&
+              detail.includes("16-byte scratch write") &&
+              detail.includes("No allocation or exact runtime binding"),
+          ),
+        ),
+      );
+  }
   assert.equal(table.data_sources[0].entry_size_bytes, 4);
   assert.equal(table.data_sources[0].entry_count, oracle.mappings.length);
   for (const item of oracle.mappings) {
@@ -337,6 +434,13 @@ function check(result, oracle, positive) {
 
 async function inspect(target, positive, cliParity = false) {
   const { path, oracle, directory, label } = target;
+  if (startAt !== undefined) {
+    if (label !== startAt) {
+      skipped.push(label);
+      return;
+    }
+    startAt = undefined;
+  }
   const before = digest(await readFile(path));
   const transport = new StdioClientTransport({
     command: process.execPath,
@@ -410,7 +514,7 @@ async function inspect(target, positive, cliParity = false) {
     check(evidence.normalized_result, oracle, positive);
     assert.equal(
       evidence.analysis_profile.parameters.swift_enum_switch_recovery,
-      "abi-signed-word-cfg-v7",
+      "abi-signed-word-cfg-v8",
     );
     assert.ok(
       evidence.limitations.some((text) =>
@@ -499,53 +603,70 @@ try {
     false,
     1,
   );
+  const probes = [];
+  if (!values["baseline-only"])
+    for (const probe of swiftProbeCases)
+      probes.push(await compile(11, 13, probe.label, false, false, 0, probe));
   if (!values["compiler-oracle-only"]) {
-    await inspect(large, true, true);
-    await inspect(small, true);
-    await inspect(dispatchLoad, true, true);
-    await inspect(foreignSuffix, false);
-    await inspect(projected, true, true);
-    await inspect(projectedOne, true);
-    for (const [label, bytes] of Object.entries(
-      swiftProjectionNegativeCopies(projected.bytes, projected.oracle),
-    )) {
-      const directory = join(root, label);
+    for (const probe of probes)
+      await inspect(
+        probe,
+        probe.oracle.probe.positive,
+        probe.oracle.probe.positive,
+      );
+    if (!values["probe-only"]) {
+      await inspect(large, true, true);
+      await inspect(small, true);
+      await inspect(dispatchLoad, true, true);
+      await inspect(foreignSuffix, false);
+      await inspect(projected, true, true);
+      await inspect(projectedOne, true);
+      for (const [label, bytes] of Object.entries(
+        swiftProjectionNegativeCopies(projected.bytes, projected.oracle),
+      )) {
+        const directory = join(root, label);
+        await mkdir(directory);
+        const path = join(directory, "mutated.dylib");
+        await writeFile(path, bytes);
+        await inspect(
+          { path, oracle: projected.oracle, directory, label },
+          false,
+        );
+      }
+      const clobbered = Buffer.from(dispatchLoad.bytes);
+      clobbered.writeUInt32LE(
+        0xf94003e8,
+        dispatchLoad.oracle.offsets.dispatch_load,
+      );
+      const directory = join(root, "dispatch-load-clobber");
       await mkdir(directory);
       const path = join(directory, "mutated.dylib");
-      await writeFile(path, bytes);
+      await writeFile(path, clobbered);
       await inspect(
-        { path, oracle: projected.oracle, directory, label },
+        {
+          path,
+          oracle: dispatchLoad.oracle,
+          directory,
+          label: "dispatch-load-clobber",
+        },
         false,
       );
-    }
-    const clobbered = Buffer.from(dispatchLoad.bytes);
-    clobbered.writeUInt32LE(
-      0xf94003e8,
-      dispatchLoad.oracle.offsets.dispatch_load,
-    );
-    const directory = join(root, "dispatch-load-clobber");
-    await mkdir(directory);
-    const path = join(directory, "mutated.dylib");
-    await writeFile(path, clobbered);
-    await inspect(
-      {
-        path,
-        oracle: dispatchLoad.oracle,
-        directory,
-        label: "dispatch-load-clobber",
-      },
-      false,
-    );
-    for (const [label, bytes] of Object.entries(
-      swiftEnumNegativeCopies(large.bytes, large.oracle),
-    )) {
-      const directory = join(root, label);
-      await mkdir(directory);
-      const path = join(directory, "mutated.dylib");
-      await writeFile(path, bytes);
-      await inspect({ path, oracle: large.oracle, directory, label }, false);
+      for (const [label, bytes] of Object.entries(
+        swiftEnumNegativeCopies(large.bytes, large.oracle),
+      )) {
+        const directory = join(root, label);
+        await mkdir(directory);
+        const path = join(directory, "mutated.dylib");
+        await writeFile(path, bytes);
+        await inspect({ path, oracle: large.oracle, directory, label }, false);
+      }
     }
   }
+  assert.equal(
+    startAt,
+    undefined,
+    "Requested baseline start case was not found",
+  );
 } catch (error) {
   failure = error;
 }
@@ -563,6 +684,7 @@ await save(join(root, "summary.json"), {
   compiler,
   commands,
   results,
+  skipped,
   records,
   target_executed: false,
   process_lineage: lifecycle.process_lineage,

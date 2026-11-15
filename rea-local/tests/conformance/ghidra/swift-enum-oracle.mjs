@@ -11,13 +11,16 @@ export function swiftEnumOracle(
   empty,
   dispatchLoad = false,
   projection = false,
+  probe = false,
 ) {
   assert.equal(bytes.readUInt32LE(0), 0xfeedfacf);
   const sections = [];
   const symbols = [];
   const strings = {};
+  const libraries = [];
   let symtab;
   let indirect;
+  let chained;
   for (let index = 0, at = 32; index < bytes.readUInt32LE(16); index++) {
     const command = bytes.readUInt32LE(at);
     if (command === 0x19) {
@@ -44,9 +47,42 @@ export function swiftEnumOracle(
         strings: bytes.readUInt32LE(at + 16),
       };
     if (command === 0xb) indirect = bytes.readUInt32LE(at + 56);
+    if (command === 0x80000034)
+      chained = {
+        offset: bytes.readUInt32LE(at + 8),
+        size: bytes.readUInt32LE(at + 12),
+      };
+    if ([0xc, 0x80000018, 0x8000001f, 0x80000023].includes(command))
+      libraries.push(
+        bytes
+          .subarray(
+            at + bytes.readUInt32LE(at + 8),
+            at + bytes.readUInt32LE(at + 4),
+          )
+          .toString()
+          .split("\0")[0],
+      );
     at += bytes.readUInt32LE(at + 4);
   }
   assert.ok(symtab && indirect);
+  if (chained) {
+    const start = chained.offset;
+    Object.assign(chained, {
+      imports: start + bytes.readUInt32LE(start + 8),
+      strings: start + bytes.readUInt32LE(start + 12),
+      count: bytes.readUInt32LE(start + 16),
+      format: bytes.readUInt32LE(start + 20),
+    });
+    const segments = start + bytes.readUInt32LE(start + 4);
+    for (let i = 0; i < bytes.readUInt32LE(segments); i++) {
+      const offset = bytes.readUInt32LE(segments + 4 + i * 4);
+      if (offset)
+        assert.ok(
+          [2, 6].includes(bytes.readUInt16LE(segments + offset + 6)),
+          "Owned fixture uses an admitted 64-bit chained pointer format",
+        );
+    }
+  }
   const offset = (location, length = 4) => {
     const section = sections.find(
       (item) =>
@@ -66,7 +102,14 @@ export function swiftEnumOracle(
     const at = symtab.offset + index * 16;
     const nameOffset = symtab.strings + bytes.readUInt32LE(at);
     const name = string(nameOffset);
-    symbols.push({ name, address: Number(bytes.readBigUInt64LE(at + 8)) });
+    symbols.push({
+      name,
+      address: Number(bytes.readBigUInt64LE(at + 8)),
+      description: bytes.readUInt16LE(at + 6),
+      type: bytes[at + 4],
+      record_offset: at,
+      string_index: bytes.readUInt32LE(at),
+    });
     strings[name] = nameOffset;
   }
   const symbol = (suffix) => {
@@ -199,7 +242,16 @@ export function swiftEnumOracle(
     assert.equal(selected.length, 1);
     const metadata = symbol("10FixedChildON");
     const witness = symbol("10FixedChildOWV");
-    const pointer = (at) => Number(bytes.readBigUInt64LE(offset(at, 8)));
+    const pointer = (at) => {
+      const raw = bytes.readBigUInt64LE(offset(at, 8));
+      if (!chained) return Number(raw);
+      assert.equal(
+        raw >> 63n,
+        0n,
+        "Owned metadata pointer is a local chained rebase",
+      );
+      return Number((raw & 0xfffffffffn) | (((raw >> 36n) & 0xffn) << 56n));
+    };
     assert.equal((word(descriptor) >>> 16) & 3, 0);
     assert.equal(pointer(metadata), 0x201);
     assert.equal(pointer(metadata + 8), descriptor);
@@ -235,14 +287,36 @@ export function swiftEnumOracle(
     };
     const runtime = importedCalls("_swift_getEnumCaseMultiPayload");
     const memcpy = importedCalls("_memcpy");
-    assert.equal((word(memcpy - 8) & 0xffe0001f) >>> 0, 0x52800008); // MOV W8,#156
-    assert.equal((word(memcpy - 8) >>> 5) & 0xffff, 156);
+    const sizes = [];
+    if (probe) {
+      for (let at = runtime + 4; at < memcpy; at += 4)
+        if (word(at) === 0x52801388) sizes.push(at); // MOV W8,#156
+    } else sizes.push(memcpy - 8);
+    assert.equal(sizes.length, 1, "Exact owned copy-size definition");
+    const copySize = sizes[0];
+    assert.equal((word(copySize) & 0xffe0001f) >>> 0, 0x52800008);
+    assert.equal((word(copySize) >>> 5) & 0xffff, 156);
     assert.equal(word(memcpy - 4), 0xaa0803e2); // MOV X2,X8
-    assert.equal((word(memcpy - 16) & 0xffc003ff) >>> 0, 0x910003e0); // ADD X0,SP,#buffer
-    assert.equal((word(memcpy - 20) & 0xffc003ff) >>> 0, 0xf94003e1); // LDR X1,[SP,#input]
+    assert.equal((word(copySize - 8) & 0xffc003ff) >>> 0, 0x910003e0); // ADD X0,SP,#buffer
+    assert.equal((word(copySize - 12) & 0xffc003ff) >>> 0, 0xf94003e1); // LDR X1,[SP,#input]
+    if (probe) {
+      const reloads = [];
+      for (let at = copySize + 4; at < memcpy; at += 4)
+        if (word(at) === word(copySize - 12)) reloads.push(at);
+      assert.equal(
+        reloads.length,
+        1,
+        "Memcpy input is reloaded after the probe",
+      );
+      assert.equal(
+        word(reloads[0] + 4),
+        word(copySize - 8),
+        "Memcpy destination is recomputed after the probe",
+      );
+    }
     assert.equal((word(entry) & 0xffc003ff) >>> 0, 0xd10003ff); // fixed SUB SP,SP,#frame
     const frameSize = (word(entry) >>> 10) & 0xfff;
-    const destinationOffset = (word(memcpy - 16) >>> 10) & 0xfff;
+    const destinationOffset = (word(copySize - 8) >>> 10) & 0xfff;
     assert.ok(destinationOffset + 156 <= frameSize);
     projectionInfo = {
       outer,
@@ -275,6 +349,10 @@ export function swiftEnumOracle(
     accessorCall: accessorCalls[0],
     mappings,
     sections,
+    symbols,
+    libraries,
+    indirect_table: indirect,
+    chained,
     strings,
     projection: projectionInfo,
     offsets: {
