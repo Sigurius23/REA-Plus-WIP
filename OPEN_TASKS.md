@@ -63,15 +63,19 @@ Open work on `main` following PR #1 and the field tests.
   CLI/MCP comparisons**, including Arc, pass. Published to WIP `main` in
   **`a74006bbe`**, with the remote SHA checked on 2026-11-09. See the
   [repair report](field-tests/arc-seed-diagnostics-2026-11-08.md).
-- **Fixed-layout Swift reducer dispatch, item 55 (2026-11-13):** Open for Arc's
-  dynamic-stack copy and inline SIMD projection. A bounded typed private-copy
-  lane now recovers all 24 case callees in two owned fixed-frame fixtures;
-  the existing resilient controls also pass. Review added memory-effect,
-  lifetime, writeback and unknown-flow rejection controls. Profile v7 passes
-  **44 real Ghidra cases / 176 MCP calls / three CLI comparisons** and is
-  published in **`f2cdb96ba`**. The unchanged Arc reducer still reports 2,024 observed
-  bytes across an 8,608-byte span and no recovered nested table. Shared getter
-  code never supplies enum identity or count. See item 55 below.
+- **Swift reducer dispatch, item 55 (2026-11-15):** Open for Arc's dynamic
+  stack storage and inline SIMD projection. The bounded Darwin stack-probe
+  summary is implemented in **`5628ef81c`**: profile v8 passes **67 distinct
+  real Ghidra cases (seven positives / 60 rejections)** and **five CLI/MCP
+  comparisons**, including the earlier fixed-copy controls. One baseline run
+  stopped at provider startup after seven completed cases; a separate run
+  completed the remaining 37. The interrupted receipt remains explicit.
+  A fresh unchanged-Arc retest still reports **2,024 observed bytes across an
+  8,608-byte span**, with no recovered nested switch. A conditional typed
+  snapshot lane for its dynamic storage and complete SIMD byte origins is
+  being implemented; this work does not close the Arc reducer or establish
+  its case effects. See item 55 and the
+  [bounded probe report](field-tests/darwin-probe-profile-2026-11-14.md).
 - **Arc selector follow-up (2026-11-13):** The selected path now proves
   reciprocal input scaling, the exact `getHoveredElement({x: …, y: …})`
   command, and forward rectangle scaling on successful completion. Error and
@@ -258,14 +262,15 @@ Open work on `main` following PR #1 and the field tests.
      also passed with unchanged test budgets; see
      [HeyClicky fix verification](field-tests/heyclicky-fixes-2026-10-28.md).
 2. **Branch state and push:**
-   - **Implementation checkpoint (2026-11-14):** `076c706c6e06257190c5303fa8aec5de1d2e649f`
-     is pushed and matched the WIP remote `main` by direct SSH `ls-remote`.
-     It includes class selection `8a5efd668`, bounded Swift dispatch
-     `f2cdb96ba`, single-attempt settlement `72fcdbe8c`, and retained cleanup/
-     startup ownership `076c706c6`. This registry update
-     adds the supporting Arc synthesis and retained captures. The supplied DMG,
-     compiled probe outputs, provider projects and two large Rize JSONs remain
-     local. Item 55's exact Arc projection and broader feature recovery stay open.
+   - **Implementation checkpoint (2026-11-15):** `5628ef81ce5144c9af3bdc11b1e3647a9035c368`
+     is pushed and matched WIP `main` by direct SSH `ls-remote`. It includes class selection `8a5efd668`, bounded
+     Swift dispatch `f2cdb96ba`, single-attempt settlement `72fcdbe8c`, retained
+     cleanup/startup ownership `076c706c6`, supporting captures `72cccedec`,
+     and bounded Darwin probe effects `5628ef81c`. New dynamic-snapshot
+     implementation changes and follow-up notes remain in the working tree.
+     The supplied DMG, compiled probes, provider projects and two large Rize
+     JSONs remain local. Item 55's exact Arc projection and broader feature
+     recovery stay open.
    - **Items 45–50 verification batch (2026-11-06):** implementation, tests,
      skill 43, DMG retest and complete small captures are included together
      after `14855891c323`. The fixed user DMG, source-built binaries,
@@ -1302,9 +1307,12 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     A second owned enum with the same payload layout but a different empty-case
     count can share/fold its getter through a thunk. A helper signature, address
     or equal bytes therefore cannot establish the caller's enum identity/count.
-    The repair must bind the active outer enum case to its reflected payload
-    type and prove private-frame memcpy/projection/non-escape before assigning
-    cases or growing function ownership. Preserve ambiguity and budgets;
+    Recovery must bind the active outer enum case to its reflected payload
+    type and prove complete representation provenance before assigning cases
+    or growing function ownership. The existing lane proves a private-frame
+    copy; the new snapshot lane instead names a recursively valid call-site
+    value and stable checked window as explicit premises. Preserve ambiguity
+    and budgets;
     do not weaken the existing guards or guess a case count from tag bits.
     Sources, compiler records and public before/control captures are retained
     under `field-tests/arc-reducer-dispatch-probe-2026-11-08/`.
@@ -1329,14 +1337,14 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     cached/shared accessor shape. A conditional byte audit covers all 156 bytes
     and rejects eight altered controls. Those supplemental checks are not
     public recovery. Required residuals include a typed snapshot/copy-effect
-    rule, complete extent/disjointness and escape proofs, and explicit Darwin
-    stack-probe ABI handling. See
+    rule, complete extent/disjointness and byte-origin proofs. The bounded
+    Darwin stack-probe integration is now verified separately below. See
     [proof obligations and probe](field-tests/arc-dynamic-projection-2026-11-13/design.md).
     The selected installed ARM64 stack-probe body is now confirmed through
     public REA+: **108 bytes / 27 instructions / nine blocks**, matching an
     independent local byte proof. Normal-return X2/X8/X12/SP preservation is
-    established for that image; integration and Arc runtime binding remain
-    separate obligations. See
+    established for that image; Arc runtime binding remains a separate
+    obligation. See
     [dependency verification](field-tests/arc-dynamic-projection-2026-11-13/stackprobe-rea-verification.md).
 
     The 2026-11-14 public follow-up confirms the complete 1,016-byte outer
@@ -1344,10 +1352,26 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     tails. The selected installed Swift runtime preserves the incoming VWT
     pointer and copy slot +16 for the observed callback/layout flags, while
     changing other slots. That supplemental implementation proof remains
-    conditional: Arc's runtime binding and singleton-instance identity are
-    unproved. Case-restricted copy effects, symbolic stack separation and
-    complete SIMD provenance still need producing support. See the
+    conditional on the selected installed runtime. A later singleton-path
+    follow-up confirms descriptor +32 instance identity for that runtime;
+    Arc's actual runtime binding remains unproved. The dispatch snapshot
+    approach does not require proving the preceding copy's ownership effects.
+    Symbolic stack separation and complete SIMD provenance still need
+    producing support. See the
     [runtime and public corroboration](field-tests/arc-dynamic-projection-2026-11-13/swift-runtime-vwt-followup.md).
+
+    **Bounded Darwin effects complete (2026-11-15):** Profile v8 accepts only
+    the exact system import with unambiguous original chained-bind ordinal
+    and loaded target identity. It preserves the verified minimum register
+    set and models 16 bytes of scratch below incoming SP; unknown bounds
+    discard memory provenance. **67 distinct real cases / five CLI/MCP
+    comparisons** pass, with all completed runs verifying empty owned lineage.
+    Focused source, fast, built-doc and package checks also pass; the complete
+    `check:pr` gate was not rerun. Published in `5628ef81c`. The unchanged
+    Arc retest still returns 2,024 bytes across 8,608 and no nested table,
+    confirming that the dynamic snapshot/SIMD lane remains necessary.
+    See the [bounded probe report](field-tests/darwin-probe-profile-2026-11-14.md)
+    and [Arc retest](field-tests/arc-selector-v8-2026-11-15/reducer-retest.md).
 
 56. **Select an indexed Swift vtable class before decode admission.** Done (2026-11-09), within the static indexed-class profile.
     Arc's `HoveredElementTracker` descriptor at `0x103d7bcb4` is established by

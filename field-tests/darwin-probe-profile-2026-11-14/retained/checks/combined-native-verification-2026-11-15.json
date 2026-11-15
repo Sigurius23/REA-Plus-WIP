@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "checked_at": "2026-11-15T10:02:37.207694+00:00",
+  "authority": "Distinct completed public verifier cases; preserves interrupted prefix and resumes only missing labels",
+  "profile": "abi-signed-word-cfg-v8",
+  "probe_policy": "trusted-darwin-arm64-chkstk-v1",
+  "producer_sha256": "26bd8cb5419e36e31ab1ef6e4d71b72a15d6b701a80c9b34218fc374019e4039",
+  "distinct_cases": 67,
+  "positive": 7,
+  "rejections": 60,
+  "cli_mcp_comparisons": 5,
+  "all_runs_empty_owned_lineage": true,
+  "runs": [
+    {
+      "label": "focused23",
+      "path": "rea-local/.cache/darwin-stack-probe-increment-2026-11-14/native-second",
+      "ok": true,
+      "passed_cases": 23,
+      "skipped": [],
+      "verifier_sha256": "09cc895052223b5d2681adfe4d631775588d564ea8b62f5db66ad005448c63a3",
+      "empty_lineage": true
+    },
+    {
+      "label": "baseline-prefix7",
+      "path": "rea-local/.cache/darwin-stack-probe-increment-2026-11-14/native-baseline",
+      "ok": false,
+      "passed_cases": 7,
+      "skipped": [],
+      "verifier_sha256": "46745d6ed1e2c1c9164190c88bfbb06654c01b59d4bb7f3dcd6827d0ce807aff",
+      "empty_lineage": true
+    },
+    {
+      "label": "baseline-resumed37",
+      "path": "rea-local/.cache/darwin-stack-probe-increment-2026-11-14/native-baseline-resumed-2026-11-15",
+      "ok": true,
+      "passed_cases": 37,
+      "skipped": [
+        "thirty-cases",
+        "twelve-cases",
+        "dispatch-load",
+        "dispatch-foreign-entry",
+        "fixed-projection-case-zero",
+        "fixed-projection-case-one",
+        "projection_indirect_field"
+      ],
+      "verifier_sha256": "f443beab595c13dd5afcd0ccc79e480c0b933b02500d1694532de6742a759da8",
+      "empty_lineage": true
+    }
+  ],
+  "limitations": [
+    "The failed prefix remains an interrupted run, not an all-green run.",
+    "Focused verifier identity comes from its separately retained, hash-checked source snapshot; later runs embed identity in run-start.",
+    "This bounded increment does not recover Arc dynamic-stack inline SIMD dispatch.",
+    "No supplied application or library code was executed."
+  ]
+}
