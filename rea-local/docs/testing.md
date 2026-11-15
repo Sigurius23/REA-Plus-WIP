@@ -604,6 +604,32 @@ remain its own. Input hashes and final owned process lineage are checked. Use
 `--compiler-oracle-only` to check the compiler shape without starting Ghidra;
 that mode does not establish provider coverage.
 
+Use `--snapshot-only` to select the independent dynamic typed-snapshot matrix,
+or `--snapshot-only --snapshot-case snapshot-pairs` for one reproduction. These
+source-owned assembly variants reuse compiler-produced reflection, metadata,
+getter and table bytes, then introduce a second-argument source, symbolic stack
+allocation, unknown pre-tag copy call and complete 156-byte SIMD projection.
+The linked-image oracle checks the positive metadata/size/alignment chain,
+original import bindings, vector offsets and exact mutation encodings. Negative
+structural offset maps are explicitly distinguished from semantic byte origins.
+Controls cover partial/wrong tails, D/S vector aliases, zero-register writes,
+changed source/destination pointers, source/unknown writes, stack retirement,
+wrong metadata/outer case, unknown post-tag calls, escaped post-getter spills,
+foreign/bypass paths and unresolved computed outer exits. Positive results
+must report the named call-site validity, stability and stack/linkage assumptions;
+this workflow does not execute or establish preceding copy/ownership behavior.
+
+`--probe-only --probe-case probe-unrelated-rebases` selects the import-scan
+budget reproduction. Its source-owned data adds 100,001 local pointers, and the
+independent oracle walks original chained starts to count them. Probe identity
+and effects must remain unchanged despite those unrelated rebases. Additional
+owned LINKEDIT repacking controls cover formats 2/3 with zero/nonzero import
+table addends and a used raw space-name lookalike plus an unused literal import
+of the same ordinal. Pointer-chain indices and code remain unchanged, so these
+controls isolate original binding identity from Ghidra's normalized loaded
+symbols. These static fixtures make no signature or executability claim. The existing
+fixed-copy and Darwin probe matrices remain separate regression controls.
+
 `npm run verify:inspector` requires the supported Node.js runtime and installed
 REA+ dependencies. CI runs it on Linux and macOS x64/arm64 and Windows x64. It starts owned loopback
 Node Inspector fixtures and verifies discovery and passive observation through

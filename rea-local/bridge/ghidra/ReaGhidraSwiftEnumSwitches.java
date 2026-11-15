@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import ghidra.app.cmd.disassemble.DisassembleCommand;
 import ghidra.app.cmd.function.CreateFunctionCmd;
 import ghidra.app.util.PseudoDisassembler;
+import ghidra.program.database.mem.FileBytes;
 import ghidra.program.model.address.*;
 import ghidra.program.model.lang.Register;
 import ghidra.program.model.listing.*;
@@ -28,6 +29,9 @@ final class ReaGhidraSwiftEnumSwitches {
     private static final int MAX_CASES = 4096;
     private static final int MAX_QUERIES = 100000;
     private static final String DARWIN_PROBE_ABI = "trusted-darwin-arm64-chkstk-v1";
+    private static final String SNAPSHOT_ABI = "swift-dynamic-typed-snapshot-v1";
+    private final Map<Address,String> snapshotProofs = new HashMap<>();
+    private final Map<Address,Value> snapshotTags = new HashMap<>();
     private final Program program;
     private final TaskMonitor monitor;
     private final Map<Address, EnumInfo> accessors = new HashMap<>();
@@ -53,7 +57,7 @@ final class ReaGhidraSwiftEnumSwitches {
     private record FixedEnum(EnumInfo type, Address metadata, Address witness, Address getter, long size) {}
     private record ProjectionQuery(Address before, boolean copied) {}
     private record FrameWrite(long start, int size) {}
-    private record ProbeImport(Address external, String library) {}
+    private record ProbeImport(Address external, String library, long ordinal) {}
     private record ProbeTarget(ProbeImport binding, Address slot) {}
     private record ProbeEffect(ProbeTarget target, FrameWrite scratch) {}
     private static final Pattern MEMORY = Pattern.compile(
@@ -194,22 +198,10 @@ final class ReaGhidraSwiftEnumSwitches {
     private void collectProbeImports() throws Exception {
         probeLibraries=probeLibraryOrder();
         if (probeLibraries.isEmpty()) return;
-        Set<Long> ordinals=new HashSet<>();
+        Long ordinal=originalProbeOrdinal();
+        if (ordinal==null) return;
         int examined=0;
-        Iterator<Relocation> relocations=program.getRelocationTable().getRelocations();
-        while (relocations.hasNext()) {
-            monitor.checkCancelled();
-            if (++examined>MAX_QUERIES) return;
-            Relocation relocation=relocations.next();
-            if (!"___chkstk_darwin".equals(relocation.getSymbolName())) continue;
-            Long ordinal=probeOrdinal(relocation);
-            // Classic binds discard the ordinal; mixed same-name imports may
-            // collapse in the loader. Neither representation grants authority.
-            if (ordinal==null) return;
-            ordinals.add(ordinal);
-        }
-        if (ordinals.size()!=1) return;
-        String library=probeLibraries.get(ordinals.iterator().next().intValue()-1);
+        String library=probeLibraries.get(ordinal.intValue()-1);
         if (!Set.of("/usr/lib/libSystem.B.dylib", "/usr/lib/system/libcompiler_rt.dylib").contains(library)) return;
         ExternalLocation selected=null;
         for (String name:program.getExternalManager().getExternalLibraryNames()) {
@@ -224,7 +216,7 @@ final class ReaGhidraSwiftEnumSwitches {
             }
         }
         if (selected==null || selected.getExternalSpaceAddress()==null) return;
-        uniqueProbeImport=new ProbeImport(selected.getExternalSpaceAddress(),library);
+        uniqueProbeImport=new ProbeImport(selected.getExternalSpaceAddress(),library,ordinal);
         probeImports.put(selected.getExternalSpaceAddress(),uniqueProbeImport);
     }
 
@@ -265,6 +257,99 @@ final class ReaGhidraSwiftEnumSwitches {
         return offset==end?libraries:List.of();
     }
 
+    /** Identity admission scans the bounded original import table, not every
+     * unrelated rebase in the loaded Program. In particular, a large image's
+     * rebase count cannot consume the binding-identity decode budget.
+     * Mixed classic binding/section-relocation carriers remain unsupported:
+     * their discarded ordinals cannot establish global same-name uniqueness.
+     */
+    private Long originalProbeOrdinal() throws Exception {
+        List<FileBytes> sources=program.getMemory().getAllFileBytes();
+        if (sources.size()!=1) return null;
+        ProbeSource source=new ProbeSource(sources.get(0));
+        try {
+            if (!source.span(0,32)) return null;
+            long commandBytes=source.u32(20),commands=source.u32(16);
+            if (commands>MAX_CASES || commandBytes>4L*MAX_QUERIES || !source.span(0,32+commandBytes)) return null;
+            byte[] original=source.read(0,(int)(32+commandBytes)),loaded=new byte[original.length];
+            if (program.getMemory().getBytes(program.getImageBase(),loaded)!=loaded.length || !Arrays.equals(original,loaded)) return null;
+            long at=32,end=32+commandBytes,fixups=-1,fixupsBytes=0;
+            for (long index=0;index<commands;index++) {
+                monitor.checkCancelled();
+                if (at+8>end) return null;
+                long kind=source.u32(at),length=source.u32(at+4);
+                if (length<8 || (length&7)!=0 || length>end-at) return null;
+                if (kind==0x80000034L) {
+                    if (fixups>=0 || length!=16) return null;
+                    fixups=source.u32(at+8);fixupsBytes=source.u32(at+12);
+                } else if (kind==0x22 || kind==0x80000022L) {
+                    if (length!=48 || source.u32(at+20)!=0 || source.u32(at+28)!=0 || source.u32(at+36)!=0) return null;
+                } else if (kind==0xb) {
+                    if (length!=80 || source.u32(at+68)!=0) return null;
+                } else if (kind==0x19) {
+                    if (length<72) return null;
+                    long sections=source.u32(at+64);
+                    if (sections>(length-72)/80 || 72+80*sections!=length) return null;
+                    for (long section=0;section<sections;section++)
+                        if (source.u32(at+72+80*section+60)!=0) return null;
+                }
+                at+=length;
+            }
+            if (at!=end || fixups<0 || fixupsBytes<28 || !source.span(fixups,fixupsBytes) || source.u32(fixups)!=0) return null;
+            long imports=source.u32(fixups+8),symbols=source.u32(fixups+12),count=source.u32(fixups+16);
+            long format=source.u32(fixups+20),symbolsFormat=source.u32(fixups+24);
+            int width=format==1?4:format==2?8:format==3?16:0;
+            if (width==0 || symbolsFormat!=0 || count>MAX_QUERIES || imports<28 || imports>fixupsBytes ||
+                count>(fixupsBytes-imports)/width || symbols<imports+count*width || symbols>=fixupsBytes) return null;
+            String literal="___chkstk_darwin";
+            byte[] name=(literal+"\0").getBytes(java.nio.charset.StandardCharsets.US_ASCII);
+            Long selected=null;
+            for (long index=0;index<count;index++) {
+                monitor.checkCancelled();
+                long record=fixups+imports+index*width,value=format==3?source.u64(record):source.u32(record);
+                long nameOffset=format==3?value>>>32:value>>>9;
+                if (nameOffset>=fixupsBytes-symbols) return null;
+                // Ghidra reads US-ASCII then replaces each invalid symbol
+                // character with one underscore. Both operations preserve the
+                // byte/character count here, so a longer name cannot collide.
+                byte[] rawName=source.read(fixups+symbols+nameOffset,(int)Math.min(name.length,fixupsBytes-symbols-nameOffset));
+                int terminated=0;while (terminated<rawName.length && rawName[terminated]!=0) terminated++;
+                if (terminated==rawName.length) { if (rawName.length<name.length) return null;continue; }
+                String decoded=new String(rawName,0,terminated,java.nio.charset.StandardCharsets.US_ASCII);
+                if (!literal.equals(SymbolUtilities.replaceInvalidChars(decoded,true))) continue;
+                if (!Arrays.equals(rawName,name)) return null; // normalized lookalikes cannot supply literal identity
+                // Ghidra 12.1.4 does not apply the import-table addend when
+                // fixing up this pointer. Its loaded target alone therefore
+                // cannot attest a nonzero addend's actual dyld destination.
+                if ((format==2 && source.u32(record+4)!=0) || (format==3 && source.u64(record+8)!=0)) return null;
+                long ordinal=format==3?value&0xffff:value&0xff;
+                if (format==3 && ordinal>0xfff0) ordinal=(short)ordinal;
+                else if (format!=3 && ordinal>0xf0) ordinal=(byte)ordinal;
+                if (ordinal<=0 || ordinal>probeLibraries.size() || (selected!=null && selected.longValue()!=ordinal)) return null;
+                selected=ordinal;
+            }
+            return selected;
+        } catch (java.io.IOException | ArithmeticException invalid) { return null; }
+    }
+
+    private static final class ProbeSource {
+        final FileBytes bytes;
+        ProbeSource(FileBytes bytes) { this.bytes=bytes; }
+        boolean span(long start,long length) { return start>=0 && length>=0 && start<=bytes.getSize() && length<=bytes.getSize()-start; }
+        byte[] read(long start,int length) throws java.io.IOException {
+            if (!span(start,length)) throw new java.io.IOException("Original Mach-O span exceeds carrier");
+            byte[] result=new byte[length];
+            if (bytes.getOriginalBytes(start,result)!=length) throw new java.io.IOException("Incomplete original Mach-O span");
+            return result;
+        }
+        long u32(long start) throws java.io.IOException {
+            return Integer.toUnsignedLong(java.nio.ByteBuffer.wrap(read(start,4)).order(java.nio.ByteOrder.LITTLE_ENDIAN).getInt());
+        }
+        long u64(long start) throws java.io.IOException {
+            return java.nio.ByteBuffer.wrap(read(start,8)).order(java.nio.ByteOrder.LITTLE_ENDIAN).getLong();
+        }
+    }
+
     private Long probeOrdinal(Relocation relocation) {
         long[] values=relocation.getValues();
         return relocation.getStatus()==Relocation.Status.APPLIED && relocation.getType()==0x8888 &&
@@ -301,7 +386,7 @@ final class ReaGhidraSwiftEnumSwitches {
         if (uniqueProbeImport==null || relocations.size()!=1) return null;
         Relocation relocation=relocations.get(0);
         Long ordinal=probeOrdinal(relocation);
-        if (ordinal==null || !"___chkstk_darwin".equals(relocation.getSymbolName()) ||
+        if (ordinal==null || ordinal.longValue()!=uniqueProbeImport.ordinal || !"___chkstk_darwin".equals(relocation.getSymbolName()) ||
             !probeLibraries.get(ordinal.intValue()-1).equals(uniqueProbeImport.library)) return null;
         Address target=address(program.getMemory().getLong(slot));
         Reference[] references=program.getReferenceManager().getReferencesFrom(slot);
@@ -447,10 +532,12 @@ final class ReaGhidraSwiftEnumSwitches {
     /** The caller's reflected payload, never a shared helper, selects the count.
      * This lane intentionally accepts only an unchanged incoming object copied
      * by the exact C memcpy import into ABI-private fixed frame storage. Dynamic
-     * stack allocations, other copy witnesses and inline projections remain
-     * unsupported until their distinct alias and effect proofs are available.
+     * stack allocations and inline projections use the separate conditional
+     * typed-snapshot lane below; this legacy proof is unchanged.
      */
     private Value outlinedTag(Graph graph, Instruction call, Address target) throws Exception {
+        Value snapshot=dynamicSnapshotTag(graph,call,target);
+        if (snapshot!=null) return snapshot;
         Value destination=graph.register("r0",call.getAddress());
         if (!kind(destination,"frame") || !graph.privateHistoryBefore(call.getAddress())) return null;
         for (Instruction prior : graph.runtimeTags) {
@@ -481,6 +568,337 @@ final class ReaGhidraSwiftEnumSwitches {
             return new Value("tag-low32",0,child.type,call.getAddress());
         }
         return null;
+    }
+
+    /** Independent forward domain: fixed offsets minus a monotonic sequence of
+     * align16(N) allocations. No symbolic values enter the legacy Graph lattice. */
+    private record StackPoint(long fixed,List<Address> allocations) {
+        StackPoint shift(long delta) { return new StackPoint(Math.addExact(fixed,delta),allocations); }
+    }
+    private record SnapshotFact(String kind,long number,EnumInfo type,Address identity,StackPoint pointer) {}
+    private record SnapshotAllocation(StackPoint parent,StackPoint result,SnapshotFact metadata) {}
+    private final class SnapshotState {
+        final Map<String,SnapshotFact> registers=new HashMap<>();
+        final Map<String,int[]> vectors=new HashMap<>();
+        int[] bytes;
+        SnapshotState(int size) { bytes=new int[size];Arrays.fill(bytes,-1); }
+        SnapshotState copy() {
+            SnapshotState result=new SnapshotState(bytes.length);
+            result.registers.putAll(registers);
+            for (var entry:vectors.entrySet()) result.vectors.put(entry.getKey(),entry.getValue().clone());
+            result.bytes=bytes.clone();return result;
+        }
+        void meet(SnapshotState other) {
+            registers.entrySet().removeIf(e->!e.getValue().equals(other.registers.get(e.getKey())));
+            vectors.entrySet().removeIf(e->!Arrays.equals(e.getValue(),other.vectors.get(e.getKey())));
+            for (int j=0;j<bytes.length;j++) if (bytes[j]!=other.bytes[j]) bytes[j]=-1;
+        }
+    }
+    private SnapshotFact snapshotFact(String kind,long number,EnumInfo type,Address identity,StackPoint pointer) {
+        return new SnapshotFact(kind,number,type,identity,pointer);
+    }
+    private SnapshotFact snapshotRead(Map<String,SnapshotFact> registers,String register) {
+        return Set.of("xzr","wzr").contains(register)?snapshotFact("constant",0,null,null,null):registers.get(register);
+    }
+    private boolean snapshotDestination(String register) { return register.equals("sp") || register.matches("r(?:[0-9]|[12][0-9]|30)"); }
+    private SnapshotFact stackFact(StackPoint pointer) { return snapshotFact("stack",0,null,null,pointer); }
+    private boolean snapshotKind(SnapshotFact fact,String kind) { return fact!=null && fact.kind.equals(kind); }
+    private static String vectorRegister(String register) {
+        return register.matches("[zvqdshb]\\d+")?"v"+register.substring(1):null;
+    }
+    private final class SnapshotPrefix {
+        final Graph graph;
+        final Map<Address,SnapshotAllocation> allocations=new HashMap<>();
+        final SnapshotState state=new SnapshotState(0);
+        long fixedFloor;
+        boolean dynamic;
+        boolean visibleBindingsIntact=true;
+        final Map<Address,ProbeTarget> probes=new LinkedHashMap<>();
+        SnapshotPrefix(Graph graph) { this.graph=graph;state.registers.put("sp",stackFact(new StackPoint(0,List.of()))); }
+        SnapshotFact get(String register) { return snapshotRead(state.registers,register); }
+        StackPoint stack() { SnapshotFact fact=get("sp");return snapshotKind(fact,"stack")?fact.pointer:null; }
+        void put(String register,SnapshotFact fact) { if (!snapshotDestination(register)) return;if (fact==null) state.registers.remove(register);else state.registers.put(register,fact); }
+        boolean build(Instruction runtime) throws Exception {
+            Address at=graph.owner.getEntryPoint(),previous=null;
+            Set<Address> seen=new HashSet<>();
+            while (!at.equals(runtime.getAddress())) {
+                monitor.checkCancelled();
+                if (++graph.work>MAX_QUERIES || !seen.add(at) || graph.foreignEntries.contains(at)) return false;
+                Instruction i=graph.instructions.get(at);
+                if (i==null || (previous!=null && !graph.predecessors.getOrDefault(at,List.of()).equals(List.of(previous))) ||
+                    i.getFlowType().isJump() || i.getFlowType().isTerminal() || i.getFallThrough()==null || !step(i)) return false;
+                previous=at;at=i.getFallThrough();
+            }
+            return previous!=null && !graph.foreignEntries.contains(at) &&
+                graph.predecessors.getOrDefault(at,List.of()).equals(List.of(previous));
+        }
+        /** Unknown normal-return calls preserve SP and ABI callee-saved GPRs,
+         * but kill all spills, volatile registers, and Swift-error X21. */
+        void call(Instruction i) throws Exception {
+            ProbeTarget probe=graph.probeTarget(i);
+            Map<String,SnapshotFact> before=new HashMap<>(state.registers);
+            state.registers.keySet().removeIf(r->volatileRegister(r) || r.equals("r21") || Set.of("nzcv","n","z","c","v").contains(r));
+            state.vectors.clear();
+            if (probe!=null && visibleBindingsIntact) {
+                probes.put(i.getAddress(),probe);
+                for (String r:List.of("r2","r8","r12")) {
+                SnapshotFact preserved=before.get(r);if (preserved!=null) state.registers.put(r,preserved);
+            }
+            }
+            EnumInfo type=accessors.get(directTarget(i));
+            if (type!=null && snapshotKind(before.get("r0"),"constant") && before.get("r0").number==0)
+                put("r0",snapshotFact("metadata",0,type,i.getAddress(),null));
+        }
+        SnapshotFact arithmetic(Instruction i,Map<String,SnapshotFact> before) {
+            String mnemonic=name(i);SnapshotFact base=snapshotRead(before,reg(op(i,1)));Long delta=immediate(i,2);
+            if (op(i,0).startsWith("w")) return null;
+            if (delta!=null) {
+                if (snapshotKind(base,"constant")) return snapshotFact("constant",Math.addExact(base.number,mnemonic.equals("SUB")?-delta:delta),null,null,null);
+                if (snapshotKind(base,"stack")) return stackFact(base.pointer.shift(mnemonic.equals("SUB")?-delta:delta));
+                if (mnemonic.equals("ADD") && delta==15 && snapshotKind(base,"size")) return snapshotFact("padded-size",0,base.type,base.identity,null);
+            } else if (mnemonic.equals("SUB") && snapshotKind(base,"stack") && base.pointer.equals(stack())) {
+                SnapshotFact amount=snapshotRead(before,reg(op(i,2)));
+                // Earlier unsigned subtracts supply upper bounds only. They
+                // do not acquire a type or a VWT contract. Normal nonwrapping
+                // monotonic stack semantics is an explicit lane premise.
+                if (snapshotKind(amount,"constant")) {
+                    return amount.number<0?null:stackFact(base.pointer.shift(-amount.number));
+                }
+                if (op(i,2).matches("x\\d+")) {
+                    List<Address> terms=new ArrayList<>(base.pointer.allocations);terms.add(i.getAddress());
+                    StackPoint result=new StackPoint(base.pointer.fixed,List.copyOf(terms));
+                    SnapshotFact metadata=snapshotKind(amount,"aligned-size") && amount.type!=null?
+                        snapshotFact("metadata",0,amount.type,amount.identity,null):null;
+                    allocations.put(i.getAddress(),new SnapshotAllocation(base.pointer,result,metadata));
+                    return stackFact(result);
+                }
+            }
+            return null;
+        }
+        boolean moveStack(StackPoint old,SnapshotFact result) {
+            if (!snapshotKind(result,"stack") || old==null) return false;
+            StackPoint next=result.pointer;
+            if (next.allocations.equals(old.allocations)) {
+                if (next.fixed>=old.fixed) return false; // reject restores/increases, including stale aliases
+            } else {
+                if (next.allocations.size()!=old.allocations.size()+1) return false;
+                SnapshotAllocation allocation=allocations.get(next.allocations.get(next.allocations.size()-1));
+                if (allocation==null || !allocation.parent.equals(old) || !allocation.result.equals(next)) return false;
+            }
+            if (!dynamic && !next.allocations.isEmpty()) { fixedFloor=old.fixed;dynamic=true; }
+            if (!dynamic) fixedFloor=next.fixed;
+            return true;
+        }
+        String proof() {
+            StringBuilder result=new StringBuilder();
+            for (var entry:probes.entrySet()) {
+                ProbeTarget target=entry.getValue();
+                result.append("Under ").append(DARWIN_PROBE_ABI).append(" on normal return, prefix probe ")
+                    .append(hex(entry.getKey())).append(" binds imported ").append(hex(target.binding.external))
+                    .append(" from ").append(target.binding.library)
+                    .append(target.slot==null?" via its exact import/stub":" through original applied chained GOT slot "+hex(target.slot))
+                    .append("; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. ")
+                    .append("Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. ")
+                    .append("No allocation, nonfaulting execution or actual runtime binding is established. ");
+            }
+            return result.toString();
+        }
+        boolean step(Instruction i) throws Exception {
+            if (i.getFlowType().isCall()) { call(i);return stack()!=null; }
+            if (hasOpaqueEffect(i)) return false;
+            Map<String,SnapshotFact> before=new HashMap<>(state.registers);
+            StackPoint old=stack();String mnemonic=name(i);SnapshotFact result=null;
+            String destination=i.getNumOperands()>0?reg(op(i,0)):"";
+            if (mnemonic.equals("MOV")) {
+                Long literal=immediate(i,1);
+                result=literal==null?snapshotRead(before,reg(op(i,1))):snapshotFact("constant",literal,null,null,null);
+                if (op(i,0).startsWith("w") && !snapshotKind(result,"constant")) result=null;
+            } else if (Set.of("ADD","SUB").contains(mnemonic)) result=arithmetic(i,before);
+            else if (mnemonic.equals("AND") && !op(i,0).startsWith("w")) {
+                SnapshotFact base=snapshotRead(before,reg(op(i,1)));
+                if (snapshotKind(base,"padded-size") && Objects.equals(immediate(i,2),-16L))
+                    result=snapshotFact("aligned-size",0,base.type,base.identity,null);
+            } else if (Set.of("ADR","ADRP").contains(mnemonic)) {
+                Long literal=immediate(i,1);if (literal!=null) result=snapshotFact("constant",literal,null,null,null);
+            } else if (Set.of("LDR","LDUR").contains(mnemonic) && i.getNumOperands()==2 && op(i,1).endsWith("]")) {
+                MemoryOperand memory=memory(i,1);SnapshotFact base=memory==null?null:before.get(memory.base);
+                if (op(i,0).startsWith("x") && memory!=null) {
+                    if (snapshotKind(base,"metadata") && memory.offset==-8) result=snapshotFact("witness",0,base.type,base.identity,null);
+                    else if (snapshotKind(base,"witness") && memory.offset==64) result=snapshotFact("size",0,base.type,base.identity,null);
+                }
+            }
+            if (hasMemoryEffect(i)) {
+                int operand=mnemonic.equals("STP")?2:1;
+                MemoryOperand memory=isStore(i)?memory(i,operand):null;
+                SnapshotFact base=memory==null?null:before.get(memory.base);
+                if (!snapshotKind(base,"stack")) visibleBindingsIntact=false;
+            }
+            // No pre-tag memory fact is retained: earlier stores/calls are not
+            // classified as pure and stack spills cannot establish identity.
+            for (Object object:i.getResultObjects()) if (object instanceof Register written) state.registers.remove(reg(written.getBaseRegister().getName()));
+            if (result!=null) put(destination,result);
+            if (writesRegister(i,"sp")) {
+                SnapshotFact next=state.registers.get("sp");
+                if (mnemonic.equals("STP") && op(i,2).endsWith("!")) {
+                    MemoryOperand memory=memory(i,2);
+                    if (memory==null || !memory.base.equals("sp") || memory.offset>=0) return false;
+                    next=stackFact(old.shift(memory.offset));put("sp",next);
+                }
+                if (!moveStack(old,next)) return false;
+            }
+            return stack()!=null;
+        }
+    }
+
+    /** Local post-tag representation proof. Earlier calls/escapes are neither
+     * classified nor declared pure; validity and stability are named premises. */
+    private Value dynamicSnapshotTag(Graph graph,Instruction getter,Address target) throws Exception {
+        if (snapshotProofs.containsKey(getter.getAddress())) return snapshotTags.get(getter.getAddress());
+        for (Instruction runtime:graph.runtimeTags) {
+            if (++graph.work>MAX_QUERIES) return null;
+            SnapshotPrefix prefix=new SnapshotPrefix(graph);
+            try {
+                if (!prefix.build(runtime)) continue;
+                SnapshotFact metadata=prefix.get("r1"),source=prefix.get("r0");StackPoint sp=prefix.stack();
+                if (!snapshotKind(metadata,"metadata") || !snapshotKind(source,"stack") || sp==null ||
+                    sp.allocations.isEmpty() || !source.pointer.equals(sp)) continue;
+                SnapshotAllocation last=prefix.allocations.get(sp.allocations.get(sp.allocations.size()-1));
+                if (last==null || !last.result.equals(sp) || !metadata.equals(last.metadata)) continue;
+                Set<Address> window=snapshotAncestors(graph,runtime,getter);
+                if (window==null) continue;
+                int selected=graph.selectedCase(runtime,getter,metadata.type);
+                if (selected<0 || selected>=metadata.type.payloads) continue;
+                FixedEnum child=fixedEnums.get(directPayloadDescriptor(metadata.type,selected));
+                Value destination=graph.register("r0",getter.getAddress());
+                if (child==null || !sameGetter(child,target) || !kind(destination,"frame") ||
+                    destination.number<prefix.fixedFloor || Math.addExact(destination.number,child.size)>0 ||
+                    sp.fixed>destination.number || !snapshotProjection(graph,prefix,runtime,getter,source.pointer,destination.number,child.size,window)) continue;
+                String proof="Under " + SNAPSHOT_ABI + ", the exact libswiftCore runtime tag call at " + hex(runtime.getAddress()) +
+                    " receives metadata from accessor " + hex(metadata.type.accessor) + " for outer enum descriptor " + hex(metadata.type.descriptor) +
+                    ". Its source is the current SP after the last align16(N) allocation at " + hex(sp.allocations.get(sp.allocations.size()-1)) +
+                    ", where N is VWT+64 of that same metadata value. The straight-line entry prefix proves only register/stack identities; unknown earlier calls and escapes are allowed and their memory history is discarded. " +
+                    "Assumptions: a recursively valid active outer payload at this call's normal return; stable ABI metadata layout; ordinary nonwrapping, nonaliasing stack allocation with N<=align16(N), N large enough for the active payload; live source and destination until the child getter, and no asynchronous interference throughout the checked post-tag window through dispatch. " +
+                    "Stable imported-call/GOT bindings throughout the prefix (no interposition or mutation by earlier unknown calls) are assumed; visible non-stack writes cannot establish probe effects. " + prefix.proof() +
+                    "Every incoming path selects outer tag " + selected + "; direct reflection field " + hex(metadata.type.fields.add(16+12L*selected)) +
+                    " binds inline offset-zero child descriptor " + hex(child.type.descriptor) + ". Static child metadata " + hex(child.metadata) +
+                    " declares VWT " + hex(child.witness) + ", size " + child.size + " and pure complete getter " + hex(child.getter) +
+                    ". Complete inline SIMD byte origins prove destination byte j equals snapshot source byte j for all " + child.size +
+                    " bytes, with live/disjoint fixed destination and dynamic source. No unknown post-tag call/write, SP change, foreign entry or bypass is admitted. Getter call " + hex(getter.getAddress()) +
+                    " reads that representation. A separate straight-line getter-return-to-dispatch proof rejects calls, SP changes, foreign/bypass entries and unmodeled stores, including effects on escaped tag spills. Shared helper code never supplies identity/count. This proof does not establish preceding copy/witness correctness, pre-tag nonescape, ownership/retention, or later lifetime semantics.";
+                snapshotProofs.put(getter.getAddress(),proof);outlinedProofs.put(getter.getAddress(),proof);
+                Value tag=new Value("tag-low32",0,child.type,getter.getAddress());snapshotTags.put(getter.getAddress(),tag);return tag;
+            } catch (ArithmeticException invalid) { /* nonwrapping proof failed */ }
+        }
+        return null;
+    }
+    private Set<Address> snapshotAncestors(Graph graph,Instruction runtime,Instruction getter) throws Exception {
+        if (!graph.dominatedBy(runtime.getAddress(),getter.getAddress())) return null;
+        Set<Address> nodes=new HashSet<>();Deque<Address> pending=new ArrayDeque<>(List.of(getter.getAddress()));
+        while (!pending.isEmpty()) {
+            Address at=pending.removeFirst();if (at.equals(runtime.getAddress()) || !nodes.add(at)) continue;
+            if (++graph.work>MAX_QUERIES || graph.foreignEntries.contains(at)) return null;
+            List<Address> incoming=graph.predecessors.getOrDefault(at,List.of());if (incoming.isEmpty()) return null;pending.addAll(incoming);
+        }
+        return nodes;
+    }
+    private boolean snapshotProjection(Graph graph,SnapshotPrefix prefix,Instruction runtime,Instruction getter,StackPoint source,long destination,long size,Set<Address> nodes) throws Exception {
+        if (size>4096) return false;
+        Deque<Address> pending=new ArrayDeque<>();
+        Map<Address,Integer> degree=new HashMap<>();Map<Address,SnapshotState> states=new HashMap<>();
+        for (Address at:nodes) degree.put(at,(int)graph.predecessors.getOrDefault(at,List.of()).stream().filter(nodes::contains).count());
+        SnapshotState initial=prefix.state.copy();initial.bytes=new int[(int)size];Arrays.fill(initial.bytes,-1);
+        prefix.call(runtime);initial.registers.clear();initial.registers.putAll(prefix.state.registers);
+        Address first=runtime.getFallThrough();if (first==null || !nodes.contains(first)) return false;
+        states.put(first,initial);pending.add(first);int visited=0;
+        while (!pending.isEmpty()) {
+            monitor.checkCancelled();Address at=pending.removeFirst();if (++graph.work>MAX_QUERIES || degree.get(at)!=0) return false;
+            SnapshotState state=states.get(at);if (state==null) return false;visited++;
+            if (at.equals(getter.getAddress())) {
+                SnapshotFact actual=state.registers.get("r0");
+                if (!snapshotKind(actual,"stack") || !actual.pointer.equals(new StackPoint(destination,List.of()))) return false;
+                for (int j=0;j<size;j++) if (state.bytes[j]!=j) return false;
+                continue;
+            }
+            Instruction i=graph.instructions.get(at);
+            if (i==null || i.getFlowType().isCall() || writesRegister(i,"sp") || hasOpaqueEffect(i) ||
+                (i.getFlowType().isJump() && (i.getFlowType().isComputed() || i.getFlows().length==0)) ||
+                !snapshotStep(prefix,state,i,source,destination,size)) return false;
+            List<Address> next=new ArrayList<>();if (i.getFallThrough()!=null) next.add(i.getFallThrough());
+            if (i.getFlowType().isJump()) Collections.addAll(next,i.getFlows());
+            for (Address successor:new LinkedHashSet<>(next)) if (nodes.contains(successor)) {
+                SnapshotState prior=states.get(successor);if (prior==null) states.put(successor,state.copy());else prior.meet(state);
+                int remaining=degree.merge(successor,-1,Integer::sum);if (remaining==0) pending.addLast(successor);
+            }
+        }
+        return visited==nodes.size(); // cycles, unreachable/bypass entries fail closed
+    }
+    private boolean snapshotStep(SnapshotPrefix prefix,SnapshotState state,Instruction i,StackPoint source,long destination,long size) {
+        String mnemonic=name(i);Map<String,SnapshotFact> before=new HashMap<>(state.registers);
+        boolean load=Set.of("LDR","LDUR","LDP").contains(mnemonic),store=isStore(i),pair=Set.of("LDP","STP").contains(mnemonic);
+        int operand=pair?2:1;MemoryOperand memory=(load||store)?memory(i,operand):null;
+        for (PcodeOp operation:i.getPcode()) if (operation.getOpcode()==PcodeOp.LOAD && !load) return false;
+        if ((load||store) && (memory==null || i.getNumOperands()!=operand+1 || !op(i,operand).endsWith("]"))) return false;
+        SnapshotFact base=memory==null?null:before.get(memory.base);
+        StackPoint location=snapshotKind(base,"stack")?base.pointer.shift(memory.offset):null;
+        int width=store?storeWidth(i):load?width(op(i,0)):0,count=pair?2:1;
+        List<int[]> loaded=new ArrayList<>();
+        if (load) {
+            if (location==null) return false;
+            boolean vector=op(i,0).matches("q\\d+");
+            if (vector) {
+                if (pair && !op(i,1).matches("q\\d+")) return false;
+                if (!location.allocations.equals(source.allocations)) return false;
+                long start=Math.subtractExact(location.fixed,source.fixed);
+                if (start<0 || Math.addExact(start,(long)width*count)>size) return false;
+                for (int n=0;n<count;n++) { int[] bytes=new int[16];for (int j=0;j<16;j++) bytes[j]=(int)start+16*n+j;loaded.add(bytes); }
+            } else if (!location.allocations.isEmpty() || location.fixed<prefix.fixedFloor || Math.addExact(location.fixed,(long)width*count)>0) return false;
+        }
+        if (store || hasMemoryEffect(i)) {
+            if (!store || location==null || !location.allocations.isEmpty() || location.fixed<prefix.fixedFloor ||
+                Math.addExact(location.fixed,(long)width*count)>0 || !dataRegister(op(i,0)) ||
+                (pair && (!dataRegister(op(i,1)) || width(op(i,0))!=width(op(i,1))))) return false;
+            // Every admitted store is in the fixed frame, above the source's
+            // pre-allocation upper bound; the regions cannot overlap.
+            for (int n=0;n<count;n++) {
+                String vector=vectorRegister(op(i,n));int[] origins=width==16 && vector!=null?state.vectors.get(vector):null;
+                for (int j=0;j<width;j++) {
+                    long relative=location.fixed+width*n+j-destination;
+                    if (relative>=0 && relative<size) state.bytes[(int)relative]=origins==null?-1:origins[j];
+                }
+            }
+        }
+        SnapshotFact result=null;
+        if (mnemonic.equals("MOV") && op(i,0).startsWith("x")) result=snapshotRead(before,reg(op(i,1)));
+        else if (Set.of("ADD","SUB").contains(mnemonic) && op(i,0).startsWith("x")) {
+            SnapshotFact pointer=snapshotRead(before,reg(op(i,1)));Long delta=immediate(i,2);
+            if (snapshotKind(pointer,"stack") && delta!=null) result=stackFact(pointer.pointer.shift(mnemonic.equals("SUB")?-delta:delta));
+        }
+        for (Object object:i.getResultObjects()) if (object instanceof Register written) {
+            String register=written.getBaseRegister().getName().toLowerCase(Locale.ROOT);
+            state.registers.remove(reg(register));String vector=vectorRegister(register);if (vector!=null) state.vectors.remove(vector);
+        }
+        if (result!=null && snapshotDestination(reg(op(i,0)))) state.registers.put(reg(op(i,0)),result);
+        for (int n=0;n<loaded.size();n++) state.vectors.put(vectorRegister(op(i,n)),loaded.get(n));
+        return true;
+    }
+
+    /** Escaped earlier aliases cannot be allowed to invalidate a tag spill
+     * through a later unknown call. The new lane checks the whole suffix. */
+    private boolean snapshotTagSuffix(Graph graph,Address getter,Instruction branch) throws Exception {
+        Address at=branch.getAddress();Set<Address> seen=new HashSet<>();
+        while (!at.equals(getter)) {
+            if (++graph.work>MAX_QUERIES || !seen.add(at) || graph.foreignEntries.contains(at)) return false;
+            Instruction i=graph.instructions.get(at);
+            if (i==null || i.getFlowType().isCall() || writesRegister(i,"sp") || hasOpaqueEffect(i) ||
+                (hasMemoryEffect(i) && graph.privateStore(i)==null) ||
+                (!at.equals(branch.getAddress()) && i.getFlowType().isJump())) return false;
+            List<Address> incoming=graph.predecessors.getOrDefault(at,List.of());
+            if (incoming.size()!=1) return false;
+            Instruction previous=graph.instructions.get(incoming.get(0));
+            if (previous==null || !Objects.equals(previous.getFallThrough(),at)) return false;
+            at=previous.getAddress();
+        }
+        return true;
     }
 
     private EnumInfo readEnum(Address descriptor) throws Exception { return readEnumLayout(descriptor,1); }
@@ -611,7 +1029,9 @@ final class ReaGhidraSwiftEnumSwitches {
         Value table = graph.register(reg(indexed.group(1)), load.getAddress());
         Value tag = graph.register(reg(indexed.group(2)), load.getAddress());
         if (!kind(anchor,"constant") || !kind(table,"constant") || !kind(tag,"tag")) return null;
-        if (graph.frameEscapedBefore(tag.origin)) return null;
+        if (snapshotProofs.containsKey(tag.origin)) {
+            if (!snapshotTagSuffix(graph,tag.origin,branch)) return null;
+        } else if (graph.frameEscapedBefore(tag.origin)) return null;
         Address tableAddress = address(table.number), anchorAddress = address(anchor.number);
         if (!initialized(tableAddress, 4L * tag.type.count())) return null;
         MemoryBlock tableBlock = program.getMemory().getBlock(tableAddress);
@@ -705,15 +1125,17 @@ final class ReaGhidraSwiftEnumSwitches {
                 mapping.addProperty("confidence","high");
                 String label = item.type.names.get(index);
                 mapping.add("evidence",evidence("Swift ABI tag " + index + (label == null ? "" : " (field name " + label + ")") +
-                    " selects signed word at " + hex(item.table.add(index * 4L)) + ", reaching " + hex(item.targets.get(index)) + ". " + proof));
+                    " selects signed word at " + hex(item.table.add(index * 4L)) + ", reaching " + hex(item.targets.get(index)) +
+                    ". Complete type/value provenance and ABI assumptions are retained once in this jump table's data source " + hex(item.table) + "."));
                 mappings.add(mapping);
             }
             table.add("mappings",mappings);
             table.add("default_targets",new JsonArray());
             JsonArray limitations = new JsonArray();
             limitations.add("Case values are Swift ABI runtime tags, with payload cases before empty cases; field names are reflection metadata. Valid enum values supply the bound; this does not establish state reachability or original source order.");
-            limitations.add("Control-flow recovery assumes the normal AArch64 ABI and private non-escaped frame storage. It does not execute the target or prove each case's high-level semantics.");
-            if (!item.probeProof.isEmpty()) limitations.add("Darwin stack-probe effects assume " + DARWIN_PROBE_ABI +
+            if (snapshotProofs.containsKey(item.tagCall)) limitations.add(SNAPSHOT_ABI + ": conditional on a recursively valid active outer value at the exact runtime tag call, stable ABI layout and imported-call/GOT bindings during the prefix (no interposition/mutation), live/disjoint stack regions, nonwrapping monotonic allocations and a stable checked post-tag window. Pre-tag nonescape, preceding copy/ownership and later lifetime semantics are not proved.");
+            else limitations.add("Control-flow recovery assumes the normal AArch64 ABI and private non-escaped frame storage. It does not execute the target or prove each case's high-level semantics.");
+            if (!item.probeProof.isEmpty() || (snapshotProofs.containsKey(item.tagCall) && snapshotProofs.get(item.tagCall).contains(DARWIN_PROBE_ABI))) limitations.add("Darwin stack-probe effects assume " + DARWIN_PROBE_ABI +
                 " on normal return. Import identity does not establish Arc's runtime binding, absence of interposition, nonfaulting reads or completed allocation.");
             table.add("limitations",limitations);
             result.add(table);

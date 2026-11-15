@@ -2,7 +2,14 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { constants } from "node:fs";
+import {
+  copyFile,
+  mkdir,
+  mkdtemp,
+  readFile,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -24,18 +31,32 @@ import {
   swiftProbePatch,
 } from "../tests/conformance/ghidra/swift-stack-probe-fixtures.mjs";
 
+import {
+  swiftSnapshotCases,
+  swiftSnapshotAssembly,
+  swiftSnapshotOracle,
+  swiftSnapshotPatch,
+} from "../tests/conformance/ghidra/swift-dynamic-snapshot-fixtures.mjs";
+
 const { values } = parseArgs({
   options: {
     "output-dir": { type: "string" },
     "compiler-oracle-only": { type: "boolean", default: false },
+    "snapshot-only": { type: "boolean", default: false },
+    "snapshot-case": { type: "string" },
+    "probe-case": { type: "string" },
     "probe-only": { type: "boolean", default: false },
     "baseline-only": { type: "boolean", default: false },
     "baseline-start-at": { type: "string" },
   },
 });
 assert.ok(
-  !(values["probe-only"] && values["baseline-only"]),
-  "Select either probe-only or baseline-only",
+  [
+    values["probe-only"],
+    values["baseline-only"],
+    values["snapshot-only"],
+  ].filter(Boolean).length <= 1,
+  "Select at most one of probe-only, baseline-only, snapshot-only",
 );
 assert.ok(
   values["baseline-start-at"] === undefined || values["baseline-only"],
@@ -78,6 +99,27 @@ const env = {
   REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS: "60",
   REA_PROCESS_RUN_ID: run.run_id,
 };
+const catalogs = new Map();
+async function retainCatalog(catalog, directory) {
+  const bytes = Buffer.from(JSON.stringify(catalog, null, 2) + "\n"),
+    sha256 = digest(bytes);
+  let retained = catalogs.get(sha256);
+  if (retained === undefined) {
+    const folder = join(root, "catalogs");
+    await mkdir(folder, { recursive: true });
+    const path = join(folder, `${sha256}.json`);
+    await writeFile(path, bytes, { flag: "wx" });
+    retained = { path, bytes: bytes.length, sha256 };
+    catalogs.set(sha256, retained);
+  }
+  // FICLONE requests independent APFS copy-on-write file bytes; Node falls
+  // back to a full copy on filesystems that do not support reflinks.
+  await copyFile(
+    retained.path,
+    join(directory, "catalog.json"),
+    constants.COPYFILE_FICLONE | constants.COPYFILE_EXCL,
+  );
+}
 const records = [];
 const commands = [];
 const results = [];
@@ -98,11 +140,13 @@ await save(join(root, "run-start.json"), {
   target_executed: false,
   baseline_start_at: startAt ?? null,
   verifier: await identity(fileURLToPath(import.meta.url)),
-  selection: values["probe-only"]
-    ? "darwin-probe-effects"
-    : values["baseline-only"]
-      ? "baseline-swift-enum-matrix"
-      : "complete-swift-enum-matrix",
+  selection: values["snapshot-only"]
+    ? "dynamic-typed-snapshot"
+    : values["probe-only"]
+      ? "darwin-probe-effects"
+      : values["baseline-only"]
+        ? "baseline-swift-enum-matrix"
+        : "complete-swift-enum-matrix",
 });
 
 async function compile(
@@ -113,6 +157,7 @@ async function compile(
   foreignSuffix = false,
   projectionCase,
   probe,
+  snapshot,
 ) {
   const directory = join(root, label);
   await mkdir(directory);
@@ -210,7 +255,7 @@ async function compile(
       exit_code: 0,
     });
   }
-  if (dispatchLoad || probe !== undefined) {
+  if (dispatchLoad || probe !== undefined || snapshot !== undefined) {
     const assembly = join(directory, "switch.s");
     const args = [
       ...common,
@@ -230,7 +275,7 @@ async function compile(
     commands.push({ command: "/usr/bin/swiftc", args, ...reply, exit_code: 0 });
     const original = await readFile(assembly, "utf8");
     const start = original.indexOf(
-      probe === undefined
+      probe === undefined && snapshot === undefined
         ? "_$s22ReaSwiftRelativeSwitch03reacD0ySiAA0A9LiveEventO_SitF:"
         : "_$s22ReaSwiftRelativeSwitch11fixedReduceySiAA11FixedActionO_SitF:",
     );
@@ -241,7 +286,11 @@ async function compile(
     assert.equal([...body.matchAll(/\tbr\tx8\n/g)].length, 1);
     // Reassemble owned source; never patch the caller's shipped artifact.
     const transformed =
-      probe === undefined ? null : swiftProbeAssembly(body, probe);
+      snapshot !== undefined
+        ? swiftSnapshotAssembly(body, snapshot)
+        : probe === undefined
+          ? null
+          : swiftProbeAssembly(body, probe);
     let modified =
       transformed === null
         ? original.slice(0, start) +
@@ -299,7 +348,8 @@ async function compile(
       "macosx",
       "clang",
       "-dynamiclib",
-      ...(probe === undefined || probe.change === "classic-binding"
+      ...((probe === undefined && snapshot === undefined) ||
+      probe?.change === "classic-binding"
         ? []
         : ["-Wl,-fixup_chains"]),
       "-arch",
@@ -333,12 +383,27 @@ async function compile(
     dispatchLoad,
     projectionCase !== undefined,
     probe !== undefined,
+    snapshot !== undefined,
   );
   if (probe !== undefined) {
     bytes = swiftProbePatch(bytes, oracle, probe);
     await writeFile(path, bytes);
     oracle = swiftEnumOracle(bytes, payloads, empty, dispatchLoad, true, true);
     oracle.probe = swiftProbeOracle(bytes, oracle, probe);
+  }
+  if (snapshot !== undefined) {
+    bytes = swiftSnapshotPatch(bytes, oracle, snapshot);
+    await writeFile(path, bytes);
+    oracle = swiftEnumOracle(
+      bytes,
+      payloads,
+      empty,
+      dispatchLoad,
+      true,
+      false,
+      true,
+    );
+    oracle.snapshot = swiftSnapshotOracle(bytes, oracle, snapshot);
   }
   if (projectionCase !== undefined)
     assert.equal(oracle.projection.selected.index, projectionCase);
@@ -381,6 +446,30 @@ function check(result, oracle, positive) {
     })),
   );
   assert.deepEqual(table.default_targets, []);
+  if (oracle.snapshot !== undefined) {
+    assert.ok(
+      table.limitations.some(
+        (text) =>
+          text.includes("swift-dynamic-typed-snapshot-v1") &&
+          text.includes("recursively valid") &&
+          text.includes("stable checked post-tag window"),
+      ),
+    );
+    assert.ok(
+      !table.limitations.some((text) =>
+        text.includes("private non-escaped frame storage"),
+      ),
+    );
+    assert.ok(
+      table.data_sources.some((source) =>
+        source.evidence.some(
+          ({ detail }) =>
+            detail.includes("preceding copy/witness correctness") &&
+            detail.includes("all 156 bytes"),
+        ),
+      ),
+    );
+  }
   if (oracle.probe !== undefined) {
     assert.ok(
       table.limitations.some(
@@ -497,7 +586,7 @@ async function inspect(target, positive, cliParity = false) {
   try {
     await client.connect(transport);
     catalog = (await client.listTools()).tools;
-    await save(join(directory, "catalog.json"), catalog);
+    await retainCatalog(catalog, directory);
     await call("open_binary", { path, provider_id: "ghidra" });
     // Observe the body before any decompiler query; repair must not be a lazy
     // side effect that changes the answer for the same observation parameters.
@@ -514,7 +603,7 @@ async function inspect(target, positive, cliParity = false) {
     check(evidence.normalized_result, oracle, positive);
     assert.equal(
       evidence.analysis_profile.parameters.swift_enum_switch_recovery,
-      "abi-signed-word-cfg-v8",
+      "abi-signed-word-cfg-v9",
     );
     assert.ok(
       evidence.limitations.some((text) =>
@@ -577,44 +666,67 @@ async function inspect(target, positive, cliParity = false) {
 
 let failure;
 try {
-  const large = await compile(18, 12, "thirty-cases");
-  const small = await compile(8, 4, "twelve-cases");
-  const dispatchLoad = await compile(18, 12, "dispatch-load", true);
-  const foreignSuffix = await compile(
-    18,
-    12,
-    "dispatch-foreign-entry",
-    true,
-    true,
-  );
-  const projected = await compile(
-    11,
-    13,
-    "fixed-projection-case-zero",
-    false,
-    false,
-    0,
-  );
-  const projectedOne = await compile(
-    11,
-    13,
-    "fixed-projection-case-one",
-    false,
-    false,
-    1,
-  );
+  const large = values["snapshot-only"]
+    ? null
+    : await compile(18, 12, "thirty-cases");
+  const small = values["snapshot-only"]
+    ? null
+    : await compile(8, 4, "twelve-cases");
+  const dispatchLoad = values["snapshot-only"]
+    ? null
+    : await compile(18, 12, "dispatch-load", true);
+  const foreignSuffix = values["snapshot-only"]
+    ? null
+    : await compile(18, 12, "dispatch-foreign-entry", true, true);
+  const projected = values["snapshot-only"]
+    ? null
+    : await compile(11, 13, "fixed-projection-case-zero", false, false, 0);
+  const projectedOne = values["snapshot-only"]
+    ? null
+    : await compile(11, 13, "fixed-projection-case-one", false, false, 1);
   const probes = [];
-  if (!values["baseline-only"])
-    for (const probe of swiftProbeCases)
+  if (!values["baseline-only"] && !values["snapshot-only"])
+    for (const probe of swiftProbeCases.filter(
+      (item) => !values["probe-case"] || item.label === values["probe-case"],
+    ))
       probes.push(await compile(11, 13, probe.label, false, false, 0, probe));
+  assert.ok(!values["probe-case"] || probes.length === 1, "Unknown probe-case");
+  const snapshots = [];
+  if (!values["baseline-only"] && !values["probe-only"])
+    for (const snapshot of swiftSnapshotCases.filter(
+      (item) =>
+        !values["snapshot-case"] || item.label === values["snapshot-case"],
+    ))
+      snapshots.push(
+        await compile(
+          11,
+          13,
+          snapshot.label,
+          false,
+          false,
+          1,
+          undefined,
+          snapshot,
+        ),
+      );
+  assert.ok(
+    !values["snapshot-case"] || snapshots.length === 1,
+    "Unknown snapshot-case",
+  );
   if (!values["compiler-oracle-only"]) {
+    for (const snapshot of snapshots)
+      await inspect(
+        snapshot,
+        snapshot.oracle.snapshot.positive,
+        snapshot.oracle.snapshot.positive,
+      );
     for (const probe of probes)
       await inspect(
         probe,
         probe.oracle.probe.positive,
         probe.oracle.probe.positive,
       );
-    if (!values["probe-only"]) {
+    if (!values["probe-only"] && !values["snapshot-only"]) {
       await inspect(large, true, true);
       await inspect(small, true);
       await inspect(dispatchLoad, true, true);
@@ -686,6 +798,7 @@ await save(join(root, "summary.json"), {
   results,
   skipped,
   records,
+  catalogs: [...catalogs.values()],
   target_executed: false,
   process_lineage: lifecycle.process_lineage,
   error: failure ? String(failure.stack ?? failure) : null,

@@ -12,6 +12,7 @@ export function swiftEnumOracle(
   dispatchLoad = false,
   projection = false,
   probe = false,
+  snapshot = false,
 ) {
   assert.equal(bytes.readUInt32LE(0), 0xfeedfacf);
   const sections = [];
@@ -171,7 +172,7 @@ export function swiftEnumOracle(
       "_swift_getEnumCaseMultiPayload",
     );
   assert.equal(word(tagCall + 4), 0x11000008); // ADD W8,W0,#0
-  assert.equal(word(tagCall + 8), 0x2a0803e8); // MOV W8,W8
+  if (!snapshot) assert.equal(word(tagCall + 8), 0x2a0803e8); // MOV W8,W8
   const pageAt = dispatch - 20 - gap;
   const pageWord = word(pageAt);
   assert.equal((pageWord & 0x9f00001f) >>> 0, 0x9000000a);
@@ -204,7 +205,10 @@ export function swiftEnumOracle(
     assert.equal(word(record + 4) !== 0, index < payloads);
     const target = anchor + bytes.readInt32LE(offset(table + index * 4));
     assert.equal(target % 4, 0);
-    assert.equal(stubSymbol(callTarget(target + 4)), `_rea_case_${index}`);
+    assert.equal(
+      stubSymbol(callTarget(target + (snapshot ? 8 : 4))),
+      `_rea_case_${index}`,
+    );
     mappings.push({
       case_value: index,
       target_address: address(target),
@@ -286,37 +290,41 @@ export function swiftEnumOracle(
       return result[0];
     };
     const runtime = importedCalls("_swift_getEnumCaseMultiPayload");
-    const memcpy = importedCalls("_memcpy");
-    const sizes = [];
-    if (probe) {
-      for (let at = runtime + 4; at < memcpy; at += 4)
-        if (word(at) === 0x52801388) sizes.push(at); // MOV W8,#156
-    } else sizes.push(memcpy - 8);
-    assert.equal(sizes.length, 1, "Exact owned copy-size definition");
-    const copySize = sizes[0];
-    assert.equal((word(copySize) & 0xffe0001f) >>> 0, 0x52800008);
-    assert.equal((word(copySize) >>> 5) & 0xffff, 156);
-    assert.equal(word(memcpy - 4), 0xaa0803e2); // MOV X2,X8
-    assert.equal((word(copySize - 8) & 0xffc003ff) >>> 0, 0x910003e0); // ADD X0,SP,#buffer
-    assert.equal((word(copySize - 12) & 0xffc003ff) >>> 0, 0xf94003e1); // LDR X1,[SP,#input]
-    if (probe) {
-      const reloads = [];
-      for (let at = copySize + 4; at < memcpy; at += 4)
-        if (word(at) === word(copySize - 12)) reloads.push(at);
-      assert.equal(
-        reloads.length,
-        1,
-        "Memcpy input is reloaded after the probe",
-      );
-      assert.equal(
-        word(reloads[0] + 4),
-        word(copySize - 8),
-        "Memcpy destination is recomputed after the probe",
-      );
+    let memcpy = null,
+      destinationOffset = 64;
+    if (!snapshot) {
+      memcpy = importedCalls("_memcpy");
+      const sizes = [];
+      if (probe) {
+        for (let at = runtime + 4; at < memcpy; at += 4)
+          if (word(at) === 0x52801388) sizes.push(at); // MOV W8,#156
+      } else sizes.push(memcpy - 8);
+      assert.equal(sizes.length, 1, "Exact owned copy-size definition");
+      const copySize = sizes[0];
+      assert.equal((word(copySize) & 0xffe0001f) >>> 0, 0x52800008);
+      assert.equal((word(copySize) >>> 5) & 0xffff, 156);
+      assert.equal(word(memcpy - 4), 0xaa0803e2); // MOV X2,X8
+      assert.equal((word(copySize - 8) & 0xffc003ff) >>> 0, 0x910003e0); // ADD X0,SP,#buffer
+      assert.equal((word(copySize - 12) & 0xffc003ff) >>> 0, 0xf94003e1); // LDR X1,[SP,#input]
+      if (probe) {
+        const reloads = [];
+        for (let at = copySize + 4; at < memcpy; at += 4)
+          if (word(at) === word(copySize - 12)) reloads.push(at);
+        assert.equal(
+          reloads.length,
+          1,
+          "Memcpy input is reloaded after the probe",
+        );
+        assert.equal(
+          word(reloads[0] + 4),
+          word(copySize - 8),
+          "Memcpy destination is recomputed after the probe",
+        );
+      }
+      assert.equal((word(entry) & 0xffc003ff) >>> 0, 0xd10003ff); // fixed SUB SP,SP,#frame
+      destinationOffset = (word(copySize - 8) >>> 10) & 0xfff;
     }
-    assert.equal((word(entry) & 0xffc003ff) >>> 0, 0xd10003ff); // fixed SUB SP,SP,#frame
     const frameSize = (word(entry) >>> 10) & 0xfff;
-    const destinationOffset = (word(copySize - 8) >>> 10) & 0xfff;
     assert.ok(destinationOffset + 156 <= frameSize);
     projectionInfo = {
       outer,
@@ -369,7 +377,7 @@ export function swiftEnumOracle(
       table_add: offset(pageAt + 4),
       wrong_metadata_call: offset(accessorCalls[0]),
       accessor_request: offset(accessorCalls[0] - 4),
-      ...(projectionInfo
+      ...(projectionInfo && !snapshot
         ? {
             payload_reference: offset(projectionInfo.selected.mangled, 6),
             payload_flags: offset(projectionInfo.selected.record),

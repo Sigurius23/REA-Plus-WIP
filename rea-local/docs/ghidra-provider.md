@@ -190,7 +190,31 @@ complete four-instruction constant accessor or its five-instruction temporary-
 register/header-offset variant is admitted; its returned metadata must point
 back to the reflected child descriptor. Indirect payload fields and unknown
 field flags are rejected before inline copying is considered.
-Inline SIMD projections and other copy-witness paths remain unsupported.
+The separate `swift-dynamic-typed-snapshot-v1` lane supports a straight-line
+entry-to-runtime-tag prefix followed by checked selected-case SIMD projection
+paths. This is conditional on a recursively valid active outer value at that
+exact tag call, stable ABI metadata and imported-call/GOT bindings, normal
+nonwrapping monotonic stack allocation, live/disjoint regions, and a stable
+post-tag window without asynchronous interference. The tag reader does not
+validate or initialize the payload. Earlier unknown calls, copies and escapes
+are allowed; their memory history is discarded. This proves neither pre-tag
+nonescape nor copy/retention/ownership correctness or later lifetime semantics.
+
+Its independent forward domain preserves SP on normal-return calls, kills
+volatile and Swift-error X21 facts, and retains only register identities. Earlier
+unsigned SUB allocations supply monotonic upper bounds; the final current-SP
+allocation must be exactly align16(N), where N is VWT+64 of the identical proved
+outer metadata value passed to the tag reader. SP increases, stale restores and
+unknown SP definitions reject the lane. The descriptor's selected direct child
+and its static metadata/VWT/getter establish type and size. Every child byte
+must have the corresponding source origin through supported Q LDR/LDUR/LDP and
+STR/STUR/STP operations. Matching overlapping tails are allowed; source writes,
+unknown aliases, calls or SP changes after the tag, cycles, foreign entries and
+bypasses reject recovery. A separate straight-line getter-to-dispatch check
+rejects calls, SP changes, foreign/bypass entries and unmodeled stores so that
+escaped aliases cannot invalidate a later tag spill. The snapshot proof has its own per-table assumptions;
+it does not relax the fixed-copy proof above. Other copy-witness paths remain
+unsupported.
 
 The versioned `trusted-darwin-arm64-chkstk-v1` effect policy additionally admits
 the literal imported Mach-O symbol `___chkstk_darwin` from the system install
@@ -209,6 +233,18 @@ data reference must agree with the imported external association. Classic
 bindings that discard the ordinal, conflicting same-name library ordinals and
 ambiguous or changed pointer targets remain unsupported.
 
+Global same-name ordinal identity is checked in the bounded original Mach-O
+chained import table, independently of the number of unrelated loaded rebases.
+All entries with the literal raw name must agree on one positive library ordinal.
+The original header/load commands must agree with the loaded image and have one
+unambiguous original carrier. Formats 1/2/3 with uncompressed symbol names are
+supported. The per-slot applied relocation, loaded pointer/reference and unique
+imported external checks still apply. Mixed classic binding or external/section
+relocation carriers remain unsupported. Nonzero import-table addends for the
+exact probe name are rejected because Ghidra 12.1.4's loaded pointer does not
+attest those dyld destinations. Raw names that only normalize to the literal
+probe name cannot establish its import identity.
+
 On normal return this narrow summary preserves X2, X8, X12 and SP in addition
 to ordinary callee-saved handling. Other volatile registers, including X9,
 X10, X16, X17 and X30, and condition flags remain unknown. The probe can read
@@ -223,8 +259,9 @@ This is an explicit trusted Darwin ABI assumption, supported by inspected
 versioned implementations, rather than a byte binding to the OS image a target
 will load. Recovery provenance records admitted call/import/slot identities,
 the scratch interval and that limitation. It does not establish Arc's runtime
-binding or extend recovery to Arc's dynamic allocations, typed copy witnesses
-or SIMD projections.
+binding or prove typed-copy correctness. The snapshot lane separately permits symbolic-SP
+probe preservation under stable import bindings; visible non-stack prefix writes
+disable those effects, and all pre-tag scratch memory is discarded.
 
 Verified destinations receive computed-flow references and are disassembled into
 the existing function body without stealing independent function entries. The
@@ -237,8 +274,9 @@ for values outside the valid enum. This recovers control flow, not state
 reachability, original source declarations or every Swift calling convention.
 
 The analysis profile commits `swift_enum_switch_recovery:
-"abi-signed-word-cfg-v8"` and `darwin_stack_probe_call_summary:
-"trusted-darwin-arm64-chkstk-v1"` for supported targets. Earlier snapshots cannot replay
+"abi-signed-word-cfg-v9"` and `darwin_stack_probe_call_summary:
+"trusted-darwin-arm64-chkstk-v1"`, plus `swift_dynamic_typed_snapshot:
+"swift-dynamic-typed-snapshot-v1"` for supported targets. Earlier snapshots cannot replay
 as this recovery. Windows P0 retains its no-database-mutation boundary.
 
 `npm run verify:ghidra` compiles the versioned C oracle into debug and stripped

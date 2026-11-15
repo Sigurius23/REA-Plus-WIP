@@ -77,9 +77,15 @@ allocation. The narrow profile requires a known private SP, models the
 16-byte scratch write below it, and preserves only X2/X8/X12/SP beyond ordinary
 callee-saved handling. The first lane requires an applied chained import with
 an original positive library ordinal matching the exact system install name;
-classic or ambiguous bindings remain unsupported. Dynamic stack, typed-copy and SIMD projection paths
-remain separate unsupported obligations unless their own Evidence establishes
-them. See the [Ghidra guide](https://github.com/morluto/rea/blob/main/docs/ghidra-provider.md#swift-enum-dispatch-recovery).
+classic or ambiguous bindings remain unsupported. The separate
+`swift-dynamic-typed-snapshot-v1` lane can recover selected direct inline child
+SIMD projections from a dynamic source. Its Evidence assumes a recursively valid
+outer value at the exact runtime tag call, stable metadata/import bindings,
+normal nonwrapping monotonic stack allocations, live/disjoint intervals and a
+stable checked window through dispatch. The tag reader does not validate those
+premises. Earlier copy/retention, pre-tag nonescape and later lifetime behavior
+remain unproved; do not treat this as a copy-witness or actual-runtime binding
+proof. See the [Ghidra guide](https://github.com/morluto/rea/blob/main/docs/ghidra-provider.md#swift-enum-dispatch-recovery).
 
 To see which functions or Objective-C methods a Mach-O actually calls in one
 run, use `observe_native_calls` with explicit breakpoints and a bounded
