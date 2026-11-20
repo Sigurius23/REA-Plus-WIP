@@ -206,6 +206,36 @@ complete observation.
   partial coverage. Other providers retain the
   existing symbol-based inventory with its narrower coverage.
 
+## Retain a function and read selected facts
+
+`analyze_function` accepts `detail: "summary"` in an MCP session that retains
+Evidence. The complete native dossier is stored before the compact response;
+`normalized_result.parent_evidence_id` selects it for `inspect_analysis_view`.
+Request a `native` view of assembly, references, CFG, pseudocode, native API or
+value-flow rows without running the provider again. Pseudocode offsets and
+limits count UTF-16 code units; continue at the returned `next_offset`.
+
+The summary gives procedure identity, retained row counts and availability.
+Missing optional rows and unavailable value flow remain null, and empty
+pseudocode has unknown availability in older dossiers. Counts describe the
+retained record, not complete app behavior. Parent limitations remain visible.
+Default `detail: "complete"` keeps the existing complete inline result and its
+response limit. Delivery selection is absent from the provider parameters and
+the complete parent's semantic identity.
+
+For a one-shot CLI invocation, save the complete record in a new portable bundle:
+
+```sh
+rea function ./app 0x100001000 --provider ghidra --detail summary --evidence-output ./function.bundle.json --json
+```
+
+The new file is never overwritten. A missing bundle destination or an existing
+file is refused before target admission. The bundle can be imported into a
+later MCP session, or its selected record can be supplied inline to
+`rea inspect-analysis-view`. The summary itself is not a full function dossier.
+The existing `--snapshot` mechanism remains a result snapshot; it does not save
+a Ghidra Program or replace a portable Evidence bundle.
+
 ## Exact CLI selectors
 
 `function`, `instructions` and `decompile` accept `--procedure=<name-or-address>`;

@@ -15,7 +15,7 @@ Repository root:
 ```
 
 Read `rea-local/AGENTS.md`,
-`rea-local/.agents/skills/reverse-engineer-anything/SKILL.md` (version 43),
+`rea-local/.agents/skills/reverse-engineer-anything/SKILL.md` (current version 44),
 `OPEN_TASKS.md`, and `field-tests/arc-analysis-dossier-2026-11-08.md`.
 The REA skill explicitly requests independent delegation in step 6; use
 distinct scopes when workers are available. Workers hit usage limits during
@@ -46,6 +46,31 @@ backlog in item 62; it must not block the bounded Arc-focused update.
 The following November 16 Git/publication account is historical; its source
 commit is already pushed. This checkpoint saves the previously untracked
 supporting material locally before integration.
+
+## Focused upstream continuation (2026-11-20)
+
+Baseline commit `d62dd2f4f826f20cc54bfa22bade6d4cf102799e` and tag
+`arc-baseline-before-upstream-2026-11-20` are pushed. The first selective
+upstream slice adds opt-in native function summary delivery and portable CLI
+bundles, preserving the native bridge and v9 producer exactly. See
+`field-tests/arc-upstream-retained-2026-11-20.md` and its machine verification.
+All 44 focused tests, fast/docs/package checks, 37 real MCP calls and one fresh
+CLI case pass; both real-provider lineages are verified empty.
+
+The first new summary's parent equals the saved historical full Arc Evidence
+record, including the 28 mappings and 10,072-byte body. Summary mode is a
+delivery choice, absent from the parent's parameters. Use it for selected
+native pages. CLI summary requires a new `--evidence-output` bundle path.
+Automatic Ghidra Program checkpoints remain open because upstream's stock
+profile rejects our seeds/extensions and requires separate ownership/profile
+integration. Do not silently remove the seed overlay to enable it.
+
+The selected State name, parent and all 21 stored names are now read through
+public tools. `field-tests/arc-upstream-retained-2026-11-20/state-field-bindings.json`
+maps declaration indices and trace keys to names with Evidence IDs. Runtime
+instance offsets and durable writes are still unproved. Current frozen runtime:
+`rea-local/.cache/arc-runtime-retained-summary-2026-11-20`; its manifest records
+1,868 files. Actual verification Node is 24.22.3, Ghidra 12.1.4, existing JDK 27.
 
 ## Git and approval state (historical November 16)
 
@@ -291,7 +316,7 @@ anchors. Do not rewrite old indices to describe new observations.
 
 ## Exact next work, in priority order
 
-### 1. Finish State-property and dependency bindings from already captured data
+### 1. Continue State type and dependency bindings
 
 The reducer's metadata accessor `0x1012b05e8` is fully captured (20 bytes/five
 instructions); it passes cache `0x104627168` and descriptor `0x103d7b238` to
@@ -315,12 +340,15 @@ gives:
 | incomplete metadata             | `0x104627198`                                            |
 | completion callback             | `0x1012b7014`                                            |
 
-Next obtain the name/parent identity and field-descriptor header/records, then
-names. For this matched shape, field index for metadata key `k` is
-`(k - 8*2)/4`, subject to alignment/range checks. For example F24→index5,
-F60→index20. **Names have not yet been read; do not guess them.** Runtime
-offset values being uninitialized does not prevent mapping the declared field
-vector indices to names.
+The November 20 pass now observes name `State`, parent `BoostsEditor`, the
+21-record field descriptor and every stored name. For this matched shape,
+field index for metadata key `k` is `(k - 8*2)/4`, subject to alignment/range
+checks; the key suffix is hexadecimal. F24 is index 5 `interstitialType`;
+F60 is index 20 `hasDismissedJSWarningBanner`. F50/F54/F58 identify `boostData`,
+`changeStack` and `boostDataBeforeInteractiveUpdates`. See the exact binding
+JSON above. Next resolve mangled field types, dependency implementations and
+actual write/readback primitives. Metadata-vector indices do not prove runtime
+instance offsets or durable storage.
 
 Preferences lead: initialize reads raw key `0x32`; dismissJSWarningBanner
 writes the corresponding flag and invokes writer `(1,0x32)`; completeInterstitial
@@ -392,11 +420,11 @@ Read the actual result before interpreting it.
 
 ### 4. Complete reporting and publish supporting material
 
-Source fixes are pushed. Update stale publication wording in the registry to
-`70d5dd7d1`; commit/push mature notes, reproducible sources and retained text
-Evidence after review becomes available. Preserve all failures, source hashes,
-profile limits, and current schema/coverage distinctions. Do not stage still
-mutable session journals or reformat captures.
+The prior native fixes are pushed in `70d5dd7d1`; supporting material is now
+saved/pushed in `d62dd2f4f` and its recovery tag. Keep the current retention
+implementation and its field-test report together when publishing. Preserve
+failures, source hashes, profile limits and current schema/coverage distinctions.
+Do not stage still mutable session journals or reformat captures.
 
 Sidebar/tabs/spaces/navigation, durable storage, account/sync, history/downloads,
 general networking and security are not all answered end to end. Keep the
@@ -409,6 +437,7 @@ passing regression is not completion of an app feature.
 > REA+ skill. Continue the offline Arc semantic analysis from the captured phase
 > 7 State/dependency facts and the prepared broader seed overlay. Source fixes
 > 55/60/61 are already pushed and verified; do not rerun their 102-case matrix.
-> Finish persistence and browser-feature traces, fix newly confirmed bugs, keep
+> The State names are now captured in the November 20 retention pass; use its
+> exact bindings and opt-in summaries. Finish persistence and browser-feature traces, fix newly confirmed bugs, keep
 > OPEN_TASKS and the dossier accurate, and publish mature notes/captures when
 > normal approval review is available. Never launch Arc or shipped scripts.

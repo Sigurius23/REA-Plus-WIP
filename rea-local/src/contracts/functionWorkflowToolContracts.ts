@@ -5,14 +5,23 @@ import type { ToolContract } from "./toolContractTypes.js";
 import { toolContractMetadata } from "./toolEffects.js";
 import { enhancedOutputSchemas } from "./toolOutputSchemaGroups.js";
 import { requireOutputSchema } from "./toolOutputSchemaPrimitives.js";
+import { analysisDetailSchema } from "./analysisDetail.js";
 
 type FunctionWorkflowName = "analyze_function" | "inspect_native_api";
+
+/** Delivery selection belongs to adapters, never the native provider request. */
+const functionWorkflowInputSchemas = {
+  analyze_function: enhancedInputSchemas.analyze_function.extend({
+    detail: analysisDetailSchema,
+  }),
+  inspect_native_api: enhancedInputSchemas.inspect_native_api,
+} as const;
 
 const functionWorkflow = <Name extends FunctionWorkflowName>(
   name: Name,
   description: string,
 ) => {
-  const inputSchema = enhancedInputSchemas[name];
+  const inputSchema = functionWorkflowInputSchemas[name];
   const outputSchema = requireOutputSchema(enhancedOutputSchemas, name);
   return {
     name,
@@ -36,7 +45,7 @@ const functionWorkflow = <Name extends FunctionWorkflowName>(
 export const FUNCTION_WORKFLOW_TOOL_CONTRACTS = [
   functionWorkflow(
     "analyze_function",
-    "Build a dossier for one native function identified by symbol or provider-returned address. Returns identity with complete inclusive analyzed body ranges or explicit unknown, provider-specific pseudocode and assembly, comments, calls, references, referenced strings/names, local CFG blocks, and available native API boundary observations. Ghidra terminal-call assumptions that may cut the analyzed body are reported in limitations with available callee identities.",
+    "Build a dossier for one native function identified by symbol or provider-returned address. Returns identity with complete inclusive analyzed body ranges or explicit unknown, provider-specific pseudocode and assembly, comments, calls, references, referenced strings/names, local CFG blocks, and available native API boundary observations. detail summary retains the complete dossier and returns identity, facet counts and availability; use inspect_analysis_view with normalized_result.parent_evidence_id to page the retained facts without reanalysis. Default complete preserves the full inline result. Ghidra terminal-call assumptions that may cut the analyzed body are reported in limitations with available callee identities.",
   ),
   functionWorkflow(
     "inspect_native_api",

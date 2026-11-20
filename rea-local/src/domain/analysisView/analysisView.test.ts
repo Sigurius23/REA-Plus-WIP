@@ -60,6 +60,46 @@ const nativeParent = (
   artifact: { path: "/fixtures/example.exe", sha256: "a".repeat(64) },
 });
 
+it("summarizes legacy missing and unavailable native facets without inventing zero counts", () => {
+  const original = functionDossierSchema.parse(ghidraFunctionDossier());
+  const { unresolved_calls: _unrecorded, ...legacy } = original;
+  for (const native_value_flow of [
+    null,
+    {
+      available: false,
+      reason: "Unsupported fixture",
+      limitations: ["Flow unavailable"],
+    },
+  ]) {
+    const result = projectAnalysisView(
+      nativeParent({
+        ...legacy,
+        pseudocode: "",
+        native_api: null,
+        native_value_flow,
+      }),
+      { kind: "summary" },
+    );
+    if (!result.ok) throw result.error;
+    expect(result.value).toMatchObject({
+      kind: "summary",
+      summary: {
+        pseudocode: { available: null, code_units: 0 },
+        native_api: { available: null, jump_tables: null },
+        value_flow: {
+          available: native_value_flow === null ? null : false,
+          truncated: null,
+        },
+        counts: { unresolved_calls: null, value_flow_operations: null },
+      },
+      unknowns: expect.arrayContaining([
+        "unresolved_calls was not recorded",
+        "native_api was not recorded",
+      ]),
+    });
+  }
+});
+
 it("projects native procedure and bounded assembly and high-pcode with exact parent identity", () => {
   const parent = nativeParent();
   const procedure = projectAnalysisView(parent, {

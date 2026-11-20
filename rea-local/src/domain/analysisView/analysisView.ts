@@ -235,6 +235,42 @@ const javascriptSummarySchema = z.strictObject({
   limitation_count: z.number().int().nonnegative(),
 });
 
+/** Counts describe retained rows, without promoting them to complete coverage. */
+const nativeFunctionSummarySchema = z.strictObject({
+  procedure: z.strictObject({ name: z.string(), address: z.string() }),
+  pseudocode: z.strictObject({
+    available: z.boolean().nullable(),
+    code_units: z.number().int().nonnegative(),
+    unit: z.literal("utf16-code-units"),
+  }),
+  value_flow: z.strictObject({
+    available: z.boolean().nullable(),
+    truncated: z.boolean().nullable(),
+  }),
+  native_api: z.strictObject({
+    available: z.boolean().nullable(),
+    jump_tables: z.number().int().nonnegative().nullable(),
+  }),
+  counts: z.strictObject({
+    assembly: z.number().int().nonnegative(),
+    basic_blocks: z.number().int().nonnegative(),
+    comments: z.number().int().nonnegative(),
+    callers: z.number().int().nonnegative(),
+    callees: z.number().int().nonnegative(),
+    incoming_references: z.number().int().nonnegative(),
+    outgoing_references: z.number().int().nonnegative(),
+    unresolved_calls: z.number().int().nonnegative().nullable(),
+    referenced_strings: z.number().int().nonnegative(),
+    referenced_names: z.number().int().nonnegative(),
+    value_flow_operations: z.number().int().nonnegative().nullable(),
+    value_flow_def_use: z.number().int().nonnegative().nullable(),
+    value_flow_effects: z.number().int().nonnegative().nullable(),
+    value_flow_parameters: z.number().int().nonnegative().nullable(),
+    value_flow_parameter_uses: z.number().int().nonnegative().nullable(),
+  }),
+  limitation_count: z.number().int().nonnegative(),
+});
+
 const viewResultBase = {
   parent_evidence_id: prefixedDigestSchema("ev"),
   parent_operation: z.enum([
@@ -255,7 +291,12 @@ export const analysisViewResultSchema = z.discriminatedUnion("kind", [
   z.strictObject({
     kind: z.literal("summary"),
     view: summaryViewSchema,
-    summary: z.union([layoutSummarySchema, javascriptSummarySchema]),
+    procedure_address: z.string().nullable().optional(),
+    summary: z.union([
+      layoutSummarySchema,
+      javascriptSummarySchema,
+      nativeFunctionSummarySchema,
+    ]),
     ...viewResultBase,
   }),
   z.strictObject({

@@ -1,0 +1,197 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-upstream-retained-2026-11-20/mcp",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-broader-feature-plan-2026-11-15/broader-action-seeds-2038.tsv"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012a571c",
+        "detail": "summary"
+      },
+      "label": "reducer-summary",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-upstream-retained-2026-11-20/mcp/reducer-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "native",
+          "facet": "assembly",
+          "offset": 0,
+          "limit": 16
+        }
+      },
+      "label": "assembly-page",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-upstream-retained-2026-11-20/mcp/reducer-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "native",
+          "facet": "pseudocode",
+          "offset": 0,
+          "limit": 1024
+        }
+      },
+      "label": "pseudocode-page",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-upstream-retained-2026-11-20/mcp/reducer-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "native",
+          "facet": "value_flow_operations",
+          "offset": 0,
+          "limit": 16
+        }
+      },
+      "label": "value-flow-page",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-upstream-retained-2026-11-20/mcp/reducer-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "native",
+          "facet": "native_api",
+          "offset": 0,
+          "limit": 16
+        }
+      },
+      "label": "native-api",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-upstream-retained-2026-11-20/mcp/reducer-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "native",
+          "facet": "procedure",
+          "offset": 0,
+          "limit": 16
+        }
+      },
+      "label": "procedure",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012a571c",
+        "detail": "complete"
+      },
+      "label": "reducer-complete",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103eb510c",
+        "length": 268
+      },
+      "label": "state-fields",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103788b96",
+        "length": 96
+      },
+      "label": "state-name",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103d7b1ac",
+        "length": 40
+      },
+      "label": "state-parent",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-upstream-retained-2026-11-20/mcp/initial.bundle.json"
+      },
+      "label": "export-initial",
+      "expect_success": true
+    }
+  ],
+  "idle_timeout_ms": 180000,
+  "runtime_manifest": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-upstream-retained-2026-11-20/runtime-manifest.json",
+  "exploratory_broader_steps": "Errors are retained for investigation; they are not converted into successful semantic claims.",
+  "verification": "Compare compact delivery with complete native Evidence and the saved 28-case Arc baseline; page retained facts without reanalysis. Additional State metadata reads continue the existing offline investigation.",
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-upstream-retained-2026-11-20/field-names.continue.json"
+  ]
+}

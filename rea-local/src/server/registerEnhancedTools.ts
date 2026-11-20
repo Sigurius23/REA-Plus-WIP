@@ -30,6 +30,11 @@ import { logToolExecution } from "./toolLogging.js";
 import { toolRegistrationOptions } from "./toolRegistrationOptions.js";
 import { executeFunctionAnalysisEvidence } from "../application/FunctionAnalysisEvidence.js";
 import type { WithAdmittedAnalysis } from "./analysisAdmission.js";
+import type { EvidenceLookup } from "../application/EvidenceInputResolver.js";
+import {
+  analysisViewRetentionFailure,
+  summarizeRetainedAnalysis,
+} from "../application/analysisView/AnalysisViewService.js";
 
 /** Optional session services used by enhanced tool registration. */
 export interface EnhancedToolRegistration {
@@ -40,6 +45,7 @@ export interface EnhancedToolRegistration {
     | (() => AnalysisProfileCommitment | undefined)
     | undefined;
   readonly recordEvidence: EvidenceWriter["recordEvidence"] | undefined;
+  readonly evidenceById?: EvidenceLookup | undefined;
   readonly recordUnknown: UnknownRegistryPort["recordUnknown"] | undefined;
   readonly allowsSnapshotReplay:
     | ((operation: ValidatedEnhancedCall["name"]) => boolean)
@@ -158,11 +164,14 @@ export const registerEnhancedTools = (
   server.registerTool(
     analyzeFunction.name,
     toolRegistrationOptions(analyzeFunction),
-    (input, context) =>
-      executeEnhancedTool(registration, analyzeFunction, {
-        validatedCall: { name: "analyze_function", input },
+    (input, context) => {
+      const { detail, ...parameters } = input;
+      return executeEnhancedTool(registration, analyzeFunction, {
+        validatedCall: { name: "analyze_function", input: parameters },
         context,
-      }),
+        detail,
+      });
+    },
   );
   server.registerTool(
     inspectNativeApi.name,
@@ -210,6 +219,7 @@ const executeEnhancedTool = async (
   request: {
     readonly validatedCall: ValidatedEnhancedCall;
     readonly context: ServerContext;
+    readonly detail?: "complete" | "summary";
   },
 ): Promise<CallToolResult> => {
   const admitted = await registration.withAdmittedAnalysis(
@@ -231,6 +241,7 @@ const executeEnhancedTool = async (
         return executeFunctionTool(admittedAnalysis, registration, contract, {
           context,
           parameters,
+          detail: request.detail ?? "complete",
         });
       const scope = new WorkflowEvidenceScope(
         {
@@ -308,9 +319,21 @@ const executeFunctionTool = async (
   request: {
     readonly context: ServerContext;
     readonly parameters: Readonly<Record<string, JsonValue>>;
+    readonly detail: "complete" | "summary";
   },
 ): Promise<CallToolResult> => {
   const { context, parameters } = request;
+  if (request.detail === "summary") {
+    const unavailable = analysisViewRetentionFailure("analyze_function", {
+      recordEvidence: registration.recordEvidence,
+      evidenceById: registration.evidenceById,
+    });
+    if (unavailable !== undefined)
+      return registration.delivery.toCallToolResult(
+        { ok: false, error: unavailable },
+        contract,
+      );
+  }
   const progress = mcpProgressReporter(context);
   const result = await logToolExecution(
     registration.logger,
@@ -335,6 +358,19 @@ const executeFunctionTool = async (
   });
   if (!result.ok)
     return registration.delivery.toCallToolResult(result, contract);
+  if (request.detail === "summary") {
+    const summary = summarizeRetainedAnalysis(result.value, {
+      recordEvidence: registration.recordEvidence,
+      evidenceById: registration.evidenceById,
+    });
+    return summary.ok
+      ? registration.delivery.toEvidenceToolResult(
+          summary.value,
+          contract,
+          registration.recordEvidence?.(summary.value),
+        )
+      : registration.delivery.toCallToolResult(summary, contract);
+  }
   return registration.delivery.toEvidenceToolResult(
     result.value,
     contract,

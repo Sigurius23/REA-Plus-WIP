@@ -4,6 +4,19 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc-focused upstream retention, item 62 (2026-11-20):** First bounded
+  slice implemented and verified. Native function summaries retain complete
+  Evidence and expose existing selected pages; the CLI saves a new portable
+  full bundle before summary delivery. **44 focused tests**, fast/docs/package
+  checks, **37/37 real Arc MCP calls** and a fresh CLI case pass with empty
+  owned lineage. The 31,084-byte MCP summary points to the exact saved full
+  Arc record: all 28 mappings and 10,072 body bytes remain unchanged. Baseline
+  research is saved/pushed as `d62dd2f4f` and tag
+  `arc-baseline-before-upstream-2026-11-20`. Program persistence remains open:
+  upstream's stock checkpoint profile rejects the seeds/extensions our Arc
+  workflow requires. The same pass observes all 21 `BoostsEditor.State` stored
+  names. See the [update and retest](field-tests/arc-upstream-retained-2026-11-20.md).
+
 - **Cleanup history across attempts, item 58 (2026-11-14):** Fixed and verified.
   Review reproduced a false successful second close after an incomplete stop:
   the launcher exits and a detached, unreadable child is forgotten. The repair
@@ -1556,12 +1569,20 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     names / 30 local-only names**. Counts describe names, not independent
     capabilities or verified runtime availability.
 
+    - [x] Add bounded native function summary delivery and use retained native
+      pages through MCP/CLI (2026-11-20). The complete parent is preserved;
+      default complete behavior and the response budget remain unchanged.
+      See the [44-test and real Arc qualification](field-tests/arc-upstream-retained-2026-11-20.md).
+
     - [ ] Reconcile shared schema/Evidence/profile, boundary/parser and
       lifecycle changes while retaining local Swift/Arc/Rize and ownership
       fixes. Audit findings alone do not prove upstream bug fixes are missing
       semantically from our different implementation.
     - [ ] Port and qualify owned Ghidra checkpoints, verified selected-project
-      copies and retained native pages to reduce repeated Arc analysis.
+      copies and remaining native inventory/batch pages. Stock upstream
+      checkpoints reject seeds/extensions; preserving the Arc seeded profile
+      requires a separate ownership/provenance integration. Defer that broader
+      port while continuing Arc with the qualified function-summary slice.
     - [ ] Add structured offline firmware readers (HEX/S-record, UF2/DfuSe,
       uImage/FIT/ESP, Android boot/OTA) and devicetree inspection.
     - [ ] Qualify raw-image/RISC-V, expanded MIPS and PowerPC/DOL lanes
@@ -1574,6 +1595,8 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 
     Preserve the 30 differently exposed local tools, including general function
     emulation and Chromium resource inspection/search; do not replace REA+
-    wholesale. No source merge, dependency install or upstream provider run was
-    performed. See the [comparison and proposed order](field-tests/upstream-rea-comparison-2026-11-18.md)
+    wholesale. The November 18 audit performed no source merge, dependency
+    install or upstream provider run. The November 20 selective delivery
+    update and local qualification are recorded above. See the
+    [comparison and proposed order](field-tests/upstream-rea-comparison-2026-11-18.md)
     and [complete source-name inventory](field-tests/upstream-rea-comparison-2026-11-18/comparison.json).

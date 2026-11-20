@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { analysisViewResultSchema } from "../domain/analysisView/analysisView.js";
 
 import {
   procedureClassificationSchema,
@@ -520,4 +521,6 @@ export const graphNode = z.discriminatedUnion("status", [
   }),
 ]);
 
-export const functionDossierOutput = evidenceResultOf(functionDossierSchema);
+export const functionDossierOutput = evidenceResultOf(
+  z.union([functionDossierSchema, analysisViewResultSchema]),
+);

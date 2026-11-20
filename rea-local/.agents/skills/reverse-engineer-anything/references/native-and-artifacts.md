@@ -53,6 +53,16 @@ cross-references. Addresses and recovered pseudocode are analysis observations,
 not original source. Provider unavailability and unsupported metadata remain
 unknown rather than false.
 
+For large functions, request `analyze_function` with `detail: "summary"` in a
+retaining MCP session. Keep its `normalized_result.parent_evidence_id`; the
+complete dossier stays retained. Default complete delivery is unchanged.
+For CLI, `rea function ./app 0x100001000 --detail summary
+--evidence-output ./function.bundle.json --json` saves a new portable bundle
+before returning its summary. Import that bundle for later session views.
+Summary counts describe retained rows, not complete coverage; missing facets
+and unavailable value flow remain unknown. A summary is not a full dossier for
+comparison or further native derivation.
+
 For a completed `analyze_function` dossier, use `inspect_analysis_view` with
 `view: {kind: "native", facet: "value_flow_operations", offset: 0, limit: 32}`
 and the exact retained Evidence ID to read selected facts without reanalysis.

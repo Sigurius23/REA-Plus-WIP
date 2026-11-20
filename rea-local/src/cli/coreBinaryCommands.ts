@@ -19,6 +19,7 @@ import type { CliInstance } from "./types.js";
 import { runCliJavaScriptApplicationAnalysis } from "./javascriptApplicationAnalysis.js";
 import { withCommandCancellation } from "./commandCancellation.js";
 import { javascriptApplicationOptions } from "../cliObservationOptions.js";
+import { runCliFunctionAnalysis } from "./functionAnalysis.js";
 
 const snapshotOption = z
   .string()
@@ -41,6 +42,15 @@ const standardAnalysisOptions = {
   "staging-dir": stagingDirSelectionOption,
   provider: providerSelectionOption,
 };
+
+const functionDeliveryOptions = z.object({
+  detail: z.enum(["complete", "summary"]).default("complete"),
+  "evidence-output": z
+    .string()
+    .min(1)
+    .optional()
+    .describe("New portable Evidence bundle path; required for summary"),
+});
 
 /** Route parsed standard options into direct-analysis execution options. */
 const directOptions = (
@@ -86,23 +96,38 @@ const registerProcedureSelectorCommand = (
     options: z.object({
       procedure: procedureOption,
       ...standardAnalysisOptions,
+      ...(registration.operation === "analyze_function"
+        ? {
+            ...functionDeliveryOptions.shape,
+          }
+        : {}),
     }),
     run: ({ args, options }) =>
-      logCliCommand(logger, registration.command, () =>
-        runDirectAnalysis(
-          args.path,
-          registration.operation,
-          {
-            procedure: resolveCliAnalysisSelector(
-              args.address,
-              options.procedure,
-              "procedure",
-              registration.operation,
-            ),
-          },
-          directOptions(logger, options),
-        ),
-      ),
+      logCliCommand(logger, registration.command, () => {
+        const run = (signal?: AbortSignal) =>
+          runDirectAnalysis(
+            args.path,
+            registration.operation,
+            {
+              procedure: resolveCliAnalysisSelector(
+                args.address,
+                options.procedure,
+                "procedure",
+                registration.operation,
+              ),
+            },
+            {
+              ...directOptions(logger, options),
+              ...(signal === undefined ? {} : { signal }),
+            },
+          );
+        if (registration.operation !== "analyze_function") return run();
+        const delivery = functionDeliveryOptions.parse(options);
+        return runCliFunctionAnalysis(run, {
+          detail: delivery.detail,
+          evidenceOutput: delivery["evidence-output"],
+        });
+      }),
   });
 };
 

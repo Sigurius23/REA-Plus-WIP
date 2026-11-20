@@ -59,6 +59,51 @@ const parentFields = (
   };
 };
 
+/** Retained facts only; missing facets remain null rather than measured zero. */
+const summarizeDossier = (dossier: FunctionDossier) => {
+  const flow = dossier.native_value_flow?.available
+    ? dossier.native_value_flow
+    : undefined;
+  const api = dossier.native_api;
+  return {
+    procedure: {
+      name: dossier.procedure.name,
+      address: dossier.procedure.address,
+    },
+    pseudocode: {
+      available: dossier.pseudocode.length > 0 ? true : null,
+      code_units: dossier.pseudocode.length,
+      unit: "utf16-code-units" as const,
+    },
+    value_flow: {
+      available: dossier.native_value_flow?.available ?? null,
+      truncated: flow?.truncated ?? null,
+    },
+    native_api: {
+      available: api?.available ?? null,
+      jump_tables: api?.available ? api.jump_tables.length : null,
+    },
+    counts: {
+      assembly: dossier.assembly.length,
+      basic_blocks: dossier.basic_blocks.length,
+      comments: dossier.comments.length,
+      callers: dossier.callers.length,
+      callees: dossier.callees.length,
+      incoming_references: dossier.incoming_references.length,
+      outgoing_references: dossier.outgoing_references.length,
+      unresolved_calls: dossier.unresolved_calls?.length ?? null,
+      referenced_strings: dossier.referenced_strings.length,
+      referenced_names: dossier.referenced_names.length,
+      value_flow_operations: flow?.operations.length ?? null,
+      value_flow_def_use: flow?.def_use.length ?? null,
+      value_flow_effects: flow?.effects.length ?? null,
+      value_flow_parameters: flow?.parameters.length ?? null,
+      value_flow_parameter_uses: flow?.parameter_uses.length ?? null,
+    },
+    limitation_count: dossier.limitations.length,
+  };
+};
+
 const pseudocodePage = (
   body: string,
   offset: number,
@@ -134,8 +179,10 @@ export const projectNativeFunctionView = (
   dossier: FunctionDossier,
   view: AnalysisViewRequest,
 ): Result<UnsignedAnalysisView, AnalysisError> => {
-  if (view.kind !== "native")
-    return err(viewError("analyze_function Evidence requires a native view."));
+  if (view.kind !== "native" && view.kind !== "summary")
+    return err(
+      viewError("analyze_function Evidence requires a native or summary view."),
+    );
   const artifact = parent.artifact;
   if (!artifact)
     return err(
@@ -149,6 +196,25 @@ export const projectNativeFunctionView = (
       ]),
     );
   const common = parentFields(parent, dossier, artifact);
+  if (view.kind === "summary")
+    return ok({
+      kind: "summary",
+      view,
+      summary: summarizeDossier(dossier),
+      coverage: completeWithinViewCoverage(1, 1),
+      ...common,
+      unknowns: uniqueSorted([
+        ...common.unknowns,
+        ...(dossier.pseudocode.length === 0
+          ? [
+              "No pseudocode text was returned; this dossier does not establish whether pseudocode is unavailable.",
+            ]
+          : []),
+        ...(dossier.unresolved_calls === undefined
+          ? ["unresolved_calls was not recorded"]
+          : []),
+      ]),
+    });
   const singleton = (item: unknown): UnsignedAnalysisView => ({
     kind: "native",
     view,

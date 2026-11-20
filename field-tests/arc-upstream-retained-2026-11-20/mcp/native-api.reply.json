@@ -1,0 +1,648 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"evidence_id\":\"ev_0075770301136b3254bc31f661f1259d13e042ba2507ddedd4fd31f13bfb7a39\",\"subject\":{\"name\":\"Arc-arm64\",\"digest\":{\"sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"},\"format\":\"mach-o\",\"architecture\":\"arm64\",\"local_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\"},\"provider\":{\"id\":\"rea-analysis-view\",\"name\":\"REA+ analysis view projection\",\"version\":\"1\"},\"analysis_profile\":null,\"predicate_type\":\"rea.analysis-view\",\"operation\":\"inspect_analysis_view\",\"parameters\":{\"parent_evidence_id\":\"ev_7820ea6368f520cd61483866fba5814ed0c4a1661bb9cc22d4c6f15a6806a139\",\"view\":{\"kind\":\"native\",\"facet\":\"native_api\",\"offset\":0,\"limit\":16}},\"raw_result\":null,\"normalized_result\":{\"kind\":\"native\",\"view\":{\"kind\":\"native\",\"facet\":\"native_api\",\"offset\":0,\"limit\":16},\"procedure_address\":\"0x1012a571c\",\"item\":{\"available\":true,\"provenance\":\"ghidra-high-function\",\"signature_source\":\"default\",\"calling_convention\":\"__swiftcall\",\"return_type\":{\"ordinal\":null,\"name\":null,\"data_type\":\"void\",\"size_bytes\":0,\"storage\":\"<VOID>\",\"confidence\":\"low\",\"evidence\":[{\"kind\":\"signature-source\",\"source\":\"ghidra-function-manager\",\"detail\":\"Function signature source is default.\"},{\"kind\":\"decompiler-type\",\"source\":\"ghidra-high-function\",\"detail\":\"HighFunction recovered data type void.\"}],\"decompiler_artifacts\":[\"recovered-signature\",\"register-or-stack-storage\"],\"role\":\"return\"},\"parameters\":[{\"ordinal\":0,\"name\":\"param_1\",\"data_type\":\"long *\",\"size_bytes\":8,\"storage\":\"x8:8\",\"confidence\":\"low\",\"evidence\":[{\"kind\":\"signature-source\",\"source\":\"ghidra-function-manager\",\"detail\":\"Function signature source is default.\"},{\"kind\":\"decompiler-type\",\"source\":\"ghidra-high-function\",\"detail\":\"HighFunction recovered data type long *.\"}],\"decompiler_artifacts\":[\"recovered-signature\",\"register-or-stack-storage\",\"compiler-generated-variable\"],\"role\":\"parameter\"},{\"ordinal\":1,\"name\":\"param_2\",\"data_type\":\"undefined8 *\",\"size_bytes\":8,\"storage\":\"x0:8\",\"confidence\":\"low\",\"evidence\":[{\"kind\":\"signature-source\",\"source\":\"ghidra-function-manager\",\"detail\":\"Function signature source is default.\"},{\"kind\":\"decompiler-type\",\"source\":\"ghidra-high-function\",\"detail\":\"HighFunction recovered data type undefined8 *.\"}],\"decompiler_artifacts\":[\"recovered-signature\",\"register-or-stack-storage\",\"compiler-generated-variable\"],\"role\":\"parameter\"},{\"ordinal\":2,\"name\":\"param_3\",\"data_type\":\"undefined8\",\"size_bytes\":8,\"storage\":\"x1:8\",\"confidence\":\"low\",\"evidence\":[{\"kind\":\"signature-source\",\"source\":\"ghidra-function-manager\",\"detail\":\"Function signature source is default.\"},{\"kind\":\"decompiler-type\",\"source\":\"ghidra-high-function\",\"detail\":\"HighFunction recovered data type undefined8.\"}],\"decompiler_artifacts\":[\"recovered-signature\",\"register-or-stack-storage\",\"compiler-generated-variable\"],\"role\":\"parameter\"}],\"jump_tables\":[{\"dispatch_address\":\"0x1012a5bc8\",\"data_sources\":[{\"address\":\"0x1012a7e74\",\"provenance\":\"rea-swift-enum-signed-word-table\",\"entry_size_bytes\":4,\"entry_count\":28,\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift enum descriptor 0x103d7b2a4 declares 11 payload and 17 empty cases; field descriptor 0x103eb5298 agrees. Under swift-dynamic-typed-snapshot-v1, the exact libswiftCore runtime tag call at 0x1012a5aa0 receives metadata from accessor 0x1012b284c for outer enum descriptor 0x103d7b260. Its source is the current SP after the last align16(N) allocation at 0x1012a5a80, where N is VWT+64 of that same metadata value. The straight-line entry prefix proves only register/stack identities; unknown earlier calls and escapes are allowed and their memory history is discarded. Assumptions: a recursively valid active outer payload at this call's normal return; stable ABI metadata layout; ordinary nonwrapping, nonaliasing stack allocation with N<=align16(N), N large enough for the active payload; live source and destination until the child getter, and no asynchronous interference throughout the checked post-tag window through dispatch. Stable imported-call/GOT bindings throughout the prefix (no interposition or mutation by earlier unknown calls) are assumed; visible non-stack writes cannot establish probe effects. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a577c binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a57b8 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a57e0 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5800 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5820 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a583c binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5870 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5898 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a58b8 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a58f0 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5940 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5980 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a59c0 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a59f0 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5a30 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5a58 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5a78 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Every incoming path selects outer tag 1; direct reflection field 0x103eb5234 binds inline offset-zero child descriptor 0x103d7b2a4. Static child metadata 0x104317118 declares VWT 0x104317098, size 156 and pure complete getter 0x1012b2860. Complete inline SIMD byte origins prove destination byte j equals snapshot source byte j for all 156 bytes, with live/disjoint fixed destination and dynamic source. No unknown post-tag call/write, SP change, foreign entry or bypass is admitted. Getter call 0x1012a5ba8 reads that representation. A separate straight-line getter-return-to-dispatch proof rejects calls, SP changes, foreign/bypass entries and unmodeled stores, including effects on escaped tag spills. Shared helper code never supplies identity/count. This proof does not establish preceding copy/witness correctness, pre-tag nonescape, ownership/retention, or later lifetime semantics. Its unchanged tag reaches the LDRSW index after an explicit 32-bit zero-extending write. Signed 32-bit entries at 0x1012a7e74 are added to 0x1012a5bb8; the simple non-writeback LDR at 0x1012a5bc4 does not overwrite the computed branch register and has a single fallthrough predecessor/successor in this suffix. REA+ restored computed edges, disassembled destinations and extended the owning function before observations; generated override labels are analysis metadata, not source/caller declarations.\"}]}],\"mappings\":[{\"case_value\":0,\"target_address\":\"0x1012a5bcc\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 0 (field name showAdvancedColorMapper) selects signed word at 0x1012a7e74, reaching 0x1012a5bcc. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":1,\"target_address\":\"0x1012a63fc\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 1 (field name setModality) selects signed word at 0x1012a7e78, reaching 0x1012a63fc. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":2,\"target_address\":\"0x1012a6324\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 2 (field name setCodeEditingWindowSize) selects signed word at 0x1012a7e7c, reaching 0x1012a6324. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":3,\"target_address\":\"0x1012a63a0\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 3 (field name setZapToPreview) selects signed word at 0x1012a7e80, reaching 0x1012a63a0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":4,\"target_address\":\"0x1012a6154\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 4 (field name toggleDevTools) selects signed word at 0x1012a7e84, reaching 0x1012a6154. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":5,\"target_address\":\"0x1012a65d4\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 5 (field name update) selects signed word at 0x1012a7e88, reaching 0x1012a65d4. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":6,\"target_address\":\"0x1012a6834\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 6 (field name appendZap) selects signed word at 0x1012a7e8c, reaching 0x1012a6834. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":7,\"target_address\":\"0x1012a63e0\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 7 (field name removeZap) selects signed word at 0x1012a7e90, reaching 0x1012a63e0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":8,\"target_address\":\"0x1012a6ad0\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 8 (field name showSelectorPicker) selects signed word at 0x1012a7e94, reaching 0x1012a6ad0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":9,\"target_address\":\"0x1012a61dc\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 9 (field name copySelectorToPasteboard) selects signed word at 0x1012a7e98, reaching 0x1012a61dc. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":10,\"target_address\":\"0x1012a6a54\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 10 (field name boostIDE) selects signed word at 0x1012a7e9c, reaching 0x1012a6a54. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":11,\"target_address\":\"0x1012a5f84\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 11 (field name initialize) selects signed word at 0x1012a7ea0, reaching 0x1012a5f84. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":12,\"target_address\":\"0x1012a6174\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 12 (field name close) selects signed word at 0x1012a7ea4, reaching 0x1012a6174. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":13,\"target_address\":\"0x1012a6750\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 13 (field name completeInterstitial) selects signed word at 0x1012a7ea8, reaching 0x1012a6750. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":14,\"target_address\":\"0x1012a5f7c\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 14 (field name learnMore) selects signed word at 0x1012a7eac, reaching 0x1012a5f7c. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":15,\"target_address\":\"0x1012a6340\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 15 (field name undo) selects signed word at 0x1012a7eb0, reaching 0x1012a6340. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":16,\"target_address\":\"0x1012a5f48\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 16 (field name redo) selects signed word at 0x1012a7eb4, reaching 0x1012a5f48. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":17,\"target_address\":\"0x1012a642c\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 17 (field name delete) selects signed word at 0x1012a7eb8, reaching 0x1012a642c. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":18,\"target_address\":\"0x1012a69e0\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 18 (field name rename) selects signed word at 0x1012a7ebc, reaching 0x1012a69e0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":19,\"target_address\":\"0x1012a6c10\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 19 (field name shuffle) selects signed word at 0x1012a7ec0, reaching 0x1012a6c10. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":20,\"target_address\":\"0x1012a64a0\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 20 (field name report) selects signed word at 0x1012a7ec4, reaching 0x1012a64a0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":21,\"target_address\":\"0x1012a66f4\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 21 (field name resetAll) selects signed word at 0x1012a7ec8, reaching 0x1012a66f4. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":22,\"target_address\":\"0x1012a6af0\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 22 (field name resetColorMapping) selects signed word at 0x1012a7ecc, reaching 0x1012a6af0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":23,\"target_address\":\"0x1012a6c20\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 23 (field name showAllBoosts) selects signed word at 0x1012a7ed0, reaching 0x1012a6c20. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":24,\"target_address\":\"0x1012a62b8\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 24 (field name reloadPage) selects signed word at 0x1012a7ed4, reaching 0x1012a62b8. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":25,\"target_address\":\"0x1012a62a4\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 25 (field name hideSelectorPicker) selects signed word at 0x1012a7ed8, reaching 0x1012a62a4. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":26,\"target_address\":\"0x1012a6cd4\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 26 (field name boostIDEAppeared) selects signed word at 0x1012a7edc, reaching 0x1012a6cd4. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]},{\"case_value\":27,\"target_address\":\"0x1012a5ed8\",\"confidence\":\"high\",\"evidence\":[{\"kind\":\"jump-table\",\"source\":\"rea-swift-abi-instruction-and-memory\",\"detail\":\"Swift ABI tag 27 (field name dismissJSWarningBanner) selects signed word at 0x1012a7ee0, reaching 0x1012a5ed8. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74.\"}]}],\"default_targets\":[],\"limitations\":[\"Case values are Swift ABI runtime tags, with payload cases before empty cases; field names are reflection metadata. Valid enum values supply the bound; this does not establish state reachability or original source order.\",\"swift-dynamic-typed-snapshot-v1: conditional on a recursively valid active outer value at the exact runtime tag call, stable ABI layout and imported-call/GOT bindings during the prefix (no interposition/mutation), live/disjoint stack regions, nonwrapping monotonic allocations and a stable checked post-tag window. Pre-tag nonescape, preceding copy/ownership and later lifetime semantics are not proved.\",\"Darwin stack-probe effects assume trusted-darwin-arm64-chkstk-v1 on normal return. Import identity does not establish Arc's runtime binding, absence of interposition, nonfaulting reads or completed allocation.\"]}],\"call_model_adjustments\":[],\"pseudocode\":{\"classification\":\"decompiler-generated-non-source\",\"compilable\":false},\"decompiler_artifacts\":[\"recovered-signature\",\"register-and-stack-variables\",\"compiler-generated-control-flow\",\"pointer-arithmetic\",\"pseudocode\"],\"limitations\":[\"Types and calling conventions are Ghidra decompiler observations, not source declarations.\",\"Register variables, compiler-generated blocks, and pointer arithmetic remain decompiler artifacts.\",\"Pseudocode is neither original source nor guaranteed to compile.\",\"On supported non-Windows AArch64 Mach-O inputs, REA+ can restore signed-word Swift enum dispatches from verified ABI metadata, accessor and instruction flow. Generated switch overrides are analysis metadata. Recovery budgets are 4096 cases, 100000 CFG/reaching-definition work units per candidate function and 256 nested queries; unsupported or exhausted paths remain unrecovered, not complete.\"]},\"parent_evidence_id\":\"ev_7820ea6368f520cd61483866fba5814ed0c4a1661bb9cc22d4c6f15a6806a139\",\"parent_operation\":\"analyze_function\",\"parent_digest\":\"7820ea6368f520cd61483866fba5814ed0c4a1661bb9cc22d4c6f15a6806a139\",\"view_digest\":\"23d22b19b345d14a5ea63145d62266bf5de86e6f771985901e2a56afe246c05c\",\"artifact\":{\"path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"},\"coverage\":{\"status\":\"complete-within-view\",\"examined\":1,\"total\":1,\"next_offset\":null,\"exhausted\":true},\"limitations\":[\"Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.\",\"Def-use links do not cross function boundaries and may omit memory aliasing, call side effects, or unresolved indirect flow.\",\"Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.\",\"Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-broader-feature-plan-2026-11-15/broader-action-seeds-2038.tsv (sha256 e79864e44b4309050e623ae1c63a1bc2ccab8126a7f96371363e1afd94b7e457: 2038 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.\",\"Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.\",\"High p-code is decompiler-derived, not original source or runtime behavior. is_dead preserves the Java AST flag; decoded block members can retain that flag, so block_membership separately reports actual syntax-tree membership.\",\"Known omitted-edge counts cover links omitted from retained operations; omitted operations may contain additional uncounted links.\",\"Memory read/write effects include stack and temporary memory operations; they do not identify persistent state or business meaning.\",\"On supported non-Windows AArch64 Mach-O inputs, REA+ can restore signed-word Swift enum dispatches from verified ABI metadata, accessor and instruction flow. Generated switch overrides are analysis metadata. Recovery budgets are 4096 cases, 100000 CFG/reaching-definition work units per candidate function and 256 nested queries; unsupported or exhausted paths remain unrecovered, not complete.\",\"Operation, input, and def-use limits can truncate large functions; inspect truncation, omitted lower bounds, and known omitted counts before drawing conclusions.\",\"Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.\",\"Pseudocode is neither original source nor guaranteed to compile.\",\"References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.\",\"Register variables, compiler-generated blocks, and pointer arithmetic remain decompiler artifacts.\",\"Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.\",\"Seed outcome: 1940 functions created, 98 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory.\",\"Swift control-flow uncertainty at 0x1012a59d4: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a5ddc: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a5df0: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a61ec: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a64e8: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a6534: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a6550: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a71cc: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Synthetic Ghidra entry-point references without actionable memory sources are omitted.\",\"The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.\",\"The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.\",\"The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.\",\"The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.\",\"The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.\",\"Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.\",\"Types and calling conventions are Ghidra decompiler observations, not source declarations.\",\"Unresolved computed or indirect flows without target addresses are not represented as reference edges.\",\"macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.\"],\"unknowns\":[\"native_value_flow is truncated; omitted observations remain unknown\"]},\"confidence\":\"derived\",\"authority\":\"shipped-artifact\",\"environment\":null,\"limitations\":[\"Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.\",\"Def-use links do not cross function boundaries and may omit memory aliasing, call side effects, or unresolved indirect flow.\",\"Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.\",\"Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-broader-feature-plan-2026-11-15/broader-action-seeds-2038.tsv (sha256 e79864e44b4309050e623ae1c63a1bc2ccab8126a7f96371363e1afd94b7e457: 2038 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.\",\"Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.\",\"High p-code is decompiler-derived, not original source or runtime behavior. is_dead preserves the Java AST flag; decoded block members can retain that flag, so block_membership separately reports actual syntax-tree membership.\",\"Known omitted-edge counts cover links omitted from retained operations; omitted operations may contain additional uncounted links.\",\"Memory read/write effects include stack and temporary memory operations; they do not identify persistent state or business meaning.\",\"On supported non-Windows AArch64 Mach-O inputs, REA+ can restore signed-word Swift enum dispatches from verified ABI metadata, accessor and instruction flow. Generated switch overrides are analysis metadata. Recovery budgets are 4096 cases, 100000 CFG/reaching-definition work units per candidate function and 256 nested queries; unsupported or exhausted paths remain unrecovered, not complete.\",\"Operation, input, and def-use limits can truncate large functions; inspect truncation, omitted lower bounds, and known omitted counts before drawing conclusions.\",\"Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.\",\"Pseudocode is neither original source nor guaranteed to compile.\",\"References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.\",\"Register variables, compiler-generated blocks, and pointer arithmetic remain decompiler artifacts.\",\"Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.\",\"Seed outcome: 1940 functions created, 98 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory.\",\"Swift control-flow uncertainty at 0x1012a59d4: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a5ddc: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a5df0: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a61ec: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a64e8: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a6534: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a6550: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Swift control-flow uncertainty at 0x1012a71cc: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.\",\"Synthetic Ghidra entry-point references without actionable memory sources are omitted.\",\"The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.\",\"The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.\",\"The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.\",\"The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.\",\"The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.\",\"Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.\",\"Types and calling conventions are Ghidra decompiler observations, not source declarations.\",\"Unresolved computed or indirect flows without target addresses are not represented as reference edges.\",\"macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.\"],\"locations\":[{\"kind\":\"artifact-path\",\"path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\"},{\"kind\":\"address\",\"address\":\"0x1012a571c\"}],\"evidence_links\":[\"ev_7820ea6368f520cd61483866fba5814ed0c4a1661bb9cc22d4c6f15a6806a139\"]}"
+    }
+  ],
+  "structuredContent": {
+    "evidence_id": "ev_0075770301136b3254bc31f661f1259d13e042ba2507ddedd4fd31f13bfb7a39",
+    "subject": {
+      "name": "Arc-arm64",
+      "digest": {
+        "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+      },
+      "format": "mach-o",
+      "architecture": "arm64",
+      "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+    },
+    "provider": {
+      "id": "rea-analysis-view",
+      "name": "REA+ analysis view projection",
+      "version": "1"
+    },
+    "analysis_profile": null,
+    "predicate_type": "rea.analysis-view",
+    "operation": "inspect_analysis_view",
+    "parameters": {
+      "parent_evidence_id": "ev_7820ea6368f520cd61483866fba5814ed0c4a1661bb9cc22d4c6f15a6806a139",
+      "view": {
+        "kind": "native",
+        "facet": "native_api",
+        "offset": 0,
+        "limit": 16
+      }
+    },
+    "raw_result": null,
+    "normalized_result": {
+      "kind": "native",
+      "view": {
+        "kind": "native",
+        "facet": "native_api",
+        "offset": 0,
+        "limit": 16
+      },
+      "procedure_address": "0x1012a571c",
+      "item": {
+        "available": true,
+        "provenance": "ghidra-high-function",
+        "signature_source": "default",
+        "calling_convention": "__swiftcall",
+        "return_type": {
+          "ordinal": null,
+          "name": null,
+          "data_type": "void",
+          "size_bytes": 0,
+          "storage": "<VOID>",
+          "confidence": "low",
+          "evidence": [
+            {
+              "kind": "signature-source",
+              "source": "ghidra-function-manager",
+              "detail": "Function signature source is default."
+            },
+            {
+              "kind": "decompiler-type",
+              "source": "ghidra-high-function",
+              "detail": "HighFunction recovered data type void."
+            }
+          ],
+          "decompiler_artifacts": [
+            "recovered-signature",
+            "register-or-stack-storage"
+          ],
+          "role": "return"
+        },
+        "parameters": [
+          {
+            "ordinal": 0,
+            "name": "param_1",
+            "data_type": "long *",
+            "size_bytes": 8,
+            "storage": "x8:8",
+            "confidence": "low",
+            "evidence": [
+              {
+                "kind": "signature-source",
+                "source": "ghidra-function-manager",
+                "detail": "Function signature source is default."
+              },
+              {
+                "kind": "decompiler-type",
+                "source": "ghidra-high-function",
+                "detail": "HighFunction recovered data type long *."
+              }
+            ],
+            "decompiler_artifacts": [
+              "recovered-signature",
+              "register-or-stack-storage",
+              "compiler-generated-variable"
+            ],
+            "role": "parameter"
+          },
+          {
+            "ordinal": 1,
+            "name": "param_2",
+            "data_type": "undefined8 *",
+            "size_bytes": 8,
+            "storage": "x0:8",
+            "confidence": "low",
+            "evidence": [
+              {
+                "kind": "signature-source",
+                "source": "ghidra-function-manager",
+                "detail": "Function signature source is default."
+              },
+              {
+                "kind": "decompiler-type",
+                "source": "ghidra-high-function",
+                "detail": "HighFunction recovered data type undefined8 *."
+              }
+            ],
+            "decompiler_artifacts": [
+              "recovered-signature",
+              "register-or-stack-storage",
+              "compiler-generated-variable"
+            ],
+            "role": "parameter"
+          },
+          {
+            "ordinal": 2,
+            "name": "param_3",
+            "data_type": "undefined8",
+            "size_bytes": 8,
+            "storage": "x1:8",
+            "confidence": "low",
+            "evidence": [
+              {
+                "kind": "signature-source",
+                "source": "ghidra-function-manager",
+                "detail": "Function signature source is default."
+              },
+              {
+                "kind": "decompiler-type",
+                "source": "ghidra-high-function",
+                "detail": "HighFunction recovered data type undefined8."
+              }
+            ],
+            "decompiler_artifacts": [
+              "recovered-signature",
+              "register-or-stack-storage",
+              "compiler-generated-variable"
+            ],
+            "role": "parameter"
+          }
+        ],
+        "jump_tables": [
+          {
+            "dispatch_address": "0x1012a5bc8",
+            "data_sources": [
+              {
+                "address": "0x1012a7e74",
+                "provenance": "rea-swift-enum-signed-word-table",
+                "entry_size_bytes": 4,
+                "entry_count": 28,
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift enum descriptor 0x103d7b2a4 declares 11 payload and 17 empty cases; field descriptor 0x103eb5298 agrees. Under swift-dynamic-typed-snapshot-v1, the exact libswiftCore runtime tag call at 0x1012a5aa0 receives metadata from accessor 0x1012b284c for outer enum descriptor 0x103d7b260. Its source is the current SP after the last align16(N) allocation at 0x1012a5a80, where N is VWT+64 of that same metadata value. The straight-line entry prefix proves only register/stack identities; unknown earlier calls and escapes are allowed and their memory history is discarded. Assumptions: a recursively valid active outer payload at this call's normal return; stable ABI metadata layout; ordinary nonwrapping, nonaliasing stack allocation with N<=align16(N), N large enough for the active payload; live source and destination until the child getter, and no asynchronous interference throughout the checked post-tag window through dispatch. Stable imported-call/GOT bindings throughout the prefix (no interposition or mutation by earlier unknown calls) are assumed; visible non-stack writes cannot establish probe effects. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a577c binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a57b8 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a57e0 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5800 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5820 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a583c binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5870 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5898 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a58b8 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a58f0 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5940 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5980 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a59c0 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a59f0 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5a30 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5a58 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Under trusted-darwin-arm64-chkstk-v1 on normal return, prefix probe 0x1012a5a78 binds imported 0x1d6b from /usr/lib/libSystem.B.dylib through original applied chained GOT slot 0x104237440; only X2/X8/X12/SP gain special preservation. Other volatile registers, flags and Swift-error X21 are killed. Its possible [symbolic-SP-16,symbolic-SP) scratch write is before the snapshot; all pre-tag memory facts are discarded. No allocation, nonfaulting execution or actual runtime binding is established. Every incoming path selects outer tag 1; direct reflection field 0x103eb5234 binds inline offset-zero child descriptor 0x103d7b2a4. Static child metadata 0x104317118 declares VWT 0x104317098, size 156 and pure complete getter 0x1012b2860. Complete inline SIMD byte origins prove destination byte j equals snapshot source byte j for all 156 bytes, with live/disjoint fixed destination and dynamic source. No unknown post-tag call/write, SP change, foreign entry or bypass is admitted. Getter call 0x1012a5ba8 reads that representation. A separate straight-line getter-return-to-dispatch proof rejects calls, SP changes, foreign/bypass entries and unmodeled stores, including effects on escaped tag spills. Shared helper code never supplies identity/count. This proof does not establish preceding copy/witness correctness, pre-tag nonescape, ownership/retention, or later lifetime semantics. Its unchanged tag reaches the LDRSW index after an explicit 32-bit zero-extending write. Signed 32-bit entries at 0x1012a7e74 are added to 0x1012a5bb8; the simple non-writeback LDR at 0x1012a5bc4 does not overwrite the computed branch register and has a single fallthrough predecessor/successor in this suffix. REA+ restored computed edges, disassembled destinations and extended the owning function before observations; generated override labels are analysis metadata, not source/caller declarations."
+                  }
+                ]
+              }
+            ],
+            "mappings": [
+              {
+                "case_value": 0,
+                "target_address": "0x1012a5bcc",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 0 (field name showAdvancedColorMapper) selects signed word at 0x1012a7e74, reaching 0x1012a5bcc. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 1,
+                "target_address": "0x1012a63fc",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 1 (field name setModality) selects signed word at 0x1012a7e78, reaching 0x1012a63fc. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 2,
+                "target_address": "0x1012a6324",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 2 (field name setCodeEditingWindowSize) selects signed word at 0x1012a7e7c, reaching 0x1012a6324. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 3,
+                "target_address": "0x1012a63a0",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 3 (field name setZapToPreview) selects signed word at 0x1012a7e80, reaching 0x1012a63a0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 4,
+                "target_address": "0x1012a6154",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 4 (field name toggleDevTools) selects signed word at 0x1012a7e84, reaching 0x1012a6154. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 5,
+                "target_address": "0x1012a65d4",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 5 (field name update) selects signed word at 0x1012a7e88, reaching 0x1012a65d4. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 6,
+                "target_address": "0x1012a6834",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 6 (field name appendZap) selects signed word at 0x1012a7e8c, reaching 0x1012a6834. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 7,
+                "target_address": "0x1012a63e0",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 7 (field name removeZap) selects signed word at 0x1012a7e90, reaching 0x1012a63e0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 8,
+                "target_address": "0x1012a6ad0",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 8 (field name showSelectorPicker) selects signed word at 0x1012a7e94, reaching 0x1012a6ad0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 9,
+                "target_address": "0x1012a61dc",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 9 (field name copySelectorToPasteboard) selects signed word at 0x1012a7e98, reaching 0x1012a61dc. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 10,
+                "target_address": "0x1012a6a54",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 10 (field name boostIDE) selects signed word at 0x1012a7e9c, reaching 0x1012a6a54. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 11,
+                "target_address": "0x1012a5f84",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 11 (field name initialize) selects signed word at 0x1012a7ea0, reaching 0x1012a5f84. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 12,
+                "target_address": "0x1012a6174",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 12 (field name close) selects signed word at 0x1012a7ea4, reaching 0x1012a6174. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 13,
+                "target_address": "0x1012a6750",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 13 (field name completeInterstitial) selects signed word at 0x1012a7ea8, reaching 0x1012a6750. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 14,
+                "target_address": "0x1012a5f7c",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 14 (field name learnMore) selects signed word at 0x1012a7eac, reaching 0x1012a5f7c. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 15,
+                "target_address": "0x1012a6340",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 15 (field name undo) selects signed word at 0x1012a7eb0, reaching 0x1012a6340. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 16,
+                "target_address": "0x1012a5f48",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 16 (field name redo) selects signed word at 0x1012a7eb4, reaching 0x1012a5f48. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 17,
+                "target_address": "0x1012a642c",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 17 (field name delete) selects signed word at 0x1012a7eb8, reaching 0x1012a642c. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 18,
+                "target_address": "0x1012a69e0",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 18 (field name rename) selects signed word at 0x1012a7ebc, reaching 0x1012a69e0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 19,
+                "target_address": "0x1012a6c10",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 19 (field name shuffle) selects signed word at 0x1012a7ec0, reaching 0x1012a6c10. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 20,
+                "target_address": "0x1012a64a0",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 20 (field name report) selects signed word at 0x1012a7ec4, reaching 0x1012a64a0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 21,
+                "target_address": "0x1012a66f4",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 21 (field name resetAll) selects signed word at 0x1012a7ec8, reaching 0x1012a66f4. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 22,
+                "target_address": "0x1012a6af0",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 22 (field name resetColorMapping) selects signed word at 0x1012a7ecc, reaching 0x1012a6af0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 23,
+                "target_address": "0x1012a6c20",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 23 (field name showAllBoosts) selects signed word at 0x1012a7ed0, reaching 0x1012a6c20. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 24,
+                "target_address": "0x1012a62b8",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 24 (field name reloadPage) selects signed word at 0x1012a7ed4, reaching 0x1012a62b8. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 25,
+                "target_address": "0x1012a62a4",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 25 (field name hideSelectorPicker) selects signed word at 0x1012a7ed8, reaching 0x1012a62a4. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 26,
+                "target_address": "0x1012a6cd4",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 26 (field name boostIDEAppeared) selects signed word at 0x1012a7edc, reaching 0x1012a6cd4. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              },
+              {
+                "case_value": 27,
+                "target_address": "0x1012a5ed8",
+                "confidence": "high",
+                "evidence": [
+                  {
+                    "kind": "jump-table",
+                    "source": "rea-swift-abi-instruction-and-memory",
+                    "detail": "Swift ABI tag 27 (field name dismissJSWarningBanner) selects signed word at 0x1012a7ee0, reaching 0x1012a5ed8. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0x1012a7e74."
+                  }
+                ]
+              }
+            ],
+            "default_targets": [],
+            "limitations": [
+              "Case values are Swift ABI runtime tags, with payload cases before empty cases; field names are reflection metadata. Valid enum values supply the bound; this does not establish state reachability or original source order.",
+              "swift-dynamic-typed-snapshot-v1: conditional on a recursively valid active outer value at the exact runtime tag call, stable ABI layout and imported-call/GOT bindings during the prefix (no interposition/mutation), live/disjoint stack regions, nonwrapping monotonic allocations and a stable checked post-tag window. Pre-tag nonescape, preceding copy/ownership and later lifetime semantics are not proved.",
+              "Darwin stack-probe effects assume trusted-darwin-arm64-chkstk-v1 on normal return. Import identity does not establish Arc's runtime binding, absence of interposition, nonfaulting reads or completed allocation."
+            ]
+          }
+        ],
+        "call_model_adjustments": [],
+        "pseudocode": {
+          "classification": "decompiler-generated-non-source",
+          "compilable": false
+        },
+        "decompiler_artifacts": [
+          "recovered-signature",
+          "register-and-stack-variables",
+          "compiler-generated-control-flow",
+          "pointer-arithmetic",
+          "pseudocode"
+        ],
+        "limitations": [
+          "Types and calling conventions are Ghidra decompiler observations, not source declarations.",
+          "Register variables, compiler-generated blocks, and pointer arithmetic remain decompiler artifacts.",
+          "Pseudocode is neither original source nor guaranteed to compile.",
+          "On supported non-Windows AArch64 Mach-O inputs, REA+ can restore signed-word Swift enum dispatches from verified ABI metadata, accessor and instruction flow. Generated switch overrides are analysis metadata. Recovery budgets are 4096 cases, 100000 CFG/reaching-definition work units per candidate function and 256 nested queries; unsupported or exhausted paths remain unrecovered, not complete."
+        ]
+      },
+      "parent_evidence_id": "ev_7820ea6368f520cd61483866fba5814ed0c4a1661bb9cc22d4c6f15a6806a139",
+      "parent_operation": "analyze_function",
+      "parent_digest": "7820ea6368f520cd61483866fba5814ed0c4a1661bb9cc22d4c6f15a6806a139",
+      "view_digest": "23d22b19b345d14a5ea63145d62266bf5de86e6f771985901e2a56afe246c05c",
+      "artifact": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+      },
+      "coverage": {
+        "status": "complete-within-view",
+        "examined": 1,
+        "total": 1,
+        "next_offset": null,
+        "exhausted": true
+      },
+      "limitations": [
+        "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+        "Def-use links do not cross function boundaries and may omit memory aliasing, call side effects, or unresolved indirect flow.",
+        "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+        "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-broader-feature-plan-2026-11-15/broader-action-seeds-2038.tsv (sha256 e79864e44b4309050e623ae1c63a1bc2ccab8126a7f96371363e1afd94b7e457: 2038 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+        "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.",
+        "High p-code is decompiler-derived, not original source or runtime behavior. is_dead preserves the Java AST flag; decoded block members can retain that flag, so block_membership separately reports actual syntax-tree membership.",
+        "Known omitted-edge counts cover links omitted from retained operations; omitted operations may contain additional uncounted links.",
+        "Memory read/write effects include stack and temporary memory operations; they do not identify persistent state or business meaning.",
+        "On supported non-Windows AArch64 Mach-O inputs, REA+ can restore signed-word Swift enum dispatches from verified ABI metadata, accessor and instruction flow. Generated switch overrides are analysis metadata. Recovery budgets are 4096 cases, 100000 CFG/reaching-definition work units per candidate function and 256 nested queries; unsupported or exhausted paths remain unrecovered, not complete.",
+        "Operation, input, and def-use limits can truncate large functions; inspect truncation, omitted lower bounds, and known omitted counts before drawing conclusions.",
+        "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+        "Pseudocode is neither original source nor guaranteed to compile.",
+        "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+        "Register variables, compiler-generated blocks, and pointer arithmetic remain decompiler artifacts.",
+        "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+        "Seed outcome: 1940 functions created, 98 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory.",
+        "Swift control-flow uncertainty at 0x1012a59d4: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+        "Swift control-flow uncertainty at 0x1012a5ddc: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+        "Swift control-flow uncertainty at 0x1012a5df0: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+        "Swift control-flow uncertainty at 0x1012a61ec: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+        "Swift control-flow uncertainty at 0x1012a64e8: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+        "Swift control-flow uncertainty at 0x1012a6534: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+        "Swift control-flow uncertainty at 0x1012a6550: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+        "Swift control-flow uncertainty at 0x1012a71cc: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+        "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+        "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+        "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+        "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+        "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+        "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+        "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+        "Types and calling conventions are Ghidra decompiler observations, not source declarations.",
+        "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+        "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state."
+      ],
+      "unknowns": [
+        "native_value_flow is truncated; omitted observations remain unknown"
+      ]
+    },
+    "confidence": "derived",
+    "authority": "shipped-artifact",
+    "environment": null,
+    "limitations": [
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Def-use links do not cross function boundaries and may omit memory aliasing, call side effects, or unresolved indirect flow.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-broader-feature-plan-2026-11-15/broader-action-seeds-2038.tsv (sha256 e79864e44b4309050e623ae1c63a1bc2ccab8126a7f96371363e1afd94b7e457: 2038 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+      "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.",
+      "High p-code is decompiler-derived, not original source or runtime behavior. is_dead preserves the Java AST flag; decoded block members can retain that flag, so block_membership separately reports actual syntax-tree membership.",
+      "Known omitted-edge counts cover links omitted from retained operations; omitted operations may contain additional uncounted links.",
+      "Memory read/write effects include stack and temporary memory operations; they do not identify persistent state or business meaning.",
+      "On supported non-Windows AArch64 Mach-O inputs, REA+ can restore signed-word Swift enum dispatches from verified ABI metadata, accessor and instruction flow. Generated switch overrides are analysis metadata. Recovery budgets are 4096 cases, 100000 CFG/reaching-definition work units per candidate function and 256 nested queries; unsupported or exhausted paths remain unrecovered, not complete.",
+      "Operation, input, and def-use limits can truncate large functions; inspect truncation, omitted lower bounds, and known omitted counts before drawing conclusions.",
+      "Pseudocode and assembly are Ghidra-specific representations, not original source or Hopper-equivalent text.",
+      "Pseudocode is neither original source nor guaranteed to compile.",
+      "References cover the complete Ghidra function-body AddressSet and exact entry. Dossier incoming edges omit sources owned by that function; procedure_references also retains those internal edges.",
+      "Register variables, compiler-generated blocks, and pointer arithmetic remain decompiler artifacts.",
+      "Resolved reference metadata identifies computed, indirect, external, call, jump, and data edges; unresolved targetless flows remain unknown, and function classifications distinguish thunks and externals.",
+      "Seed outcome: 1940 functions created, 98 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory.",
+      "Swift control-flow uncertainty at 0x1012a59d4: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x1012a5ddc: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x1012a5df0: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x1012a61ec: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x1012a64e8: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x1012a6534: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x1012a6550: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x1012a71cc: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Synthetic Ghidra entry-point references without actionable memory sources are omitted.",
+      "The Java bridge serializes one function request per Program and lets each decompilation run until it completes or the caller cancels.",
+      "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+      "The dossier combines Ghidra FunctionManager, Listing, ReferenceManager, BasicBlockModel, and decompiler observations; provider-specific pseudocode and assembly are not cross-provider text invariants.",
+      "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Thunk and external classifications are Ghidra FunctionManager observations; they do not resolve targetless calls.",
+      "Types and calling conventions are Ghidra decompiler observations, not source declarations.",
+      "Unresolved computed or indirect flows without target addresses are not represented as reference edges.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "locations": [
+      {
+        "kind": "artifact-path",
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+      },
+      {
+        "kind": "address",
+        "address": "0x1012a571c"
+      }
+    ],
+    "evidence_links": [
+      "ev_7820ea6368f520cd61483866fba5814ed0c4a1661bb9cc22d4c6f15a6806a139"
+    ]
+  }
+}

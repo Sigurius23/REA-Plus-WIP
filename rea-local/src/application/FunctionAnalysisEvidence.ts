@@ -2,7 +2,7 @@ import type {
   AnalysisOperationPort,
   ExecutionOptions,
 } from "./AnalysisProvider.js";
-import { toolContract } from "../contracts/toolContracts.js";
+import { enhancedInputSchemas } from "../contracts/enhancedInputs.js";
 import type { BinaryTarget } from "../domain/binaryTargetTypes.js";
 import { createEvidence } from "../domain/evidence.js";
 import { parseFunctionDossier } from "../domain/hopperValues.js";
@@ -17,8 +17,7 @@ export const executeFunctionAnalysisEvidence = async (
   target: BinaryTarget | undefined,
   options?: ExecutionOptions,
 ) => {
-  const input =
-    toolContract("analyze_function").inputSchema.safeParse(parameters);
+  const input = enhancedInputSchemas.analyze_function.safeParse(parameters);
   if (!input.success)
     return err(
       analysisInputErrorFromIssues(

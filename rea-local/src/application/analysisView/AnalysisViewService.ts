@@ -84,6 +84,26 @@ export interface AnalysisViewRetention {
   readonly recordEvidence: EvidenceWriter["recordEvidence"] | undefined;
 }
 
+const retentionUnavailable = (operation: string) =>
+  new AnalysisCapabilityUnavailableError(
+    ANALYSIS_VIEW_PROVIDER.id,
+    operation,
+    "summary detail requires a server session that retains Evidence for later views",
+    {
+      userMessage:
+        "This server does not retain Evidence. Select detail complete to receive the complete analysis inline.",
+    },
+  );
+
+/** Refuse unavailable retention before starting an expensive provider operation. */
+export const analysisViewRetentionFailure = (
+  operation: string,
+  retention: AnalysisViewRetention,
+): AnalysisCapabilityUnavailableError | undefined =>
+  retention.recordEvidence === undefined || retention.evidenceById === undefined
+    ? retentionUnavailable(operation)
+    : undefined;
+
 /**
  * Retain complete analysis Evidence in the session, then project its summary
  * view from the retained record. Callers page or select the rest through
@@ -97,17 +117,7 @@ export const summarizeRetainedAnalysis = (
     retention.recordEvidence === undefined ||
     retention.evidenceById === undefined
   )
-    return err(
-      new AnalysisCapabilityUnavailableError(
-        ANALYSIS_VIEW_PROVIDER.id,
-        evidence.operation,
-        "summary detail requires a server session that retains Evidence for later views",
-        {
-          userMessage:
-            "This server does not retain Evidence. Select detail complete to receive the complete analysis inline.",
-        },
-      ),
-    );
+    return err(retentionUnavailable(evidence.operation));
   const recorded = retention.recordEvidence(evidence);
   if (!recorded.ok) return recorded;
   return inspectAnalysisViewValidated(

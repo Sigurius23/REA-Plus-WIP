@@ -819,6 +819,7 @@ const registerBinaryAnalysisTools = ({
   logger,
   activeTarget,
   recordEvidence,
+  evidenceById,
   recordEvidenceWithUnknown,
   withAdmittedAnalysis,
 }: ServerToolContext): void => {
@@ -837,6 +838,7 @@ const registerBinaryAnalysisTools = ({
   registerOfficialTools(server, analysisOptions);
   registerEnhancedTools(server, {
     ...analysisOptions,
+    evidenceById,
     analysisProfile:
       session === undefined ? undefined : () => session.analysisProfile(),
     allowsSnapshotReplay:

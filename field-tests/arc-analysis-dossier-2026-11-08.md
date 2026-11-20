@@ -6,6 +6,8 @@ Selector coordinate and cleanup follow-up verified **2026-11-13**.
 Selector input filtering, candidate-query construction and visual composition
 addendum added **2026-11-15**. Actual v9 reducer coverage, candidate commit/reset
 and broader action entry-point observations added **2026-11-16**.
+Retained-summary qualification and all 21 selected State names added
+**2026-11-20**.
 This dossier consolidates the supplied
 **Arc 1.172.1 / build 90370 DMG** investigation. It is a coverage map and an
 explanation of recovered implementation paths; full Arc behavior is **not yet
@@ -846,3 +848,37 @@ completion.
 [V08]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/broader-action-0x10043efc0-pseudocode.evidence.json
 [V09]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/exact-sidebar-restoration-class.evidence.json
 [V10]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/exact-sidebar-restoration-conformances.evidence.json
+
+## State declaration binding follow-up (2026-11-20)
+
+The Arc-focused upstream delivery pass also advances the existing offline
+State investigation. These are additional U01–U03 anchors, separate from the
+historical E/S/V inventories.
+
+- **U01 — selected context and records.** Public bytes name the selected
+  context `State` and its parent `BoostsEditor`. Its field descriptor at
+  `0x103eb510c` reports struct kind 0, 12-byte records and 21 fields. See the
+  [State name](arc-upstream-retained-2026-11-20/mcp/state-name.evidence.json),
+  [parent name](arc-upstream-retained-2026-11-20/mcp/state-parent-name.evidence.json)
+  and [field records](arc-upstream-retained-2026-11-20/mcp/state-fields.evidence.json).
+- **U02 — stored names.** All 21 names are now individually read through
+  public `read_bytes`. They include `css`, `js`, `font`, `zaps`, `colorScheme`,
+  `boostID`, `boostData`, `changeStack`, `boostDataBeforeInteractiveUpdates`
+  and `hasDismissedJSWarningBanner`. The
+  [binding inventory](arc-upstream-retained-2026-11-20/state-field-bindings.json)
+  records every record/name/type address and supporting Evidence ID.
+- **U03 — earlier metadata keys.** With the already observed vector word
+  offset 2, hexadecimal trace key F24 binds declaration index 5
+  `interstitialType`, while F60 binds index 20 `hasDismissedJSWarningBanner`.
+  F50/F54/F58 identify `boostData`, `changeStack` and
+  `boostDataBeforeInteractiveUpdates`. These are metadata-vector index
+  bindings; runtime instance offsets, field types, dependency implementations
+  and durable write/readback behavior remain unresolved.
+
+The same pass verifies **37/37 real MCP calls and one fresh CLI case** with
+empty owned lineages. Compact delivery references the exact historical full
+Arc record, preserving all 28 mappings and the 10,072-byte analyzed body.
+See the [update/retest](arc-upstream-retained-2026-11-20.md) and
+[machine verification](arc-upstream-retained-2026-11-20/verification.json).
+This extends the selected editor path; broader Arc feature coverage remains
+partial.
