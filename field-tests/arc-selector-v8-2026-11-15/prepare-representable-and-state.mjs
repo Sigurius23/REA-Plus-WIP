@@ -1,0 +1,45 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { createRequire } from 'node:module';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+const directory = path.dirname(fileURLToPath(import.meta.url)), root = path.resolve(directory, '../..');
+const read = async name => JSON.parse(await fs.readFile(path.join(directory, name), 'utf8'));
+const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+const manifest = await read('runtime-manifest.json');
+const { parseEvidence } = await import(pathToFileURL(path.join(manifest.runtime_package, 'dist/domain/evidence.js')));
+const { parseEvidenceBundle } = await import(pathToFileURL(path.join(manifest.runtime_package, 'dist/domain/evidenceBundle.js')));
+const req = createRequire(path.join(manifest.runtime_package, 'package.json'));
+const { Ajv2020 } = await import(pathToFileURL(req.resolve('ajv/dist/2020.js')));
+const expected = '6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578', source = 'mouse-and-spotlight-reopen/evidence';
+const bundleBytes = await fs.readFile(path.join(directory, source, 'phase-2-bundle.json')), bundle = parseEvidenceBundle(JSON.parse(bundleBytes)); assert.equal(bundle.records.length, 24);
+const records = {}, anchors = [];
+for (const name of (await fs.readdir(path.join(directory, source))).filter(name => name.endsWith('.evidence.json'))) { const bytes = await fs.readFile(path.join(directory, source, name)), record = parseEvidence(JSON.parse(bytes)); assert.equal(record.subject.digest.sha256, expected); assert.ok(bundle.records.some(row => row.evidence_id === record.evidence_id)); records[name] = record; anchors.push({ path: `${source}/${name}`, evidence_id: record.evidence_id, sha256: hash(bytes), operation: record.operation }); }
+assert.equal(anchors.length, 24); assert.equal(new Set(anchors.map(row => row.evidence_id)).size, 24);
+const conformance = records['exact-candidate-representable-conformance.evidence.json'].normalized_result.result;
+assert.equal(conformance.swift_conformances[0].protocol_reference.symbol, '_$s7SwiftUI4ViewMp');
+const requirements = ['_$s7SwiftUI4ViewP05_makeC04view6inputsAA01_C7OutputsVAA11_GraphValueVyxG_AA01_C6InputsVtFZTq', '_$s7SwiftUI4ViewP4body4BodyQzvgTq'];
+const witnesses = requirements.map(symbol => { const row = conformance.swift_resilient_witnesses.find(row => row.requirement_reference?.symbol === symbol); assert.ok(row); assert.equal(row.runtime_witness_table, 'not_instantiated'); return row; });
+assert.equal(witnesses[0].implementation_address, '0x100b0c3d4'); assert.equal(witnesses[1].implementation_address, '0x100b0c474');
+const query = records['tracking-setup-0x1012e6f8c-pseudocode.evidence.json']; assert.ok(query.normalized_result.includes('FUN_1012e72c0'));
+assert.ok(records['event-result-0x1012f3f54-pseudocode.evidence.json'].normalized_result.includes('FUN_1012f3fb4'));
+const layout = records['spotlight-candidate-layout-type-references.evidence.json'].normalized_result, layoutBytes = Buffer.from(layout.bytes_hex, 'hex');
+const layoutStrings = [0,8,16].map(offset => ({ source: `0x${(BigInt(layout.address)+BigInt(offset)).toString(16)}`, address: `0x${(BigInt(layout.address)+BigInt(offset)+BigInt(layoutBytes.readInt32LE(offset))).toString(16)}`, length: layoutBytes.readUInt32LE(offset+4) })); assert.equal(layoutStrings[0].address, '0x103bdfd34');
+const index = parseEvidence(JSON.parse(await fs.readFile(path.join(root, 'field-tests/arc-dispatch-2026-11-06/native/function-start-index.evidence.json'), 'utf8')));
+const encoded = Buffer.from(index.normalized_result.bytes_hex, 'hex'); let current = 0x100000000n, value = 0n, shift = 0n; const starts = [];
+for (const byte of encoded) { value |= BigInt(byte & 127) << shift; if (byte & 128) { shift += 7n; continue; } if (!value) break; current += value; starts.push(current); value = shift = 0n; }
+const seedBytes = await fs.readFile(query.analysis_profile.parameters.analysis_seeds.path); assert.equal(hash(seedBytes), query.analysis_profile.parameters.analysis_seeds.sha256); const seedLines = seedBytes.toString('utf8').split('\n');
+const target = entry => { const i = starts.indexOf(BigInt(entry)); assert.notEqual(i, -1); assert.ok(seedLines.includes(`${entry}\tfunction`)); return { entry, next_indexed_start: `0x${starts[i+1].toString(16)}`, indexed_interval_bytes: Number(starts[i+1]-starts[i]), interval_is_not_complete_body_proof: true }; };
+const targets = ['0x100b0c3d4','0x100b0c474','0x1012e72c0','0x1012f3fb4'].map(target), optionalTarget = target('0x100b0c424');
+const pair = row => [{ name: 'read_function_instructions', arguments: { procedure: row.entry }, label: `representable-state-${row.entry}-instructions` },{ name: 'procedure_pseudo_code', arguments: { procedure: row.entry }, label: `representable-state-${row.entry}-pseudocode` }];
+const steps = [...targets.flatMap(pair),{ name: 'read_bytes', arguments: { address: '0x103bdfd34',length: 128 }, label: 'spotlight-candidate-layout-mangled-types' },{ name: 'read_bytes', arguments: { address: '0x103a1df50',length: 32 }, label: 'selector-rectangle-query-prefix' }], optionalSteps = pair(optionalTarget);
+const valueCatalog = await read(`${source}/catalog.json`), catalog = Array.isArray(valueCatalog)?valueCatalog:valueCatalog.tools, ajv = new Ajv2020({strict:false,validateFormats:false});
+for(const step of [...steps,...optionalSteps]){const tool=catalog.find(row=>row.name===step.name);assert.ok(tool);const validate=ajv.compile(tool.inputSchema);assert.ok(validate(step.arguments),JSON.stringify(validate.errors));}
+const save=async(name,value)=>{const output=path.join(directory,name);try{await fs.access(output);throw new Error(`Refusing to overwrite ${name}`);}catch(error){if(error.code!=='ENOENT')throw error;}await fs.writeFile(output,`${JSON.stringify(value,null,2)}\n`);};
+await save('representable-and-state.steps.json',{authority:'Prepared from authenticated immutable-v8 phase2 records; parent owns provider reopen',target_sha256:expected,required_seed_file:query.analysis_profile.parameters.analysis_seeds.path,seed_sha256:hash(seedBytes),execution:'Reuse the unchanged2034seed set. View witnesses are not NSViewRepresentable requirement implementations; follow their concrete bridges without relabeling them.',steps});
+await save('representable-list.optional.steps.json',{authority:'Optional View._makeViewList counterpart; no requests executed by preparation',target_sha256:expected,steps:optionalSteps});
+await save('representable-and-state-preparation.json',{status:'passed',target_sha256:expected,source_evidence:anchors,static_view_witnesses:witnesses.map(row=>({requirement:row.requirement_reference.symbol,implementation:row.implementation_address,runtime_witness_table:row.runtime_witness_table})),targets,optionalTarget,layoutStrings,seed_sha256:hash(seedBytes),seed_count:2034,requests:steps.length,optional_requests:optionalSteps.length,provider_calls_executed:0});
+const summary = await read(`${source}/summary.json`), invocations = await read(`${source}/invocations.json`); assert.equal(summary.calls,28);assert.equal(summary.successful,28);assert.equal(summary.errors,0);assert.equal(summary.verifier_run.process_lineage.status,'verified');assert.deepEqual(summary.verifier_run.process_lineage.descendants,[]);assert.ok(!invocations.some(row=>row.name==='close_binary'));
+await save('mouse-and-spotlight-phase-2-audit.json',{status:'passed',source_commit:manifest.source_commit,bundle_sha256:hash(bundleBytes),cumulative_unique_records:24,new_canonical_records:7,records:anchors,settlement:{calls:28,successful:28,errors:0,explicit_close_binary:false,finalization:'Continuation expired; recorder finalized and verified owned process lineage empty',verifier_run:summary.verifier_run,filesystem_cleanup_claimed:false}});
+console.log(JSON.stringify({status:'passed',canonical_records:anchors.length,requests:steps.length,optional_requests:optionalSteps.length,explicit_close_binary:false}));

@@ -1,0 +1,262 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/evidence",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-broader-feature-plan-2026-11-15/broader-action-seeds-2038.tsv"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012a571c"
+      },
+      "label": "arc-reducer-v9",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_info",
+      "arguments": {
+        "procedure": "0x1012a571c"
+      },
+      "label": "arc-reducer-v9-info",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1012a571c"
+      },
+      "label": "arc-reducer-v9-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "trace_native_values",
+      "arguments": {
+        "procedure": "0x1012a571c",
+        "max_depth": 0,
+        "max_functions": 1,
+        "max_call_sites": 512,
+        "max_nodes": 20000,
+        "max_edges": 40000,
+        "offset": 0,
+        "limit": 5000
+      },
+      "label": "arc-reducer-v9-values-page-0",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1012e6d68"
+      },
+      "label": "candidate-selection-0x1012e6d68-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1012e6d68"
+      },
+      "label": "candidate-selection-0x1012e6d68-pseudocode",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1012e6dcc"
+      },
+      "label": "candidate-selection-0x1012e6dcc-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1012e6dcc"
+      },
+      "label": "candidate-selection-0x1012e6dcc-pseudocode",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1012ef654"
+      },
+      "label": "candidate-selection-0x1012ef654-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1012ef654"
+      },
+      "label": "candidate-selection-0x1012ef654-pseudocode",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x1045a1dc0",
+        "length": 8
+      },
+      "label": "restore-class-description-pointer",
+      "expect_success": false
+    },
+    {
+      "name": "search_strings",
+      "arguments": {
+        "pattern": "SidebarViewController|BrowserWindow|SpacesMainMenuProvider|sidebarStorableDataStore|RestoreSidebarDataFlow|restorableFiles",
+        "mode": "regex",
+        "case_sensitive": false
+      },
+      "label": "broader-state-and-restore-strings",
+      "expect_success": false
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-vtables",
+        "swift_class_address": "0x103d3916c",
+        "max_file_bytes": 100663296,
+        "max_records": 1000
+      },
+      "label": "exact-sidebar-restoration-class",
+      "expect_success": false
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-conformances",
+        "swift_conformance_filter": {
+          "type_name": "RestoreSidebarDataFlow"
+        },
+        "max_file_bytes": 100663296,
+        "max_records": 1000
+      },
+      "label": "exact-sidebar-restoration-conformances",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x10014fc14"
+      },
+      "label": "broader-action-0x10014fc14-instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x10014fc14"
+      },
+      "label": "broader-action-0x10014fc14-pseudocode",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100150114"
+      },
+      "label": "broader-action-0x100150114-instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x100150114"
+      },
+      "label": "broader-action-0x100150114-pseudocode",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x10043ef5c"
+      },
+      "label": "broader-action-0x10043ef5c-instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x10043ef5c"
+      },
+      "label": "broader-action-0x10043ef5c-pseudocode",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x10043efc0"
+      },
+      "label": "broader-action-0x10043efc0-instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x10043efc0"
+      },
+      "label": "broader-action-0x10043efc0-pseudocode",
+      "expect_success": false
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/evidence/phase-0-bundle.json"
+      },
+      "label": "phase-0-export",
+      "expect_success": true
+    }
+  ],
+  "idle_timeout_ms": 3600000,
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-1.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-2.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-3.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-4.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-5.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-6.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-7.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-8.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-9.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-10.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-11.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-12.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-13.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-14.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-15.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-16.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-17.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-18.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-19.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-20.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-21.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-22.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-23.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-24.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-25.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-26.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-27.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-28.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-29.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-30.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-31.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/phase-32.json"
+  ],
+  "runtime_source_freeze": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/final-source-freeze.json",
+  "runtime_manifest": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-retest/runtime-manifest.json",
+  "exploratory_broader_steps": "Errors are retained for investigation; they are not converted into successful semantic claims."
+}

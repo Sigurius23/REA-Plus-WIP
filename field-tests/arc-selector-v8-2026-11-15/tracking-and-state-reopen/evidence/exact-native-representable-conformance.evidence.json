@@ -1,0 +1,2304 @@
+{
+  "evidence_id": "ev_8ed2dd32a86d8ab9d9aba96829604f422ed8b15f7156fa3bb464cb70473532d8",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+  },
+  "provider": {
+    "id": "rea-workflow",
+    "name": "REA+ composed investigation workflow",
+    "version": "1"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "rea-workflow",
+      "name": "REA+ composed investigation workflow",
+      "version": "1"
+    },
+    "parameters": {
+      "upstream_analysis_profile": {
+        "provider": {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        },
+        "parameters": {
+          "target_kind": "executable",
+          "target_format": "mach-o",
+          "architecture": "arm64",
+          "available_architectures": [
+            "arm64"
+          ],
+          "import_mode": "ephemeral-source-immutable",
+          "annotation_policy": "atomic-function-entry-metadata-v1",
+          "load_image_observations": "source-mappings-entry-context-v2",
+          "function_body_evidence": "complete-inclusive-ranges-v1",
+          "function_references": "complete-body-and-entry-reference-manager-v2",
+          "string_inventory_evidence": "defined-data-coverage-v1",
+          "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+          "instruction_flow_evidence": "decoded-return-pcode-v1",
+          "instruction_references": "exact-address-incoming-v1",
+          "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+          "no_return_repair": "returning-imports-decoded-return-v2",
+          "process_launch": "inspected-jvm-launch-support-v1",
+          "jump_table_evidence": "typed-case-default-blocks-v1",
+          "swift_enum_switch_recovery": "abi-signed-word-cfg-v8",
+          "darwin_stack_probe_call_summary": "trusted-darwin-arm64-chkstk-v1",
+          "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+          "decompiler_jump_loads": true,
+          "loader": "auto-from-header",
+          "language_id": "auto-from-header",
+          "compiler_spec_id": "auto-default",
+          "analyzer_preset": "ghidra-default",
+          "analysis_policy": "bounded-autoanalysis-v1",
+          "analysis_timeout_seconds": 1,
+          "analysis_seeds": {
+            "format": "rea-ghidra-seeds-v1",
+            "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-selector-v8-2026-11-15/modifier-reopen-seeds.tsv",
+            "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-selector-v8-2026-11-15/modifier-reopen-seeds.tsv",
+            "sha256": "f0e517acbb426e38512a257d5e7147e6ae3029d48cf1c61275e1ad9491a8db16",
+            "entries": {
+              "function": 2034,
+              "code": 0,
+              "label": 0
+            }
+          }
+        },
+        "digest": "846a06c380dd1f08822163aa7910f7e882073eec0848061099e24c3e096a9238"
+      },
+      "workflow_evidence_revision": 1
+    },
+    "digest": "ff108a4ac8a08baf8ea9fd199297d031d1085bf8c1d7986f66c46b20e8469b6a"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_native_dispatch_metadata",
+  "parameters": {
+    "swift_conformance_address": "0x103715fe8",
+    "max_file_bytes": 100663296,
+    "max_records": 1000,
+    "facet": "swift-conformances"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+    "provider": {
+      "id": "native-macos",
+      "name": "macOS native inspection utilities",
+      "version": "apple-metadata-reader-1"
+    },
+    "analysis_profile_digest": null,
+    "result": {
+      "swift_conformance_selection": {
+        "address": "0x103715fe8",
+        "matched": true
+      },
+      "objc_classes": [],
+      "objc_protocols": [],
+      "objc_categories": [],
+      "swift_decls": [],
+      "objc_ivars": [],
+      "objc_protocol_records": [],
+      "objc_dispatch_implementations": [],
+      "swift_conformances": [
+        {
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "module": null,
+          "witness_table": {
+            "address": null,
+            "file_offset": null
+          },
+          "location": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "External Swift metadata layout is unsupported; local names and bind identities are retained separately"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift protocol conformance descriptor, local names and external bind identities",
+              "location": {
+                "address": "0x103715fe8",
+                "file_offset": 57761768
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "swift_dispatch_slots": [],
+      "swift_resilient_witnesses": [
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 0,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentablePAA4ViewTb",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x103baa0af",
+          "implementation_location": {
+            "address": "0x103baa0af",
+            "file_offset": 62562479
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x103715ffc",
+            "file_offset": 57761788
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x103715ffc",
+                "file_offset": 57761788
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 1,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s10NSViewType7SwiftUI0A13RepresentablePTl",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x103b9df11",
+          "implementation_location": {
+            "address": "0x103b9df11",
+            "file_offset": 62512913
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x103716004",
+            "file_offset": 57761796
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x103716004",
+                "file_offset": 57761796
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 2,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s11Coordinator7SwiftUI19NSViewRepresentablePTl",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x103baa007",
+          "implementation_location": {
+            "address": "0x103baa007",
+            "file_offset": 62562311
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x10371600c",
+            "file_offset": 57761804
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x10371600c",
+                "file_offset": 57761804
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 3,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP04makeC07context0C4TypeQzAA0cD7ContextVyxG_tFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x100b0c33c",
+          "implementation_location": {
+            "address": "0x100b0c33c",
+            "file_offset": 11584316
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x103716014",
+            "file_offset": 57761812
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x103716014",
+                "file_offset": 57761812
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 4,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP06updateC0_7contexty0C4TypeQz_AA0cD7ContextVyxGtFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x100b0c344",
+          "implementation_location": {
+            "address": "0x100b0c344",
+            "file_offset": 11584324
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x10371601c",
+            "file_offset": 57761820
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x10371601c",
+                "file_offset": 57761820
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 5,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP09dismantleC0_11coordinatory0C4TypeQz_11CoordinatorQztFZTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x100b0c34c",
+          "implementation_location": {
+            "address": "0x100b0c34c",
+            "file_offset": 11584332
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x103716024",
+            "file_offset": 57761828
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x103716024",
+                "file_offset": 57761828
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 6,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP15makeCoordinator0F0QzyFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x100b0c354",
+          "implementation_location": {
+            "address": "0x100b0c354",
+            "file_offset": 11584340
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x10371602c",
+            "file_offset": 57761836
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x10371602c",
+                "file_offset": 57761836
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 7,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP19_identifiedViewTree2inAA011_IdentifiedfG0O0C4TypeQz_tFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x1009b9090",
+          "implementation_location": {
+            "address": "0x1009b9090",
+            "file_offset": 10195088
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x103716034",
+            "file_offset": 57761844
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x103716034",
+                "file_offset": 57761844
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 8,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP12sizeThatFits_6nsView7contextSo6CGSizeVSgAA08ProposedI4SizeV_0C4TypeQzAA0cD7ContextVyxGtFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x1009b9094",
+          "implementation_location": {
+            "address": "0x1009b9094",
+            "file_offset": 10195092
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x10371603c",
+            "file_offset": 57761852
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x10371603c",
+                "file_offset": 57761852
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 9,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP21_overrideSizeThatFits_2in6nsViewySo6CGSizeVz_AA09_ProposedF0V0C4TypeQztFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x1009b9098",
+          "implementation_location": {
+            "address": "0x1009b9098",
+            "file_offset": 10195096
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x103716044",
+            "file_offset": 57761860
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x103716044",
+                "file_offset": 57761860
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 10,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP21_overrideLayoutTraits_3foryAA01_fG0Vz_0C4TypeQztFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x1009b909c",
+          "implementation_location": {
+            "address": "0x1009b909c",
+            "file_offset": 10195100
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x10371604c",
+            "file_offset": 57761868
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x10371604c",
+                "file_offset": 57761868
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 11,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP24_modifyBridgedViewInputsyyAA01_gH0VzFZTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x1002a561c",
+          "implementation_location": {
+            "address": "0x1002a561c",
+            "file_offset": 2774556
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x103716054",
+            "file_offset": 57761876
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x103716054",
+                "file_offset": 57761876
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 12,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP35_invalidatesSizeOnConstraintChangesSbvgZTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x1002a5620",
+          "implementation_location": {
+            "address": "0x1002a5620",
+            "file_offset": 2774560
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x10371605c",
+            "file_offset": 57761884
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x10371605c",
+                "file_offset": 57761884
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "type_name": "Representable",
+          "protocol_name": null,
+          "type_reference": null,
+          "protocol_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "record_ordinal": 13,
+          "requirement": {
+            "address": null,
+            "file_offset": null
+          },
+          "requirement_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP14_layoutOptionsyAA013_PlatformViewd6LayoutF0V0C4TypeQzFZTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "requirement_flags": null,
+          "implementation_address": "0x1002a5624",
+          "implementation_location": {
+            "address": "0x1002a5624",
+            "file_offset": 2774564
+          },
+          "implementation_kind": "executable_address",
+          "generic_witness_table": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "runtime_witness_table": "not_instantiated",
+          "location": {
+            "address": "0x103716064",
+            "file_offset": 57761892
+          },
+          "decode": {
+            "status": "partial",
+            "reason": "Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI static resilient requirement/witness pair; ordinal is not a runtime table slot, and generic witness control data is not instantiated",
+              "location": {
+                "address": "0x103716064",
+                "file_offset": 57761892
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "swift_witness_templates": [
+        {
+          "conformance": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "conformance_flags": 196608,
+          "type_name": "Representable",
+          "protocol_name": null,
+          "pattern": {
+            "address": null,
+            "file_offset": null
+          },
+          "generic_control": {
+            "address": "0x10371606c",
+            "file_offset": 57761900
+          },
+          "template_words": 0,
+          "extent_source": "generic_control",
+          "private_words": 0,
+          "instantiation_flag": true,
+          "instantiator": {
+            "address": null,
+            "file_offset": null
+          },
+          "private_data": {
+            "address": "0x104784830",
+            "file_offset": null
+          },
+          "retroactive_context": null,
+          "conditional_requirement_count": 0,
+          "conditional_requirements": [],
+          "conditional_pack_count": 0,
+          "conditional_packs": [],
+          "entries": [],
+          "runtime_witness_table": "not_observed",
+          "decode": {
+            "status": "partial",
+            "reason": "Generic private storage is not file-backed or unresolved; runtime storage was not read"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Static Swift witness template and conformance tails; no runtime table is instantiated or observed",
+              "location": {
+                "address": "0x103715fe8",
+                "file_offset": 57761768
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "swift_symbols": [],
+      "relative_pointers": [
+        {
+          "field": {
+            "address": "0x103f65078",
+            "file_offset": 66474104
+          },
+          "target": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -8712336,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103f65078",
+                "file_offset": 66474104
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103715fe8",
+            "file_offset": 57761768
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad120",
+            "file_offset": 69914912
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableMp",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153145,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103715fe8",
+                "file_offset": 57761768
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103715fec",
+            "file_offset": 57761772
+          },
+          "target": {
+            "address": "0x103d5c1e8",
+            "file_offset": 64340456
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 6578684,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103715fec",
+                "file_offset": 57761772
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103d5c1f0",
+            "file_offset": 64340464
+          },
+          "target": {
+            "address": "0x103715f22",
+            "file_offset": 57761570
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -6578894,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103d5c1f0",
+                "file_offset": 64340464
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103715ff0",
+            "file_offset": 57761776
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 0,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103715ff0",
+                "file_offset": 57761776
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716070",
+            "file_offset": 57761904
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 0,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716070",
+                "file_offset": 57761904
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716074",
+            "file_offset": 57761908
+          },
+          "target": {
+            "address": "0x104784830",
+            "file_offset": null
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 17229756,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "partial",
+            "reason": "Unmapped or ambiguous metadata pointer 0x104784830"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716074",
+                "file_offset": 57761908
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103715ffc",
+            "file_offset": 57761788
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad128",
+            "file_offset": 69914920
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentablePAA4ViewTb",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103715ffc",
+                "file_offset": 57761788
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716000",
+            "file_offset": 57761792
+          },
+          "target": {
+            "address": "0x103baa0af",
+            "file_offset": 62562479
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 4800687,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716000",
+                "file_offset": 57761792
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716004",
+            "file_offset": 57761796
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad130",
+            "file_offset": 69914928
+          },
+          "external_reference": {
+            "symbol": "_$s10NSViewType7SwiftUI0A13RepresentablePTl",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716004",
+                "file_offset": 57761796
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716008",
+            "file_offset": 57761800
+          },
+          "target": {
+            "address": "0x103b9df11",
+            "file_offset": 62512913
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 4751113,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716008",
+                "file_offset": 57761800
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10371600c",
+            "file_offset": 57761804
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad138",
+            "file_offset": 69914936
+          },
+          "external_reference": {
+            "symbol": "_$s11Coordinator7SwiftUI19NSViewRepresentablePTl",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x10371600c",
+                "file_offset": 57761804
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716010",
+            "file_offset": 57761808
+          },
+          "target": {
+            "address": "0x103baa007",
+            "file_offset": 62562311
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 4800503,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716010",
+                "file_offset": 57761808
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716014",
+            "file_offset": 57761812
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad140",
+            "file_offset": 69914944
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP04makeC07context0C4TypeQzAA0cD7ContextVyxG_tFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716014",
+                "file_offset": 57761812
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716018",
+            "file_offset": 57761816
+          },
+          "target": {
+            "address": "0x100b0c33c",
+            "file_offset": 11584316
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -46177500,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716018",
+                "file_offset": 57761816
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10371601c",
+            "file_offset": 57761820
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad148",
+            "file_offset": 69914952
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP06updateC0_7contexty0C4TypeQz_AA0cD7ContextVyxGtFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x10371601c",
+                "file_offset": 57761820
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716020",
+            "file_offset": 57761824
+          },
+          "target": {
+            "address": "0x100b0c344",
+            "file_offset": 11584324
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -46177500,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716020",
+                "file_offset": 57761824
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716024",
+            "file_offset": 57761828
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad150",
+            "file_offset": 69914960
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP09dismantleC0_11coordinatory0C4TypeQz_11CoordinatorQztFZTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716024",
+                "file_offset": 57761828
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716028",
+            "file_offset": 57761832
+          },
+          "target": {
+            "address": "0x100b0c34c",
+            "file_offset": 11584332
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -46177500,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716028",
+                "file_offset": 57761832
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10371602c",
+            "file_offset": 57761836
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad158",
+            "file_offset": 69914968
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP15makeCoordinator0F0QzyFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x10371602c",
+                "file_offset": 57761836
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716030",
+            "file_offset": 57761840
+          },
+          "target": {
+            "address": "0x100b0c354",
+            "file_offset": 11584340
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -46177500,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716030",
+                "file_offset": 57761840
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716034",
+            "file_offset": 57761844
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad160",
+            "file_offset": 69914976
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP19_identifiedViewTree2inAA011_IdentifiedfG0O0C4TypeQz_tFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716034",
+                "file_offset": 57761844
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716038",
+            "file_offset": 57761848
+          },
+          "target": {
+            "address": "0x1009b9090",
+            "file_offset": 10195088
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -47566760,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716038",
+                "file_offset": 57761848
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10371603c",
+            "file_offset": 57761852
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad168",
+            "file_offset": 69914984
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP12sizeThatFits_6nsView7contextSo6CGSizeVSgAA08ProposedI4SizeV_0C4TypeQzAA0cD7ContextVyxGtFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x10371603c",
+                "file_offset": 57761852
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716040",
+            "file_offset": 57761856
+          },
+          "target": {
+            "address": "0x1009b9094",
+            "file_offset": 10195092
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -47566764,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716040",
+                "file_offset": 57761856
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716044",
+            "file_offset": 57761860
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad170",
+            "file_offset": 69914992
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP21_overrideSizeThatFits_2in6nsViewySo6CGSizeVz_AA09_ProposedF0V0C4TypeQztFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716044",
+                "file_offset": 57761860
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716048",
+            "file_offset": 57761864
+          },
+          "target": {
+            "address": "0x1009b9098",
+            "file_offset": 10195096
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -47566768,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716048",
+                "file_offset": 57761864
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10371604c",
+            "file_offset": 57761868
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad178",
+            "file_offset": 69915000
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP21_overrideLayoutTraits_3foryAA01_fG0Vz_0C4TypeQztFTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x10371604c",
+                "file_offset": 57761868
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716050",
+            "file_offset": 57761872
+          },
+          "target": {
+            "address": "0x1009b909c",
+            "file_offset": 10195100
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -47566772,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716050",
+                "file_offset": 57761872
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716054",
+            "file_offset": 57761876
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad180",
+            "file_offset": 69915008
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP24_modifyBridgedViewInputsyyAA01_gH0VzFZTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716054",
+                "file_offset": 57761876
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716058",
+            "file_offset": 57761880
+          },
+          "target": {
+            "address": "0x1002a561c",
+            "file_offset": 2774556
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -54987324,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716058",
+                "file_offset": 57761880
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10371605c",
+            "file_offset": 57761884
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad188",
+            "file_offset": 69915016
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP35_invalidatesSizeOnConstraintChangesSbvgZTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x10371605c",
+                "file_offset": 57761884
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716060",
+            "file_offset": 57761888
+          },
+          "target": {
+            "address": "0x1002a5620",
+            "file_offset": 2774560
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -54987328,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716060",
+                "file_offset": 57761888
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716064",
+            "file_offset": 57761892
+          },
+          "target": {
+            "address": null,
+            "file_offset": null
+          },
+          "indirect_slot": {
+            "address": "0x1042ad190",
+            "file_offset": 69915024
+          },
+          "external_reference": {
+            "symbol": "_$s7SwiftUI19NSViewRepresentableP14_layoutOptionsyAA013_PlatformViewd6LayoutF0V0C4TypeQzFZTq",
+            "library": "/System/Library/Frameworks/SwiftUI.framework/Versions/A/SwiftUI",
+            "weak": false,
+            "addend": "0"
+          },
+          "displacement": 12153133,
+          "indirectable": true,
+          "indirect": true,
+          "decode": {
+            "status": "unsupported",
+            "reason": "External Swift metadata layout is unsupported"
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716064",
+                "file_offset": 57761892
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103716068",
+            "file_offset": 57761896
+          },
+          "target": {
+            "address": "0x1002a5624",
+            "file_offset": 2774564
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -54987332,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103716068",
+                "file_offset": 57761896
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "coverage": [
+        {
+          "facet": "objc_class_method_ivar_metadata",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "binary_relative_pointers",
+          "status": "partial",
+          "reason": "relative_pointer_targets_unresolved",
+          "examined": 35,
+          "decoded": 19
+        },
+        {
+          "facet": "objc_properties_categories",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "pointer_fixups",
+          "status": "complete",
+          "reason": "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+          "examined": 2,
+          "decoded": 2
+        },
+        {
+          "facet": "swift_generic_resilient_witnesses_overrides_async_coroutines",
+          "status": "unsupported",
+          "reason": "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_conformances_static_witness_slots",
+          "status": "partial",
+          "reason": "Coverage is limited to the selected indexed conformance descriptor; conformance_decode_partial at 0x103715fe8: External Swift metadata layout is unsupported; local names and bind identities are retained separately; swift_records_unresolved",
+          "examined": 1,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_resilient_witness_records",
+          "status": "partial",
+          "reason": "Coverage is limited to the selected indexed conformance descriptor; resilient_record_partial at 0x103715ffc: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716004: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x10371600c: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716014: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x10371601c: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716024: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x10371602c: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716034: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x10371603c: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716044: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x10371604c: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716054: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x10371605c: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716064: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable",
+          "examined": 1,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_witness_template_records",
+          "status": "partial",
+          "reason": "Coverage is limited to the selected indexed conformance descriptor; template_conformance_unresolved at 0x103715fe8: Generic private storage is not file-backed or unresolved; runtime storage was not read",
+          "examined": 1,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_class_vtable_descriptors",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        }
+      ],
+      "db_save_result": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Derived by an REA+ composed workflow.",
+    "Coverage is limited to the selected indexed conformance descriptor; conformance_decode_partial at 0x103715fe8: External Swift metadata layout is unsupported; local names and bind identities are retained separately; swift_records_unresolved",
+    "Coverage is limited to the selected indexed conformance descriptor; resilient_record_partial at 0x103715ffc: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716004: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x10371600c: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716014: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x10371601c: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716024: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x10371602c: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716034: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x10371603c: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716044: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x10371604c: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716054: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x10371605c: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable; resilient_record_partial at 0x103716064: Generic witness private data is not file-backed or unresolved; runtime storage is not inspected; Imported requirement identity retained; requirement flags and function kind are unavailable",
+    "Coverage is limited to the selected indexed conformance descriptor; template_conformance_unresolved at 0x103715fe8: Generic private storage is not file-backed or unresolved; runtime storage was not read",
+    "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
+    "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+    "relative_pointer_targets_unresolved"
+  ],
+  "locations": [],
+  "evidence_links": []
+}

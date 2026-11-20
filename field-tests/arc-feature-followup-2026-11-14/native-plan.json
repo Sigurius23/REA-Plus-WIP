@@ -1,0 +1,159 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-14/native-evidence",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-14/merged-seeds.tsv"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_references",
+      "arguments": {
+        "procedure": "0x1012e4cec",
+        "direction": "incoming"
+      },
+      "label": "hover-value-getter-consumers",
+      "expect_success": true
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x10378b2c8"
+      },
+      "label": "hover-wrapped-keypath-users",
+      "expect_success": true
+    },
+    {
+      "name": "xrefs",
+      "arguments": {
+        "address": "0x10378b2f0"
+      },
+      "label": "hover-storage-keypath-users",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x10378b2b0",
+        "length": 128
+      },
+      "label": "hover-task-descriptor-and-keypath-bytes",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_references",
+      "arguments": {
+        "procedure": "0x1012e4d6c",
+        "direction": "incoming"
+      },
+      "label": "hover-task-starter-callers",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1012f311c"
+      },
+      "label": "hover-task-helper-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1012f311c"
+      },
+      "label": "hover-task-helper-pseudocode",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1012cd820"
+      },
+      "label": "helper-0x1012cd820-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1012cd820"
+      },
+      "label": "helper-0x1012cd820-pseudocode",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100aa47d0"
+      },
+      "label": "helper-0x100aa47d0-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x100aa47d0"
+      },
+      "label": "helper-0x100aa47d0-pseudocode",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1004c6010"
+      },
+      "label": "helper-0x1004c6010-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1004c6010"
+      },
+      "label": "helper-0x1004c6010-pseudocode",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1004ad574"
+      },
+      "label": "helper-0x1004ad574-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1004ad574"
+      },
+      "label": "helper-0x1004ad574-pseudocode",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-14/native-evidence/evidence-bundle.json"
+      },
+      "label": "export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "close",
+      "expect_success": true
+    }
+  ]
+}

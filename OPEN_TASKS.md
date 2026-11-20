@@ -63,25 +63,27 @@ Open work on `main` following PR #1 and the field tests.
   CLI/MCP comparisons**, including Arc, pass. Published to WIP `main` in
   **`a74006bbe`**, with the remote SHA checked on 2026-11-09. See the
   [repair report](field-tests/arc-seed-diagnostics-2026-11-08.md).
-- **Swift reducer dispatch, item 55 (2026-11-15):** Open for Arc's dynamic
-  stack storage and inline SIMD projection. The bounded Darwin stack-probe
-  summary is implemented in **`5628ef81c`**: profile v8 passes **67 distinct
-  real Ghidra cases (seven positives / 60 rejections)** and **five CLI/MCP
-  comparisons**, including the earlier fixed-copy controls. One baseline run
-  stopped at provider startup after seven completed cases; a separate run
-  completed the remaining 37. The interrupted receipt remains explicit.
-  A fresh unchanged-Arc retest still reports **2,024 observed bytes across an
-  8,608-byte span**, with no recovered nested switch. A conditional typed
-  snapshot lane for its dynamic storage and complete SIMD byte origins is
-  being implemented; this work does not close the Arc reducer or establish
-  its case effects. See item 55 and the
-  [bounded probe report](field-tests/darwin-probe-profile-2026-11-14.md).
-- **Arc selector follow-up (2026-11-13):** The selected path now proves
-  reciprocal input scaling, the exact `getHoveredElement({x: …, y: …})`
-  command, and forward rectangle scaling on successful completion. Error and
-  publication paths stay explicit. The dossier authenticates **88 Evidence
-  anchors**. Final drawing, page/world identity and broader feature coverage
-  remain open; see the [dossier](field-tests/arc-analysis-dossier-2026-11-08.md).
+- **Swift reducer dispatch, item 55 (2026-11-15):** Implemented and verified
+  within the conditional v9 typed-snapshot/ABI profile. All **102 real native
+  cases (15 positives / 87 rejections)** and **13 CLI/MCP comparisons** pass.
+  Arc now returns **28 exact switch targets and a contiguous 10,072-byte body**,
+  replacing the earlier 2,024-byte partial body. All targets agree with the
+  independently captured table and are instruction-covered. Preceding copy
+  ownership, actual runtime binding, case effects and app-wide behavior remain
+  separate questions. Item 60 repairs import admission; item 61 restores the
+  complete inline response without dropping proof or raising its limit.
+  Implementation is published in `70d5dd7d1`; supporting notes/captures are included in the pre-upstream research checkpoint. See the
+  [proof and retest](field-tests/arc-dynamic-snapshot-2026-11-15.md).
+- **Arc selector follow-up (2026-11-15):** The selected native path now
+  connects an installed flipped AppKit tracking view, local/normalized mouse
+  coordinates, point filtering, DOM queries, forward rectangle scaling and
+  SwiftUI gradient/candidate drawing. Setup/update/teardown, exact tracking
+  flags and the five-attempt rectangle retry are traced. Separate S01–S30
+  anchors extend the historical 88-anchor dossier; they are not a claim of
+  complete Arc coverage. Tap candidate-response selection remains queued for
+  the next v9 Arc retest. Page/world identity, live viewport mapping,
+  persistence and broader features remain open. See the
+  [dossier](field-tests/arc-analysis-dossier-2026-11-08.md).
 - **Arc store handoff and editor lifecycle (2026-11-08):** Offline tracing now
   connects the editor's `_viewStore` initialization to its installed send
   closure and captured store-send routine. The concrete stored witness target
@@ -263,11 +265,14 @@ Open work on `main` following PR #1 and the field tests.
      [HeyClicky fix verification](field-tests/heyclicky-fixes-2026-10-28.md).
 2. **Branch state and push:**
    - **Implementation checkpoint (2026-11-15):** `5628ef81ce5144c9af3bdc11b1e3647a9035c368`
-     is pushed and matched WIP `main` by direct SSH `ls-remote`. It includes class selection `8a5efd668`, bounded
+     is pushed; its identity was checked against WIP `main` by direct SSH.
+     The later documentation/evidence checkpoint `325702b06` is also pushed.
+     The implementation includes class selection `8a5efd668`, bounded
      Swift dispatch `f2cdb96ba`, single-attempt settlement `72fcdbe8c`, retained
      cleanup/startup ownership `076c706c6`, supporting captures `72cccedec`,
-     and bounded Darwin probe effects `5628ef81c`. New dynamic-snapshot
-     implementation changes and follow-up notes remain in the working tree.
+     and bounded Darwin probe effects `5628ef81c`. The dynamic-snapshot
+     implementation is published in `70d5dd7d1`. Follow-up notes and retained
+     text captures are saved in the 2026-11-20 pre-upstream research checkpoint.
      The supplied DMG, compiled probes, provider projects and two large Rize
      JSONs remain local. Item 55's exact Arc projection and broader feature
      recovery stay open.
@@ -1290,12 +1295,13 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     Arc artifact. Source/typecheck/build/fast/built-doc checks pass. See
     [repair and receipts](field-tests/arc-seed-diagnostics-2026-11-08.md).
 
-55. **Recover fixed-layout Swift enum dispatch from proved caller type.** Open (2026-11-08).
+55. **Recover fixed-layout Swift enum dispatch from proved caller type.** Done within the conditional v9 profile (2026-11-15).
     Arc's `BoostsEditor: Reducer` witness at `0x1012a9870` reaches
     `0x1012a571c`, whose nested outlined tag getter is `0x1012b2860` and whose
-    signed-word dispatch at `0x1012a5bc8` remains unrecovered. The observed
-    function body is only 2,024 bytes across an 8,608-byte span; missing case
-    code must not be treated as complete decompilation.
+    signed-word dispatch at `0x1012a5bc8` was originally unrecovered. The
+    earlier observed body was 2,024 bytes across an 8,608-byte span. The v9
+    retest now recovers all 28 targets and a contiguous 10,072-byte body;
+    high-level case effects remain a separate analysis task.
 
     An owned fixed-layout `-Onone` nested reducer reproduces the omission:
     zero tables and zero of 24 known case callees, versus all 30 recovered for
@@ -1372,6 +1378,20 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     confirming that the dynamic snapshot/SIMD lane remains necessary.
     See the [bounded probe report](field-tests/darwin-probe-profile-2026-11-14.md)
     and [Arc retest](field-tests/arc-selector-v8-2026-11-15/reducer-retest.md).
+
+    **v9 resolution (2026-11-15):** A conditional typed snapshot at the exact
+    runtime outer-tag call replaces a required proof of preceding copy effects.
+    Named validity/ABI/linkage/nonwrapping/live-region/stability premises remain
+    explicit. Same-metadata aligned extent, live/disjoint stack identities,
+    all-path outer-case selection, all 156 inline SIMD byte origins, pure child
+    getter and closed getter-to-dispatch window are checked. Final recovery
+    source `9717688d…c4df34` passes 102 native cases and 13 CLI comparisons.
+    Arc's 28 mappings match all captured signed words, and all targets belong
+    to the contiguous 10,072-byte body with 2,518 decoded instructions. A later
+    evidence-text-only change preserves these facts and full shared proof while
+    reducing the inline response below 10 MiB. Source/fast, package and built-doc
+    checks pass; `check:pr` was not rerun. See the
+    [final proof](field-tests/arc-dynamic-snapshot-2026-11-15.md).
 
 56. **Select an indexed Swift vtable class before decode admission.** Done (2026-11-09), within the static indexed-class profile.
     Arc's `HoveredElementTracker` descriptor at `0x103d7bcb4` is established by
@@ -1479,3 +1499,81 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     included in the final item 58 matrix. Published in `076c706c6`. See the
     [ownership report](field-tests/arc-cleanup-history-2026-11-13.md) and
     `field-tests/radare2-startup-cleanup-2026-11-14/`.
+
+60. **Admit stack-probe imports independently of unrelated rebases and preserve original import addends.** Fixed and verified; implementation published in `70d5dd7d1` (2026-11-15).
+    The v8 probe-identity lookup spends its 100,000-record budget on the entire
+    Ghidra relocation table before selecting a probe import. Original Arc
+    bytes contain 329,896 chained pointers but only 8,039 import records;
+    the exact probe is import 1,428, library ordinal 14, `libSystem.B.dylib`.
+    Installed Ghidra source adds a relocation for each chained fixup, so this
+    lookup cannot finish its uniqueness proof on that complete index. Public
+    loader diagnostics independently confirm the fixed-up pointer count;
+    neither count is a direct live Ghidra-table measurement. An unchanged
+    862,864-byte owned fixture now reproduces the gap through public MCP:
+    v8 returns zero tables / 296 function bytes; v9 returns all 24 mappings /
+    776 bytes. Both sessions explicitly close and verify empty lineage.
+
+    The repair scans bounded original chained-import records for global
+    same-name ordinal uniqueness, retains exact loaded header, imported
+    external, applied selected-slot relocation and loaded-target checks,
+    and rejects mixed classic binding/section-relocation carriers. Review
+    also identified that Ghidra parses but omits format 2/3 import-table
+    addends when applying pointers. Exact-name nonzero import addends must
+    therefore reject the summary even if Ghidra's loaded pointer appears
+    canonical. Owned large-rebase and zero/nonzero-addend controls are being
+    verified in the completed 102-case native matrix, including zero/nonzero
+    format 2/3 addends and a normalized-name collision. The Arc retest also
+    recovers all 28 cases under the declared probe/typed-snapshot assumptions.
+    Implementation is published in `70d5dd7d1`; supporting material is retained
+    in the pre-upstream research checkpoint. See the
+    [comparison](field-tests/arc-dynamic-snapshot-2026-11-15/large-rebase-comparison.json)
+    and [current proof report](field-tests/arc-dynamic-snapshot-2026-11-15.md).
+
+61. **Keep shared Swift switch proofs at the table instead of repeating them per case.** Fixed and verified; implementation published in `70d5dd7d1` (2026-11-15).
+    The successful Arc v9 analysis recovers all 28 cases and a contiguous
+    10,072-byte body, but its MCP response exceeds 10 MiB. The complete Evidence
+    is retained and public bundle export recovers it; the first field recorder
+    incorrectly treated the response limit as fatal before exporting.
+    Inspection finds the same roughly 11 KiB shared proof repeated in every
+    case mapping, in addition to the table data source. Across raw/normalized
+    results, 58 large detail occurrences total 641,212 bytes. Keep each mapping's
+    tag/name, word address and target facts, referring to the complete proof
+    already owned by its table data source. Do not remove assumptions or raise
+    the response limit. The unchanged-Arc retest now succeeds inline with a
+    9,298,190-byte serialized reply. All 28 mappings, 10,072 body bytes, complete
+    shared proof and limitations are identical. Both explicit closes succeed
+    and the owned lineage is empty. Recovery logic is unchanged from the
+    102-case producer; its full matrix was not repeated for this text-only
+    repair. See the [exact comparison](field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-inline-retest/comparison.json).
+
+## Upstream reconciliation (2026-11-18)
+
+62. **Review and selectively integrate upstream REA additions.** Audit done;
+    integration open. Compared local `70d5dd7d1` / source package 6.4.0 with
+    upstream `f7849cad3fe3bffb207b4dc30f34394978c20297` / package 6.9.0
+    (main includes changes after the November 11 release). Static source
+    contracts: **205 local / 260 upstream**, **175 shared**, **85 upstream-only
+    names / 30 local-only names**. Counts describe names, not independent
+    capabilities or verified runtime availability.
+
+    - [ ] Reconcile shared schema/Evidence/profile, boundary/parser and
+      lifecycle changes while retaining local Swift/Arc/Rize and ownership
+      fixes. Audit findings alone do not prove upstream bug fixes are missing
+      semantically from our different implementation.
+    - [ ] Port and qualify owned Ghidra checkpoints, verified selected-project
+      copies and retained native pages to reduce repeated Arc analysis.
+    - [ ] Add structured offline firmware readers (HEX/S-record, UF2/DfuSe,
+      uImage/FIT/ESP, Android boot/OTA) and devicetree inspection.
+    - [ ] Qualify raw-image/RISC-V, expanded MIPS and PowerPC/DOL lanes
+      separately. Upstream raw ARM remains A32; Cortex-M/Thumb is not established.
+    - [ ] Review native diagnostics, APK signing/JNI/R8, standalone packages,
+      language/data inspectors and network/browser/Electron additions against
+      overlapping local tools.
+    - [ ] Prioritize optional persistent debugger/Frida sessions, desktop/agent
+      environments and NTFS/Windows workflows when needed.
+
+    Preserve the 30 differently exposed local tools, including general function
+    emulation and Chromium resource inspection/search; do not replace REA+
+    wholesale. No source merge, dependency install or upstream provider run was
+    performed. See the [comparison and proposed order](field-tests/upstream-rea-comparison-2026-11-18.md)
+    and [complete source-name inventory](field-tests/upstream-rea-comparison-2026-11-18/comparison.json).

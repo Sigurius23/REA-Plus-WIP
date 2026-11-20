@@ -1,0 +1,5530 @@
+{
+  "kind": "supplemental-offline-case-semantics",
+  "evidence_id": "ev_583079470e74897be835bc992f7970146808dc6ced3ae7dc423c29725672acc6",
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "source": {
+    "path": "evidence/arc-reducer-v9.retained.evidence.json",
+    "sha256": "d0f9b27d9c9b88ac67e64f152bbb3a3da3e89455a4db5e2a3f5d8376a9a491f7"
+  },
+  "instruction_evidence_id": "ev_40ba88fc8651de3ee7dca401286285565c0d72dd24ae10c54b889c86ff4e12a0",
+  "instruction_count": 2518,
+  "case_count": 28,
+  "limitations": [
+    "Static caller observations only; target and libraries were not executed.",
+    "Decompiler param_1/param_2, inferred types and extraout variables are not original Swift signatures. Assembly supplies the register/frame anchors.",
+    "F(k)=S+signext32(*(M+k)); k is a load offset in M, NOT a numeric field offset in S. Nominal state type/field names are unproved until metadata is decoded.",
+    "S is entry X0 saved at [X19+0xc0]; E is entry X8 saved at+0xc8; D is entry X20 saved at+0xb0. These are value/address identities, not concrete instance/lifetime ownership proofs.",
+    "Calls to helper0x1012b28a8 precede payload reads; its projection/ownership contract is not proved by this caller-only note.",
+    "No visible parent state store does not mean no side effects: helper and indirect-callback bodies remain unknown.",
+    "Just/AnyPublisher and result tags prove construction in this caller; subscription, cancellation, actual clipboard/reload/network/file/preferences execution are not observed.",
+    "Result discriminator2 is called empty-like by convention; nominal Effect type and its complete lifecycle are not independently proved here.",
+    "The complete assembly/CFG inventory is separate from truncated high p-code: native_value_flow has3000 operations/truncated=true; trace page0 also reports provider truncation and call-depth omissions.",
+    "Reachable block unions are syntactic CFG coverage, not claims that every listed branch is feasible or that traps/unknown callees return."
+  ],
+  "cases": [
+    {
+      "tag": 0,
+      "reflection_name": "showAdvancedColorMapper",
+      "target": "0x1012a5bcc",
+      "pseudocode_lines": [
+        458,
+        463
+      ],
+      "observed_decisions_interpretation": "Read one byte via payload access helper; no conditional branch before shared write.",
+      "explicit_parent_state_writes_interpretation": "F(0x20) <- accessed byte.",
+      "return_or_effect_construction_interpretation": "Common empty-like result discriminator2.",
+      "anchors": [
+        {
+          "address": "0x1012a5bd4",
+          "instruction": "0x1012a5bd4: ldrb w8, [x0]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a5bdc",
+          "instruction": "0x1012a5bdc: ldrsw x9, [x9, #0x20]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6ae8",
+          "instruction": "0x1012a6ae8: strb w8, [x10, x9]",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a5bcc",
+        "0x1012a6ae4",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 26,
+      "instruction_dump": "case-instructions/00-showAdvancedColorMapper.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a5bd0",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a6ae8",
+          "instruction": "strb w8, [x10, x9]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 1,
+      "reflection_name": "setModality",
+      "target": "0x1012a63fc",
+      "pseudocode_lines": [
+        464,
+        474
+      ],
+      "observed_decisions_interpretation": "Read byte; compare it with3.",
+      "explicit_parent_state_writes_interpretation": "F(0x18) <- byte; F(0x1c) <- (byte==3 ? 1 : 2).",
+      "return_or_effect_construction_interpretation": "Common empty-like result discriminator2.",
+      "anchors": [
+        {
+          "address": "0x1012a6404",
+          "instruction": "0x1012a6404: ldrb w8, [x0]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6410",
+          "instruction": "0x1012a6410: strb w8, [x10, x9]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6418",
+          "instruction": "0x1012a6418: cmp w8, #0x3",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6424",
+          "instruction": "0x1012a6424: strb w8, [x10, x9]",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a63fc",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 29,
+      "instruction_dump": "case-instructions/01-setModality.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6400",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a6410",
+          "instruction": "strb w8, [x10, x9]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6424",
+          "instruction": "strb w8, [x10, x9]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 2,
+      "reflection_name": "setCodeEditingWindowSize",
+      "target": "0x1012a6324",
+      "pseudocode_lines": [
+        475,
+        482
+      ],
+      "observed_decisions_interpretation": "No visible value-dependent branch.",
+      "explicit_parent_state_writes_interpretation": "16 accessed bytes -> F(0x28).",
+      "return_or_effect_construction_interpretation": "Common empty-like result discriminator2.",
+      "anchors": [
+        {
+          "address": "0x1012a6330",
+          "instruction": "0x1012a6330: ldrsw x8, [x8, #0x28]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6334",
+          "instruction": "0x1012a6334: ldr q0, [x0]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6338",
+          "instruction": "0x1012a6338: str q0, x9, x8, , ",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6324",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 24,
+      "instruction_dump": "case-instructions/02-setCodeEditingWindowSize.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6328",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a6338",
+          "instruction": "str q0, x9, x8, , ",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 3,
+      "reflection_name": "setZapToPreview",
+      "target": "0x1012a63a0",
+      "pseudocode_lines": [
+        483,
+        557
+      ],
+      "observed_decisions_interpretation": "Replace two-word F(0x5c). Previous second word==0 takes initial branch; otherwise a nonzero new second word skips the asynchronous construction. When reached, F(0x4c).second must be nonzero.",
+      "explicit_parent_state_writes_interpretation": "F(0x5c) <- accessed two-word value. Parent invokes typed state copy into a capture context on the asynchronous arm.",
+      "return_or_effect_construction_interpretation": "Conditional task/run-style constructor0x100598344 with async descriptor candidate0x1037887d0, environment bytes0x280, selected-identity pair and a state-copy request. Other arms return discriminator2. Actual delayed work/retention unproved.",
+      "anchors": [
+        {
+          "address": "0x1012a63b0",
+          "instruction": "0x1012a63b0: ldrsw x9, [x23, #0x5c]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a63bc",
+          "instruction": "0x1012a63bc: cbz x20, 0x1012a714c",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a63c0",
+          "instruction": "0x1012a63c0: stp x8, x22, [x9]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a63d8",
+          "instruction": "0x1012a63d8: cbnz x22, 0x1012a7870",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a714c",
+          "instruction": "0x1012a714c: stp x8, x22, [x9]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a71bc",
+          "instruction": "0x1012a71bc: ldr x20, [x8, #0x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a71c0",
+          "instruction": "0x1012a71c0: cbz x20, 0x1012a7870",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a72a0",
+          "instruction": "0x1012a72a0: bl 0x100598344",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a63a0",
+        "0x1012a63c0",
+        "0x1012a63dc",
+        "0x1012a714c",
+        "0x1012a71b4",
+        "0x1012a71c4",
+        "0x1012a7870",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 132,
+      "instruction_dump": "case-instructions/03-setZapToPreview.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a63a4",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a63cc",
+          "callee": "0x1012b2954",
+          "name": "FUN_1012b2954",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a63d4",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a71a8",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a71b0",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a71cc",
+          "callee": "0x103639f40",
+          "name": "_$sScPMa",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7208",
+          "callee": "0x10000828c",
+          "name": "FUN_10000828c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7240",
+          "callee": "0x10363ffe8",
+          "name": "_swift_allocObject",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7254",
+          "callee": "0x1000082d0",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7268",
+          "callee": "0x10363f6a0",
+          "name": "_memcpy",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a727c",
+          "callee": "0x1012b2920",
+          "name": "FUN_1012b2920",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7284",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a72a0",
+          "callee": "0x100598344",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a72a8",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a72b0",
+          "callee": "0x1012b287c",
+          "name": "FUN_1012b287c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a72c8",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7874",
+          "callee": "0x1012b287c",
+          "name": "FUN_1012b287c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a71ec",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [
+        {
+          "site": "0x1012a63bc",
+          "instruction": "cbz x20, 0x1012a714c"
+        },
+        {
+          "site": "0x1012a63d8",
+          "instruction": "cbnz x22, 0x1012a7870"
+        },
+        {
+          "site": "0x1012a71c0",
+          "instruction": "cbz x20, 0x1012a7870"
+        }
+      ],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a63c0",
+          "instruction": "stp x8, x22, [x9]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a714c",
+          "instruction": "stp x8, x22, [x9]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7158",
+          "instruction": "str q0, [x19, #0x630]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a715c",
+          "instruction": "str q1, [x19, #0x640]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7164",
+          "instruction": "str q0, [x19, #0x650]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7170",
+          "instruction": "stur q0, [x8, #0x8c]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a717c",
+          "instruction": "str q0, [x19, #0x5f0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7180",
+          "instruction": "str q1, [x19, #0x600]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a718c",
+          "instruction": "str q0, [x19, #0x610]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7190",
+          "instruction": "str q1, [x19, #0x620]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a719c",
+          "instruction": "str q0, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a71a0",
+          "instruction": "str q1, [x19, #0x5e0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7270",
+          "instruction": "stp x23, x20, [x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 4,
+      "reflection_name": "toggleDevTools",
+      "target": "0x1012a6154",
+      "pseudocode_lines": [
+        558,
+        567
+      ],
+      "observed_decisions_interpretation": "Read byte via access helper.",
+      "explicit_parent_state_writes_interpretation": "No direct parent state store identified.",
+      "return_or_effect_construction_interpretation": "Constructs outer action tag0 with payload tag byte3 at+0x20 and byte value in first word; Just -> AnyPublisher -> result discriminator0. Delegate-style emission, not an observed DevTools operation.",
+      "anchors": [
+        {
+          "address": "0x1012a6154",
+          "instruction": "0x1012a6154: add x0, x19, #0x4e0",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6c34",
+          "instruction": "0x1012a6c34: strb w8, [x24, #0x20]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6c48",
+          "instruction": "0x1012a6c48: bl 0x103640564",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6c78",
+          "instruction": "0x1012a6c78: bl 0x103635fe0",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a76d8",
+          "instruction": "0x1012a76d8: adrp x0, 0x104626000",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6154",
+        "0x1012a6c34",
+        "0x1012a6c78",
+        "0x1012a76c8",
+        "0x1012a7898",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 70,
+      "instruction_dump": "case-instructions/04-toggleDevTools.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6158",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c48",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c64",
+          "callee": "0x10000828c",
+          "name": "FUN_10000828c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c78",
+          "callee": "0x103635fe0",
+          "name": "_$s7Combine4JustVyACyxGxcfC",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c9c",
+          "callee": "0x10000a9c8",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6cb0",
+          "callee": "0x1036360c4",
+          "name": "_$s7Combine9PublisherPAAE010eraseToAnyB0AA0eB0Vy6OutputQz7FailureQzGyF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76cc",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76e8",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a6cc8",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a6164",
+          "instruction": "stp x8, xzr, [x24]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6168",
+          "instruction": "stp xzr, xzr, [x24, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6c34",
+          "instruction": "strb w8, [x24, #0x20]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a76d4",
+          "instruction": "str x20, [x21]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 5,
+      "reflection_name": "update",
+      "target": "0x1012a65d4",
+      "pseudocode_lines": [
+        568,
+        849
+      ],
+      "observed_decisions_interpretation": "Classify accessed update twice with0x101165e98. Classification<=5 and mask0x2c (2/3/5) selects modality2. Classification>1 enters flag-bit/optional-value comparison path; helper0x10115cd48 participates in equality and0x1012aa084 in history handling.",
+      "explicit_parent_state_writes_interpretation": "F(0x48) <- 0; conditional F(0x18) <- 2. Calls0x1012b2b00 with state/model buffer on one arm; destroy/tag-single-payload calls target F(0x58). State writes hidden in helpers remain unproved.",
+      "return_or_effect_construction_interpretation": "Builds one-element heap container of accessed/transformed update-like bytes, then0x1012abe5c(S,container,flag-bit). Return construction/application/persistence inside that helper unproved.",
+      "anchors": [
+        {
+          "address": "0x1012a6630",
+          "instruction": "0x1012a6630: ldrb w24, [x0, #0x9b]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a663c",
+          "instruction": "0x1012a663c: strb wzr, [x21, x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6640",
+          "instruction": "0x1012a6640: bl 0x101165e98",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6654",
+          "instruction": "0x1012a6654: mov w9, #0x2c",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6668",
+          "instruction": "0x1012a6668: strb w9, [x21, x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6670",
+          "instruction": "0x1012a6670: bl 0x101165e98",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6678",
+          "instruction": "0x1012a6678: b.hi 0x1012a6ce4",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a7c1c",
+          "instruction": "0x1012a7c1c: ldr x23, [x19, #0x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a7c58",
+          "instruction": "0x1012a7c58: adrp x0, 0x104626000",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a65d4",
+        "0x1012a664c",
+        "0x1012a6660",
+        "0x1012a666c",
+        "0x1012a667c",
+        "0x1012a6ce4",
+        "0x1012a6ce8",
+        "0x1012a6d80",
+        "0x1012a6e24",
+        "0x1012a76fc",
+        "0x1012a7750",
+        "0x1012a7788",
+        "0x1012a789c",
+        "0x1012a7b00",
+        "0x1012a7b04",
+        "0x1012a7b24",
+        "0x1012a7c1c",
+        "0x1012a7c58",
+        "0x1012a7d48"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 392,
+      "instruction_dump": "case-instructions/05-update.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a65d8",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6640",
+          "callee": "0x101165e98",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6670",
+          "callee": "0x101165e98",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a66d4",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a66ec",
+          "callee": "0x100008168",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6d48",
+          "callee": "0x100008168",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6d60",
+          "callee": "0x100008168",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6dd8",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6df0",
+          "callee": "0x100008168",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6e08",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6e38",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7704",
+          "callee": "0x1012b2954",
+          "name": "FUN_1012b2954",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7710",
+          "callee": "0x1012b2b00",
+          "name": "FUN_1012b2b00",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a772c",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a776c",
+          "callee": "0x100008168",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a77e0",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a77f8",
+          "callee": "0x100008168",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7810",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7820",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7b18",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7b3c",
+          "callee": "0x1000082d0",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7b98",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7bb0",
+          "callee": "0x100008168",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7bbc",
+          "callee": "0x10115cd48",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7bcc",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7bf0",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7c00",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7c10",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7c30",
+          "callee": "0x1012aa084",
+          "name": "FUN_1012aa084",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7c54",
+          "callee": "0x100086d40",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7c68",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7c74",
+          "callee": "0x10363ffe8",
+          "name": "_swift_allocObject",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d08",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d20",
+          "callee": "0x100008168",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d34",
+          "callee": "0x1012abe5c",
+          "name": "FUN_1012abe5c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d3c",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d44",
+          "callee": "0x1012b287c",
+          "name": "FUN_1012b287c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d4c",
+          "callee": "0x1012b287c",
+          "name": "FUN_1012b287c",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a6d0c",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        },
+        {
+          "site": "0x1012a6d74",
+          "instruction": "blr x20",
+          "target_binding": "unresolved in caller-only inventory"
+        },
+        {
+          "site": "0x1012a6e18",
+          "instruction": "blr x20",
+          "target_binding": "unresolved in caller-only inventory"
+        },
+        {
+          "site": "0x1012a7744",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        },
+        {
+          "site": "0x1012a777c",
+          "instruction": "blr x20",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [
+        {
+          "site": "0x1012a6648",
+          "instruction": "b.hi 0x1012a666c"
+        },
+        {
+          "site": "0x1012a665c",
+          "instruction": "b.eq 0x1012a666c"
+        },
+        {
+          "site": "0x1012a6678",
+          "instruction": "b.hi 0x1012a6ce4"
+        },
+        {
+          "site": "0x1012a6ce4",
+          "instruction": "tbz w24, #0x0, 0x1012a76fc"
+        },
+        {
+          "site": "0x1012a6d7c",
+          "instruction": "b.ne 0x1012a7750"
+        },
+        {
+          "site": "0x1012a6e20",
+          "instruction": "b.ne 0x1012a7b00"
+        },
+        {
+          "site": "0x1012a7784",
+          "instruction": "b.ne 0x1012a7b24"
+        },
+        {
+          "site": "0x1012a7c18",
+          "instruction": "tbz w21, #0x0, 0x1012a7c58"
+        }
+      ],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a65e4",
+          "instruction": "stur q0, [x29, #-0xa0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a65ec",
+          "instruction": "stur q0, [x29, #-0x90]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a65f4",
+          "instruction": "stur q0, [x29, #-0x80]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a65fc",
+          "instruction": "stur q0, [x25, #0x8b]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6604",
+          "instruction": "stur q0, [x29, #-0xe0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a660c",
+          "instruction": "stur q0, [x29, #-0xd0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6614",
+          "instruction": "stur q0, [x29, #-0xc0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a661c",
+          "instruction": "stur q0, [x29, #-0xb0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6624",
+          "instruction": "stur q0, [x29, #-0x100]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a662c",
+          "instruction": "stur q0, [x29, #-0xf0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a663c",
+          "instruction": "strb wzr, [x21, x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6668",
+          "instruction": "strb w9, [x21, x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6684",
+          "instruction": "str q0, [x19, #0x630]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6688",
+          "instruction": "str q1, [x19, #0x640]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6690",
+          "instruction": "str q0, [x19, #0x650]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a669c",
+          "instruction": "stur q0, [x20, #0x8c]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a66a8",
+          "instruction": "str q0, [x19, #0x5f0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a66ac",
+          "instruction": "str q1, [x19, #0x600]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a66b8",
+          "instruction": "str q0, [x19, #0x610]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a66bc",
+          "instruction": "str q1, [x19, #0x620]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a66c8",
+          "instruction": "str q0, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a66cc",
+          "instruction": "str q1, [x19, #0x5e0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6ce8",
+          "instruction": "str w24, [x19, #0x98]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6d28",
+          "instruction": "str x23, [x19, #0xb8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6d88",
+          "instruction": "str q0, [x19, #0x630]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6d8c",
+          "instruction": "str q1, [x19, #0x640]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6d94",
+          "instruction": "str q0, [x19, #0x650]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6da0",
+          "instruction": "stur q0, [x8, #0x8c]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6dac",
+          "instruction": "str q0, [x19, #0x5f0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6db0",
+          "instruction": "str q1, [x19, #0x600]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6dbc",
+          "instruction": "str q0, [x19, #0x610]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6dc0",
+          "instruction": "str q1, [x19, #0x620]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6dcc",
+          "instruction": "str q0, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6dd0",
+          "instruction": "str q1, [x19, #0x5e0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7790",
+          "instruction": "str q0, [x19, #0x630]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7794",
+          "instruction": "str q1, [x19, #0x640]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a779c",
+          "instruction": "str q0, [x19, #0x650]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a77a8",
+          "instruction": "stur q0, [x20, #0x8c]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a77b4",
+          "instruction": "str q0, [x19, #0x5f0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a77b8",
+          "instruction": "str q1, [x19, #0x600]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a77c4",
+          "instruction": "str q0, [x19, #0x610]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a77c8",
+          "instruction": "str q1, [x19, #0x620]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a77d4",
+          "instruction": "str q0, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a77d8",
+          "instruction": "str q1, [x19, #0x5e0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7b48",
+          "instruction": "str q0, [x19, #0x630]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7b4c",
+          "instruction": "str q1, [x19, #0x640]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7b54",
+          "instruction": "str q0, [x19, #0x650]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7b60",
+          "instruction": "stur q0, [x8, #0x8c]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7b6c",
+          "instruction": "str q0, [x19, #0x5f0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7b70",
+          "instruction": "str q1, [x19, #0x600]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7b7c",
+          "instruction": "str q0, [x19, #0x610]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7b80",
+          "instruction": "str q1, [x19, #0x620]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7b8c",
+          "instruction": "str q0, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7b90",
+          "instruction": "str q1, [x19, #0x5e0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7c84",
+          "instruction": "stp q1, q2, [x0, #0x90]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7c8c",
+          "instruction": "stur q1, [x0, #0xab]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7c98",
+          "instruction": "stp q2, q3, [x0, #0x50]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7ca4",
+          "instruction": "stp q4, q0, [x0, #0x70]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7cac",
+          "instruction": "stp q2, q0, [x0, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7cb0",
+          "instruction": "stp q3, q1, [x0, #0x30]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7cbc",
+          "instruction": "str q0, [x19, #0x630]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7cc0",
+          "instruction": "str q1, [x19, #0x640]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7cc8",
+          "instruction": "str q0, [x19, #0x650]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7cd0",
+          "instruction": "stur q0, [x20, #0x8c]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7cdc",
+          "instruction": "str q0, [x19, #0x5f0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7ce0",
+          "instruction": "str q1, [x19, #0x600]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7cec",
+          "instruction": "str q0, [x19, #0x610]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7cf0",
+          "instruction": "str q1, [x19, #0x620]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7cfc",
+          "instruction": "str q0, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7d00",
+          "instruction": "str q1, [x19, #0x5e0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 6,
+      "reflection_name": "appendZap",
+      "target": "0x1012a6834",
+      "pseudocode_lines": [
+        850,
+        934
+      ],
+      "observed_decisions_interpretation": "Access two-word argument; obtain F(0x40), create one-element two-word container, call0x1012aeaf8 and0x1011648f8.",
+      "explicit_parent_state_writes_interpretation": "F(0x48) <- 0. Calls0x1012b2b00 with transformed buffer, destroys F(0x58) value and invokes witness+0x38(field,1,1,type), consistent with clearing an optional but nominal type unproved.",
+      "return_or_effect_construction_interpretation": "Creates one-element update-like container; calls0x1012abe5c(...,0). Actual append/persistence semantics reside in helpers.",
+      "anchors": [
+        {
+          "address": "0x1012a6844",
+          "instruction": "0x1012a6844: ldrsw x8, [x25, #0x40]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6880",
+          "instruction": "0x1012a6880: stp x21, x23, [x0, #0x20]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a68a4",
+          "instruction": "0x1012a68a4: bl 0x1012aeaf8",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a68b4",
+          "instruction": "0x1012a68b4: bl 0x1011648f8",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6900",
+          "instruction": "0x1012a6900: strb wzr, [x24, x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a690c",
+          "instruction": "0x1012a690c: bl 0x1012b2b00",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6940",
+          "instruction": "0x1012a6940: blr x8",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a69c8",
+          "instruction": "0x1012a69c8: bl 0x1012abe5c",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6834",
+        "0x1012a789c",
+        "0x1012a7d48"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 118,
+      "instruction_dump": "case-instructions/06-appendZap.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6838",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a685c",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6868",
+          "callee": "0x10363ffe8",
+          "name": "_swift_allocObject",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6890",
+          "callee": "0x1012b2954",
+          "name": "FUN_1012b2954",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6898",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a68a4",
+          "callee": "0x1012aeaf8",
+          "name": "FUN_1012aeaf8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a68b4",
+          "callee": "0x1011648f8",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a690c",
+          "callee": "0x1012b2b00",
+          "name": "FUN_1012b2b00",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6928",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6954",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6960",
+          "callee": "0x10363ffe8",
+          "name": "_swift_allocObject",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a69b0",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a69c8",
+          "callee": "0x1012abe5c",
+          "name": "FUN_1012abe5c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a69d0",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a69d8",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d4c",
+          "callee": "0x1012b287c",
+          "name": "FUN_1012b287c",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a6940",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a6878",
+          "instruction": "str q0, [x19, #0xa0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a687c",
+          "instruction": "str q0, [x0, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6880",
+          "instruction": "stp x21, x23, [x0, #0x20]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6884",
+          "instruction": "str x20, [x19, #0xd0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a68ac",
+          "instruction": "str x22, [x19, #0xd0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a68bc",
+          "instruction": "str q0, [x19, #0x630]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a68c0",
+          "instruction": "str q1, [x19, #0x640]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a68c8",
+          "instruction": "str q0, [x19, #0x650]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a68d4",
+          "instruction": "stur q0, [x21, #0x8b]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a68dc",
+          "instruction": "str q0, [x19, #0x5f0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a68e0",
+          "instruction": "str q1, [x19, #0x600]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a68e8",
+          "instruction": "str q0, [x19, #0x610]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a68ec",
+          "instruction": "str q1, [x19, #0x620]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a68f4",
+          "instruction": "str q0, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a68f8",
+          "instruction": "str q1, [x19, #0x5e0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6900",
+          "instruction": "strb wzr, [x24, x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6974",
+          "instruction": "stp q1, q2, [x0, #0x90]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a697c",
+          "instruction": "stur q1, [x0, #0xab]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6990",
+          "instruction": "stp q2, q3, [x0, #0x50]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6994",
+          "instruction": "stp q4, q0, [x0, #0x70]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a69a4",
+          "instruction": "stp q3, q0, [x0, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a69a8",
+          "instruction": "stp q2, q1, [x0, #0x30]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 7,
+      "reflection_name": "removeZap",
+      "target": "0x1012a63e0",
+      "pseudocode_lines": [
+        935,
+        939
+      ],
+      "observed_decisions_interpretation": "Access one word.",
+      "explicit_parent_state_writes_interpretation": "No direct parent state store identified; delegates to0x1012a8ea4.",
+      "return_or_effect_construction_interpretation": "Calls0x1012a8ea4 with state, accessed argument and output slot. Helper effects/return form unproved.",
+      "anchors": [
+        {
+          "address": "0x1012a63e8",
+          "instruction": "0x1012a63e8: ldr x1, [x0]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a63f4",
+          "instruction": "0x1012a63f4: bl 0x1012a8ea4",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a63e0",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 15,
+      "instruction_dump": "case-instructions/07-removeZap.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a63e4",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a63f4",
+          "callee": "0x1012a8ea4",
+          "name": "FUN_1012a8ea4",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [],
+      "conditional_branches": [],
+      "raw_memory_stores": [],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 8,
+      "reflection_name": "showSelectorPicker",
+      "target": "0x1012a6ad0",
+      "pseudocode_lines": [
+        940,
+        947
+      ],
+      "observed_decisions_interpretation": "Read byte via access helper.",
+      "explicit_parent_state_writes_interpretation": "F(0x1c) <- accessed byte.",
+      "return_or_effect_construction_interpretation": "Common empty-like result discriminator2.",
+      "anchors": [
+        {
+          "address": "0x1012a6ad8",
+          "instruction": "0x1012a6ad8: ldrb w8, [x0]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6ae0",
+          "instruction": "0x1012a6ae0: ldrsw x9, [x9, #0x1c]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6ae8",
+          "instruction": "0x1012a6ae8: strb w8, [x10, x9]",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6ad0",
+        "0x1012a6ae4",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 25,
+      "instruction_dump": "case-instructions/08-showSelectorPicker.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6ad4",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a6ae8",
+          "instruction": "strb w8, [x10, x9]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 9,
+      "reflection_name": "copySelectorToPasteboard",
+      "target": "0x1012a61dc",
+      "pseudocode_lines": [
+        948,
+        968
+      ],
+      "observed_decisions_interpretation": "Access two-word selector value; construct optional TaskPriority-like argument through Swift metadata/witness calls.",
+      "explicit_parent_state_writes_interpretation": "No direct parent state store identified.",
+      "return_or_effect_construction_interpretation": "Allocates0x2a0 capture object, copies environment0x280 bytes, stores accessed pair at+0x290/+0x298, then0x100598344 with async descriptor candidate0x1037887b0. Clipboard execution/subscription is not observed.",
+      "anchors": [
+        {
+          "address": "0x1012a61dc",
+          "instruction": "0x1012a61dc: add x0, x19, #0x4e0",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a61ec",
+          "instruction": "0x1012a61ec: bl 0x103639f40",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6238",
+          "instruction": "0x1012a6238: bl 0x10363f6a0",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6260",
+          "instruction": "0x1012a6260: add x1, x1, #0x7b0",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a628c",
+          "instruction": "0x1012a628c: add x1, x1, #0xf80",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a61dc",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 58,
+      "instruction_dump": "case-instructions/09-copySelectorToPasteboard.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a61e0",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a61ec",
+          "callee": "0x103639f40",
+          "name": "_$sScPMa",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6220",
+          "callee": "0x10363ffe8",
+          "name": "_swift_allocObject",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6238",
+          "callee": "0x10363f6a0",
+          "name": "_memcpy",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a624c",
+          "callee": "0x1012b2920",
+          "name": "FUN_1012b2920",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6258",
+          "callee": "0x1012b2954",
+          "name": "FUN_1012b2954",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6274",
+          "callee": "0x100598344",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a627c",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6284",
+          "callee": "0x1012b287c",
+          "name": "FUN_1012b287c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a629c",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a620c",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a623c",
+          "instruction": "str x21, [x20, #0x290]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6240",
+          "instruction": "str x22, [x20, #0x298]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 10,
+      "reflection_name": "boostIDE",
+      "target": "0x1012a6a54",
+      "pseudocode_lines": [
+        969,
+        1169
+      ],
+      "observed_decisions_interpretation": "Payload byte+0x38 branches0/1/other. Requires nonzero F(0x4c).second and identity equality (two-word fast path or Swift String comparison). Cases0/1 call0x1011648b4/0x1011648bc. Other branch chooses F(0x2c) or F(0x30), defaults absent strings to empty, calls0x100576028.",
+      "explicit_parent_state_writes_interpretation": "Matched0/1 arms clear F(0x48) and call0x1012abe5c with transformed one-element update-like container. No explicit parent state write on the other callback arm.",
+      "return_or_effect_construction_interpretation": "Some arms delegate result construction to0x1012abe5c; other arms directly invoke0x100576028 then return discriminator2. Do not classify that unknown call as deferred or persistent without its body.",
+      "anchors": [
+        {
+          "address": "0x1012a6a68",
+          "instruction": "0x1012a6a68: ldrb w8, [x0, #0x38]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6a94",
+          "instruction": "0x1012a6a94: cmp x26, x2",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a78c8",
+          "instruction": "0x1012a78c8: mov x0, x26",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a790c",
+          "instruction": "0x1012a790c: str x23, [x19, #0x5d0]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a7af0",
+          "instruction": "0x1012a7af0: bl 0x10002ef98",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a7dfc",
+          "instruction": "0x1012a7dfc: mov x0, x21",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6a54",
+        "0x1012a6a70",
+        "0x1012a6a7c",
+        "0x1012a6a90",
+        "0x1012a6a9c",
+        "0x1012a6aa4",
+        "0x1012a752c",
+        "0x1012a7540",
+        "0x1012a754c",
+        "0x1012a7554",
+        "0x1012a7580",
+        "0x1012a759c",
+        "0x1012a75a0",
+        "0x1012a75a8",
+        "0x1012a75b0",
+        "0x1012a75c4",
+        "0x1012a75d8",
+        "0x1012a7828",
+        "0x1012a782c",
+        "0x1012a7834",
+        "0x1012a783c",
+        "0x1012a7850",
+        "0x1012a7864",
+        "0x1012a7870",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c",
+        "0x1012a78c8",
+        "0x1012a790c",
+        "0x1012a79e0",
+        "0x1012a7a24",
+        "0x1012a7af0",
+        "0x1012a7d48",
+        "0x1012a7d54",
+        "0x1012a7d88",
+        "0x1012a7dbc",
+        "0x1012a7dc4",
+        "0x1012a7de0",
+        "0x1012a7de8",
+        "0x1012a7dfc"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 326,
+      "instruction_dump": "case-instructions/10-boostIDE.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6a58",
+          "callee": "0x1012b28a8",
+          "name": "FUN_1012b28a8",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6ab0",
+          "callee": "0x10002efe0",
+          "name": "FUN_10002efe0",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6ab8",
+          "callee": "0x10363f910",
+          "name": "_objc_retain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6ac8",
+          "callee": "0x10002efe0",
+          "name": "FUN_10002efe0",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7560",
+          "callee": "0x10002efe0",
+          "name": "FUN_10002efe0",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7568",
+          "callee": "0x10363f910",
+          "name": "_objc_retain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7578",
+          "callee": "0x10002efe0",
+          "name": "FUN_10002efe0",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a75bc",
+          "callee": "0x10363c964",
+          "name": "_$ss27_stringCompareWithSmolCheck__9expectingSbs11_StringGutsV_ADs01_G16ComparisonResultOtF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7848",
+          "callee": "0x10363c964",
+          "name": "_$ss27_stringCompareWithSmolCheck__9expectingSbs11_StringGutsV_ADs01_G16ComparisonResultOtF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7874",
+          "callee": "0x1012b287c",
+          "name": "FUN_1012b287c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a78d4",
+          "callee": "0x10363c964",
+          "name": "_$ss27_stringCompareWithSmolCheck__9expectingSbs11_StringGutsV_ADs01_G16ComparisonResultOtF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a78e8",
+          "callee": "0x10002efe0",
+          "name": "FUN_10002efe0",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a78f0",
+          "callee": "0x10363f910",
+          "name": "_objc_retain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7904",
+          "callee": "0x10002efe0",
+          "name": "FUN_10002efe0",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7918",
+          "callee": "0x1011648bc",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7938",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7944",
+          "callee": "0x10363ffe8",
+          "name": "_swift_allocObject",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a799c",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a79b4",
+          "callee": "0x1012abe5c",
+          "name": "FUN_1012abe5c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a79bc",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a79cc",
+          "callee": "0x10002ef98",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a79ec",
+          "callee": "0x10363c964",
+          "name": "_$ss27_stringCompareWithSmolCheck__9expectingSbs11_StringGutsV_ADs01_G16ComparisonResultOtF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7a00",
+          "callee": "0x10002efe0",
+          "name": "FUN_10002efe0",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7a08",
+          "callee": "0x10363f910",
+          "name": "_objc_retain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7a1c",
+          "callee": "0x10002efe0",
+          "name": "FUN_10002efe0",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7a30",
+          "callee": "0x1011648b4",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7a4c",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7a58",
+          "callee": "0x10363ffe8",
+          "name": "_swift_allocObject",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7ab0",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7ac8",
+          "callee": "0x1012abe5c",
+          "name": "FUN_1012abe5c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7ad0",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7ae0",
+          "callee": "0x10002ef98",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7af0",
+          "callee": "0x10002ef98",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7af8",
+          "callee": "0x10363f904",
+          "name": "_objc_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d4c",
+          "callee": "0x1012b287c",
+          "name": "FUN_1012b287c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d58",
+          "callee": "0x10363f904",
+          "name": "_objc_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d68",
+          "callee": "0x10002ef98",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d70",
+          "callee": "0x1012b287c",
+          "name": "FUN_1012b287c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d80",
+          "callee": "0x10002ef98",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d8c",
+          "callee": "0x10363f904",
+          "name": "_objc_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7d9c",
+          "callee": "0x10002ef98",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7da4",
+          "callee": "0x1012b287c",
+          "name": "FUN_1012b287c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7db4",
+          "callee": "0x10002ef98",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7e00",
+          "callee": "0x10363f910",
+          "name": "_objc_retain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7e0c",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7e14",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7e1c",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7e30",
+          "callee": "0x100576028",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7e38",
+          "callee": "0x10363f904",
+          "name": "_objc_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7e40",
+          "callee": "0x1012b287c",
+          "name": "FUN_1012b287c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7e48",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7e50",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7e58",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [],
+      "conditional_branches": [
+        {
+          "site": "0x1012a6a6c",
+          "instruction": "cbz w8, 0x1012a752c"
+        },
+        {
+          "site": "0x1012a6a78",
+          "instruction": "b.ne 0x1012a7580"
+        },
+        {
+          "site": "0x1012a6a8c",
+          "instruction": "cbz x3, 0x1012a7870"
+        },
+        {
+          "site": "0x1012a6a98",
+          "instruction": "b.ne 0x1012a78c8"
+        },
+        {
+          "site": "0x1012a6aa0",
+          "instruction": "b.ne 0x1012a78c8"
+        },
+        {
+          "site": "0x1012a753c",
+          "instruction": "cbz x3, 0x1012a7870"
+        },
+        {
+          "site": "0x1012a7548",
+          "instruction": "b.ne 0x1012a79e0"
+        },
+        {
+          "site": "0x1012a7550",
+          "instruction": "b.ne 0x1012a79e0"
+        },
+        {
+          "site": "0x1012a7598",
+          "instruction": "cbz x8, 0x1012a7828"
+        },
+        {
+          "site": "0x1012a759c",
+          "instruction": "cbz x3, 0x1012a7870"
+        },
+        {
+          "site": "0x1012a75a4",
+          "instruction": "b.ne 0x1012a75b0"
+        },
+        {
+          "site": "0x1012a75ac",
+          "instruction": "b.eq 0x1012a75c4"
+        },
+        {
+          "site": "0x1012a75c0",
+          "instruction": "tbz w0, #0x0, 0x1012a7870"
+        },
+        {
+          "site": "0x1012a75d4",
+          "instruction": "cbz x23, 0x1012a7dbc"
+        },
+        {
+          "site": "0x1012a7828",
+          "instruction": "cbz x3, 0x1012a7870"
+        },
+        {
+          "site": "0x1012a7830",
+          "instruction": "b.ne 0x1012a783c"
+        },
+        {
+          "site": "0x1012a7838",
+          "instruction": "b.eq 0x1012a7850"
+        },
+        {
+          "site": "0x1012a784c",
+          "instruction": "tbz w0, #0x0, 0x1012a7870"
+        },
+        {
+          "site": "0x1012a7860",
+          "instruction": "cbz x23, 0x1012a7de0"
+        },
+        {
+          "site": "0x1012a7908",
+          "instruction": "tbz w24, #0x0, 0x1012a7d54"
+        },
+        {
+          "site": "0x1012a7a20",
+          "instruction": "tbz w24, #0x0, 0x1012a7d88"
+        }
+      ],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a790c",
+          "instruction": "str x23, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7910",
+          "instruction": "str x22, [x19, #0x5d8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7924",
+          "instruction": "strb wzr, [x27, x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7958",
+          "instruction": "stp q1, q2, [x0, #0x90]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7964",
+          "instruction": "stur q1, [x0, #0xab]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7978",
+          "instruction": "stp q2, q3, [x0, #0x50]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7984",
+          "instruction": "stp q4, q0, [x0, #0x70]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7990",
+          "instruction": "stp q2, q0, [x0, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7994",
+          "instruction": "stp q3, q1, [x0, #0x30]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7a24",
+          "instruction": "str x23, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7a28",
+          "instruction": "str x22, [x19, #0x5d8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7a38",
+          "instruction": "strb wzr, [x25, x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7a6c",
+          "instruction": "stp q1, q2, [x0, #0x90]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7a78",
+          "instruction": "stur q1, [x0, #0xab]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7a8c",
+          "instruction": "stp q2, q3, [x0, #0x50]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7a98",
+          "instruction": "stp q4, q0, [x0, #0x70]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7aa4",
+          "instruction": "stp q2, q0, [x0, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7aa8",
+          "instruction": "stp q3, q1, [x0, #0x30]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7dc4",
+          "instruction": "str x26, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7dc8",
+          "instruction": "str x24, [x19, #0x5d8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7dcc",
+          "instruction": "str x8, [x19, #0x5e0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7dd0",
+          "instruction": "str x22, [x19, #0x5e8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7dd8",
+          "instruction": "strb w8, [x19, #0x5f0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7de8",
+          "instruction": "str x26, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7dec",
+          "instruction": "str x24, [x19, #0x5d8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7df0",
+          "instruction": "str x8, [x19, #0x5e0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7df4",
+          "instruction": "str x22, [x19, #0x5e8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7df8",
+          "instruction": "strb wzr, [x19, #0x5f0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 11,
+      "reflection_name": "initialize",
+      "target": "0x1012a5f84",
+      "pseudocode_lines": [
+        1170,
+        1219
+      ],
+      "observed_decisions_interpretation": "Environment-derived getter closure invoked with raw key0x32; use returned low bit.",
+      "explicit_parent_state_writes_interpretation": "F(0x60) <- returned bit0.",
+      "return_or_effect_construction_interpretation": "Allocates two-result container:0x1012a7ee4(state-copy) builds first;0x10059803c with code pointer0x1012b35c8 and captured environment/state builds second;0x1012ad570 combines them. Constructor/closure bodies unqueried.",
+      "anchors": [
+        {
+          "address": "0x1012a5fd4",
+          "instruction": "0x1012a5fd4: mov w0, #0x32",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a5fd8",
+          "instruction": "0x1012a5fd8: blr x23",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a5ff4",
+          "instruction": "0x1012a5ff4: strb w9, [x28, x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6088",
+          "instruction": "0x1012a6088: bl 0x1012a7ee4",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a60fc",
+          "instruction": "0x1012a60fc: adrp x0, 0x1012b3000",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6110",
+          "instruction": "0x1012a6110: bl 0x10059803c",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6124",
+          "instruction": "0x1012a6124: bl 0x1012ad570",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a5f84",
+        "0x1012a6144",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 124,
+      "instruction_dump": "case-instructions/11-initialize.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a5fb0",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a5fbc",
+          "callee": "0x1006fa470",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a5fc8",
+          "callee": "0x1036404f8",
+          "name": "_swift_retain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a5fd0",
+          "callee": "0x1000078a4",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a5fe4",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6008",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6020",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6048",
+          "callee": "0x10363ffe8",
+          "name": "_swift_allocObject",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6078",
+          "callee": "0x10000828c",
+          "name": "FUN_10000828c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6088",
+          "callee": "0x1012a7ee4",
+          "name": "FUN_1012a7ee4",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6094",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a60a4",
+          "callee": "0x10000828c",
+          "name": "FUN_10000828c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a60c8",
+          "callee": "0x10363ffe8",
+          "name": "_swift_allocObject",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a60dc",
+          "callee": "0x10363f6a0",
+          "name": "_memcpy",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a60ec",
+          "callee": "0x1000082d0",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a60f8",
+          "callee": "0x1012b2920",
+          "name": "FUN_1012b2920",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6110",
+          "callee": "0x10059803c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6118",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6124",
+          "callee": "0x1012ad570",
+          "name": "FUN_1012ad570",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a612c",
+          "callee": "0x103640528",
+          "name": "_swift_setDeallocating",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a613c",
+          "callee": "0x10364000c",
+          "name": "_swift_arrayDestroy",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a614c",
+          "callee": "0x103640114",
+          "name": "_swift_deallocClassInstance",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a5fd8",
+          "instruction": "blr x23",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a5f8c",
+          "instruction": "stp q0, q1, [x29, #-0xe0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a5f94",
+          "instruction": "stur q0, [x29, #-0xc0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a5f9c",
+          "instruction": "stp q1, q0, [x29, #-0x100]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a5ff4",
+          "instruction": "strb w9, [x28, x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6024",
+          "instruction": "str x0, [x19, #0xb8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6058",
+          "instruction": "str q0, [x0, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 12,
+      "reflection_name": "close",
+      "target": "0x1012a6174",
+      "pseudocode_lines": [
+        1220,
+        1275
+      ],
+      "observed_decisions_interpretation": "Resolve environment dependency copied from D+0x50..0x9f; read optional selected pair F(0x4c), retain if present, invoke an indirect dependency closure.",
+      "explicit_parent_state_writes_interpretation": "No direct parent state store identified.",
+      "return_or_effect_construction_interpretation": "Then emits outer action tag0, inner tag byte4 with first word0 via Just/AnyPublisher; returns result tag0. Immediate dependency-call effects and later delegate handling remain separate unknowns.",
+      "anchors": [
+        {
+          "address": "0x1012a6174",
+          "instruction": "0x1012a6174: ldr x8, [x19, #0xb0]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a61b8",
+          "instruction": "0x1012a61b8: ldp x8, x9, [x19, #0xb8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a705c",
+          "instruction": "0x1012a705c: bl 0x1012b364c",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a7070",
+          "instruction": "0x1012a7070: bl 0x100fe4628",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a708c",
+          "instruction": "0x1012a708c: blr x23",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a70c8",
+          "instruction": "0x1012a70c8: bl 0x103640564",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a712c",
+          "instruction": "0x1012a712c: bl 0x1036360c4",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a76c8",
+          "instruction": "0x1012a76c8: mov x1, x21",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6174",
+        "0x1012a61cc",
+        "0x1012a7044",
+        "0x1012a7048",
+        "0x1012a76c8",
+        "0x1012a7898",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 114,
+      "instruction_dump": "case-instructions/12-close.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a61a8",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a61b4",
+          "callee": "0x1006fa470",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a61d4",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a705c",
+          "callee": "0x1012b364c",
+          "name": "FUN_1012b364c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a706c",
+          "callee": "0x10363f6a0",
+          "name": "_memcpy",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7070",
+          "callee": "0x100fe4628",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7080",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7094",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a709c",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a70a4",
+          "callee": "0x100fe263c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a70c8",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a70e4",
+          "callee": "0x10000828c",
+          "name": "FUN_10000828c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a70f8",
+          "callee": "0x103635fe0",
+          "name": "_$s7Combine4JustVyACyxGxcfC",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a711c",
+          "callee": "0x10000a9c8",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a712c",
+          "callee": "0x1036360c4",
+          "name": "_$s7Combine9PublisherPAAE010eraseToAnyB0AA0eB0Vy6OutputQz7FailureQzGyF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76cc",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76e8",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a708c",
+          "instruction": "blr x23",
+          "target_binding": "unresolved in caller-only inventory"
+        },
+        {
+          "site": "0x1012a7140",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [
+        {
+          "site": "0x1012a61c8",
+          "instruction": "cbz x21, 0x1012a7044"
+        }
+      ],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a617c",
+          "instruction": "str q0, [x19, #0x5a0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6180",
+          "instruction": "str q1, [x19, #0x5b0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6188",
+          "instruction": "str q0, [x19, #0x5c0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6190",
+          "instruction": "str q0, [x19, #0x590]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6194",
+          "instruction": "str q1, [x19, #0x580]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7054",
+          "instruction": "stp x20, x21, [x19, #0xd0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a70b0",
+          "instruction": "stp q0, q0, [x23]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a70b8",
+          "instruction": "strb w8, [x23, #0x20]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a76d4",
+          "instruction": "str x20, [x21]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 13,
+      "reflection_name": "completeInterstitial",
+      "target": "0x1012a6750",
+      "pseudocode_lines": [
+        1276,
+        1293
+      ],
+      "observed_decisions_interpretation": "No state predicate before write; environment-derived writer invoked with (1,0x31).",
+      "explicit_parent_state_writes_interpretation": "F(0x24) <- 1.",
+      "return_or_effect_construction_interpretation": "Writer returns retained publisher-like value;0x100596e80 wraps it into result slot. Whether writing happens at call or subscription, and storage backend/instance, are unproved.",
+      "anchors": [
+        {
+          "address": "0x1012a675c",
+          "instruction": "0x1012a675c: strb w9, [x10, x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a67b4",
+          "instruction": "0x1012a67b4: mov w0, #0x1",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a67b8",
+          "instruction": "0x1012a67b8: mov w1, #0x31",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a67bc",
+          "instruction": "0x1012a67bc: blr x21",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6824",
+          "instruction": "0x1012a6824: bl 0x100596e80",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6750",
+        "0x1012a67bc",
+        "0x1012a6828",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 65,
+      "instruction_dump": "case-instructions/13-completeInterstitial.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a678c",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6798",
+          "callee": "0x1006fa470",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a67a8",
+          "callee": "0x1036404f8",
+          "name": "_swift_retain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a67b0",
+          "callee": "0x1000078a4",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a67c8",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a67e8",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6808",
+          "callee": "0x10000a9c8",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6824",
+          "callee": "0x100596e80",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a682c",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a67bc",
+          "instruction": "blr x21",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a675c",
+          "instruction": "strb w9, [x10, x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6768",
+          "instruction": "stp q0, q1, [x19, #0xf0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6770",
+          "instruction": "str q0, [x19, #0x110]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6778",
+          "instruction": "stp q1, q0, [x19, #0xd0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a67cc",
+          "instruction": "stur x21, [x29, #-0x100]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 14,
+      "reflection_name": "learnMore",
+      "target": "0x1012a5f7c",
+      "pseudocode_lines": [
+        1294,
+        1296
+      ],
+      "observed_decisions_interpretation": "No visible predicate.",
+      "explicit_parent_state_writes_interpretation": "No direct parent state store identified.",
+      "return_or_effect_construction_interpretation": "Outer action tag0, inner tag byte4, first word3 -> Just/AnyPublisher/result tag0. Navigation/URL behavior requires delegated handler.",
+      "anchors": [
+        {
+          "address": "0x1012a5f7c",
+          "instruction": "0x1012a5f7c: mov w8, #0x3",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6c24",
+          "instruction": "0x1012a6c24: ldr x24, [x19, #0x60]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6c78",
+          "instruction": "0x1012a6c78: bl 0x103635fe0",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a5f7c",
+        "0x1012a6c24",
+        "0x1012a6c34",
+        "0x1012a6c78",
+        "0x1012a76c8",
+        "0x1012a7898",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 68,
+      "instruction_dump": "case-instructions/14-learnMore.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6c48",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c64",
+          "callee": "0x10000828c",
+          "name": "FUN_10000828c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c78",
+          "callee": "0x103635fe0",
+          "name": "_$s7Combine4JustVyACyxGxcfC",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c9c",
+          "callee": "0x10000a9c8",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6cb0",
+          "callee": "0x1036360c4",
+          "name": "_$s7Combine9PublisherPAAE010eraseToAnyB0AA0eB0Vy6OutputQz7FailureQzGyF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76cc",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76e8",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a6cc8",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a6c28",
+          "instruction": "stp x8, xzr, [x24]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6c2c",
+          "instruction": "stp xzr, xzr, [x24, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6c34",
+          "instruction": "strb w8, [x24, #0x20]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a76d4",
+          "instruction": "str x20, [x21]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 15,
+      "reflection_name": "undo",
+      "target": "0x1012a6340",
+      "pseudocode_lines": [
+        1297,
+        1314
+      ],
+      "observed_decisions_interpretation": "History cursor at F(0x54)+8 must be >0. Decrement, bounds-check previous cursor against array count; otherwise no-op or trap.",
+      "explicit_parent_state_writes_interpretation": "F(0x54).cursor <- cursor-1.",
+      "return_or_effect_construction_interpretation": "Loads first handle from 16-byte history entry at array+0x20+16*(cursor-1), calls0x1012abe5c(...,0). No available undo returns discriminator2.",
+      "anchors": [
+        {
+          "address": "0x1012a6344",
+          "instruction": "0x1012a6344: ldrsw x8, [x8, #0x54]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6354",
+          "instruction": "0x1012a6354: b.lt 0x1012a7878",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6358",
+          "instruction": "0x1012a6358: str x8, [x10, #0x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6368",
+          "instruction": "0x1012a6368: b.hi 0x1012a7e60",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6370",
+          "instruction": "0x1012a6370: ldr x21, [x8, #0x20]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6390",
+          "instruction": "0x1012a6390: bl 0x1012abe5c",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6340",
+        "0x1012a6358",
+        "0x1012a636c",
+        "0x1012a6374",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c",
+        "0x1012a7e60"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 42,
+      "instruction_dump": "case-instructions/15-undo.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6378",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6390",
+          "callee": "0x1012abe5c",
+          "name": "FUN_1012abe5c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6398",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [],
+      "conditional_branches": [
+        {
+          "site": "0x1012a6354",
+          "instruction": "b.lt 0x1012a7878"
+        },
+        {
+          "site": "0x1012a6368",
+          "instruction": "b.hi 0x1012a7e60"
+        }
+      ],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a6358",
+          "instruction": "str x8, [x10, #0x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 16,
+      "reflection_name": "redo",
+      "target": "0x1012a5f48",
+      "pseudocode_lines": [
+        1315,
+        1328
+      ],
+      "observed_decisions_interpretation": "History cursor < array count and nonnegative; otherwise no-op or trap.",
+      "explicit_parent_state_writes_interpretation": "F(0x54).cursor <- cursor+1.",
+      "return_or_effect_construction_interpretation": "Loads second handle from entry at array+0x28+16*cursor and shares apply call0x1012abe5c(...,0). No available redo returns discriminator2.",
+      "anchors": [
+        {
+          "address": "0x1012a5f54",
+          "instruction": "0x1012a5f54: ldp x10, x9, [x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a5f60",
+          "instruction": "0x1012a5f60: b.ge 0x1012a7878",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a5f64",
+          "instruction": "0x1012a5f64: tbnz x9, #0x3f, 0x1012a7e64",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a5f6c",
+          "instruction": "0x1012a5f6c: ldr x21, [x10, #0x28]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a5f74",
+          "instruction": "0x1012a5f74: str x9, [x8, #0x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6374",
+          "instruction": "0x1012a6374: mov x0, x21",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a5f48",
+        "0x1012a5f64",
+        "0x1012a5f68",
+        "0x1012a6374",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c",
+        "0x1012a7e64"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 42,
+      "instruction_dump": "case-instructions/16-redo.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6378",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6390",
+          "callee": "0x1012abe5c",
+          "name": "FUN_1012abe5c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6398",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [],
+      "conditional_branches": [
+        {
+          "site": "0x1012a5f60",
+          "instruction": "b.ge 0x1012a7878"
+        },
+        {
+          "site": "0x1012a5f64",
+          "instruction": "tbnz x9, #0x3f, 0x1012a7e64"
+        }
+      ],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a5f74",
+          "instruction": "str x9, [x8, #0x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 17,
+      "reflection_name": "delete",
+      "target": "0x1012a642c",
+      "pseudocode_lines": [
+        1329,
+        1343
+      ],
+      "observed_decisions_interpretation": "Requires nonzero F(0x4c).second.",
+      "explicit_parent_state_writes_interpretation": "No direct parent state store identified.",
+      "return_or_effect_construction_interpretation": "Selected pair -> outer action tag0 with inner tag byte0; Just/AnyPublisher/result tag0. No selected pair returns discriminator2. Deletion/persistence is delegated, not performed visibly here.",
+      "anchors": [
+        {
+          "address": "0x1012a6438",
+          "instruction": "0x1012a6438: ldr x20, [x8, #0x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a643c",
+          "instruction": "0x1012a643c: cbz x20, 0x1012a7878",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6448",
+          "instruction": "0x1012a6448: stp x8, x20, [x24]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6450",
+          "instruction": "0x1012a6450: strb wzr, [x24, #0x20]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6464",
+          "instruction": "0x1012a6464: bl 0x103640564",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6c78",
+          "instruction": "0x1012a6c78: bl 0x103635fe0",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a642c",
+        "0x1012a6440",
+        "0x1012a6c78",
+        "0x1012a76c8",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 82,
+      "instruction_dump": "case-instructions/17-delete.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6464",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6480",
+          "callee": "0x10000828c",
+          "name": "FUN_10000828c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6488",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c78",
+          "callee": "0x103635fe0",
+          "name": "_$s7Combine4JustVyACyxGxcfC",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c9c",
+          "callee": "0x10000a9c8",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6cb0",
+          "callee": "0x1036360c4",
+          "name": "_$s7Combine9PublisherPAAE010eraseToAnyB0AA0eB0Vy6OutputQz7FailureQzGyF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76cc",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76e8",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a6cc8",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [
+        {
+          "site": "0x1012a643c",
+          "instruction": "cbz x20, 0x1012a7878"
+        }
+      ],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a6448",
+          "instruction": "stp x8, x20, [x24]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a644c",
+          "instruction": "stp xzr, xzr, [x24, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6450",
+          "instruction": "strb wzr, [x24, #0x20]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a76d4",
+          "instruction": "str x20, [x21]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 18,
+      "reflection_name": "rename",
+      "target": "0x1012a69e0",
+      "pseudocode_lines": [
+        1344,
+        1386
+      ],
+      "observed_decisions_interpretation": "Requires selected pair F(0x4c) and present optional F(0x50); a helper produces another two-word value.",
+      "explicit_parent_state_writes_interpretation": "No direct parent state store identified.",
+      "return_or_effect_construction_interpretation": "Outer tag0, inner tag byte2 containing selected pair + derived pair -> Just/AnyPublisher/result tag0. Actual renaming/storage requires delegate consumer.",
+      "anchors": [
+        {
+          "address": "0x1012a69ec",
+          "instruction": "0x1012a69ec: ldr x22, [x8, #0x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6a30",
+          "instruction": "0x1012a6a30: cmp w0, #0x1",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a75e4",
+          "instruction": "0x1012a75e4: adrp x21, 0x101159000",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a760c",
+          "instruction": "0x1012a760c: bl 0x10115c638",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a7664",
+          "instruction": "0x1012a7664: bl 0x103635fe0",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a76c8",
+          "instruction": "0x1012a76c8: mov x1, x21",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a69e0",
+        "0x1012a69f4",
+        "0x1012a6a38",
+        "0x1012a75e4",
+        "0x1012a76c8",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 116,
+      "instruction_dump": "case-instructions/18-rename.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6a18",
+          "callee": "0x100008168",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6a4c",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a75fc",
+          "callee": "0x1000082d0",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7604",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a760c",
+          "callee": "0x10115c638",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7634",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7650",
+          "callee": "0x10000828c",
+          "name": "FUN_10000828c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7664",
+          "callee": "0x103635fe0",
+          "name": "_$s7Combine4JustVyACyxGxcfC",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7688",
+          "callee": "0x10000a9c8",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a769c",
+          "callee": "0x1036360c4",
+          "name": "_$s7Combine9PublisherPAAE010eraseToAnyB0AA0eB0Vy6OutputQz7FailureQzGyF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76c0",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76cc",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76e8",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a6a2c",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        },
+        {
+          "site": "0x1012a76b4",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [
+        {
+          "site": "0x1012a69f0",
+          "instruction": "cbz x22, 0x1012a7878"
+        },
+        {
+          "site": "0x1012a6a34",
+          "instruction": "b.ne 0x1012a75e4"
+        }
+      ],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a7614",
+          "instruction": "stp x24, x22, [x25]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7618",
+          "instruction": "stp x0, x1, [x25, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7620",
+          "instruction": "strb w8, [x25, #0x20]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a76d4",
+          "instruction": "str x20, [x21]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 19,
+      "reflection_name": "shuffle",
+      "target": "0x1012a6c10",
+      "pseudocode_lines": [
+        1387,
+        1389
+      ],
+      "observed_decisions_interpretation": "No parent predicate.",
+      "explicit_parent_state_writes_interpretation": "Delegates to0x1012a82d4; direct/indirect writes inside helper unknown.",
+      "return_or_effect_construction_interpretation": "Helper receives state/output slot; shuffle/RNG/output semantics require body.",
+      "anchors": [
+        {
+          "address": "0x1012a6c10",
+          "instruction": "0x1012a6c10: ldp x0, x8, [x19, #0xc0]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6c18",
+          "instruction": "0x1012a6c18: bl 0x1012a82d4",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6c10",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 12,
+      "instruction_dump": "case-instructions/19-shuffle.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6c18",
+          "callee": "0x1012a82d4",
+          "name": "FUN_1012a82d4",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [],
+      "conditional_branches": [],
+      "raw_memory_stores": [],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 20,
+      "reflection_name": "report",
+      "target": "0x1012a64a0",
+      "pseudocode_lines": [
+        1390,
+        1543
+      ],
+      "observed_decisions_interpretation": "Requires present optional F(0x50), nonzero identifier inside it and predicate0x1012a8178 true. Otherwise logs \u201cAttempted to report a boost that should not be reportable\u201d.",
+      "explicit_parent_state_writes_interpretation": "No direct parent state store identified.",
+      "return_or_effect_construction_interpretation": "Accepted arm creates two Just/AnyPublisher delegate-style actions (inner tag4/value0, then inner tag1/identifier) and combines with0x1012ad570. Rejected arm returns discriminator2. No network report is established.",
+      "anchors": [
+        {
+          "address": "0x1012a64c0",
+          "instruction": "0x1012a64c0: blr x8",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a64c4",
+          "instruction": "0x1012a64c4: cbz w0, 0x1012a72d0",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a64d8",
+          "instruction": "0x1012a64d8: adrp x0, 0x103a1d000",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a72d0",
+          "instruction": "0x1012a72d0: ldrsw x8, [x21, #0x30]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a730c",
+          "instruction": "0x1012a730c: bl 0x1012a8178",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a7334",
+          "instruction": "0x1012a7334: bl 0x100005134",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a7440",
+          "instruction": "0x1012a7440: bl 0x100008314",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6144",
+        "0x1012a64a0",
+        "0x1012a64c8",
+        "0x1012a65b8",
+        "0x1012a6f2c",
+        "0x1012a72d0",
+        "0x1012a72e0",
+        "0x1012a7324",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c",
+        "0x1012a78bc"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 322,
+      "instruction_dump": "case-instructions/20-report.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a614c",
+          "callee": "0x103640114",
+          "name": "_swift_deallocClassInstance",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a64e8",
+          "callee": "0x10363ba88",
+          "name": "_$ss12StaticStringV11descriptionSSvg",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6504",
+          "callee": "0x103639850",
+          "name": "_$sSS6appendyySSF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a650c",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a651c",
+          "callee": "0x10073d6fc",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6534",
+          "callee": "0x10363ba88",
+          "name": "_$ss12StaticStringV11descriptionSSvg",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6550",
+          "callee": "0x10363ba88",
+          "name": "_$ss12StaticStringV11descriptionSSvg",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a656c",
+          "callee": "0x10364006c",
+          "name": "_swift_beginAccess",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6578",
+          "callee": "0x100012c10",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a658c",
+          "callee": "0x100012c54",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a65ac",
+          "callee": "0x100012e70",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a65bc",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a65c4",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a65cc",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6f34",
+          "callee": "0x100012c10",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6f48",
+          "callee": "0x100012c54",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6f50",
+          "callee": "0x1012b360c",
+          "name": "FUN_1012b360c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6f5c",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6f7c",
+          "callee": "0x10363cd18",
+          "name": "_$ss32ExpressibleByStringInterpolationPss07DefaultcD0V0cD0RtzrlE06stringD0xAD_tcfC",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6fe0",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6fe8",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6ff4",
+          "callee": "0x1004c403c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6ffc",
+          "callee": "0x100012cf4",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a701c",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7024",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a702c",
+          "callee": "0x100012cf4",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7034",
+          "callee": "0x100012e70",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a703c",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a72fc",
+          "callee": "0x10000828c",
+          "name": "FUN_10000828c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7304",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a730c",
+          "callee": "0x1012a8178",
+          "name": "FUN_1012a8178",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a731c",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7334",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a734c",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7374",
+          "callee": "0x10363ffe8",
+          "name": "_swift_allocObject",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a73b4",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a73cc",
+          "callee": "0x10000828c",
+          "name": "FUN_10000828c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a73e0",
+          "callee": "0x103635fe0",
+          "name": "_$s7Combine4JustVyACyxGxcfC",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7404",
+          "callee": "0x10000a9c8",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7418",
+          "callee": "0x1036360c4",
+          "name": "_$s7Combine9PublisherPAAE010eraseToAnyB0AA0eB0Vy6OutputQz7FailureQzGyF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7440",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7458",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a746c",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7490",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a74a4",
+          "callee": "0x10000828c",
+          "name": "FUN_10000828c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a74b4",
+          "callee": "0x103635fe0",
+          "name": "_$s7Combine4JustVyACyxGxcfC",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a74c0",
+          "callee": "0x1036360c4",
+          "name": "_$s7Combine9PublisherPAAE010eraseToAnyB0AA0eB0Vy6OutputQz7FailureQzGyF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a74e0",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a74f8",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7508",
+          "callee": "0x1012ad570",
+          "name": "FUN_1012ad570",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7510",
+          "callee": "0x103640528",
+          "name": "_swift_setDeallocating",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7520",
+          "callee": "0x10364000c",
+          "name": "_swift_arrayDestroy",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a78c0",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a64c0",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        },
+        {
+          "site": "0x1012a65a0",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        },
+        {
+          "site": "0x1012a7014",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        },
+        {
+          "site": "0x1012a7430",
+          "instruction": "blr x22",
+          "target_binding": "unresolved in caller-only inventory"
+        },
+        {
+          "site": "0x1012a74d0",
+          "instruction": "blr x22",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [
+        {
+          "site": "0x1012a64c4",
+          "instruction": "cbz w0, 0x1012a72d0"
+        },
+        {
+          "site": "0x1012a65b4",
+          "instruction": "b.cc 0x1012a6f2c"
+        },
+        {
+          "site": "0x1012a72dc",
+          "instruction": "cbz x23, 0x1012a64c8"
+        },
+        {
+          "site": "0x1012a7320",
+          "instruction": "tbz w20, #0x0, 0x1012a78bc"
+        }
+      ],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a64f8",
+          "instruction": "str x8, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a64fc",
+          "instruction": "str x20, [x19, #0x5d8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6514",
+          "instruction": "str x8, [x19, #0xc0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6f8c",
+          "instruction": "strb w10, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6f90",
+          "instruction": "str x8, [x19, #0x5d8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6f94",
+          "instruction": "str x9, [x19, #0x5e0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fa0",
+          "instruction": "stur q0, [x11, #0x18]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fa4",
+          "instruction": "stur q0, [x11, #0x28]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fa8",
+          "instruction": "str x24, [x19, #0x608]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fac",
+          "instruction": "str x22, [x19, #0x610]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fb0",
+          "instruction": "str x25, [x19, #0x618]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fb4",
+          "instruction": "str x23, [x19, #0x620]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fbc",
+          "instruction": "str x11, [x19, #0x628]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fc0",
+          "instruction": "strb w10, [x19, #0xd0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fc4",
+          "instruction": "stp x8, x9, [x19, #0xd8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fc8",
+          "instruction": "stur q0, [x19, #0xe8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fcc",
+          "instruction": "stur q0, [x19, #0xf8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fd0",
+          "instruction": "stp x24, x22, [x19, #0x108]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fd4",
+          "instruction": "stp x25, x23, [x19, #0x118]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6fd8",
+          "instruction": "str x11, [x19, #0x128]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7358",
+          "instruction": "stp x10, x0, [x19, #0xb8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7380",
+          "instruction": "str x0, [x19, #0xa0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7384",
+          "instruction": "str q0, [x0, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7388",
+          "instruction": "str x24, [x19, #0xb0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7398",
+          "instruction": "stp q0, q0, [x21]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a73a0",
+          "instruction": "strb w8, [x21, #0x20]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a740c",
+          "instruction": "str x0, [x19, #0x90]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7444",
+          "instruction": "str x25, [x24]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7474",
+          "instruction": "stp x8, x23, [x21]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7478",
+          "instruction": "stp xzr, xzr, [x21, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a7480",
+          "instruction": "strb w8, [x21, #0x20]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a74e8",
+          "instruction": "str x23, [x24, x8#0x0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 21,
+      "reflection_name": "resetAll",
+      "target": "0x1012a66f4",
+      "pseudocode_lines": [
+        1544,
+        1587
+      ],
+      "observed_decisions_interpretation": "Requires present optional F(0x50). Helper0x10115ad60 invoked with0 and empty Swift string, then0x10115f7f4 twice; history cursor checked for0<=cursor<=count.",
+      "explicit_parent_state_writes_interpretation": "Calls0x1012b0288 on history cursor/paired handles; writes cursor+1 and calls0x1012b2a44 on one arm. Helper-internal state writes unknown.",
+      "return_or_effect_construction_interpretation": "Passes obtained handle to0x1012abe5c(...,0). No model returns discriminator2; invalid cursor paths trap.",
+      "anchors": [
+        {
+          "address": "0x1012a66f8",
+          "instruction": "0x1012a66f8: ldrsw x8, [x26, #0x50]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a672c",
+          "instruction": "0x1012a672c: cmp w0, #0x1",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6e44",
+          "instruction": "0x1012a6e44: ldr x21, [x19, #0xb0]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6e74",
+          "instruction": "0x1012a6e74: bl 0x10115ad60",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6ed0",
+          "instruction": "0x1012a6ed0: bl 0x1012b0288",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6eec",
+          "instruction": "0x1012a6eec: bl 0x1012b2a44",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6f0c",
+          "instruction": "0x1012a6f0c: bl 0x1012abe5c",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a66f4",
+        "0x1012a6734",
+        "0x1012a6e44",
+        "0x1012a6eac",
+        "0x1012a6eb0",
+        "0x1012a6eec",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c",
+        "0x1012a7e68",
+        "0x1012a7e6c",
+        "0x1012a7e70"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 101,
+      "instruction_dump": "case-instructions/21-resetAll.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6714",
+          "callee": "0x100008168",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6748",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6e60",
+          "callee": "0x1000082d0",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6e74",
+          "callee": "0x10115ad60",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6e78",
+          "callee": "0x10115f7f4",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6e88",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6e90",
+          "callee": "0x10115f7f4",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6eb4",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6ebc",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6ed0",
+          "callee": "0x1012b0288",
+          "name": "FUN_1012b0288",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6eec",
+          "callee": "0x1012b2a44",
+          "name": "FUN_1012b2a44",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6ef4",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6f0c",
+          "callee": "0x1012abe5c",
+          "name": "FUN_1012abe5c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6f14",
+          "callee": "0x103640078",
+          "name": "_swift_bridgeObjectRelease",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6f24",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a6728",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [
+        {
+          "site": "0x1012a6730",
+          "instruction": "b.ne 0x1012a6e44"
+        },
+        {
+          "site": "0x1012a6ea8",
+          "instruction": "b.lt 0x1012a7e68"
+        },
+        {
+          "site": "0x1012a6eac",
+          "instruction": "tbnz x24, #0x3f, 0x1012a7e6c"
+        },
+        {
+          "site": "0x1012a6ee8",
+          "instruction": "b.ls 0x1012a7e70"
+        }
+      ],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a6ed8",
+          "instruction": "str x0, [x20, #0x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 22,
+      "reflection_name": "resetColorMapping",
+      "target": "0x1012a6af0",
+      "pseudocode_lines": [
+        1588,
+        1643
+      ],
+      "observed_decisions_interpretation": "Build default model via0x10115923c and0x1011648ec.",
+      "explicit_parent_state_writes_interpretation": "F(0x20)<-0; F(0x48)<-0; F(0x18)<-2; calls model setter0x1012b2b00 and clear-style witness calls on F(0x58).",
+      "return_or_effect_construction_interpretation": "Obtains static container0x104626fd0 through swift_initStaticObject; delegates to0x1012abe5c(...,0). Underlying model/persistence type unproved.",
+      "anchors": [
+        {
+          "address": "0x1012a6af8",
+          "instruction": "0x1012a6af8: strb wzr, [x21, x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6b00",
+          "instruction": "0x1012a6b00: bl 0x10115923c",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6b38",
+          "instruction": "0x1012a6b38: bl 0x1011648ec",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6b84",
+          "instruction": "0x1012a6b84: strb wzr, [x21, x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6b90",
+          "instruction": "0x1012a6b90: strb w9, [x21, x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6b9c",
+          "instruction": "0x1012a6b9c: bl 0x1012b2b00",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6bd0",
+          "instruction": "0x1012a6bd0: blr x8",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6c08",
+          "instruction": "0x1012a6c08: bl 0x1012abe5c",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6af0",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 80,
+      "instruction_dump": "case-instructions/22-resetColorMapping.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6b00",
+          "callee": "0x10115923c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6b38",
+          "callee": "0x1011648ec",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6b9c",
+          "callee": "0x1012b2b00",
+          "name": "FUN_1012b2b00",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6bb8",
+          "callee": "0x10000733c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6be4",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6bf0",
+          "callee": "0x1036403d8",
+          "name": "_swift_initStaticObject",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c08",
+          "callee": "0x1012abe5c",
+          "name": "FUN_1012abe5c",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a6bd0",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a6af8",
+          "instruction": "strb wzr, [x21, x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b08",
+          "instruction": "stp q0, q1, [x19, #0x130]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b10",
+          "instruction": "str q0, [x19, #0x150]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b18",
+          "instruction": "stur q0, [x27, #0x8a]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b20",
+          "instruction": "stp q0, q1, [x19, #0xf0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b28",
+          "instruction": "stp q0, q1, [x19, #0x110]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b30",
+          "instruction": "stp q0, q1, [x19, #0xd0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b40",
+          "instruction": "str q0, [x19, #0x630]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b44",
+          "instruction": "str q1, [x19, #0x640]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b4c",
+          "instruction": "str q0, [x19, #0x650]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b58",
+          "instruction": "stur q0, [x8, #0x8b]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b60",
+          "instruction": "str q0, [x19, #0x5f0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b64",
+          "instruction": "str q1, [x19, #0x600]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b6c",
+          "instruction": "str q0, [x19, #0x610]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b70",
+          "instruction": "str q1, [x19, #0x620]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b78",
+          "instruction": "str q0, [x19, #0x5d0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b7c",
+          "instruction": "str q1, [x19, #0x5e0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b84",
+          "instruction": "strb wzr, [x21, x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6b90",
+          "instruction": "strb w9, [x21, x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 23,
+      "reflection_name": "showAllBoosts",
+      "target": "0x1012a6c20",
+      "pseudocode_lines": [
+        1644,
+        1675
+      ],
+      "observed_decisions_interpretation": "No visible predicate.",
+      "explicit_parent_state_writes_interpretation": "No direct parent state store identified.",
+      "return_or_effect_construction_interpretation": "Outer tag0, inner tag byte4, first word1 -> Just/AnyPublisher/result tag0. Actual presentation delegated.",
+      "anchors": [
+        {
+          "address": "0x1012a6c20",
+          "instruction": "0x1012a6c20: mov w8, #0x1",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6c34",
+          "instruction": "0x1012a6c34: strb w8, [x24, #0x20]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6c78",
+          "instruction": "0x1012a6c78: bl 0x103635fe0",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6c20",
+        "0x1012a6c24",
+        "0x1012a6c34",
+        "0x1012a6c78",
+        "0x1012a76c8",
+        "0x1012a7898",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 67,
+      "instruction_dump": "case-instructions/23-showAllBoosts.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6c48",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c64",
+          "callee": "0x10000828c",
+          "name": "FUN_10000828c",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c78",
+          "callee": "0x103635fe0",
+          "name": "_$s7Combine4JustVyACyxGxcfC",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6c9c",
+          "callee": "0x10000a9c8",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6cb0",
+          "callee": "0x1036360c4",
+          "name": "_$s7Combine9PublisherPAAE010eraseToAnyB0AA0eB0Vy6OutputQz7FailureQzGyF",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76cc",
+          "callee": "0x100008314",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a76e8",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a6cc8",
+          "instruction": "blr x8",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a6c28",
+          "instruction": "stp x8, xzr, [x24]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6c2c",
+          "instruction": "stp xzr, xzr, [x24, #0x10]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a6c34",
+          "instruction": "strb w8, [x24, #0x20]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a76d4",
+          "instruction": "str x20, [x21]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 24,
+      "reflection_name": "reloadPage",
+      "target": "0x1012a62b8",
+      "pseudocode_lines": [
+        1676,
+        1687
+      ],
+      "observed_decisions_interpretation": "Read first two state words; capture them with environment.",
+      "explicit_parent_state_writes_interpretation": "No direct parent state store identified.",
+      "return_or_effect_construction_interpretation": "Allocate0x2a0 context, copy D+0..0x27f, store state words at+0x290/+0x298;0x10059803c receives code pointer0x1012b31d8. Page reload execution requires that closure and subscription/cancellation path.",
+      "anchors": [
+        {
+          "address": "0x1012a62b8",
+          "instruction": "0x1012a62b8: ldr x8, [x19, #0xc0]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a62e8",
+          "instruction": "0x1012a62e8: bl 0x10363f6a0",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a62ec",
+          "instruction": "0x1012a62ec: str x22, [x21, #0x290]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6308",
+          "instruction": "0x1012a6308: adrp x0, 0x1012b3000",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a631c",
+          "instruction": "0x1012a631c: bl 0x10059803c",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a62b8",
+        "0x1012a6828",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 38,
+      "instruction_dump": "case-instructions/24-reloadPage.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a62d0",
+          "callee": "0x10363ffe8",
+          "name": "_swift_allocObject",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a62e8",
+          "callee": "0x10363f6a0",
+          "name": "_memcpy",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a62fc",
+          "callee": "0x1012b2920",
+          "name": "FUN_1012b2920",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6304",
+          "callee": "0x103640090",
+          "name": "_swift_bridgeObjectRetain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a631c",
+          "callee": "0x10059803c",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a682c",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a62ec",
+          "instruction": "str x22, [x21, #0x290]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a62f0",
+          "instruction": "str x20, [x21, #0x298]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 25,
+      "reflection_name": "hideSelectorPicker",
+      "target": "0x1012a62a4",
+      "pseudocode_lines": [
+        1688,
+        1690
+      ],
+      "observed_decisions_interpretation": "No visible predicate.",
+      "explicit_parent_state_writes_interpretation": "F(0x1c) <- 2.",
+      "return_or_effect_construction_interpretation": "Common empty-like result discriminator2.",
+      "anchors": [
+        {
+          "address": "0x1012a62a8",
+          "instruction": "0x1012a62a8: ldrsw x8, [x8, #0x1c]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a62ac",
+          "instruction": "0x1012a62ac: mov w9, #0x2",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a62b0",
+          "instruction": "0x1012a62b0: strb w9, [x10, x8]",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a62a4",
+        "0x1012a7878",
+        "0x1012a7898",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 22,
+      "instruction_dump": "case-instructions/25-hideSelectorPicker.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a7888",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a7898",
+          "callee": "0x103640564",
+          "name": "_swift_storeEnumTagMultiPayload",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a62b0",
+          "instruction": "strb w9, [x10, x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": true
+    },
+    {
+      "tag": 26,
+      "reflection_name": "boostIDEAppeared",
+      "target": "0x1012a6cd4",
+      "pseudocode_lines": [
+        1691,
+        1693
+      ],
+      "observed_decisions_interpretation": "No parent predicate.",
+      "explicit_parent_state_writes_interpretation": "Delegates to0x1012a93b0; helper writes unknown.",
+      "return_or_effect_construction_interpretation": "Helper receives state/output slot; appearance handling and result semantics require body.",
+      "anchors": [
+        {
+          "address": "0x1012a6cd4",
+          "instruction": "0x1012a6cd4: ldp x0, x8, [x19, #0xc0]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6cdc",
+          "instruction": "0x1012a6cdc: bl 0x1012a93b0",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a6cd4",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 12,
+      "instruction_dump": "case-instructions/26-boostIDEAppeared.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a6cdc",
+          "callee": "0x1012a93b0",
+          "name": "FUN_1012a93b0",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [],
+      "conditional_branches": [],
+      "raw_memory_stores": [],
+      "common_empty_like_tag2_return_reachable": false
+    },
+    {
+      "tag": 27,
+      "reflection_name": "dismissJSWarningBanner",
+      "target": "0x1012a5ed8",
+      "pseudocode_lines": [
+        1694,
+        1734
+      ],
+      "observed_decisions_interpretation": "Environment-derived writer invoked with(1,0x32), sharing writer/AnyPublisher path with case13.",
+      "explicit_parent_state_writes_interpretation": "F(0x60) <- 1.",
+      "return_or_effect_construction_interpretation": "0x100596e80 wraps writer-returned publisher. Same raw key as initialize getter, but backend/instance/delivery/lifetime unproved.",
+      "anchors": [
+        {
+          "address": "0x1012a5edc",
+          "instruction": "0x1012a5edc: ldrsw x8, [x8, #0x60]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a5ee4",
+          "instruction": "0x1012a5ee4: strb w9, [x10, x8]",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a5f3c",
+          "instruction": "0x1012a5f3c: mov w0, #0x1",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a5f40",
+          "instruction": "0x1012a5f40: mov w1, #0x32",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a67bc",
+          "instruction": "0x1012a67bc: blr x21",
+          "reachable_in_captured_cfg": true
+        },
+        {
+          "address": "0x1012a6824",
+          "instruction": "0x1012a6824: bl 0x100596e80",
+          "reachable_in_captured_cfg": true
+        }
+      ],
+      "reachable_blocks": [
+        "0x1012a5ed8",
+        "0x1012a67bc",
+        "0x1012a6828",
+        "0x1012a789c"
+      ],
+      "unknown_cfg_successors": [],
+      "reachable_instruction_count": 66,
+      "instruction_dump": "case-instructions/27-dismissJSWarningBanner.txt",
+      "direct_calls": [
+        {
+          "site": "0x1012a5f14",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a5f20",
+          "callee": "0x1006fa470",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a5f30",
+          "callee": "0x1036404f8",
+          "name": "_swift_retain",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a5f38",
+          "callee": "0x1000078a4",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a67c8",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a67e8",
+          "callee": "0x100005134",
+          "name": "FUN_100005134",
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6808",
+          "callee": "0x10000a9c8",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a6824",
+          "callee": "0x100596e80",
+          "name": null,
+          "body_queried_here": false
+        },
+        {
+          "site": "0x1012a682c",
+          "callee": "0x1036404e0",
+          "name": "_swift_release",
+          "body_queried_here": false
+        }
+      ],
+      "indirect_calls": [
+        {
+          "site": "0x1012a67bc",
+          "instruction": "blr x21",
+          "target_binding": "unresolved in caller-only inventory"
+        }
+      ],
+      "conditional_branches": [],
+      "raw_memory_stores": [
+        {
+          "site": "0x1012a5ee4",
+          "instruction": "strb w9, [x10, x8]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a5ef0",
+          "instruction": "stp q0, q1, [x19, #0xf0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a5ef8",
+          "instruction": "str q0, [x19, #0x110]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a5f00",
+          "instruction": "stp q1, q0, [x19, #0xd0]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        },
+        {
+          "site": "0x1012a67cc",
+          "instruction": "stur x21, [x29, #-0x100]",
+          "classification": "raw memory store; may be stack/capture/state, not automatically persistent"
+        }
+      ],
+      "common_empty_like_tag2_return_reachable": false
+    }
+  ],
+  "focused_queries": [
+    {
+      "priority": 1,
+      "addresses": [
+        "0x1012b05e8"
+      ],
+      "question": "Bind M to its nominal state metadata/descriptor and reflect field names/types; decode F(k) offsets without guessing object offsets.",
+      "sites": [
+        "0x1012a58d0",
+        "0x1012a58d4"
+      ]
+    },
+    {
+      "priority": 1,
+      "addresses": [
+        "0x1006fa470",
+        "0x103788790",
+        "0x100596e80"
+      ],
+      "question": "Resolve the dependency accessor/key and publisher-to-result wrapper behind raw-key0x31/0x32 writes; identify storage backend and whether execution is immediate or deferred. 0x103788790 is a data/mangled-type reference, not a function entry.",
+      "sites": [
+        "0x1012a5fd4",
+        "0x1012a5fd8",
+        "0x1012a5f3c",
+        "0x1012a5f40",
+        "0x1012a67b4",
+        "0x1012a67b8",
+        "0x1012a67bc",
+        "0x1012a6824"
+      ]
+    },
+    {
+      "priority": 1,
+      "addresses": [
+        "0x1012abe5c",
+        "0x1012aa084",
+        "0x1012b0288",
+        "0x1012b2a44"
+      ],
+      "question": "Separate model application, paired history/cursor updates, emitted effects and actual persistence. Common apply helper is reached by update/append/IDE/reset/undo/redo.",
+      "sites": [
+        "0x1012a6390",
+        "0x1012a69c8",
+        "0x1012a7c1c",
+        "0x1012a6c08"
+      ]
+    },
+    {
+      "priority": 2,
+      "addresses": [
+        "0x1012b2b00",
+        "0x1012aeaf8",
+        "0x101165e98",
+        "0x10115cd48"
+      ],
+      "question": "Bind model setter/append transformation, update classification mask2/3/5 and optional-model equality/coalescing before asserting undo grouping or saved content.",
+      "sites": [
+        "0x1012a6640",
+        "0x1012a6670",
+        "0x1012a68a4",
+        "0x1012a690c"
+      ]
+    },
+    {
+      "priority": 2,
+      "addresses": [
+        "0x100598344",
+        "0x1037887b0",
+        "0x1037887d0"
+      ],
+      "question": "Resolve task/run-style construction and async closure descriptors for clipboard and conditional preview jobs. Inspect descriptor bytes before treating data addresses as code.",
+      "sites": [
+        "0x1012a61dc",
+        "0x1012a63a0"
+      ]
+    },
+    {
+      "priority": 2,
+      "addresses": [
+        "0x10059803c",
+        "0x1012b31d8",
+        "0x1012b35c8",
+        "0x1012a7ee4",
+        "0x1012ad570"
+      ],
+      "question": "Resolve reload/initialize closures and two-result combination. Establish subscription, cancellation, replay and actual browser/side-effect execution separately.",
+      "sites": [
+        "0x1012a631c",
+        "0x1012a6110",
+        "0x1012a6124"
+      ]
+    },
+    {
+      "priority": 2,
+      "addresses": [
+        "0x103d7b260",
+        "0x103eb5228"
+      ],
+      "question": "Decode direct payload0 reflection of outer Action to bind delegate enum and its tag4 nested navigation values0/1/3. Outer field1 record is0x103eb5234; field0 record is12 bytes earlier. Do not infer target action names solely from caller case names.",
+      "sites": [
+        "0x1012a6c48",
+        "0x1012a6c78",
+        "0x1012a76c8"
+      ]
+    },
+    {
+      "priority": 3,
+      "addresses": [
+        "0x1012a8ea4",
+        "0x1012a82d4",
+        "0x1012a93b0",
+        "0x1012a8178"
+      ],
+      "question": "Complete removeZap/shuffle/IDE-appeared handling and report eligibility; caller alone delegates all substantial semantics.",
+      "sites": [
+        "0x1012a63f4",
+        "0x1012a6c18",
+        "0x1012a6cdc",
+        "0x1012a730c"
+      ]
+    },
+    {
+      "priority": 3,
+      "addresses": [
+        "0x1012b28a8",
+        "0x1011648b4",
+        "0x1011648bc",
+        "0x100576028"
+      ],
+      "question": "Prove payload projection and distinguish model editing from direct IDE synchronization callback effects, including string field identities.",
+      "sites": [
+        "0x1012a6400",
+        "0x1012a790c",
+        "0x1012a7dfc"
+      ]
+    }
+  ]
+}

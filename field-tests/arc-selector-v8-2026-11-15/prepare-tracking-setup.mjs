@@ -1,0 +1,37 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { createRequire } from 'node:module';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+const directory = path.dirname(fileURLToPath(import.meta.url)), root = path.resolve(directory, '../..');
+const read = async name => JSON.parse(await fs.readFile(path.join(directory, name), 'utf8'));
+const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+const manifest = await read('runtime-manifest.json');
+const { parseEvidence } = await import(pathToFileURL(path.join(manifest.runtime_package, 'dist/domain/evidence.js')));
+const { parseEvidenceBundle } = await import(pathToFileURL(path.join(manifest.runtime_package, 'dist/domain/evidenceBundle.js')));
+const req = createRequire(path.join(manifest.runtime_package, 'package.json'));
+const { Ajv2020 } = await import(pathToFileURL(req.resolve('ajv/dist/2020.js')));
+const expected = '6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578', evidenceDirectory = 'mouse-and-spotlight-reopen/evidence';
+const bundleBytes = await fs.readFile(path.join(directory, evidenceDirectory, 'phase-1-bundle.json')), bundle = parseEvidenceBundle(JSON.parse(bundleBytes)); assert.equal(bundle.records.length, 17);
+const anchors = [], records = {};
+for (const name of (await fs.readdir(path.join(directory, evidenceDirectory))).filter(name => name.endsWith('.evidence.json'))) { const bytes = await fs.readFile(path.join(directory, evidenceDirectory, name)), record = parseEvidence(JSON.parse(bytes)); assert.equal(record.subject.digest.sha256, expected); assert.ok(bundle.records.some(row => row.evidence_id === record.evidence_id)); records[name] = record; anchors.push({ path: `${evidenceDirectory}/${name}`, evidence_id: record.evidence_id, sha256: hash(bytes), operation: record.operation }); }
+assert.equal(anchors.length, 17); assert.equal(new Set(anchors.map(row => row.evidence_id)).size, 17);
+const moved = records['event-result-0x100b0be48-instructions.evidence.json']; assert.ok(moved.normalized_result.instructions.includes('0x100b0be78: bl 0x100b0bd20'));
+const query = records['event-result-0x1012f3f54-pseudocode.evidence.json']; for (const fragment of ['FUN_1012e6f8c', 'FUN_1012f3fb4']) assert.ok(query.normalized_result.includes(fragment));
+const refs = records['mouse-modifier-body-type-references.evidence.json'].normalized_result; assert.equal(refs.complete, true); const bytes = Buffer.from(refs.bytes_hex, 'hex');
+const firstString = BigInt(refs.address) + BigInt(bytes.readInt32LE(0)); const secondString = BigInt(refs.address) + 8n + BigInt(bytes.readInt32LE(8)); assert.equal(firstString, 0x103baa082n); assert.equal(secondString, 0x103baa062n); assert.equal(bytes.readUInt32LE(4), 12); assert.equal(bytes.readUInt32LE(12), 31);
+const candidate = BigInt(refs.address) + 0x18n, protocolWord = bytes.readInt32LE(0x18); assert.equal(candidate, 0x103715f98n); assert.equal(protocolWord & 1, 1); const candidateProtocolSlot = (candidate + BigInt(protocolWord)) & ~1n; assert.equal(candidateProtocolSlot, 0x1042ad0b0n); assert.equal(bytes.readUInt32LE(0x24), 0x30000);
+const index = parseEvidence(JSON.parse(await fs.readFile(path.join(root, 'field-tests/arc-dispatch-2026-11-06/native/function-start-index.evidence.json'), 'utf8')));
+const encoded = Buffer.from(index.normalized_result.bytes_hex, 'hex'); let current = 0x100000000n, value = 0n, shift = 0n; const starts = [];
+for (const byte of encoded) { value |= BigInt(byte & 127) << shift; if (byte & 128) { shift += 7n; continue; } if (!value) break; current += value; starts.push(current); value = shift = 0n; }
+const seedBytes = await fs.readFile(query.analysis_profile.parameters.analysis_seeds.path); assert.equal(hash(seedBytes), query.analysis_profile.parameters.analysis_seeds.sha256); const seedLines = seedBytes.toString('utf8').split('\n');
+const targets = ['0x100b0bd20', '0x1012e6f8c'].map(entry => { const i = starts.indexOf(BigInt(entry)); assert.notEqual(i, -1); assert.ok(seedLines.includes(`${entry}\tfunction`)); return { entry, next_indexed_start: `0x${starts[i + 1].toString(16)}`, indexed_interval_bytes: Number(starts[i + 1] - starts[i]), interval_is_not_complete_body_proof: true }; });
+const steps = [...targets.flatMap(row => [{ name: 'read_function_instructions', arguments: { procedure: row.entry }, label: `tracking-setup-${row.entry}-instructions` }, { name: 'procedure_pseudo_code', arguments: { procedure: row.entry }, label: `tracking-setup-${row.entry}-pseudocode` }]), { name: 'inspect_native_dispatch_metadata', arguments: { facet: 'swift-conformances', swift_conformance_address: '0x103715f98', max_file_bytes: 100663296, max_records: 500 }, label: 'exact-candidate-representable-conformance' }, { name: 'read_bytes', arguments: { address: '0x10378c2a0', length: 64 }, label: 'spotlight-candidate-layout-type-references' }, { name: 'read_bytes', arguments: { address: '0x103baa062', length: 64 }, label: 'mouse-modifier-body-mangled-types' }];
+const valueCatalog = await read(`${evidenceDirectory}/catalog.json`), catalog = Array.isArray(valueCatalog) ? valueCatalog : valueCatalog.tools; const ajv = new Ajv2020({ strict: false, validateFormats: false });
+for (const step of steps) { const tool = catalog.find(row => row.name === step.name); assert.ok(tool); const validate = ajv.compile(tool.inputSchema); assert.ok(validate(step.arguments), JSON.stringify(validate.errors)); }
+const save = async (name, value) => { const output = path.join(directory, name); try { await fs.access(output); throw new Error(`Refusing to overwrite ${name}`); } catch (error) { if (error.code !== 'ENOENT') throw error; } await fs.writeFile(output, `${JSON.stringify(value, null, 2)}\n`); };
+await save('tracking-setup.steps.json', { authority: 'Prepared from authenticated current immutable-v8 phase-1 records; no provider calls by preparation', target_sha256: expected, execution: 'Parent owns the current persistent continuation. Exact conformance address is a loaded-byte ABI candidate; index-membership validation and its imported protocol/method identities are not assumed. No global conformance discovery requested.', steps });
+await save('tracking-setup-preparation.json', { status: 'passed', target_sha256: expected, source_evidence: anchors, targets, candidate_conformance: { address: `0x${candidate.toString(16)}`, source: 'mouse-modifier-body-type-references.evidence.json', selected_abi: 'candidate Swift conformance record after concrete type references', protocol_indirect_slot: `0x${candidateProtocolSlot.toString(16)}`, flags: '0x30000', public_index_membership_and_protocol_pending: true }, concrete_type_references: [{ source: '0x103715f80', target: `0x${firstString.toString(16)}`, length: 12 }, { source: '0x103715f88', target: `0x${secondString.toString(16)}`, length: 31 }], prepared_requests: steps.length, schema_checked: true, provider_calls_executed: 0 });
+await save('mouse-and-spotlight-phase-1-audit.json', { status: 'passed', source_commit: manifest.source_commit, bundle_sha256: hash(bundleBytes), cumulative_unique_records: 17, new_canonical_records: 7, records: anchors, session_finalized: false, cleanup_claimed: false });
+console.log(JSON.stringify({ status: 'passed', canonical_records: anchors.length, requests: steps.length, targets: targets.map(row => row.entry) }));

@@ -1,0 +1,214 @@
+{
+  "kind": "supplemental-static-helper-interpretation",
+  "sources": [
+    {
+      "path": "evidence/boost-mutation-shared-helper-pseudocode.evidence.json",
+      "sha256": "3c806f82b19a1629705def51def97b613667be1649e4132a3315c98165d866da",
+      "evidence_id": "ev_d2f78c6461c8559c7a9fa9915ec643b02776abcce6bf904f62622214fe38cf80"
+    },
+    {
+      "path": "evidence/boost-mutation-shared-helper-instructions.evidence.json",
+      "sha256": "7e1fc7d43d19e818206486f45e13f09b3546345672421270309e8cf223918c89",
+      "evidence_id": "ev_990a8245bafaea79842636984505daa123b134af9357cdc17623647d0dba6a81"
+    }
+  ],
+  "instruction_count": 702,
+  "observations": [
+    {
+      "kind": "entry-bindings",
+      "anchors": [
+        "0x1012abe84",
+        "0x1012abe88",
+        "0x1012abe8c",
+        "0x1012abe90"
+      ],
+      "detail": "Entry W2 flag, X1 update-container, X0 state address, X8 output address are separately saved. Decompiler four-argument C signature is not the physical ABI.",
+      "instructions": [
+        "0x1012abe84: str w2, [x19, #0x9c]",
+        "0x1012abe88: mov x20, x1",
+        "0x1012abe8c: mov x23, x0",
+        "0x1012abe90: str x8, [x19, #0x88]"
+      ]
+    },
+    {
+      "kind": "direct-state-write",
+      "anchors": [
+        "0x1012ac074",
+        "0x1012ac078"
+      ],
+      "detail": "Clear F(0x48) before iterating.",
+      "instructions": [
+        "0x1012ac074: ldrsw x8, [x21, #0x48]",
+        "0x1012ac078: strb wzr, [x23, x8]"
+      ]
+    },
+    {
+      "kind": "container-loop",
+      "anchors": [
+        "0x1012ac07c",
+        "0x1012ac11c",
+        "0x1012ac120",
+        "0x1012ac198"
+      ],
+      "detail": "Read count at container+0x10; entries begin+0x20, advance by0xa0; call classifier0x101165e98.",
+      "instructions": [
+        "0x1012ac07c: ldr x22, [x20, #0x10]",
+        "0x1012ac11c: add x24, x24, #0xa0",
+        "0x1012ac120: subs x27, x27, #0x1",
+        "0x1012ac198: bl 0x101165e98"
+      ]
+    },
+    {
+      "kind": "state-field-dispatch",
+      "anchors": [
+        "0x1012ac0a8",
+        "0x1012ac1c0",
+        "0x1012ac1c4",
+        "0x1012ac1e4",
+        "0x1012ac24c",
+        "0x1012ac294",
+        "0x1012ac31c",
+        "0x1012ac324",
+        "0x1012ac328",
+        "0x1012ac33c"
+      ],
+      "detail": "Classification0/1/2 targets pair fields F(0x2c/0x30/0x34);3 targets byte F(0x38);4 targets word+byte F(0x3c);5 copies large F(0x44);remaining branch targets reference-like F(0x40). Values pass through helper0x100006b90; its payload contract is not proved here.",
+      "instructions": [
+        "0x1012ac0a8: ldrsw x8, [x21, #0x2c]",
+        "0x1012ac1c0: ldrsw x9, [x21, #0x38]",
+        "0x1012ac1c4: strb w8, [x23, x9]",
+        "0x1012ac1e4: ldrsw x8, [x21, #0x30]",
+        "0x1012ac24c: ldrsw x8, [x21, #0x44]",
+        "0x1012ac294: ldrsw x8, [x21, #0x34]",
+        "0x1012ac31c: ldrsw x10, [x21, #0x3c]",
+        "0x1012ac324: str x8, [x10]",
+        "0x1012ac328: strb w9, [x10, #0x8]",
+        "0x1012ac33c: ldrsw x26, [x21, #0x40]"
+      ]
+    },
+    {
+      "kind": "shared-helper-call",
+      "anchors": [
+        "0x1012ac3bc"
+      ],
+      "detail": "Call0x1012a93b0(state, output): same target as parent boostIDEAppeared. It is also reached after ordinary mutations, so its role cannot be inferred from the appearance case name alone.",
+      "instructions": [
+        "0x1012ac3bc: bl 0x1012a93b0"
+      ]
+    },
+    {
+      "kind": "always-constructed-async-work",
+      "anchors": [
+        "0x1012ac448",
+        "0x1012ac4ac",
+        "0x1012ac4bc",
+        "0x1012ac4d4",
+        "0x1012ac4d8",
+        "0x1012ac4dc",
+        "0x1012ac500"
+      ],
+      "detail": "Request state copy through typed helper, capture input update-container handle and0x280 environment bytes, construct task/run-style value via0x100598344 with descriptor candidate0x103788e38. Actual body, scheduling and persistence unproved.",
+      "instructions": [
+        "0x1012ac448: bl 0x10000828c",
+        "0x1012ac4ac: str x24, [x26, x21#0x0]",
+        "0x1012ac4bc: bl 0x10363f6a0",
+        "0x1012ac4d4: bl 0x1012b2920",
+        "0x1012ac4d8: adrp x1, 0x103788000",
+        "0x1012ac4dc: add x1, x1, #0xe38",
+        "0x1012ac500: bl 0x100598344"
+      ]
+    },
+    {
+      "kind": "flag-dependent-constructed-work",
+      "anchors": [
+        "0x1012ac524",
+        "0x1012ac528",
+        "0x1012ac590",
+        "0x1012ac594",
+        "0x1012ac5a8"
+      ],
+      "detail": "If flag bit0 is clear, construct another task-style value via0x10059803c with executable code pointer0x1012baef4 and captured state/environment. Strong focused deferred-work boundary; not yet a proven save operation.",
+      "instructions": [
+        "0x1012ac524: ldr w24, [x19, #0x9c]",
+        "0x1012ac528: tbnz w24, #0x0, 0x1012ac618",
+        "0x1012ac590: adrp x0, 0x1012ba000",
+        "0x1012ac594: add x0, x0, #0xef4",
+        "0x1012ac5a8: bl 0x10059803c"
+      ]
+    },
+    {
+      "kind": "history-or-state-helper",
+      "anchors": [
+        "0x1012ac61c",
+        "0x1012ac628",
+        "0x1012ac62c"
+      ],
+      "detail": "Call0x1012a9b80(state, flag&1, output). Body required before assigning undo grouping/persistence semantics.",
+      "instructions": [
+        "0x1012ac61c: and w1, w24, #0x1",
+        "0x1012ac628: ldr x0, [x19, #0xc8]",
+        "0x1012ac62c: bl 0x1012a9b80"
+      ]
+    },
+    {
+      "kind": "conditional-delegate-emission",
+      "anchors": [
+        "0x1012ac6b0",
+        "0x1012ac6b4",
+        "0x1012ac6b8"
+      ],
+      "detail": "With flag bit0 clear, scan update entries for classifier5; if found, append Just/AnyPublisher outer tag0/inner tag4/value2 to constructed result collection. Nominal delegate/navigation names remain unbound.",
+      "instructions": [
+        "0x1012ac6b0: bl 0x101165e98",
+        "0x1012ac6b4: cmp w0, #0x5",
+        "0x1012ac6b8: b.eq 0x1012ac6cc"
+      ]
+    },
+    {
+      "kind": "effect-combination",
+      "anchors": [
+        "0x1012ac848",
+        "0x1012ac854"
+      ],
+      "detail": "Call0x1012acd58 then0x1012ad570 to combine constructed results. Actual subscription/ordering/cancellation requires helper contracts.",
+      "instructions": [
+        "0x1012ac848: bl 0x1012acd58",
+        "0x1012ac854: bl 0x1012ad570"
+      ]
+    }
+  ],
+  "focused_extra_queries": [
+    {
+      "address": "0x1012baef4",
+      "kind": "code pointer",
+      "why": "Conditional deferred work when flag bit0=0; inspect this thunk and its exact tail target."
+    },
+    {
+      "address": "0x103788e38",
+      "kind": "data/async descriptor candidate",
+      "why": "Always-constructed async work; read its bounded bytes then derive executable entry under a checked descriptor layout, not a blind code seed."
+    },
+    {
+      "address": "0x1012a9b80",
+      "kind": "direct callee",
+      "why": "Receives state and normalized flag, candidate history/coalescing/result boundary."
+    },
+    {
+      "address": "0x1012a93b0",
+      "kind": "direct callee",
+      "why": "Shared post-mutation and boostIDEAppeared route; likely synchronization but unknown body."
+    },
+    {
+      "address": "0x1012acd58",
+      "kind": "direct callee",
+      "why": "Assembles/composes the result collection before common combine helper."
+    }
+  ],
+  "limits": [
+    "No target/library execution.",
+    "Nominal update/state/result types and field names remain unproved.",
+    "Construction is not observed execution, subscription or durable persistence.",
+    "Capture lifetime/ownership and dependency instance identity are not proved by caller copies/retains.",
+    "Pseudocode has unmodeled return-register artifacts; assembly supplies physical arguments and flag branch."
+  ]
+}

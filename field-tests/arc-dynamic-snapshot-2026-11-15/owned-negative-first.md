@@ -1,0 +1,3 @@
+The first-source producer rejected the owned `snapshot-vector-alias` fixture through public MCP: no REA+ Swift-bound table was published after `FMOV D0,XZR` invalidated the final Q0 tail. The target was analyzed statically and never executed. Input bytes remained unchanged; open/procedure/analyze/close succeeded and cleanup reported verified empty process lineage at 2026-11-15T12:15:42.344Z.
+
+Complete [Evidence](snapshot-vector-alias-first.evidence.json) and [receipt](owned-negative-first-receipt.json) retain the producer/target identities and commands. This interim reproduction precedes the original import-table scan repair and the final matrix; it does not claim Arc recovery or runtime/copy correctness.

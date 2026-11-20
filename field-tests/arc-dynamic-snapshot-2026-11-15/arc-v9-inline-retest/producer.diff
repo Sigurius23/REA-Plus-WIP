@@ -1,0 +1,12 @@
+--- v9-9717688d
++++ v9-compact-evidence
+@@ -1125,7 +1125,8 @@
+                 mapping.addProperty("confidence","high");
+                 String label = item.type.names.get(index);
+                 mapping.add("evidence",evidence("Swift ABI tag " + index + (label == null ? "" : " (field name " + label + ")") +
+-                    " selects signed word at " + hex(item.table.add(index * 4L)) + ", reaching " + hex(item.targets.get(index)) + ". " + proof));
++                    " selects signed word at " + hex(item.table.add(index * 4L)) + ", reaching " + hex(item.targets.get(index)) +
++                    ". Complete type/value provenance and ABI assumptions are retained once in this jump table's data source " + hex(item.table) + "."));
+                 mappings.add(mapping);
+             }
+             table.add("mappings",mappings);

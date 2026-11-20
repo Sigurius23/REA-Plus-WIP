@@ -1,0 +1,20 @@
+{
+  "status": "prepared_not_finalized",
+  "authority": "Retention preparation only; native-final is owned and monitored by the main task",
+  "finalize_requires": [
+    "Parent confirms the final native run has settled",
+    "All three run summaries exist, report ok=true, and retain verified empty owned lineages",
+    "Final run has exactly 102 completed distinct labels and the frozen producer/verifier identities"
+  ],
+  "final_producer_sha256": "9717688d73a8913fad46891c41a79b1babba5587202baeca7e8108a650c4df34",
+  "final_verifier_sha256": "1930838735f94c3f8eb0cd423441f98a71821895d55b0f1106b621d427055b2b",
+  "predecessor_commit": "325702b06c19d80e0d80211889b49782cdfc9e45",
+  "historical_runs": ["native-first", "native-negative-first"],
+  "final_run": "native-final",
+  "validator_runtime": "rea-local/.cache/arc-runtime-5628ef81",
+  "validator_manifest": "field-tests/arc-selector-v8-2026-11-15/runtime-manifest.json",
+  "outputs_after_settlement_only": ["retained/", "retention-index.json", "evidence-audit.json", "text-manifest.json"],
+  "catalog_policy": "Copy one native catalog per SHA-256; retain per-case digest references. Existing root large-rebase captures stay in place.",
+  "bundle_policy": "Authenticate existing public large-rebase bundles; assemble explicitly labelled offline bundles from native verifier captures",
+  "excluded": ["executable binaries", "compiled modules/classes", "module caches", "Ghidra projects", "mutable working production sources"]
+}

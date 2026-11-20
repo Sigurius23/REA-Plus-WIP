@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-11-14",
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "status": "verified-with-open-builder-and-binding",
+  "authority": "Static captured observations authenticated using content-verified frozen076runtime; not runtime drawing or physical event observations",
+  "frozen_runtime": {
+    "manifest_sha256": "1e7a04dad0a376b3b91e2c90413f05e95c2cb305ced4f49012ef29f916ca1ef6",
+    "matched_files": 1865,
+    "source_commit": "076c706c6e06257190c5303fa8aec5de1d2e649f",
+    "mutable_current_source_used": false
+  },
+  "session": {
+    "calls": 8,
+    "successful": 8,
+    "errors": 0,
+    "canonical_records": 5,
+    "explicit_close_ms": 1111,
+    "verified_empty_descendants": true
+  },
+  "body_witness": {
+    "entry": "0x1012d1ccc",
+    "body_bytes": 256,
+    "output_buffer_register": "X8 saved to X19",
+    "operations": [
+      "obtain SwiftUI Alignment.center",
+      "call0x1012cd97c into a metadata-offset child output field",
+      "copy self through0x10000828c",
+      "allocate captured self context",
+      "move copy through0x1000082d0",
+      "install closure0x1012d1dd0/context and two zero words into metadata-offset output field"
+    ],
+    "child_builder": "0x1012cd97c",
+    "captured_closure": "0x1012d1dd0",
+    "concrete_view_composition_or_modifier_kind_proved": false,
+    "drawing_proved": false
+  },
+  "point_input_thunk": {
+    "entry": "0x1012f0174",
+    "body_bytes": 12,
+    "instruction_count": 3,
+    "context_register": "X20",
+    "extra_words_loaded_at": "0x10/0x18 intoX2/X3",
+    "captured_value_argument": "X1 = context+0x20",
+    "incoming_point_argument": "X0 preserved",
+    "tail_target": "0x1012f0028",
+    "installed_ui_callback_proved": false
+  },
+  "thunk_incoming_references": {
+    "records": 1,
+    "source": "0x104e88fb8",
+    "kind": "DATA",
+    "concrete_closure_installation_site_recovered": false,
+    "physical_event_source_proved": false
+  },
+  "next_batch": {
+    "path": "view-builder.steps.json",
+    "requests": 4,
+    "targets": [
+      {
+        "entry": "0x1012cd97c",
+        "exact_lc_function_start": true,
+        "next_indexed_start": "0x1012ce284",
+        "indexed_interval_bytes": 2312,
+        "interval_is_not_complete_body_proof": true
+      },
+      {
+        "entry": "0x1012d1dd0",
+        "exact_lc_function_start": true,
+        "next_indexed_start": "0x1012d1ddc",
+        "indexed_interval_bytes": 12,
+        "interval_is_not_complete_body_proof": true
+      }
+    ],
+    "question": "Recover actual child-view construction and meaning of the captured modifier/closure installed by the body witness.",
+    "executed_by_this_interpretation": false
+  },
+  "limitations": [
+    "Stable one-second partial Program; an empty code-caller set is not absence proof.",
+    "The point thunk pseudocode folds the tail-called callback; its own body is exactly three instructions.",
+    "Alignment.center alone does not establish a particular container type.",
+    "A stored closure pointer is not sufficient to name an onAppear, onChange or hover modifier.",
+    "Coordinate filtering remainsFRINTA rounding in coordinate units; no physical-pixel or final drawing assertion.",
+    "Durable persistence and broader Arc behavior remain unproved."
+  ],
+  "evidence": [
+    {
+      "path": "body-and-thunk-evidence/boost-editor-view-body-witness-instructions.evidence.json",
+      "evidence_id": "ev_3c6327f45756236390ffda07b090cefbfd7c51f2c480b09d62a08f890a97882d",
+      "file_sha256": "93a2cb892205d9e1b62f8c59b395e2abe0545e1bbb818eab2c7eab34231c95d4",
+      "operation": "read_function_instructions",
+      "analysis_profile_digest": "409d0a885cefe3a5ceb4106cb617b7a9a86aff9fac34d29f1bc43d137a028298"
+    },
+    {
+      "path": "body-and-thunk-evidence/boost-editor-view-body-witness-pseudocode.evidence.json",
+      "evidence_id": "ev_4c3191469969278565439ed441e73f8013dd63fded0ea8c306b32b74e98ad24a",
+      "file_sha256": "45e9983675d8db8febe9174ef078cbdb5b88fe8abab3e547cb46c0a5a3d1e9cb",
+      "operation": "procedure_pseudo_code",
+      "analysis_profile_digest": "409d0a885cefe3a5ceb4106cb617b7a9a86aff9fac34d29f1bc43d137a028298"
+    },
+    {
+      "path": "body-and-thunk-evidence/selector-point-input-thunk-callers.evidence.json",
+      "evidence_id": "ev_78bf67c5244813b12b4fc38458ca144a5f41be071d04cb3a22a7c0d155e6db05",
+      "file_sha256": "eecd34df54c6a049810aac2ea9540bb05d6809f2cbe4356b1c39c8c8c6cd6a06",
+      "operation": "procedure_references",
+      "analysis_profile_digest": "409d0a885cefe3a5ceb4106cb617b7a9a86aff9fac34d29f1bc43d137a028298"
+    },
+    {
+      "path": "body-and-thunk-evidence/selector-point-input-thunk-instructions.evidence.json",
+      "evidence_id": "ev_cccf9f2cc819961ca994bae4f5e86a117e6b39568ebfda08a182ea9ce6a333ff",
+      "file_sha256": "939d1d00d50535d68f73b4440159940662c7ade6610d9127fab59b358e41ae77",
+      "operation": "read_function_instructions",
+      "analysis_profile_digest": "409d0a885cefe3a5ceb4106cb617b7a9a86aff9fac34d29f1bc43d137a028298"
+    },
+    {
+      "path": "body-and-thunk-evidence/selector-point-input-thunk-pseudocode.evidence.json",
+      "evidence_id": "ev_85c8075fc54101a54093a62459d2cff34a4dcb7a29edda15df453ed01a098e85",
+      "file_sha256": "dfadcbca3cec6a3be88b4ef3cf8f7a514d9123c9f233b7e476ab17c8026627c6",
+      "operation": "procedure_pseudo_code",
+      "analysis_profile_digest": "409d0a885cefe3a5ceb4106cb617b7a9a86aff9fac34d29f1bc43d137a028298"
+    }
+  ]
+}

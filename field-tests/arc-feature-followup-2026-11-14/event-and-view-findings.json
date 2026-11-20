@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-11-14",
+  "status": "verified-with-open-origin-and-rendering",
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "authority": "Static shipped-artifact observations authenticated with the isolated076runtime; instruction-level analyst interpretation, not target execution",
+  "frozen_runtime": {
+    "source_commit": "076c706c6e06257190c5303fa8aec5de1d2e649f",
+    "manifest": "frozen-runtime-manifest.json",
+    "manifest_sha256": "1e7a04dad0a376b3b91e2c90413f05e95c2cb305ced4f49012ef29f916ca1ef6",
+    "runtime_package": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-runtime-076c706c6",
+    "matched_files": 1865,
+    "current_tree_java_or_build_used": false
+  },
+  "session": {
+    "calls": 7,
+    "successful": 7,
+    "errors": 0,
+    "evidence_records": 4,
+    "explicit_close_ms": 829,
+    "verified_empty_descendants": true,
+    "analysis_profile_digest": "409d0a885cefe3a5ceb4106cb617b7a9a86aff9fac34d29f1bc43d137a028298",
+    "initial_analysis_timeout_seconds": 1,
+    "analysis_complete": false
+  },
+  "point_callback": {
+    "entry": "0x1012f0028",
+    "body_bytes": 328,
+    "input_layout": {
+      "coordinate_double_offsets": [
+        "0x0",
+        "0x8"
+      ],
+      "flag_byte_offset": "0x10"
+    },
+    "context_state_object_layout": {
+      "words": [
+        "0x40",
+        "0x48"
+      ],
+      "flag_byte": "0x50"
+    },
+    "receiver": {
+      "selected_route": "StateObject.wrappedValue using accessor0x1012e5260 and conformance0x10378b278",
+      "prior_conformance_type": "HoveredElementTracker",
+      "prior_conformance_evidence_id": "ev_3df6eed5948e42faccb09e3ce93e46fbf3ee2dece40dd268fd6c3b1375472988",
+      "runtime_instance_observed": false
+    },
+    "point_write": {
+      "coordinate_offsets": [
+        "0x20",
+        "0x28"
+      ],
+      "flag_offset": "0x30",
+      "occurs_before_filtering": true
+    },
+    "absent_input_branch": {
+      "flag_value": 1,
+      "output": "Published setter with four zero words and flag1",
+      "keypaths": [
+        "0x10378c010",
+        "0x10378c038"
+      ],
+      "starts_query": false,
+      "equivalence_to_previous_keypath_pair_proved": false
+    },
+    "present_input_branch": {
+      "prior_flag1": "call task starter",
+      "prior_point_present": "compare quantized old/new coordinates; skip starter when equal",
+      "quantization_for_finite_coordinates": "Q(x) = 2 * roundTiesAwayFromZero(x / 2)",
+      "rounding_basis": "FRINTA instructions; decompiler integer cast is not authoritative",
+      "units": "coordinate units; physical pixels not established",
+      "unequal_output": "call0x1012e4d6c"
+    },
+    "origin_edge": {
+      "source_entry": "0x1012f0174",
+      "jump_site": "0x1012f017c",
+      "target": "0x1012f0028",
+      "kind": "UNCONDITIONAL_JUMP"
+    },
+    "physical_event_or_coordinate_space_proved": false
+  },
+  "view_body": {
+    "type_name": "BoostsEditorView",
+    "protocol_bind": "_$s7SwiftUI4ViewMp",
+    "conformance": "0x103789dc0",
+    "requirement_bind": "_$s7SwiftUI4ViewP4body4BodyQzvgTq",
+    "record_ordinal": 5,
+    "record_location": "0x103789dfc",
+    "implementation": "0x1012d1ccc",
+    "runtime_witness_table": "not_instantiated",
+    "ordinal_is_runtime_slot": false,
+    "body_instructions_analyzed": false,
+    "drawing_output_proved": false
+  },
+  "next_batch": {
+    "path": "body-and-thunk.steps.json",
+    "requests": 5,
+    "instructions_and_pseudocode": [
+      "0x1012d1ccc",
+      "0x1012f0174"
+    ],
+    "incoming_references": [
+      "0x1012f0174"
+    ],
+    "exact_lc_entry_checks": [
+      {
+        "entry": "0x1012d1ccc",
+        "exact_indexed_start": true,
+        "previous_indexed_start": "0x1012d1c20",
+        "next_indexed_start": "0x1012d1dcc",
+        "indexed_interval_bytes": 256,
+        "interval_is_not_complete_body_proof": true
+      },
+      {
+        "entry": "0x1012f0174",
+        "exact_indexed_start": true,
+        "previous_indexed_start": "0x1012f0170",
+        "next_indexed_start": "0x1012f0180",
+        "indexed_interval_bytes": 12,
+        "interval_is_not_complete_body_proof": true
+      }
+    ],
+    "executed_by_this_interpretation": false
+  },
+  "final_drawing_proved": false,
+  "persistence_proved": false,
+  "broader_arc_complete": false,
+  "limitations": [
+    "Stable partial Program, not complete reference discovery.",
+    "Point quantization is stated in coordinate units and for finite coordinate values.",
+    "The absent-input setter uses new keypath pattern addresses; equivalence to the earlier getter/publication pair is not assumed.",
+    "Imported SwiftUI requirement identity identifies a static body witness implementation, not an instantiated runtime witness slot.",
+    "The initial event source and body effects remain to be traced."
+  ],
+  "evidence": [
+    {
+      "path": "event-and-view-evidence/exact-boost-editor-view-conformances.evidence.json",
+      "evidence_id": "ev_cbe3e235ed958c2e3e7480a5706e20d4865d0affa0abe4badc5732ba131db676",
+      "file_sha256": "abe543a2527e6e88782e445bd6f9a0146ceec34a6b33391ecbe247e29576291b",
+      "operation": "inspect_native_dispatch_metadata",
+      "analysis_profile_digest": "afa54a7a16d02c4a772d65d260938c227b03701c934cd6fc5aa2dd34e294ec5d"
+    },
+    {
+      "path": "event-and-view-evidence/selector-new-starter-caller-inputs.evidence.json",
+      "evidence_id": "ev_8e41a28d11fcb50049e02a8aa6228f1afee234e25f5f59e3c22c2d2947de1bc5",
+      "file_sha256": "6610de687972e675c7a6eecca51826835d4ee99d2ce20a21b0ddcc37ef13ddf1",
+      "operation": "procedure_references",
+      "analysis_profile_digest": "409d0a885cefe3a5ceb4106cb617b7a9a86aff9fac34d29f1bc43d137a028298"
+    },
+    {
+      "path": "event-and-view-evidence/selector-new-starter-caller-instructions.evidence.json",
+      "evidence_id": "ev_9a0033b19f9f414e924918b64b5e5605a587ac84340df7dc890bcfdb54602ec9",
+      "file_sha256": "31d216b8d56ce95cb6e3c61428cfad57708242d5ba0d8cbd270e08d8b21c635c",
+      "operation": "read_function_instructions",
+      "analysis_profile_digest": "409d0a885cefe3a5ceb4106cb617b7a9a86aff9fac34d29f1bc43d137a028298"
+    },
+    {
+      "path": "event-and-view-evidence/selector-new-starter-caller-pseudocode.evidence.json",
+      "evidence_id": "ev_fc97be90e17739380e8e83ed0e4b19b47ea2f345eba7797034fe174a74596b45",
+      "file_sha256": "8bb1fb6e845542f7291bca9a9da13128053e7b1ef9919989219a05c9c770838c",
+      "operation": "procedure_pseudo_code",
+      "analysis_profile_digest": "409d0a885cefe3a5ceb4106cb617b7a9a86aff9fac34d29f1bc43d137a028298"
+    }
+  ]
+}

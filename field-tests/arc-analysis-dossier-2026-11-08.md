@@ -3,12 +3,15 @@
 Snapshot assembled **2026-11-08**, Europe/Berlin; fixed-version identity,
 signed attributes and selector completion observations added **2026-11-09**.
 Selector coordinate and cleanup follow-up verified **2026-11-13**.
+Selector input filtering, candidate-query construction and visual composition
+addendum added **2026-11-15**. Actual v9 reducer coverage, candidate commit/reset
+and broader action entry-point observations added **2026-11-16**.
 This dossier consolidates the supplied
 **Arc 1.172.1 / build 90370 DMG** investigation. It is a coverage map and an
 explanation of recovered implementation paths; full Arc behavior is **not yet
 established**. Native analyses, resource searches and owned compiler tests have
-answered several narrow questions, while reducer effects, persistence, final
-UI rendering and broader browser subsystems remain open.
+answered several narrow questions, while complete reducer effects, durable persistence, surrounding
+UI integration and broader browser subsystems remain open.
 
 This snapshot uses retained observations only. Arc, its helpers and shipped
 JavaScript were not executed in these offline passes. There are no observations
@@ -53,9 +56,9 @@ Recovered pseudocode is decompiler output, not original Swift/C++ source.
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | Native editor UI/state     | The selected editor initializer creates a view store, SwiftUI state/observed-object storage, subscriptions and cached web-content/browser pairs. [E15][E15]                                                                                                    | This does not recover the whole window hierarchy or all Arc UI.                                                                      |
 | Web-content bridge         | `WebContentChromium` implements the selected callback JavaScript route and weak UI-delegate storage. [E07][E07], [E12][E12]                                                                                                                                    | The concrete runtime object/factory choice is not observed.                                                                          |
-| Native store/reducer       | The editor handoff reaches an installed send closure and captured store's generic send loop. A local `BoostsEditor: Reducer` conformance and reducer witness are identified. [E16][E16], [E18][E18], [E22][E22]                                                | The stored instance may be wrapped; static conformance alone is not an instance assignment. Nested case recovery remains incomplete. |
+| Native store/reducer       | The editor handoff reaches an installed send closure and captured store's generic send loop. A local `BoostsEditor: Reducer` conformance and reducer witness are identified. [E16][E16], [E18][E18], [E22][E22]                                                | The stored instance may be wrapped; static conformance alone is not an instance assignment. The v9 addendum recovers all 28 nested table/body cases conditionally; complete effects and stored binding remain partial. |
 | Bundled selector source    | `ARC_BoostsEditor.bundle` contains a 11,068-byte `SelectorPicker.js`, retained in the fixed-version loose-script analysis. [E36][E36]                                                                                                                          | Source presence does not prove loading into a particular page/world.                                                                 |
-| Native selector completion | Selected async entries schedule cached-source evaluation, continue after releasing a bootstrap error, and reach two `Published` value-update branches. An exact indexed hover-class query returns 17 vtable rows / two resolved targets. [E71][E71]–[E78][E78] | The initiating event, concrete receiver, unsupported slots and final native drawing remain unresolved.                               |
+| Native selector completion | Selected async entries schedule cached-source evaluation, continue after releasing a bootstrap error, and reach two `Published` value-update branches. An exact indexed hover-class query returns 17 vtable rows / two resolved targets. [E71][E71]–[E78][E78] | The selected input/state/drawing route is recovered in the selector addenda; concrete receiver, unsupported slots and live display remain unresolved.                               |
 | Packed extension sources   | Public pack reads recover manifests and inert Google Docs/Slack/Web Store/Notion sources with exact resource identities. [E28][E28]–[E32][E32]                                                                                                                 | Three selected filename-to-ID mappings are corroborated below; activation remains unobserved.                                        |
 | ArcCore native support     | Selected code supplies the manifest resource, brands it, parses/registers a component and conditionally reaches an activation handoff. [E26][E26], [E33][E33], [E65][E65]–[E69][E69]                                                                           | Runtime flags/overrides and activation remain unobserved; this is not complete recovery of ArcCore or Chromium.                      |
 
@@ -77,12 +80,20 @@ output. “Unassessed” means this investigation has not traced that subsystem.
 | What are the exact JSON key spellings on 1.172.1?                                                                 | Answered, static witness implementations | Fresh metadata-selected getters return `boostId`, `type`, `data` and `contents`. [E38][E38]–[E43][E43]                                                                                                                                        | No additional spelling evidence; runtime witness population and submitted-message behavior remain unobserved.                                   |
 | Which JavaScript evaluator does the selected selector route use?                                                  | Answered, selected implementation        | Callback `executeJavascript:reason:completion:` path, main-actor completion, String cast and JSON decode. [E11][E11]–[E14][E14]                                                                                                               | Runtime world, frame and concrete web-view instance.                                                                                            |
 | How is the selector library supplied?                                                                             | Partial                                  | Resource loader/cache, async scheduling, cached-source forwarding and a caller that releases a bootstrap error before continuing are recovered. [E25][E25], [E72][E72]–[E75][E75]                                                             | The initiating event, next-stage implementation, concrete page/world, per-page lifetime and actual evaluation outcome.                          |
-| How are points/rectangles transformed and drawn?                                                                  | Partial                                  | Source wrappers forward DOM rectangle components. The selected native query scales input by the reciprocal getter value, builds `getHoveredElement({x: …, y: …})`, then scales its successful rectangle result forward. [E81][E81]–[E88][E88] | Concrete receiver/value interpretation, final native coordinate spaces, origin/scroll/zoom handling, live getter values and overlay rendering.  |
+| Which point-state changes start a hover lookup? | Answered, selected static route | The bound State callback stores the latest optional point, clears the published rectangle for absent input, and otherwise skips lookup when both coordinates remain in the same two-unit rounded bucket. [S01][S01]–[S03][S03] | The native event producer and physical coordinate meaning remain separate questions. |
+| How are points/rectangles transformed and drawn? | Partial | Flipped-view local input, reciprocal point-query scaling, forward rectangle-result scaling, State assignment and candidate shape/position/frame construction are recovered. [S21][S21]–[S27][S27], [S16][S16], [S17][S17] | Specific Chromium viewport/page/world correspondence, surrounding origin/clip/scroll, live scalar value, native window placement and actual rendered output. |
+| How is native pointer tracking installed, updated and removed? | Answered, selected static route | Concrete NSViewRepresentable creates FlippedView and coordinator, installs its NSTrackingArea, updates weak view/enabled storage and removes tracking areas at teardown. [S21][S21]–[S25][S25] | Actual runtime view/event delivery is unobserved. |
+| How are unready or failed rectangle queries handled? | Answered, selected static route | Up to five attempts with requested50ms sleeps; success replaces the drawing State, while exhaustion clears it. [S27][S27], [S29][S29], [S30][S30] | This does not establish every possible cancellation/evaluator failure path or elapsed runtime. |
+| How is each Spotlight candidate shape/frame constructed? | Answered, selected static builder | Continuous RoundedRectangle corner sizes10/10, white Color, overlay blend mode, position at rectangle midpoint and centered frame enlarged by20 in each dimension. [S17][S17], [layout derivation](arc-selector-v8-2026-11-15/symbolic-layout-source-verification.json) | Surrounding coordinate system and actual rendering remain outside this narrow question. |
+| What does a selected picker tap request and how is its result selected? | Answered, selected static result path | A guarded tap requests point-derived candidates; the native continuation filters match counts at 500, stores the array and selects its first candidate (or nil if empty). [S05][S05], [S07][S07], [S08][S08], [V02][V02], [V03][V03] | Actual live evaluation outcome and broader error presentation remain unobserved. |
+| How is a candidate selector committed or reset? | Partial | The registered action invokes a captured callback with the selected selector, then resets locked-selection, candidate-array and selected-candidate State. [V04][V04], [V05][V05] | Concrete captured consumer and its end-to-end appendZap/storage effect. |
+| Does the actual Boost reducer expose every nested dispatch case? | Answered, conditional static table/body coverage | The actual v9 export has all 28 targets/case labels, 10,072 owned bytes and 2,518 instructions, agreeing with the independently read table. [V01][V01] | Full case-effect semantics, pre-tag ownership/copy, runtime stored binding and reported throw/value-flow limitations remain. |
 | How does editor browser/web-content state change?                                                                 | Partial                                  | Internal CSS/JS URL construction and conditional cache-release path are recovered. [E20][E20], [E21][E21]                                                                                                                                     | URL handlers, concrete manager methods and complete state transitions.                                                                          |
-| How are Boost edits stored and restored?                                                                          | Unresolved                               | The generic send route is known; no durable end-to-end persistence path is established.                                                                                                                                                       | Command → mutation → storage write → reload/readback, including failures and identity association.                                              |
+| How are Boost edits stored and restored? | Partial | Recovered update/appendZap/IDE branches reach a shared state-mutation and effect-composition helper; concrete async/dependency boundaries are identified. [V06][V06], [v9 feature ledger](arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/feature-findings-phase5.md) | Durable write/readback, concrete dependency consumer, failures and identity association remain unproved. |
 | How does the Google Docs helper inject its page code?                                                             | Partial                                  | Manifest scopes, extension URL creation, appended script, conditional canvas-annotation script construction. [E28][E28]–[E30][E30]                                                                                                            | Actual native registration and page/CSP/Trusted Types outcomes.                                                                                 |
 | How is the internal extension branded/registered?                                                                 | Partial                                  | First branding replacement, override-aware manifest read, parse, gated vector registration and conditional creation/identifier-check/activation handoff are traced. [E26][E26], [E44][E44]–[E49][E49], [E65][E65]–[E69][E69]                  | Remaining identifier helpers, runtime override/brand/policy state and actual activation or service-worker execution.                            |
-| Sidebar/tabs/spaces/navigation, account/sync, downloads/history, storage security and general browser networking? | Unassessed as end-to-end features        | Package/type/resource observations may exist.                                                                                                                                                                                                 | Entry points, decisions, state ownership, durable effects, outputs and failure paths for each subsystem.                                        |
+| Sidebar/tabs/spaces/navigation and sidebar restoration? | Partial, selected entry points | nextSpace/reload forward actions through viewStore; switchToTab/sidebarToggle have exact native worker targets; exact RestoreSidebarDataFlow class/conformance implementations are selected. [V07][V07]–[V10][V10] | Worker decisions, final feature reducers/browser primitives, storage format/location, migration and restoration failures. |
+| Account/sync, downloads/history, storage security and general browser networking? | Unassessed as end-to-end features | Package/type/resource observations may exist. | Entry points, decisions, state ownership, durable effects, outputs and failure paths for each subsystem. |
 | Which component identities and signed attributes ship in this fixed build?                                        | Answered, selected static attributes     | All 28 inventory-selected Mach-O carriers have signature Evidence; 22 executable-bearing bundle plists identify the fixed version and declarations. 24 of 28 carriers, including the main, report hardened runtime. [E50][E50]–[E64][E64]     | Filesystem resource-seal/trust/notarization validation, independent universal-slice equivalence and actual runtime isolation remain unassessed. |
 
 ## Boost command path
@@ -121,9 +132,11 @@ New selected metadata identifies **`BoostsEditor: Reducer`**, conformance
 **`0x103788ae8`**, table **`0x1046270d8`**, with a reduce witness at
 **`0x1012a9870`** forwarding to **`0x1012a571c`**. This narrows the implementation
 candidate without proving that the captured runtime store holds this exact
-unwrapped table. The nested outlined tag helper **`0x1012b2860`** precedes an
-unrecovered signed-word jump at **`0x1012a5bc8`**. Missing case bodies prevent
-closing all CSS/JavaScript effects. [E22][E22]–[E24][E24]
+unwrapped table. In the historical Nov8 capture, the nested outlined tag helper **`0x1012b2860`**
+preceded an unrecovered signed-word jump at **`0x1012a5bc8`**. The Nov16 v9
+addendum supersedes that table/body gap for the selected reducer under its
+explicit typed-snapshot assumptions; complete CSS/JavaScript effects remain
+partial. [E22][E22]–[E24][E24], [V01][V01]
 
 A later public byte read retains **112 bytes / all 28 signed words** in the
 selected table. It agrees with the original 24-word prefix and removes that
@@ -434,6 +447,252 @@ spaces and rendering. Broader browser subsystems require their
 own entries and end-to-end traces. Missing runtime values may remain explicit
 assumptions; they must not be replaced with invented observations.
 
+## Selector addendum: 2026-11-15
+
+This addendum extends the historical E01–E88 snapshot with separately indexed
+**S01–S10** observations. The earlier Evidence index and its 88-record audit
+remain unchanged. The new anchor file is
+[selector-addendum-index-2026-11-15.json](arc-analysis-dossier-2026-11-08/selector-addendum-index-2026-11-15.json).
+The detailed retained reports are the
+[point/filter and tap trace](arc-feature-followup-2026-11-14/selector-tracking-findings-2026-11-15.md),
+[lifecycle/helper follow-up](arc-feature-followup-2026-11-14/selector-reopen-findings-2026-11-15.md),
+[v8 selector phase 0](arc-selector-v8-2026-11-15/findings-phase-0.md) and
+[v8 selector phase 1](arc-selector-v8-2026-11-15/findings-phase-1.md).
+
+`SelectorPicker` content binds a SwiftUI point State change to the capture
+adapter `0x1012f0174`, then `0x1012f0028`. The worker records the latest point
+before filtering. An absent point publishes an absent rectangle. A present
+point starts lookup if there was no previous point or the two quantized
+coordinates differ. Machine instructions give the quantizer as
+**`Q(x) = 2 × FRINTA(x / 2)`**, with ties rounded away from zero. These are
+coordinate units; physical pixels are not established. The producer adapter
+`0x1012f14dc` forwards to `0x1012ef1f4`, which projects a four-word optional
+input to the optional point and writes that State. [S01][S01]–[S03][S03]
+
+The visual child installs tracking on a white view with opacity **0.01** and
+a single-tap callback. The tap worker requires no stored rectangle plus a
+present point/current published rectangle; it stores that rectangle and
+schedules a task. The selected task stage transforms its point using the
+reciprocal adaptor-supplied Double and constructs
+**`getSelectorCandidates({x: …, y: …}, {})`** before handing the String through
+the selected adaptor execution path. This closes String construction, not
+candidate response or selection effects. [S04][S04], [S05][S05],
+[S07][S07], [S08][S08]
+
+The shared helper `0x100b080a8` attaches appearance and value-change actions;
+its `0x1012f0218` callback assigns the tracker adaptor. It is not the physical
+point callback. A separate concrete tracking modifier is corroborated as
+**`MouseMoveModifier: SwiftUI.ViewModifier`**, with static `body(content:)`
+implementation **`0x100b0c498`**. Its imported protocol layout remains partial
+and the runtime witness table is **not instantiated**. The newly selected
+body is outside the earlier caller seeds; its event implementation is still
+being traced with an explicitly expanded admission profile. [S06][S06],
+[S09][S09]
+
+The overlay's alternate branch is `SelectorSpotlight`. Its body delegates
+through `0x1012f3454` and a render capture adapter to worker
+**`0x1012f3734`**. Retained folded pseudocode constructs **BlendMode.color**,
+a **RadialGradient** from black colors with opacity constants **0.245** and
+**0.5**, and a State-backed **ForEach** with child **`0x1012f3b80`**. Direct
+worker instructions and the child remain the next evidence for final radius,
+candidate shape/frame/mask and placement. A separate String lifecycle
+callback schedules task **`0x1012f44f8`**, whose selection result and State
+effect remain untraced here. These are static view constructions, without a
+live UI observation. [S10][S10]
+
+This addendum does not close durable Boost persistence, native window
+placement, every reducer effect or the broader Arc feature checklist. Native
+observations use either frozen076 or immutable-v8 profiles as recorded by
+their respective receipts; they are not described as one unchanged profile.
+
+### Native event and candidate drawing follow-up
+
+A second, separately authenticated selector index adds **S11–S20** without
+changing either the historical E01–E88 index or S01–S10:
+[selector-native-drawing-index-2026-11-15.json](arc-analysis-dossier-2026-11-08/selector-native-drawing-index-2026-11-15.json).
+Detailed outcomes and session settlement are in
+[the drawing receipt](arc-selector-v8-2026-11-15/mouse-and-spotlight-findings-phase-0.md),
+[event receipt](arc-selector-v8-2026-11-15/mouse-and-spotlight-findings-phase-1.md)
+and [phase-2 receipt](arc-selector-v8-2026-11-15/mouse-and-spotlight-findings-phase-2.md).
+
+Retained fixed-input Objective-C metadata identifies the private nested
+**MouseMoveModifier.Representable.Coordinator: NSResponder**, with
+`mouseMoved:` at **`0x100b0be48`** and `mouseExited:` at
+**`0x100b0be98`**. The moved method reaches **`0x100b0bd20`**. With a live weak
+view, enabled flag and callback, its selected worker emits the point's two
+Double components, each component divided by a view-dependent rectangle's
+width/height, and present flag0. The exited method emits four zero words and
+absent flag1 when enabled and the callback exists. These concrete methods
+match the selected picker adapter's representation. The remaining setup
+question is how the representable installs the coordinator and tracking area;
+actual NSResponder delivery is unobserved. Objective-C stub selector bindings
+are also still needed before assigning exact coordinate-space/property names.
+[S11][S11]–[S14][S14]
+
+The selected `Representable` conformance at **`0x103715f98`** is to imported
+**SwiftUI.View**, not NSViewRepresentable. Its named static `_makeView`,
+`_makeViewList` and `body` targets are **`0x100b0c3d4`**,
+**`0x100b0c424`** and **`0x100b0c474`**. Their runtime witness table is
+uninstantiated. The next trace follows those View bridges to native setup
+rather than renaming their requirements. [S15][S15]
+
+The Spotlight gradient is distinct from the candidate shapes. Direct
+instructions and the selected imported API ABI give gradient center
+**(0.5,0.5)**, start radius **1**, and end radius **GeometryProxy.size.width**;
+its two black opacity constants are **0.245** and **0.5**. The separate
+candidate builder constructs a continuous **RoundedRectangle with corner
+sizes10/10**, white Color and **overlay blend mode**. It stores rectangle
+midX/midY in the following modifier payload and constructs a centered frame
+with width/height each enlarged by **20 coordinate units**. Concrete midpoint
+modifier type corroboration remains pending; no physical pixel or live
+appearance assertion follows. [S16][S16], [S17][S17]
+
+The String-change route proceeds through **`0x1012f3f54`** to
+**`0x1012e6f8c`**. That stage passes its input through **`0x1012e72c0`**. Its
+zero-result path returns an empty Array; the other path formats a query and
+hands it to the selected adaptor execution route. The literal, helper's
+escaping/validation and outer consumer **`0x1012f3fb4`** are the immediate
+next evidence for rectangle State updates. [S18][S18], [S19][S19]
+
+The admitted modifier body **`0x100b0c498`** now corroborates its Boolean
+environment gate and captured-content/callback construction. The investigation
+used an explicitly expanded **2,034-entry** seed set, not a retry of the
+previous 1,951-entry profile. That session retained24 canonical records,
+completed28/28 calls, expired while awaiting another continuation, and
+verified empty owned descendants. It issued no explicit `close_binary`.
+The phase-2 audit retains the exact run identity and observation time.
+[S20][S20]
+
+### Selected static rectangle-display route: final v8 receipt
+
+The [final setup/scaling/retry report](arc-selector-v8-2026-11-15/tracking-and-state-findings-final.md)
+and [audit](arc-selector-v8-2026-11-15/tracking-and-state-final-audit.json)
+close several previously pending links. Separate **S21–S30** sources are in
+[selector-installation-index-2026-11-15.json](arc-analysis-dossier-2026-11-08/selector-installation-index-2026-11-15.json).
+All earlier indexes remain unchanged.
+
+Exact **Representable: NSViewRepresentable** metadata selects native
+make/update/dismantle/coordinator implementations. The constructor creates
+**ARCUI.FlippedView**, whose exact metadata-selected `isFlipped` getter returns
+true. It installs an NSTrackingArea with the coordinator owner, zero rectangle,
+nil userInfo, and raw options **0x623** on the selected byte1 construction.
+Public stub/selector reads corroborate installation and teardown operations.
+The alternate raw flag branch is **0x6a3**. A separately retained local AppKit
+SDK constant derivation maps the selected bits to entered/exited, moved,
+active-in-key-window, visible-rect and mouse-drag tracking; the alternate adds
+ActiveAlways. Neither sets AssumeInside. Update changes weak-view/enabled
+storage; dismantle clears the weak view and removes tracking areas.
+[S21][S21]–[S25][S25], [S28][S28]
+
+Event coordinates are explicitly **event.locationInWindow →
+view.convertPoint:fromView:nil** on the flipped local view. The additional
+payload fractions divide by its bounds dimensions. The picker uses the
+converted point, then reciprocal adaptor-supplied scalar for DOM lookup.
+Rectangle-query success **0x1012e7150** multiplies every returned rectangle's
+four components by the adaptor-supplied scalar before the State consumer.
+This closes the selected conversion/scaling path, while a particular live
+Chromium viewport, surrounding origin/clip/scroll, evaluated page/world and
+actual scalar meaning remain separate questions. [S24][S24]–[S26][S26]
+
+Serialized selector input feeds **rectsForSelector**; successful nonempty
+results other than a single CGRect.zero reach the same State read by the
+Spotlight candidate loop. The retry counter starts at0. Empty/single-zero and
+the selected error route request50ms sleep, then increment; at5 the worker
+clears the candidate State and returns, otherwise it repeats the query.
+There are at most five attempts on this path. Sleep-error release joins the
+same next-attempt stage; this is not a global cancellation claim. No elapsed
+time was measured. [S27][S27], [S29][S29], [S30][S30]
+
+The separate symbolic-layout source derivation matches public loaded mangles
+and resolves the candidate modifier chain as **ShapeView<RoundedRectangle,
+Color> → BlendModeEffect → PositionLayout → FrameLayout**. Thus the recovered
+midpoint payload is specifically a position modifier. It also resolves the
+tracking body as **BackgroundModifier<Representable>**. This is explicitly
+analyst decoding of symbolic/chained-bind source fields, not an automatic
+general type decoder or runtime metadata observation. See the
+[byte agreement and derivation receipt](arc-selector-v8-2026-11-15/symbolic-layout-source-verification.json).
+
+The final export contains **71 canonical records**, checked with all1,865
+immutable runtime manifest files. Recorder status remains **failed**:
+**78 calls / 77 successes / one close error**. The explicit close returned
+**cleanup_incomplete**, with an ownership-read `sysctl_errno_22` for candidate
+6891. Later client shutdown verified empty owned descendants at
+**2026-11-15T12:32:42.752Z**. This does not turn the earlier close into a success
+or establish filesystem cleanup. The public close diagnostic also records
+**329,896 loader fixed-up chained pointers**. All identities, hashes and
+source diagnostics are preserved in the final audit.
+
+The [direct selector-source interpretation](arc-selector-v8-2026-11-15/selector-source-semantics.md)
+now maps hit testing, descriptive hash, ancestor/descendant selector refinement,
+semantic/style ranking, sampling and failure results to these native paths.
+The retained11,068-byte source has the exact fixed-build digest
+**0e779dad9316f8b14cf4e1b20fa710240cd90bc9a9a1dd820df38ebd525d977d**,
+bound by E36. Its output candidate fields are only selector/matches. The
+100-match generator filter does not cap rectsForSelector, and target15 is a
+sampling policy rather than a hard count cap. Hover no-hit returns undefined;
+candidate no-hit returns an empty array; invalid rectangle-query CSS can throw.
+The native single-zero-rectangle readiness test is not a source-generated error
+sentinel. The [source index](arc-selector-v8-2026-11-15/selector-source-index.json)
+separates digest-bound source ranges and analyst semantics from public tool
+observations; no shipped JavaScript was executed. [E36][E36]
+
+The remaining separate tap candidate-selection path has a prepared six-call
+follow-up for the parent-owned v9 retest. It is not executed by this receipt.
+Broader Arc subsystems and durable Boost persistence remain open.
+
+## Actual v9 feature addendum: 2026-11-16
+
+The [phase 5 report and nine-question ledger](arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/feature-findings-phase 5.md)
+record actual fixed-version Arc results from byte-frozen v9 producer `9717688d…`.
+This supersedes the older selected reducer table/body gap: the exported
+`analyze_function` now owns **10,072 contiguous bytes / 2,518 instructions** and
+all **28** dispatch targets and pseudocode case labels. Every signed table word
+agrees with the independent public 112-byte read. The [reproducible coverage
+receipt](arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/reducer-coverage-observation.json)
+preserves exact profile/seed identity and the actual Evidence operation. [V01][V01]
+
+This recovery remains conditional on a recursively valid active outer value at
+the runtime tag call, stable ABI/import bindings, valid disjoint nonwrapping
+stack regions, a stable checked post-tag window and trusted Darwin stack-probe
+normal-return effects. Pre-tag copy/ownership/nonescape, later lifetime and live
+reachability remain unproved. Native value flow is truncated at 3,000 operations,
+and eight synchronous-throw uncertainty sites remain reported. Complete table
+coverage does not establish all case effects or the exact captured runtime
+store binding.
+
+The selected candidate success path now reaches State: it preserves candidates
+whose match count is at most 500, then stores the array and selects its first
+triple or the nil value. This is distinct from the shipped source's at-most-100
+match-count filter and ascending ordering; those source semantics come from an
+[inert source interpretation](arc-selector-v8-2026-11-15/selector-source-semantics.md),
+not a live DOM run. The registered candidate action invokes a captured consumer
+with the selected selector and then clears locked selection, candidate-array
+and selected-candidate State. The exact consumer is still a boundary; an
+end-to-end `appendZap` or durable write claim would exceed these observations.
+[V02][V02]–[V05][V05]
+
+The actual reducer's `update`, `appendZap` and Boost IDE mutation branches converge
+on a shared state/effect helper. Concrete follow-ups now identify an async worker
+and a conditional dependency callback, but no complete durable write/readback
+path has been established. [V06][V06]
+
+Broader browser tracing has started with behavior rather than inventory alone:
+`nextSpace:` and `handleReload:` forward selected actions through static
+`viewStore` field bindings; `switchToTab:` and sidebar toggle reach exact native
+workers requiring additional partial-Program admission. Exact
+`RestoreSidebarDataFlow` metadata selects three class-vtable implementations and
+one `RestoreDataFlow` static witness. Seven remaining class implementation
+relative words are zero; they are not asserted as concrete async methods.
+Runtime witness population, final tab/space/sidebar/navigation effects and
+durable restoration remain partial. [V07][V07]–[V10][V10]
+
+The [new anchor index](arc-analysis-dossier-2026-11-08/v9-feature-index-2026-11-16.json)
+keeps V01–V10 separate from historical E01–E88 and earlier selector S01–S30.
+The phase 5 receipt does not claim final session cleanup; later settlement is a
+separate observation. Earlier response-budget failures and captures are retained
+unchanged. This is progress toward the broader analysis, not a full-Arc
+completion claim.
+
 ## Evidence index
 
 References **E01–E88** resolve to the exact retained files below. The
@@ -541,3 +800,49 @@ completion.
 [E86]: arc-dispatch-load-2026-11-09/re-extraction-2026-11-13/extract.evidence.json
 [E87]: arc-selector-rendering-2026-11-09/query-return-2026-11-13/selector-success.evidence.json
 [E88]: arc-selector-rendering-2026-11-09/query-return-2026-11-13/selector-error.evidence.json
+
+
+<!-- S01–S10 belong to the Nov15 selector addendum, not the historical E01–E88 index. -->
+[S01]: arc-feature-followup-2026-11-14/event-and-view-evidence/selector-new-starter-caller-instructions.evidence.json
+[S02]: arc-feature-followup-2026-11-14/persistent-selector-evidence/selector-content-SelectorPicker-instructions.evidence.json
+[S03]: arc-feature-followup-2026-11-14/persistent-selector-evidence/selector-tracking-0x1012f14dc-pseudocode.evidence.json
+[S04]: arc-feature-followup-2026-11-14/persistent-selector-evidence/selector-visual-child-instructions.evidence.json
+[S05]: arc-feature-followup-2026-11-14/persistent-selector-evidence/selector-tracking-0x1012f14e8-pseudocode.evidence.json
+[S06]: arc-feature-followup-2026-11-14/selector-reopen-evidence/reopened-selector-0x100b080a8-pseudocode.evidence.json
+[S07]: arc-selector-v8-2026-11-15/evidence/selector-render-query-0x1012e6bc8-instructions.evidence.json
+[S08]: arc-selector-v8-2026-11-15/evidence/tap-point-query-prefix.evidence.json
+[S09]: arc-selector-v8-2026-11-15/evidence/exact-mouse-move-modifier-conformances.evidence.json
+[S10]: arc-selector-v8-2026-11-15/evidence/spotlight-render-closure-pseudocode.evidence.json
+
+[S11]: arc-dispatch-2026-11-06/objc-metadata.evidence.json
+[S12]: arc-selector-v8-2026-11-15/mouse-and-spotlight-reopen/evidence/event-result-0x100b0be48-pseudocode.evidence.json
+[S13]: arc-selector-v8-2026-11-15/mouse-and-spotlight-reopen/evidence/event-result-0x100b0be98-pseudocode.evidence.json
+[S14]: arc-selector-v8-2026-11-15/mouse-and-spotlight-reopen/evidence/tracking-setup-0x100b0bd20-instructions.evidence.json
+[S15]: arc-selector-v8-2026-11-15/mouse-and-spotlight-reopen/evidence/exact-candidate-representable-conformance.evidence.json
+[S16]: arc-selector-v8-2026-11-15/mouse-and-spotlight-reopen/evidence/modifier-drawing-0x1012f3734-instructions.evidence.json
+[S17]: arc-selector-v8-2026-11-15/mouse-and-spotlight-reopen/evidence/modifier-drawing-0x1012f3b80-pseudocode.evidence.json
+[S18]: arc-selector-v8-2026-11-15/mouse-and-spotlight-reopen/evidence/tracking-setup-0x1012e6f8c-pseudocode.evidence.json
+[S19]: arc-selector-v8-2026-11-15/mouse-and-spotlight-reopen/evidence/event-result-0x1012f3f54-pseudocode.evidence.json
+[S20]: arc-selector-v8-2026-11-15/mouse-and-spotlight-reopen/evidence/modifier-drawing-0x100b0c498-instructions.evidence.json
+
+[S21]: arc-selector-v8-2026-11-15/tracking-and-state-reopen/evidence/exact-native-representable-conformance.evidence.json
+[S22]: arc-selector-v8-2026-11-15/tracking-and-state-reopen/evidence/tracking-area-0x100b0c740-instructions.evidence.json
+[S23]: arc-selector-v8-2026-11-15/tracking-and-state-reopen/evidence/tracking-area-0x100b0c8f0-pseudocode.evidence.json
+[S24]: arc-selector-v8-2026-11-15/tracking-and-state-reopen/evidence/tracking-view-class-accessor-loaded-bytes.evidence.json
+[S25]: arc-selector-v8-2026-11-15/tracking-and-state-reopen/evidence/tracking-flipped-view-getter.evidence.json
+[S26]: arc-selector-v8-2026-11-15/tracking-and-state-reopen/evidence/tracking-area-0x1012e7150-instructions.evidence.json
+[S27]: arc-selector-v8-2026-11-15/tracking-and-state-reopen/evidence/tracking-area-0x1012f43a4-pseudocode.evidence.json
+[S28]: arc-selector-v8-2026-11-15/tracking-and-state-reopen/evidence/native-install-0x100b0ca50-pseudocode.evidence.json
+[S29]: arc-selector-v8-2026-11-15/tracking-and-state-reopen/evidence/native-install-0x1012f4024-pseudocode.evidence.json
+[S30]: arc-selector-v8-2026-11-15/tracking-and-state-reopen/evidence/representable-state-0x1012e72c0-pseudocode.evidence.json
+
+[V01]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/arc-reducer-v9.retained.evidence.json
+[V02]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/candidate-selection-0x1012e6dcc-pseudocode.evidence.json
+[V03]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/tap-completion-0x1012ef734-pseudocode.evidence.json
+[V04]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/commit-effect-0x1012f1658-pseudocode.evidence.json
+[V05]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/commit-effect-0x1012efae4-instructions.evidence.json
+[V06]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/boost-mutation-shared-helper-pseudocode.evidence.json
+[V07]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/broader-action-0x100150114-pseudocode.evidence.json
+[V08]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/broader-action-0x10043efc0-pseudocode.evidence.json
+[V09]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/exact-sidebar-restoration-class.evidence.json
+[V10]: arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/exact-sidebar-restoration-conformances.evidence.json

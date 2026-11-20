@@ -1,0 +1,867 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"evidence_id\":\"ev_062a4701a3a5d47f2155cd7637797477e390c3f59f5d4cbaa09bae5b4c33bdca\",\"subject\":{\"name\":\"Arc-arm64\",\"digest\":{\"sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"},\"format\":\"mach-o\",\"architecture\":\"arm64\",\"local_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\"},\"provider\":{\"id\":\"rea-workflow\",\"name\":\"REA+ composed investigation workflow\",\"version\":\"1\"},\"analysis_profile\":{\"provider\":{\"id\":\"rea-workflow\",\"name\":\"REA+ composed investigation workflow\",\"version\":\"1\"},\"parameters\":{\"upstream_analysis_profile\":{\"provider\":{\"id\":\"ghidra\",\"name\":\"Ghidra\",\"version\":\"12.1.4\"},\"parameters\":{\"target_kind\":\"executable\",\"target_format\":\"mach-o\",\"architecture\":\"arm64\",\"available_architectures\":[\"arm64\"],\"import_mode\":\"ephemeral-source-immutable\",\"annotation_policy\":\"atomic-function-entry-metadata-v1\",\"load_image_observations\":\"source-mappings-entry-context-v2\",\"function_body_evidence\":\"complete-inclusive-ranges-v1\",\"function_references\":\"complete-body-and-entry-reference-manager-v2\",\"string_inventory_evidence\":\"defined-data-coverage-v1\",\"location_resolution\":\"explicit-address-exact-entry-symbol-first-v3\",\"instruction_flow_evidence\":\"decoded-return-pcode-v1\",\"instruction_references\":\"exact-address-incoming-v1\",\"function_boundary_observations\":\"ghidra-terminal-call-limitations-v1\",\"no_return_repair\":\"returning-imports-decoded-return-v2\",\"process_launch\":\"inspected-jvm-launch-support-v1\",\"jump_table_evidence\":\"typed-case-default-blocks-v1\",\"swift_enum_switch_recovery\":\"abi-signed-word-cfg-v9\",\"swift_dynamic_typed_snapshot\":\"swift-dynamic-typed-snapshot-v1\",\"darwin_stack_probe_call_summary\":\"trusted-darwin-arm64-chkstk-v1\",\"swift_error_register_model\":\"proved-native-synchronous-callee-x21-v3\",\"decompiler_jump_loads\":true,\"loader\":\"auto-from-header\",\"language_id\":\"auto-from-header\",\"compiler_spec_id\":\"auto-default\",\"analyzer_preset\":\"ghidra-default\",\"analysis_policy\":\"bounded-autoanalysis-v1\",\"analysis_timeout_seconds\":1,\"analysis_seeds\":{\"format\":\"rea-ghidra-seeds-v1\",\"path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-broader-feature-plan-2026-11-15/broader-action-seeds-2038.tsv\",\"configured_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-broader-feature-plan-2026-11-15/broader-action-seeds-2038.tsv\",\"sha256\":\"e79864e44b4309050e623ae1c63a1bc2ccab8126a7f96371363e1afd94b7e457\",\"entries\":{\"function\":2038,\"code\":0,\"label\":0}}},\"digest\":\"f29bf0a1f3aaed722743b5b4fc0a83c0ca280d220689a9149410f74e045b16e3\"},\"workflow_evidence_revision\":1},\"digest\":\"b3e240ea1cdf9636f48f126fc6dd72832b9f0751117949525313681e27f00b04\"},\"predicate_type\":\"rea.analysis\",\"operation\":\"inspect_native_dispatch_metadata\",\"parameters\":{\"swift_class_address\":\"0x103d3916c\",\"max_file_bytes\":100663296,\"max_records\":1000,\"facet\":\"swift-vtables\"},\"raw_result\":null,\"normalized_result\":{\"target_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\",\"provider\":{\"id\":\"native-macos\",\"name\":\"macOS native inspection utilities\",\"version\":\"apple-metadata-reader-1\"},\"analysis_profile_digest\":null,\"result\":{\"swift_vtable_selection\":{\"address\":\"0x103d3916c\",\"index_entries\":11125,\"examined\":11125,\"matching_index_entries\":1,\"matched\":true,\"unresolved\":0},\"objc_classes\":[],\"objc_protocols\":[],\"objc_categories\":[],\"swift_decls\":[],\"objc_ivars\":[],\"objc_protocol_records\":[],\"objc_dispatch_implementations\":[],\"swift_conformances\":[],\"swift_dispatch_slots\":[{\"owner\":\"RestoreSidebarDataFlow\",\"table_kind\":\"class_vtable\",\"slot_index\":13,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x103d391a0\",\"file_offset\":64197024},\"decode\":{\"status\":\"partial\",\"reason\":\"Async, coroutine, external or unmapped vtable implementation is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal\",\"location\":{\"address\":\"0x103d391a0\",\"file_offset\":64197024},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"RestoreSidebarDataFlow\",\"table_kind\":\"class_vtable\",\"slot_index\":14,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x103d391a8\",\"file_offset\":64197032},\"decode\":{\"status\":\"partial\",\"reason\":\"Async, coroutine, external or unmapped vtable implementation is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal\",\"location\":{\"address\":\"0x103d391a8\",\"file_offset\":64197032},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"RestoreSidebarDataFlow\",\"table_kind\":\"class_vtable\",\"slot_index\":15,\"requirement\":null,\"implementation\":null,\"implementation_address\":\"0x100305344\",\"thunk_address\":null,\"location\":{\"address\":\"0x103d391b0\",\"file_offset\":64197040},\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal\",\"location\":{\"address\":\"0x103d391b0\",\"file_offset\":64197040},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"RestoreSidebarDataFlow\",\"table_kind\":\"class_vtable\",\"slot_index\":16,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x103d391b8\",\"file_offset\":64197048},\"decode\":{\"status\":\"partial\",\"reason\":\"Async, coroutine, external or unmapped vtable implementation is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal\",\"location\":{\"address\":\"0x103d391b8\",\"file_offset\":64197048},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"RestoreSidebarDataFlow\",\"table_kind\":\"class_vtable\",\"slot_index\":17,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x103d391c0\",\"file_offset\":64197056},\"decode\":{\"status\":\"partial\",\"reason\":\"Async, coroutine, external or unmapped vtable implementation is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal\",\"location\":{\"address\":\"0x103d391c0\",\"file_offset\":64197056},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"RestoreSidebarDataFlow\",\"table_kind\":\"class_vtable\",\"slot_index\":18,\"requirement\":null,\"implementation\":null,\"implementation_address\":\"0x100305b70\",\"thunk_address\":null,\"location\":{\"address\":\"0x103d391c8\",\"file_offset\":64197064},\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal\",\"location\":{\"address\":\"0x103d391c8\",\"file_offset\":64197064},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"RestoreSidebarDataFlow\",\"table_kind\":\"class_vtable\",\"slot_index\":19,\"requirement\":null,\"implementation\":null,\"implementation_address\":\"0x100305ef0\",\"thunk_address\":null,\"location\":{\"address\":\"0x103d391d0\",\"file_offset\":64197072},\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal\",\"location\":{\"address\":\"0x103d391d0\",\"file_offset\":64197072},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"RestoreSidebarDataFlow\",\"table_kind\":\"class_vtable\",\"slot_index\":20,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x103d391d8\",\"file_offset\":64197080},\"decode\":{\"status\":\"partial\",\"reason\":\"Async, coroutine, external or unmapped vtable implementation is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal\",\"location\":{\"address\":\"0x103d391d8\",\"file_offset\":64197080},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"RestoreSidebarDataFlow\",\"table_kind\":\"class_vtable\",\"slot_index\":21,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x103d391e0\",\"file_offset\":64197088},\"decode\":{\"status\":\"partial\",\"reason\":\"Async, coroutine, external or unmapped vtable implementation is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal\",\"location\":{\"address\":\"0x103d391e0\",\"file_offset\":64197088},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"RestoreSidebarDataFlow\",\"table_kind\":\"class_vtable\",\"slot_index\":22,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x103d391e8\",\"file_offset\":64197096},\"decode\":{\"status\":\"partial\",\"reason\":\"Async, coroutine, external or unmapped vtable implementation is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal\",\"location\":{\"address\":\"0x103d391e8\",\"file_offset\":64197096},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]}],\"swift_symbols\":[],\"relative_pointers\":[{\"field\":{\"address\":\"0x103f77230\",\"file_offset\":66548272},\"target\":{\"address\":\"0x103d3916c\",\"file_offset\":64196972},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":-2351300,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103f77230\",\"file_offset\":66548272},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d39174\",\"file_offset\":64196980},\"target\":{\"address\":\"0x1036be6f0\",\"file_offset\":57403120},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":-6793860,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d39174\",\"file_offset\":64196980},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d391a4\",\"file_offset\":64197028},\"target\":{\"address\":null,\"file_offset\":null},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":0,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d391a4\",\"file_offset\":64197028},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d391ac\",\"file_offset\":64197036},\"target\":{\"address\":null,\"file_offset\":null},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":0,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d391ac\",\"file_offset\":64197036},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d391b4\",\"file_offset\":64197044},\"target\":{\"address\":\"0x100305344\",\"file_offset\":3167044},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":-61030000,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d391b4\",\"file_offset\":64197044},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d391bc\",\"file_offset\":64197052},\"target\":{\"address\":null,\"file_offset\":null},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":0,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d391bc\",\"file_offset\":64197052},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d391c4\",\"file_offset\":64197060},\"target\":{\"address\":null,\"file_offset\":null},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":0,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d391c4\",\"file_offset\":64197060},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d391cc\",\"file_offset\":64197068},\"target\":{\"address\":\"0x100305b70\",\"file_offset\":3169136},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":-61027932,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d391cc\",\"file_offset\":64197068},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d391d4\",\"file_offset\":64197076},\"target\":{\"address\":\"0x100305ef0\",\"file_offset\":3170032},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":-61027044,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d391d4\",\"file_offset\":64197076},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d391dc\",\"file_offset\":64197084},\"target\":{\"address\":null,\"file_offset\":null},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":0,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d391dc\",\"file_offset\":64197084},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d391e4\",\"file_offset\":64197092},\"target\":{\"address\":null,\"file_offset\":null},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":0,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d391e4\",\"file_offset\":64197092},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d391ec\",\"file_offset\":64197100},\"target\":{\"address\":null,\"file_offset\":null},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":0,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d391ec\",\"file_offset\":64197100},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]}],\"coverage\":[{\"facet\":\"objc_class_method_ivar_metadata\",\"status\":\"not_requested\",\"reason\":null,\"examined\":0,\"decoded\":0},{\"facet\":\"binary_relative_pointers\",\"status\":\"complete\",\"reason\":null,\"examined\":12,\"decoded\":12},{\"facet\":\"objc_properties_categories\",\"status\":\"not_requested\",\"reason\":null,\"examined\":0,\"decoded\":0},{\"facet\":\"pointer_fixups\",\"status\":\"complete\",\"reason\":\"chained fixups: DYLD_CHAINED_PTR_64_OFFSET\",\"examined\":2,\"decoded\":2},{\"facet\":\"swift_generic_resilient_witnesses_overrides_async_coroutines\",\"status\":\"unsupported\",\"reason\":\"Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded\",\"examined\":0,\"decoded\":0},{\"facet\":\"swift_conformances_static_witness_slots\",\"status\":\"not_requested\",\"reason\":null,\"examined\":0,\"decoded\":0},{\"facet\":\"swift_resilient_witness_records\",\"status\":\"not_requested\",\"reason\":null,\"examined\":0,\"decoded\":0},{\"facet\":\"swift_witness_template_records\",\"status\":\"not_requested\",\"reason\":null,\"examined\":0,\"decoded\":0},{\"facet\":\"swift_class_vtable_descriptors\",\"status\":\"partial\",\"reason\":\"Coverage is limited to the selected indexed Swift class descriptor; vtable_implementation_unresolved at 0x103d391a0: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391a8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391b8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391c0: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391d8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391e0: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391e8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementations_unresolved\",\"examined\":1,\"decoded\":3}],\"db_save_result\":null}},\"confidence\":\"derived\",\"authority\":\"shipped-artifact\",\"environment\":null,\"limitations\":[\"Derived by an REA+ composed workflow.\",\"Coverage is limited to the selected indexed Swift class descriptor; vtable_implementation_unresolved at 0x103d391a0: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391a8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391b8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391c0: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391d8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391e0: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391e8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementations_unresolved\",\"Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded\",\"chained fixups: DYLD_CHAINED_PTR_64_OFFSET\"],\"locations\":[],\"evidence_links\":[]}"
+    }
+  ],
+  "structuredContent": {
+    "evidence_id": "ev_062a4701a3a5d47f2155cd7637797477e390c3f59f5d4cbaa09bae5b4c33bdca",
+    "subject": {
+      "name": "Arc-arm64",
+      "digest": {
+        "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+      },
+      "format": "mach-o",
+      "architecture": "arm64",
+      "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+    },
+    "provider": {
+      "id": "rea-workflow",
+      "name": "REA+ composed investigation workflow",
+      "version": "1"
+    },
+    "analysis_profile": {
+      "provider": {
+        "id": "rea-workflow",
+        "name": "REA+ composed investigation workflow",
+        "version": "1"
+      },
+      "parameters": {
+        "upstream_analysis_profile": {
+          "provider": {
+            "id": "ghidra",
+            "name": "Ghidra",
+            "version": "12.1.4"
+          },
+          "parameters": {
+            "target_kind": "executable",
+            "target_format": "mach-o",
+            "architecture": "arm64",
+            "available_architectures": [
+              "arm64"
+            ],
+            "import_mode": "ephemeral-source-immutable",
+            "annotation_policy": "atomic-function-entry-metadata-v1",
+            "load_image_observations": "source-mappings-entry-context-v2",
+            "function_body_evidence": "complete-inclusive-ranges-v1",
+            "function_references": "complete-body-and-entry-reference-manager-v2",
+            "string_inventory_evidence": "defined-data-coverage-v1",
+            "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+            "instruction_flow_evidence": "decoded-return-pcode-v1",
+            "instruction_references": "exact-address-incoming-v1",
+            "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+            "no_return_repair": "returning-imports-decoded-return-v2",
+            "process_launch": "inspected-jvm-launch-support-v1",
+            "jump_table_evidence": "typed-case-default-blocks-v1",
+            "swift_enum_switch_recovery": "abi-signed-word-cfg-v9",
+            "swift_dynamic_typed_snapshot": "swift-dynamic-typed-snapshot-v1",
+            "darwin_stack_probe_call_summary": "trusted-darwin-arm64-chkstk-v1",
+            "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+            "decompiler_jump_loads": true,
+            "loader": "auto-from-header",
+            "language_id": "auto-from-header",
+            "compiler_spec_id": "auto-default",
+            "analyzer_preset": "ghidra-default",
+            "analysis_policy": "bounded-autoanalysis-v1",
+            "analysis_timeout_seconds": 1,
+            "analysis_seeds": {
+              "format": "rea-ghidra-seeds-v1",
+              "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-broader-feature-plan-2026-11-15/broader-action-seeds-2038.tsv",
+              "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-broader-feature-plan-2026-11-15/broader-action-seeds-2038.tsv",
+              "sha256": "e79864e44b4309050e623ae1c63a1bc2ccab8126a7f96371363e1afd94b7e457",
+              "entries": {
+                "function": 2038,
+                "code": 0,
+                "label": 0
+              }
+            }
+          },
+          "digest": "f29bf0a1f3aaed722743b5b4fc0a83c0ca280d220689a9149410f74e045b16e3"
+        },
+        "workflow_evidence_revision": 1
+      },
+      "digest": "b3e240ea1cdf9636f48f126fc6dd72832b9f0751117949525313681e27f00b04"
+    },
+    "predicate_type": "rea.analysis",
+    "operation": "inspect_native_dispatch_metadata",
+    "parameters": {
+      "swift_class_address": "0x103d3916c",
+      "max_file_bytes": 100663296,
+      "max_records": 1000,
+      "facet": "swift-vtables"
+    },
+    "raw_result": null,
+    "normalized_result": {
+      "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "provider": {
+        "id": "native-macos",
+        "name": "macOS native inspection utilities",
+        "version": "apple-metadata-reader-1"
+      },
+      "analysis_profile_digest": null,
+      "result": {
+        "swift_vtable_selection": {
+          "address": "0x103d3916c",
+          "index_entries": 11125,
+          "examined": 11125,
+          "matching_index_entries": 1,
+          "matched": true,
+          "unresolved": 0
+        },
+        "objc_classes": [],
+        "objc_protocols": [],
+        "objc_categories": [],
+        "swift_decls": [],
+        "objc_ivars": [],
+        "objc_protocol_records": [],
+        "objc_dispatch_implementations": [],
+        "swift_conformances": [],
+        "swift_dispatch_slots": [
+          {
+            "owner": "RestoreSidebarDataFlow",
+            "table_kind": "class_vtable",
+            "slot_index": 13,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x103d391a0",
+              "file_offset": 64197024
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Async, coroutine, external or unmapped vtable implementation is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+                "location": {
+                  "address": "0x103d391a0",
+                  "file_offset": 64197024
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "RestoreSidebarDataFlow",
+            "table_kind": "class_vtable",
+            "slot_index": 14,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x103d391a8",
+              "file_offset": 64197032
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Async, coroutine, external or unmapped vtable implementation is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+                "location": {
+                  "address": "0x103d391a8",
+                  "file_offset": 64197032
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "RestoreSidebarDataFlow",
+            "table_kind": "class_vtable",
+            "slot_index": 15,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": "0x100305344",
+            "thunk_address": null,
+            "location": {
+              "address": "0x103d391b0",
+              "file_offset": 64197040
+            },
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+                "location": {
+                  "address": "0x103d391b0",
+                  "file_offset": 64197040
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "RestoreSidebarDataFlow",
+            "table_kind": "class_vtable",
+            "slot_index": 16,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x103d391b8",
+              "file_offset": 64197048
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Async, coroutine, external or unmapped vtable implementation is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+                "location": {
+                  "address": "0x103d391b8",
+                  "file_offset": 64197048
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "RestoreSidebarDataFlow",
+            "table_kind": "class_vtable",
+            "slot_index": 17,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x103d391c0",
+              "file_offset": 64197056
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Async, coroutine, external or unmapped vtable implementation is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+                "location": {
+                  "address": "0x103d391c0",
+                  "file_offset": 64197056
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "RestoreSidebarDataFlow",
+            "table_kind": "class_vtable",
+            "slot_index": 18,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": "0x100305b70",
+            "thunk_address": null,
+            "location": {
+              "address": "0x103d391c8",
+              "file_offset": 64197064
+            },
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+                "location": {
+                  "address": "0x103d391c8",
+                  "file_offset": 64197064
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "RestoreSidebarDataFlow",
+            "table_kind": "class_vtable",
+            "slot_index": 19,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": "0x100305ef0",
+            "thunk_address": null,
+            "location": {
+              "address": "0x103d391d0",
+              "file_offset": 64197072
+            },
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+                "location": {
+                  "address": "0x103d391d0",
+                  "file_offset": 64197072
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "RestoreSidebarDataFlow",
+            "table_kind": "class_vtable",
+            "slot_index": 20,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x103d391d8",
+              "file_offset": 64197080
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Async, coroutine, external or unmapped vtable implementation is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+                "location": {
+                  "address": "0x103d391d8",
+                  "file_offset": 64197080
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "RestoreSidebarDataFlow",
+            "table_kind": "class_vtable",
+            "slot_index": 21,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x103d391e0",
+              "file_offset": 64197088
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Async, coroutine, external or unmapped vtable implementation is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+                "location": {
+                  "address": "0x103d391e0",
+                  "file_offset": 64197088
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "RestoreSidebarDataFlow",
+            "table_kind": "class_vtable",
+            "slot_index": 22,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x103d391e8",
+              "file_offset": 64197096
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Async, coroutine, external or unmapped vtable implementation is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift class vtable method descriptor; slot index is a metadata word offset, not a source method ordinal",
+                "location": {
+                  "address": "0x103d391e8",
+                  "file_offset": 64197096
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          }
+        ],
+        "swift_symbols": [],
+        "relative_pointers": [
+          {
+            "field": {
+              "address": "0x103f77230",
+              "file_offset": 66548272
+            },
+            "target": {
+              "address": "0x103d3916c",
+              "file_offset": 64196972
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": -2351300,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103f77230",
+                  "file_offset": 66548272
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d39174",
+              "file_offset": 64196980
+            },
+            "target": {
+              "address": "0x1036be6f0",
+              "file_offset": 57403120
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": -6793860,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d39174",
+                  "file_offset": 64196980
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d391a4",
+              "file_offset": 64197028
+            },
+            "target": {
+              "address": null,
+              "file_offset": null
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": 0,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d391a4",
+                  "file_offset": 64197028
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d391ac",
+              "file_offset": 64197036
+            },
+            "target": {
+              "address": null,
+              "file_offset": null
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": 0,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d391ac",
+                  "file_offset": 64197036
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d391b4",
+              "file_offset": 64197044
+            },
+            "target": {
+              "address": "0x100305344",
+              "file_offset": 3167044
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": -61030000,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d391b4",
+                  "file_offset": 64197044
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d391bc",
+              "file_offset": 64197052
+            },
+            "target": {
+              "address": null,
+              "file_offset": null
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": 0,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d391bc",
+                  "file_offset": 64197052
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d391c4",
+              "file_offset": 64197060
+            },
+            "target": {
+              "address": null,
+              "file_offset": null
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": 0,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d391c4",
+                  "file_offset": 64197060
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d391cc",
+              "file_offset": 64197068
+            },
+            "target": {
+              "address": "0x100305b70",
+              "file_offset": 3169136
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": -61027932,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d391cc",
+                  "file_offset": 64197068
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d391d4",
+              "file_offset": 64197076
+            },
+            "target": {
+              "address": "0x100305ef0",
+              "file_offset": 3170032
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": -61027044,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d391d4",
+                  "file_offset": 64197076
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d391dc",
+              "file_offset": 64197084
+            },
+            "target": {
+              "address": null,
+              "file_offset": null
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": 0,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d391dc",
+                  "file_offset": 64197084
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d391e4",
+              "file_offset": 64197092
+            },
+            "target": {
+              "address": null,
+              "file_offset": null
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": 0,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d391e4",
+                  "file_offset": 64197092
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d391ec",
+              "file_offset": 64197100
+            },
+            "target": {
+              "address": null,
+              "file_offset": null
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": 0,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d391ec",
+                  "file_offset": 64197100
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          }
+        ],
+        "coverage": [
+          {
+            "facet": "objc_class_method_ivar_metadata",
+            "status": "not_requested",
+            "reason": null,
+            "examined": 0,
+            "decoded": 0
+          },
+          {
+            "facet": "binary_relative_pointers",
+            "status": "complete",
+            "reason": null,
+            "examined": 12,
+            "decoded": 12
+          },
+          {
+            "facet": "objc_properties_categories",
+            "status": "not_requested",
+            "reason": null,
+            "examined": 0,
+            "decoded": 0
+          },
+          {
+            "facet": "pointer_fixups",
+            "status": "complete",
+            "reason": "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+            "examined": 2,
+            "decoded": 2
+          },
+          {
+            "facet": "swift_generic_resilient_witnesses_overrides_async_coroutines",
+            "status": "unsupported",
+            "reason": "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
+            "examined": 0,
+            "decoded": 0
+          },
+          {
+            "facet": "swift_conformances_static_witness_slots",
+            "status": "not_requested",
+            "reason": null,
+            "examined": 0,
+            "decoded": 0
+          },
+          {
+            "facet": "swift_resilient_witness_records",
+            "status": "not_requested",
+            "reason": null,
+            "examined": 0,
+            "decoded": 0
+          },
+          {
+            "facet": "swift_witness_template_records",
+            "status": "not_requested",
+            "reason": null,
+            "examined": 0,
+            "decoded": 0
+          },
+          {
+            "facet": "swift_class_vtable_descriptors",
+            "status": "partial",
+            "reason": "Coverage is limited to the selected indexed Swift class descriptor; vtable_implementation_unresolved at 0x103d391a0: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391a8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391b8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391c0: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391d8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391e0: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391e8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementations_unresolved",
+            "examined": 1,
+            "decoded": 3
+          }
+        ],
+        "db_save_result": null
+      }
+    },
+    "confidence": "derived",
+    "authority": "shipped-artifact",
+    "environment": null,
+    "limitations": [
+      "Derived by an REA+ composed workflow.",
+      "Coverage is limited to the selected indexed Swift class descriptor; vtable_implementation_unresolved at 0x103d391a0: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391a8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391b8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391c0: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391d8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391e0: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementation_unresolved at 0x103d391e8: Async, coroutine, external or unmapped vtable implementation is unresolved; vtable_implementations_unresolved",
+      "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
+      "chained fixups: DYLD_CHAINED_PTR_64_OFFSET"
+    ],
+    "locations": [],
+    "evidence_links": []
+  }
+}

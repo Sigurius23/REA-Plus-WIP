@@ -1,0 +1,180 @@
+{
+  "ok": true,
+  "compiler": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0\n",
+  "commands": [
+    {
+      "command": "/usr/bin/swiftc",
+      "args": [
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/module-cache",
+        "-parse-as-library",
+        "-enable-library-evolution",
+        "-module-name",
+        "ReaResilientPayload",
+        "-emit-module",
+        "-emit-module-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/ReaResilientPayload.swiftmodule",
+        "-emit-library",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/libReaResilientPayload.dylib",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/tests/conformance/ghidra/swift-enum-payload.swift"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": "/usr/bin/swiftc",
+      "args": [
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/module-cache",
+        "-parse-as-library",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias",
+        "-L",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias",
+        "-lReaResilientPayload",
+        "-Onone",
+        "-module-name",
+        "ReaSwiftRelativeSwitch",
+        "-emit-library",
+        "-Xlinker",
+        "-undefined",
+        "-Xlinker",
+        "dynamic_lookup",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/libReaSwiftRelativeSwitch.dylib",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/switch.swift"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": "/usr/bin/swiftc",
+      "args": [
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/module-cache",
+        "-parse-as-library",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias",
+        "-Onone",
+        "-module-name",
+        "ReaSwiftRelativeSwitch",
+        "-emit-assembly",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/switch.s",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/switch.swift"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": "/usr/bin/xcrun",
+      "args": [
+        "--sdk",
+        "macosx",
+        "clang",
+        "-dynamiclib",
+        "-Wl,-fixup_chains",
+        "-arch",
+        "arm64",
+        "-Wl,-undefined,dynamic_lookup",
+        "-L",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/swift",
+        "-lReaResilientPayload",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/libReaSwiftRelativeSwitch.dylib",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/switch.s"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    }
+  ],
+  "results": [
+    {
+      "label": "snapshot-vector-alias",
+      "positive": false,
+      "cli_parity": false,
+      "target": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/libReaSwiftRelativeSwitch.dylib",
+        "bytes": 70080,
+        "sha256": "66211332009f0935f63fc9ac313867ced1645e00a52521f0d14bba2b7fa0497e"
+      },
+      "evidence_id": "ev_0fe770aab1964f3a9d8e6daf066fa60fa31a908f04679f51d15daa012c1a76f7",
+      "body_bytes": 228
+    }
+  ],
+  "skipped": [],
+  "records": [
+    {
+      "label": "snapshot-vector-alias",
+      "name": "open_binary",
+      "args": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/libReaSwiftRelativeSwitch.dylib",
+        "provider_id": "ghidra"
+      },
+      "duration_ms": 2695,
+      "reply": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/0-open_binary.json",
+        "bytes": 927,
+        "sha256": "a35dc52f7efdd1b491d4074c37764a8093a95ea999fd8caedba16e3361966377"
+      },
+      "is_error": false
+    },
+    {
+      "label": "snapshot-vector-alias",
+      "name": "procedure_info",
+      "args": {
+        "procedure": "0x1494"
+      },
+      "duration_ms": 22303,
+      "reply": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/1-procedure_info.json",
+        "bytes": 15129,
+        "sha256": "deca952be8b9815fa44ab8eb8caa2a43b010f29b8ba08e117bc90a5e196be5c0"
+      },
+      "is_error": false
+    },
+    {
+      "label": "snapshot-vector-alias",
+      "name": "analyze_function",
+      "args": {
+        "procedure": "0x1494"
+      },
+      "duration_ms": 354,
+      "reply": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/2-analyze_function.json",
+        "bytes": 802501,
+        "sha256": "3e93e18c9a984d48d4a0ca67c428c65f42dea970f96e7dc8f3a108866aace7a4"
+      },
+      "is_error": false
+    },
+    {
+      "label": "snapshot-vector-alias",
+      "name": "close_binary",
+      "args": {},
+      "duration_ms": 426,
+      "reply": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/dynamic-snapshot-2026-11-15/native-negative-first/snapshot-vector-alias/3-close_binary.json",
+        "bytes": 140,
+        "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+      },
+      "is_error": false
+    }
+  ],
+  "target_executed": false,
+  "process_lineage": {
+    "status": "verified",
+    "observed_at": "2026-11-15T12:15:42.344Z",
+    "launcher_pid": 6451,
+    "launcher_parent_pid": 1380,
+    "process_group_id": 6451,
+    "descendants": []
+  },
+  "error": null
+}

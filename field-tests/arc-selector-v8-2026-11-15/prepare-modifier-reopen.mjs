@@ -1,0 +1,48 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { createRequire } from 'node:module';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+const directory = path.dirname(fileURLToPath(import.meta.url)), root = path.resolve(directory, '../..');
+const read = async name => JSON.parse(await fs.readFile(path.join(directory, name), 'utf8'));
+const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+const manifestBytes = await fs.readFile(path.join(directory, 'runtime-manifest.json')), manifest = JSON.parse(manifestBytes);
+for (let i = 0; i < manifest.files.length; i += 32) await Promise.all(manifest.files.slice(i, i + 32).map(async row => { const bytes = await fs.readFile(path.join(manifest.runtime_package, row.path)); assert.equal(bytes.length, row.bytes); assert.equal(hash(bytes), row.sha256); }));
+const { parseEvidence } = await import(pathToFileURL(path.join(manifest.runtime_package, 'dist/domain/evidence.js')));
+const { parseEvidenceBundle } = await import(pathToFileURL(path.join(manifest.runtime_package, 'dist/domain/evidenceBundle.js')));
+const req = createRequire(path.join(manifest.runtime_package, 'package.json'));
+const { Ajv2020 } = await import(pathToFileURL(req.resolve('ajv/dist/2020.js')));
+const expected = '6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578';
+const bundleBytes = await fs.readFile(path.join(directory, 'evidence/phase-1-bundle.json')), bundle = parseEvidenceBundle(JSON.parse(bundleBytes)); assert.equal(bundle.records.length, 13);
+const anchors = [], records = {};
+for (const name of (await fs.readdir(path.join(directory, 'evidence'))).filter(name => name.endsWith('.evidence.json'))) { const bytes = await fs.readFile(path.join(directory, 'evidence', name)), record = parseEvidence(JSON.parse(bytes)); assert.equal(record.subject.digest.sha256, expected); assert.ok(bundle.records.some(row => row.evidence_id === record.evidence_id)); records[name] = record; anchors.push({ path: `evidence/${name}`, evidence_id: record.evidence_id, sha256: hash(bytes), operation: record.operation }); }
+assert.equal(anchors.length, 13); assert.equal(new Set(anchors.map(row => row.evidence_id)).size, 13);
+const prefix = records['tap-point-query-prefix.evidence.json'].normalized_result; assert.equal(prefix.complete, true); assert.equal(Buffer.from(prefix.bytes_hex, 'hex').subarray(0, 26).toString('utf8'), 'getSelectorCandidates({x: ');
+const task = records['spotlight-string-task-descriptor.evidence.json'].normalized_result, descriptor = Buffer.from(task.bytes_hex, 'hex'); const taskTarget = BigInt(task.address) + BigInt(descriptor.readInt32LE(0)); assert.equal(taskTarget, 0x1012f44f8n); assert.equal(descriptor.readUInt32LE(4), 32);
+const render = records['spotlight-render-closure-instructions.evidence.json']; assert.ok(render.normalized_result.instructions.includes('0x1012f46d0: b 0x1012f3734'));
+const pseudo = records['spotlight-render-closure-pseudocode.evidence.json'].normalized_result;
+for (const fragment of ['FUN_1012f3b80', 'SwiftUI14RadialGradient', 'SwiftUI7ForEach', 'BlendModeO5color']) assert.ok(pseudo.includes(fragment));
+const modifier = records['mouse-modifier-body-loaded-bytes.evidence.json'].normalized_result; assert.equal(modifier.complete, true); const modifierBytes = Buffer.from(modifier.bytes_hex, 'hex'); assert.equal(modifierBytes.length, 192);
+const blWord = modifierBytes.readUInt32LE(0x30); assert.equal(blWord >>> 26, 0x25); const encodedImmediate = blWord & 0x03ffffff; const signedImmediate = encodedImmediate & 0x02000000 ? encodedImmediate - 0x04000000 : encodedImmediate; const directCallee = BigInt(modifier.address) + 0x30n + BigInt(signedImmediate * 4); assert.equal(directCallee, 0x100a8035cn);
+const invocations = await read('evidence/invocations.json'), rejection = invocations.find(row => row.arguments?.procedure === '0x100b0c498' && row.name === 'procedure_info'); assert.ok(rejection?.is_error);
+const errorReply = await read(`evidence/${rejection.reply}`); assert.ok(JSON.stringify(errorReply).includes('No procedure exists'));
+const index = parseEvidence(JSON.parse(await fs.readFile(path.join(root, 'field-tests/arc-dispatch-2026-11-06/native/function-start-index.evidence.json'), 'utf8'))); assert.equal(index.subject.digest.sha256, expected);
+const encoded = Buffer.from(index.normalized_result.bytes_hex, 'hex'); let current = 0x100000000n, value = 0n, shift = 0n; const starts = [];
+for (const byte of encoded) { value |= BigInt(byte & 127) << shift; if (byte & 128) { shift += 7n; continue; } if (!value) break; current += value; starts.push(current); value = shift = 0n; }
+const oldPath = render.analysis_profile.parameters.analysis_seeds.path, oldBytes = await fs.readFile(oldPath); assert.equal(hash(oldBytes), render.analysis_profile.parameters.analysis_seeds.sha256);
+const oldStarts = oldBytes.toString('utf8').trim().split('\n').map(row => BigInt(row.split('\t')[0])); assert.equal(oldStarts.length, 1951);
+const neighborhood = starts.filter(entry => entry >= 0x100b0b000n && entry < 0x100b0d000n); assert.equal(neighborhood.length, 83);
+const merged = [...new Set([...oldStarts, ...neighborhood, directCallee])].sort((a, b) => a < b ? -1 : a > b ? 1 : 0); assert.equal(merged.length, 2034);
+const seedBytes = Buffer.from(merged.map(entry => `0x${entry.toString(16)}\tfunction\n`).join(''));
+const entries = ['0x100b0c498', '0x100a8035c', '0x1012f3734', '0x1012f3b80', '0x1012f44f8'];
+const targets = entries.map(entry => { const index = starts.indexOf(BigInt(entry)); assert.notEqual(index, -1); assert.ok(merged.includes(BigInt(entry))); return { entry, exact_lc_start: true, next_indexed_start: `0x${starts[index + 1].toString(16)}`, indexed_interval_bytes: Number(starts[index + 1] - starts[index]), interval_is_not_complete_body_proof: true }; });
+const steps = targets.flatMap(row => [{ name: 'read_function_instructions', arguments: { procedure: row.entry }, label: `modifier-drawing-${row.entry}-instructions` }, { name: 'procedure_pseudo_code', arguments: { procedure: row.entry }, label: `modifier-drawing-${row.entry}-pseudocode` }]);
+const valueCatalog = await read('evidence/catalog.json'), catalog = Array.isArray(valueCatalog) ? valueCatalog : valueCatalog.tools; const ajv = new Ajv2020({ strict: false, validateFormats: false });
+for (const step of steps) { const tool = catalog.find(row => row.name === step.name); assert.ok(tool); const validate = ajv.compile(tool.inputSchema); assert.ok(validate(step.arguments), JSON.stringify(validate.errors)); }
+const save = async (name, value) => { const output = path.join(directory, name); try { await fs.access(output); throw new Error(`Refusing to overwrite ${name}`); } catch (error) { if (error.code !== 'ENOENT') throw error; } await fs.writeFile(output, typeof value === 'string' ? value : `${JSON.stringify(value, null, 2)}\n`); };
+await save('modifier-reopen-seeds.tsv', seedBytes.toString('utf8'));
+await save('modifier-reopen.steps.json', { authority: 'Prepared from authenticated immutable-v8 phase-1 observations; parent owns provider close and reopen', target_sha256: expected, required_seed_file: path.join(directory, 'modifier-reopen-seeds.tsv'), seed_sha256: hash(seedBytes), steps });
+await save('modifier-reopen-preparation.json', { status: 'passed', target_sha256: expected, frozen_runtime_files_matched: manifest.files.length, source_commit: manifest.source_commit, source_evidence: anchors, function_index_evidence_id: index.evidence_id, old_seed_file: oldPath, old_seed_sha256: hash(oldBytes), old_seed_count: 1951, new_seed_file: 'modifier-reopen-seeds.tsv', new_seed_sha256: hash(seedBytes), new_seed_count: 2034, additions: 83, neighborhood: { start: '0x100b0b000', end_exclusive: '0x100b0d000', exact_lc_entries: 83, previously_unseeded: 82, reason: 'Bounded8KiB neighborhood containing the already identified tracking helper and concrete MouseMoveModifier body; prepares immediate event/helper follow-ups without another import, but does not establish feature identity for neighboring entries.' }, extra_direct_callee: { source_address: '0x100b0c4c8', source_word_hex: blWord.toString(16), target: `0x${directCallee.toString(16)}`, authority: 'Analyst AArch64 signed BL immediate derivation from retained public loaded bytes; native instructions pending' }, targets, prepared_requests: steps.length, schema_checked: true, provider_calls_executed: 0, session_finalized: false, cleanup_claimed: false });
+await save('phase-1-audit.json', { status: 'passed', source_commit: manifest.source_commit, runtime_manifest_sha256: hash(manifestBytes), frozen_files_matched: manifest.files.length, phase_bundle_sha256: hash(bundleBytes), cumulative_unique_records: 13, new_canonical_records: 5, expected_admission_rejection: { procedure: '0x100b0c498', reply: rejection.reply, reason: 'No procedure exists in the partial Program; fixed loaded bytes remain available' }, records: anchors, session_finalized: false, cleanup_claimed: false });
+console.log(JSON.stringify({ status: 'passed', phase_records: 13, expanded_seed_count: 2034, requests: steps.length, string_task: `0x${taskTarget.toString(16)}` }));

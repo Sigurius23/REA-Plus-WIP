@@ -1,0 +1,99 @@
+{
+  "evidence_id": "ev_fc97be90e17739380e8e83ed0e4b19b47ea2f345eba7797034fe174a74596b45",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "mach-o",
+      "architecture": "arm64",
+      "available_architectures": [
+        "arm64"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "swift_enum_switch_recovery": "abi-signed-word-cfg-v7",
+      "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default",
+      "analysis_policy": "bounded-autoanalysis-v1",
+      "analysis_timeout_seconds": 1,
+      "analysis_seeds": {
+        "format": "rea-ghidra-seeds-v1",
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-14/merged-seeds.tsv",
+        "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-14/merged-seeds.tsv",
+        "sha256": "1ed196cfaf3a788ffa6feea42f741b125c5bd409783f630af422bc0b8491c152",
+        "entries": {
+          "function": 1949,
+          "code": 0,
+          "label": 0
+        }
+      }
+    },
+    "digest": "409d0a885cefe3a5ceb4106cb617b7a9a86aff9fac34d29f1bc43d137a028298"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "procedure_pseudo_code",
+  "parameters": {
+    "procedure": "0x1012f0028"
+  },
+  "raw_result": {
+    "value": "\nvoid FUN_1012f0028(double *param_1,long param_2)\n\n{\n  undefined8 uVar1;\n  char cVar2;\n  undefined1 uVar3;\n  char cVar4;\n  undefined8 uVar5;\n  undefined8 uVar6;\n  long lVar7;\n  undefined *puVar8;\n  undefined *puVar9;\n  long lVar10;\n  double dVar11;\n  double dVar12;\n  double dVar13;\n  double dVar14;\n  double dVar15;\n  undefined1 auVar16 [16];\n  double dVar17;\n  undefined8 uStack_80;\n  undefined8 uStack_78;\n  undefined8 uStack_70;\n  undefined8 uStack_68;\n  undefined1 uStack_60;\n  \n  dVar12 = param_1[1];\n  dVar15 = *param_1;\n  dVar11 = *param_1;\n  dVar14 = param_1[1];\n  cVar2 = *(char *)(param_1 + 2);\n  lVar7 = *(long *)(param_2 + 0x40);\n  uVar1 = *(undefined8 *)(param_2 + 0x48);\n  uVar3 = *(undefined1 *)(param_2 + 0x50);\n  uVar5 = 0;\n  FUN_1012e5260(0);\n  uVar6 = 0x1046292b0;\n  func_0x00010000571c(0x1046292b0,FUN_1012e5260,&UNK_10378b278);\n  __s7SwiftUI11StateObjectV12wrappedValuexvg(lVar7,uVar1,uVar3,uVar5,uVar6);\n  dVar13 = *(double *)(lVar7 + 0x28);\n  dVar17 = *(double *)(lVar7 + 0x20);\n  cVar4 = *(char *)(lVar7 + 0x30);\n  *(double *)(lVar7 + 0x20) = dVar11;\n  *(double *)(lVar7 + 0x28) = dVar14;\n  *(char *)(lVar7 + 0x30) = cVar2;\n  if (cVar2 == '\\x01') {\n    puVar8 = &UNK_10378c010;\n    _swift_getKeyPath(&UNK_10378c010);\n    puVar9 = &UNK_10378c038;\n    _swift_getKeyPath(&UNK_10378c038);\n    uStack_78 = 0;\n    uStack_80 = 0;\n    uStack_68 = 0;\n    uStack_70 = 0;\n    uStack_60 = 1;\n    __s7Combine9PublishedV18_enclosingInstance7wrapped7storagexqd___s24ReferenceWritableKeyPathCyqd__xGAHyqd__ACyxGGtcRld__CluisZ\n              (&uStack_80,lVar7,puVar8,puVar9);\n    return;\n  }\n  if (cVar4 != '\\x01') {\n    auVar16 = NEON_fmov(0x3fe0000000000000,8);\n    dVar11 = (double)(long)(dVar17 * auVar16._0_8_);\n    dVar14 = (double)(long)(dVar13 * auVar16._8_8_);\n    dVar15 = (double)(long)(dVar15 * auVar16._0_8_);\n    dVar17 = (double)(long)(dVar12 * auVar16._8_8_);\n    lVar10 = lVar7;\n    _CGPointEqualToPoint(dVar11 + dVar11,dVar14 + dVar14,dVar15 + dVar15,dVar17 + dVar17);\n    if ((int)lVar10 != 0) goto LAB_1012f0150;\n  }\n  FUN_1012e4d6c();\nLAB_1012f0150:\n                    /* WARNING: Could not recover jumptable at 0x0001036404e8. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*(code *)PTR__swift_release_10423fb10)(lVar7);\n  return;\n}\n\n",
+    "limitations": [
+      "Swift control-flow uncertainty at 0x1012f0098: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x1012f00f4: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths."
+    ]
+  },
+  "normalized_result": "\nvoid FUN_1012f0028(double *param_1,long param_2)\n\n{\n  undefined8 uVar1;\n  char cVar2;\n  undefined1 uVar3;\n  char cVar4;\n  undefined8 uVar5;\n  undefined8 uVar6;\n  long lVar7;\n  undefined *puVar8;\n  undefined *puVar9;\n  long lVar10;\n  double dVar11;\n  double dVar12;\n  double dVar13;\n  double dVar14;\n  double dVar15;\n  undefined1 auVar16 [16];\n  double dVar17;\n  undefined8 uStack_80;\n  undefined8 uStack_78;\n  undefined8 uStack_70;\n  undefined8 uStack_68;\n  undefined1 uStack_60;\n  \n  dVar12 = param_1[1];\n  dVar15 = *param_1;\n  dVar11 = *param_1;\n  dVar14 = param_1[1];\n  cVar2 = *(char *)(param_1 + 2);\n  lVar7 = *(long *)(param_2 + 0x40);\n  uVar1 = *(undefined8 *)(param_2 + 0x48);\n  uVar3 = *(undefined1 *)(param_2 + 0x50);\n  uVar5 = 0;\n  FUN_1012e5260(0);\n  uVar6 = 0x1046292b0;\n  func_0x00010000571c(0x1046292b0,FUN_1012e5260,&UNK_10378b278);\n  __s7SwiftUI11StateObjectV12wrappedValuexvg(lVar7,uVar1,uVar3,uVar5,uVar6);\n  dVar13 = *(double *)(lVar7 + 0x28);\n  dVar17 = *(double *)(lVar7 + 0x20);\n  cVar4 = *(char *)(lVar7 + 0x30);\n  *(double *)(lVar7 + 0x20) = dVar11;\n  *(double *)(lVar7 + 0x28) = dVar14;\n  *(char *)(lVar7 + 0x30) = cVar2;\n  if (cVar2 == '\\x01') {\n    puVar8 = &UNK_10378c010;\n    _swift_getKeyPath(&UNK_10378c010);\n    puVar9 = &UNK_10378c038;\n    _swift_getKeyPath(&UNK_10378c038);\n    uStack_78 = 0;\n    uStack_80 = 0;\n    uStack_68 = 0;\n    uStack_70 = 0;\n    uStack_60 = 1;\n    __s7Combine9PublishedV18_enclosingInstance7wrapped7storagexqd___s24ReferenceWritableKeyPathCyqd__xGAHyqd__ACyxGGtcRld__CluisZ\n              (&uStack_80,lVar7,puVar8,puVar9);\n    return;\n  }\n  if (cVar4 != '\\x01') {\n    auVar16 = NEON_fmov(0x3fe0000000000000,8);\n    dVar11 = (double)(long)(dVar17 * auVar16._0_8_);\n    dVar14 = (double)(long)(dVar13 * auVar16._8_8_);\n    dVar15 = (double)(long)(dVar15 * auVar16._0_8_);\n    dVar17 = (double)(long)(dVar12 * auVar16._8_8_);\n    lVar10 = lVar7;\n    _CGPointEqualToPoint(dVar11 + dVar11,dVar14 + dVar14,dVar15 + dVar15,dVar17 + dVar17);\n    if ((int)lVar10 != 0) goto LAB_1012f0150;\n  }\n  FUN_1012e4d6c();\nLAB_1012f0150:\n                    /* WARNING: Could not recover jumptable at 0x0001036404e8. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (*(code *)PTR__swift_release_10423fb10)(lVar7);\n  return;\n}\n\n",
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+    "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+    "Swift control-flow uncertainty at 0x1012f0098: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+    "Swift control-flow uncertainty at 0x1012f00f4: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+    "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.",
+    "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-feature-followup-2026-11-14/merged-seeds.tsv (sha256 1ed196cfaf3a788ffa6feea42f741b125c5bd409783f630af422bc0b8491c152: 1949 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+    "Seed outcome: 1853 functions created, 96 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+  ],
+  "locations": [],
+  "evidence_links": []
+}
