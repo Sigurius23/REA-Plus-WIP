@@ -26,6 +26,43 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest default-directory checkpoint (2026-11-21)
+
+Read `field-tests/arc-base-url-2026-11-21.md`, plus its capture verification
+and fact index. Item 65's code/evidence is pushed as `c59033f73ad0`; this
+follow-up changes research/docs only and reuses its qualified frozen runtime.
+All sessions below are closed; no provider or owned DMG mount remains live.
+
+The selected shipped ordinary default constructs **user-domain Application
+Support / Arc / StorableBoostsData.json**. `URLForDirectory` uses directory 14,
+domain 1, create true; exact installed SDK constants and public selector
+bytes bind the API. NSBundle `CFBundleName` supplies `Arc`, verified by public
+`inspect_plist` on exact original-DMG plist bytes. Its 5,697-byte hash matches
+the old extraction manifest. Supplemental byte retrieval uses the existing
+owned read-only reader, closes it and verifies empty helper lineage.
+
+Precedence: when a classifier byte equals 1, a nonempty first matching
+`--user-data-dir=...` suffix can override; otherwise the selected Client
+`stringForSetting` tag 0x10 can provide `customApplicationDataBaseURLPath`.
+Then the user-domain Application Support/bundle-name fallback applies. The
+stored preference route is tied to the actual default adapter/reader and
+`stringForKey:` selector, not its field name alone. `--log-file` sets a
+separate optional log URL/flag. The classifier's semantic name is still
+unknown; do not label it development/release merely from the current plist.
+
+Three new sessions: 163 calls, 159 successful/four initial admission errors.
+The later profile adds exactly 18 original function-start/code-reference
+entries (2,481 total); both later sessions succeed throughout. All export,
+close twice and verify empty lineage. Production code is unchanged; no new
+native matrix/package run was needed for this analysis-only follow-up.
+
+Next independently useful questions: trace the post-write `featuresUsed`
+update; inspect local version/migration/backup/error/durability policy; prove
+the remaining typed-context carrier for item 63; then continue the broader
+browser feature routes. Actual injected runtime dependencies, current
+arguments/preferences, filesystem readback and full Arc remain unproved.
+The earlier default-directory gap below is superseded by this section.
+
 ## Latest detached-instruction checkpoint (2026-11-21)
 
 Read `field-tests/arc-unlisted-instructions-2026-11-21.md` and

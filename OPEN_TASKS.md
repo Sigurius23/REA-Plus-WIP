@@ -1670,9 +1670,13 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     typed StorableBoostsData factory. Item 65 now decodes the selected interior
     branch without admitting it as a function: filename `StorableBoostsData.json`,
     then path builder `0x100d98fd0`. The selected generic dependency resolves to
-    `ApplicationPaths`, whose reflection includes `baseURL`; its constructed or
-    injected base directory remains open. Do not infer a complete path, enum
-    input type or the separate Setting table's 297-case bound from the tag.
+    `ApplicationPaths`, whose reflection includes `baseURL`. The next static
+    pass now resolves the selected ordinary default to user-domain Application
+    Support / Arc / StorableBoostsData.json, with conditional CLI and stored
+    preference overrides. Active injection/current values remain unknown.
+    Do not infer an enum input type or the separate Setting table's 297-case
+    bound from that location tag. See the
+    [default-path report](field-tests/arc-base-url-2026-11-21.md).
     Automatic context-scoped dispatch remains open alongside item 63. The [new report](field-tests/arc-callbacks-2026-11-21.md)
     closes editor save effects, getter decoding and conditional two-write
     control flow while retaining the remaining store/path and runtime gaps.
@@ -1726,6 +1730,8 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     The new path findings and typed-input counterexamples are recorded in
     [the report](field-tests/arc-unlisted-instructions-2026-11-21.md) and
     [verification](field-tests/arc-typed-dispatch-2026-11-21/retest-verification.json).
-    Item 63, runtime dependency selection, full store location/durability and
-    broader Arc coverage remain open. This is an offline investigation; no Arc
+    The subsequent [default-directory trace](field-tests/arc-base-url-2026-11-21.md)
+    resolves ordinary default construction and its override branches. Item 63,
+    runtime dependency selection, store durability and broader Arc coverage
+    remain open. This is an offline investigation; no Arc
     executable, fixture library, profile, account or service was used at runtime.

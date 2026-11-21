@@ -1,0 +1,152 @@
+{
+  "status": "passed",
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "default_formula": "user-domain Application Support / Arc / StorableBoostsData.json",
+  "preference_override_key": "customApplicationDataBaseURLPath",
+  "conditional_cli_argument": "--user-data-dir=...",
+  "cli_gate": "byte returned via 0x1005a4e64 equals 1; semantic classification not established here",
+  "bundle_name": "Arc",
+  "original_plist_sha256": "2b2acc2969fd9cfe09ca8e3219b4ec2614cd2181756a5d29e1006e435da32358",
+  "sdk_header": {
+    "path": "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSPathUtilities.h",
+    "sha256": "2aee919fc4fad808318316edae73cafb856cb6bde8d0eaff248ef75ce28b4072",
+    "selected_constants": [
+      {
+        "name": "NSApplicationSupportDirectory",
+        "value": 14,
+        "line": 75,
+        "source_line": "    NSApplicationSupportDirectory = 14,     // location of application support files (plug-ins, etc) (Library/Application Support)"
+      },
+      {
+        "name": "NSUserDomainMask",
+        "value": 1,
+        "line": 93,
+        "source_line": "    NSUserDomainMask = 1,       // user's home directory --- place to install user's personal items (~)"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "claim": "default directory API",
+      "kind": "observed",
+      "sources": [
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-seeded/0x100d99b20-read_function_instructions.evidence.json",
+          "sha256": "731653cabc563ef4ca11a67f65548d8074724619fa5eef91e5f4c5743ff314d8",
+          "evidence_id": "ev_16d610006ee2bf22ffa60b3a606dee8dbdec76945ac54db993e77d78d9338df4"
+        },
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-seeded/application-support-selector.evidence.json",
+          "sha256": "1fc4fffb7e1958ae777049636e038897b32e298aab299b4e9c5e8f9c7807cf70",
+          "evidence_id": "ev_082c393253962a0e13cf651cc4de306a2868c0c79a3571a903a0d7b522b41863"
+        }
+      ]
+    },
+    {
+      "claim": "bundle-derived suffix",
+      "kind": "observed",
+      "sources": [
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-seeded/0x1005adab8-read_function_instructions.evidence.json",
+          "sha256": "91cd4d0bfea239150666184ffc2970d0983cdf17cf6d6b99fdcd8b361faeda76",
+          "evidence_id": "ev_faae6b9d793af31feeaa864f4a30b7730101e6fc62fa590aabc9e03340d2a6d4"
+        },
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-seeded/bundle-info-selector.evidence.json",
+          "sha256": "9ea73c191f6c51a8938fad459fe025725c282cfc5f9cbb8ed8c69975e4f033f9",
+          "evidence_id": "ev_70db6ad357bf9ba82addf748946a17d3d7bb35b25dde62ffbcae2bfaf782b082"
+        },
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-seeded/bundle-url-selector.evidence.json",
+          "sha256": "7712c33d77ac1025372b71d3f03af5ea49c4ae2aa5458422cee5c2bbd21c7280",
+          "evidence_id": "ev_94f3fceebc61ab0600e3ec192753dcd0a1a340f573faf535abd0f10e67626662"
+        },
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-seeded/main-bundle-selector.evidence.json",
+          "sha256": "a8d1d7ec28152e2d25b9281f39096209268a0905d07fd7d2110e0b9c2b3915a2",
+          "evidence_id": "ev_a72b8441f254ecc236cf793425e22bf0408beac6f89158da4b8ea812c48f4919"
+        },
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-seeded/original-bundle-plist.evidence.json",
+          "sha256": "17a66312e85bcf420637f707a39fdf2dcbbde830a408e3a2a4edd1bce6214016",
+          "evidence_id": "ev_17e4081db3a2ae0a8ead58ee3448c55f73aef440b0f1eb7169c8d6f6d40cd313"
+        }
+      ]
+    },
+    {
+      "claim": "preference override",
+      "kind": "selected-path derivation",
+      "sources": [
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-seeded/default-builder-read_function_instructions.evidence.json",
+          "sha256": "8524ed9998b382dbe9d6e9c782952657b93f749007bd8e564bb47c1a65a010c3",
+          "evidence_id": "ev_aabed1c01495edf6db9e534d1d13062c87d4b0f5299f569d021210f6e17f933b"
+        },
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-seeded/base-setting-tag10-word.evidence.json",
+          "sha256": "65b60895ca675ac341638318262e34adb5272e7961ed14b4b4107aff14db9f6d",
+          "evidence_id": "ev_8dc5221ecee50a03e9324382f439e1f032dc6dadde79689bb564585be79865ce"
+        },
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-seeded/base-setting-key-literal.evidence.json",
+          "sha256": "d62a383f744a704a939400a303e2ddb3225c8914853e8a5f5f6d9daac872066f",
+          "evidence_id": "ev_7354bece5b78a19c2bd8b0757164328e1fcab7023828f39fa930adebd51967f4"
+        }
+      ]
+    },
+    {
+      "claim": "conditional CLI override",
+      "kind": "selected-path derivation",
+      "sources": [
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-seeded/default-builder-read_function_instructions.evidence.json",
+          "sha256": "8524ed9998b382dbe9d6e9c782952657b93f749007bd8e564bb47c1a65a010c3",
+          "evidence_id": "ev_aabed1c01495edf6db9e534d1d13062c87d4b0f5299f569d021210f6e17f933b"
+        },
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-seeded/0x1007ed0d4-read_function_instructions.evidence.json",
+          "sha256": "02169a90cabf1a534ca6e4f200cade32eff36b5e66a96a0d03cad7be48e2102a",
+          "evidence_id": "ev_3f2dba7b3c3c3e6970f12d1c411424243d16bb7f127f96f9212c650a7baff93e"
+        }
+      ]
+    },
+    {
+      "claim": "default string reader binding",
+      "kind": "selected-default-construction derivation; no active injection proof",
+      "sources": [
+        {
+          "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/function-0x100d92a28-read_function_instructions.evidence.json",
+          "sha256": "50fe84cd5d8190dc329bfe370b22b4b3b8ad7b794b9d07183e7e9bcd86ae5f73",
+          "evidence_id": "ev_d00a9b57f727c00efb29343cb39faf592c2f821822b7ec8002ca470c98df28b1"
+        },
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-string/string-setting-adapter.evidence.json",
+          "sha256": "737016bf894ce0f1ab2fbf997c2ecb3f456a3821949f66b41adcffff3d1462af",
+          "evidence_id": "ev_5959bfa674c48e17e8f22164538762aaa6f3ff574aba88863953987d7944b873"
+        },
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-string/0x100d911ec-read_function_instructions.evidence.json",
+          "sha256": "9a2761a5a3f821a8327a5622375037374bc1223fe02af714178a57d230159440",
+          "evidence_id": "ev_a1c9bcc3582623db22c16cf5f15fea7fe5c01e5e9f005132d06817824dedb5f5"
+        },
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-string/string-for-key-selector.evidence.json",
+          "sha256": "0800a8dbdbc3ad7b43de6db421ad0d1e97513727a966bfb9da79e3db3124255a",
+          "evidence_id": "ev_d85abf397ff7b4dbd1dd390e0e5668efb92e47aea2d7552e6adcf158d5d6dd98"
+        },
+        {
+          "path": "field-tests/arc-base-url-2026-11-21/mcp-string/0x1007ed6e4-read_function_instructions.evidence.json",
+          "sha256": "7ca8f949e853c19274ac57e56840689e23620abd5079b0aca80d46e9cef2c3af",
+          "evidence_id": "ev_ab2e433f2635f6aef1aa32c63ed063b2995542c951ccadcb41f30019873ac0c5"
+        }
+      ]
+    }
+  ],
+  "target_executed": false,
+  "limits": [
+    "The formula is conditional on the selected shipped default and successful API paths. Runtime injection, preferences, arguments, sandbox mapping and filesystem contents are not observed.",
+    "--log-file sets a separate optional log URL/flag; it does not replace the selected base-directory calculation.",
+    "Directory/error-path and storage-write traces do not prove durability, backup/migration policy or successful readback.",
+    "Item 63 automatic typed-context halfword recovery remains open."
+  ]
+}

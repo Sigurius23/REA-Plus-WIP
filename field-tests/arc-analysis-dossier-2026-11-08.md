@@ -1007,3 +1007,28 @@ for a global CFG override: enum, unchecked UInt16 and foreign-owner inputs
 share the same implementation. A context-scoped observation carrier and exact
 input/origin proof are still needed. The existing enum-recovery producer is
 unchanged. Full Arc feature coverage remains incomplete; no target was run.
+
+
+## Ordinary default directory and override precedence (2026-11-21)
+
+[The next static pass](arc-base-url-2026-11-21.md) resolves the former
+base-directory construction gap. The ordinary shipped default is user-domain
+Application Support / Arc / StorableBoostsData.json. Public selector/assembly
+facts bind directory 14, domain 1, create true; the original DMG's exact plist
+bytes, decoded with public `inspect_plist`, bind the bundle suffix to Arc.
+The native reader retrieves only that small carrier, closes its owned mount
+and verifies empty helper lineage.
+
+A classifier-gated `--user-data-dir=...` route precedes the selected stored
+`customApplicationDataBaseURLPath` override; otherwise the Application
+Support/bundle-name fallback applies. The default String reader is traced
+through its exact constructor field, adapter, converter and `stringForKey:`
+selector. `--log-file` affects a separate log URL/flag. Runtime injection,
+the gate's semantic classification, current overrides and actual I/O are not
+observed. No global enum-bound inference follows from this constant tag.
+
+Three sessions: 163 calls, 159 successes/four retained initial admission
+errors. A focused profile adds 18 exact original function-start/code-reference
+entries. All sessions export/close twice and verify empty lineage. Production
+source and the qualified runtime are unchanged. Durability, migration/backup,
+post-write feature tracking, item 63 and broader Arc coverage remain open.
