@@ -4,6 +4,18 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc editor/JS/local-store follow-up (2026-11-21):** The selected editor
+  now reaches `createBoost`, `setBoostData` and preview effects. Getter decoding
+  proves the stored-active/local-ID/nonblank-JS gate. New local insertion
+  performs an inactive-copy merge, then an original-model merge on first
+  success; both primary error paths are traced. The selected local store
+  reaches queued JSON read/write and temporary-file replacement code. **352
+  successful replies / two retained admission errors**, five verified empty
+  owned lineages. One field-test plan stopped on a duplicate label; all replies
+  and the failed status are retained. Production source is unchanged. Exact
+  store location, policy/readback and broader Arc remain open. See the
+  [findings and verification](field-tests/arc-callbacks-2026-11-21.md).
+
 - **Arc-focused upstream retention, item 62 (2026-11-20):** First bounded
   slice implemented and verified. Native function summaries retain complete
   Evidence and expose existing selected pages; the CLI saves a new portable
@@ -1638,3 +1650,13 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     storage, and identifies the default Memory/Firebase `BoostsStorage`
     conformances. These are semantic progress, not closure of full Arc,
     durable readback, account/sync or the other browser feature routes.
+
+    The callback/local-store follow-up also encounters an 8-bit-masked
+    unguarded halfword dispatch at `0x100d989e4`, reached with tag `0x32` by the
+    typed StorableBoostsData factory. Its selected table word is captured;
+    its interior target is not an admitted standalone procedure. Do not use
+    that mask/tag to infer the input type, exact store path or the separate
+    Setting table's 297-case bound. This related coverage boundary remains
+    open alongside item 63. The [new report](field-tests/arc-callbacks-2026-11-21.md)
+    closes editor save effects, getter decoding and conditional two-write
+    control flow while retaining the remaining store/path and runtime gaps.

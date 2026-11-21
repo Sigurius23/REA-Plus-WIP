@@ -26,6 +26,56 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest callback/local-store checkpoint (2026-11-21)
+
+Read `field-tests/arc-callbacks-2026-11-21.md` and its `fact-index.json`,
+`capture-verification.json`, `source-verification.json` and independent
+`js-activation-two-writes.md` first. They supersede older "getter decoding",
+"alternate setter" and "editor save trigger" gaps below. Earlier reviews and
+captures remain immutable; later notes resolve their uncertainties separately.
+
+The editor constructs `createBoost`/`setBoostData`/preview effects. The selected
+converter computes `storedActive && (localID || !nonblankJS)`; a local-read
+error supplies an empty Set. New local insertion is not save success. It
+causes two primary model-data merges: inactive temporary, then original model
+only after the first succeeds. Both errors forward. A following `featuresUsed`
+update still needs tracing. Do not describe the temporary's inactive flag as
+final persisted state.
+
+The typed `StorableDataStore<StorableBoostsData>` factory `0x10118c418` reaches
+`StorableDataStoreImpl`, synchronous queue wrappers and JSON/file I/O. The
+writer uses a sibling `.tmp-<UUID>` URL and replacement API. Exact location,
+version/migration, backup/error policy, fsync and durability remain unresolved.
+Its location helper `0x100d989e4` masks to 8 bits and uses an unguarded halfword
+dispatch with selected tag `0x32`; this is distinct from the 297-case Setting
+converter. Neither input type nor full dispatch is proved. Existing item 63
+remains open. Generic unknown throwing closures remain outside item 47's
+proved named synchronous-callee profile; do not alter their x21 semantics by
+assumption.
+
+Five sessions: 354 calls, 352 successful replies, two retained procedure
+admission errors for one interior branch target. One plan accidentally reused
+a label; the driver stopped before invocation. Its 71 completed records and
+failed status remain retained; six records follow its last bundle. The
+verifier authenticates them from original public replies without claiming a
+complete bundle. The other four sessions export final bundles and close twice.
+**All five owned lineages are verified empty; no live session remains.**
+The prior manifest is unchanged: its 826 capture/support files still match;
+three living documents now have new revisions and their historic bytes are
+authenticated from published `a8b426fedc`. All 1,868 frozen-runtime files match.
+No production source changed, so no new native producer qualification is
+claimed. Current complete source-bound profile is
+`storage-io-seeds-2463.tsv` with receipt/reproducer in the new directory.
+
+Continue with: (1) exact store location/input-type provenance and item 63's
+owned positive/negative controls, (2) remaining `featuresUsed` and detailed
+local-store policy/error continuations, (3) preview object-method `+0x2e8`,
+then final browser reducers and the existing broader feature checklist. Use
+actual catalog schemas and unique labels checked against the whole journal
+before writing a continuation. Reuse frozen runtime
+`rea-local/.cache/arc-runtime-retained-summary-2026-11-20` and a new output
+folder; preserve all old journals. Remain offline and publish mature evidence.
+
 ## Pre-upstream preservation checkpoint (2026-11-20)
 
 The user authorized saving the Arc baseline, then a focused integration of
@@ -500,11 +550,12 @@ passing regression is not completion of an app feature.
 
 ## Copyable continuation instruction
 
-> Read `ARC_HANDOFF.md` in this repository, then the repository instructions and
-> REA+ skill. Continue the offline Arc semantic analysis from the captured phase
-> 7 State/dependency facts and the prepared broader seed overlay. Source fixes
-> 55/60/61 are already pushed and verified; do not rerun their 102-case matrix.
-> The State names are now captured in the November 20 retention pass; use its
-> exact bindings and opt-in summaries. Finish persistence and browser-feature traces, fix newly confirmed bugs, keep
-> OPEN_TASKS and the dossier accurate, and publish mature notes/captures when
-> normal approval review is available. Never launch Arc or shipped scripts.
+> Read `ARC_HANDOFF.md`, repository instructions and the REA+ skill. Continue
+> the offline Arc investigation from the latest callback/local-store checkpoint
+> and source-bound 2,463-entry profile. The two-write JS activation route is now
+> traced; exact local-store path/policies, preview method and wider browser
+> features remain open. Item 63 needs proved input-type provenance and owned
+> controls before production recovery changes. All sessions are closed and the
+> frozen runtime remains unchanged. Preserve original evidence, fix confirmed
+> tool bugs, update OPEN_TASKS/dossier and push mature work to the existing WIP
+> repo. Never launch Arc, shipped scripts or application service requests.

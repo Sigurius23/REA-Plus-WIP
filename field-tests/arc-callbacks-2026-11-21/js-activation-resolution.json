@@ -1,0 +1,157 @@
+{
+  "kind": "independent-retained-javascript-activation-resolution",
+  "date": "2026-11-21",
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "authority": "Fresh mcp-finish phase2 public replies; no reviewer provider/target launch, capture mutation or production change.",
+  "sources": [
+    {
+      "label": "function-0x101158eb0-read_function_instructions",
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x101158eb0-read_function_instructions.evidence.json",
+      "evidence_id": "ev_b949738433a2f0094f280273edc9b4ab38ee405b3b7dfa00f1fbbb6768c9b121",
+      "sha256": "bc0fa38a320e2e69d620583dd99163cb61687b52ec97c0ebaad6e23cba451e65"
+    },
+    {
+      "label": "function-0x101158eb0-procedure_pseudo_code",
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x101158eb0-procedure_pseudo_code.evidence.json",
+      "evidence_id": "ev_81ab34be50e9cad749a5a911bb9da63be1f1f4063b619d426a8350f634f467c0",
+      "sha256": "a40123e8626bcd3d1274e810d2c97ea4a1c1cf50a2fbbb1501259228e6aab895"
+    },
+    {
+      "label": "function-0x10117d4fc-read_function_instructions",
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x10117d4fc-read_function_instructions.evidence.json",
+      "evidence_id": "ev_5c96d5e945b80ac069d98bc1771b40b27ac02c02a02b9e3d33bfc7e8b990c795",
+      "sha256": "01a69a068825bb0f233a057736b03ebb2d5e3d885f354b397eac14228f641b10"
+    },
+    {
+      "label": "function-0x10117d4fc-procedure_pseudo_code",
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x10117d4fc-procedure_pseudo_code.evidence.json",
+      "evidence_id": "ev_e0f97df62e4081c2ac3c78a4779587fd0e165dc1df0155ccf16ac3d1859675b1",
+      "sha256": "cef672a4532e0837bfcef85279883d6844e0b9a9017d344734adb2eac0f1f4ad"
+    },
+    {
+      "label": "function-0x10080fc90-read_function_instructions",
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x10080fc90-read_function_instructions.evidence.json",
+      "evidence_id": "ev_c84eea95dfecef650fdcc75ce52ec4ac6bcdd453279c19ca76a4c1fa6d9b9867",
+      "sha256": "2950b5e155220288cecc742b6bbffaa692709375463354cb90db2230cc8ae05c"
+    },
+    {
+      "label": "function-0x10080fc90-procedure_pseudo_code",
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x10080fc90-procedure_pseudo_code.evidence.json",
+      "evidence_id": "ev_cf0d6fe6b71caf8bbb602131bcc64b116f0c037b2d995bfcc519e869ee4fa427",
+      "sha256": "739928fb9c06a9e6a095cce7e9c986743d75ce79ae57590788e4595a7eb9247e"
+    },
+    {
+      "label": "function-0x10115aa74-read_function_instructions",
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x10115aa74-read_function_instructions.evidence.json",
+      "evidence_id": "ev_8e764d7a0aebab238a17ffa577ed13cdeb3caee983be297557cee477163687a3",
+      "sha256": "74e3605cfa4a95489cb3a5b4fc1133174b462ee1c3a0903af8dcec1395137b88"
+    },
+    {
+      "label": "function-0x10115aa74-procedure_pseudo_code",
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x10115aa74-procedure_pseudo_code.evidence.json",
+      "evidence_id": "ev_4e917a3de5601f0adbb6d6d280210400ce5bdaa69e4ded2ac05d21a406c3cf5d",
+      "sha256": "e0f71c16fb5df563a62f1dc077b606b424a50aa2af43915dd12aa83ad555b332"
+    }
+  ],
+  "prior_reviews": [
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/js-activation-review.json",
+      "sha256": "dd6cd5f985dedbd0ab879bd88455b9c4323ba72727568b535e23b09fe0593500"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/js-activation-final.json",
+      "sha256": "ee809e9dd9a5f07a94eaf946e5e6179953e733a6e0c423d873a3fcd04f3947b2"
+    }
+  ],
+  "resolved": [
+    {
+      "id": "JS-RES-01",
+      "finding": "On a newly inserted local identifier, the selected parent reconstructs a BoostData output whose isActive isfalse, serializes that output and enters the shared Firebase merge path.",
+      "caller_flow": "0x10117d424 flag1 branch setsx20=originalmodel,x8=temporarymodel,w0=0 and calls0x101158eb0 at0x10117d45c;serializes temporary through0x10115b98c at0x10117d46c;joins other branch at0x10117d4d4;rawbranch0x10117cd20 at0x10117d4f8.",
+      "callee_physical_abi": {
+        "w0": "new isActive bit",
+        "x20": "source BoostData address",
+        "x8": "output BoostData address"
+      },
+      "callee_anchors": [
+        "0x101158ed0: source x20->x26",
+        "0x101158ed4: savew0 atsp+0x6c",
+        "0x101158ed8: resultx8->x23",
+        "0x10115908c: BoostData metadata accessor0x101159d7c",
+        "0x1011591a0: load field-vector offset atmetadata+0x2c",
+        "0x1011591a4..1ac: load savedw0,maskbit0,storebyte at output+selectedoffset"
+      ],
+      "field_binding": "Metadata-vector key0x2c selects field7 isActive (word-offset2; exact prior BoostData field records/names).",
+      "instruction_evidence_id": "ev_b949738433a2f0094f280273edc9b4ab38ee405b3b7dfa00f1fbbb6768c9b121",
+      "caller_instruction_evidence_id": "ev_c808f2a87d30e301b712fa3b6a02c3126bf554aec308b1baf62f3f190bce09cb",
+      "limits": "This routine reconstructs the model and applies an isActive bit; do not claim every other byte is copied unchanged. This establishes the selected merge input, not the final remote state after all later writes/completions."
+    },
+    {
+      "id": "JS-RES-02",
+      "finding": "The JavaScript predicate uses actual leading/trailing trimming against CharacterSet.whitespacesAndNewlines; its result is true exactly when the resulting String is nonempty on the inspected valid-value path.",
+      "helper_physical_abi": {
+        "x20": "address of generic String-like source value",
+        "x0": "CharacterSet address",
+        "x1": "String metadata",
+        "x2": "String conformance witness"
+      },
+      "helper_flow": [
+        "0x10080fd60..fdcc fetches leading Unicode scalars, calls CharacterSet.contains, advances whilecontained.",
+        "0x10080fdd8..fe6c fetches trailing Unicode scalars, calls CharacterSet.contains, retreats whilecontained.",
+        "0x10080fe84..fea4 checks resulting bounds and returns the bounded Substring.",
+        "Caller101159db4 converts the returned Substring toString and tests resulting length; optional-data predicate10115a958 uses the same helper after its optionaltag/nil gates."
+      ],
+      "instruction_evidence_id": "ev_c84eea95dfecef650fdcc75ce52ec4ac6bcdd453279c19ca76a4c1fa6d9b9867",
+      "predicate_instruction_evidence_id": "ev_85e6ac5c3244f5604392ebc5620caa33bf625362af2d5f2fcc2796a853c51355",
+      "witness_binding": "0x10115aa74 loads/caches the String conformance witness through swift_getWitnessTable using importedString metadata and _$sSSSysMc; static first-use setup, not target execution.",
+      "witness_instruction_evidence_id": "ev_8e764d7a0aebab238a17ffa577ed13cdeb3caee983be297557cee477163687a3",
+      "limits": "This tests nonblank source content; it does not parse JavaScript syntax or observe JavaScript execution."
+    },
+    {
+      "id": "JS-RES-03",
+      "finding": "The newly inserted branch preserves merge completion error state and chooses explicit success/error continuations.",
+      "physical_flow": [
+        "0x10117d514..528 obtains parentframe and storesincomingasyncx20error atparent+0xb0.",
+        "0x10117d52c..53c deallocateschildframe and releases serializedvalue/document reference.",
+        "0x10117d544 testsx20. Zero selects0x10117d570;nonzero selects0x10117d818;both passparentexecutorwords toSwift task-switch machinery."
+      ],
+      "instruction_evidence_id": "ev_5c96d5e945b80ac069d98bc1771b40b27ac02c02a02b9e3d33bfc7e8b990c795",
+      "remaining_destinations": [
+        "0x10117d570",
+        "0x10117d818"
+      ],
+      "limits": "Those two terminal continuation bodies are not part of these phase2 sources; their final return or additional writes remain unassigned. The inspected noninserted branch forwards its saved error through0x10117d86c, but that behavior is not substituted for this sibling."
+    }
+  ],
+  "combined_activation_rule": {
+    "read": "BoostData.isActive = parsedStoredIsActive && (ID in locallyEnabledBoostIDs || !hasNonblankJS).",
+    "stored_flag": "String true parsestrue;otherStringsfalse;missing/wrongStringtypedvalue defaults true.",
+    "local_read_error": "The captured local-read failure releases its error and continues with an empty locallyEnabledBoostIDs Set, so the selected read suppresses active JavaScript-bearing data on that fallback.",
+    "selected_write": "When the originalmodel isActive==1 and optional-data nonblankJS predicate istrue,the selected setter performslocalenable insertion. A newly insertedID then selects reconstruction with isActive=false before merge; already-presentID selects serialization oftheoriginalmodel. Both continue into the merge request setup.",
+    "not_claimed": [
+      "actual active dependency injection",
+      "successfullocal orremote operation",
+      "final remote value afterunread continuations",
+      "JavaScript execution orDOM effects",
+      "globalapplication policy beyondthese selectedstatic paths"
+    ]
+  },
+  "next_queries": [
+    {
+      "address": "0x10117d570",
+      "tools": [
+        "read_function_instructions",
+        "procedure_pseudo_code"
+      ],
+      "purpose": "Inserted-branch merge-success terminal continuation/additional-work boundary."
+    },
+    {
+      "address": "0x10117d818",
+      "tools": [
+        "read_function_instructions",
+        "procedure_pseudo_code"
+      ],
+      "purpose": "Inserted-branch merge-error terminal propagation boundary."
+    }
+  ]
+}

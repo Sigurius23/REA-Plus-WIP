@@ -1,0 +1,96 @@
+{
+  "evidence_id": "ev_a6dcc764bdf10cc2a20f9a0080edc89e87f9c2d861d0e3c4b5cdae9805a74732",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "mach-o",
+      "architecture": "arm64",
+      "available_architectures": [
+        "arm64"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "swift_enum_switch_recovery": "abi-signed-word-cfg-v9",
+      "swift_dynamic_typed_snapshot": "swift-dynamic-typed-snapshot-v1",
+      "darwin_stack_probe_call_summary": "trusted-darwin-arm64-chkstk-v1",
+      "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default",
+      "analysis_policy": "bounded-autoanalysis-v1",
+      "analysis_timeout_seconds": 1,
+      "analysis_seeds": {
+        "format": "rea-ghidra-seeds-v1",
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/editor-async-seeds-2308.tsv",
+        "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/editor-async-seeds-2308.tsv",
+        "sha256": "8dd6f03b99094d7a592d4a7a8d05c529bbafb987dee3eec9b0594e54950c40d3",
+        "entries": {
+          "function": 2308,
+          "code": 0,
+          "label": 0
+        }
+      }
+    },
+    "digest": "8ee0aeef23a0bb6b4994152a9366448ad5aad5486a893833bb60be6cc51961fc"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "procedure_pseudo_code",
+  "parameters": {
+    "procedure": "0x1012aab40"
+  },
+  "raw_result": {
+    "value": "\nvoid FUN_1012aab40(void)\n\n{\n  int iVar1;\n  code *pcVar2;\n  long *plVar3;\n  undefined8 *puVar4;\n  long lVar5;\n  undefined8 uVar6;\n  long lVar7;\n  long unaff_x22;\n  int *piVar8;\n  undefined8 uVar9;\n  undefined8 uVar10;\n  undefined8 uVar11;\n  undefined8 uVar12;\n  undefined8 uVar13;\n  undefined8 uVar14;\n  undefined8 uVar15;\n  \n  uVar6 = *(undefined8 *)(unaff_x22 + 0xa70);\n  lVar7 = *(long *)(unaff_x22 + 0xa68);\n  puVar4 = *(undefined8 **)(unaff_x22 + 0xa60);\n  uVar9 = *puVar4;\n  *(undefined8 *)(unaff_x22 + 0x9c8) = puVar4[1];\n  *(undefined8 *)(unaff_x22 + 0x9c0) = uVar9;\n  uVar10 = puVar4[7];\n  uVar9 = puVar4[6];\n  uVar12 = puVar4[9];\n  uVar11 = puVar4[8];\n  uVar15 = puVar4[2];\n  uVar14 = puVar4[5];\n  uVar13 = puVar4[4];\n  *(undefined8 *)(unaff_x22 + 0x9d8) = puVar4[3];\n  *(undefined8 *)(unaff_x22 + 0x9d0) = uVar15;\n  *(undefined8 *)(unaff_x22 + 0xa08) = uVar12;\n  *(undefined8 *)(unaff_x22 + 0xa00) = uVar11;\n  *(undefined8 *)(unaff_x22 + 0x9f8) = uVar10;\n  *(undefined8 *)(unaff_x22 + 0x9f0) = uVar9;\n  *(undefined8 *)(unaff_x22 + 0x9e8) = uVar14;\n  *(undefined8 *)(unaff_x22 + 0x9e0) = uVar13;\n  FUN_100005134(0x104627440,&UNK_103788e18);\n  FUN_1006fa470(unaff_x22 + 0x30);\n  pcVar2 = *(code **)(unaff_x22 + 0xb0);\n  uVar9 = *(undefined8 *)(unaff_x22 + 0xb8);\n  _swift_retain(uVar9);\n  func_0x0001000081f8(unaff_x22 + 0x30);\n  (*pcVar2)();\n  _swift_release(uVar9);\n  *(long *)(unaff_x22 + 0xaa0) = lVar7;\n  if (lVar7 != 0) {\n    lVar5 = *(long *)(unaff_x22 + 0xa60);\n    uVar9 = *(undefined8 *)(lVar5 + 0xa0);\n    *(undefined8 *)(unaff_x22 + 0xa18) = *(undefined8 *)(lVar5 + 0xa8);\n    *(undefined8 *)(unaff_x22 + 0xa10) = uVar9;\n    uVar9 = *(undefined8 *)(lVar5 + 0xd0);\n    uVar11 = *(undefined8 *)(lVar5 + 0xe8);\n    uVar10 = *(undefined8 *)(lVar5 + 0xe0);\n    uVar15 = *(undefined8 *)(lVar5 + 0xb8);\n    uVar14 = *(undefined8 *)(lVar5 + 0xb0);\n    uVar13 = *(undefined8 *)(lVar5 + 200);\n    uVar12 = *(undefined8 *)(lVar5 + 0xc0);\n    *(undefined8 *)(unaff_x22 + 0xa48) = *(undefined8 *)(lVar5 + 0xd8);\n    *(undefined8 *)(unaff_x22 + 0xa40) = uVar9;\n    *(undefined8 *)(unaff_x22 + 0xa58) = uVar11;\n    *(undefined8 *)(unaff_x22 + 0xa50) = uVar10;\n    *(undefined8 *)(unaff_x22 + 0xa28) = uVar15;\n    *(undefined8 *)(unaff_x22 + 0xa20) = uVar14;\n    *(undefined8 *)(unaff_x22 + 0xa38) = uVar13;\n    *(undefined8 *)(unaff_x22 + 0xa30) = uVar12;\n    FUN_100005134(0x104627360,&UNK_103788d18);\n    FUN_1006fa470(unaff_x22 + 0x8b0);\n    piVar8 = *(int **)(unaff_x22 + 0x960);\n    *(undefined8 *)(unaff_x22 + 0xaa8) = *(undefined8 *)(unaff_x22 + 0x968);\n    _swift_retain(*(undefined8 *)(unaff_x22 + 0x968));\n    FUN_1012ba050(unaff_x22 + 0x8b0);\n    *(long *)(unaff_x22 + 0x20) = lVar7;\n    *(undefined8 *)(unaff_x22 + 0x28) = uVar6;\n    iVar1 = *piVar8;\n    plVar3 = (long *)(ulong)(uint)piVar8[1];\n    _swift_task_alloc();\n    *(long **)(unaff_x22 + 0xab0) = plVar3;\n    *plVar3 = unaff_x22;\n    plVar3[1] = (long)FUN_1012aacbc;\n                    /* WARNING: Could not recover jumptable at 0x0001012aac90. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*(code *)((long)iVar1 + (long)piVar8))\n              (*(undefined8 *)(unaff_x22 + 0xa78),*(undefined8 *)(unaff_x22 + 0xa80),&UNK_103788e68,\n               unaff_x22 + 0x10);\n    return;\n  }\n  _swift_release(*(undefined8 *)(unaff_x22 + 0xa88));\n                    /* WARNING: Could not recover jumptable at 0x0001012aacb8. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(unaff_x22 + 8))();\n  return;\n}\n\n",
+    "limitations": []
+  },
+  "normalized_result": "\nvoid FUN_1012aab40(void)\n\n{\n  int iVar1;\n  code *pcVar2;\n  long *plVar3;\n  undefined8 *puVar4;\n  long lVar5;\n  undefined8 uVar6;\n  long lVar7;\n  long unaff_x22;\n  int *piVar8;\n  undefined8 uVar9;\n  undefined8 uVar10;\n  undefined8 uVar11;\n  undefined8 uVar12;\n  undefined8 uVar13;\n  undefined8 uVar14;\n  undefined8 uVar15;\n  \n  uVar6 = *(undefined8 *)(unaff_x22 + 0xa70);\n  lVar7 = *(long *)(unaff_x22 + 0xa68);\n  puVar4 = *(undefined8 **)(unaff_x22 + 0xa60);\n  uVar9 = *puVar4;\n  *(undefined8 *)(unaff_x22 + 0x9c8) = puVar4[1];\n  *(undefined8 *)(unaff_x22 + 0x9c0) = uVar9;\n  uVar10 = puVar4[7];\n  uVar9 = puVar4[6];\n  uVar12 = puVar4[9];\n  uVar11 = puVar4[8];\n  uVar15 = puVar4[2];\n  uVar14 = puVar4[5];\n  uVar13 = puVar4[4];\n  *(undefined8 *)(unaff_x22 + 0x9d8) = puVar4[3];\n  *(undefined8 *)(unaff_x22 + 0x9d0) = uVar15;\n  *(undefined8 *)(unaff_x22 + 0xa08) = uVar12;\n  *(undefined8 *)(unaff_x22 + 0xa00) = uVar11;\n  *(undefined8 *)(unaff_x22 + 0x9f8) = uVar10;\n  *(undefined8 *)(unaff_x22 + 0x9f0) = uVar9;\n  *(undefined8 *)(unaff_x22 + 0x9e8) = uVar14;\n  *(undefined8 *)(unaff_x22 + 0x9e0) = uVar13;\n  FUN_100005134(0x104627440,&UNK_103788e18);\n  FUN_1006fa470(unaff_x22 + 0x30);\n  pcVar2 = *(code **)(unaff_x22 + 0xb0);\n  uVar9 = *(undefined8 *)(unaff_x22 + 0xb8);\n  _swift_retain(uVar9);\n  func_0x0001000081f8(unaff_x22 + 0x30);\n  (*pcVar2)();\n  _swift_release(uVar9);\n  *(long *)(unaff_x22 + 0xaa0) = lVar7;\n  if (lVar7 != 0) {\n    lVar5 = *(long *)(unaff_x22 + 0xa60);\n    uVar9 = *(undefined8 *)(lVar5 + 0xa0);\n    *(undefined8 *)(unaff_x22 + 0xa18) = *(undefined8 *)(lVar5 + 0xa8);\n    *(undefined8 *)(unaff_x22 + 0xa10) = uVar9;\n    uVar9 = *(undefined8 *)(lVar5 + 0xd0);\n    uVar11 = *(undefined8 *)(lVar5 + 0xe8);\n    uVar10 = *(undefined8 *)(lVar5 + 0xe0);\n    uVar15 = *(undefined8 *)(lVar5 + 0xb8);\n    uVar14 = *(undefined8 *)(lVar5 + 0xb0);\n    uVar13 = *(undefined8 *)(lVar5 + 200);\n    uVar12 = *(undefined8 *)(lVar5 + 0xc0);\n    *(undefined8 *)(unaff_x22 + 0xa48) = *(undefined8 *)(lVar5 + 0xd8);\n    *(undefined8 *)(unaff_x22 + 0xa40) = uVar9;\n    *(undefined8 *)(unaff_x22 + 0xa58) = uVar11;\n    *(undefined8 *)(unaff_x22 + 0xa50) = uVar10;\n    *(undefined8 *)(unaff_x22 + 0xa28) = uVar15;\n    *(undefined8 *)(unaff_x22 + 0xa20) = uVar14;\n    *(undefined8 *)(unaff_x22 + 0xa38) = uVar13;\n    *(undefined8 *)(unaff_x22 + 0xa30) = uVar12;\n    FUN_100005134(0x104627360,&UNK_103788d18);\n    FUN_1006fa470(unaff_x22 + 0x8b0);\n    piVar8 = *(int **)(unaff_x22 + 0x960);\n    *(undefined8 *)(unaff_x22 + 0xaa8) = *(undefined8 *)(unaff_x22 + 0x968);\n    _swift_retain(*(undefined8 *)(unaff_x22 + 0x968));\n    FUN_1012ba050(unaff_x22 + 0x8b0);\n    *(long *)(unaff_x22 + 0x20) = lVar7;\n    *(undefined8 *)(unaff_x22 + 0x28) = uVar6;\n    iVar1 = *piVar8;\n    plVar3 = (long *)(ulong)(uint)piVar8[1];\n    _swift_task_alloc();\n    *(long **)(unaff_x22 + 0xab0) = plVar3;\n    *plVar3 = unaff_x22;\n    plVar3[1] = (long)FUN_1012aacbc;\n                    /* WARNING: Could not recover jumptable at 0x0001012aac90. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n    (*(code *)((long)iVar1 + (long)piVar8))\n              (*(undefined8 *)(unaff_x22 + 0xa78),*(undefined8 *)(unaff_x22 + 0xa80),&UNK_103788e68,\n               unaff_x22 + 0x10);\n    return;\n  }\n  _swift_release(*(undefined8 *)(unaff_x22 + 0xa88));\n                    /* WARNING: Could not recover jumptable at 0x0001012aacb8. Too many branches */\n                    /* WARNING: Treating indirect jump as call */\n  (**(code **)(unaff_x22 + 8))();\n  return;\n}\n\n",
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+    "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+    "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.",
+    "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/editor-async-seeds-2308.tsv (sha256 8dd6f03b99094d7a592d4a7a8d05c529bbafb987dee3eec9b0594e54950c40d3: 2308 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+    "Seed outcome: 2203 functions created, 105 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

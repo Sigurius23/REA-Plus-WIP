@@ -1,0 +1,104 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"evidence_id\":\"ev_d9e3d88aeb0c9a5dc1000249d3da0b4d654a752e98e3f15c29c7547153568a32\",\"subject\":{\"name\":\"Arc-arm64\",\"digest\":{\"sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"},\"format\":\"mach-o\",\"architecture\":\"arm64\",\"local_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\"},\"provider\":{\"id\":\"ghidra\",\"name\":\"Ghidra\",\"version\":\"12.1.4\"},\"analysis_profile\":{\"provider\":{\"id\":\"ghidra\",\"name\":\"Ghidra\",\"version\":\"12.1.4\"},\"parameters\":{\"target_kind\":\"executable\",\"target_format\":\"mach-o\",\"architecture\":\"arm64\",\"available_architectures\":[\"arm64\"],\"import_mode\":\"ephemeral-source-immutable\",\"annotation_policy\":\"atomic-function-entry-metadata-v1\",\"load_image_observations\":\"source-mappings-entry-context-v2\",\"function_body_evidence\":\"complete-inclusive-ranges-v1\",\"function_references\":\"complete-body-and-entry-reference-manager-v2\",\"string_inventory_evidence\":\"defined-data-coverage-v1\",\"location_resolution\":\"explicit-address-exact-entry-symbol-first-v3\",\"instruction_flow_evidence\":\"decoded-return-pcode-v1\",\"instruction_references\":\"exact-address-incoming-v1\",\"function_boundary_observations\":\"ghidra-terminal-call-limitations-v1\",\"no_return_repair\":\"returning-imports-decoded-return-v2\",\"process_launch\":\"inspected-jvm-launch-support-v1\",\"jump_table_evidence\":\"typed-case-default-blocks-v1\",\"swift_enum_switch_recovery\":\"abi-signed-word-cfg-v9\",\"swift_dynamic_typed_snapshot\":\"swift-dynamic-typed-snapshot-v1\",\"darwin_stack_probe_call_summary\":\"trusted-darwin-arm64-chkstk-v1\",\"swift_error_register_model\":\"proved-native-synchronous-callee-x21-v3\",\"decompiler_jump_loads\":true,\"loader\":\"auto-from-header\",\"language_id\":\"auto-from-header\",\"compiler_spec_id\":\"auto-default\",\"analyzer_preset\":\"ghidra-default\",\"analysis_policy\":\"bounded-autoanalysis-v1\",\"analysis_timeout_seconds\":1,\"analysis_seeds\":{\"format\":\"rea-ghidra-seeds-v1\",\"path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/storage-profile-seeds-2393.tsv\",\"configured_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/storage-profile-seeds-2393.tsv\",\"sha256\":\"a7ec899cd3ed9ad4d01f058cc6947f0819b919ab8605c083c13eb855a576254b\",\"entries\":{\"function\":2393,\"code\":0,\"label\":0}}},\"digest\":\"f58db55c14270b27ad4dfc11b84426aa95ca7fc486a38742f168d7d074654112\"},\"predicate_type\":\"rea.analysis\",\"operation\":\"procedure_pseudo_code\",\"parameters\":{\"procedure\":\"0x1011867b0\"},\"raw_result\":{\"value\":\"\\nundefined8 FUN_1011867b0(ulong *param_1,ulong param_2,ulong param_3)\\n\\n{\\n  ulong *puVar1;\\n  ulong uVar2;\\n  long *plVar3;\\n  ulong uVar4;\\n  ulong uVar5;\\n  long *unaff_x20;\\n  ulong uVar6;\\n  long lVar7;\\n  long alStack_98 [9];\\n  \\n  lVar7 = *unaff_x20;\\n  __ss6HasherV5_seedABSi_tcfC(alStack_98,*(undefined8 *)(lVar7 + 0x28));\\n  plVar3 = alStack_98;\\n  __sSS4hash4intoys6HasherVz_tF(plVar3,param_2,param_3);\\n  __ss6HasherV9_finalizeSiyF();\\n  uVar5 = -1L << ((ulong)*(byte *)(lVar7 + 0x20) & 0x3f);\\n  uVar6 = (ulong)plVar3 & (uVar5 ^ 0xffffffffffffffff);\\n  if ((*(ulong *)(lVar7 + 0x38 + (uVar6 >> 6) * 8) >> (uVar6 & 0x3f) & 1) != 0) {\\n    do {\\n      puVar1 = (ulong *)(*(long *)(lVar7 + 0x30) + uVar6 * 0x10);\\n      uVar4 = *puVar1;\\n      uVar2 = puVar1[1];\\n      if ((uVar4 == param_2 && uVar2 == param_3) ||\\n         (__ss27_stringCompareWithSmolCheck__9expectingSbs11_StringGutsV_ADs01_G16ComparisonResultOtF\\n                    (uVar4,uVar2,param_2,param_3,0), (uVar4 & 1) != 0)) {\\n        _swift_bridgeObjectRelease(param_3);\\n        puVar1 = (ulong *)(*(long *)(lVar7 + 0x30) + uVar6 * 0x10);\\n        uVar5 = puVar1[1];\\n        *param_1 = *puVar1;\\n        param_1[1] = uVar5;\\n        _swift_bridgeObjectRetain();\\n        return 0;\\n      }\\n      uVar6 = uVar6 + 1 & ~uVar5;\\n    } while ((*(ulong *)(lVar7 + 0x38 + (uVar6 >> 6) * 8) >> (uVar6 & 0x3f) & 1) != 0);\\n  }\\n  lVar7 = *unaff_x20;\\n  _swift_isUniquelyReferenced_nonNull_native(lVar7);\\n  alStack_98[0] = *unaff_x20;\\n  _swift_bridgeObjectRetain(param_3);\\n  FUN_1011868f4(param_2,param_3,uVar6,lVar7);\\n  *unaff_x20 = alStack_98[0];\\n  *param_1 = param_2;\\n  param_1[1] = param_3;\\n  return 1;\\n}\\n\\n\",\"limitations\":[]},\"normalized_result\":\"\\nundefined8 FUN_1011867b0(ulong *param_1,ulong param_2,ulong param_3)\\n\\n{\\n  ulong *puVar1;\\n  ulong uVar2;\\n  long *plVar3;\\n  ulong uVar4;\\n  ulong uVar5;\\n  long *unaff_x20;\\n  ulong uVar6;\\n  long lVar7;\\n  long alStack_98 [9];\\n  \\n  lVar7 = *unaff_x20;\\n  __ss6HasherV5_seedABSi_tcfC(alStack_98,*(undefined8 *)(lVar7 + 0x28));\\n  plVar3 = alStack_98;\\n  __sSS4hash4intoys6HasherVz_tF(plVar3,param_2,param_3);\\n  __ss6HasherV9_finalizeSiyF();\\n  uVar5 = -1L << ((ulong)*(byte *)(lVar7 + 0x20) & 0x3f);\\n  uVar6 = (ulong)plVar3 & (uVar5 ^ 0xffffffffffffffff);\\n  if ((*(ulong *)(lVar7 + 0x38 + (uVar6 >> 6) * 8) >> (uVar6 & 0x3f) & 1) != 0) {\\n    do {\\n      puVar1 = (ulong *)(*(long *)(lVar7 + 0x30) + uVar6 * 0x10);\\n      uVar4 = *puVar1;\\n      uVar2 = puVar1[1];\\n      if ((uVar4 == param_2 && uVar2 == param_3) ||\\n         (__ss27_stringCompareWithSmolCheck__9expectingSbs11_StringGutsV_ADs01_G16ComparisonResultOtF\\n                    (uVar4,uVar2,param_2,param_3,0), (uVar4 & 1) != 0)) {\\n        _swift_bridgeObjectRelease(param_3);\\n        puVar1 = (ulong *)(*(long *)(lVar7 + 0x30) + uVar6 * 0x10);\\n        uVar5 = puVar1[1];\\n        *param_1 = *puVar1;\\n        param_1[1] = uVar5;\\n        _swift_bridgeObjectRetain();\\n        return 0;\\n      }\\n      uVar6 = uVar6 + 1 & ~uVar5;\\n    } while ((*(ulong *)(lVar7 + 0x38 + (uVar6 >> 6) * 8) >> (uVar6 & 0x3f) & 1) != 0);\\n  }\\n  lVar7 = *unaff_x20;\\n  _swift_isUniquelyReferenced_nonNull_native(lVar7);\\n  alStack_98[0] = *unaff_x20;\\n  _swift_bridgeObjectRetain(param_3);\\n  FUN_1011868f4(param_2,param_3,uVar6,lVar7);\\n  *unaff_x20 = alStack_98[0];\\n  *param_1 = param_2;\\n  param_1[1] = param_3;\\n  return 1;\\n}\\n\\n\",\"confidence\":\"observed\",\"authority\":\"shipped-artifact\",\"environment\":null,\"limitations\":[\"The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.\",\"The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.\",\"Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.\",\"Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.\",\"Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.\",\"External functions and functions without an analyzable body return null; other decompiler failures remain explicit.\",\"Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.\",\"The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.\",\"macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.\",\"Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/storage-profile-seeds-2393.tsv (sha256 a7ec899cd3ed9ad4d01f058cc6947f0819b919ab8605c083c13eb855a576254b: 2393 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.\",\"Seed outcome: 2288 functions created, 105 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory.\"],\"locations\":[],\"evidence_links\":[]}"
+    }
+  ],
+  "structuredContent": {
+    "evidence_id": "ev_d9e3d88aeb0c9a5dc1000249d3da0b4d654a752e98e3f15c29c7547153568a32",
+    "subject": {
+      "name": "Arc-arm64",
+      "digest": {
+        "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+      },
+      "format": "mach-o",
+      "architecture": "arm64",
+      "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "analysis_profile": {
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "parameters": {
+        "target_kind": "executable",
+        "target_format": "mach-o",
+        "architecture": "arm64",
+        "available_architectures": [
+          "arm64"
+        ],
+        "import_mode": "ephemeral-source-immutable",
+        "annotation_policy": "atomic-function-entry-metadata-v1",
+        "load_image_observations": "source-mappings-entry-context-v2",
+        "function_body_evidence": "complete-inclusive-ranges-v1",
+        "function_references": "complete-body-and-entry-reference-manager-v2",
+        "string_inventory_evidence": "defined-data-coverage-v1",
+        "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+        "instruction_flow_evidence": "decoded-return-pcode-v1",
+        "instruction_references": "exact-address-incoming-v1",
+        "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+        "no_return_repair": "returning-imports-decoded-return-v2",
+        "process_launch": "inspected-jvm-launch-support-v1",
+        "jump_table_evidence": "typed-case-default-blocks-v1",
+        "swift_enum_switch_recovery": "abi-signed-word-cfg-v9",
+        "swift_dynamic_typed_snapshot": "swift-dynamic-typed-snapshot-v1",
+        "darwin_stack_probe_call_summary": "trusted-darwin-arm64-chkstk-v1",
+        "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+        "decompiler_jump_loads": true,
+        "loader": "auto-from-header",
+        "language_id": "auto-from-header",
+        "compiler_spec_id": "auto-default",
+        "analyzer_preset": "ghidra-default",
+        "analysis_policy": "bounded-autoanalysis-v1",
+        "analysis_timeout_seconds": 1,
+        "analysis_seeds": {
+          "format": "rea-ghidra-seeds-v1",
+          "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/storage-profile-seeds-2393.tsv",
+          "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/storage-profile-seeds-2393.tsv",
+          "sha256": "a7ec899cd3ed9ad4d01f058cc6947f0819b919ab8605c083c13eb855a576254b",
+          "entries": {
+            "function": 2393,
+            "code": 0,
+            "label": 0
+          }
+        }
+      },
+      "digest": "f58db55c14270b27ad4dfc11b84426aa95ca7fc486a38742f168d7d074654112"
+    },
+    "predicate_type": "rea.analysis",
+    "operation": "procedure_pseudo_code",
+    "parameters": {
+      "procedure": "0x1011867b0"
+    },
+    "raw_result": {
+      "value": "\nundefined8 FUN_1011867b0(ulong *param_1,ulong param_2,ulong param_3)\n\n{\n  ulong *puVar1;\n  ulong uVar2;\n  long *plVar3;\n  ulong uVar4;\n  ulong uVar5;\n  long *unaff_x20;\n  ulong uVar6;\n  long lVar7;\n  long alStack_98 [9];\n  \n  lVar7 = *unaff_x20;\n  __ss6HasherV5_seedABSi_tcfC(alStack_98,*(undefined8 *)(lVar7 + 0x28));\n  plVar3 = alStack_98;\n  __sSS4hash4intoys6HasherVz_tF(plVar3,param_2,param_3);\n  __ss6HasherV9_finalizeSiyF();\n  uVar5 = -1L << ((ulong)*(byte *)(lVar7 + 0x20) & 0x3f);\n  uVar6 = (ulong)plVar3 & (uVar5 ^ 0xffffffffffffffff);\n  if ((*(ulong *)(lVar7 + 0x38 + (uVar6 >> 6) * 8) >> (uVar6 & 0x3f) & 1) != 0) {\n    do {\n      puVar1 = (ulong *)(*(long *)(lVar7 + 0x30) + uVar6 * 0x10);\n      uVar4 = *puVar1;\n      uVar2 = puVar1[1];\n      if ((uVar4 == param_2 && uVar2 == param_3) ||\n         (__ss27_stringCompareWithSmolCheck__9expectingSbs11_StringGutsV_ADs01_G16ComparisonResultOtF\n                    (uVar4,uVar2,param_2,param_3,0), (uVar4 & 1) != 0)) {\n        _swift_bridgeObjectRelease(param_3);\n        puVar1 = (ulong *)(*(long *)(lVar7 + 0x30) + uVar6 * 0x10);\n        uVar5 = puVar1[1];\n        *param_1 = *puVar1;\n        param_1[1] = uVar5;\n        _swift_bridgeObjectRetain();\n        return 0;\n      }\n      uVar6 = uVar6 + 1 & ~uVar5;\n    } while ((*(ulong *)(lVar7 + 0x38 + (uVar6 >> 6) * 8) >> (uVar6 & 0x3f) & 1) != 0);\n  }\n  lVar7 = *unaff_x20;\n  _swift_isUniquelyReferenced_nonNull_native(lVar7);\n  alStack_98[0] = *unaff_x20;\n  _swift_bridgeObjectRetain(param_3);\n  FUN_1011868f4(param_2,param_3,uVar6,lVar7);\n  *unaff_x20 = alStack_98[0];\n  *param_1 = param_2;\n  param_1[1] = param_3;\n  return 1;\n}\n\n",
+      "limitations": []
+    },
+    "normalized_result": "\nundefined8 FUN_1011867b0(ulong *param_1,ulong param_2,ulong param_3)\n\n{\n  ulong *puVar1;\n  ulong uVar2;\n  long *plVar3;\n  ulong uVar4;\n  ulong uVar5;\n  long *unaff_x20;\n  ulong uVar6;\n  long lVar7;\n  long alStack_98 [9];\n  \n  lVar7 = *unaff_x20;\n  __ss6HasherV5_seedABSi_tcfC(alStack_98,*(undefined8 *)(lVar7 + 0x28));\n  plVar3 = alStack_98;\n  __sSS4hash4intoys6HasherVz_tF(plVar3,param_2,param_3);\n  __ss6HasherV9_finalizeSiyF();\n  uVar5 = -1L << ((ulong)*(byte *)(lVar7 + 0x20) & 0x3f);\n  uVar6 = (ulong)plVar3 & (uVar5 ^ 0xffffffffffffffff);\n  if ((*(ulong *)(lVar7 + 0x38 + (uVar6 >> 6) * 8) >> (uVar6 & 0x3f) & 1) != 0) {\n    do {\n      puVar1 = (ulong *)(*(long *)(lVar7 + 0x30) + uVar6 * 0x10);\n      uVar4 = *puVar1;\n      uVar2 = puVar1[1];\n      if ((uVar4 == param_2 && uVar2 == param_3) ||\n         (__ss27_stringCompareWithSmolCheck__9expectingSbs11_StringGutsV_ADs01_G16ComparisonResultOtF\n                    (uVar4,uVar2,param_2,param_3,0), (uVar4 & 1) != 0)) {\n        _swift_bridgeObjectRelease(param_3);\n        puVar1 = (ulong *)(*(long *)(lVar7 + 0x30) + uVar6 * 0x10);\n        uVar5 = puVar1[1];\n        *param_1 = *puVar1;\n        param_1[1] = uVar5;\n        _swift_bridgeObjectRetain();\n        return 0;\n      }\n      uVar6 = uVar6 + 1 & ~uVar5;\n    } while ((*(ulong *)(lVar7 + 0x38 + (uVar6 >> 6) * 8) >> (uVar6 & 0x3f) & 1) != 0);\n  }\n  lVar7 = *unaff_x20;\n  _swift_isUniquelyReferenced_nonNull_native(lVar7);\n  alStack_98[0] = *unaff_x20;\n  _swift_bridgeObjectRetain(param_3);\n  FUN_1011868f4(param_2,param_3,uVar6,lVar7);\n  *unaff_x20 = alStack_98[0];\n  *param_1 = param_2;\n  param_1[1] = param_3;\n  return 1;\n}\n\n",
+    "confidence": "observed",
+    "authority": "shipped-artifact",
+    "environment": null,
+    "limitations": [
+      "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+      "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+      "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+      "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+      "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.",
+      "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.",
+      "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/storage-profile-seeds-2393.tsv (sha256 a7ec899cd3ed9ad4d01f058cc6947f0819b919ab8605c083c13eb855a576254b: 2393 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+      "Seed outcome: 2288 functions created, 105 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+    ],
+    "locations": [],
+    "evidence_links": []
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "evidence_id": "ev_2fc3a32fea591cd9c3b7403e4d7c14740091a1417b24b479f824900981b5b11a",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "mach-o",
+      "architecture": "arm64",
+      "available_architectures": [
+        "arm64"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "swift_enum_switch_recovery": "abi-signed-word-cfg-v9",
+      "swift_dynamic_typed_snapshot": "swift-dynamic-typed-snapshot-v1",
+      "darwin_stack_probe_call_summary": "trusted-darwin-arm64-chkstk-v1",
+      "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default",
+      "analysis_policy": "bounded-autoanalysis-v1",
+      "analysis_timeout_seconds": 1,
+      "analysis_seeds": {
+        "format": "rea-ghidra-seeds-v1",
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/storage-io-seeds-2463.tsv",
+        "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/storage-io-seeds-2463.tsv",
+        "sha256": "85a20193046dab6c42251fc95328a816cec6b159e188e2ea48a87896d7966752",
+        "entries": {
+          "function": 2463,
+          "code": 0,
+          "label": 0
+        }
+      }
+    },
+    "digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "procedure_pseudo_code",
+  "parameters": {
+    "procedure": "0x100dc4860"
+  },
+  "raw_result": {
+    "value": "\nvoid FUN_100dc4860(undefined8 param_1,undefined8 param_2,undefined8 param_3)\n\n{\n  long lVar1;\n  long lVar2;\n  long lVar3;\n  undefined *puVar4;\n  undefined *puVar5;\n  undefined8 uVar6;\n  undefined *puVar7;\n  undefined *puVar8;\n  undefined8 uVar9;\n  long extraout_x8;\n  long extraout_x8_00;\n  long lVar10;\n  long extraout_x8_01;\n  long extraout_x12;\n  long extraout_x12_00;\n  long lVar11;\n  code *pcVar12;\n  long unaff_x21;\n  long extraout_x21;\n  long extraout_x21_00;\n  long lVar13;\n  long lVar14;\n  long lVar15;\n  long lStack_100;\n  undefined8 uStack_f8;\n  undefined8 uStack_f0;\n  undefined8 uStack_e8;\n  undefined8 uStack_78;\n  undefined8 uStack_70;\n  long lStack_68;\n  \n  lStack_68 = *(long *)PTR____stack_chk_guard_1042374a0;\n  lVar1 = 0x1045f3840;\n  puVar8 = &UNK_10373f060;\n  uStack_f0 = param_1;\n  uStack_e8 = param_2;\n  FUN_100005134(0x1045f3840,&UNK_10373f060);\n  (*(code *)PTR____chkstk_darwin_104237440)\n            (*(long *)(*(long *)(lVar1 + -8) + 0x40) + 0xfU & 0xfffffffffffffff0);\n  lVar2 = 0;\n  lStack_100 = (long)&lStack_100 - extraout_x8;\n  __s10Foundation4UUIDVMa();\n  lVar11 = *(long *)(lVar2 + -8);\n  (*(code *)PTR____chkstk_darwin_104237440)(*(undefined8 *)(lVar11 + 0x40));\n  lVar15 = ((long)&lStack_100 - extraout_x8) - (extraout_x8_00 + 0xfU & 0xfffffffffffffff0);\n  lVar3 = 0;\n  __s10Foundation3URLVMa();\n  lVar10 = *(long *)(lVar3 + -8);\n  lVar1 = lVar3;\n  (*(code *)PTR____chkstk_darwin_104237440)(*(undefined8 *)(lVar10 + 0x40));\n  lVar14 = lVar15 - (extraout_x8_01 + 0xfU & 0xfffffffffffffff0);\n  (*(code *)PTR____chkstk_darwin_104237440)();\n  lVar13 = lVar14 - extraout_x12;\n  (*(code *)PTR____chkstk_darwin_104237440)();\n  uStack_f8 = param_3;\n  __s10Foundation3URLV25deletingLastPathComponentACyF(lVar13 - extraout_x12_00);\n  uStack_78 = 0x2d706d742e;\n  uStack_70 = 0xe500000000000000;\n  __s10Foundation4UUIDVACycfC(lVar15);\n  __s10Foundation4UUIDV10uuidStringSSvg();\n  (**(code **)(lVar11 + 8))(lVar15,lVar2);\n  __sSS6appendyySSF(lVar1,puVar8);\n  _swift_bridgeObjectRelease(puVar8);\n  uVar9 = uStack_70;\n  uVar6 = uStack_70;\n  __s10Foundation3URLV22appendingPathComponentyACSSF(lVar13,uStack_78,uStack_70);\n  _swift_bridgeObjectRelease(uVar9);\n  puVar4 = &_OBJC_CLASS___NSFileManager;\n  _objc_opt_self();\n  puVar8 = puVar4;\n  func_0x0001036499c0();\n  _objc_retainAutoreleasedReturnValue();\n  puVar5 = puVar8;\n  __s10Foundation3URLV4pathSSvg();\n  __sSS10FoundationE19_bridgeToObjectiveCSo8NSStringCyF();\n  _swift_bridgeObjectRelease(uVar6);\n  lVar1 = 0x1045f3b88;\n  FUN_100005134(0x1045f3b88,&UNK_10373f340);\n  _swift_initStackObject();\n  *(undefined8 *)(lVar1 + 0x20) = *(undefined8 *)PTR__NSFilePosixPermissions_104236ff8;\n  *(undefined8 *)(lVar1 + 0x18) = 2;\n  *(undefined8 *)(lVar1 + 0x10) = 1;\n  *(undefined **)(lVar1 + 0x40) = PTR___sSiN_10423d628;\n  *(undefined8 *)(lVar1 + 0x28) = 0x180;\n  _objc_retain();\n  lVar2 = lVar1;\n  FUN_100dc4560(lVar1);\n  _swift_setDeallocating(lVar1);\n  FUN_10000733c((undefined8 *)(lVar1 + 0x20),0x1045f3b90,&UNK_10373f348);\n  uVar6 = 0;\n  FUN_100db7040(0);\n  uVar9 = 0x1045f37d0;\n  FUN_10000571c(0x1045f37d0,FUN_100db7040,&UNK_10373ef78);\n  lVar1 = lVar2;\n  __sSD10FoundationE19_bridgeToObjectiveCSo12NSDictionaryCyF\n            (lVar2,uVar6,PTR___sypN_10423f7a8 + 8,uVar9);\n  _swift_bridgeObjectRelease(lVar2);\n  puVar7 = puVar8;\n  func_0x000103648620();\n  _objc_release(puVar8);\n  _objc_release(puVar5);\n  _objc_release(lVar1);\n  if ((int)puVar7 == 0) {\n    puVar8 = &_OBJC_CLASS___NSError;\n    _objc_allocWithZone(&_OBJC_CLASS___NSError);\n    uVar9 = 0x6574697257;\n    __sSS10FoundationE19_bridgeToObjectiveCSo8NSStringCyF(0x6574697257,0xe500000000000000);\n    func_0x000103651640(puVar8);\n    _objc_release(uVar9);\n    _swift_willThrow();\n    goto LAB_100dc4cf0;\n  }\n  FUN_100039248(0,0x1045f3bb8,&PTR__OBJC_CLASS___NSFileHandle_104551468);\n  (**(code **)(lVar10 + 0x10))(lVar14,lVar13,lVar3);\n  FUN_100539ca0();\n  if (unaff_x21 != 0) goto LAB_100dc4cf0;\n  uStack_78 = uStack_f0;\n  uStack_70 = uStack_e8;\n  lVar1 = lVar14;\n  FUN_100dc52ec();\n  __sSo12NSFileHandleC10FoundationE5write10contentsOfyx_tKAC12DataProtocolRzlF\n            (&uStack_78,PTR___s10Foundation4DataVN_1042361e0,lVar1);\n  if (extraout_x21 == 0) {\n    uStack_78 = 0;\n    lVar1 = lVar14;\n    func_0x00010366b920();\n    uVar9 = uStack_78;\n    if ((int)lVar1 != 0) {\n      uStack_78 = 0;\n      _objc_retain(uVar9);\n      lVar1 = lVar14;\n      func_0x000103646840();\n      if ((int)lVar1 != 0) {\n        _objc_retain(uStack_78);\n        func_0x0001036499c0(puVar4);\n        _objc_retainAutoreleasedReturnValue();\n        lVar1 = lStack_100;\n        __sSo13NSFileManagerC10FoundationE13replaceItemAt_04witheF006backupE4Name7optionsAC3URLVSgAI_AISSSgSo0abE18ReplacementOptionsVtKF\n                  (lStack_100,uStack_f8,lVar13,0,0,1);\n        if (extraout_x21_00 == 0) {\n          FUN_10000733c(lVar1,0x1045f3840,&UNK_10373f060);\n        }\n        _objc_release(puVar4);\n        goto LAB_100dc4ce8;\n      }\n    }\n    uVar9 = uStack_78;\n    uVar6 = uStack_78;\n    _objc_retain(uStack_78);\n    __s10Foundation22_convertNSErrorToErrorys0E0_pSo0C0CSgF(uVar9);\n    _objc_release(uVar6);\n    _swift_willThrow();\n  }\nLAB_100dc4ce8:\n  _objc_release(lVar14);\nLAB_100dc4cf0:\n  FUN_100dbe40c(lVar13);\n  pcVar12 = *(code **)(lVar10 + 8);\n  (*pcVar12)(lVar13,lVar3);\n  (*pcVar12)(lVar13 - extraout_x12_00,lVar3);\n  if (*(long *)PTR____stack_chk_guard_1042374a0 == lStack_68) {\n    return;\n  }\n                    /* WARNING: Subroutine does not return */\n  ___stack_chk_fail();\n}\n\n",
+    "limitations": [
+      "REA+ models x21 as unknown after proved synchronous Swift throwing callees in this private Program. Original parameters, return types and bytes are preserved; this is static ABI modeling, not observed execution.",
+      "Swift control-flow uncertainty at 0x100dc48e0: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x100dc4918: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x100dc49b0: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x100dc4a28: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x100dc4b90: An x21 guard follows a call without a retained original symbol; throwing behavior is unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x100dc4d90: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths."
+    ]
+  },
+  "normalized_result": "\nvoid FUN_100dc4860(undefined8 param_1,undefined8 param_2,undefined8 param_3)\n\n{\n  long lVar1;\n  long lVar2;\n  long lVar3;\n  undefined *puVar4;\n  undefined *puVar5;\n  undefined8 uVar6;\n  undefined *puVar7;\n  undefined *puVar8;\n  undefined8 uVar9;\n  long extraout_x8;\n  long extraout_x8_00;\n  long lVar10;\n  long extraout_x8_01;\n  long extraout_x12;\n  long extraout_x12_00;\n  long lVar11;\n  code *pcVar12;\n  long unaff_x21;\n  long extraout_x21;\n  long extraout_x21_00;\n  long lVar13;\n  long lVar14;\n  long lVar15;\n  long lStack_100;\n  undefined8 uStack_f8;\n  undefined8 uStack_f0;\n  undefined8 uStack_e8;\n  undefined8 uStack_78;\n  undefined8 uStack_70;\n  long lStack_68;\n  \n  lStack_68 = *(long *)PTR____stack_chk_guard_1042374a0;\n  lVar1 = 0x1045f3840;\n  puVar8 = &UNK_10373f060;\n  uStack_f0 = param_1;\n  uStack_e8 = param_2;\n  FUN_100005134(0x1045f3840,&UNK_10373f060);\n  (*(code *)PTR____chkstk_darwin_104237440)\n            (*(long *)(*(long *)(lVar1 + -8) + 0x40) + 0xfU & 0xfffffffffffffff0);\n  lVar2 = 0;\n  lStack_100 = (long)&lStack_100 - extraout_x8;\n  __s10Foundation4UUIDVMa();\n  lVar11 = *(long *)(lVar2 + -8);\n  (*(code *)PTR____chkstk_darwin_104237440)(*(undefined8 *)(lVar11 + 0x40));\n  lVar15 = ((long)&lStack_100 - extraout_x8) - (extraout_x8_00 + 0xfU & 0xfffffffffffffff0);\n  lVar3 = 0;\n  __s10Foundation3URLVMa();\n  lVar10 = *(long *)(lVar3 + -8);\n  lVar1 = lVar3;\n  (*(code *)PTR____chkstk_darwin_104237440)(*(undefined8 *)(lVar10 + 0x40));\n  lVar14 = lVar15 - (extraout_x8_01 + 0xfU & 0xfffffffffffffff0);\n  (*(code *)PTR____chkstk_darwin_104237440)();\n  lVar13 = lVar14 - extraout_x12;\n  (*(code *)PTR____chkstk_darwin_104237440)();\n  uStack_f8 = param_3;\n  __s10Foundation3URLV25deletingLastPathComponentACyF(lVar13 - extraout_x12_00);\n  uStack_78 = 0x2d706d742e;\n  uStack_70 = 0xe500000000000000;\n  __s10Foundation4UUIDVACycfC(lVar15);\n  __s10Foundation4UUIDV10uuidStringSSvg();\n  (**(code **)(lVar11 + 8))(lVar15,lVar2);\n  __sSS6appendyySSF(lVar1,puVar8);\n  _swift_bridgeObjectRelease(puVar8);\n  uVar9 = uStack_70;\n  uVar6 = uStack_70;\n  __s10Foundation3URLV22appendingPathComponentyACSSF(lVar13,uStack_78,uStack_70);\n  _swift_bridgeObjectRelease(uVar9);\n  puVar4 = &_OBJC_CLASS___NSFileManager;\n  _objc_opt_self();\n  puVar8 = puVar4;\n  func_0x0001036499c0();\n  _objc_retainAutoreleasedReturnValue();\n  puVar5 = puVar8;\n  __s10Foundation3URLV4pathSSvg();\n  __sSS10FoundationE19_bridgeToObjectiveCSo8NSStringCyF();\n  _swift_bridgeObjectRelease(uVar6);\n  lVar1 = 0x1045f3b88;\n  FUN_100005134(0x1045f3b88,&UNK_10373f340);\n  _swift_initStackObject();\n  *(undefined8 *)(lVar1 + 0x20) = *(undefined8 *)PTR__NSFilePosixPermissions_104236ff8;\n  *(undefined8 *)(lVar1 + 0x18) = 2;\n  *(undefined8 *)(lVar1 + 0x10) = 1;\n  *(undefined **)(lVar1 + 0x40) = PTR___sSiN_10423d628;\n  *(undefined8 *)(lVar1 + 0x28) = 0x180;\n  _objc_retain();\n  lVar2 = lVar1;\n  FUN_100dc4560(lVar1);\n  _swift_setDeallocating(lVar1);\n  FUN_10000733c((undefined8 *)(lVar1 + 0x20),0x1045f3b90,&UNK_10373f348);\n  uVar6 = 0;\n  FUN_100db7040(0);\n  uVar9 = 0x1045f37d0;\n  FUN_10000571c(0x1045f37d0,FUN_100db7040,&UNK_10373ef78);\n  lVar1 = lVar2;\n  __sSD10FoundationE19_bridgeToObjectiveCSo12NSDictionaryCyF\n            (lVar2,uVar6,PTR___sypN_10423f7a8 + 8,uVar9);\n  _swift_bridgeObjectRelease(lVar2);\n  puVar7 = puVar8;\n  func_0x000103648620();\n  _objc_release(puVar8);\n  _objc_release(puVar5);\n  _objc_release(lVar1);\n  if ((int)puVar7 == 0) {\n    puVar8 = &_OBJC_CLASS___NSError;\n    _objc_allocWithZone(&_OBJC_CLASS___NSError);\n    uVar9 = 0x6574697257;\n    __sSS10FoundationE19_bridgeToObjectiveCSo8NSStringCyF(0x6574697257,0xe500000000000000);\n    func_0x000103651640(puVar8);\n    _objc_release(uVar9);\n    _swift_willThrow();\n    goto LAB_100dc4cf0;\n  }\n  FUN_100039248(0,0x1045f3bb8,&PTR__OBJC_CLASS___NSFileHandle_104551468);\n  (**(code **)(lVar10 + 0x10))(lVar14,lVar13,lVar3);\n  FUN_100539ca0();\n  if (unaff_x21 != 0) goto LAB_100dc4cf0;\n  uStack_78 = uStack_f0;\n  uStack_70 = uStack_e8;\n  lVar1 = lVar14;\n  FUN_100dc52ec();\n  __sSo12NSFileHandleC10FoundationE5write10contentsOfyx_tKAC12DataProtocolRzlF\n            (&uStack_78,PTR___s10Foundation4DataVN_1042361e0,lVar1);\n  if (extraout_x21 == 0) {\n    uStack_78 = 0;\n    lVar1 = lVar14;\n    func_0x00010366b920();\n    uVar9 = uStack_78;\n    if ((int)lVar1 != 0) {\n      uStack_78 = 0;\n      _objc_retain(uVar9);\n      lVar1 = lVar14;\n      func_0x000103646840();\n      if ((int)lVar1 != 0) {\n        _objc_retain(uStack_78);\n        func_0x0001036499c0(puVar4);\n        _objc_retainAutoreleasedReturnValue();\n        lVar1 = lStack_100;\n        __sSo13NSFileManagerC10FoundationE13replaceItemAt_04witheF006backupE4Name7optionsAC3URLVSgAI_AISSSgSo0abE18ReplacementOptionsVtKF\n                  (lStack_100,uStack_f8,lVar13,0,0,1);\n        if (extraout_x21_00 == 0) {\n          FUN_10000733c(lVar1,0x1045f3840,&UNK_10373f060);\n        }\n        _objc_release(puVar4);\n        goto LAB_100dc4ce8;\n      }\n    }\n    uVar9 = uStack_78;\n    uVar6 = uStack_78;\n    _objc_retain(uStack_78);\n    __s10Foundation22_convertNSErrorToErrorys0E0_pSo0C0CSgF(uVar9);\n    _objc_release(uVar6);\n    _swift_willThrow();\n  }\nLAB_100dc4ce8:\n  _objc_release(lVar14);\nLAB_100dc4cf0:\n  FUN_100dbe40c(lVar13);\n  pcVar12 = *(code **)(lVar10 + 8);\n  (*pcVar12)(lVar13,lVar3);\n  (*pcVar12)(lVar13 - extraout_x12_00,lVar3);\n  if (*(long *)PTR____stack_chk_guard_1042374a0 == lStack_68) {\n    return;\n  }\n                    /* WARNING: Subroutine does not return */\n  ___stack_chk_fail();\n}\n\n",
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+    "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+    "REA+ models x21 as unknown after proved synchronous Swift throwing callees in this private Program. Original parameters, return types and bytes are preserved; this is static ABI modeling, not observed execution.",
+    "Swift control-flow uncertainty at 0x100dc48e0: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+    "Swift control-flow uncertainty at 0x100dc4918: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+    "Swift control-flow uncertainty at 0x100dc49b0: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+    "Swift control-flow uncertainty at 0x100dc4a28: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+    "Swift control-flow uncertainty at 0x100dc4b90: An x21 guard follows a call without a retained original symbol; throwing behavior is unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+    "Swift control-flow uncertainty at 0x100dc4d90: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+    "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.",
+    "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/storage-io-seeds-2463.tsv (sha256 85a20193046dab6c42251fc95328a816cec6b159e188e2ea48a87896d7966752: 2463 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+    "Seed outcome: 2358 functions created, 105 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

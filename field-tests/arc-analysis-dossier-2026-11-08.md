@@ -927,3 +927,36 @@ are `BoostsClientError.doesNotExist` / `.invalidData`. Getter result decoding,
 alternative setter effects, the editor's save trigger and actual remote/local
 readback remain open. All seven new owned lineages are verified empty; 330 of
 373 public replies succeeded, with 43 retained earlier admission errors.
+
+
+## Editor save, JS activation and local-store follow-up (2026-11-21)
+
+The [callback/local-store report](arc-callbacks-2026-11-21.md) supersedes the
+remaining absence of an editor save trigger, selected getter decoding and
+alternate setter control flow in the preceding section. Editor mutation
+constructs effects using BoostsClient `createBoost`, `setBoostData` and
+`setLocalPreviewImage`, with source-bound async descriptors. The preview
+callback's concrete object-method slot remains unresolved.
+
+The selected converter returns `isActive = storedActive && (localID ||
+!nonblankJS)`. Caught local-read errors use an empty ID Set. Newly inserted IDs
+first serialize an inactive model copy, merge it, then serialize and merge
+the original only after first success. Both primary merge-error paths forward
+an error. A subsequent `featuresUsed` update remains only partly traced;
+these are request-construction facts, not observed requests or final state.
+
+The typed StorableBoostsData factory now reaches generic synchronous queue
+wrappers, JSON decoding/encoding and sibling temporary-file replacement code.
+Exact store location, version/migration/backup policy and durable readback
+remain open. Another masked unguarded halfword dispatch on the location path
+is retained under the existing item 63 coverage boundary. Production source
+is unchanged; the previous native qualification remains scoped as before.
+
+Five sessions made 354 public calls: 352 successful replies and two retained
+admission errors. One field-test plan stopped on a duplicate label before
+invoking it; that session remains failed, with original public records and
+verified cleanup retained. All five owned lineages are verified empty. The
+[canonical verification](arc-callbacks-2026-11-21/capture-verification.json),
+[source authentication](arc-callbacks-2026-11-21/source-verification.json) and
+[static fact index](arc-callbacks-2026-11-21/fact-index.json) preserve these
+limits. Full Arc feature coverage remains incomplete.
