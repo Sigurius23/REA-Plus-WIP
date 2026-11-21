@@ -1,0 +1,72 @@
+{
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "selected_branches": [
+    {
+      "tag": "0x31",
+      "table_entry_address": "0x1036db472",
+      "halfword": 947,
+      "anchor": "0x1005aa61c",
+      "target": "0x1005ab4e8",
+      "literal_utf8_address": "0x1039d11b0",
+      "return_tail": "0x1005ab7c8",
+      "key": "hasDismissedBoostsInterstitial",
+      "utf8_length": 30,
+      "derived_string_registers": {
+        "x0": "0xd00000000000001e",
+        "x1": "0x80000001039d1190"
+      },
+      "evidence_ids": [
+        "ev_99b6bb339f76c7326ae27fe237777df073c3894ae3dcb39be9f9d0cb71a5eae2",
+        "ev_b377cd55946ed6e040b9d1fec3a07b004ffd7dcd621ef91bfc664f12cf2529f4",
+        "ev_cfe1182dff25febe980fb69d64e0f6bff0d22e33f2c7cdb93fbc74c994cfe69d",
+        "ev_ac419e0fa56ef06087e9c6516ded8e86af4eba5dbb9258bb22977009d39a4915"
+      ]
+    },
+    {
+      "tag": "0x32",
+      "table_entry_address": "0x1036db474",
+      "halfword": 134,
+      "anchor": "0x1005aa61c",
+      "target": "0x1005aa834",
+      "literal_utf8_address": "0x1039d1190",
+      "return_tail": "0x1005ab800",
+      "key": "hasDismissedJSWarningBanner",
+      "utf8_length": 27,
+      "derived_string_registers": {
+        "x0": "0xd00000000000001b",
+        "x1": "0x80000001039d1170"
+      },
+      "evidence_ids": [
+        "ev_99b6bb339f76c7326ae27fe237777df073c3894ae3dcb39be9f9d0cb71a5eae2",
+        "ev_6b08fccec01c9dd21f5d68d957655c9d5b0b342172170ca4aef6657525c8e5d6",
+        "ev_da9037c17e401a9291316f4f925d08d92adca2439a5896b7f7e31cf566ea163d",
+        "ev_7af8f282c8e541487b2269aec72634c7b090477c03a2d39ee3f21d2b6946689f"
+      ]
+    }
+  ],
+  "objc_selectors": {
+    "initWithSuiteName:": {
+      "address": "0x103fb75c4",
+      "evidence_id": "ev_863591f1dbcabfb7b2e17c8bef383e62f8f8670d9792609faaf9a63391a89e2b"
+    },
+    "standardUserDefaults": {
+      "address": "0x103fd5aeb",
+      "evidence_id": "ev_ddbafe88c2f6e1d1d0562e7a21c4870bedd286ae7af02ab3da8b438582019147"
+    },
+    "boolForKey:": {
+      "address": "0x103fa286a",
+      "evidence_id": "ev_a19d984d8a09625626f8f86c298aa1773b596489f285a67d2fe9a7182221af55"
+    },
+    "setBool:forKey:": {
+      "address": "0x103f88a82",
+      "evidence_id": "ev_fd51bbe6766c7ad116533ce18c0d5f94b4f965e43c863f9f3406981e64f739b6"
+    }
+  },
+  "interpretation": "The selected UserDefaultsClient default reader/writer path converts Setting tags0x31/0x32 to these exact keys. The writer callback reaches NSUserDefaults.setBool:forKey:; the reader reaches boolForKey:.",
+  "limits": [
+    "Only two concrete input branches were derived. The public analyzer still reports zero recovered tables and56body bytes for this anonymous converter.",
+    "No generic bound was inferred from the 0xffff mask or neighboring bytes.",
+    "Default implementation selection, publisher callback invocation, filesystem flush and installed-profile state remain unobserved.",
+    "This is static instruction arithmetic and literal inspection, not target execution or CPU emulation."
+  ]
+}

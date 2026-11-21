@@ -1600,3 +1600,41 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     update and local qualification are recorded above. See the
     [comparison and proposed order](field-tests/upstream-rea-comparison-2026-11-18.md)
     and [complete source-name inventory](field-tests/upstream-rea-comparison-2026-11-18/comparison.json).
+
+## Arc continuation (2026-11-21)
+
+63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    Open; actual Arc omission and owned compiler encoding controls retained.
+    The anonymous Setting-to-key converter at `0x1005aa5e4` masks its input to
+    16 bits, loads unsigned halfwords from `0x1036db410`, and dispatches relative
+    to `0x1005aa61c` with scale 4. Public analysis retains 14 instructions/56 body
+    bytes and zero recovered tables. The two selected entries for tags `0x31`
+    and `0x32` can be checked directly and produce the exact preference keys;
+    that selected derivation is not automatic recovery of all 297 cases.
+
+    Existing item 37/55 signed-word profiles and the guarded byte/halfword
+    decoder do not establish this unguarded input's enum identity. The mask
+    permits 65,536 values; do not infer 297 from a neighboring table, equal
+    helper bytes or a similar function. Owned 297-case Swift fixtures with
+    RawRepresentable and manual String getters produce identical 594-byte
+    tables. All 297 targets are statically checked against each fixture's
+    symbol interval; the fixtures were not executed or passed through a new
+    provider session. Arc's selected conformance-name query yields no matches
+    while retaining 401 unresolved identities, so protocol absence is not
+    established.
+
+    A safe extension must prove the parameter type through an exact typed
+    witness, or through the selected `UserDefaultsClient` closure-field,
+    constructor assignment and unchanged adapter/argument flow. Keep that
+    proof conditional on the selected default implementation; static presence
+    does not select runtime dependency injection. Add positive/negative
+    producer controls before changing recovery. The qualified native bridge
+    is unchanged; the prior 102-case matrix was not repeated. See the
+    [Arc results](field-tests/arc-persistence-2026-11-21.md) and
+    [bounded fixture/design](field-tests/arc-persistence-2026-11-20/halfword-fixture/DESIGN.md).
+
+    The same pass identifies exact warning/interstitial keys and the selected
+    NSUserDefaults read/write callback, separates `applyToWebContent` from
+    storage, and identifies the default Memory/Firebase `BoostsStorage`
+    conformances. These are semantic progress, not closure of full Arc,
+    durable readback, account/sync or the other browser feature routes.

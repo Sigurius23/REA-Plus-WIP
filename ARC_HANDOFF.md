@@ -1,4 +1,4 @@
-# Arc / REA+ handoff — preserved 2026-11-20
+# Arc / REA+ handoff — updated 2026-11-21
 
 ## Start here
 
@@ -71,6 +71,73 @@ maps declaration indices and trace keys to names with Evidence IDs. Runtime
 instance offsets and durable writes are still unproved. Current frozen runtime:
 `rea-local/.cache/arc-runtime-retained-summary-2026-11-20`; its manifest records
 1,868 files. Actual verification Node is 24.22.3, Ghidra 12.1.4, existing JDK 27.
+
+## Persistence continuation (2026-11-21)
+
+The next public sessions are retained in
+`field-tests/arc-persistence-2026-11-20/`; the current report is
+`field-tests/arc-persistence-2026-11-21.md`. Use `metadata-bindings.json`,
+`selected-preference-path.json` and `capture-verification.json` first. They
+supersede the older claim below that the preference client/key names and
+NSUserDefaults route are unproved. Actual runtime injection and disk readback
+remain unobserved.
+
+`Dependency<UserDefaultsClient>` uses field 0 `boolForSetting` at instance
+offset 0 and field 10 `setBool` at `0xa0`, independently verified in static
+metadata. Exact Setting descriptor `0x103d41568` has 0 payload/297 empty cases.
+Tags `0x31`/`0x32` are `hasDismissedBoostsInterstitial` /
+`hasDismissedJSWarningBanner`; two selected table branches independently
+return those exact key strings. The selected default conformance candidate
+reaches NSUserDefaults suite-or-standard initialization and `boolForKey:` /
+`setBool:forKey:` through captured closures. Publisher callback invocation and
+flush are not observed. The new retained helper scripts recheck these facts.
+
+The shared mutation async dependency is `BoostsClient`; its observed static
+field 13 offset `0xd0` is `applyToWebContent`. Conditional companion dependency
+is `AnalyticsClient`. Neither should remain labeled a proved durable save.
+Default field 5/6 route through `BoostsStorage`; exact conformance identities
+are `BoostsStorageMemoryImpl` and `BoostsStorageFirebaseImpl`, selected by an
+unnamed byte predicate. Captured helper classes include `BoostsImageCacheImpl`
+and `BoostsWebContentHelperImpl`. Application entries use the main actor.
+
+New item 63 records a real unsupported automatic-recovery profile: anonymous
+converter `0x1005aa5e4` has an unguarded UInt16 relative table. It still reports
+14 instructions/56 owned bytes/0 recovered tables. The mask does not prove
+the 297-case bound. Two source-owned compiler fixtures reproduce its encoding,
+with/without RawRepresentable, and show why pattern similarity cannot identify
+input type. The producer remains unchanged pending a typed witness/closure
+provenance proof and controls. Do not mark 63 fixed from the two concrete
+selected-branch derivations. See `halfword-fixture/DESIGN.md`.
+
+The initial shorter application body missed resume `0x1011880fc`; both this and
+`0x101188c58` are exact LC starts and now have a narrow source-checked overlay.
+The latest seed is
+`worker-preparation/firebase-request-seeds-2296.tsv`, SHA256
+`acf93127aa3814707b34a12f58360eb60236d8b11fcb28c314c202db102837bf`.
+The final public session is `mcp-firebase-2026-11-21/`. Check its actual
+summary and new review before repeating admission. Earlier missing-function
+replies belong to partial Programs, not absence from Arc.
+
+Harness v2 rejects reused labels and existing output directories. Two v1 label
+collisions were recovered from the full immutable bundle without changing the
+journal. One followup continuation expired but transport cleanup verified an
+empty lineage. No Arc code was launched; no production/native recovery source
+changed. Fixture binaries/caches and original target/evidence exclusions remain
+local. Publish text captures, sources and updated notes together after final
+verification; do not stage the DMG, dylibs, projects or caches.
+
+The seven sessions retain 373 public calls: 330 successful replies and 43
+procedure-admission errors from earlier partial Programs. Canonical Evidence
+and final empty owned lineages verify. The Firebase ordinary branch constructs
+`boosts`/identifier, calls `setData:merge:completion:` (merge 1), and propagates
+the callback error or normal completion. Both read-request constructors call
+`getDocumentWithCompletion:`. Next inspect getter callbacks `0x10118374c`,
+`0x101183754`, `0x101183480` and alternate setter resume `0x101182d1c`; they are
+not in the latest 2296 overlay. Verify and add only justified entries before
+replay. Exact `BoostsClientError` names now bind Memory raw tags 1/3 to
+`doesNotExist`/`invalidData`; do not apply them to the separate Firebase error
+wrapper. The editor-to-save linkage, encoding/decoding, alternate setter,
+readback and broader browser features remain open.
 
 ## Git and approval state (historical November 16)
 

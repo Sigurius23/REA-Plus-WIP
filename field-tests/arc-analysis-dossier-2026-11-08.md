@@ -7,7 +7,8 @@ Selector input filtering, candidate-query construction and visual composition
 addendum added **2026-11-15**. Actual v9 reducer coverage, candidate commit/reset
 and broader action entry-point observations added **2026-11-16**.
 Retained-summary qualification and all 21 selected State names added
-**2026-11-20**.
+**2026-11-20**. Preference keys/default NSUserDefaults callback, Boost client
+application/storage split and broader worker decisions added **2026-11-21**.
 This dossier consolidates the supplied
 **Arc 1.172.1 / build 90370 DMG** investigation. It is a coverage map and an
 explanation of recovered implementation paths; full Arc behavior is **not yet
@@ -882,3 +883,47 @@ See the [update/retest](arc-upstream-retained-2026-11-20.md) and
 [machine verification](arc-upstream-retained-2026-11-20/verification.json).
 This extends the selected editor path; broader Arc feature coverage remains
 partial.
+
+
+## Preference and Boost continuation (2026-11-21)
+
+[The new report](arc-persistence-2026-11-21.md) binds the warning/interstitial
+preference route to `Dependency<UserDefaultsClient>`, observed reader/writer
+instance offsets 0/`0xa0`, Setting tags `0x31`/`0x32`, and the exact keys
+`hasDismissedBoostsInterstitial` / `hasDismissedJSWarningBanner`. The selected
+default initializer captures suite-or-standard NSUserDefaults; reader and
+writer callback reach `boolForKey:` / `setBool:forKey:`. Runtime dependency
+selection, publisher callback timing, filesystem flush and installed-profile
+readback remain unobserved.
+
+This supersedes the earlier absence of concrete preference client/key names;
+it does not close general Boost storage. The shared mutation worker's client
+field at `0xd0` is `BoostsClient.applyToWebContent`; the conditional companion
+is `AnalyticsClient`. Exact default storage conformances identify
+`BoostsStorageMemoryImpl` and `BoostsStorageFirebaseImpl`. Application helpers
+include `BoostsWebContentHelperImpl`; selected bulk code checks URL.host and
+constructs style/font/text-transform/zap operations. The report and fresh
+worker review preserve the remaining indirect targets and identity limits.
+
+New item 63 retains an unsupported unguarded halfword converter with 14 initial
+instructions/56 recovered bytes and zero recovered tables. Two concrete input
+branches are independently verified, while generic input-type provenance and
+all-case recovery remain open. Source-owned 297-case encoding controls prevent
+assuming a type/bound from the mask or identical table shapes. Production
+recovery was not changed. The previous conditional 28-case reducer recovery
+and its fixture qualifications remain unchanged.
+
+The tab worker now has a source-bound NSMenuItem.tag 1–9 decision and special 9
+encoding. Sidebar toggling reads a keypath byte and sends its negation. Selected
+restore wrappers and textual formatting are recovered; final feature reducers,
+durable restoration, account/sync, history/downloads and general browser
+network/security behavior remain outside complete coverage.
+
+The selected Firebase ordinary setter is now traced to collection `boosts`,
+identifier-selected document and `setData:merge:completion:` with merge 1;
+its block propagates a callback error or normal continuation. Both selected
+read constructors invoke `getDocumentWithCompletion:`. Exact Memory errors
+are `BoostsClientError.doesNotExist` / `.invalidData`. Getter result decoding,
+alternative setter effects, the editor's save trigger and actual remote/local
+readback remain open. All seven new owned lineages are verified empty; 330 of
+373 public replies succeeded, with 43 retained earlier admission errors.

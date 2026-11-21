@@ -1,0 +1,195 @@
+{
+  "kind": "retained-only-preferences-review",
+  "date": "2026-11-20",
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "scope": {
+    "target_executed": false,
+    "provider_session_started": false,
+    "source_or_old_captures_modified": false
+  },
+  "sources": [
+    {
+      "path": "field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/arc-reducer-v9.retained.evidence.json",
+      "evidence_id": "ev_583079470e74897be835bc992f7970146808dc6ced3ae7dc423c29725672acc6",
+      "sha256": "d0f9b27d9c9b88ac67e64f152bbb3a3da3e89455a4db5e2a3f5d8376a9a491f7"
+    },
+    {
+      "path": "field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/arc-reducer-v9-instructions.evidence.json",
+      "evidence_id": "ev_40ba88fc8651de3ee7dca401286285565c0d72dd24ae10c54b889c86ff4e12a0",
+      "sha256": "fc68571184bc2dfe25421f080f01eeba562ac4c88b06bcecb7f90daf39c8bde4"
+    },
+    {
+      "path": "field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/reducer-preferences-key-type-reference.evidence.json",
+      "evidence_id": "ev_4a2d7f4a8096659119556955d2b5b29249358cda744e2f2eb9155403096f17a1",
+      "sha256": "8eeafd7d81170d6f789c1dc8285b88103da3f1928c5d1c13cbc9d47cca72a765"
+    },
+    {
+      "path": "field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/preferences-client-mangled-reference.evidence.json",
+      "evidence_id": "ev_f3c8e2c727e015f0cb9c1149230b645954989ea216299632b6ed471e59e41a69",
+      "sha256": "f62e33feec32594883a32862d401cebf87596406ad9a6a0306b9f795654d1810"
+    },
+    {
+      "path": "field-tests/arc-dynamic-snapshot-2026-11-15/arc-v9-export-retry/evidence/preferences-publisher-mangled-reference.evidence.json",
+      "evidence_id": "ev_f46c6276708ac4d2687f674c9961bdd19fa3ff2cee7110ea524c7b77a6cbe12d",
+      "sha256": "defd58d5890f63cd5123259dbafeca44dc2127247a574fc534778256d41eb605"
+    }
+  ],
+  "ledger": [
+    {
+      "id": "PREF-01",
+      "confidence": "observed-static",
+      "finding": "initialize passes raw key 0x32 to the selected client reader closure and stores return bit 0 in State F60. November 20 field-name Evidence binds F60 to hasDismissedJSWarningBanner.",
+      "anchors": [
+        "0x1012a5fbc",
+        "0x1012a5fc0",
+        "0x1012a5fd4",
+        "0x1012a5fd8",
+        "0x1012a5fec",
+        "0x1012a5ff4"
+      ],
+      "field_name_evidence_id": "ev_ffb7f7f1c1453c3965c894d5d72a15283f9dac5850461362d248350f855dc290"
+    },
+    {
+      "id": "PREF-02",
+      "confidence": "observed-static",
+      "finding": "dismissJSWarningBanner writes byte 1 to F60, loads the selected client writer closure and invokes it with (1,0x32). completeInterstitial writes byte 1 to F24, bound to interstitialType, and invokes the same selected client writer slot with (1,0x31).",
+      "anchors": [
+        "0x1012a5ed8",
+        "0x1012a5ee4",
+        "0x1012a5f20",
+        "0x1012a5f24",
+        "0x1012a5f3c",
+        "0x1012a5f40",
+        "0x1012a6750",
+        "0x1012a675c",
+        "0x1012a6798",
+        "0x1012a679c",
+        "0x1012a67b4",
+        "0x1012a67b8",
+        "0x1012a67bc"
+      ],
+      "field_name_evidence_id": "ev_c1130476cca5457e09f72f0fd55e693226ce7614c8d73e4c0f983969935df853"
+    },
+    {
+      "id": "PREF-03",
+      "confidence": "derived-from-instructions",
+      "finding": "Selected client reader pair is at result+0/+8; selected writer pair is at result+0xa0/+0xa8. These slots do not establish a complete field layout or actual injected closure targets."
+    },
+    {
+      "id": "PREF-04",
+      "confidence": "observed-static",
+      "finding": "The writer return value is retained in a local and passed through 0x100596e80 after publisher metadata/witness preparation. Raw pseudocode names loaded slot 0x1042387f8 as AnyPublisher conformance _$s7Combine12AnyPublisherVyxq_GAA0C0AAMc.",
+      "anchors": [
+        "0x1012a67cc",
+        "0x1012a67fc",
+        "0x1012a6808",
+        "0x1012a6824"
+      ]
+    },
+    {
+      "id": "PREF-05",
+      "confidence": "observed-static",
+      "finding": "Generic getter 0x1006fa470 and wrapper 0x100596e80 have only missing-procedure admission replies in the prior partial Program; those errors have no Evidence IDs. No canonical implementations of these bodies were found in the retained field-test Evidence files.",
+      "error_replies": [
+        "reducer-preferences-getter-admission.reply.json",
+        "reducer-publisher-wrapper-admission.reply.json"
+      ]
+    },
+    {
+      "id": "PREF-06",
+      "confidence": "derived",
+      "finding": "Both captured mangled requests contain two 0x02 symbolic context references. Signed relative pointer arithmetic gives four exact indirect slots, requiring public byte/name/import corroboration before assigning type names.",
+      "symbolic_references": [
+        {
+          "source_evidence_id": "ev_f3c8e2c727e015f0cb9c1149230b645954989ea216299632b6ed471e59e41a69",
+          "tag_address": "0x103bd6880",
+          "tag": 2,
+          "signed_delta": 6648855,
+          "indirect_context_slot": "0x10422dc98"
+        },
+        {
+          "source_evidence_id": "ev_f3c8e2c727e015f0cb9c1149230b645954989ea216299632b6ed471e59e41a69",
+          "tag_address": "0x103bd6886",
+          "tag": 2,
+          "signed_delta": 6660481,
+          "indirect_context_slot": "0x104230a08"
+        },
+        {
+          "source_evidence_id": "ev_f46c6276708ac4d2687f674c9961bdd19fa3ff2cee7110ea524c7b77a6cbe12d",
+          "tag_address": "0x103bd688e",
+          "tag": 2,
+          "signed_delta": 6692705,
+          "indirect_context_slot": "0x1042387f0"
+        },
+        {
+          "source_evidence_id": "ev_f46c6276708ac4d2687f674c9961bdd19fa3ff2cee7110ea524c7b77a6cbe12d",
+          "tag_address": "0x103bd6894",
+          "tag": 2,
+          "signed_delta": 6719843,
+          "indirect_context_slot": "0x10423f1f8"
+        }
+      ]
+    }
+  ],
+  "implementation_candidates": {
+    "concrete_default_function_addresses": [],
+    "reason": "Retained captures do not resolve client type or actual default/overridden closures. A preferences/UserDefaults backend cannot be identified from raw keys alone.",
+    "focused_searches_after_type_resolution": [
+      "search_procedures: actual-client-name.*(liveValue|testValue|previewValue), regex, case insensitive",
+      "search_procedures: DependencyValues.*actual-client-or-key-name, regex, case insensitive",
+      "inspect_native_dispatch_metadata: facet swift-conformances; exact local type_name for actual client/key, then inspect selected static witness records",
+      "search_strings: actual-client-name|hasDismissedJSWarningBanner|interstitialType as leads only; raw key bytes are not user-facing names"
+    ]
+  },
+  "next_unique_addresses": [
+    {
+      "address": "0x1006fa470",
+      "calls": [
+        "read_function_instructions",
+        "procedure_pseudo_code"
+      ]
+    },
+    {
+      "address": "0x100596e80",
+      "calls": [
+        "read_function_instructions",
+        "procedure_pseudo_code"
+      ]
+    },
+    {
+      "address": "0x10422dc98",
+      "calls": [
+        "read_bytes length=8",
+        "address_name"
+      ]
+    },
+    {
+      "address": "0x104230a08",
+      "calls": [
+        "read_bytes length=8",
+        "address_name"
+      ]
+    },
+    {
+      "address": "0x1042387f0",
+      "calls": [
+        "read_bytes length=8",
+        "address_name"
+      ]
+    },
+    {
+      "address": "0x10423f1f8",
+      "calls": [
+        "read_bytes length=8",
+        "address_name"
+      ]
+    }
+  ],
+  "limits": [
+    "Static paths and closure invocation instructions are observed; actual execution, subscription and delivery are unobserved.",
+    "No UserDefaults/CFPreferences/database/file/network write or disk readback primitive is established by these retained bodies.",
+    "Shared raw key 0x32 establishes caller-side pairing only; actual injected reader/writer instance, key mapping, overrides and lifetime remain unresolved.",
+    "Metadata-vector F60/F24 keys are not actual runtime instance storage offsets.",
+    "The original Ghidra Program was a seeded, bounded partial Program; missing procedure admission is preparation scope, not a product capability failure."
+  ]
+}

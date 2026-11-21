@@ -1,0 +1,126 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/mcp-boosts-2026-11-21",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/worker-preparation/boosts-implementation-seeds-2236.tsv"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x101178704"
+      },
+      "label": "boosts-entry-0x101178704-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101178704"
+      },
+      "label": "boosts-entry-0x101178704-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x101178770"
+      },
+      "label": "boosts-entry-0x101178770-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101178770"
+      },
+      "label": "boosts-entry-0x101178770-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x101178ac0"
+      },
+      "label": "boosts-entry-0x101178ac0-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101178ac0"
+      },
+      "label": "boosts-entry-0x101178ac0-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x101178b40"
+      },
+      "label": "boosts-entry-0x101178b40-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101178b40"
+      },
+      "label": "boosts-entry-0x101178b40-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x10117c644",
+        "length": 48
+      },
+      "label": "boosts-captured-class-accessor-0x10117c644",
+      "expect_success": false
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x10118b2b4",
+        "length": 48
+      },
+      "label": "boosts-captured-class-accessor-0x10118b2b4",
+      "expect_success": false
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/mcp-boosts-2026-11-21/phase-0.bundle.json"
+      },
+      "label": "export-phase-0",
+      "expect_success": true
+    }
+  ],
+  "idle_timeout_ms": 600000,
+  "runtime_manifest": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-upstream-retained-2026-11-20/runtime-manifest.json",
+  "exploratory_broader_steps": "Errors are retained for investigation; they are not converted into successful semantic claims.",
+  "verification": "Offline follow-up: public loader/symbolic-reference binding and seeded worker observations. Failed candidate queries remain retained; no target execution or automatic runtime-binding claim.",
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/boosts-phase-1.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/boosts-phase-2.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/boosts-phase-3.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/boosts-phase-4.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/boosts-phase-5.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/boosts-phase-6.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/boosts-phase-7.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/boosts-phase-8.continue.json"
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "analysis_profile": {
+    "digest": "0049efb216ee01144169e505ea5b21f51ecc1856521ec997e8357a33da90a310",
+    "parameters": {
+      "analysis_policy": "bounded-autoanalysis-v1",
+      "analysis_seeds": {
+        "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/worker-preparation/implementation-seeds-2216.tsv",
+        "entries": {
+          "code": 0,
+          "function": 2216,
+          "label": 0
+        },
+        "format": "rea-ghidra-seeds-v1",
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/worker-preparation/implementation-seeds-2216.tsv",
+        "sha256": "65496d5acf557743b6eaf30c5a8b16e3c530d52e04f9f9eeb5cea6da3039ea31"
+      },
+      "analysis_timeout_seconds": 1,
+      "analyzer_preset": "ghidra-default",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "architecture": "arm64",
+      "available_architectures": [
+        "arm64"
+      ],
+      "compiler_spec_id": "auto-default",
+      "darwin_stack_probe_call_summary": "trusted-darwin-arm64-chkstk-v1",
+      "decompiler_jump_loads": true,
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "import_mode": "ephemeral-source-immutable",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "language_id": "auto-from-header",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "loader": "auto-from-header",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "swift_dynamic_typed_snapshot": "swift-dynamic-typed-snapshot-v1",
+      "swift_enum_switch_recovery": "abi-signed-word-cfg-v9",
+      "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+      "target_format": "mach-o",
+      "target_kind": "executable"
+    },
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    }
+  },
+  "authority": "shipped-artifact",
+  "confidence": "observed",
+  "environment": null,
+  "evidence_id": "ev_7af8f282c8e541487b2269aec72634c7b090477c03a2d39ee3f21d2b6946689f",
+  "evidence_links": [],
+  "limitations": [
+    "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Bytes reflect Ghidra's initialized memory, including loader fixups. Reads stop at an unmapped or uninitialized byte and report completeness explicitly.",
+    "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.",
+    "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/worker-preparation/implementation-seeds-2216.tsv (sha256 65496d5acf557743b6eaf30c5a8b16e3c530d52e04f9f9eeb5cea6da3039ea31: 2216 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+    "Seed outcome: 2116 functions created, 100 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+  ],
+  "locations": [],
+  "normalized_result": {
+    "address": "0x1039d1190",
+    "bytes_hex": "6861734469736d69737365644a535761726e696e6742616e6e657200000000006861734469736d6973736564426f6f737473496e7465727374697469616c00006861734469736d69737365644c6974746c6542726f777365724e555800000000",
+    "complete": true,
+    "requested_bytes": 96,
+    "returned_bytes": 96
+  },
+  "operation": "read_bytes",
+  "parameters": {
+    "address": "0x1039d1190",
+    "length": 96
+  },
+  "predicate_type": "rea.analysis",
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "raw_result": {
+    "address": "0x1039d1190",
+    "bytes_hex": "6861734469736d69737365644a535761726e696e6742616e6e657200000000006861734469736d6973736564426f6f737473496e7465727374697469616c00006861734469736d69737365644c6974746c6542726f777365724e555800000000",
+    "complete": true,
+    "requested_bytes": 96,
+    "returned_bytes": 96
+  },
+  "subject": {
+    "architecture": "arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+    "name": "Arc-arm64"
+  }
+}

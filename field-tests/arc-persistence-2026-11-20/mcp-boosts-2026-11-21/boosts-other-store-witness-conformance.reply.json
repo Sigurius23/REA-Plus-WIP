@@ -1,0 +1,715 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"evidence_id\":\"ev_1e556281f386a6fbf52f74b0cc93f3aeb707a035fcb7a9759b57a6186829528c\",\"subject\":{\"name\":\"Arc-arm64\",\"digest\":{\"sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"},\"format\":\"mach-o\",\"architecture\":\"arm64\",\"local_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\"},\"provider\":{\"id\":\"rea-workflow\",\"name\":\"REA+ composed investigation workflow\",\"version\":\"1\"},\"analysis_profile\":{\"provider\":{\"id\":\"rea-workflow\",\"name\":\"REA+ composed investigation workflow\",\"version\":\"1\"},\"parameters\":{\"upstream_analysis_profile\":{\"provider\":{\"id\":\"ghidra\",\"name\":\"Ghidra\",\"version\":\"12.1.4\"},\"parameters\":{\"target_kind\":\"executable\",\"target_format\":\"mach-o\",\"architecture\":\"arm64\",\"available_architectures\":[\"arm64\"],\"import_mode\":\"ephemeral-source-immutable\",\"annotation_policy\":\"atomic-function-entry-metadata-v1\",\"load_image_observations\":\"source-mappings-entry-context-v2\",\"function_body_evidence\":\"complete-inclusive-ranges-v1\",\"function_references\":\"complete-body-and-entry-reference-manager-v2\",\"string_inventory_evidence\":\"defined-data-coverage-v1\",\"location_resolution\":\"explicit-address-exact-entry-symbol-first-v3\",\"instruction_flow_evidence\":\"decoded-return-pcode-v1\",\"instruction_references\":\"exact-address-incoming-v1\",\"function_boundary_observations\":\"ghidra-terminal-call-limitations-v1\",\"no_return_repair\":\"returning-imports-decoded-return-v2\",\"process_launch\":\"inspected-jvm-launch-support-v1\",\"jump_table_evidence\":\"typed-case-default-blocks-v1\",\"swift_enum_switch_recovery\":\"abi-signed-word-cfg-v9\",\"swift_dynamic_typed_snapshot\":\"swift-dynamic-typed-snapshot-v1\",\"darwin_stack_probe_call_summary\":\"trusted-darwin-arm64-chkstk-v1\",\"swift_error_register_model\":\"proved-native-synchronous-callee-x21-v3\",\"decompiler_jump_loads\":true,\"loader\":\"auto-from-header\",\"language_id\":\"auto-from-header\",\"compiler_spec_id\":\"auto-default\",\"analyzer_preset\":\"ghidra-default\",\"analysis_policy\":\"bounded-autoanalysis-v1\",\"analysis_timeout_seconds\":1,\"analysis_seeds\":{\"format\":\"rea-ghidra-seeds-v1\",\"path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/worker-preparation/boosts-implementation-seeds-2236.tsv\",\"configured_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/worker-preparation/boosts-implementation-seeds-2236.tsv\",\"sha256\":\"931f49061ebba069459f758912844d2a59f63c4a8f5b47cbbdf9c2b7422a9ac1\",\"entries\":{\"function\":2236,\"code\":0,\"label\":0}}},\"digest\":\"a7e831241d7b699eccd3b14b1d98b415da7359689552531c0335e6657321cca6\"},\"workflow_evidence_revision\":1},\"digest\":\"bc24e3ba1090c0a013578c6b941bf9f8f24e2c2449d3d2dcdb148d75f45844ec\"},\"predicate_type\":\"rea.analysis\",\"operation\":\"inspect_native_dispatch_metadata\",\"parameters\":{\"swift_conformance_address\":\"0x10377ecf0\",\"max_file_bytes\":100000000,\"max_records\":20000,\"facet\":\"swift-conformances\"},\"raw_result\":null,\"normalized_result\":{\"target_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\",\"provider\":{\"id\":\"native-macos\",\"name\":\"macOS native inspection utilities\",\"version\":\"apple-metadata-reader-1\"},\"analysis_profile_digest\":null,\"result\":{\"swift_conformance_selection\":{\"address\":\"0x10377ecf0\",\"matched\":true},\"objc_classes\":[],\"objc_protocols\":[],\"objc_categories\":[],\"swift_decls\":[],\"objc_ivars\":[],\"objc_protocol_records\":[],\"objc_dispatch_implementations\":[],\"swift_conformances\":[{\"type_name\":\"BoostsStorageFirebaseImpl\",\"protocol_name\":\"BoostsStorage\",\"type_reference\":null,\"protocol_reference\":null,\"module\":null,\"witness_table\":{\"address\":\"0x104307a30\",\"file_offset\":70285872},\"location\":{\"address\":\"0x10377ecf0\",\"file_offset\":58191088},\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift protocol conformance descriptor, local names and external bind identities\",\"location\":{\"address\":\"0x10377ecf0\",\"file_offset\":58191088},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]}],\"swift_dispatch_slots\":[{\"owner\":\"BoostsStorageFirebaseImpl: BoostsStorage\",\"table_kind\":\"witness_table\",\"slot_index\":1,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x104307a38\",\"file_offset\":70285880},\"decode\":{\"status\":\"partial\",\"reason\":\"Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Static Swift witness slot, indexed after the conformance-descriptor header\",\"location\":{\"address\":\"0x104307a38\",\"file_offset\":70285880},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"BoostsStorageFirebaseImpl: BoostsStorage\",\"table_kind\":\"witness_table\",\"slot_index\":2,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x104307a40\",\"file_offset\":70285888},\"decode\":{\"status\":\"partial\",\"reason\":\"Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Static Swift witness slot, indexed after the conformance-descriptor header\",\"location\":{\"address\":\"0x104307a40\",\"file_offset\":70285888},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"BoostsStorageFirebaseImpl: BoostsStorage\",\"table_kind\":\"witness_table\",\"slot_index\":3,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x104307a48\",\"file_offset\":70285896},\"decode\":{\"status\":\"partial\",\"reason\":\"Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Static Swift witness slot, indexed after the conformance-descriptor header\",\"location\":{\"address\":\"0x104307a48\",\"file_offset\":70285896},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"BoostsStorageFirebaseImpl: BoostsStorage\",\"table_kind\":\"witness_table\",\"slot_index\":4,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x104307a50\",\"file_offset\":70285904},\"decode\":{\"status\":\"partial\",\"reason\":\"Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Static Swift witness slot, indexed after the conformance-descriptor header\",\"location\":{\"address\":\"0x104307a50\",\"file_offset\":70285904},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"BoostsStorageFirebaseImpl: BoostsStorage\",\"table_kind\":\"witness_table\",\"slot_index\":5,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x104307a58\",\"file_offset\":70285912},\"decode\":{\"status\":\"partial\",\"reason\":\"Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Static Swift witness slot, indexed after the conformance-descriptor header\",\"location\":{\"address\":\"0x104307a58\",\"file_offset\":70285912},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"BoostsStorageFirebaseImpl: BoostsStorage\",\"table_kind\":\"witness_table\",\"slot_index\":6,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x104307a60\",\"file_offset\":70285920},\"decode\":{\"status\":\"partial\",\"reason\":\"Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Static Swift witness slot, indexed after the conformance-descriptor header\",\"location\":{\"address\":\"0x104307a60\",\"file_offset\":70285920},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"BoostsStorageFirebaseImpl: BoostsStorage\",\"table_kind\":\"witness_table\",\"slot_index\":7,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x104307a68\",\"file_offset\":70285928},\"decode\":{\"status\":\"partial\",\"reason\":\"Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Static Swift witness slot, indexed after the conformance-descriptor header\",\"location\":{\"address\":\"0x104307a68\",\"file_offset\":70285928},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"BoostsStorageFirebaseImpl: BoostsStorage\",\"table_kind\":\"witness_table\",\"slot_index\":8,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x104307a70\",\"file_offset\":70285936},\"decode\":{\"status\":\"partial\",\"reason\":\"Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Static Swift witness slot, indexed after the conformance-descriptor header\",\"location\":{\"address\":\"0x104307a70\",\"file_offset\":70285936},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"BoostsStorageFirebaseImpl: BoostsStorage\",\"table_kind\":\"witness_table\",\"slot_index\":9,\"requirement\":null,\"implementation\":null,\"implementation_address\":null,\"thunk_address\":null,\"location\":{\"address\":\"0x104307a78\",\"file_offset\":70285944},\"decode\":{\"status\":\"partial\",\"reason\":\"Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved\"},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Static Swift witness slot, indexed after the conformance-descriptor header\",\"location\":{\"address\":\"0x104307a78\",\"file_offset\":70285944},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"owner\":\"BoostsStorageFirebaseImpl: BoostsStorage\",\"table_kind\":\"witness_table\",\"slot_index\":10,\"requirement\":null,\"implementation\":null,\"implementation_address\":\"0x101183264\",\"thunk_address\":null,\"location\":{\"address\":\"0x104307a80\",\"file_offset\":70285952},\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Static Swift witness slot, indexed after the conformance-descriptor header\",\"location\":{\"address\":\"0x104307a80\",\"file_offset\":70285952},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]}],\"swift_resilient_witnesses\":[],\"swift_witness_templates\":[],\"swift_symbols\":[],\"relative_pointers\":[{\"field\":{\"address\":\"0x103f6ad10\",\"file_offset\":66497808},\"target\":{\"address\":\"0x10377ecf0\",\"file_offset\":58191088},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":-8306720,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103f6ad10\",\"file_offset\":66497808},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x10377ecf0\",\"file_offset\":58191088},\"target\":{\"address\":\"0x103d77dac\",\"file_offset\":64454060},\"indirect_slot\":{\"address\":\"0x104307da8\",\"file_offset\":70286760},\"external_reference\":null,\"displacement\":12095673,\"indirectable\":true,\"indirect\":true,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x10377ecf0\",\"file_offset\":58191088},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d77db4\",\"file_offset\":64454068},\"target\":{\"address\":\"0x10377ec4d\",\"file_offset\":58190925},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":-6263143,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d77db4\",\"file_offset\":64454068},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x10377ecf4\",\"file_offset\":58191092},\"target\":{\"address\":\"0x103d77e14\",\"file_offset\":64454164},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":6263072,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x10377ecf4\",\"file_offset\":58191092},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x103d77e1c\",\"file_offset\":64454172},\"target\":{\"address\":\"0x10377ec80\",\"file_offset\":58190976},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":-6263196,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x103d77e1c\",\"file_offset\":64454172},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]},{\"field\":{\"address\":\"0x10377ecf8\",\"file_offset\":58191096},\"target\":{\"address\":\"0x104307a30\",\"file_offset\":70285872},\"indirect_slot\":null,\"external_reference\":null,\"displacement\":12094776,\"indirectable\":false,\"indirect\":false,\"decode\":{\"status\":\"decoded\",\"reason\":null},\"evidence\":[{\"kind\":\"binary_metadata\",\"description\":\"Swift ABI signed-relative metadata pointer\",\"location\":{\"address\":\"0x10377ecf8\",\"file_offset\":58191096},\"artifact_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64\",\"artifact_sha256\":\"6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578\"}]}],\"coverage\":[{\"facet\":\"objc_class_method_ivar_metadata\",\"status\":\"not_requested\",\"reason\":null,\"examined\":0,\"decoded\":0},{\"facet\":\"binary_relative_pointers\",\"status\":\"complete\",\"reason\":null,\"examined\":6,\"decoded\":6},{\"facet\":\"objc_properties_categories\",\"status\":\"not_requested\",\"reason\":null,\"examined\":0,\"decoded\":0},{\"facet\":\"pointer_fixups\",\"status\":\"complete\",\"reason\":\"chained fixups: DYLD_CHAINED_PTR_64_OFFSET\",\"examined\":2,\"decoded\":2},{\"facet\":\"swift_generic_resilient_witnesses_overrides_async_coroutines\",\"status\":\"unsupported\",\"reason\":\"Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded\",\"examined\":0,\"decoded\":0},{\"facet\":\"swift_conformances_static_witness_slots\",\"status\":\"partial\",\"reason\":\"Coverage is limited to the selected indexed conformance descriptor; witness_slot_unresolved at 0x104307a38: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a40: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a48: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a50: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a58: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a60: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a68: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a70: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a78: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; swift_records_unresolved\",\"examined\":1,\"decoded\":1},{\"facet\":\"swift_resilient_witness_records\",\"status\":\"complete\",\"reason\":\"Coverage is limited to the selected indexed conformance descriptor\",\"examined\":0,\"decoded\":0},{\"facet\":\"swift_witness_template_records\",\"status\":\"complete\",\"reason\":\"Coverage is limited to the selected indexed conformance descriptor\",\"examined\":0,\"decoded\":0},{\"facet\":\"swift_class_vtable_descriptors\",\"status\":\"not_requested\",\"reason\":null,\"examined\":0,\"decoded\":0}],\"db_save_result\":null}},\"confidence\":\"derived\",\"authority\":\"shipped-artifact\",\"environment\":null,\"limitations\":[\"Derived by an REA+ composed workflow.\",\"Coverage is limited to the selected indexed conformance descriptor\",\"Coverage is limited to the selected indexed conformance descriptor; witness_slot_unresolved at 0x104307a38: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a40: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a48: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a50: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a58: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a60: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a68: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a70: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a78: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; swift_records_unresolved\",\"Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded\",\"chained fixups: DYLD_CHAINED_PTR_64_OFFSET\"],\"locations\":[],\"evidence_links\":[]}"
+    }
+  ],
+  "structuredContent": {
+    "evidence_id": "ev_1e556281f386a6fbf52f74b0cc93f3aeb707a035fcb7a9759b57a6186829528c",
+    "subject": {
+      "name": "Arc-arm64",
+      "digest": {
+        "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+      },
+      "format": "mach-o",
+      "architecture": "arm64",
+      "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+    },
+    "provider": {
+      "id": "rea-workflow",
+      "name": "REA+ composed investigation workflow",
+      "version": "1"
+    },
+    "analysis_profile": {
+      "provider": {
+        "id": "rea-workflow",
+        "name": "REA+ composed investigation workflow",
+        "version": "1"
+      },
+      "parameters": {
+        "upstream_analysis_profile": {
+          "provider": {
+            "id": "ghidra",
+            "name": "Ghidra",
+            "version": "12.1.4"
+          },
+          "parameters": {
+            "target_kind": "executable",
+            "target_format": "mach-o",
+            "architecture": "arm64",
+            "available_architectures": [
+              "arm64"
+            ],
+            "import_mode": "ephemeral-source-immutable",
+            "annotation_policy": "atomic-function-entry-metadata-v1",
+            "load_image_observations": "source-mappings-entry-context-v2",
+            "function_body_evidence": "complete-inclusive-ranges-v1",
+            "function_references": "complete-body-and-entry-reference-manager-v2",
+            "string_inventory_evidence": "defined-data-coverage-v1",
+            "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+            "instruction_flow_evidence": "decoded-return-pcode-v1",
+            "instruction_references": "exact-address-incoming-v1",
+            "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+            "no_return_repair": "returning-imports-decoded-return-v2",
+            "process_launch": "inspected-jvm-launch-support-v1",
+            "jump_table_evidence": "typed-case-default-blocks-v1",
+            "swift_enum_switch_recovery": "abi-signed-word-cfg-v9",
+            "swift_dynamic_typed_snapshot": "swift-dynamic-typed-snapshot-v1",
+            "darwin_stack_probe_call_summary": "trusted-darwin-arm64-chkstk-v1",
+            "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+            "decompiler_jump_loads": true,
+            "loader": "auto-from-header",
+            "language_id": "auto-from-header",
+            "compiler_spec_id": "auto-default",
+            "analyzer_preset": "ghidra-default",
+            "analysis_policy": "bounded-autoanalysis-v1",
+            "analysis_timeout_seconds": 1,
+            "analysis_seeds": {
+              "format": "rea-ghidra-seeds-v1",
+              "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/worker-preparation/boosts-implementation-seeds-2236.tsv",
+              "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/worker-preparation/boosts-implementation-seeds-2236.tsv",
+              "sha256": "931f49061ebba069459f758912844d2a59f63c4a8f5b47cbbdf9c2b7422a9ac1",
+              "entries": {
+                "function": 2236,
+                "code": 0,
+                "label": 0
+              }
+            }
+          },
+          "digest": "a7e831241d7b699eccd3b14b1d98b415da7359689552531c0335e6657321cca6"
+        },
+        "workflow_evidence_revision": 1
+      },
+      "digest": "bc24e3ba1090c0a013578c6b941bf9f8f24e2c2449d3d2dcdb148d75f45844ec"
+    },
+    "predicate_type": "rea.analysis",
+    "operation": "inspect_native_dispatch_metadata",
+    "parameters": {
+      "swift_conformance_address": "0x10377ecf0",
+      "max_file_bytes": 100000000,
+      "max_records": 20000,
+      "facet": "swift-conformances"
+    },
+    "raw_result": null,
+    "normalized_result": {
+      "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "provider": {
+        "id": "native-macos",
+        "name": "macOS native inspection utilities",
+        "version": "apple-metadata-reader-1"
+      },
+      "analysis_profile_digest": null,
+      "result": {
+        "swift_conformance_selection": {
+          "address": "0x10377ecf0",
+          "matched": true
+        },
+        "objc_classes": [],
+        "objc_protocols": [],
+        "objc_categories": [],
+        "swift_decls": [],
+        "objc_ivars": [],
+        "objc_protocol_records": [],
+        "objc_dispatch_implementations": [],
+        "swift_conformances": [
+          {
+            "type_name": "BoostsStorageFirebaseImpl",
+            "protocol_name": "BoostsStorage",
+            "type_reference": null,
+            "protocol_reference": null,
+            "module": null,
+            "witness_table": {
+              "address": "0x104307a30",
+              "file_offset": 70285872
+            },
+            "location": {
+              "address": "0x10377ecf0",
+              "file_offset": 58191088
+            },
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift protocol conformance descriptor, local names and external bind identities",
+                "location": {
+                  "address": "0x10377ecf0",
+                  "file_offset": 58191088
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          }
+        ],
+        "swift_dispatch_slots": [
+          {
+            "owner": "BoostsStorageFirebaseImpl: BoostsStorage",
+            "table_kind": "witness_table",
+            "slot_index": 1,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x104307a38",
+              "file_offset": 70285880
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Static Swift witness slot, indexed after the conformance-descriptor header",
+                "location": {
+                  "address": "0x104307a38",
+                  "file_offset": 70285880
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "BoostsStorageFirebaseImpl: BoostsStorage",
+            "table_kind": "witness_table",
+            "slot_index": 2,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x104307a40",
+              "file_offset": 70285888
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Static Swift witness slot, indexed after the conformance-descriptor header",
+                "location": {
+                  "address": "0x104307a40",
+                  "file_offset": 70285888
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "BoostsStorageFirebaseImpl: BoostsStorage",
+            "table_kind": "witness_table",
+            "slot_index": 3,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x104307a48",
+              "file_offset": 70285896
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Static Swift witness slot, indexed after the conformance-descriptor header",
+                "location": {
+                  "address": "0x104307a48",
+                  "file_offset": 70285896
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "BoostsStorageFirebaseImpl: BoostsStorage",
+            "table_kind": "witness_table",
+            "slot_index": 4,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x104307a50",
+              "file_offset": 70285904
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Static Swift witness slot, indexed after the conformance-descriptor header",
+                "location": {
+                  "address": "0x104307a50",
+                  "file_offset": 70285904
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "BoostsStorageFirebaseImpl: BoostsStorage",
+            "table_kind": "witness_table",
+            "slot_index": 5,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x104307a58",
+              "file_offset": 70285912
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Static Swift witness slot, indexed after the conformance-descriptor header",
+                "location": {
+                  "address": "0x104307a58",
+                  "file_offset": 70285912
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "BoostsStorageFirebaseImpl: BoostsStorage",
+            "table_kind": "witness_table",
+            "slot_index": 6,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x104307a60",
+              "file_offset": 70285920
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Static Swift witness slot, indexed after the conformance-descriptor header",
+                "location": {
+                  "address": "0x104307a60",
+                  "file_offset": 70285920
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "BoostsStorageFirebaseImpl: BoostsStorage",
+            "table_kind": "witness_table",
+            "slot_index": 7,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x104307a68",
+              "file_offset": 70285928
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Static Swift witness slot, indexed after the conformance-descriptor header",
+                "location": {
+                  "address": "0x104307a68",
+                  "file_offset": 70285928
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "BoostsStorageFirebaseImpl: BoostsStorage",
+            "table_kind": "witness_table",
+            "slot_index": 8,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x104307a70",
+              "file_offset": 70285936
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Static Swift witness slot, indexed after the conformance-descriptor header",
+                "location": {
+                  "address": "0x104307a70",
+                  "file_offset": 70285936
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "BoostsStorageFirebaseImpl: BoostsStorage",
+            "table_kind": "witness_table",
+            "slot_index": 9,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": null,
+            "thunk_address": null,
+            "location": {
+              "address": "0x104307a78",
+              "file_offset": 70285944
+            },
+            "decode": {
+              "status": "partial",
+              "reason": "Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved"
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Static Swift witness slot, indexed after the conformance-descriptor header",
+                "location": {
+                  "address": "0x104307a78",
+                  "file_offset": 70285944
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "owner": "BoostsStorageFirebaseImpl: BoostsStorage",
+            "table_kind": "witness_table",
+            "slot_index": 10,
+            "requirement": null,
+            "implementation": null,
+            "implementation_address": "0x101183264",
+            "thunk_address": null,
+            "location": {
+              "address": "0x104307a80",
+              "file_offset": 70285952
+            },
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Static Swift witness slot, indexed after the conformance-descriptor header",
+                "location": {
+                  "address": "0x104307a80",
+                  "file_offset": 70285952
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          }
+        ],
+        "swift_resilient_witnesses": [],
+        "swift_witness_templates": [],
+        "swift_symbols": [],
+        "relative_pointers": [
+          {
+            "field": {
+              "address": "0x103f6ad10",
+              "file_offset": 66497808
+            },
+            "target": {
+              "address": "0x10377ecf0",
+              "file_offset": 58191088
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": -8306720,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103f6ad10",
+                  "file_offset": 66497808
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x10377ecf0",
+              "file_offset": 58191088
+            },
+            "target": {
+              "address": "0x103d77dac",
+              "file_offset": 64454060
+            },
+            "indirect_slot": {
+              "address": "0x104307da8",
+              "file_offset": 70286760
+            },
+            "external_reference": null,
+            "displacement": 12095673,
+            "indirectable": true,
+            "indirect": true,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x10377ecf0",
+                  "file_offset": 58191088
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d77db4",
+              "file_offset": 64454068
+            },
+            "target": {
+              "address": "0x10377ec4d",
+              "file_offset": 58190925
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": -6263143,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d77db4",
+                  "file_offset": 64454068
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x10377ecf4",
+              "file_offset": 58191092
+            },
+            "target": {
+              "address": "0x103d77e14",
+              "file_offset": 64454164
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": 6263072,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x10377ecf4",
+                  "file_offset": 58191092
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x103d77e1c",
+              "file_offset": 64454172
+            },
+            "target": {
+              "address": "0x10377ec80",
+              "file_offset": 58190976
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": -6263196,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x103d77e1c",
+                  "file_offset": 64454172
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          },
+          {
+            "field": {
+              "address": "0x10377ecf8",
+              "file_offset": 58191096
+            },
+            "target": {
+              "address": "0x104307a30",
+              "file_offset": 70285872
+            },
+            "indirect_slot": null,
+            "external_reference": null,
+            "displacement": 12094776,
+            "indirectable": false,
+            "indirect": false,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift ABI signed-relative metadata pointer",
+                "location": {
+                  "address": "0x10377ecf8",
+                  "file_offset": 58191096
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ]
+          }
+        ],
+        "coverage": [
+          {
+            "facet": "objc_class_method_ivar_metadata",
+            "status": "not_requested",
+            "reason": null,
+            "examined": 0,
+            "decoded": 0
+          },
+          {
+            "facet": "binary_relative_pointers",
+            "status": "complete",
+            "reason": null,
+            "examined": 6,
+            "decoded": 6
+          },
+          {
+            "facet": "objc_properties_categories",
+            "status": "not_requested",
+            "reason": null,
+            "examined": 0,
+            "decoded": 0
+          },
+          {
+            "facet": "pointer_fixups",
+            "status": "complete",
+            "reason": "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+            "examined": 2,
+            "decoded": 2
+          },
+          {
+            "facet": "swift_generic_resilient_witnesses_overrides_async_coroutines",
+            "status": "unsupported",
+            "reason": "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
+            "examined": 0,
+            "decoded": 0
+          },
+          {
+            "facet": "swift_conformances_static_witness_slots",
+            "status": "partial",
+            "reason": "Coverage is limited to the selected indexed conformance descriptor; witness_slot_unresolved at 0x104307a38: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a40: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a48: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a50: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a58: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a60: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a68: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a70: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a78: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; swift_records_unresolved",
+            "examined": 1,
+            "decoded": 1
+          },
+          {
+            "facet": "swift_resilient_witness_records",
+            "status": "complete",
+            "reason": "Coverage is limited to the selected indexed conformance descriptor",
+            "examined": 0,
+            "decoded": 0
+          },
+          {
+            "facet": "swift_witness_template_records",
+            "status": "complete",
+            "reason": "Coverage is limited to the selected indexed conformance descriptor",
+            "examined": 0,
+            "decoded": 0
+          },
+          {
+            "facet": "swift_class_vtable_descriptors",
+            "status": "not_requested",
+            "reason": null,
+            "examined": 0,
+            "decoded": 0
+          }
+        ],
+        "db_save_result": null
+      }
+    },
+    "confidence": "derived",
+    "authority": "shipped-artifact",
+    "environment": null,
+    "limitations": [
+      "Derived by an REA+ composed workflow.",
+      "Coverage is limited to the selected indexed conformance descriptor",
+      "Coverage is limited to the selected indexed conformance descriptor; witness_slot_unresolved at 0x104307a38: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a40: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a48: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a50: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a58: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a60: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a68: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a70: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; witness_slot_unresolved at 0x104307a78: Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved; swift_records_unresolved",
+      "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
+      "chained fixups: DYLD_CHAINED_PTR_64_OFFSET"
+    ],
+    "locations": [],
+    "evidence_links": []
+  }
+}

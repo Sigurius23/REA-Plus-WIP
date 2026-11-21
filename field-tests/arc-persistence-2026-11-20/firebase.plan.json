@@ -1,0 +1,90 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/mcp-firebase-2026-11-21",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/worker-preparation/firebase-request-seeds-2296.tsv"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x101182ab4"
+      },
+      "label": "implementation-0x101182ab4-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x101182ab4"
+      },
+      "label": "implementation-0x101182ab4-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x10117cd3c"
+      },
+      "label": "implementation-0x10117cd3c-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x10117cd3c"
+      },
+      "label": "implementation-0x10117cd3c-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x10117fec8"
+      },
+      "label": "implementation-0x10117fec8-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x10117fec8"
+      },
+      "label": "implementation-0x10117fec8-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/mcp-firebase-2026-11-21/phase-0.bundle.json"
+      },
+      "label": "export-phase-0",
+      "expect_success": true
+    }
+  ],
+  "idle_timeout_ms": 600000,
+  "runtime_manifest": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-upstream-retained-2026-11-20/runtime-manifest.json",
+  "exploratory_broader_steps": "Errors are retained for investigation; they are not converted into successful semantic claims.",
+  "verification": "Offline follow-up: public loader/symbolic-reference binding and seeded worker observations. Failed candidate queries remain retained; no target execution or automatic runtime-binding claim.",
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/firebase-phase-1.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/firebase-phase-2.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/firebase-phase-3.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/firebase-phase-4.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/firebase-phase-5.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/firebase-phase-6.continue.json"
+  ]
+}

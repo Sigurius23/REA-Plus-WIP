@@ -1,0 +1,216 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/mcp-followup",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/worker-preparation/broader-direct-callee-seeds-2069.tsv"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x104230a48",
+        "length": 8
+      },
+      "label": "setting-symbolic-slot",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103e1dad6",
+        "length": 448
+      },
+      "label": "boosts-client-field-names",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103bd1848",
+        "length": 448
+      },
+      "label": "boosts-client-field-types",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103e1d772",
+        "length": 160
+      },
+      "label": "boost-data-field-names",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103e1da32",
+        "length": 24
+      },
+      "label": "boost-id-field-names",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103e1fb5c",
+        "length": 64
+      },
+      "label": "change-stack-field-names",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x100d98210",
+        "length": 64
+      },
+      "label": "user-defaults-metadata-accessor-bytes",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1006faab0"
+      },
+      "label": "dependency-implementation-0x1006faab0-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1006faab0"
+      },
+      "label": "dependency-implementation-0x1006faab0-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1006fa7b4"
+      },
+      "label": "dependency-implementation-0x1006fa7b4-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1006fa7b4"
+      },
+      "label": "dependency-implementation-0x1006fa7b4-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1006fa77c"
+      },
+      "label": "dependency-implementation-0x1006fa77c-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x1006fa77c"
+      },
+      "label": "dependency-implementation-0x1006fa77c-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100d8c154"
+      },
+      "label": "dependency-implementation-0x100d8c154-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x100d8c154"
+      },
+      "label": "dependency-implementation-0x100d8c154-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100d8c1dc"
+      },
+      "label": "dependency-implementation-0x100d8c1dc-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x100d8c1dc"
+      },
+      "label": "dependency-implementation-0x100d8c1dc-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100d929a0"
+      },
+      "label": "dependency-implementation-0x100d929a0-read_function_instructions",
+      "expect_success": false
+    },
+    {
+      "name": "procedure_pseudo_code",
+      "arguments": {
+        "procedure": "0x100d929a0"
+      },
+      "label": "dependency-implementation-0x100d929a0-procedure_pseudo_code",
+      "expect_success": false
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-conformances",
+        "swift_conformance_filter": {
+          "type_name": "BoostsClient"
+        },
+        "max_file_bytes": 100000000,
+        "max_records": 20000
+      },
+      "label": "boosts-client-conformances",
+      "expect_success": false
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/mcp-followup/phase-0.bundle.json"
+      },
+      "label": "export-phase-0",
+      "expect_success": true
+    }
+  ],
+  "idle_timeout_ms": 600000,
+  "runtime_manifest": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-upstream-retained-2026-11-20/runtime-manifest.json",
+  "exploratory_broader_steps": "Errors are retained for investigation; they are not converted into successful semantic claims.",
+  "verification": "Offline follow-up: public loader/symbolic-reference binding and seeded worker observations. Failed candidate queries remain retained; no target execution or automatic runtime-binding claim.",
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/followup-phase-1.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/followup-phase-2.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/followup-phase-3.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/followup-phase-4.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/followup-phase-5.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/followup-phase-6.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/followup-phase-7.continue.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-persistence-2026-11-20/followup-phase-8.continue.json"
+  ]
+}
