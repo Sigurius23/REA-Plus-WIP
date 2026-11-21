@@ -83,7 +83,11 @@ const inputSchemas = {
       "Supply exactly one of type or address",
     ),
   inspect_native_instruction: z
-    .object({ document, address: ghidraInputAddressSchema })
+    .object({
+      document,
+      address: ghidraInputAddressSchema,
+      decode_unlisted: z.boolean().optional(),
+    })
     .strict(),
   resolve_native_call_targets: z
     .object({ document, address: ghidraInputAddressSchema })

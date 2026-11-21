@@ -1645,13 +1645,17 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     while retaining 401 unresolved identities, so protocol absence is not
     established.
 
-    A safe extension must prove the parameter type through an exact typed
-    witness, or through the selected `UserDefaultsClient` closure-field,
-    constructor assignment and unchanged adapter/argument flow. Keep that
-    proof conditional on the selected default implementation; static presence
-    does not select runtime dependency injection. Add positive/negative
-    producer controls before changing recovery. The qualified native bridge
-    is unchanged; the prior 102-case matrix was not repeated. See the
+    A safe extension must bind the complete closure input type, exact nominal
+    owner and selected code/context origin, then preserve unchanged argument
+    flow. Keep its domain conditional on that invocation and the declared
+    valid Swift input/default-selection premises. Owned optimized controls now
+    show typed-enum, unchecked UInt16 and foreign-owner paths sharing helper
+    code. Therefore one typed caller cannot justify the existing owner-wide
+    CFG/table override. Implement an observation-only typed context first, or
+    separately prove every entry's domain. Constructor output-pointer writes
+    and an associated `Value` identity alone do not prove the constructor's
+    declaration. The enum-recovery class remains unchanged; the prior
+    102-case matrix was not repeated. See the
     [Arc results](field-tests/arc-persistence-2026-11-21.md) and
     [bounded fixture/design](field-tests/arc-persistence-2026-11-20/halfword-fixture/DESIGN.md).
 
@@ -1663,11 +1667,13 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 
     The callback/local-store follow-up also encounters an 8-bit-masked
     unguarded halfword dispatch at `0x100d989e4`, reached with tag `0x32` by the
-    typed StorableBoostsData factory. Its selected table word is captured;
-    its interior target is not an admitted standalone procedure. Do not use
-    that mask/tag to infer the input type, exact store path or the separate
-    Setting table's 297-case bound. This related coverage boundary remains
-    open alongside item 63. The [new report](field-tests/arc-callbacks-2026-11-21.md)
+    typed StorableBoostsData factory. Item 65 now decodes the selected interior
+    branch without admitting it as a function: filename `StorableBoostsData.json`,
+    then path builder `0x100d98fd0`. The selected generic dependency resolves to
+    `ApplicationPaths`, whose reflection includes `baseURL`; its constructed or
+    injected base directory remains open. Do not infer a complete path, enum
+    input type or the separate Setting table's 297-case bound from the tag.
+    Automatic context-scoped dispatch remains open alongside item 63. The [new report](field-tests/arc-callbacks-2026-11-21.md)
     closes editor save effects, getter decoding and conditional two-write
     control flow while retaining the remaining store/path and runtime gaps.
 
@@ -1692,3 +1698,34 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     Evidence remains valid with the optional fields omitted. This supplies a
     missing identity fact for item 63, not its producer/type-flow repair. See
     [the exact scope and verification](field-tests/arc-witness-data-2026-11-21.md).
+
+
+65. **Inspect valid unlisted native instructions without changing the CFG.**
+    Done and verified for Ghidra ARM64/x86-64. Arc's selected switch interiors
+    contain valid executable bytes but no Listing instructions, so the original
+    instruction probe reported undecodable. `inspect_native_instruction` now
+    accepts explicit `decode_unlisted: true` (CLI `--decode-unlisted`) and
+    returns a detached byte interpretation with `decode_source` and
+    `references_available`. Default behavior remains Listing-only. The decoder
+    rejects data/instruction overlaps, misalignment, uninitialized/nonexecutable
+    memory and cross-block encodings. It creates no Listing, function,
+    ReferenceManager or CFG objects. Outgoing analyzed references remain
+    unavailable for detached decodes; direct encoded flow is separate.
+
+    **43 focused tests**, fast/build/docs/package gates, two real native
+    fixtures (**44 MCP calls: 40 successful, four expected input rejections**),
+    two exact CLI/MCP comparisons and **137/137 Arc replies** pass. The earlier
+    typed-root session adds 20 calls (18 successful, two retained admission
+    errors). Both Arc sessions close twice and all qualified lineages are
+    verified empty. Arc's selected Setting function stays 14 instructions /
+    56 body bytes; the selected interiors remain unlisted afterwards.
+    Selected instruction bytes match the immutable original image. The
+    Swift enum-recovery class is unchanged; its 102-case matrix was not rerun
+    for this independent inspection primitive.
+
+    The new path findings and typed-input counterexamples are recorded in
+    [the report](field-tests/arc-unlisted-instructions-2026-11-21.md) and
+    [verification](field-tests/arc-typed-dispatch-2026-11-21/retest-verification.json).
+    Item 63, runtime dependency selection, full store location/durability and
+    broader Arc coverage remain open. This is an offline investigation; no Arc
+    executable, fixture library, profile, account or service was used at runtime.

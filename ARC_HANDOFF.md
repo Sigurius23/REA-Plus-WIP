@@ -26,6 +26,44 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest detached-instruction checkpoint (2026-11-21)
+
+Read `field-tests/arc-unlisted-instructions-2026-11-21.md` and
+`field-tests/arc-typed-dispatch-2026-11-21/retest-verification.json` first.
+The prior witness-data checkpoint is pushed as `d647436b459d`.
+Item 65 adds explicit unlisted byte decoding to the instruction probe; it
+creates no function/Listing/CFG/reference objects. The frozen runtime is
+`rea-local/.cache/arc-runtime-unlisted-2026-11-21` (1,869 files). All sessions
+from this checkpoint are closed with verified empty lineage.
+
+Verification: 43 focused tests; fast/build/docs/package gates; ARM64/x86-64
+native fixtures with 44 MCP calls (four expected input rejections), two exact
+CLI/MCP cases; 137/137 current Arc replies. An earlier typed-root session
+made 20 calls, 18 successful and two retained admission errors. The enum
+recovery class is unchanged; the 102-case matrix was not repeated.
+
+The selected location tag `0x32` produces `StorableBoostsData.json`. Its branch
+`0x100d98aa0 -> 0x100d98ad0 -> 0x100d98f68 -> 0x100d98fd0` is now represented
+by public instruction Evidence, without changing the old function body.
+The last helper appends the filename to its supplied URL, obtains the parent
+URL when the flag is zero, checks existence with NSFileManager and creates
+missing directories with intermediates enabled. Failure builds a fatal-error
+message at ApplicationPaths.swift line 383. This is selected static code,
+not observed filesystem behavior. The factory's generic dependency is exactly
+`Dependency<ApplicationPaths>`; reflected field zero is `baseURL`. Trace its
+actual construction/default/injected value next before assigning a full path.
+Do not call an equal-size UserDefaultsClient value the location dependency.
+
+Item 63 remains open. The owned optimized controls merge typed enum, unchecked
+UInt16 and same-name foreign enum callers into one helper. A typed caller does
+not establish a global domain for that shared helper. Start with an
+observation-only per-invocation proof carrier; do not install the existing
+owner-wide JumpTable override based on one closure's type. The design review
+and source/assembly oracles are retained in the new directory. The exact
+UserDefaultsClient VWT wrapper binds a conditional source snapshot under the
+normal Swift ABI/valid-source premise; it does not prove a constructor's
+signature, origin across unknown writes or active default selection.
+
 ## Latest witness-data repair (2026-11-21)
 
 The callback checkpoint below is pushed as `4f870986e`. Read

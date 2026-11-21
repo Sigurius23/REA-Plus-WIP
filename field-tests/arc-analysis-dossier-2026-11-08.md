@@ -981,3 +981,29 @@ The associated-type alias advances the ownership chain without supplying the
 anonymous getter's full signature, typed constructor/closure propagation,
 item 63 producer repair, actual runtime injection or durable storage. Native
 Ghidra Java/recovery is unchanged. Full Arc coverage remains incomplete.
+
+
+## Detached instruction inspection and selected store filename (2026-11-21)
+
+[Item 65's qualified decoder](arc-unlisted-instructions-2026-11-21.md) now
+exposes valid unlisted switch-interior instructions through explicit opt-in,
+with separate byte provenance and outgoing-reference availability. It creates
+no Listing/function/CFG objects. The selected Setting helper remains at
+14 instructions/56 body bytes after probing. ARM64/x86-64 fixture checks,
+CLI/MCP parity, 43 focused tests and fast/build/docs/package checks pass.
+The two new Arc sessions made 157 calls: 155 successful, two retained earlier
+admission errors. Both export and explicitly close twice; cleanup is verified.
+
+The local store's selected filename is `StorableBoostsData.json`, reached via
+location tag `0x32`. Its common path builder appends that filename to a supplied
+URL, checks the parent when its flag is zero and creates missing directories
+with intermediates enabled; the failure path constructs a fatal error.
+The factory selects `Dependency<ApplicationPaths>`, whose reflection includes
+`baseURL`. The actual constructed/injected base directory, full store path,
+backup/migration policy, durable readback and runtime injection remain open.
+
+Owned optimized Swift controls show why item 63 cannot use one typed caller
+for a global CFG override: enum, unchecked UInt16 and foreign-owner inputs
+share the same implementation. A context-scoped observation carrier and exact
+input/origin proof are still needed. The existing enum-recovery producer is
+unchanged. Full Arc feature coverage remains incomplete; no target was run.

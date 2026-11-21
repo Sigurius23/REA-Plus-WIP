@@ -10,6 +10,7 @@ import {
 } from "../domain/native/nativeInstruction.fixture.js";
 import {
   parseGhidraFunctionResult,
+  parseGhidraFunctionInput,
   type GhidraFunctionOperation,
 } from "./GhidraFunctionValues.js";
 import {
@@ -40,6 +41,56 @@ const parseFunctionValueFixture = (
   const parsed = parseGhidraFunctionResult(operation, wireValue);
   return parsed.ok ? { ok: true as const, value: parsed.value.value } : parsed;
 };
+
+describe("Ghidra instruction byte-decode boundaries", () => {
+  it("preserves explicit byte-decode choices only at the inspection boundary", () => {
+    for (const selection of [
+      {},
+      { decode_unlisted: false },
+      { decode_unlisted: true },
+    ]) {
+      const parsed = parseGhidraFunctionInput("inspect_native_instruction", {
+        address: "0x401000",
+        ...selection,
+      });
+      if (!parsed.ok) throw parsed.error;
+      expect(parsed.value).toEqual({
+        document: null,
+        address: "0x401000",
+        ...selection,
+      });
+    }
+    expect(
+      parseGhidraFunctionInput("resolve_native_call_targets", {
+        address: "0x401000",
+        decode_unlisted: true,
+      }).ok,
+    ).toBe(false);
+    expect(
+      parseGhidraFunctionInput("inspect_native_instruction", {
+        address: "0x401000",
+        decode_unlisted: "true",
+      }).ok,
+    ).toBe(false);
+  });
+
+  it("keeps legacy omissions and explicit missing-reference provenance distinct", () => {
+    for (const provenance of [
+      {},
+      { decode_source: "listing", references_available: true },
+      { decode_source: "unlisted_program_bytes", references_available: false },
+      { decode_source: null, references_available: false },
+    ]) {
+      const expected = { ...compactInstruction(), ...provenance };
+      const parsed = parseFunctionValueFixture(
+        "inspect_native_instruction",
+        expected,
+      );
+      if (!parsed.ok) throw parsed.error;
+      expect(parsed.value).toEqual(expected);
+    }
+  });
+});
 
 describe("Ghidra function-analysis result values", () => {
   it.each([...observationOperations])(

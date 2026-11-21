@@ -1,0 +1,103 @@
+{
+  "evidence_id": "ev_2900b205053f59c56dba4f96f5175f4e3f88d2b80139857f1a9f79ae6cdd7e1d",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "mach-o",
+      "architecture": "arm64",
+      "available_architectures": [
+        "arm64"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "swift_enum_switch_recovery": "abi-signed-word-cfg-v9",
+      "swift_dynamic_typed_snapshot": "swift-dynamic-typed-snapshot-v1",
+      "darwin_stack_probe_call_summary": "trusted-darwin-arm64-chkstk-v1",
+      "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default",
+      "analysis_policy": "bounded-autoanalysis-v1",
+      "analysis_timeout_seconds": 1,
+      "analysis_seeds": {
+        "format": "rea-ghidra-seeds-v1",
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/storage-io-seeds-2463.tsv",
+        "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/storage-io-seeds-2463.tsv",
+        "sha256": "85a20193046dab6c42251fc95328a816cec6b159e188e2ea48a87896d7966752",
+        "entries": {
+          "function": 2463,
+          "code": 0,
+          "label": 0
+        }
+      }
+    },
+    "digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "procedure_pseudo_code",
+  "parameters": {
+    "procedure": "0x100d98fd0"
+  },
+  "raw_result": {
+    "value": "\nvoid FUN_100d98fd0(undefined8 param_1,undefined8 param_2,long param_3,ulong param_4)\n\n{\n  undefined8 uVar1;\n  long lVar2;\n  undefined *puVar3;\n  undefined *puVar4;\n  undefined *puVar5;\n  undefined *puVar6;\n  undefined8 uVar7;\n  long extraout_x8;\n  long extraout_x12;\n  long unaff_x20;\n  code *pcVar8;\n  undefined1 *puVar9;\n  long lVar10;\n  code *pcVar11;\n  long lVar12;\n  undefined8 uStack_a0;\n  undefined4 auStack_98 [2];\n  undefined1 auStack_90 [8];\n  undefined8 uStack_88;\n  undefined8 uStack_80;\n  undefined8 uStack_78;\n  long lStack_68;\n  \n  lStack_68 = *(long *)PTR____stack_chk_guard_1042374a0;\n  lVar2 = 0;\n  __s10Foundation3URLVMa();\n  lVar12 = *(long *)(lVar2 + -8);\n  (*(code *)PTR____chkstk_darwin_104237440)(*(undefined8 *)(lVar12 + 0x40));\n  puVar9 = auStack_90 + -(extraout_x8 + 0xfU & 0xfffffffffffffff0);\n  (*(code *)PTR____chkstk_darwin_104237440)();\n  lVar10 = (long)puVar9 - extraout_x12;\n  pcVar11 = *(code **)(lVar12 + 0x10);\n  (*pcVar11)(lVar10);\n  if (param_3 != 0) {\n    __s10Foundation3URLV19appendPathComponentyySSF(param_2,param_3);\n    unaff_x20 = param_3;\n  }\n  if ((param_4 & 1) == 0) {\n    __s10Foundation3URLV25deletingLastPathComponentACyF(puVar9);\n  }\n  else {\n    unaff_x20 = lVar10;\n    (*pcVar11)(puVar9,lVar10,lVar2);\n  }\n  puVar3 = &_OBJC_CLASS___NSFileManager;\n  _objc_opt_self();\n  puVar4 = puVar3;\n  func_0x0001036499c0();\n  _objc_retainAutoreleasedReturnValue();\n  puVar5 = puVar4;\n  __s10Foundation3URLV4pathSSvg();\n  __sSS10FoundationE19_bridgeToObjectiveCSo8NSStringCyF();\n  _swift_bridgeObjectRelease(unaff_x20);\n  puVar6 = puVar4;\n  func_0x00010364d000();\n  _objc_release(puVar4);\n  _objc_release(puVar5);\n  if (((ulong)puVar6 & 1) == 0) {\n    func_0x0001036499c0();\n    _objc_retainAutoreleasedReturnValue();\n    puVar4 = puVar3;\n    __s10Foundation3URLV19_bridgeToObjectiveCSo5NSURLCyF();\n    uStack_80 = 0;\n    puVar5 = puVar3;\n    func_0x000103648560();\n    _objc_release(puVar3);\n    _objc_release(puVar4);\n    uStack_88 = uStack_80;\n    if ((int)puVar5 == 0) {\n      uVar7 = uStack_80;\n      _objc_retain();\n      __s10Foundation22_convertNSErrorToErrorys0E0_pSo0C0CSgF();\n      _objc_release(uVar7);\n      _swift_willThrow();\n      uStack_80 = 0;\n      uStack_78 = 0xe000000000000000;\n      _swift_errorRetain(uStack_88);\n      __ss11_StringGutsV4growyySiF(0x32);\n      uVar7 = 0xd000000000000025;\n      __sSS6appendyySSF(0xd000000000000025,0x80000001039ed790);\n      func_0x000100d9b48c();\n      __ss23CustomStringConvertibleP11descriptionSSvgTj(lVar2,uVar7);\n      __sSS6appendyySSF();\n      _swift_bridgeObjectRelease(uVar7);\n      __sSS6appendyySSF(0x3a726f727245202e,0xe900000000000020);\n      uVar7 = 0x1045eec10;\n      FUN_100005134(0x1045eec10,&UNK_10373d238);\n      __ss15_print_unlockedyyx_q_zts16TextOutputStreamR_r0_lF\n                (&uStack_88,&uStack_80,uVar7,PTR___ss26DefaultStringInterpolationVN_10423ecd0,\n                 PTR___ss26DefaultStringInterpolationVs16TextOutputStreamsWP_10423ece0);\n      uVar1 = uStack_78;\n      uVar7 = uStack_80;\n      *(undefined4 *)(lVar10 + -8) = 0;\n      *(undefined8 *)(lVar10 + -0x10) = 0x17f;\n      __ss17_assertionFailure__4file4line5flagss5NeverOs12StaticStringV_SSAHSus6UInt32VtF\n                (\"Fatal error\",0xb,2,uVar7,uVar1,\"ApplicationPaths/ApplicationPaths.swift\",0x27,2);\n                    /* WARNING: Does not return */\n      pcVar11 = (code *)SoftwareBreakpoint(1,0x100d99308);\n      (*pcVar11)();\n    }\n    pcVar8 = *(code **)(lVar12 + 8);\n    _objc_retain();\n  }\n  else {\n    pcVar8 = *(code **)(lVar12 + 8);\n  }\n  (*pcVar8)(puVar9,lVar2);\n  (*pcVar11)(param_1,lVar10,lVar2);\n  (*pcVar8)(lVar10,lVar2);\n  if (*(long *)PTR____stack_chk_guard_1042374a0 == lStack_68) {\n    return;\n  }\n                    /* WARNING: Subroutine does not return */\n  ___stack_chk_fail();\n}\n\n",
+    "limitations": [
+      "Swift control-flow uncertainty at 0x100d99018: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x100d990d8: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+      "Swift control-flow uncertainty at 0x100d9925c: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths."
+    ]
+  },
+  "normalized_result": "\nvoid FUN_100d98fd0(undefined8 param_1,undefined8 param_2,long param_3,ulong param_4)\n\n{\n  undefined8 uVar1;\n  long lVar2;\n  undefined *puVar3;\n  undefined *puVar4;\n  undefined *puVar5;\n  undefined *puVar6;\n  undefined8 uVar7;\n  long extraout_x8;\n  long extraout_x12;\n  long unaff_x20;\n  code *pcVar8;\n  undefined1 *puVar9;\n  long lVar10;\n  code *pcVar11;\n  long lVar12;\n  undefined8 uStack_a0;\n  undefined4 auStack_98 [2];\n  undefined1 auStack_90 [8];\n  undefined8 uStack_88;\n  undefined8 uStack_80;\n  undefined8 uStack_78;\n  long lStack_68;\n  \n  lStack_68 = *(long *)PTR____stack_chk_guard_1042374a0;\n  lVar2 = 0;\n  __s10Foundation3URLVMa();\n  lVar12 = *(long *)(lVar2 + -8);\n  (*(code *)PTR____chkstk_darwin_104237440)(*(undefined8 *)(lVar12 + 0x40));\n  puVar9 = auStack_90 + -(extraout_x8 + 0xfU & 0xfffffffffffffff0);\n  (*(code *)PTR____chkstk_darwin_104237440)();\n  lVar10 = (long)puVar9 - extraout_x12;\n  pcVar11 = *(code **)(lVar12 + 0x10);\n  (*pcVar11)(lVar10);\n  if (param_3 != 0) {\n    __s10Foundation3URLV19appendPathComponentyySSF(param_2,param_3);\n    unaff_x20 = param_3;\n  }\n  if ((param_4 & 1) == 0) {\n    __s10Foundation3URLV25deletingLastPathComponentACyF(puVar9);\n  }\n  else {\n    unaff_x20 = lVar10;\n    (*pcVar11)(puVar9,lVar10,lVar2);\n  }\n  puVar3 = &_OBJC_CLASS___NSFileManager;\n  _objc_opt_self();\n  puVar4 = puVar3;\n  func_0x0001036499c0();\n  _objc_retainAutoreleasedReturnValue();\n  puVar5 = puVar4;\n  __s10Foundation3URLV4pathSSvg();\n  __sSS10FoundationE19_bridgeToObjectiveCSo8NSStringCyF();\n  _swift_bridgeObjectRelease(unaff_x20);\n  puVar6 = puVar4;\n  func_0x00010364d000();\n  _objc_release(puVar4);\n  _objc_release(puVar5);\n  if (((ulong)puVar6 & 1) == 0) {\n    func_0x0001036499c0();\n    _objc_retainAutoreleasedReturnValue();\n    puVar4 = puVar3;\n    __s10Foundation3URLV19_bridgeToObjectiveCSo5NSURLCyF();\n    uStack_80 = 0;\n    puVar5 = puVar3;\n    func_0x000103648560();\n    _objc_release(puVar3);\n    _objc_release(puVar4);\n    uStack_88 = uStack_80;\n    if ((int)puVar5 == 0) {\n      uVar7 = uStack_80;\n      _objc_retain();\n      __s10Foundation22_convertNSErrorToErrorys0E0_pSo0C0CSgF();\n      _objc_release(uVar7);\n      _swift_willThrow();\n      uStack_80 = 0;\n      uStack_78 = 0xe000000000000000;\n      _swift_errorRetain(uStack_88);\n      __ss11_StringGutsV4growyySiF(0x32);\n      uVar7 = 0xd000000000000025;\n      __sSS6appendyySSF(0xd000000000000025,0x80000001039ed790);\n      func_0x000100d9b48c();\n      __ss23CustomStringConvertibleP11descriptionSSvgTj(lVar2,uVar7);\n      __sSS6appendyySSF();\n      _swift_bridgeObjectRelease(uVar7);\n      __sSS6appendyySSF(0x3a726f727245202e,0xe900000000000020);\n      uVar7 = 0x1045eec10;\n      FUN_100005134(0x1045eec10,&UNK_10373d238);\n      __ss15_print_unlockedyyx_q_zts16TextOutputStreamR_r0_lF\n                (&uStack_88,&uStack_80,uVar7,PTR___ss26DefaultStringInterpolationVN_10423ecd0,\n                 PTR___ss26DefaultStringInterpolationVs16TextOutputStreamsWP_10423ece0);\n      uVar1 = uStack_78;\n      uVar7 = uStack_80;\n      *(undefined4 *)(lVar10 + -8) = 0;\n      *(undefined8 *)(lVar10 + -0x10) = 0x17f;\n      __ss17_assertionFailure__4file4line5flagss5NeverOs12StaticStringV_SSAHSus6UInt32VtF\n                (\"Fatal error\",0xb,2,uVar7,uVar1,\"ApplicationPaths/ApplicationPaths.swift\",0x27,2);\n                    /* WARNING: Does not return */\n      pcVar11 = (code *)SoftwareBreakpoint(1,0x100d99308);\n      (*pcVar11)();\n    }\n    pcVar8 = *(code **)(lVar12 + 8);\n    _objc_retain();\n  }\n  else {\n    pcVar8 = *(code **)(lVar12 + 8);\n  }\n  (*pcVar8)(puVar9,lVar2);\n  (*pcVar11)(param_1,lVar10,lVar2);\n  (*pcVar8)(lVar10,lVar2);\n  if (*(long *)PTR____stack_chk_guard_1042374a0 == lStack_68) {\n    return;\n  }\n                    /* WARNING: Subroutine does not return */\n  ___stack_chk_fail();\n}\n\n",
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Pseudocode is Ghidra decompiler output, not original source and not text-equivalent to Hopper output.",
+    "External functions and functions without an analyzable body return null; other decompiler failures remain explicit.",
+    "Swift control-flow uncertainty at 0x100d99018: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+    "Swift control-flow uncertainty at 0x100d990d8: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+    "Swift control-flow uncertainty at 0x100d9925c: The Swift symbol is outside the native function/initializer ABI profile. Synchronous throwing effects remain unproved. Consult assembly and machine CFG before inferring success/failure paths.",
+    "Ghidra auto-analysis state: analysis_complete=false; analysis_timed_out=true; analysis_timeout_seconds=1.",
+    "The explicitly bounded auto-analysis ended before completion. Operations read a stable partial Program; missing functions, references, strings and types remain unknown, and inventory counts describe that Program only.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state.",
+    "Ghidra analysis was seeded before auto-analysis from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-callbacks-2026-11-21/storage-io-seeds-2463.tsv (sha256 85a20193046dab6c42251fc95328a816cec6b159e188e2ea48a87896d7966752: 2463 function, 0 code, 0 label entries). Seeded functions, code and names are caller assertions, not Ghidra discoveries.",
+    "Seed outcome: 2358 functions created, 105 already present, 0 failed; 0 code seeds decoded, 0 failed; 0 labels applied, 0 failed; 0 seeds outside initialized memory."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

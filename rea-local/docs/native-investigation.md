@@ -325,6 +325,25 @@ outside-memory and undecodable addresses have separate outcomes. Effective
 memory base/index/displacement roles and per-instruction context mode remain
 unavailable; `mode` is the program language variant.
 
+Inspection normally reads analyzed Listing instructions. An absent Listing entry
+is not proof that the bytes are invalid code. Explicit MCP `decode_unlisted: true`
+or CLI `--decode-unlisted` asks Ghidra to interpret one unlisted instruction in
+initialized executable Program memory, using its existing language/context.
+`decode_source` distinguishes `listing` from `unlisted_program_bytes`; older
+Evidence may omit it. This creates no Listing instructions, functions, references
+or CFG edges. Existing data/instruction overlaps, uninitialized/non-executable
+ranges, language misalignment and instructions crossing a block are not admitted.
+Detached decoding does not establish reachability or runtime CPU mode.
+
+For detached results, `references_available` is false: the empty outgoing
+`references` array is unavailable analysis, not proof of no references. Decoded
+direct-flow destinations remain separate machine facts with byte-decoder
+provenance. `resolve_native_call_targets` keeps its analyzed-reference semantics
+and does not accept this option. The macOS compiler/Ghidra verification lane
+`npm run verify:ghidra:unlisted -- --output-dir /absolute/new/receipts` checks
+ARM64/x86-64 decoding, CLI/MCP agreement, boundary exclusions and unchanged
+Listing/function bodies without executing either fixture.
+
 `inspect_native_instruction` also returns `incoming_references` to the exact
 queried address, including data, interior-instruction and undecodable addresses.
 Ghidra enumerates its ReferenceManager, excludes synthetic entry-point

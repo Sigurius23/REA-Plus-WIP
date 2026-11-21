@@ -13,7 +13,10 @@ import {
 import type { ToolContract } from "./toolContractTypes.js";
 import { toolContractMetadata } from "./toolEffects.js";
 import { nativeDataTypeInputSchema } from "../domain/native/nativeDataType.js";
-import { nativeInstructionInputSchema } from "../domain/native/nativeInstruction.js";
+import {
+  nativeInstructionInputSchema,
+  nativeCallTargetsInputSchema,
+} from "../domain/native/nativeInstruction.js";
 import { functionInstructionInputSchema } from "./functionInstructionContract.js";
 import { HOPPER_MEMORY_TOOL_DEFINITIONS } from "./hopperMemoryContracts.js";
 import { analysisSearchInput } from "./analysisSearchContract.js";
@@ -54,13 +57,13 @@ export const OFFICIAL_TOOL_CONTRACTS = [
   ),
   official(
     "inspect_native_instruction",
-    "Inspect one exact code or data address: decoded bytes, mnemonic, ordered operand tokens, flow, outgoing instruction references and typed incoming references where available. Incoming references preserve source, access kind, operand index and analysis provenance even at data addresses; they do not prove runtime access. Memory addressing decomposition is unavailable when the provider supplies only tokens. Data, interior instruction addresses and undecodable bytes are distinct outcomes.",
+    "Inspect one exact code or data address: decoded bytes, mnemonic, ordered operand tokens, flow, outgoing instruction references and typed incoming references where available. Explicit decode_unlisted requests detached interpretation of initialized executable bytes without changing analyzed instructions, functions, references or CFG; decode_source and references_available separate byte interpretation from analyzed facts. Incoming references preserve source, access kind, operand index and analysis provenance even at data addresses; they do not prove runtime access. Memory addressing decomposition is unavailable when the provider supplies only tokens. Data, interior instruction addresses and undecodable bytes are distinct outcomes.",
     nativeInstructionInputSchema,
   ),
   official(
     "resolve_native_call_targets",
     "Resolve one explicit static call site using typed provider call references. Preserves ambiguous targets as candidates and unresolved computed calls as unknown; does not execute code or traverse a call graph.",
-    nativeInstructionInputSchema,
+    nativeCallTargetsInputSchema,
   ),
   official(
     "address_name",

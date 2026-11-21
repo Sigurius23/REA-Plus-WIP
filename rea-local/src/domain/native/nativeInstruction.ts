@@ -4,6 +4,16 @@ import { z } from "zod";
 export const nativeInstructionInputSchema = z.strictObject({
   address: z.string().min(1),
   document: z.string().optional(),
+  decode_unlisted: z
+    .boolean()
+    .optional()
+    .describe(
+      "Explicitly interpret unlisted initialized executable bytes without adding database instructions, functions or control-flow edges, where supported. Omission uses analyzed instructions only. Byte decoding does not establish reachability or runtime mode.",
+    ),
+});
+export const nativeCallTargetsInputSchema = nativeInstructionInputSchema.pick({
+  address: true,
+  document: true,
 });
 const reference = z.strictObject({
   target_address: z.string(),
@@ -58,6 +68,16 @@ export const nativeInstructionSchema = z.strictObject({
   length: z.number().int().positive().nullable(),
   mnemonic: z.string().nullable(),
   raw_disassembly: z.string().nullable(),
+  decode_source: z
+    .enum(["listing", "unlisted_program_bytes"])
+    .nullable()
+    .optional(),
+  references_available: z
+    .boolean()
+    .optional()
+    .describe(
+      "Whether outgoing analyzed instruction references are available. False keeps an empty references array from implying absence; direct decoded flow is reported separately. Older records may omit this fact.",
+    ),
   operands: z.array(
     z.strictObject({
       index: z.number().int().nonnegative(),

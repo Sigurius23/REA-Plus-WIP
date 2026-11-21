@@ -1,0 +1,50 @@
+
+> rea-agents@6.4.0 verify:ghidra:unlisted
+> npm run build:cached && node scripts/verify/ghidra/unlisted-instructions.mjs --output-dir /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-typed-dispatch-2026-11-21/byte-qualification-v2
+
+
+> rea-agents@6.4.0 build:cached
+> node scripts/check-dependency-install.mjs && node scripts/run-exclusive.mjs artifacts turbo run artifacts:skills
+
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs e1a7cc92912513e0
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs c0b04451cd7902aa
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache hit, replaying logs 4179bb9987e7d671
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    3 cached, 3 total
+  Time:    360ms >>> FULL TURBO
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+
+'decoded'
+    at file:///Users/sigur/Desktop/projekte/reverse%20engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/scripts/verify/ghidra/unlisted-instructions.mjs:236:18 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'decoded',
+  expected: 'decoded',
+  operator: 'notStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.22.3

@@ -236,13 +236,29 @@ export const registerCoreNativeCommands = (
         "target-format": formatSelectionOption,
         "staging-dir": stagingDirSelectionOption,
         provider: providerSelectionOption,
+        ...(operation === "inspect_native_instruction"
+          ? {
+              "decode-unlisted": z
+                .boolean()
+                .optional()
+                .describe(
+                  "Interpret unlisted initialized executable bytes without changing the analysis database",
+                ),
+            }
+          : {}),
       }),
       run: ({ args, options }) =>
         logCliCommand(logger, command, () =>
           runDirectAnalysis(
             args.path,
             operation,
-            { address: args.address },
+            {
+              address: args.address,
+              ...(operation === "inspect_native_instruction" &&
+              typeof options["decode-unlisted"] === "boolean"
+                ? { decode_unlisted: options["decode-unlisted"] }
+                : {}),
+            },
             directAnalysisOptions(logger, {
               providerId: options.provider,
               formatHint: options["target-format"],

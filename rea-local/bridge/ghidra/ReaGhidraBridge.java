@@ -45,6 +45,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import ghidra.app.util.headless.HeadlessScript;
+import ghidra.app.util.PseudoDisassembler;
 import ghidra.app.decompiler.DecompInterface;
 import ghidra.app.decompiler.DecompileOptions;
 import ghidra.app.decompiler.DecompileResults;
@@ -906,17 +907,55 @@ public final class ReaGhidraBridge extends HeadlessScript {
         return item;
     }
 
+    /** Decode one unlisted instruction into a detached object; never apply it. */
+    private Instruction decodeUnlistedInstruction(Address address) throws Exception {
+        ghidra.program.model.mem.MemoryBlock block = currentProgram.getMemory().getBlock(address);
+        if (block == null || !block.isInitialized() || !block.isExecute() ||
+            currentProgram.getListing().getInstructionContaining(address) != null ||
+            currentProgram.getListing().getDefinedDataContaining(address) != null) return null;
+        int alignment = currentProgram.getLanguage().getInstructionAlignment();
+        if (alignment < 1 || Long.remainderUnsigned(address.getOffset(), alignment) != 0) return null;
+        Instruction decoded;
+        try { decoded = new PseudoDisassembler(currentProgram).disassemble(address); }
+        catch (ghidra.program.model.lang.InsufficientBytesException |
+               ghidra.program.model.lang.UnknownInstructionException |
+               ghidra.program.model.lang.UnknownContextException unavailable) { return null; }
+        if (decoded == null || !decoded.getAddress().equals(address) || decoded.getLength() < 1) return null;
+        Address end;
+        try { end = address.addNoWrap(decoded.getLength() - 1); }
+        catch (ghidra.program.model.address.AddressOverflowException invalid) { return null; }
+        if (!block.contains(end)) return null;
+        AddressSet span = new AddressSet(address, end);
+        if (currentProgram.getListing().getInstructions(span, true).hasNext() ||
+            currentProgram.getListing().getDefinedData(span, true).hasNext()) return null;
+        return decoded;
+    }
+
     private JsonObject inspectNativeInstruction(JsonObject params, boolean includeIncoming) throws Exception {
-        requireKeys(params, Set.of("document", "address"));
+        requireKeys(params, params.has("decode_unlisted") ? Set.of("document", "address", "decode_unlisted") : Set.of("document", "address"));
         requireDocument(params);
+        boolean decodeUnlisted = false;
+        if (params.has("decode_unlisted")) {
+            JsonElement selected = params.get("decode_unlisted");
+            if (!selected.isJsonPrimitive() || !selected.getAsJsonPrimitive().isBoolean())
+                throw new RequestFailure("invalid_request", "decode_unlisted must be a boolean");
+            decodeUnlisted = selected.getAsBoolean();
+        }
         Address address = requireAddress(params, "address");
         Instruction instruction = currentProgram.getListing().getInstructionAt(address);
+        boolean unlisted = false;
+        if (instruction == null && decodeUnlisted) {
+            instruction = decodeUnlistedInstruction(address);
+            unlisted = instruction != null;
+        }
         Function function = currentProgram.getFunctionManager().getFunctionContaining(address);
         JsonObject result = new JsonObject();
         result.addProperty("address", canonicalAddress(address));
         result.add("procedure", function == null ? JsonNull.INSTANCE : GSON.toJsonTree(canonicalAddress(function.getEntryPoint())));
         result.addProperty("architecture", currentProgram.getLanguageID().getIdAsString());
         result.addProperty("mode", currentProgram.getLanguage().getLanguageDescription().getVariant());
+        result.add("decode_source", instruction == null ? JsonNull.INSTANCE : GSON.toJsonTree(unlisted ? "unlisted_program_bytes" : "listing"));
+        result.addProperty("references_available", instruction != null && !unlisted);
         JsonArray operands = new JsonArray();
         JsonArray references = new JsonArray();
         JsonArray destinations = new JsonArray();
@@ -937,7 +976,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
             result.addProperty("raw_disassembly", instruction.toString());
             RefType type = instruction.getFlowType();
             JsonObject listingFlow = new JsonObject();
-            listingFlow.addProperty("source", "ghidra-listing-flow-type");
+            listingFlow.addProperty("source", unlisted ? "ghidra-byte-decoder-flow-type" : "ghidra-listing-flow-type");
             listingFlow.addProperty("value", type.getName());
             flowEvidence.add(listingFlow);
             boolean decodedReturn = false;
@@ -945,7 +984,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
                 if (operation.getOpcode() != PcodeOp.RETURN) continue;
                 decodedReturn = true;
                 JsonObject returnEvidence = new JsonObject();
-                returnEvidence.addProperty("source", "ghidra-instruction-pcode");
+                returnEvidence.addProperty("source", unlisted ? "ghidra-byte-decoder-pcode" : "ghidra-instruction-pcode");
                 returnEvidence.addProperty("value", operation.getMnemonic());
                 flowEvidence.add(returnEvidence);
             }
@@ -953,7 +992,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
             flow.addProperty("conditional", type.isConditional());
             flow.addProperty("computed", type.isComputed());
             if (!type.isComputed()) for (Address target : instruction.getFlows()) destinations.add(canonicalAddress(target));
-            for (Reference reference : instruction.getReferencesFrom()) references.add(instructionReference(reference));
+            if (!unlisted) for (Reference reference : instruction.getReferencesFrom()) references.add(instructionReference(reference));
             for (int index = 0; index < instruction.getNumOperands(); index++) {
                 JsonObject operand = new JsonObject();
                 operand.addProperty("index", index);
@@ -1002,13 +1041,17 @@ public final class ReaGhidraBridge extends HeadlessScript {
             for (Reference reference : orderedIncoming) incomingReferences.add(instructionReference(reference));
             result.add("incoming_references", incomingReferences);
         }
-        List<String> limitations = new ArrayList<>(List.of("Operand components are Ghidra Listing decoder tokens; effective memory base/index/displacement roles and per-instruction context mode are unavailable. The mode field is the program language variant."));
+        List<String> limitations = new ArrayList<>(List.of("Operand components are Ghidra decoder tokens; effective memory base/index/displacement roles and per-instruction context mode are unavailable. The mode field is the program language variant."));
+        if (decodeUnlisted) limitations.add("Opt-in unlisted decoding interprets aligned, initialized executable Program bytes without adding Listing instructions, functions, references or CFG edges. Existing instruction/data overlaps and cross-block instructions are not reinterpreted. Decoding does not prove reachability or identify a runtime CPU mode.");
+        if (unlisted) limitations.add("Outgoing analyzed instruction references are unavailable for this detached decode; the empty references array does not establish their absence. Incoming references, when requested, are only existing ReferenceManager observations.");
+        else if (instruction == null && !decodeUnlisted) limitations.add("No Listing instruction is present at this address. Unlisted Program bytes were not decoded; decode_unlisted explicitly opts into a detached byte interpretation.");
         if (flow.get("kind").getAsString().equals("terminal")) limitations.add("No RETURN operation was observed in the provider's instruction p-code; terminal classification remains generic.");
         result.add("limitations", GSON.toJsonTree(limitations));
         return result;
     }
 
     private JsonObject resolveNativeCallTargets(JsonObject params) throws Exception {
+        requireKeys(params, Set.of("document", "address"));
         JsonObject instruction = inspectNativeInstruction(params, false);
         JsonObject result = new JsonObject();
         result.add("call_site", instruction.get("address"));

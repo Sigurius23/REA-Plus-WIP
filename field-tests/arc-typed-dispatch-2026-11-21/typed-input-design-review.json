@@ -1,0 +1,1216 @@
+{
+  "format": "rea-typed-dispatch-design-review-v1",
+  "created_utc": "2026-11-21T16:00:45.853298+00:00",
+  "baseline_reference_received": "d647436b",
+  "baseline_git_verified": false,
+  "scope": {
+    "mode": "independent-offline-design-review",
+    "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+    "no_provider_run": true,
+    "no_build": true,
+    "no_target_or_library_execution": true,
+    "no_production_edits": true,
+    "no_git_invoked": true,
+    "outputs": [
+      "field-tests/arc-typed-dispatch-2026-11-21/typed-input-design-review.md",
+      "field-tests/arc-typed-dispatch-2026-11-21/typed-input-design-review.json"
+    ]
+  },
+  "decision": {
+    "item63": "open",
+    "global_cfg_repair_from_one_typed_caller": "unsound",
+    "recommended_initial_lane": "observation-only conditional typed invocation context; emit partial missing-owner proof until exact typed buffer root and origin chain close",
+    "minimal_domain": "For the exact proved typed closure invocation only, helper low16(X0) is a valid tag of descriptor103d41568 and belongs to[0,297).",
+    "constructor_declaration_return_type": "not established by23 pairs,0x170 copies, field names, associated Value=Client or getter flags3",
+    "prior_ownership_and_later_lifetime": "not proved; do not require or claim whole-program retention proof for conditional input-domain analysis"
+  },
+  "reproduced_metadata": {
+    "client_descriptor": "0x103d648c4",
+    "client_fields": "0x103e972f0",
+    "client_metadata": "0x1042c8ac0",
+    "metadata_kind": "0x200",
+    "field_count": 23,
+    "field_offset_vector_word_offset": 2,
+    "field0_record": "0x103e97300",
+    "field0_name_address": "0x103e03230",
+    "field0_type_mangle": "0x103bb3220",
+    "field0_type_bytes_hex": "53620225d867005962630000",
+    "field0_offset": 0,
+    "closure_symbolic_indirect_slot": "0x104230a48",
+    "enum_descriptor": "0x103d41568",
+    "enum_fields": "0x103e7b6fc",
+    "payload_cases": 0,
+    "empty_cases": 297,
+    "field_record_size": 12,
+    "all297_records_have_no_payload_type": true,
+    "client_vwt": "0x1042c8a58",
+    "vwt_slot16_target": "0x100d97b04",
+    "vwt_size": 368,
+    "vwt_stride": 368,
+    "notes": [
+      "Closure mangling grammar/ABI lowering is a design obligation, not an existing producer proof.",
+      "Ghidra byte reads include initialized loader fixups; static identities do not establish runtime interposition or active instance."
+    ]
+  },
+  "proof_obligations": [
+    {
+      "id": "nominal-layout",
+      "status": "retained-static-facts",
+      "requires": "Exact nongeneric Client descriptor, metadata backpointer/field offset vector, field index and complete native thick closure type; exact symbolic enum descriptor with zero payloads and297 empty cases; two-byte valid-enum ABI representation. The closure type parser and ABI lowering still require new producer implementation."
+    },
+    {
+      "id": "typed-root",
+      "status": "missing-complete-chain",
+      "requires": "A typed buffer/operation for this exact context, independently of getter slot order: selected KeyPath<Root,Client> output on normal return, or exact M=Client VWT source snapshot with an explicit valid-source ABI premise, or exact original function/requirement signature that actually names the output type."
+    },
+    {
+      "id": "construction-origin",
+      "status": "raw-forwarding-retained-not-ownership-proof",
+      "requires": "Tie selected constructor output pointer to that typed location at a particular call/time; trace only relevant code/context bytes through exact stores/copies and forbid stale aliases/intervening writes. Do not promote one call result to a global constructor return declaration."
+    },
+    {
+      "id": "closure-invocation",
+      "status": "ABI-obligation",
+      "requires": "Exact selected native synchronous thick closure invocation; code and context belong to same typed field value; code identity equals100d92ebc. Valid Client/closure input at invocation is an explicit conditional premise; static default presence does not select active dependency injection."
+    },
+    {
+      "id": "argument-flow",
+      "status": "selected-forwarding-retained",
+      "requires": "Single enum argument lowered to low16(X0) under admitted Swift ARM64 ABI; adapter changes onlyX1 before tail100d910dc, reader leavesX0 unchanged before100d910f0. Check all admitted predecessors/aliases, clobbers and escapes for this context; do not assign all helper callers a type."
+    },
+    {
+      "id": "dispatch-domain",
+      "status": "decoder-not-implemented",
+      "requires": "For this context only, low16(X0) in[0,297); verify exact mask, LDRH unsigned, table index scale1 and target scale2, table bytes2*N and nonwrapping aligned executable targets; no bound from mask/table length."
+    },
+    {
+      "id": "representation",
+      "status": "current-owner-wide-carrier-insufficient",
+      "requires": "Emit separate observation-only conditional context object; no owner-wide computed edges, JumpTable override or inferred helper parameter type. Independent unknown caller contexts remain unknown."
+    }
+  ],
+  "negative_controls": [
+    {
+      "label": "merged-UInt16-and-enum-callers",
+      "kind": "owned-source-observed",
+      "expected": "Typed selected context may get297 mappings; UInt16 context and helper-global domain remain unknown. Fixture optimizer shares reader/switch code."
+    },
+    {
+      "label": "same-name-different-owner",
+      "kind": "owned-source-observed",
+      "expected": "Do not bind primary enum by name/count or shared target; retain exact descriptor per context."
+    },
+    {
+      "label": "associated-Value-but-unrelated-getter",
+      "kind": "proposed",
+      "expected": "Value=Client plus getter flags3 does not bind return type; reject unless signature or independent typed operation binds the buffer."
+    },
+    {
+      "label": "same-VWT-function-different-metadata",
+      "kind": "proposed",
+      "expected": "Same initializeWithCopy code address is not nominal identity. Metadata descriptor must be exact; unresolved/other owner stays unknown."
+    },
+    {
+      "label": "wrong-field-or-function-tree",
+      "kind": "proposed",
+      "expected": "Changed offset, closure returning enum rather than accepting enum, malformed/trailing mangling, unresolved symbolic slot, thin/C/block/async/throws or generic ABI not implemented must reject."
+    },
+    {
+      "label": "constructor-result-type-confusion",
+      "kind": "proposed",
+      "expected": "Anonymous equal-size23-pair constructor feeding an unrelated same-layout nominal does not establish Client output; keep missing root explicit."
+    },
+    {
+      "label": "pair-rewrite-or-mixed-origin",
+      "kind": "proposed",
+      "expected": "Changed codeword, mixed code/context versions, later store or copy overlap before selected invocation invalidates origin; no stale initializer claim."
+    },
+    {
+      "label": "hidden-output-escape",
+      "kind": "proposed",
+      "expected": "Unknown call receiving tracked result pointer throughX8, X20/swiftself or memory, or alias via captured object, cannot use legacy X0-X7-only escape check as ownership proof."
+    },
+    {
+      "label": "argument-clobber-and-bypass",
+      "kind": "proposed",
+      "expected": "X0 load/bit transformation, unknown intervening call, zero-register identity forgery, disagreeing join, foreign/bypass entry or unresolved computed forwarding rejects exact context proof."
+    },
+    {
+      "label": "wrong-halfword-table-form",
+      "kind": "proposed",
+      "expected": "Signed LDRSH, changed index scale, target scale, anchor, arithmetic wrap, incomplete/uninitialized source bytes or nonexecutable/misaligned destination rejects mapping."
+    },
+    {
+      "label": "one-past-typed-domain",
+      "kind": "proposed",
+      "expected": "Index297 and higher are outside the selected valid enum context; never claim absent/default/global behaviour for such values."
+    },
+    {
+      "label": "runtime-injection-changed",
+      "kind": "proposed",
+      "expected": "Alternative constructor/closure selected at runtime is outside default-path result; static selected candidate is not an observed active binding."
+    }
+  ],
+  "bounded_remaining_queries": [
+    {
+      "priority": 1,
+      "request": "Complete selected KeyPath construction/capture chain for caller1006fa470→1006faab0→1006fa5bc; then only pattern/type-accessor bytes revealed by those instructions.",
+      "known_anchors": [
+        "0x1006faab8: ldp x1,x0,[x20,#0x10]",
+        "0x1006fa60c: ldr x1,[x23,#0x10]",
+        "0x1006fa614..0x1006fa618: saved incomingX8 restored and swift_getAtKeyPath call"
+      ],
+      "purpose": "Prove exact KeyPath Value=Client and exact output buffer independently of unknown protocol getter signature.",
+      "limit": "Root is already collecting; no duplicate provider query made in this review. Do not invent a pattern address or infer incomingX0 is metadata."
+    },
+    {
+      "priority": 2,
+      "request": "Authenticate exact imported swift_getAtKeyPath ABI/binding and selected Value metadata/type accessors; if original runtime declaration is unavailable preserve it as named stable ABI premise.",
+      "known_anchors": [
+        "0x10364021c",
+        "0x1042c8ac0",
+        "0x103d648c4"
+      ],
+      "purpose": "The raw call and X8 preservation alone do not establish KeyPath Value.",
+      "limit": "One exact selected import/pattern, not broad protocol/library scans."
+    },
+    {
+      "priority": 3,
+      "request": "For VWT snapshot alternative, use existing metadata backpointer and1042c8a58 slot+16; inspect100d97b04 only if proof needs post-copy byte origins or nonescape effects.",
+      "known_anchors": [
+        "0x100cce830..0x100cce844",
+        "0x1042c8ab8",
+        "0x1042c8a58",
+        "0x100d97b04",
+        "0x100d929f8"
+      ],
+      "purpose": "Bind the typed source/destination buffer at one call under exact VWT ABI; never infer owner from equal helper address.",
+      "limit": "Actual copy implementation is unnecessary for the conditional source-type snapshot alone, but required if relied on for byte preservation/effects. No memcpy summary from VWT contract."
+    }
+  ],
+  "proposed_conditional_contract": {
+    "status": "proved or partial (never silently omitted missing premises)",
+    "context_id": "digest of artifact+selected typed root/call+buffer identity+field descriptor/index+code/context origin+call chain+assumptions",
+    "typed_root": {
+      "nominal_descriptor": "required exact identity",
+      "operation_address": "required",
+      "buffer_identity": "required time-scoped symbolic identity",
+      "binding_method": "typed-keypath-output | typed-vwt-source-snapshot | exact-typed-signature"
+    },
+    "closure_field": {
+      "owner_descriptor": "required",
+      "field_record": "required",
+      "offset": "required",
+      "complete_function_type": "required",
+      "code_origin": "required",
+      "context_origin": "required or explicit opaque-valid-context premise"
+    },
+    "argument_flow": "ordered instruction/source anchors into this helper invocation only",
+    "domain": {
+      "enum_descriptor": "0x103d41568",
+      "representation_bits": 16,
+      "valid_tags": {
+        "start": 0,
+        "end_exclusive": 297
+      }
+    },
+    "dispatch": {
+      "owner": "0x1005aa5e4",
+      "instruction": "0x1005aa618",
+      "table": "0x1036db410",
+      "anchor": "0x1005aa61c",
+      "entry_width_bytes": 2,
+      "entry_signed": false,
+      "index_shift": 1,
+      "target_shift": 2
+    },
+    "mappings": "context-scoped only after all declared proof obligations close; otherwise absent with explicit missing facts",
+    "unknown_contexts": "retained, not collapsed into helper-global type/domain",
+    "program_mutations": false,
+    "named_assumptions": [
+      "proposed swift-native-thick-closure-valid-enum-input-v1",
+      "normal synchronous Swift ARM64 closure ABI",
+      "valid typed Client/closure at the selected invocation or exact typed source snapshot",
+      "stable admitted metadata/layout/import bindings for the checked path",
+      "normal nonfaulting return for traversed typed runtime operations",
+      "no admitted stale alias, intervening write or bypass in relevant checked windows"
+    ],
+    "limitations": [
+      "Static selected default candidate does not select actual dependency injection.",
+      "No inferred protocol getter signature from flags, name or slot order.",
+      "No whole-program helper type, all-callers closedness, prior copy/ARC correctness, active defaults instance, durability or later lifetime claim."
+    ]
+  },
+  "implementation_reuse": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "3e6c1254a05bf0e8bad4970b1abb7fc9428da51f6f8fd321ac74a0147cf869e7",
+      "lines": {
+        "start": 1,
+        "end": 57
+      },
+      "range_text_sha256": "3e6c1254a05bf0e8bad4970b1abb7fc9428da51f6f8fd321ac74a0147cf869e7",
+      "purpose": "Authority, ownership, uncertainty and producer representation rules"
+    },
+    {
+      "path": ".agents/skills/reverse-engineer-anything/SKILL.md",
+      "sha256": "001dc0e81f4fab33b115e03c09904d8d4c17ca15642f972c785fc035ff3ef60e",
+      "lines": {
+        "start": 285,
+        "end": 320
+      },
+      "range_text_sha256": "9fdcb96747388087c31c607e9c6a0172dce7f6f267d874531232f9018f4e2d56",
+      "purpose": "REA+ version44 work decomposition and evidence rules"
+    },
+    {
+      "path": "bridge/ghidra/ReaGhidraSwiftEnumSwitches.java",
+      "sha256": "558e14b134d1236bb9101296efd0844db382d7b5428f459ef8330fe3be19ba48",
+      "lines": {
+        "start": 46,
+        "end": 59
+      },
+      "range_text_sha256": "610773bcab4bb12bf9059331de29f5d8bc070325cbbea5a4c57742fc0de35bea",
+      "purpose": "Owner-wide Recovery and type/value records"
+    },
+    {
+      "path": "bridge/ghidra/ReaGhidraSwiftEnumSwitches.java",
+      "sha256": "558e14b134d1236bb9101296efd0844db382d7b5428f459ef8330fe3be19ba48",
+      "lines": {
+        "start": 71,
+        "end": 103
+      },
+      "range_text_sha256": "3a945d00122bafb8d7d8aef848ecc8311ef18e3caf7ff5989498ad7574fa40f8",
+      "purpose": "Existing analysis discovery is rooted in multipayload runtime calls"
+    },
+    {
+      "path": "bridge/ghidra/ReaGhidraSwiftEnumSwitches.java",
+      "sha256": "558e14b134d1236bb9101296efd0844db382d7b5428f459ef8330fe3be19ba48",
+      "lines": {
+        "start": 906,
+        "end": 938
+      },
+      "range_text_sha256": "a8bd95f34f64f6e1fb300efce74c577d2862382b4e9da713a636ddfdf45b400d",
+      "purpose": "Enum layout checks currently require at least one payload; not a pure-enum reader"
+    },
+    {
+      "path": "bridge/ghidra/ReaGhidraSwiftEnumSwitches.java",
+      "sha256": "558e14b134d1236bb9101296efd0844db382d7b5428f459ef8330fe3be19ba48",
+      "lines": {
+        "start": 995,
+        "end": 1090
+      },
+      "range_text_sha256": "6100b17c01d0bcbb129527f35af6b93d6c9ed9b47e28a1aa4b1c553f1b294cee",
+      "purpose": "match/repair install unconditional owner-wide edges and JumpTable override"
+    },
+    {
+      "path": "bridge/ghidra/ReaGhidraSwiftEnumSwitches.java",
+      "sha256": "558e14b134d1236bb9101296efd0844db382d7b5428f459ef8330fe3be19ba48",
+      "lines": {
+        "start": 1092,
+        "end": 1145
+      },
+      "range_text_sha256": "37c94c0039fd4159a709c053fa882d5db1ee6c642eecebfcd7634382a3b72ed6",
+      "purpose": "tables serializes owner-wide mapping/limitations, no typed context domain"
+    },
+    {
+      "path": "bridge/ghidra/ReaGhidraSwiftEnumSwitches.java",
+      "sha256": "558e14b134d1236bb9101296efd0844db382d7b5428f459ef8330fe3be19ba48",
+      "lines": {
+        "start": 1162,
+        "end": 1198
+      },
+      "range_text_sha256": "df1033502cff7fc9fa37e2c96d180ac6cea26e2a259e2298644009247aa2a3fe",
+      "purpose": "Bounded local graph and known foreign-entry checks"
+    },
+    {
+      "path": "bridge/ghidra/ReaGhidraSwiftEnumSwitches.java",
+      "sha256": "558e14b134d1236bb9101296efd0844db382d7b5428f459ef8330fe3be19ba48",
+      "lines": {
+        "start": 1488,
+        "end": 1513
+      },
+      "range_text_sha256": "dfd1d0be067e772cb0eb754ec7a47fd986c3b7721ac75b9fe5729ff94dc20647",
+      "purpose": "Legacy frame escape checks only X0-X7 at unknown calls; not an X8 output ownership proof"
+    },
+    {
+      "path": "bridge/ghidra/ReaGhidraSwiftEnumSwitches.java",
+      "sha256": "558e14b134d1236bb9101296efd0844db382d7b5428f459ef8330fe3be19ba48",
+      "lines": {
+        "start": 1515,
+        "end": 1650
+      },
+      "range_text_sha256": "ca1f41e2a1ee9677bf74510a9249a7001158931f05ccd2f1ad010bed67762e4f",
+      "purpose": "Local reaching definitions; entry X0 is untyped input and call outputs have narrow summaries"
+    },
+    {
+      "path": "bridge/ghidra/ReaGhidraSwiftErrorCalls.java",
+      "sha256": "dce96b6456b9428542a40268c617267514197e4d9b057fea16f3d0e740ad7348",
+      "lines": {
+        "start": 324,
+        "end": 391
+      },
+      "range_text_sha256": "fcbfd583ed5ecc65cc2479fbca9d96eee6f12093d45ef52fec490580e8b9e4b6",
+      "purpose": "Complete outer-function demangler tree discrimination, not closure field ABI inference"
+    },
+    {
+      "path": "src/native/AppleSwiftDispatchFacets.ts",
+      "sha256": "388fea82b02b5deb6decf011a2e4b4da3886b1453a634ec93dc98bb8f518bb47",
+      "lines": {
+        "start": 80,
+        "end": 172
+      },
+      "range_text_sha256": "218c9762d17b9e73f207cc51c9f1e26032a5eb3eb92ab6f23d717e0d45b8565f",
+      "purpose": "Signed-relative pointers, indirect slots, original fixup identities and explicit uncertainty"
+    },
+    {
+      "path": "src/native/AppleSwiftWitnessData.ts",
+      "sha256": "0e9403d72a99bc37556ce91e2dc6d578d1f6e1094ca8b441a3d09a410972820d",
+      "lines": {
+        "start": 12,
+        "end": 55
+      },
+      "range_text_sha256": "57cb50b8ac66639e3b2ac6fb20de833ab4053b14bfe06a9f1a639d68a975c97c",
+      "purpose": "Ordinary Self base-protocol constraints"
+    },
+    {
+      "path": "src/native/AppleSwiftWitnessData.ts",
+      "sha256": "0e9403d72a99bc37556ce91e2dc6d578d1f6e1094ca8b441a3d09a410972820d",
+      "lines": {
+        "start": 57,
+        "end": 209
+      },
+      "range_text_sha256": "2a5cc2528867217890cc979386b5c5def2932fe8dcb50c049069610aff83f952",
+      "purpose": "Associated-type data identity does not encode method signatures"
+    },
+    {
+      "path": "src/domain/native/nativeApiBoundary.ts",
+      "sha256": "3c312a1e8c8f77e44b8e5c0d108b17693101e218652d594132855be8de883f71",
+      "lines": {
+        "start": 49,
+        "end": 99
+      },
+      "range_text_sha256": "79d30aa8851c2b9d685a3a27eb1cfab6fd7fd26517c02b48f19c78190c932efd",
+      "purpose": "Public jump-table schema has no path context or conditional-domain carrier"
+    },
+    {
+      "path": "src/domain/native/functionEmulation.ts",
+      "sha256": "d3775908318a2a85a1f1ab366399440bfdf2863860dc739c0f314ddc35e8f898",
+      "lines": {
+        "start": 40,
+        "end": 115
+      },
+      "range_text_sha256": "eb9e6c6050e122e0d25867e27baa082893d75542443c5db0cde87889a0008712",
+      "purpose": "Concrete initial register/memory selections"
+    },
+    {
+      "path": "src/domain/native/functionEmulation.ts",
+      "sha256": "d3775908318a2a85a1f1ab366399440bfdf2863860dc739c0f314ddc35e8f898",
+      "lines": {
+        "start": 320,
+        "end": 351
+      },
+      "range_text_sha256": "6371ee471a659d5a7e2539ddf6f9edc43d18d635388c244cfcf599ac145105af",
+      "purpose": "Controlled-replay Evidence authority"
+    },
+    {
+      "path": "src/application/binaryDiagnostics/FunctionEmulationService.ts",
+      "sha256": "c582c5a388c83f8150c739f45a8231762a1a3744117ea7d77bc20c3c6206c750",
+      "lines": {
+        "start": 18,
+        "end": 110
+      },
+      "range_text_sha256": "e51959c3bd2ccd8982adbc3a0e08917a088ca5d4741c9b721d14c5854adfa5e1",
+      "purpose": "Shared concrete replay selection/coverage validation"
+    }
+  ],
+  "evidence_records": [
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/function-0x1005aa5e4-read_function_instructions.evidence.json",
+      "sha256": "41dc45fc243672d40029846e844e1299d3807dcf4265a34b3b35c45fc1dbe310",
+      "evidence_id": "ev_a85245e4e0d85341be69f83cdb04266e3260799ef75fab0e6f9120991ac70c44",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x1005aa5e4"
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "procedure": {
+        "address": "0x1005aa5e4",
+        "name": "FUN_1005aa5e4",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1005aa5e4",
+              "end": "0x1005aa61b"
+            }
+          ],
+          "total_bytes": 56,
+          "span_bytes": 56,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 14,
+      "instruction_text_sha256": "57586bc083d09ed274bda8a2a156e8c3750db314f9aa947ab4dccf5a643c386f",
+      "instruction_digest_encoding": "UTF-8 JSON array, no whitespace; this is instruction text, not instruction bytes"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/function-0x100d90ebc-read_function_instructions.evidence.json",
+      "sha256": "0235eb67ab3cb00595966baae6532db103dcdb24ed65689784a55aea6e096f32",
+      "evidence_id": "ev_2dc3d3ceaf1f8035c149fbedf9dbaed70fd841a4133a1c98d3de84633e567d2c",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100d90ebc"
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "procedure": {
+        "address": "0x100d90ebc",
+        "name": "FUN_100d90ebc",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x100d90ebc",
+              "end": "0x100d90f27"
+            }
+          ],
+          "total_bytes": 108,
+          "span_bytes": 108,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 27,
+      "instruction_text_sha256": "46ff0aac78997cf64feaa84aa44cd68387cd491679c55b4fd195a8cfc6505398",
+      "instruction_digest_encoding": "UTF-8 JSON array, no whitespace; this is instruction text, not instruction bytes"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/function-0x100d929a0-read_function_instructions.evidence.json",
+      "sha256": "0cf139fd0bb1b08419e41f585b94823366a6380576680aac18ee1ae5166b621c",
+      "evidence_id": "ev_043ef409d73ba266d407c748faea4d769f0d196d3dfff1c686db2bcf04a282cd",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100d929a0"
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "procedure": {
+        "address": "0x100d929a0",
+        "name": "FUN_100d929a0",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x100d929a0",
+              "end": "0x100d92a27"
+            }
+          ],
+          "total_bytes": 136,
+          "span_bytes": 136,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 34,
+      "instruction_text_sha256": "fe0c2765a74056f69c8d8961184b58aeb435398bae8442d9825a2219b31b5ba5",
+      "instruction_digest_encoding": "UTF-8 JSON array, no whitespace; this is instruction text, not instruction bytes"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/function-0x100d92a28-read_function_instructions.evidence.json",
+      "sha256": "50fe84cd5d8190dc329bfe370b22b4b3b8ad7b794b9d07183e7e9bcd86ae5f73",
+      "evidence_id": "ev_d00a9b57f727c00efb29343cb39faf592c2f821822b7ec8002ca470c98df28b1",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100d92a28"
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "procedure": {
+        "address": "0x100d92a28",
+        "name": "FUN_100d92a28",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x100d92a28",
+              "end": "0x100d92e97"
+            }
+          ],
+          "total_bytes": 1136,
+          "span_bytes": 1136,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 284,
+      "instruction_text_sha256": "2a477b4eae41b9e5ff76cd52aab3fb81909b189fc3d82d8d83aa9f58c4596d09",
+      "instruction_digest_encoding": "UTF-8 JSON array, no whitespace; this is instruction text, not instruction bytes"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/function-0x100d92ebc-read_function_instructions.evidence.json",
+      "sha256": "8182c526e09987932d6476a0172c58fcb3e35e4f687ad54696d85d8ee7f15a58",
+      "evidence_id": "ev_5cdd6ecdeb1dd319136a365ee7f153dacb03ad0db1dd2da04bc96e520530aeac",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100d92ebc"
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "procedure": {
+        "address": "0x100d92ebc",
+        "name": "FUN_100d92ebc",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x100d92ebc",
+              "end": "0x100d92ec3"
+            }
+          ],
+          "total_bytes": 8,
+          "span_bytes": 8,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 2,
+      "instruction_text_sha256": "6d5f76a7a13e5a2567ed3bdfb6a3af563dad88dae5bb945855c6a7b128347709",
+      "instruction_digest_encoding": "UTF-8 JSON array, no whitespace; this is instruction text, not instruction bytes"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/function-0x100d910dc-read_function_instructions.evidence.json",
+      "sha256": "91ca0a6b5ba8b6bc73a5497d771b35b257670aa2623cd7c349f059926a952ffa",
+      "evidence_id": "ev_a5c05294c45e254bc63f6613e0c08dc3c83a07bcf1bf689adb0f52a336130b2a",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100d910dc"
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "procedure": {
+        "address": "0x100d910dc",
+        "name": "FUN_100d910dc",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x100d910dc",
+              "end": "0x100d91133"
+            }
+          ],
+          "total_bytes": 88,
+          "span_bytes": 88,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 22,
+      "instruction_text_sha256": "5f22c4e0afc5afae85070e81641bb2513eca384a8a5e7578b6a9cd142668a309",
+      "instruction_digest_encoding": "UTF-8 JSON array, no whitespace; this is instruction text, not instruction bytes"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/boolForSetting-field-type.evidence.json",
+      "sha256": "04d88b48e97813108b54c8497c0c6525e09558d2f37570a5c6432497305129b5",
+      "evidence_id": "ev_5d75890540e412630421e7db8b6ee8b03684569229a774344a3988ef3fdfb19d",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103bb3220",
+        "length": 12
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "address": "0x103bb3220",
+      "returned_bytes": 12,
+      "complete": true,
+      "read_bytes_sha256": "95d80d1ad00f20839df44a532a51583fa7df9e410b0c716069497a06d1a2672e"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/Setting-symbolic-indirect-slot.evidence.json",
+      "sha256": "a8216fc65dc1e99b607f34b8223c767b5465d448002e974e839bec1dbe27b459",
+      "evidence_id": "ev_bbd12da010349bb21799d9b8d31cb20ea9f5d7253f746d6eed792a12ae089d15",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x104230a48",
+        "length": 8
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "address": "0x104230a48",
+      "returned_bytes": 8,
+      "complete": true,
+      "read_bytes_sha256": "551301a599b56faf19b2b52797933e708bfbecc886838843d63bb05cdc549d5d"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/UserDefaultsClient-descriptor.evidence.json",
+      "sha256": "a2672c232527f6efa90d8986bdf01f3c3c6793abf2b2bec75ccf51311e7bde86",
+      "evidence_id": "ev_e9e00a0d80f9d9645fcc7754e3597cceb6fcdd582a23f4e0838de743f79917f6",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103d648c4",
+        "length": 32
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "address": "0x103d648c4",
+      "returned_bytes": 32,
+      "complete": true,
+      "read_bytes_sha256": "3d3efc39592ec988dabc8b3824c7401e94506f59fbb108fdadfd8a16cd819dcf"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/UserDefaultsClient-Value-witness-mangle.evidence.json",
+      "sha256": "7ff01c47341460a3c15d0f6c24f80e55a82ab0c4b0e0bc1346a86cdc04f29191",
+      "evidence_id": "ev_7636075b93cffc713d983990f789810b628a24119e05d3cb8535a8a0730be040",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103bb305a",
+        "length": 24
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "address": "0x103bb305a",
+      "returned_bytes": 24,
+      "complete": true,
+      "read_bytes_sha256": "5b6525891cd05ca68195b2c14b99d30256dd132cb44255f3f69651c0d138cc53"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/Value-witness-symbolic-indirect-slot.evidence.json",
+      "sha256": "f557158d1b8e86fc4cfdb7840ccac8830be7545a1f5914485ff3750364a92184",
+      "evidence_id": "ev_9a391b208dbad2c20226536cfe38bc1ef916540a6dd7e9d0ae2d0d1231ed04bb",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x104230a08",
+        "length": 8
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "address": "0x104230a08",
+      "returned_bytes": 8,
+      "complete": true,
+      "read_bytes_sha256": "79143dcf3acb148935326f6028bb01dc1c07bb6089950287fa9b1e0f6111eea6"
+    },
+    {
+      "path": "field-tests/arc-persistence-2026-11-20/mcp/preferences-model-descriptor-field-records.evidence.json",
+      "sha256": "65081d0673ac588e96f3e33d5e922e66fa5f77362927dbee2a980f050930d004",
+      "evidence_id": "ev_e9f897c1c47763a5731876226f801482b212020f26bacbbe451a3992c84ef1ea",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103e972f0",
+        "length": 292
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "85142c35f505721e7fe8c0550707ead18feb3c486b12bb22f97ad2e3ee36eb10",
+      "address": "0x103e972f0",
+      "returned_bytes": 292,
+      "complete": true,
+      "read_bytes_sha256": "11eeab0aac632b75eb757d82281f85c6209a57efe36a8a5fef2037f680ba542a"
+    },
+    {
+      "path": "field-tests/arc-persistence-2026-11-20/mcp/preferences-model-descriptor-text-name.evidence.json",
+      "sha256": "a44fab19de279994525d453c7237bd5a220b685a680b7ca8878b0d1b6f1a47e7",
+      "evidence_id": "ev_56dc5654fbf0ee97c8ce97df7700d2044d2626f1a672c5e3b142ef73ced47dc4",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x10373cf10",
+        "length": 128
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "85142c35f505721e7fe8c0550707ead18feb3c486b12bb22f97ad2e3ee36eb10",
+      "address": "0x10373cf10",
+      "returned_bytes": 128,
+      "complete": true,
+      "read_bytes_sha256": "13703477a6a0d13d2aad02ceb7a44ccd2668ae5a41012cfed4f7d7eb0e389eff"
+    },
+    {
+      "path": "field-tests/arc-persistence-2026-11-20/mcp-defaults-2026-11-21/user-defaults-static-metadata.evidence.json",
+      "sha256": "341a60442b83c10e198bdc612846a7f356ec833b38b1d6dbdc9b856fe0c754e0",
+      "evidence_id": "ev_da9e45a8e818b5b153e8ec499a0a95182a86788e9fda08695207c0ab683e9c79",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x1042c8ac0",
+        "length": 160
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "b30f67d29b4043b1f2c47a5f95b73b2323517e46a28b4266ed2503ee65ff6dec",
+      "address": "0x1042c8ac0",
+      "returned_bytes": 160,
+      "complete": true,
+      "read_bytes_sha256": "6db011844b4bba89c89ebd388bd1c21d489da08f80c8ff583477495a2709243d"
+    },
+    {
+      "path": "field-tests/arc-persistence-2026-11-20/mcp-followup/user-defaults-setting-descriptor.evidence.json",
+      "sha256": "8fc4aad8ae0a2683afedb03d25ce777f11876aa08160dd7f0d5048dae0e64d84",
+      "evidence_id": "ev_669f22e4e86b3715f0f647e7812eff7af1022ada54496dd0a27e3a309dc1c2bf",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103d41568",
+        "length": 40
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "4a8318b2c7c3b686b52188d146c2ba4372a4b9d69be6023f83cd198260f3b54e",
+      "address": "0x103d41568",
+      "returned_bytes": 40,
+      "complete": true,
+      "read_bytes_sha256": "0e58b2042ca79ad4a0b59ce652826bcd0b6f9bd08a228891d8cc0d9d94b55ab9"
+    },
+    {
+      "path": "field-tests/arc-persistence-2026-11-20/mcp-defaults-2026-11-21/setting-case-records.evidence.json",
+      "sha256": "aeb8fbd6198cc748823d55d5f5d3e823cf78bf95394aad9f71645461e5e66045",
+      "evidence_id": "ev_2fde2c91ee3bce37b66901483745f18ed035cc5f756ad1e6fe9719487638cfa9",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103e7b6fc",
+        "length": 3580
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "b30f67d29b4043b1f2c47a5f95b73b2323517e46a28b4266ed2503ee65ff6dec",
+      "address": "0x103e7b6fc",
+      "returned_bytes": 3580,
+      "complete": true,
+      "read_bytes_sha256": "f588f4b0d3dc35189923b98b53e33bb762ae78e8e6c7220fc93b148571406b65"
+    },
+    {
+      "path": "field-tests/arc-typed-dispatch-2026-11-21/mcp/function-0x100cce81c-read_function_instructions.evidence.json",
+      "sha256": "397a68b38771d1f08c89b58adb6565976d4784fa368a47bbf20b0e38acb73c9a",
+      "evidence_id": "ev_9b4f91a689962ac4304dbc71ffe7ff03ac42401b7d30d292facb1ca8464ac6a3",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100cce81c"
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "procedure": {
+        "address": "0x100cce81c",
+        "name": "FUN_100cce81c",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x100cce81c",
+              "end": "0x100cce857"
+            }
+          ],
+          "total_bytes": 60,
+          "span_bytes": 60,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 15,
+      "instruction_text_sha256": "eb6eec2f0d0ed429ad2596e3183571bc08b09472f26ad76b154e3e2c81582636",
+      "instruction_digest_encoding": "UTF-8 JSON array, no whitespace; this is instruction text, not instruction bytes"
+    },
+    {
+      "path": "field-tests/arc-typed-dispatch-2026-11-21/mcp/function-0x1006faab0-read_function_instructions.evidence.json",
+      "sha256": "cfc400e288589f2d204f1444cbd5c58819adc5da47a38d42526886329f51fdbf",
+      "evidence_id": "ev_504e4f3a5fb2197c1de3f845ff4f7d4f6f728e3b31fb1790bcc12335605295d9",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x1006faab0"
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "procedure": {
+        "address": "0x1006faab0",
+        "name": "FUN_1006faab0",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1006faab0",
+              "end": "0x1006faac7"
+            }
+          ],
+          "total_bytes": 24,
+          "span_bytes": 24,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 6,
+      "instruction_text_sha256": "542da36c4807a0912982a2b25296c1dfc24dab0f45da826ed99a2c1359818fc5",
+      "instruction_digest_encoding": "UTF-8 JSON array, no whitespace; this is instruction text, not instruction bytes"
+    },
+    {
+      "path": "field-tests/arc-typed-dispatch-2026-11-21/mcp/function-0x1006fa5bc-read_function_instructions.evidence.json",
+      "sha256": "b0609a1792e27922ea44acd0d770af6a42aefcc8f66627a20b540562b2840e77",
+      "evidence_id": "ev_c7802fdb4464716ccd0b6a9d982cab67fd050c1d1b15fedcd9f0af2121cd5a17",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x1006fa5bc"
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "procedure": {
+        "address": "0x1006fa5bc",
+        "name": "FUN_1006fa5bc",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x1006fa5bc",
+              "end": "0x1006fa65f"
+            }
+          ],
+          "total_bytes": 164,
+          "span_bytes": 164,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 41,
+      "instruction_text_sha256": "ad2b5ce663086f750dc2a998e6c080db65e12b253cfdab4aea608a91249d2dfd",
+      "instruction_digest_encoding": "UTF-8 JSON array, no whitespace; this is instruction text, not instruction bytes"
+    },
+    {
+      "path": "field-tests/arc-typed-dispatch-2026-11-21/mcp/UserDefaultsClient-value-witness-pointer.evidence.json",
+      "sha256": "f2119d466a8a17f29c4662082a2119e9a3ca7cf448177ff09e1560d4c3ffa9ee",
+      "evidence_id": "ev_98d06c9528774a627016b978dc547c5abd7cf7ad20f3e3192cb192d0e708ba14",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x1042c8ab8",
+        "length": 8
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "address": "0x1042c8ab8",
+      "returned_bytes": 8,
+      "complete": true,
+      "read_bytes_sha256": "ff3a7e4c80881d6311bce33ecf34a336e3ace68c04377b8ae3be92c807dbd170"
+    },
+    {
+      "path": "field-tests/arc-typed-dispatch-2026-11-21/mcp/UserDefaultsClient-value-witness-table.evidence.json",
+      "sha256": "573231b1e38c1f17d8db9799f44a7d4214a7e81ce500f314e8bf10e814a39f09",
+      "evidence_id": "ev_1ebecf8ae9fffd240af203ce1172bcdc3a455bb944fea42d4c8aa7132448f5e1",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x1042c8a58",
+        "length": 88
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "67e1f6a611b76cd713ca65cc5a7322008156128483845b1046dc9db447873b9b",
+      "address": "0x1042c8a58",
+      "returned_bytes": 88,
+      "complete": true,
+      "read_bytes_sha256": "695842dbbf9b631516a5211c41feeb8b7b369761497088a55933fec05996488c"
+    },
+    {
+      "path": "field-tests/arc-persistence-2026-11-20/mcp/user-defaults-field-names.evidence.json",
+      "sha256": "143f39a74aea22a131d1f086555fc090df9a2899849621bef585126fe3122798",
+      "evidence_id": "ev_130935b106e160e506fefd40d870dce4a816a1fa0570311d1fff911e7b7221bc",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103e03230",
+        "length": 512
+      },
+      "provider": {
+        "id": "ghidra",
+        "name": "Ghidra",
+        "version": "12.1.4"
+      },
+      "analysis_profile_digest": "85142c35f505721e7fe8c0550707ead18feb3c486b12bb22f97ad2e3ee36eb10",
+      "address": "0x103e03230",
+      "returned_bytes": 512,
+      "complete": true,
+      "read_bytes_sha256": "9b591819c4a9257c0096ab7f5541b0fd782ff8d9e6b3e9bd562e1c6529956e91"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp-witness/all-UserDefaultsClient.evidence.json",
+      "sha256": "5f9035bc708e692e4ad78458fc63a1d5b31c9424857c9ec43699bdd6e44a63e8",
+      "evidence_id": "ev_d837be558840a1b1cfd1bd4579da3b4501c08a12a0bb9f3a73faf52f28ad9d96",
+      "operation": "inspect_native_dispatch_metadata",
+      "parameters": {
+        "swift_conformance_filter": {
+          "protocol_name": null,
+          "type_name": "UserDefaultsClient"
+        },
+        "max_file_bytes": 100000000,
+        "max_records": 20000,
+        "facet": "swift-conformances"
+      },
+      "provider": {
+        "id": "rea-workflow",
+        "name": "REA+ composed investigation workflow",
+        "version": "1"
+      },
+      "analysis_profile_digest": "0733405ff4b711a08875f00fe3be8a95b51290eaada7205bf2a16f8690c4af44",
+      "selected_fact": {
+        "owner": "UserDefaultsClient: TestDependencyKey",
+        "table_kind": "witness_table",
+        "slot_index": 1,
+        "requirement": null,
+        "implementation": null,
+        "implementation_address": null,
+        "thunk_address": null,
+        "requirement_flags": 7,
+        "witness_data": {
+          "kind": "associated_type",
+          "name": "Value",
+          "representation": "mangled_name",
+          "pointer_target": "0x103bb305b",
+          "target": {
+            "address": "0x103bb305a",
+            "file_offset": 62599258
+          },
+          "context_descriptor": {
+            "address": "0x103d648c4",
+            "file_offset": 64374980
+          },
+          "type_name": "UserDefaultsClient"
+        },
+        "location": {
+          "address": "0x1045ee8b8",
+          "file_offset": 73328824
+        },
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        },
+        "evidence": [
+          {
+            "kind": "binary_metadata",
+            "description": "Static Swift witness slot, indexed after the conformance-descriptor header",
+            "location": {
+              "address": "0x1045ee8b8",
+              "file_offset": 73328824
+            },
+            "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+            "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+          },
+          {
+            "kind": "binary_metadata",
+            "description": "Protocol requirement flags determining the witness representation",
+            "location": {
+              "address": "0x103d46e14",
+              "file_offset": 64253460
+            },
+            "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+            "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+          },
+          {
+            "kind": "binary_metadata",
+            "description": "Tagged associated-type witness: complete symbolic nominal type reference",
+            "location": {
+              "address": "0x103bb305a",
+              "file_offset": 62599258
+            },
+            "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+            "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+          },
+          {
+            "kind": "binary_metadata",
+            "description": "Associated-type nominal descriptor identity",
+            "location": {
+              "address": "0x103d648c4",
+              "file_offset": 64374980
+            },
+            "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+            "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+          }
+        ]
+      }
+    }
+  ],
+  "additional_source_hashes": [
+    {
+      "path": "field-tests/arc-witness-data-2026-11-21.md",
+      "sha256": "dfb737fa21b3eaf79577532e961b58978196b73909b1740869c778381c43e8a8"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/README.md",
+      "sha256": "8f8ebcc3fcaeb0d8af470005b2e54d250f66c9516a047bf090b8ac91393fdff8"
+    },
+    {
+      "path": "field-tests/arc-persistence-2026-11-20/halfword-fixture/DESIGN.md",
+      "sha256": "d20da7ffcb83036ec82837de606e64021003a9c756dd78679e222b10e0abfac9"
+    },
+    {
+      "path": "field-tests/arc-persistence-2026-11-20/metadata-bindings.json",
+      "sha256": "59216abe86d00d54cd27c5b7c26b79c194732ed314826f98f9fe1cc8729416d0"
+    },
+    {
+      "path": "field-tests/arc-persistence-2026-11-21.md",
+      "sha256": "f1fe48cf36d76ad4620650faf6f702025b1ca8a0c3b78fc0ef537bb886931388"
+    },
+    {
+      "path": "field-tests/arc-typed-dispatch-2026-11-21/fixture/TypedClientControls.swift",
+      "sha256": "a8a523954cbf8c401f2790cabea899d9f4671393dddcffffea357485993d2fe1"
+    },
+    {
+      "path": "field-tests/arc-typed-dispatch-2026-11-21/fixture/TypedClientControls-O.s",
+      "sha256": "1dacf4fddef7c896b750c693c26a930db115fc84650db376d2a59d162b004ba3"
+    },
+    {
+      "path": "field-tests/arc-typed-dispatch-2026-11-21/fixture/TypedClientControls-O.ll",
+      "sha256": "73dbb391dcb6d977c23cf2f58024a1f7e5b511168b32ded43f23f1875616d292"
+    },
+    {
+      "path": "field-tests/arc-typed-dispatch-2026-11-21/fixture/disassembly.txt",
+      "sha256": "c8f611d62f57d4986d0acfbbad650094b5435b710994cc87c13319254d4c6d55"
+    },
+    {
+      "path": "field-tests/arc-typed-dispatch-2026-11-21/fixture/commands.json",
+      "sha256": "56e512bb771c629083ed667a7ece7113a1e3c8ed2f6b8ceacee321ab46ccdfcc"
+    },
+    {
+      "path": "OPEN_TASKS.md",
+      "sha256": "8fcc0e23d30c28dbdfe74a855019b7da9d11423fd32ba44bda596730b5aef8e3"
+    }
+  ],
+  "authentication": {
+    "method": "All listed canonical Evidence files parsed and required target digest checked; byte arithmetic/assertions reproduced offline; instruction text anchors checked; file/range hashes retained. No new public operation executed.",
+    "evidence_file_sha256": "SHA-256 of exact retained JSON file bytes",
+    "read_bytes_sha256": "SHA-256 of bytes_hex bytes (includes provider loader-fixup semantics)",
+    "source_range_sha256": "SHA-256 of UTF-8 source lines inclusive using retained line endings",
+    "public_completeness_limit": "Retained Ghidra records describe stable partial bounded autoanalysis and caller-seeded functions; absence of other references/types/callers is not established."
+  },
+  "markdown_sha256": "8aa0b414e420cc14c88c64b47661d96d5e57e687560f00ecc5f2fe958c2a2f32"
+}
