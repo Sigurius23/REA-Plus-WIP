@@ -1,0 +1,280 @@
+
+> rea-agents@6.4.0 test:local
+> node scripts/run-development-tests.mjs local src/native/AppleSwiftWitnessData.test.ts src/native/AppleSwiftVtables.test.ts src/native/AppleSwiftClassSelection.test.ts src/native/AppleDispatchMetadata.test.ts src/native/AppleSwiftResilientWitnesses.test.ts src/native/AppleSwiftWitnessTemplates.test.ts
+
+Source-test feedback; compiled boundaries and real providers need explicit verification.
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |adapters| src/native/AppleDispatchMetadata.test.ts (23 tests) 46ms
+ ✓ |adapters| src/native/AppleSwiftResilientWitnesses.test.ts (30 tests) 174ms
+ ✓ |adapters| src/native/AppleSwiftWitnessTemplates.test.ts (13 tests) 33ms
+ ✓ |adapters| src/native/AppleSwiftClassSelection.test.ts (13 tests) 24ms
+ ❯ |adapters| src/native/AppleSwiftWitnessData.test.ts (9 tests | 9 failed) 38ms
+   ❯ static Swift witness data through the Mach-O reader (2)
+     × separates inherited/associated data from executable slots and retains exact identity 24ms
+     × resolves an indirect symbolic context while preserving its pointer source 3ms
+   ❯ unsupported or malformed witness data (7)
+     × rejects an inherited table for a different owner even when names match 3ms
+     × retains unsupported associated mangling prefix 255 without inventing a type 1ms
+     × retains unsupported associated mangling prefix 83 without inventing a type 1ms
+     × retains metadata-representation identity as unknown rather than executable code 1ms
+     × retains an unmapped associated pointer and continues later slots 1ms
+     × rejects missing/mismatched names and reserved data flags 1ms
+     × rejects generic context substitutions instead of treating the declaration as a concrete type 1ms
+ ✓ |adapters| src/native/AppleSwiftVtables.test.ts (3 tests) 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |adapters| src/native/AppleSwiftWitnessData.test.ts > static Swift witness data through the Mach-O reader > separates inherited/associated data from executable slots and retains exact identity
+AssertionError: expected [ { …(12) }, { …(12) }, { …(12) } ] to match object [ …(3) ]
+(39 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -20,31 +20,22 @@
+        },
+      },
+    },
+    {
+      "decode": {
+-       "status": "decoded",
++       "status": "partial",
+      },
+      "implementation_address": null,
+-     "requirement_flags": 7,
++     "requirement_flags": 0,
+      "witness_data": {
+-       "context_descriptor": {
+-         "address": "0x100000b00",
+-       },
+-       "kind": "associated_type",
+-       "name": "Value",
+-       "pointer_target": "0x100000e01",
+-       "representation": "mangled_name",
+-       "target": {
+-         "address": "0x100000e00",
+-       },
+-       "type_name": "Request",
++       "kind": "base_protocol",
++       "type_name": null,
+      },
+    },
+    {
+      "decode": {
+-       "status": "decoded",
++       "status": "partial",
+      },
+-     "implementation_address": "0x100000500",
+-     "requirement_flags": 3,
++     "implementation_address": null,
++     "requirement_flags": 7,
+    },
+  ]
+
+ ❯ src/native/AppleSwiftWitnessData.test.ts:61:41
+     59|   it("separates inherited/associated data from executable slots and re…
+     60|     const result = inspect(fixture());
+     61|     expect(result.swift_dispatch_slots).toMatchObject([
+       |                                         ^
+     62|       {
+     63|         requirement_flags: 0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  |adapters| src/native/AppleSwiftWitnessData.test.ts > static Swift witness data through the Mach-O reader > resolves an indirect symbolic context while preserving its pointer source
+AssertionError: expected { kind: 'base_protocol', …(6) } to match object { context_descriptor: { …(1) }, …(1) }
+(10 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "context_descriptor": {
+-     "address": "0x100000b00",
+-   },
+-   "type_name": "Request",
++   "type_name": null,
+  }
+
+ ❯ src/native/AppleSwiftWitnessData.test.ts:115:58
+    113|     bytes.writeBigUInt64LE(base + 0xb00n, 0xe20);
+    114|     const result = inspect(bytes);
+    115|     expect(result.swift_dispatch_slots[1]?.witness_data).toMatchObject…
+       |                                                          ^
+    116|       context_descriptor: { address: address(0xb00) },
+    117|       type_name: "Request",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  |adapters| src/native/AppleSwiftWitnessData.test.ts > unsupported or malformed witness data > rejects an inherited table for a different owner even when names match
+AssertionError: expected null to be '0x100000500' // Object.is equality
+
+- Expected:
+"0x100000500"
+
++ Received:
+null
+
+ ❯ src/native/AppleSwiftWitnessData.test.ts:146:68
+    144|       witness_data: { type_descriptor: { address: address(0xb20) } },
+    145|     });
+    146|     expect(result.swift_dispatch_slots[2]?.implementation_address).toB…
+       |                                                                    ^
+    147|       address(0x500),
+    148|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  |adapters| src/native/AppleSwiftWitnessData.test.ts > unsupported or malformed witness data > retains unsupported associated mangling prefix 255 without inventing a type
+ FAIL  |adapters| src/native/AppleSwiftWitnessData.test.ts > unsupported or malformed witness data > retains unsupported associated mangling prefix 83 without inventing a type
+AssertionError: expected { …(12) } to match object { implementation_address: null, …(2) }
+(21 matching properties omitted from actual)
+
+- Expected
++ Received
+
+@@ -2,9 +2,8 @@
+    "decode": {
+      "status": "partial",
+    },
+    "implementation_address": null,
+    "witness_data": {
+-     "representation": "mangled_name",
+      "type_name": null,
+    },
+  }
+
+ ❯ src/native/AppleSwiftWitnessData.test.ts:157:54
+    155|       const bytes = fixture();
+    156|       bytes[0xe00] = prefix;
+    157|       expect(inspect(bytes).swift_dispatch_slots[1]).toMatchObject({
+       |                                                      ^
+    158|         implementation_address: null,
+    159|         decode: { status: "partial" },
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  |adapters| src/native/AppleSwiftWitnessData.test.ts > unsupported or malformed witness data > retains metadata-representation identity as unknown rather than executable code
+AssertionError: expected { …(12) } to match object { implementation_address: null, …(2) }
+(21 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "decode": {
+-     "reason": StringContaining "Metadata-based",
++     "reason": "Unmapped or ambiguous metadata pointer 0xfffffcff0d",
+      "status": "partial",
+    },
+    "implementation_address": null,
+    "witness_data": {
+-     "representation": "metadata",
+-     "target": {
+-       "address": "0x100000e00",
+-     },
+      "type_name": null,
+    },
+  }
+
+ ❯ src/native/AppleSwiftWitnessData.test.ts:168:52
+    166|     const bytes = fixture();
+    167|     bytes.writeBigUInt64LE(base + 0xe00n, 0xd10);
+    168|     expect(inspect(bytes).swift_dispatch_slots[1]).toMatchObject({
+       |                                                    ^
+    169|       implementation_address: null,
+    170|       decode: {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  |adapters| src/native/AppleSwiftWitnessData.test.ts > unsupported or malformed witness data > retains an unmapped associated pointer and continues later slots
+AssertionError: expected { …(12) } to match object { decode: { status: 'partial' }, …(1) }
+(20 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "decode": {
+      "status": "partial",
+    },
+    "witness_data": {
+-     "target": {
+-       "address": "0x100002000",
+-       "file_offset": null,
+-     },
+      "type_name": null,
+    },
+  }
+
+ ❯ src/native/AppleSwiftWitnessData.test.ts:186:44
+    184|     bytes.writeBigUInt64LE(base + 0x2001n, 0xd10);
+    185|     const result = inspect(bytes);
+    186|     expect(result.swift_dispatch_slots[1]).toMatchObject({
+       |                                            ^
+    187|       decode: { status: "partial" },
+    188|       witness_data: {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  |adapters| src/native/AppleSwiftWitnessData.test.ts > unsupported or malformed witness data > rejects missing/mismatched names and reserved data flags
+AssertionError: expected { status: 'partial', …(1) } to match object { status: 'partial', …(1) }
+
+- Expected
++ Received
+
+  {
+-   "reason": StringContaining "names do not match",
++   "reason": "Unmapped or ambiguous metadata pointer 0xfffffd0b",
+    "status": "partial",
+  }
+
+ ❯ src/native/AppleSwiftWitnessData.test.ts:201:60
+    199|     const bytes = fixture();
+    200|     bytes.write("Wrong Extra\0", 0xc50);
+    201|     expect(inspect(bytes).swift_dispatch_slots[1]?.decode).toMatchObje…
+       |                                                            ^
+    202|       status: "partial",
+    203|       reason: expect.stringContaining("names do not match"),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  |adapters| src/native/AppleSwiftWitnessData.test.ts > unsupported or malformed witness data > rejects generic context substitutions instead of treating the declaration as a concrete type
+AssertionError: expected { …(12) } to match object { decode: { …(2) }, …(1) }
+(22 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "decode": {
+-     "reason": StringContaining "generic substitutions",
++     "reason": "Unmapped or ambiguous metadata pointer 0xfffffd2b",
+      "status": "partial",
+    },
+    "witness_data": {
+-     "context_descriptor": {
+-       "address": "0x100000b20",
+-     },
+      "type_name": null,
+    },
+  }
+
+ ❯ src/native/AppleSwiftWitnessData.test.ts:218:52
+    216|     bytes.writeUInt32LE(0x92, 0xb20);
+    217|     bytes.writeInt32LE(0xc00 - 0xb28, 0xb28);
+    218|     expect(inspect(bytes).swift_dispatch_slots[1]).toMatchObject({
+       |                                                    ^
+    219|       decode: {
+    220|         status: "partial",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  9 failed | 82 passed (91)
+   Start at  16:20:41
+   Duration  2.86s (transform 51%, import 33%, tests 11%, worker 6%)
+

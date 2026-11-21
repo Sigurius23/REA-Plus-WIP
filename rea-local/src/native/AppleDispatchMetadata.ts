@@ -198,6 +198,7 @@ export const decodeAppleDispatchMetadata = (
   const swiftBudget = createBudget();
   const vtableBudget = createBudget();
   const readers = {
+    u8: (address: bigint) => bytes.readUInt8(offset(address, 1)),
     u32,
     i32: (address: bigint) => bytes.readInt32LE(offset(address, 4)),
     u64: (address: bigint) => bytes.readBigUInt64LE(offset(address, 8)),

@@ -1,0 +1,112 @@
+{
+  "status": "passed",
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "sessions": [
+    {
+      "directory": "mcp",
+      "calls": 33,
+      "successful": 33,
+      "errors": 0,
+      "explicit_close_twice": true,
+      "verified_empty_lineage": true,
+      "bundle_sha256": "5a1cdb66f967c3916a3f7e1cd009bebb4eb7e23a8bbb5892a555a03fe748b733"
+    },
+    {
+      "directory": "mcp-witness",
+      "calls": 7,
+      "successful": 7,
+      "errors": 0,
+      "explicit_close_twice": true,
+      "verified_empty_lineage": true,
+      "bundle_sha256": "b09f15c55fd947b575a97dd5380f11cdd1ad0224ebe216afd0e651161caca4ad"
+    }
+  ],
+  "total_mcp_calls": 40,
+  "cli_cases": [
+    {
+      "label": "DependencyKey",
+      "complete_metadata_equal": true,
+      "cli_evidence_id": "ev_faf8f08de149f73ae28136bc15f7175b1e8cde71bca54419287d352cb3f8e436",
+      "mcp_evidence_id": "ev_a777288d62a27be316e3473c3d9a3d6d9eec6532c7d73508d1da422169cb7600"
+    },
+    {
+      "label": "TestDependencyKey",
+      "complete_metadata_equal": true,
+      "cli_evidence_id": "ev_dc3deb131a1fb3bac7ed2005d18deb20c878659a1a0c354ebd7d76737c0fb92d",
+      "mcp_evidence_id": "ev_f06641bc9adb62d0e201e247d5a9518c0b3a8956bbd18a6ba586f3fd70adeba0"
+    }
+  ],
+  "typed_witness_data": {
+    "base_protocol": {
+      "kind": "base_protocol",
+      "witness_table": {
+        "address": "0x1045ee8b0",
+        "file_offset": 73328816
+      },
+      "conformance": {
+        "address": "0x10373cca8",
+        "file_offset": 57920680
+      },
+      "protocol_descriptor": {
+        "address": "0x103d46dfc",
+        "file_offset": 64253436
+      },
+      "protocol_name": "TestDependencyKey",
+      "type_descriptor": {
+        "address": "0x103d648c4",
+        "file_offset": 64374980
+      },
+      "type_name": "UserDefaultsClient"
+    },
+    "associated_type": {
+      "kind": "associated_type",
+      "name": "Value",
+      "representation": "mangled_name",
+      "pointer_target": "0x103bb305b",
+      "target": {
+        "address": "0x103bb305a",
+        "file_offset": 62599258
+      },
+      "context_descriptor": {
+        "address": "0x103d648c4",
+        "file_offset": 64374980
+      },
+      "type_name": "UserDefaultsClient"
+    }
+  },
+  "unchanged_executable_targets": true,
+  "broad_discovery": {
+    "matched": 2,
+    "unresolved": 401
+  },
+  "compiler_fixture_variants": 10,
+  "compiler_cli_mcp_discovery_cases": 7,
+  "target_executed": false,
+  "package_verifier": {
+    "status": "passed",
+    "tools": 205,
+    "verified_empty_lineage": true
+  },
+  "frozen_runtime_files": 1868,
+  "runtime_delta": {
+    "changed": [
+      "dist/domain/native/objcSwiftMetadata.js",
+      "dist/native/AppleDispatchMetadata.js",
+      "dist/native/AppleSwiftDispatchFacets.js"
+    ],
+    "added": [
+      "dist/native/AppleSwiftWitnessData.js"
+    ],
+    "removed": [
+      "bridge/unicorn/__pycache__/emulate.cpython-313.pyc"
+    ]
+  },
+  "ghidra_bridge_unchanged": true,
+  "source_tests": 92,
+  "limits": [
+    "The selected conformances decode completely; 401 broader identities remain unresolved.",
+    "Data identity does not reveal getter names/signatures or prove runtime dependency injection.",
+    "Item 63 input-type propagation and automatic unguarded-table recovery remain open.",
+    "The Ghidra native producer was not changed; its previous 102-case matrix was not repeated."
+  ]
+}

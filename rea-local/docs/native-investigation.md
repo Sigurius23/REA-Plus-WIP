@@ -89,6 +89,15 @@ complete observation.
   vtable descriptors. Records include exact virtual addresses/file offsets and
   artifact evidence. Vtable indexes are metadata word offsets; witness indexes
   start after the conformance header. Names unavailable in metadata remain null.
+  Static witness rows also retain `requirement_flags` and optional `witness_data`.
+  Ordinary inherited-table entries identify their table, conformance, exact nominal
+  owner and protocol, checked against a declared `Self` constraint. Associated-type
+  entries retain the tag, target and name; a complete direct/indirect symbolic
+  reference can identify a non-generic nominal descriptor. These rows have no
+  executable implementation address. Metadata-based types, compound/generic
+  manglings, unsupported flags and unresolved pointers remain partial. The
+  representation follows the [Swift witness requirement flags](https://github.com/swiftlang/swift/blob/main/include/swift/ABI/MetadataValues.h);
+  requirement getter names and signatures are not inferred from slot order.
   External Swift protocol/type descriptors retain their dyld symbol, library,
   weak binding and decimal addend separately from decoded names. Relative-pointer
   records retain the indirect slot; their final target stays null and external

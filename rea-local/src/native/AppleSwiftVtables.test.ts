@@ -130,6 +130,7 @@ describe("Swift witness coverage facts", () => {
       sections: [{ name: "__swift5_proto", address: 0x100n, size: 4 }],
       segments: [],
       readers: {
+        u8: () => 0,
         u32: (address) => values.get(address) ?? 0,
         pointer: (address) => ({
           kind: "rebase",

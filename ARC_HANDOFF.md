@@ -26,6 +26,34 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest witness-data repair (2026-11-21)
+
+The callback checkpoint below is pushed as `4f870986e`. Read
+`field-tests/arc-witness-data-2026-11-21.md` and
+`field-tests/arc-dispatch-provenance-2026-11-21/retest-verification.json` next.
+Item 64 adds structured inherited/associated witness data to the native byte
+reader and optional canonical row fields. It resolves the exact inherited
+TestDependencyKey table and `Value = UserDefaultsClient` descriptor
+`0x103d648c4`. Code targets and broader discovery's 401 unknown identities are
+unchanged. Unsupported data encodings retain partial facts.
+
+The typed-data repair passes 92 source tests, fast/build/docs/package checks,
+ten real compiler variants, seven discovery comparisons, 40/40 public MCP
+replies and two exact Arc CLI/MCP cases. Both new MCP sessions export/close
+cleanly; the package verifier's lineage is also verified empty. No live session
+remains. Native Ghidra Java/recovery is unchanged; do not rerun its 102-case
+matrix solely for this byte-reader change.
+
+The new frozen runtime is
+`rea-local/.cache/arc-runtime-witness-data-2026-11-21` (1,868 files, source
+hashes in the new manifest). The prior retention runtime and all original
+captures remain intact. Seed profile `storage-io-seeds-2463.tsv` is unchanged.
+Item 63 still needs typed field/constructor/adapter provenance and owned
+producer controls; getter names/signatures are not inferred from requirement
+kind or slot order. The unrelated location-dispatch input is still unresolved.
+Do not treat the new associated-type identity as complete table recovery or
+runtime injection proof. Continue the exact boundaries listed below.
+
 ## Latest callback/local-store checkpoint (2026-11-21)
 
 Read `field-tests/arc-callbacks-2026-11-21.md` and its `fact-index.json`,
@@ -551,11 +579,11 @@ passing regression is not completion of an app feature.
 ## Copyable continuation instruction
 
 > Read `ARC_HANDOFF.md`, repository instructions and the REA+ skill. Continue
-> the offline Arc investigation from the latest callback/local-store checkpoint
+> the offline Arc investigation from the latest witness-data repair, callback/local-store checkpoint
 > and source-bound 2,463-entry profile. The two-write JS activation route is now
 > traced; exact local-store path/policies, preview method and wider browser
 > features remain open. Item 63 needs proved input-type provenance and owned
 > controls before production recovery changes. All sessions are closed and the
-> frozen runtime remains unchanged. Preserve original evidence, fix confirmed
+> new witness-data runtime is frozen; Ghidra recovery remains unchanged. Preserve original evidence, fix confirmed
 > tool bugs, update OPEN_TASKS/dossier and push mature work to the existing WIP
 > repo. Never launch Arc, shipped scripts or application service requests.

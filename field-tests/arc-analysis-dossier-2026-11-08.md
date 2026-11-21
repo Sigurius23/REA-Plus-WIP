@@ -960,3 +960,24 @@ verified cleanup retained. All five owned lineages are verified empty. The
 [source authentication](arc-callbacks-2026-11-21/source-verification.json) and
 [static fact index](arc-callbacks-2026-11-21/fact-index.json) preserve these
 limits. Full Arc feature coverage remains incomplete.
+
+
+## Static witness identity repair (2026-11-21)
+
+The [new decoder/retest](arc-witness-data-2026-11-21.md) resolves two previously
+partial data slots: the inherited TestDependencyKey table and its associated
+`Value = UserDefaultsClient`, with exact descriptor `0x103d648c4`. These are
+static typed identities, with no executable implementation address. Original
+code targets are unchanged; two selected conformances now decode completely,
+while broader discovery still retains 401 unknown identities.
+
+This is a qualified REA+ improvement (item 64): 92 source tests, fast/build/
+docs/package gates, ten compiler variants, seven discovery comparisons, 40
+public MCP calls and two exact Arc CLI/MCP metadata cases pass. All relevant
+owned lineages are verified empty. The field report preserves unsupported
+encoding limits and intermediate qualification attempts.
+
+The associated-type alias advances the ownership chain without supplying the
+anonymous getter's full signature, typed constructor/closure propagation,
+item 63 producer repair, actual runtime injection or durable storage. Native
+Ghidra Java/recovery is unchanged. Full Arc coverage remains incomplete.

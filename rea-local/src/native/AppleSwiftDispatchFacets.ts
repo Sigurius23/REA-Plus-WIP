@@ -8,6 +8,10 @@ import { issue, type FacetDecodeFacts } from "./AppleDispatchDecodeFacts.js";
 import type { SwiftResilientWitnessObserver } from "./AppleSwiftResilientWitnesses.js";
 import { discoverSwiftConformances } from "./AppleSwiftConformanceDiscovery.js";
 import type { SwiftWitnessTemplateObserver } from "./AppleSwiftWitnessTemplates.js";
+import {
+  decodeSwiftWitnessData,
+  readSwiftBaseProtocolConstraints,
+} from "./AppleSwiftWitnessData.js";
 
 /** Resolved file-backed metadata location from the Mach-O layout. */
 export interface ResolvedMetadataLocation {
@@ -34,6 +38,7 @@ export interface DispatchRecordBudget {
 
 /** Byte readers for Swift relative-pointer and conformance decode facets. */
 export interface SwiftDispatchReaders {
+  u8(address: bigint): number;
   u32(address: bigint): number;
   pointer(address: bigint): DecodedPointer;
   string(address: bigint): string;
@@ -197,6 +202,10 @@ export const decodeSwiftDispatchFacets = (input: {
   } = input;
   const swiftFailures: string[] = [];
   const issues = [] as ReturnType<typeof issue>[];
+  const baseConstraints = new Map<
+    bigint,
+    ReturnType<typeof readSwiftBaseProtocolConstraints>
+  >();
   let swiftExamined = 0;
   let decodedRecords = 0;
   if (conformanceAddress !== undefined)
@@ -334,11 +343,40 @@ export const decodeSwiftDispatchFacets = (input: {
           );
           continue;
         }
-        if (protocol === null) continue;
+        if (protocol === null || type === null) continue;
         const count = read.u32(protocol + 16n);
         const signatureCount = read.u32(protocol + 12n);
         if (count > 20_000 || signatureCount > 20_000)
           throw new RangeError("Swift witness requirement count exceeds 20000");
+        const requirementBase = protocol + 24n + BigInt(signatureCount * 12);
+        if (count !== 0) read.offset(requirementBase, count * 8);
+        const requirements = Array.from({ length: count }, (_, slot) =>
+          read.u32(requirementBase + BigInt(slot * 8)),
+        );
+        const associatedCount = requirements.filter(
+          (flags) => (flags & 15) === 7,
+        ).length;
+        let associatedNames: string[] = [];
+        let associatedNameError: string | null = null;
+        if (associatedCount !== 0) {
+          try {
+            const names = relative.local(protocol + 20n);
+            if (names === 0n)
+              throw new TypeError("Missing associated-type names");
+            associatedNames = read.string(names).split(" ");
+            if (
+              associatedNames.length !== associatedCount ||
+              associatedNames.some((name) => name.length === 0)
+            )
+              throw new TypeError(
+                "Associated-type names do not match protocol requirements",
+              );
+          } catch (cause) {
+            associatedNameError =
+              cause instanceof Error ? cause.message : String(cause);
+          }
+        }
+        let associatedOrdinal = 0;
         for (let slot = 0; slot < count; slot++) {
           if (!budget.admit()) break;
           const entry = witness + BigInt((slot + 1) * 8);
@@ -347,10 +385,30 @@ export const decodeSwiftDispatchFacets = (input: {
             implementationPointer.kind === "rebase"
               ? implementationPointer.target
               : null;
-          const requirementFlags = read.u32(
-            protocol + 24n + BigInt(signatureCount * 12 + slot * 8),
-          );
+          const requirementFlags = requirements[slot]!;
           const kind = requirementFlags & 15;
+          const associatedName =
+            kind === 7 ? (associatedNames[associatedOrdinal++] ?? null) : null;
+          if (kind === 0 && !baseConstraints.has(protocol))
+            baseConstraints.set(
+              protocol,
+              readSwiftBaseProtocolConstraints(protocol, read, relative),
+            );
+          const witnessData =
+            requirementFlags === kind &&
+            ((read.u32(protocol) >>> 16) & ~3) === 0
+              ? decodeSwiftWitnessData({
+                  kind,
+                  pointer: implementationPointer,
+                  ownerType: type,
+                  ownerProtocol: protocol,
+                  associatedName,
+                  associatedNameError,
+                  baseConstraints: baseConstraints.get(protocol) ?? null,
+                  readers: read,
+                  relative,
+                })
+              : null;
           const synchronousFunction =
             kind >= 1 && kind <= 4 && (requirementFlags & 0x20) === 0;
           const executable =
@@ -362,13 +420,15 @@ export const decodeSwiftDispatchFacets = (input: {
                 implementation >= segment.address &&
                 implementation < segment.address + segment.size,
             );
-          const slotDecode = executable
-            ? { status: "decoded" as const, reason: null }
-            : {
-                status: "partial" as const,
-                reason:
-                  "Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved",
-              };
+          const slotDecode =
+            witnessData?.decode ??
+            (executable
+              ? { status: "decoded" as const, reason: null }
+              : {
+                  status: "partial" as const,
+                  reason:
+                    "Witness slot is non-function, async, nil, external, authenticated or encoded; implementation target is unresolved",
+                });
           result.swift_dispatch_slots.push({
             owner: `${typeName}: ${protocolName}`,
             table_kind: "witness_table",
@@ -380,12 +440,21 @@ export const decodeSwiftDispatchFacets = (input: {
                 ? hex(implementation)
                 : null,
             thunk_address: null,
+            requirement_flags: requirementFlags,
+            ...(witnessData === null ? {} : { witness_data: witnessData.data }),
             location: read.location(entry),
             decode: slotDecode,
-            evidence: read.evidence(
-              entry,
-              "Static Swift witness slot, indexed after the conformance-descriptor header",
-            ),
+            evidence: [
+              ...read.evidence(
+                entry,
+                "Static Swift witness slot, indexed after the conformance-descriptor header",
+              ),
+              ...read.evidence(
+                requirementBase + BigInt(slot * 8),
+                "Protocol requirement flags determining the witness representation",
+              ),
+              ...(witnessData?.evidence ?? []),
+            ],
           });
           if (slotDecode.status !== "decoded")
             issues.push(

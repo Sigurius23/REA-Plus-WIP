@@ -4,6 +4,16 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Static Swift witness data, item 64 (2026-11-21):** Implemented and
+  qualified on unchanged Arc bytes. Inherited protocol and associated-type
+  data retain typed identity/provenance separately from executable targets;
+  unsupported representations stay partial. **92 source tests**, fast/build/
+  docs/package checks, **40/40 public MCP replies**, two exact CLI/MCP cases
+  and the existing ten-variant compiler lane pass. All owned verification
+  lineages are empty. Arc's `Value = UserDefaultsClient` is now explicit;
+  getter signature/closure provenance and item 63 recovery remain open. See
+  [the repair and retest](field-tests/arc-witness-data-2026-11-21.md).
+
 - **Arc editor/JS/local-store follow-up (2026-11-21):** The selected editor
   now reaches `createBoost`, `setBoostData` and preview effects. Getter decoding
   proves the stored-active/local-ID/nonblank-JS gate. New local insertion
@@ -1660,3 +1670,25 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     open alongside item 63. The [new report](field-tests/arc-callbacks-2026-11-21.md)
     closes editor save effects, getter decoding and conditional two-write
     control flow while retaining the remaining store/path and runtime gaps.
+
+
+64. **Decode static Swift witness data alongside executable slots.** Done
+    within ordinary local static-conformance layouts. The Arc `DependencyKey`
+    witness's inherited-table entry and `TestDependencyKey.Value` entry were
+    retained as unclassified partial slots. They now carry `requirement_flags`
+    and optional typed `witness_data`, with exact owner/protocol/context
+    locations and binary provenance; neither becomes a code target. Inherited
+    tables require exact nominal ownership and a declared ordinary `Self`
+    protocol constraint. Tagged complete symbolic names resolve non-generic
+    associated nominal types. Metadata-based, compound/protocol-context,
+    generic, external and unsupported encodings remain partial.
+
+    Arc retesting explicitly binds `Value` to `UserDefaultsClient` descriptor
+    `0x103d648c4`, without changing executable targets or broader discovery's
+    401 unresolved identities. Both selected conformances have complete scoped
+    witness coverage. **92 source tests / six files**, ten compiler variants,
+    seven discovery comparisons, **40 public MCP replies**, two full CLI/MCP
+    metadata comparisons and fast/build/docs/package gates pass. Earlier
+    Evidence remains valid with the optional fields omitted. This supplies a
+    missing identity fact for item 63, not its producer/type-flow repair. See
+    [the exact scope and verification](field-tests/arc-witness-data-2026-11-21.md).

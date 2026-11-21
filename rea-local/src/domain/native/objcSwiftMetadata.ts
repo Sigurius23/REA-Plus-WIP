@@ -249,6 +249,29 @@ export const swiftConformanceSchema = z.strictObject({
   evidence: z.array(nativeMetadataEvidenceSchema).min(1),
 });
 
+/** Static witness data has a type/protocol identity, never a code target. */
+export const swiftWitnessDataSchema = z.discriminatedUnion("kind", [
+  z.strictObject({
+    kind: z.literal("base_protocol"),
+    witness_table: nativeMetadataLocationSchema,
+    conformance: nativeMetadataLocationSchema.nullable(),
+    protocol_descriptor: nativeMetadataLocationSchema.nullable(),
+    protocol_name: z.string().nullable(),
+    type_descriptor: nativeMetadataLocationSchema.nullable(),
+    type_name: z.string().nullable(),
+  }),
+  z.strictObject({
+    kind: z.literal("associated_type"),
+    name: z.string().nullable(),
+    representation: z.enum(["mangled_name", "metadata"]),
+    pointer_target: z.string(),
+    target: nativeMetadataLocationSchema,
+    context_descriptor: nativeMetadataLocationSchema.nullable(),
+    type_name: z.string().nullable(),
+  }),
+]);
+export type SwiftWitnessData = z.infer<typeof swiftWitnessDataSchema>;
+
 /** A typed slot in a Swift protocol witness table or class vtable. */
 export const swiftDispatchSlotSchema = z.strictObject({
   owner: z.string().min(1),
@@ -258,6 +281,8 @@ export const swiftDispatchSlotSchema = z.strictObject({
   implementation: z.string().nullable(),
   implementation_address: z.string().nullable(),
   thunk_address: z.string().nullable(),
+  requirement_flags: z.number().int().min(0).max(0xffffffff).optional(),
+  witness_data: swiftWitnessDataSchema.optional(),
   location: nativeMetadataLocationSchema,
   decode: nativeMetadataDecodeSchema,
   evidence: z.array(nativeMetadataEvidenceSchema).min(1),
