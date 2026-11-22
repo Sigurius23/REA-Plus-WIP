@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "name": "baseline",
+      "classification": "expected-counterexample",
+      "calls": 4,
+      "completed_cases": 0,
+      "positive_cases": 0,
+      "negative_cases": 0,
+      "cli_cases": 0,
+      "evidence_records": 2,
+      "verified_empty_lineage": true,
+      "profile": "abi-signed-word-cfg-v9"
+    },
+    {
+      "name": "native-full",
+      "classification": "partial-stale-verifier-assertion",
+      "calls": 32,
+      "completed_cases": 7,
+      "positive_cases": 0,
+      "negative_cases": 7,
+      "cli_cases": 0,
+      "evidence_records": 16,
+      "verified_empty_lineage": true,
+      "profile": "abi-signed-word-cfg-v10"
+    },
+    {
+      "name": "native-final",
+      "classification": "completed",
+      "calls": 440,
+      "completed_cases": 110,
+      "positive_cases": 16,
+      "negative_cases": 94,
+      "cli_cases": 14,
+      "evidence_records": 220,
+      "verified_empty_lineage": true,
+      "profile": "abi-signed-word-cfg-v10"
+    }
+  ],
+  "frozen_runtime_files": 1869,
+  "package_verified_empty_lineage": true,
+  "fast_and_docs_gate_logs_authenticated": true,
+  "target_executed": false,
+  "limits": [
+    "The old producer counterexample is authenticated against the committed v9 Java source; the exact fixture bytes are retested separately through v10 MCP.",
+    "The first v10 run correctly rejected seven unsafe cases; the positive case recovered but its stale verifier assertion failed. Original records are preserved.",
+    "Native qualification checks producer boundaries and source-built controls, not completion of Arc or item63 typed closure provenance."
+  ]
+}

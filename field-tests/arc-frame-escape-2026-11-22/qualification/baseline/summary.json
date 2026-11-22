@@ -1,0 +1,173 @@
+{
+  "ok": false,
+  "compiler": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0\n",
+  "commands": [
+    {
+      "command": "/usr/bin/swiftc",
+      "args": [
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/module-cache",
+        "-parse-as-library",
+        "-enable-library-evolution",
+        "-module-name",
+        "ReaResilientPayload",
+        "-emit-module",
+        "-emit-module-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/ReaResilientPayload.swiftmodule",
+        "-emit-library",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/libReaResilientPayload.dylib",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/tests/conformance/ghidra/swift-enum-payload.swift"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": "/usr/bin/swiftc",
+      "args": [
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/module-cache",
+        "-parse-as-library",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8",
+        "-L",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8",
+        "-lReaResilientPayload",
+        "-Onone",
+        "-module-name",
+        "ReaSwiftRelativeSwitch",
+        "-emit-library",
+        "-Xlinker",
+        "-undefined",
+        "-Xlinker",
+        "dynamic_lookup",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/libReaSwiftRelativeSwitch.dylib",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/switch.swift"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": "/usr/bin/swiftc",
+      "args": [
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/module-cache",
+        "-parse-as-library",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8",
+        "-Onone",
+        "-module-name",
+        "ReaSwiftRelativeSwitch",
+        "-emit-assembly",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/switch.s",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/switch.swift"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": "/usr/bin/xcrun",
+      "args": [
+        "--sdk",
+        "macosx",
+        "clang",
+        "-dynamiclib",
+        "-arch",
+        "arm64",
+        "-Wl,-undefined,dynamic_lookup",
+        "-L",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/swift",
+        "-lReaResilientPayload",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/libReaSwiftRelativeSwitch.dylib",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/switch.s"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    }
+  ],
+  "results": [],
+  "skipped": [],
+  "records": [
+    {
+      "label": "frame-escape-post-x8",
+      "name": "open_binary",
+      "args": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/libReaSwiftRelativeSwitch.dylib",
+        "provider_id": "ghidra"
+      },
+      "duration_ms": 2818,
+      "reply": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/0-open_binary.json",
+        "bytes": 891,
+        "sha256": "665731e168b335e7dffdf91ee69bbaaba6fb9275c9193e3625cd266b3b8c213f"
+      },
+      "is_error": false
+    },
+    {
+      "label": "frame-escape-post-x8",
+      "name": "procedure_info",
+      "args": {
+        "procedure": "0x970"
+      },
+      "duration_ms": 15251,
+      "reply": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/1-procedure_info.json",
+        "bytes": 14791,
+        "sha256": "d5dbb5b22e409f3bd265eb7c0852095d4e414b7d1c2e911b241bb2330838f467"
+      },
+      "is_error": false
+    },
+    {
+      "label": "frame-escape-post-x8",
+      "name": "analyze_function",
+      "args": {
+        "procedure": "0x970"
+      },
+      "duration_ms": 883,
+      "reply": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/2-analyze_function.json",
+        "bytes": 4026121,
+        "sha256": "44f2af049f5d352297d7a83a7eb40e5019206656b9c4be7024476e92fa4c0195"
+      },
+      "is_error": false
+    },
+    {
+      "label": "frame-escape-post-x8",
+      "name": "close_binary",
+      "args": {},
+      "duration_ms": 444,
+      "reply": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/frame-escape-post-x8/3-close_binary.json",
+        "bytes": 140,
+        "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+      },
+      "is_error": false
+    }
+  ],
+  "catalogs": [
+    {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/frame-escape-2026-11-22/baseline/catalogs/5b5e6ad2bb9a5823a9b9c857c50d79713e4a8a6ed25622fa0a81549abc616859.json",
+      "bytes": 6167912,
+      "sha256": "5b5e6ad2bb9a5823a9b9c857c50d79713e4a8a6ed25622fa0a81549abc616859"
+    }
+  ],
+  "target_executed": false,
+  "process_lineage": {
+    "status": "verified",
+    "observed_at": "2026-11-22T16:15:20.476Z",
+    "launcher_pid": 90109,
+    "launcher_parent_pid": 9314,
+    "process_group_id": 90109,
+    "descendants": []
+  },
+  "error": "AssertionError [ERR_ASSERTION]: An unsupported/corrupt shape acquired a Swift ABI bound\n+ actual - expected\n\n+ [\n+   {\n+     data_sources: [\n+       {\n+         address: '0xea0',\n+         confidence: 'high',\n+         entry_count: 30,\n+         entry_size_bytes: 4,\n+         evidence: [\n+           {\n+             detail: 'Swift enum descriptor 0x3614 declares 18 payload and 12 empty cases; field descriptor 0x3748 agrees. Its ABI-declared accessor 0xf18 loads its declared singleton cache 0x81c8 and has the verified swift_getSingletonMetadata path. Exact libswiftCore external swift_getEnumCaseMultiPayload at 0x9f4 receives that metadata. Its unchanged tag reaches the LDRSW index after an explicit 32-bit zero-extending write. Signed 32-bit entries at 0xea0 are added to 0xa18. REA+ restored computed edges, disassembled destinations and extended the owning function before observations; generated override labels are analysis metadata, not source/caller declarations.',\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         provenance: 'rea-swift-enum-signed-word-table'\n+       }\n+     ],\n+     default_targets: [],\n+     dispatch_address: '0xa24',\n+     limitations: [\n+       'Case values are Swift ABI runtime tags, with payload cases before empty cases; field names are reflection metadata. Valid enum values supply the bound; this does not establish state reachability or original source order.',\n+       \"Control-flow recovery assumes the normal AArch64 ABI and private non-escaped frame storage. It does not execute the target or prove each case's high-level semantics.\"\n+     ],\n+     mappings: [\n+       {\n+         case_value: 0,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 0 (field name payload0) selects signed word at 0xea0, reaching 0xa28. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xa28'\n+       },\n+       {\n+         case_value: 1,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 1 (field name payload1) selects signed word at 0xea4, reaching 0xa5c. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xa5c'\n+       },\n+       {\n+         case_value: 2,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 2 (field name payload2) selects signed word at 0xea8, reaching 0xa90. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xa90'\n+       },\n+       {\n+         case_value: 3,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 3 (field name payload3) selects signed word at 0xeac, reaching 0xac4. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xac4'\n+       },\n+       {\n+         case_value: 4,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 4 (field name payload4) selects signed word at 0xeb0, reaching 0xaf8. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xaf8'\n+       },\n+       {\n+         case_value: 5,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 5 (field name payload5) selects signed word at 0xeb4, reaching 0xb2c. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xb2c'\n+       },\n+       {\n+         case_value: 6,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 6 (field name payload6) selects signed word at 0xeb8, reaching 0xb60. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xb60'\n+       },\n+       {\n+         case_value: 7,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 7 (field name payload7) selects signed word at 0xebc, reaching 0xb94. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xb94'\n+       },\n+       {\n+         case_value: 8,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 8 (field name payload8) selects signed word at 0xec0, reaching 0xbc8. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xbc8'\n+       },\n+       {\n+         case_value: 9,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 9 (field name payload9) selects signed word at 0xec4, reaching 0xbfc. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xbfc'\n+       },\n+       {\n+         case_value: 10,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 10 (field name payload10) selects signed word at 0xec8, reaching 0xc30. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xc30'\n+       },\n+       {\n+         case_value: 11,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 11 (field name payload11) selects signed word at 0xecc, reaching 0xc64. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xc64'\n+       },\n+       {\n+         case_value: 12,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 12 (field name payload12) selects signed word at 0xed0, reaching 0xc98. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xc98'\n+       },\n+       {\n+         case_value: 13,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 13 (field name payload13) selects signed word at 0xed4, reaching 0xccc. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xccc'\n+       },\n+       {\n+         case_value: 14,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 14 (field name payload14) selects signed word at 0xed8, reaching 0xd00. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xd00'\n+       },\n+       {\n+         case_value: 15,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 15 (field name payload15) selects signed word at 0xedc, reaching 0xd34. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xd34'\n+       },\n+       {\n+         case_value: 16,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 16 (field name payload16) selects signed word at 0xee0, reaching 0xd68. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xd68'\n+       },\n+       {\n+         case_value: 17,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 17 (field name payload17) selects signed word at 0xee4, reaching 0xd9c. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xd9c'\n+       },\n+       {\n+         case_value: 18,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 18 (field name empty0) selects signed word at 0xee8, reaching 0xdd0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xdd0'\n+       },\n+       {\n+         case_value: 19,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 19 (field name empty1) selects signed word at 0xeec, reaching 0xde0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xde0'\n+       },\n+       {\n+         case_value: 20,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 20 (field name empty2) selects signed word at 0xef0, reaching 0xdf0. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xdf0'\n+       },\n+       {\n+         case_value: 21,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 21 (field name empty3) selects signed word at 0xef4, reaching 0xe00. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xe00'\n+       },\n+       {\n+         case_value: 22,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 22 (field name empty4) selects signed word at 0xef8, reaching 0xe10. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xe10'\n+       },\n+       {\n+         case_value: 23,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 23 (field name empty5) selects signed word at 0xefc, reaching 0xe20. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xe20'\n+       },\n+       {\n+         case_value: 24,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 24 (field name empty6) selects signed word at 0xf00, reaching 0xe30. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xe30'\n+       },\n+       {\n+         case_value: 25,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 25 (field name empty7) selects signed word at 0xf04, reaching 0xe40. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xe40'\n+       },\n+       {\n+         case_value: 26,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 26 (field name empty8) selects signed word at 0xf08, reaching 0xe50. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xe50'\n+       },\n+       {\n+         case_value: 27,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 27 (field name empty9) selects signed word at 0xf0c, reaching 0xe60. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xe60'\n+       },\n+       {\n+         case_value: 28,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 28 (field name empty10) selects signed word at 0xf10, reaching 0xe70. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xe70'\n+       },\n+       {\n+         case_value: 29,\n+         confidence: 'high',\n+         evidence: [\n+           {\n+             detail: \"Swift ABI tag 29 (field name empty11) selects signed word at 0xf14, reaching 0xe80. Complete type/value provenance and ABI assumptions are retained once in this jump table's data source 0xea0.\",\n+             kind: 'jump-table',\n+             source: 'rea-swift-abi-instruction-and-memory'\n+           }\n+         ],\n+         target_address: '0xe80'\n+       }\n+     ]\n+   }\n+ ]\n- []\n\n    at check (file:///Users/sigur/Desktop/projekte/reverse%20engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/scripts/verify-real-ghidra-swift-enum.mjs:445:12)\n    at inspect (file:///Users/sigur/Desktop/projekte/reverse%20engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/scripts/verify-real-ghidra-swift-enum.mjs:620:5)\n    at async file:///Users/sigur/Desktop/projekte/reverse%20engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/scripts/verify-real-ghidra-swift-enum.mjs:742:7"
+}

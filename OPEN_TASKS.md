@@ -1792,3 +1792,29 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     correctly; no new production REA+ defect was established. Item 63,
     higher restore caller/writeback, full apply/UI/browser coverage and runtime
     I/O/durability remain open. No target was executed.
+
+
+67. **Invalidate Swift enum spill proofs for hidden ABI frame arguments.**
+    Done and verified within the existing recovery model (2026-11-22).
+    Found while continuing item 63. Both historical frame-escape detection
+    and post-call spill retention checked only X0-X7. An owned source-built
+    fixture supplies the tag-spill address through X8 to a helper that writes
+    65,536; v9 nevertheless publishes a 30-case unchanged-tag table. This is
+    a reproduced producer defect, not an Arc behavior claim.
+
+    One shared predicate now includes X0-X8, Swift self/context X20 and Swift
+    async context X22 at unknown calls. The profile advances to
+    `abi-signed-word-cfg-v10`. Seven immediate/retained-address negatives reject,
+    and an X19 non-argument control still recovers all 30 cases. The verifier's
+    stale duplicated-proof assertion was corrected to authenticate the shared
+    table proof and each exact case link; original failed runs are retained.
+    Build, 42 provider tests and fast/docs/package checks pass. The complete
+    native matrix passes **110 cases (16 positive / 94 negative), 440 MCP
+    replies and 14 CLI/MCP comparisons**, with empty owned lineage. The exact
+    unchanged counterexample and fixed Arc are retested with **15/15 replies**,
+    exports, two closes per session and empty lineages. Arc's existing 28-case
+    reducer mappings / 10,072 body bytes remain intact. The Setting helper
+    remains 14 instructions / 56 bytes / zero Swift tables. No fixture or Arc
+    code was executed. This is a prerequisite safety repair; item 63's typed
+    root, closure origin and invocation-scoped carrier remain open. See the
+    [report and verification](field-tests/arc-frame-escape-2026-11-22.md).

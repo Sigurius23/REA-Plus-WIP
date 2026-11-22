@@ -1485,6 +1485,16 @@ final class ReaGhidraSwiftEnumSwitches {
             }
             return work<=MAX_QUERIES;
         }
+        /** Unknown AArch64 callees can receive pointers outside X0..X7 too:
+         * X8 is the indirect-result location, X20 Swift self/context and X22
+         * Swift async context. Callee-saved does not mean unused as an input.
+         * Both historical escape and post-call spill retention use this rule.
+         */
+        boolean passesFrameAddress(Instruction call) throws Exception {
+            for (int index : new int[]{0,1,2,3,4,5,6,7,8,20,22})
+                if (kind(register("r"+index,call.getAddress()),"frame")) return true;
+            return false;
+        }
         boolean frameEscapedBefore(Address limit) throws Exception {
             // A pointer retained by an earlier call can alias a later store as
             // well. Do not look only at the most recent call after that store.
@@ -1503,8 +1513,7 @@ final class ReaGhidraSwiftEnumSwitches {
                     // C memcpy copies the bytes, without retaining its pointer
                     // arguments; the destination is another private frame span.
                     if (nonEscapingCall(i)) { pending.addAll(predecessors.getOrDefault(at,List.of()));continue; }
-                    for (int index = 0; index < 8; index++)
-                        if (kind(register("r"+index,i.getAddress()),"frame")) return true;
+                    if (passesFrameAddress(i)) return true;
                 } else if (hasMemoryEffect(i) && frameStore(i,false)==null) {
                     return true;
                 }
@@ -1586,10 +1595,7 @@ final class ReaGhidraSwiftEnumSwitches {
                         int wanted="slot32".equals(query.register)?4:8;
                         return overlaps(destination.number,size,query.slot,wanted)?null:priorSlot(query,at);
                     }
-                    if (!nonEscapingCall(instruction)) {
-                        for (int index=0;index<8;index++)
-                            if (kind(register("r"+index,at),"frame")) return null;
-                    }
+                    if (!nonEscapingCall(instruction) && passesFrameAddress(instruction)) return null;
                     return priorSlot(query,at);
                 }
                 if (!hasMemoryEffect(instruction)) {

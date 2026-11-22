@@ -152,6 +152,12 @@ destinations and short initialized table extents remain unrecovered. The pass
 tracks frame escape along CFG predecessors regardless of physical block order.
 It also requires an explicit 32-bit zero-extending write before using a returned
 32-bit tag as a 64-bit index; wide copies alone do not prove the upper bits.
+Unknown-call frame escape and post-call spill invalidation include X0–X8,
+Swift self/context in X20 and Swift async context in X22. A callee-saved
+register can still carry an ABI input; X19 is not classified as an argument
+merely because it holds a frame address. The recovery profile is
+`abi-signed-word-cfg-v10`. This register check does not establish a general
+typed invocation, constructor ownership or arbitrary callee memory purity.
 The pass
 uses budgets of 4,096 cases, 100,000 CFG/reaching-definition work units per candidate
 function and 256 nested queries; these are recovery budgets, not Swift format

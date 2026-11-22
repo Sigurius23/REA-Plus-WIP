@@ -13,6 +13,7 @@ export function swiftEnumOracle(
   projection = false,
   probe = false,
   snapshot = false,
+  additionalTagSuffixBytes = 0,
 ) {
   assert.equal(bytes.readUInt32LE(0), 0xfeedfacf);
   const sections = [];
@@ -164,7 +165,7 @@ export function swiftEnumOracle(
   );
   const dispatch = dispatches[0];
   const gap = dispatchLoad ? 4 : 0;
-  const tagCall = dispatch - 40 - gap;
+  const tagCall = dispatch - 40 - gap - additionalTagSuffixBytes;
   if (projection) assert.equal(callTarget(tagCall), symbol("10FixedChildOWOg"));
   else
     assert.equal(

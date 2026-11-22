@@ -37,6 +37,11 @@ import {
   swiftSnapshotOracle,
   swiftSnapshotPatch,
 } from "../tests/conformance/ghidra/swift-dynamic-snapshot-fixtures.mjs";
+import {
+  swiftFrameEscapeCases,
+  swiftFrameEscapeAssembly,
+  swiftFrameEscapeOracle,
+} from "../tests/conformance/ghidra/swift-frame-escape-fixtures.mjs";
 
 const { values } = parseArgs({
   options: {
@@ -48,6 +53,8 @@ const { values } = parseArgs({
     "probe-only": { type: "boolean", default: false },
     "baseline-only": { type: "boolean", default: false },
     "baseline-start-at": { type: "string" },
+    "escape-only": { type: "boolean", default: false },
+    "escape-case": { type: "string" },
   },
 });
 assert.ok(
@@ -55,8 +62,9 @@ assert.ok(
     values["probe-only"],
     values["baseline-only"],
     values["snapshot-only"],
+    values["escape-only"],
   ].filter(Boolean).length <= 1,
-  "Select at most one of probe-only, baseline-only, snapshot-only",
+  "Select at most one of probe-only, baseline-only, snapshot-only, escape-only",
 );
 assert.ok(
   values["baseline-start-at"] === undefined || values["baseline-only"],
@@ -140,13 +148,15 @@ await save(join(root, "run-start.json"), {
   target_executed: false,
   baseline_start_at: startAt ?? null,
   verifier: await identity(fileURLToPath(import.meta.url)),
-  selection: values["snapshot-only"]
-    ? "dynamic-typed-snapshot"
-    : values["probe-only"]
-      ? "darwin-probe-effects"
-      : values["baseline-only"]
-        ? "baseline-swift-enum-matrix"
-        : "complete-swift-enum-matrix",
+  selection: values["escape-only"]
+    ? "abi-frame-escape"
+    : values["snapshot-only"]
+      ? "dynamic-typed-snapshot"
+      : values["probe-only"]
+        ? "darwin-probe-effects"
+        : values["baseline-only"]
+          ? "baseline-swift-enum-matrix"
+          : "complete-swift-enum-matrix",
 });
 
 async function compile(
@@ -158,6 +168,7 @@ async function compile(
   projectionCase,
   probe,
   snapshot,
+  escape,
 ) {
   const directory = join(root, label);
   await mkdir(directory);
@@ -255,7 +266,13 @@ async function compile(
       exit_code: 0,
     });
   }
-  if (dispatchLoad || probe !== undefined || snapshot !== undefined) {
+  let additionalTagSuffixBytes = 0;
+  if (
+    dispatchLoad ||
+    probe !== undefined ||
+    snapshot !== undefined ||
+    escape !== undefined
+  ) {
     const assembly = join(directory, "switch.s");
     const args = [
       ...common,
@@ -286,11 +303,15 @@ async function compile(
     assert.equal([...body.matchAll(/\tbr\tx8\n/g)].length, 1);
     // Reassemble owned source; never patch the caller's shipped artifact.
     const transformed =
-      snapshot !== undefined
-        ? swiftSnapshotAssembly(body, snapshot)
-        : probe === undefined
-          ? null
-          : swiftProbeAssembly(body, probe);
+      escape !== undefined
+        ? swiftFrameEscapeAssembly(body, escape)
+        : snapshot !== undefined
+          ? swiftSnapshotAssembly(body, snapshot)
+          : probe === undefined
+            ? null
+            : swiftProbeAssembly(body, probe);
+    if (escape !== undefined)
+      additionalTagSuffixBytes = transformed.tagSuffixBytes;
     let modified =
       transformed === null
         ? original.slice(0, start) +
@@ -384,7 +405,10 @@ async function compile(
     projectionCase !== undefined,
     probe !== undefined,
     snapshot !== undefined,
+    additionalTagSuffixBytes,
   );
+  if (escape !== undefined)
+    oracle.escape = swiftFrameEscapeOracle(bytes, oracle, escape);
   if (probe !== undefined) {
     bytes = swiftProbePatch(bytes, oracle, probe);
     await writeFile(path, bytes);
@@ -507,15 +531,29 @@ function check(result, oracle, positive) {
     );
   }
   assert.ok(!result.pseudocode.includes("Could not recover jumptable"));
+  const source = table.data_sources[0];
+  assert.ok(
+    source.evidence.some(
+      ({ source, detail }) =>
+        source === "rea-swift-abi-instruction-and-memory" &&
+        detail.includes("descriptor") &&
+        detail.includes("unchanged tag"),
+    ),
+    "Shared table provenance must retain the full type and unchanged-value proof",
+  );
   assert.ok(
     table.mappings.every(
-      ({ confidence, evidence }) =>
+      ({ case_value, target_address, confidence, evidence }) =>
         confidence === "high" &&
         evidence.some(
-          ({ source, detail }) =>
-            source === "rea-swift-abi-instruction-and-memory" &&
-            detail.includes("descriptor") &&
-            detail.includes("unchanged tag"),
+          ({ source: producer, detail }) =>
+            producer === "rea-swift-abi-instruction-and-memory" &&
+            detail.includes(`Swift ABI tag ${case_value} `) &&
+            detail.includes(
+              `signed word at 0x${(oracle.table + case_value * 4).toString(16)}`,
+            ) &&
+            detail.includes(`reaching ${target_address}.`) &&
+            detail.includes(`data source ${source.address}.`),
         ),
     ),
   );
@@ -603,7 +641,7 @@ async function inspect(target, positive, cliParity = false) {
     check(evidence.normalized_result, oracle, positive);
     assert.equal(
       evidence.analysis_profile.parameters.swift_enum_switch_recovery,
-      "abi-signed-word-cfg-v9",
+      "abi-signed-word-cfg-v10",
     );
     assert.ok(
       evidence.limitations.some((text) =>
@@ -666,33 +704,47 @@ async function inspect(target, positive, cliParity = false) {
 
 let failure;
 try {
-  const large = values["snapshot-only"]
-    ? null
-    : await compile(18, 12, "thirty-cases");
-  const small = values["snapshot-only"]
-    ? null
-    : await compile(8, 4, "twelve-cases");
-  const dispatchLoad = values["snapshot-only"]
-    ? null
-    : await compile(18, 12, "dispatch-load", true);
-  const foreignSuffix = values["snapshot-only"]
-    ? null
-    : await compile(18, 12, "dispatch-foreign-entry", true, true);
-  const projected = values["snapshot-only"]
-    ? null
-    : await compile(11, 13, "fixed-projection-case-zero", false, false, 0);
-  const projectedOne = values["snapshot-only"]
-    ? null
-    : await compile(11, 13, "fixed-projection-case-one", false, false, 1);
+  const large =
+    values["snapshot-only"] || values["escape-only"]
+      ? null
+      : await compile(18, 12, "thirty-cases");
+  const small =
+    values["snapshot-only"] || values["escape-only"]
+      ? null
+      : await compile(8, 4, "twelve-cases");
+  const dispatchLoad =
+    values["snapshot-only"] || values["escape-only"]
+      ? null
+      : await compile(18, 12, "dispatch-load", true);
+  const foreignSuffix =
+    values["snapshot-only"] || values["escape-only"]
+      ? null
+      : await compile(18, 12, "dispatch-foreign-entry", true, true);
+  const projected =
+    values["snapshot-only"] || values["escape-only"]
+      ? null
+      : await compile(11, 13, "fixed-projection-case-zero", false, false, 0);
+  const projectedOne =
+    values["snapshot-only"] || values["escape-only"]
+      ? null
+      : await compile(11, 13, "fixed-projection-case-one", false, false, 1);
   const probes = [];
-  if (!values["baseline-only"] && !values["snapshot-only"])
+  if (
+    !values["baseline-only"] &&
+    !values["snapshot-only"] &&
+    !values["escape-only"]
+  )
     for (const probe of swiftProbeCases.filter(
       (item) => !values["probe-case"] || item.label === values["probe-case"],
     ))
       probes.push(await compile(11, 13, probe.label, false, false, 0, probe));
   assert.ok(!values["probe-case"] || probes.length === 1, "Unknown probe-case");
   const snapshots = [];
-  if (!values["baseline-only"] && !values["probe-only"])
+  if (
+    !values["baseline-only"] &&
+    !values["probe-only"] &&
+    !values["escape-only"]
+  )
     for (const snapshot of swiftSnapshotCases.filter(
       (item) =>
         !values["snapshot-case"] || item.label === values["snapshot-case"],
@@ -713,7 +765,39 @@ try {
     !values["snapshot-case"] || snapshots.length === 1,
     "Unknown snapshot-case",
   );
+  const escapes = [];
+  if (
+    !values["baseline-only"] &&
+    !values["probe-only"] &&
+    !values["snapshot-only"]
+  )
+    for (const escape of swiftFrameEscapeCases.filter(
+      (item) => !values["escape-case"] || item.label === values["escape-case"],
+    ))
+      escapes.push(
+        await compile(
+          18,
+          12,
+          escape.label,
+          false,
+          false,
+          undefined,
+          undefined,
+          undefined,
+          escape,
+        ),
+      );
+  assert.ok(
+    !values["escape-case"] || escapes.length === 1,
+    "Unknown escape-case",
+  );
   if (!values["compiler-oracle-only"]) {
+    for (const escape of escapes)
+      await inspect(
+        escape,
+        escape.oracle.escape.positive,
+        escape.oracle.escape.positive,
+      );
     for (const snapshot of snapshots)
       await inspect(
         snapshot,
@@ -726,7 +810,11 @@ try {
         probe.oracle.probe.positive,
         probe.oracle.probe.positive,
       );
-    if (!values["probe-only"] && !values["snapshot-only"]) {
+    if (
+      !values["probe-only"] &&
+      !values["snapshot-only"] &&
+      !values["escape-only"]
+    ) {
       await inspect(large, true, true);
       await inspect(small, true);
       await inspect(dispatchLoad, true, true);

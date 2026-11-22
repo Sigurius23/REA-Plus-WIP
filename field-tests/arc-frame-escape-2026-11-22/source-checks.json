@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-22",
+  "checks": [
+    {
+      "command": "npm run build:cached",
+      "exit_code": 0,
+      "authority": "Observed command completion in agent tool transcript"
+    },
+    {
+      "command": "npm run test:local -- src/ghidra/GhidraProvider.behavior.test.ts",
+      "exit_code": 0,
+      "tests_passed": 42,
+      "files_passed": 1,
+      "authority": "Observed Vitest completion in agent tool transcript; raw output was not separately logged"
+    },
+    {
+      "command": "npm run check:fast",
+      "exit_code": 0,
+      "log": "checks/fast-check.log"
+    },
+    {
+      "command": "npm run docs:check",
+      "exit_code": 0,
+      "log": "checks/docs-check.log"
+    },
+    {
+      "command": "npm run verify:package",
+      "exit_code": 0,
+      "log": "checks/package.log"
+    }
+  ],
+  "native_qualification": "Completed: 110 cases, 440 MCP replies and 14 CLI/MCP comparisons; see qualification-verification.json.",
+  "target_executed": false,
+  "retest": "Completed: exact unchanged fixture and fixed Arc, 15 successful MCP replies; see retest-verification.json."
+}

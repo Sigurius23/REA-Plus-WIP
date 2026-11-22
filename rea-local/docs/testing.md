@@ -604,6 +604,15 @@ remain its own. Input hashes and final owned process lineage are checked. Use
 `--compiler-oracle-only` to check the compiler shape without starting Ghidra;
 that mode does not establish provider coverage.
 
+Use `--escape-only` for the ABI frame-argument controls, or
+`--escape-only --escape-case frame-escape-post-x8` for the original reproduction.
+Owned assembly supplies a live tag-spill address through X8, Swift self X20 or
+Swift async context X22. One family writes an out-of-domain value immediately;
+the other retains the address before tag production and writes through it
+afterwards. Linked-byte oracles authenticate the writer and exact call sites.
+The X0 negative and X19 callee-saved non-argument positive distinguish ABI
+inputs from blanket rejection of frame-valued registers. No fixture executes.
+
 Use `--snapshot-only` to select the independent dynamic typed-snapshot matrix,
 or `--snapshot-only --snapshot-case snapshot-pairs` for one reproduction. These
 source-owned assembly variants reuse compiler-produced reflection, metadata,

@@ -1087,3 +1087,30 @@ twice; both owned lineages are verified empty. No new production defect or
 producer qualification is claimed. Item 63's typed invocation proof, full
 apply/UI/browser effects, higher restore caller/writeback, active dependencies
 and actual I/O/durability remain open. No target was executed.
+
+
+## Hidden ABI frame-argument repair and Arc regression (2026-11-22)
+
+Continuing typed-context item 63 found a reproduced safety defect in existing
+enum recovery, now fixed as [item 67](arc-frame-escape-2026-11-22.md). Unknown
+calls could receive the tag-spill address through X8, Swift self/context X20
+or async context X22, while the proof checked only X0-X7. One shared predicate
+now invalidates both escaped-frame history and affected spill retention. The
+profile advances to `abi-signed-word-cfg-v10`; this is not automatic recovery
+of the unguarded 297-case Setting helper.
+
+The full native suite passes 110 cases (16 positive / 94 negative), 440 public
+MCP replies and 14 CLI/MCP comparisons, plus build, 42 provider tests and
+fast/docs/package checks. Exact-byte counterexample and fixed-Arc sessions
+add 15 successful replies, exports, two closes each and empty lineages.
+Arc's established reducer retains all 28 case mappings and 10,072 body bytes.
+The Setting helper remains 14 instructions / 56 bytes / zero Swift tables.
+Thus the safety repair preserves the selected established recovery while
+leaving the missing typed root/origin/context representation explicit.
+
+Original v9 counterexample and partial verifier runs remain intact, with
+correct classifications and authenticated source versions. The complete large
+reducer is retained/exported behind a summary; the derived view's null profile
+is distinguished from its exact v10 source parent. No Arc or compiled fixture
+was executed. Full browser effects, higher restore caller/writeback and runtime
+dependencies, readback, durability and pixels remain unobserved.

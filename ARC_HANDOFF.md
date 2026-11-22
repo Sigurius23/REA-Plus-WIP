@@ -26,6 +26,52 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest ABI frame-escape safety checkpoint (2026-11-22)
+
+Read `field-tests/arc-frame-escape-2026-11-22.md` and its
+`qualification-verification.json`, `retest-verification.json` and
+`qualification-index.json`. The previous restore/preview checkpoint is pushed
+as `305e5acb0fa1`. All owned sessions below are closed with verified empty
+lineage. The new frozen runtime is
+`rea-local/.cache/arc-runtime-frame-escape-final-2026-11-22` (1,869 files).
+
+Continuing item 63 reproduced a prerequisite bug. At unknown calls, both
+historical frame escape and post-call spill retention checked only X0-X7.
+An owned linked fixture passes the tag-spill address through X8 to a writer
+that stores 65,536; v9 nevertheless publishes a 30-case unchanged-tag bound.
+One shared predicate now includes X0-X8, Swift self/context X20 and async
+context X22. The source/profile changes are `abi-signed-word-cfg-v10`.
+The X19 non-argument control still recovers all 30 cases. This is item 67;
+it does not establish item 63's typed invocation context or closure origin.
+
+Verification: build, 42 provider tests, fast/docs/package checks; the complete
+**110-case native suite (16 positive / 94 negative)**, **440 MCP replies** and
+**14 CLI/MCP comparisons**. The exact unchanged counterexample and fixed Arc
+are retested with **15/15 replies**, final exports and two explicit closes per
+session. The counterexample's v10 result has no REA+ Swift-bound table. Arc's
+existing reducer mappings remain **28 cases / 10,072 body bytes**; the Setting
+helper remains **14 instructions / 56 bytes / zero recovered Swift tables**.
+The large reducer uses summary plus its exported complete parent, not an
+oversized inline retry. Its derived view correctly has no source profile;
+the verifier authenticates the exact parent's v10 profile instead.
+
+Original failed/partial runs are preserved and classified explicitly. The
+first v10 trial rejected all seven unsafe controls; its positive control
+recovered correctly but a stale duplicated-proof verifier assertion failed.
+That assertion now checks the shared proof plus each case's exact link. No
+old capture/review was edited. A first offline retest-verifier assumption about
+the derived view's profile was also corrected, with its failed log retained.
+
+**Next remains item 63:** complete symbolic closure-field type parsing and
+normal ABI lowering; exact typed root and selected code/context origin with
+closed memory windows; an observation-only per-invocation domain/mapping
+carrier. Do not populate a helper-global type or JumpTable override from one
+typed caller. The earlier owned merged typed/UInt16/foreign-owner fixtures
+remain decisive negatives. Worker usage limits prevented a new independent
+typed-context review; continue sequentially unless workers become available.
+Full Arc, higher restore caller/writeback, broader apply/UI/browser paths and
+runtime dependencies/I/O/pixels remain open. No selected target was executed.
+
 ## Latest restore/preview checkpoint (2026-11-22)
 
 Read `field-tests/arc-restore-preview-2026-11-22.md`, then the directory's
