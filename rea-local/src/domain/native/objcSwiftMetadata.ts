@@ -30,6 +30,12 @@ export const nativeSwiftTypeAddressSchema = nativeMetadataAddressSchema
   .describe(
     "Required with facet swift-fields: exact indexed nominal struct or enum descriptor. Reports declared field types, not instance offsets, invocation targets or runtime validity. Cannot combine with class/conformance selectors.",
   );
+/** File-encoded metadata instance, independently bound to the selected descriptor. */
+export const nativeSwiftMetadataAddressSchema = nativeMetadataAddressSchema
+  .optional()
+  .describe(
+    "Optional with swift-fields and swift_type_address: exact file-encoded nongeneric struct metadata address. Validates kind, descriptor backpointer, uint32 field offsets and value-witness layout without instantiating metadata or proving a live instance/closure ABI.",
+  );
 /** Exact unslid class descriptor address from the indexed Swift type section. */
 export const nativeSwiftClassAddressSchema = nativeMetadataAddressSchema
   .optional()
@@ -494,6 +500,14 @@ const swiftFieldFunctionSchema = z.strictObject({
   sendable: z.boolean(),
   result: swiftFieldAtomSchema,
   parameter: swiftFieldAtomSchema,
+  argument_abi: z
+    .strictObject({
+      status: z.literal("unresolved"),
+      reason: z.literal(
+        "Reflection does not establish layout resilience or abstraction lowering; direct value versus indirect address passing requires separate evidence",
+      ),
+    })
+    .optional(),
   declared_argument_domain: z
     .strictObject({
       enum_descriptor: nativeMetadataLocationSchema,
@@ -506,6 +520,55 @@ const swiftFieldFunctionSchema = z.strictObject({
     .nullable(),
 });
 const swiftTypeFieldsSchema = z.strictObject({
+  static_metadata: z
+    .strictObject({
+      address: z.string(),
+      location: nativeMetadataLocationSchema.nullable(),
+      kind_word: z.string().nullable(),
+      owner_matched: z.boolean(),
+      field_offset_vector: nativeMetadataLocationSchema.nullable(),
+      field_offset_vector_word_offset: z
+        .number()
+        .int()
+        .nonnegative()
+        .nullable(),
+      field_offset_entry_bytes: z.literal(4),
+      field_offsets: z.array(
+        z.strictObject({
+          ordinal: z.number().int().nonnegative(),
+          byte_offset: z.number().int().nonnegative(),
+          source: nativeMetadataLocationSchema,
+          evidence: z.array(nativeMetadataEvidenceSchema),
+        }),
+      ),
+      pointers: z.array(
+        z.strictObject({
+          role: z.enum([
+            "nominal_descriptor",
+            "value_witness_table",
+            "initialize_with_copy",
+          ]),
+          slot: nativeMetadataLocationSchema,
+          target: nativeMetadataLocationSchema,
+          external_reference: nativeExternalReferenceSchema.nullable(),
+          decode: nativeMetadataDecodeSchema,
+          evidence: z.array(nativeMetadataEvidenceSchema),
+        }),
+      ),
+      value_witness: z
+        .strictObject({
+          location: nativeMetadataLocationSchema,
+          size_bytes: z.string().regex(/^\d+$/u),
+          stride_bytes: z.string().regex(/^\d+$/u),
+          flags: z.number().int().nonnegative(),
+          alignment_bytes: z.number().int().positive(),
+          initialize_with_copy: nativeMetadataLocationSchema.nullable(),
+        })
+        .nullable(),
+      decode: nativeMetadataDecodeSchema,
+      limitations: z.array(z.string()),
+    })
+    .optional(),
   address: z.string(),
   index_entries: z.number().int().nonnegative(),
   examined_index_entries: z.number().int().nonnegative(),

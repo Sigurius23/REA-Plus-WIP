@@ -4,6 +4,16 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc static Client layout / ABI boundary, item 63 partial (2026-11-22):**
+  Exact metadata binding now recovers all 23 physical field offsets and the
+  VWT copy identity. The selected wrapper provides a conditional typed source
+  anchor. Owned compiler controls expose direct versus indirect argument
+  passing for the same reflected closure shape, so ABI lowering remains
+  unresolved pending selected-context proof. 136 tests, 41 public calls
+  (39 successful/two expected invalid requests), three exact CLI comparisons
+  and build/fast/docs/package checks pass; lineages are empty. See the
+  [checkpoint](field-tests/arc-closure-abi-2026-11-22.md).
+
 - **Selected Swift field types, item 63 partial (2026-11-22):** The existing
   metadata tool now binds Arc's complete supported `boolForSetting` declaration
   to its exact 297-case enum. Shared-code typed/raw/foreign-owner controls stay
@@ -1636,6 +1646,19 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-22 static-metadata follow-up done; item remains open.**
+    Optional `swift_metadata_address` now binds Arc's exact Client metadata,
+    physical uint32 field offsets (0,16,...,352) and VWT/copy role. The selected
+    wrapper/caller supplies a conditional typed source anchor under named VWT,
+    stable-metadata and valid-source premises. Owned controls prove reflected
+    shape/case count/current size cannot choose direct i16 versus indirect
+    pointer passing; `argument_abi` explicitly stays unresolved. Shared VWT
+    helper identity never replaces the descriptor backpointer. Selected ABI,
+    closed code/context origin, forwarding and invocation mapping remain open.
+    136 tests, 39 successful public replies/two intentional invalid requests,
+    three exact CLI/MCP cases and build/fast/docs/package checks pass. See the
+    [static metadata and ABI report](field-tests/arc-closure-abi-2026-11-22.md).
+
     **2026-11-22 field-type step implemented and verified; item remains open.**
     The existing metadata tool's opt-in `swift-fields` facet with exact
     `swift_type_address` now decodes selected reflection declarations and the

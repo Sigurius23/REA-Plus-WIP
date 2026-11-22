@@ -259,6 +259,11 @@ export const decodeSwiftTypeFields = (input: {
         ? null
         : pureEnum(BigInt(parameter.descriptor.address));
     return {
+      argument_abi: {
+        status: "unresolved",
+        reason:
+          "Reflection does not establish layout resilience or abstraction lowering; direct value versus indirect address passing requires separate evidence",
+      },
       convention: "swift-thick",
       sendable,
       result: returned,

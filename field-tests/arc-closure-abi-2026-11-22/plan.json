@@ -1,0 +1,320 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-closure-abi-2026-11-22/mcp-final",
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-closure-abi-2026-11-22/ordinary/control.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "ordinary-open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0xe2c",
+        "swift_metadata_address": "0x4128",
+        "max_file_bytes": 134217728
+      },
+      "label": "ordinary-metadata",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0xe2c",
+        "swift_metadata_address": "0x4128",
+        "max_file_bytes": 134217728,
+        "max_records": 610
+      },
+      "label": "ordinary-budget",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-closure-abi-2026-11-22/mcp-final/ordinary.bundle.json"
+      },
+      "label": "ordinary-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "ordinary-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "ordinary-close2",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-closure-abi-2026-11-22/resilient/control.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "resilient-open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x1264",
+        "swift_metadata_address": "0x4128",
+        "max_file_bytes": 134217728
+      },
+      "label": "resilient-metadata",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-closure-abi-2026-11-22/mcp-final/resilient.bundle.json"
+      },
+      "label": "resilient-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "resilient-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "resilient-close2",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-closure-abi-2026-11-22/frozen/control.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "frozen-open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0xe2c",
+        "swift_metadata_address": "0x4128",
+        "max_file_bytes": 134217728
+      },
+      "label": "frozen-metadata",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-closure-abi-2026-11-22/mcp-final/frozen.bundle.json"
+      },
+      "label": "frozen-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "frozen-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "frozen-close2",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-typed-dispatch-2026-11-21/fixture/libTypedClientControls.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "merged-open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x332c",
+        "swift_metadata_address": "0x8228",
+        "max_file_bytes": 134217728
+      },
+      "label": "merged-TypedClient",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x3348",
+        "swift_metadata_address": "0x82a8",
+        "max_file_bytes": 134217728
+      },
+      "label": "merged-WrongInputClient",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x3364",
+        "swift_metadata_address": "0x8328",
+        "max_file_bytes": 134217728
+      },
+      "label": "merged-WrongOwnerClient",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x332c",
+        "swift_metadata_address": "0x8328",
+        "max_file_bytes": 134217728
+      },
+      "label": "merged-wrong-owner",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "objc",
+        "swift_metadata_address": "0x8228"
+      },
+      "label": "bad-facet",
+      "expect_success": false
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_metadata_address": "0x8228"
+      },
+      "label": "missing-owner",
+      "expect_success": false
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-closure-abi-2026-11-22/mcp-final/merged.bundle.json"
+      },
+      "label": "merged-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "merged-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "merged-close2",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "arc-open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x103d648c4",
+        "swift_metadata_address": "0x1042c8ac0",
+        "max_file_bytes": 134217728
+      },
+      "label": "arc-metadata",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x103d648c4",
+        "max_file_bytes": 134217728
+      },
+      "label": "arc-declaration-only",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100cce81c"
+      },
+      "label": "arc-instructions-0x100cce81c",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100d97b04"
+      },
+      "label": "arc-instructions-0x100d97b04",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100d929a0"
+      },
+      "label": "arc-instructions-0x100d929a0",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100d97b04",
+        "detail": "summary"
+      },
+      "label": "arc-copy-summary",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-closure-abi-2026-11-22/mcp-final/arc.bundle.json"
+      },
+      "label": "arc-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "arc-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "arc-close2",
+      "expect_success": true
+    }
+  ],
+  "timeout_ms": 390000,
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-closure-abi-2026-11-22/seeds-2507.tsv"
+  },
+  "runtime_manifest": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-closure-abi-2026-11-22/runtime-manifest.json"
+}

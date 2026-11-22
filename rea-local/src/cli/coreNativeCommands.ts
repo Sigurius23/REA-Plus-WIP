@@ -15,6 +15,7 @@ import {
   nativeDispatchFacetSchema,
   nativeSwiftClassAddressSchema,
   nativeSwiftTypeAddressSchema,
+  nativeSwiftMetadataAddressSchema,
   nativeSwiftConformanceAddressSchema,
   nativeDispatchFileBudgetSchema,
 } from "../domain/native/objcSwiftMetadata.js";
@@ -288,6 +289,7 @@ const registerNativeDispatchMetadataCommand = (
       maxFileBytes: nativeDispatchFileBudgetSchema,
       swiftConformanceAddress: nativeSwiftConformanceAddressSchema,
       swiftTypeAddress: nativeSwiftTypeAddressSchema,
+      swiftMetadataAddress: nativeSwiftMetadataAddressSchema,
       swiftClassAddress: nativeSwiftClassAddressSchema,
       swiftProtocolName: z
         .string()
@@ -333,6 +335,9 @@ const registerNativeDispatchMetadataCommand = (
             max_records: options.maxRecords,
             facet: options.facet,
             max_file_bytes: options.maxFileBytes,
+            ...(options.swiftMetadataAddress === undefined
+              ? {}
+              : { swift_metadata_address: options.swiftMetadataAddress }),
             ...(options.swiftTypeAddress === undefined
               ? {}
               : { swift_type_address: options.swiftTypeAddress }),

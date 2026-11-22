@@ -1,0 +1,939 @@
+import { z } from "zod";
+import {
+  compareUnicodeCodePoints,
+  compositeKey,
+} from "../unicodeCodePointOrder.js";
+
+/** Stable whole-file snapshot policy, shared by CLI/MCP and the binary reader. */
+export const nativeDispatchFileBudgetSchema = z
+  .number()
+  .int()
+  .min(32)
+  .max(536870912)
+  .default(67108864)
+  .describe(
+    "Maximum whole-file bytes for the binary Apple metadata snapshot, including all universal slices (default 64 MiB, maximum 512 MiB). Facet and record selection do not change this limit.",
+  );
+
+/** Native metadata family to inspect within the caller's aggregate record budget. */
+export const nativeDispatchFacetSchema = z.enum([
+  "all",
+  "objc",
+  "swift-conformances",
+  "swift-vtables",
+  "swift-fields",
+]);
+const nativeMetadataAddressSchema = z.string().regex(/^0x[0-9a-fA-F]{1,16}$/u);
+/** Opt-in exact indexed nominal type for reflection field inspection. */
+export const nativeSwiftTypeAddressSchema = nativeMetadataAddressSchema
+  .optional()
+  .describe(
+    "Required with facet swift-fields: exact indexed nominal struct or enum descriptor. Reports declared field types, not instance offsets, invocation targets or runtime validity. Cannot combine with class/conformance selectors.",
+  );
+/** File-encoded metadata instance, independently bound to the selected descriptor. */
+export const nativeSwiftMetadataAddressSchema = nativeMetadataAddressSchema
+  .optional()
+  .describe(
+    "Optional with swift-fields and swift_type_address: exact file-encoded nongeneric struct metadata address. Validates kind, descriptor backpointer, uint32 field offsets and value-witness layout without instantiating metadata or proving a live instance/closure ABI.",
+  );
+/** Exact unslid class descriptor address from the indexed Swift type section. */
+export const nativeSwiftClassAddressSchema = nativeMetadataAddressSchema
+  .optional()
+  .describe(
+    "Decode only this indexed nominal Swift class descriptor; requires facet swift-vtables and cannot combine with conformance selectors. Index membership is checked before decode admission. Runtime class metadata and unsupported layouts remain unknown.",
+  );
+/** Exact unslid descriptor address from the indexed Swift conformance section. */
+export const nativeSwiftConformanceAddressSchema = nativeMetadataAddressSchema
+  .optional()
+  .describe(
+    "Decode only this indexed Swift conformance descriptor; requires facet swift-conformances. Runtime witness tables remain unknown.",
+  );
+/** Exact local metadata names; all matching declarations are retained, without module uniqueness claims. */
+export const nativeSwiftConformanceFilterSchema = z.union([
+  z.strictObject({
+    protocol_name: z.string().min(1),
+    type_name: z.string().min(1).nullable().default(null),
+  }),
+  z.strictObject({
+    protocol_name: z.null().default(null),
+    type_name: z.string().min(1),
+  }),
+]);
+export type NativeSwiftConformanceFilter = z.infer<
+  typeof nativeSwiftConformanceFilterSchema
+>;
+export type NativeDispatchFacet = z.infer<typeof nativeDispatchFacetSchema>;
+
+/** Objective-C method type. */
+export const objcMethodTypeSchema = z.enum([
+  "instance",
+  "class",
+  "ivar_getter",
+  "ivar_setter",
+]);
+
+/** Objective-C property attribute. */
+export const objcPropertyAttributeSchema = z.strictObject({
+  name: z.string().min(1),
+  value: z.string(),
+});
+
+/** Objective-C method metadata. */
+export const objcMethodSchema = z.strictObject({
+  selector: z.string().min(1),
+  method_type: objcMethodTypeSchema,
+  address: z.number().int().nullable(),
+  is_required: z.boolean().nullable(),
+  is_optional: z.boolean().nullable(),
+});
+type ObjcMethod = z.infer<typeof objcMethodSchema>;
+
+/** Objective-C property metadata. */
+export const objcPropertySchema = z.strictObject({
+  name: z.string().min(1),
+  type_encoding: z.string().nullable(),
+  attributes: z.array(objcPropertyAttributeSchema),
+  atomicity: z.enum(["atomic", "nonatomic"]).nullable(),
+  is_readonly: z.boolean().nullable(),
+  getter: z.string().nullable(),
+  setter: z.string().nullable(),
+});
+
+/** Objective-C protocol metadata. */
+export const objcProtocolSchema = z.strictObject({
+  name: z.string().min(1),
+  methods: z.array(objcMethodSchema).default([]),
+  optional_methods: z.array(objcMethodSchema).default([]),
+  properties: z.array(objcPropertySchema).default([]),
+});
+
+/** Objective-C class metadata. */
+export const objcClassSchema = z.strictObject({
+  name: z.string().min(1),
+  super_class: z.string().nullable(),
+  is_meta_class: z.boolean().nullable(),
+  is_root_class: z.boolean().nullable(),
+  methods: z.array(objcMethodSchema).default([]),
+  properties: z.array(objcPropertySchema).default([]),
+  protocols: z.array(z.string()).default([]),
+  ivar_count: z.number().int().nonnegative().nullable(),
+  instance_size: z.number().int().nonnegative().nullable(),
+  location: z
+    .object({
+      address: z.string().nullable(),
+      file_offset: z.number().int().nonnegative().nullable(),
+    })
+    .optional(),
+  superclass_address: z.string().nullable().optional(),
+  metaclass_address: z.string().nullable().optional(),
+  decode: z
+    .object({
+      status: z.enum(["decoded", "partial", "unsupported", "invalid"]),
+      reason: z.string().nullable(),
+    })
+    .optional(),
+  evidence: z
+    .array(
+      z.object({
+        kind: z.literal("binary_metadata"),
+        description: z.string(),
+        location: z.object({
+          address: z.string().nullable(),
+          file_offset: z.number().int().nonnegative().nullable(),
+        }),
+        artifact_path: z.string(),
+        artifact_sha256: z.string(),
+      }),
+    )
+    .optional(),
+});
+type ObjcClass = z.infer<typeof objcClassSchema>;
+
+/** Exact location of a decoded native metadata value when the provider knows it. */
+export const nativeMetadataLocationSchema = z.strictObject({
+  address: z.string().nullable(),
+  file_offset: z.number().int().nonnegative().nullable(),
+});
+export type NativeMetadataLocation = z.infer<
+  typeof nativeMetadataLocationSchema
+>;
+
+/** Provider-neutral decode state; absence never silently means unsupported. */
+export const nativeMetadataDecodeSchema = z.strictObject({
+  status: z.enum(["decoded", "partial", "unsupported", "invalid"]),
+  reason: z.string().nullable(),
+});
+
+/** Evidence attached to one dispatch edge or metadata record. */
+export const nativeMetadataEvidenceSchema = z.strictObject({
+  kind: z.enum([
+    "binary_metadata",
+    "interface_builder_resource",
+    "symbol",
+    "reference",
+    "decompiler",
+  ]),
+  description: z.string().min(1),
+  location: nativeMetadataLocationSchema,
+  artifact_path: z.string().min(1).nullable().default(null),
+  artifact_sha256: z
+    .string()
+    .regex(/^[a-f0-9]{64}$/u)
+    .nullable()
+    .default(null),
+});
+export type NativeMetadataEvidence = z.infer<
+  typeof nativeMetadataEvidenceSchema
+>;
+
+/** Objective-C ivar layout, retaining encoded type and exact storage offset. */
+export const objcIvarSchema = z.strictObject({
+  class_name: z.string().min(1),
+  name: z.string().min(1),
+  type_encoding: z.string().nullable(),
+  offset: z.number().int().nonnegative().nullable(),
+  size: z.number().int().nonnegative().nullable().default(null),
+  alignment: z.number().int().positive().nullable().default(null),
+  location: nativeMetadataLocationSchema,
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+});
+
+/** Encoded Objective-C protocol declaration with required and optional method facts. */
+export const objcProtocolRecordSchema = z.strictObject({
+  name: z.string(),
+  adopted_protocols: z.array(z.string()),
+  methods: z.array(objcMethodSchema),
+  optional_methods: z.array(objcMethodSchema),
+  location: nativeMetadataLocationSchema,
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+});
+
+/** Selector implementation resolved from a class or metaclass method list. */
+export const objcDispatchImplementationSchema = z.strictObject({
+  class_name: z.string().min(1),
+  selector: z.string().min(1),
+  method_type: z.enum(["instance", "class"]),
+  implementation_address: z.string().nullable(),
+  /** Category that adds this method, when it is not defined by the class itself. */
+  category: z.string().nullable().optional(),
+  location: nativeMetadataLocationSchema,
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+});
+type ObjcDispatchImplementation = z.infer<
+  typeof objcDispatchImplementationSchema
+>;
+
+/** Objective-C category: methods, protocols and properties added to a class. */
+export const objcCategorySchema = z.strictObject({
+  name: z.string().min(1),
+  /** Extended class; external classes come from the category's bind symbol. */
+  class_name: z.string().min(1).nullable(),
+  class_source: z.enum(["local", "external", "unresolved"]),
+  instance_methods: z.array(z.string()),
+  class_methods: z.array(z.string()),
+  protocols: z.array(z.string()),
+  properties: z.array(objcPropertySchema),
+  location: nativeMetadataLocationSchema,
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+});
+
+/** A dyld bind identity; this is not a decoded, file-backed metadata address. */
+export const nativeExternalReferenceSchema = z.strictObject({
+  symbol: z.string().min(1),
+  library: z.string().nullable(),
+  weak: z.boolean(),
+  addend: z.string().regex(/^-?[0-9]+$/u),
+});
+
+/** Swift protocol conformance and its associated witness-table location. */
+export const swiftConformanceSchema = z.strictObject({
+  type_name: z.string().min(1).nullable(),
+  protocol_name: z.string().min(1).nullable(),
+  type_reference: nativeExternalReferenceSchema.nullable().optional(),
+  protocol_reference: nativeExternalReferenceSchema.nullable().optional(),
+  module: z.string().nullable(),
+  witness_table: nativeMetadataLocationSchema,
+  location: nativeMetadataLocationSchema,
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+});
+
+/** Static witness data has a type/protocol identity, never a code target. */
+export const swiftWitnessDataSchema = z.discriminatedUnion("kind", [
+  z.strictObject({
+    kind: z.literal("base_protocol"),
+    witness_table: nativeMetadataLocationSchema,
+    conformance: nativeMetadataLocationSchema.nullable(),
+    protocol_descriptor: nativeMetadataLocationSchema.nullable(),
+    protocol_name: z.string().nullable(),
+    type_descriptor: nativeMetadataLocationSchema.nullable(),
+    type_name: z.string().nullable(),
+  }),
+  z.strictObject({
+    kind: z.literal("associated_type"),
+    name: z.string().nullable(),
+    representation: z.enum(["mangled_name", "metadata"]),
+    pointer_target: z.string(),
+    target: nativeMetadataLocationSchema,
+    context_descriptor: nativeMetadataLocationSchema.nullable(),
+    type_name: z.string().nullable(),
+  }),
+]);
+export type SwiftWitnessData = z.infer<typeof swiftWitnessDataSchema>;
+
+/** A typed slot in a Swift protocol witness table or class vtable. */
+export const swiftDispatchSlotSchema = z.strictObject({
+  owner: z.string().min(1),
+  table_kind: z.enum(["witness_table", "class_vtable"]),
+  slot_index: z.number().int().nonnegative(),
+  requirement: z.string().nullable(),
+  implementation: z.string().nullable(),
+  implementation_address: z.string().nullable(),
+  thunk_address: z.string().nullable(),
+  requirement_flags: z.number().int().min(0).max(0xffffffff).optional(),
+  witness_data: swiftWitnessDataSchema.optional(),
+  location: nativeMetadataLocationSchema,
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+});
+
+/** An order-independent resilient conformance record, never a runtime table slot. */
+export const swiftResilientWitnessSchema = z.strictObject({
+  conformance: nativeMetadataLocationSchema,
+  type_name: z.string().min(1).nullable(),
+  protocol_name: z.string().min(1).nullable(),
+  type_reference: nativeExternalReferenceSchema.nullable(),
+  protocol_reference: nativeExternalReferenceSchema.nullable(),
+  record_ordinal: z
+    .number()
+    .int()
+    .nonnegative()
+    .describe(
+      "Zero-based ordinal in the conformance's static resilient records; this is not a runtime witness-table slot index.",
+    ),
+  requirement: nativeMetadataLocationSchema,
+  requirement_reference: nativeExternalReferenceSchema.nullable(),
+  requirement_flags: z.number().int().min(0).max(0xffffffff).nullable(),
+  implementation_address: z.string().nullable(),
+  implementation_location: nativeMetadataLocationSchema,
+  implementation_kind: z.enum([
+    "synchronous_function",
+    "executable_address",
+    "unresolved",
+  ]),
+  generic_witness_table: nativeMetadataLocationSchema.nullable(),
+  runtime_witness_table: z.literal("not_instantiated"),
+  location: nativeMetadataLocationSchema,
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+});
+
+/** Shipped generic witness bytes, never an observed instantiated runtime table. */
+export const swiftWitnessTemplateSchema = z.strictObject({
+  conformance: nativeMetadataLocationSchema,
+  conformance_flags: z.number().int().min(0).max(0xffffffff),
+  type_name: z.string().nullable(),
+  protocol_name: z.string().nullable(),
+  pattern: nativeMetadataLocationSchema,
+  generic_control: nativeMetadataLocationSchema.nullable(),
+  template_words: z.number().int().nonnegative().nullable(),
+  extent_source: z.enum(["generic_control", "local_protocol", "unresolved"]),
+  private_words: z.number().int().nonnegative().nullable(),
+  instantiation_flag: z.boolean().nullable(),
+  instantiator: nativeMetadataLocationSchema.nullable(),
+  private_data: nativeMetadataLocationSchema.nullable(),
+  retroactive_context: nativeMetadataLocationSchema.nullable(),
+  conditional_requirement_count: z.number().int().nonnegative(),
+  conditional_requirements: z.array(
+    z.strictObject({
+      location: nativeMetadataLocationSchema,
+      flags: z.number().int().min(0).max(0xffffffff),
+      parameter_encoding: z.number().int().min(0).max(0xffffffff),
+      constraint_encoding: z.number().int().min(0).max(0xffffffff),
+      parameter: nativeMetadataLocationSchema,
+      constraint: nativeMetadataLocationSchema.nullable(),
+      constraint_reference: nativeExternalReferenceSchema.nullable(),
+      decode: nativeMetadataDecodeSchema,
+      evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+    }),
+  ),
+  conditional_pack_count: z.number().int().nonnegative(),
+  conditional_packs: z.array(
+    z.strictObject({
+      location: nativeMetadataLocationSchema,
+      kind: z.number().int().nonnegative(),
+      index: z.number().int().nonnegative(),
+      shape_class: z.number().int().nonnegative(),
+      reserved: z.number().int().nonnegative(),
+      decode: nativeMetadataDecodeSchema,
+      evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+    }),
+  ),
+  entries: z.array(
+    z.strictObject({
+      word_index: z
+        .number()
+        .int()
+        .positive()
+        .describe(
+          "Word index in the shipped pattern after its header; not a runtime table slot.",
+        ),
+      location: nativeMetadataLocationSchema,
+      stored_value: z.string().regex(/^0x[0-9a-f]{16}$/u),
+      requirement: nativeMetadataLocationSchema.nullable(),
+      requirement_flags: z.number().int().min(0).max(0xffffffff).nullable(),
+      kind: z.enum([
+        "hole",
+        "function",
+        "async_descriptor",
+        "non_function",
+        "unresolved",
+      ]),
+      target: nativeMetadataLocationSchema,
+      target_reference: nativeExternalReferenceSchema.nullable(),
+      decode: nativeMetadataDecodeSchema,
+      evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+    }),
+  ),
+  runtime_witness_table: z.literal("not_observed"),
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+});
+
+/** Signed-relative pointer as stored in an Apple binary metadata structure. */
+export const relativePointerSchema = z.strictObject({
+  field: nativeMetadataLocationSchema,
+  target: nativeMetadataLocationSchema,
+  indirect_slot: nativeMetadataLocationSchema.nullable().optional(),
+  external_reference: nativeExternalReferenceSchema.nullable().optional(),
+  displacement: z.number().int(),
+  indirectable: z.boolean(),
+  indirect: z.boolean().nullable(),
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+});
+
+/** A raw Swift-mangled symbol when a provider has not decoded its metadata. */
+export const swiftSymbolSchema = z.strictObject({
+  mangled_name: z.string().min(1),
+  address: z.string().min(1),
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+});
+type SwiftSymbol = z.infer<typeof swiftSymbolSchema>;
+
+/** Per-facet coverage; empty arrays are meaningful only with this record. */
+export const nativeMetadataCoverageSchema = z.strictObject({
+  facet: z.string().min(1),
+  status: z.enum(["complete", "partial", "unsupported", "not_requested"]),
+  reason: z.string().nullable(),
+  examined: z.number().int().nonnegative(),
+  decoded: z.number().int().nonnegative(),
+});
+
+/** Swift declaration kind. */
+export const swiftDeclKindSchema = z.enum([
+  "class",
+  "struct",
+  "enum",
+  "protocol",
+  "extension",
+  "actor",
+  "global_var",
+  "global_func",
+]);
+
+/** Swift access level. */
+export const swiftAccessLevelSchema = z.enum([
+  "private",
+  "fileprivate",
+  "internal",
+  "public",
+  "open",
+]);
+/** Swift declaration metadata. */
+export const swiftDeclSchema = z.strictObject({
+  kind: swiftDeclKindSchema,
+  name: z.string().min(1),
+  module: z.string().nullable(),
+  access_level: swiftAccessLevelSchema.default("internal"),
+  super_class: z.string().nullable(),
+  protocols: z.array(z.string()).default([]),
+  is_final: z.boolean().default(false),
+  is_required: z.boolean().default(false),
+  is_convenience_init: z.boolean().default(false),
+  is_override: z.boolean().default(false),
+});
+
+/** Database save/read operation type. */
+export const dbOperationSchema = z.enum([
+  "save",
+  "readback",
+  "open_database",
+  "close_database",
+  "export",
+  "import",
+]);
+/** Database save operation result. */
+export const dbSaveResultSchema = z.strictObject({
+  operation: dbOperationSchema,
+  succeeded: z.boolean(),
+  preserved_names: z.number().int().nonnegative().default(0),
+  preserved_comments: z.number().int().nonnegative().default(0),
+  preserved_bookmarks: z.number().int().nonnegative().default(0),
+  database_path: z.string().nullable(),
+  error: z.string().nullable(),
+});
+
+/** Result of deeper ObjC/Swift metadata extraction. */
+const swiftFieldAtomSchema = z.strictObject({
+  kind: z.enum(["builtin", "nominal"]),
+  name: z.string(),
+  descriptor: nativeMetadataLocationSchema.nullable(),
+});
+const swiftFieldFunctionSchema = z.strictObject({
+  convention: z.literal("swift-thick"),
+  sendable: z.boolean(),
+  result: swiftFieldAtomSchema,
+  parameter: swiftFieldAtomSchema,
+  argument_abi: z
+    .strictObject({
+      status: z.literal("unresolved"),
+      reason: z.literal(
+        "Reflection does not establish layout resilience or abstraction lowering; direct value versus indirect address passing requires separate evidence",
+      ),
+    })
+    .optional(),
+  declared_argument_domain: z
+    .strictObject({
+      enum_descriptor: nativeMetadataLocationSchema,
+      lower_inclusive: z.literal(0),
+      upper_exclusive: z.number().int().positive(),
+      premise: z.literal(
+        "Valid value of this declared field's exact enum parameter; no invocation or helper-global type is established",
+      ),
+    })
+    .nullable(),
+});
+const swiftTypeFieldsSchema = z.strictObject({
+  static_metadata: z
+    .strictObject({
+      address: z.string(),
+      location: nativeMetadataLocationSchema.nullable(),
+      kind_word: z.string().nullable(),
+      owner_matched: z.boolean(),
+      field_offset_vector: nativeMetadataLocationSchema.nullable(),
+      field_offset_vector_word_offset: z
+        .number()
+        .int()
+        .nonnegative()
+        .nullable(),
+      field_offset_entry_bytes: z.literal(4),
+      field_offsets: z.array(
+        z.strictObject({
+          ordinal: z.number().int().nonnegative(),
+          byte_offset: z.number().int().nonnegative(),
+          source: nativeMetadataLocationSchema,
+          evidence: z.array(nativeMetadataEvidenceSchema),
+        }),
+      ),
+      pointers: z.array(
+        z.strictObject({
+          role: z.enum([
+            "nominal_descriptor",
+            "value_witness_table",
+            "initialize_with_copy",
+          ]),
+          slot: nativeMetadataLocationSchema,
+          target: nativeMetadataLocationSchema,
+          external_reference: nativeExternalReferenceSchema.nullable(),
+          decode: nativeMetadataDecodeSchema,
+          evidence: z.array(nativeMetadataEvidenceSchema),
+        }),
+      ),
+      value_witness: z
+        .strictObject({
+          location: nativeMetadataLocationSchema,
+          size_bytes: z.string().regex(/^\d+$/u),
+          stride_bytes: z.string().regex(/^\d+$/u),
+          flags: z.number().int().nonnegative(),
+          alignment_bytes: z.number().int().positive(),
+          initialize_with_copy: nativeMetadataLocationSchema.nullable(),
+        })
+        .nullable(),
+      decode: nativeMetadataDecodeSchema,
+      limitations: z.array(z.string()),
+    })
+    .optional(),
+  address: z.string(),
+  index_entries: z.number().int().nonnegative(),
+  examined_index_entries: z.number().int().nonnegative(),
+  matching_index_entries: z.number().int().nonnegative(),
+  unresolved_index_entries: z.number().int().nonnegative(),
+  matched: z.boolean(),
+  descriptor: nativeMetadataLocationSchema.nullable(),
+  name: z.string().nullable(),
+  kind: z.enum(["struct", "enum"]).nullable(),
+  field_descriptor: nativeMetadataLocationSchema.nullable(),
+  declared_field_count: z.number().int().nonnegative().nullable(),
+  fields: z.array(
+    z.strictObject({
+      ordinal: z.number().int().nonnegative(),
+      record: nativeMetadataLocationSchema,
+      flags: z.number().int().nonnegative(),
+      name: z.string().nullable(),
+      type_location: nativeMetadataLocationSchema.nullable(),
+      mangling_hex: z
+        .string()
+        .regex(/^(?:[0-9a-f]{2})*$/u)
+        .nullable(),
+      function_type: swiftFieldFunctionSchema.nullable(),
+      decode: nativeMetadataDecodeSchema,
+      evidence: z.array(nativeMetadataEvidenceSchema),
+    }),
+  ),
+  referenced_enums: z.array(
+    z.strictObject({
+      descriptor: nativeMetadataLocationSchema,
+      name: z.string(),
+      payload_cases: z.literal(0),
+      empty_cases: z.number().int().positive(),
+      field_descriptor: nativeMetadataLocationSchema,
+      cases: z.array(
+        z.strictObject({
+          ordinal: z.number().int().nonnegative(),
+          name: z.string(),
+          record: nativeMetadataLocationSchema,
+        }),
+      ),
+      evidence: z.array(nativeMetadataEvidenceSchema),
+    }),
+  ),
+  program_mutations: z.literal(false),
+  limitations: z.array(z.string()),
+  decode: nativeMetadataDecodeSchema,
+});
+export const objcSwiftMetadataSchema = z.strictObject({
+  swift_type_fields: swiftTypeFieldsSchema.optional(),
+  swift_vtable_selection: z
+    .strictObject({
+      address: z.string(),
+      index_entries: z.number().int().nonnegative(),
+      examined: z.number().int().nonnegative(),
+      matching_index_entries: z.number().int().nonnegative(),
+      matched: z.boolean(),
+      unresolved: z.number().int().nonnegative(),
+    })
+    .optional(),
+  swift_conformance_discovery: z
+    .strictObject({
+      filter: nativeSwiftConformanceFilterSchema,
+      index_entries: z.number().int().nonnegative(),
+      examined: z.number().int().nonnegative(),
+      matched: z.number().int().nonnegative(),
+      admitted: z.number().int().nonnegative(),
+      unresolved: z.number().int().nonnegative(),
+      unresolved_records: z.array(
+        z.strictObject({
+          index_entry: nativeMetadataLocationSchema,
+          conformance_address: z.string().nullable(),
+          protocol_name: z.string().nullable(),
+          type_name: z.string().nullable(),
+          relative_pointers: z.array(relativePointerSchema),
+          reason: z.string(),
+          evidence: z.array(nativeMetadataEvidenceSchema).min(1),
+        }),
+      ),
+    })
+    .optional(),
+  swift_conformance_selection: z
+    .strictObject({ address: z.string(), matched: z.boolean() })
+    .optional(),
+  objc_classes: z.array(objcClassSchema).default([]),
+  objc_protocols: z.array(objcProtocolSchema).default([]),
+  objc_categories: z.array(objcCategorySchema).default([]),
+  swift_decls: z.array(swiftDeclSchema).default([]),
+  objc_ivars: z.array(objcIvarSchema).default([]),
+  objc_protocol_records: z.array(objcProtocolRecordSchema).default([]),
+  objc_dispatch_implementations: z
+    .array(objcDispatchImplementationSchema)
+    .default([]),
+  swift_conformances: z.array(swiftConformanceSchema).default([]),
+  swift_dispatch_slots: z.array(swiftDispatchSlotSchema).default([]),
+  // Historical/provider-only Evidence may omit this newer binary capability.
+  swift_resilient_witnesses: z.array(swiftResilientWitnessSchema).optional(),
+  swift_witness_templates: z.array(swiftWitnessTemplateSchema).optional(),
+  swift_symbols: z.array(swiftSymbolSchema).default([]),
+  relative_pointers: z.array(relativePointerSchema).default([]),
+  coverage: z.array(nativeMetadataCoverageSchema).default([]),
+  db_save_result: dbSaveResultSchema.nullable(),
+});
+export type ObjcSwiftMetadata = z.infer<typeof objcSwiftMetadataSchema>;
+
+/** Provider and target identity for one normalized dispatch-metadata result. */
+export const nativeDispatchMetadataResultSchema = z.strictObject({
+  target_sha256: z
+    .string()
+    .regex(/^[a-f0-9]{64}$/u)
+    .nullable(),
+  provider: z.strictObject({
+    id: z.string().min(1),
+    name: z.string().min(1),
+    version: z.string().nullable(),
+  }),
+  analysis_profile_digest: z.string().min(1).nullable(),
+  result: objcSwiftMetadataSchema,
+});
+
+/** Decode only facts visible in a provider's existing name inventory. */
+export const inspectNativeDispatchMetadata = (
+  names: readonly { readonly address: string; readonly name: string }[],
+  maxRecords = 5_000,
+  facet: NativeDispatchFacet = "all",
+): ObjcSwiftMetadata => {
+  if (
+    facet === "swift-conformances" ||
+    facet === "swift-vtables" ||
+    facet === "swift-fields"
+  )
+    return objcSwiftMetadataSchema.parse({
+      db_save_result: null,
+      coverage: [
+        {
+          facet: "swift_type_fields",
+          status: facet === "swift-fields" ? "unsupported" : "not_requested",
+          reason:
+            facet === "swift-fields"
+              ? "provider_name_inventory_does_not_decode_swift_field_types"
+              : null,
+          examined: 0,
+          decoded: 0,
+        },
+        {
+          facet: "objc_class_symbols",
+          status: "not_requested",
+          reason: null,
+          examined: 0,
+          decoded: 0,
+        },
+        {
+          facet: "swift_conformances_static_witness_slots",
+          status:
+            facet === "swift-conformances" ? "unsupported" : "not_requested",
+          reason:
+            facet === "swift-conformances"
+              ? "provider_name_inventory_does_not_decode_swift_conformances_or_witness_tables"
+              : null,
+          examined: 0,
+          decoded: 0,
+        },
+        {
+          facet: "swift_witness_template_records",
+          status:
+            facet === "swift-conformances" ? "unsupported" : "not_requested",
+          reason:
+            facet === "swift-conformances"
+              ? "provider_name_inventory_does_not_decode_swift_witness_templates"
+              : null,
+          examined: 0,
+          decoded: 0,
+        },
+        {
+          facet: "swift_class_vtable_descriptors",
+          status: facet === "swift-vtables" ? "unsupported" : "not_requested",
+          reason:
+            facet === "swift-vtables"
+              ? "provider_name_inventory_does_not_decode_swift_class_vtables"
+              : null,
+          examined: 0,
+          decoded: 0,
+        },
+        {
+          facet: "relative_pointers",
+          status: "unsupported",
+          reason:
+            "provider_name_inventory_does_not_decode_binary_relative_pointers",
+          examined: 0,
+          decoded: 0,
+        },
+      ],
+    });
+  const symbolEvidence = (name: string, address: string) => [
+    {
+      kind: "symbol" as const,
+      description: `Provider symbol ${name}`,
+      location: { address, file_offset: null },
+      artifact_path: null,
+      artifact_sha256: null,
+    },
+  ];
+  const classNames = new Set<string>();
+  const implementations = new Map<string, ObjcDispatchImplementation>();
+  const swiftSymbols: SwiftSymbol[] = [];
+
+  const selectedNames =
+    facet === "objc"
+      ? names.filter(({ name }) =>
+          /(?:OBJC_CLASS_|OBJC_METACLASS_)\$_|^[+-]\[[^\s\]]+\s+[^\]]+\]$/u.test(
+            name,
+          ),
+        )
+      : names;
+  const examinedNames = selectedNames.slice(0, maxRecords);
+  for (const entry of examinedNames) {
+    const classMatch = /(?:OBJC_CLASS_|OBJC_METACLASS_)\$_([^\s]+)/u.exec(
+      entry.name,
+    );
+    if (classMatch?.[1] !== undefined) classNames.add(classMatch[1]);
+
+    const methodMatch = /^([+-])\[([^\s\]]+)\s+([^\]]+)\]$/u.exec(entry.name);
+    if (methodMatch?.[1] !== undefined && methodMatch[2] && methodMatch[3]) {
+      const methodType = methodMatch[1] === "+" ? "class" : "instance";
+      const selector = methodMatch[3];
+      implementations.set(`${methodMatch[2]}:${selector}:${methodType}`, {
+        class_name: methodMatch[2],
+        selector,
+        method_type: methodType,
+        implementation_address: entry.address,
+        location: { address: entry.address, file_offset: null },
+        decode: { status: "partial", reason: "symbol_name_only" },
+        evidence: symbolEvidence(entry.name, entry.address),
+      });
+      classNames.add(methodMatch[2]);
+    }
+
+    if (facet === "all" && /^(?:_?\$s|_Tt)/u.test(entry.name))
+      swiftSymbols.push({
+        mangled_name: entry.name,
+        address: entry.address,
+        decode: { status: "partial", reason: "mangled_symbol_not_demangled" },
+        evidence: symbolEvidence(entry.name, entry.address),
+      });
+  }
+
+  const methodsByClass = new Map<string, ObjcMethod[]>();
+  for (const implementation of implementations.values()) {
+    const methods = methodsByClass.get(implementation.class_name) ?? [];
+    methods.push({
+      selector: implementation.selector,
+      method_type: implementation.method_type,
+      address: parseMetadataAddress(implementation.implementation_address),
+      is_required: null,
+      is_optional: null,
+    });
+    methodsByClass.set(implementation.class_name, methods);
+  }
+  const classes: ObjcClass[] = [...classNames].sort().map((name) => ({
+    name,
+    super_class: null,
+    is_meta_class: null,
+    is_root_class: null,
+    methods: methodsByClass.get(name) ?? [],
+    properties: [],
+    protocols: [],
+    ivar_count: null,
+    instance_size: null,
+  }));
+  const decodedImplementations = [...implementations.values()].sort(
+    (left, right) =>
+      compareUnicodeCodePoints(
+        compositeKey([left.class_name, left.selector]),
+        compositeKey([right.class_name, right.selector]),
+      ),
+  );
+  const swift = swiftSymbols.length > 0;
+
+  return objcSwiftMetadataSchema.parse({
+    objc_classes: classes,
+    objc_dispatch_implementations: decodedImplementations,
+    swift_symbols: swiftSymbols,
+    coverage: [
+      {
+        facet: "objc_class_symbols",
+        status: "partial",
+        reason:
+          selectedNames.length > examinedNames.length
+            ? "record_limit_reached_and_symbol_names_are_not_runtime_class_metadata"
+            : "symbol_names_do_not_recover_all_runtime_class_metadata",
+        examined: examinedNames.length,
+        decoded: classes.length,
+      },
+      {
+        facet: "objc_dispatch_implementations",
+        status: decodedImplementations.length > 0 ? "partial" : "unsupported",
+        reason:
+          selectedNames.length > examinedNames.length
+            ? "record_limit_reached_and_only_symbolized_methods_are_resolved"
+            : decodedImplementations.length > 0
+              ? "only_symbolized_methods_are_resolved"
+              : "provider_name_inventory_has_no_objc_method_symbols",
+        examined: examinedNames.length,
+        decoded: decodedImplementations.length,
+      },
+      {
+        facet: "objc_ivar_layouts",
+        status: "unsupported",
+        reason: "symbol_inventory_does_not_expose_runtime_ivar_layouts",
+        examined: 0,
+        decoded: 0,
+      },
+      {
+        facet: "swift_declarations",
+        status:
+          facet === "objc"
+            ? "not_requested"
+            : swift
+              ? "partial"
+              : "unsupported",
+        reason: swift
+          ? "symbols_are_not_demangled_declarations"
+          : facet === "objc"
+            ? null
+            : "no_swift_symbols_observed",
+        examined: swiftSymbols.length,
+        decoded: 0,
+      },
+      {
+        facet: "swift_dispatch_tables",
+        status: facet === "objc" ? "not_requested" : "unsupported",
+        reason:
+          facet === "objc"
+            ? null
+            : "provider_name_inventory_does_not_decode_witness_or_class_vtables",
+        examined: 0,
+        decoded: 0,
+      },
+      {
+        facet: "swift_witness_template_records",
+        status: facet === "objc" ? "not_requested" : "unsupported",
+        reason:
+          facet === "objc"
+            ? null
+            : "provider_name_inventory_does_not_decode_swift_witness_templates",
+        examined: 0,
+        decoded: 0,
+      },
+      {
+        facet: "relative_pointers",
+        status: "unsupported",
+        reason:
+          "provider_name_inventory_does_not_decode_binary_relative_pointers",
+        examined: 0,
+        decoded: 0,
+      },
+    ],
+    db_save_result: null,
+  });
+};
+
+const parseMetadataAddress = (address: string | null): number | null => {
+  if (address === null) return null;
+  const match = /(?:^|:)0x([0-9a-f]+)$/iu.exec(address);
+  if (match?.[1] === undefined) return null;
+  const value = Number.parseInt(match[1], 16);
+  return Number.isSafeInteger(value) ? value : null;
+};

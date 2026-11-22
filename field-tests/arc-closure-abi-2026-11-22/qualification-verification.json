@@ -1,0 +1,143 @@
+{
+  "status": "passed",
+  "mcp_calls": 41,
+  "successful": 39,
+  "expected_invalid_requests": 2,
+  "exact_cli_mcp_comparisons": 3,
+  "runtime_files": 1871,
+  "sessions": [
+    {
+      "prefix": "ordinary",
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-closure-abi-2026-11-22/ordinary/control.dylib",
+      "sha256": "6751959154b2178aab940ba472fc311b97d54c1cc7e9d24b64c0001b27c98ac1",
+      "bytes": 54016,
+      "bundle_records": 2,
+      "closed_twice": true
+    },
+    {
+      "prefix": "resilient",
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-closure-abi-2026-11-22/resilient/control.dylib",
+      "sha256": "ec15f7d7c1b05b2630e9ea8077b65df2b670e56c5985e870c7948be4e4e05033",
+      "bytes": 78736,
+      "bundle_records": 1,
+      "closed_twice": true
+    },
+    {
+      "prefix": "frozen",
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-closure-abi-2026-11-22/frozen/control.dylib",
+      "sha256": "970ccb4f85636526b530acb087fe83e2d81ee2ca7aff030ee2951d75df2810c4",
+      "bytes": 53968,
+      "bundle_records": 1,
+      "closed_twice": true
+    },
+    {
+      "prefix": "merged",
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-typed-dispatch-2026-11-21/fixture/libTypedClientControls.dylib",
+      "sha256": "4d2b5527e8e04f8495a844bff36dbfd3ff37634bffe319a341c8d9b88460ad64",
+      "bytes": 82464,
+      "bundle_records": 4,
+      "closed_twice": true
+    },
+    {
+      "prefix": "nullcopy",
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-closure-abi-2026-11-22/ordinary-null-copy-fixed-chain.dylib",
+      "sha256": "fefb0d2c0b4cd174497e503ec4fac5779f6e41dee172c19b0a8f0dbd4b2a1d09",
+      "bytes": 54016,
+      "bundle_records": 1,
+      "closed_twice": true
+    },
+    {
+      "prefix": "arc",
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "bytes": 80498448,
+      "bundle_records": 7,
+      "closed_twice": true
+    }
+  ],
+  "abi_controls": [
+    {
+      "profile": "ordinary",
+      "enum_descriptor_flags": 82,
+      "cases": 297,
+      "reflected_sendable": true,
+      "reflected_result": "Bool",
+      "value_witness_size": "16",
+      "field_offset": 0,
+      "owned_ir_argument": "i16",
+      "argument_abi": "unresolved",
+      "invoke_ir": "define swiftcc i1 @\"$s17ClosureABIControl6invokeySbAA6ClientV_AA7SettingOtF\"(ptr readonly captures(none) %0, ptr %1, i16 %2) #6 {\nentry:\n  %3 = tail call swiftcc i1 %0(i16 %2, ptr swiftself %1)\n  ret i1 %3\n}"
+    },
+    {
+      "profile": "resilient",
+      "enum_descriptor_flags": 82,
+      "cases": 297,
+      "reflected_sendable": true,
+      "reflected_result": "Bool",
+      "value_witness_size": "16",
+      "field_offset": 0,
+      "owned_ir_argument": "ptr",
+      "argument_abi": "unresolved",
+      "invoke_ir": "define swiftcc i1 @\"$s17ClosureABIControl6invokeySbAA6ClientV_AA7SettingOtF\"(ptr readonly captures(none) %0, ptr %1, ptr noalias readonly captures(none) dereferenceable(2) %2) #7 {\nentry:\n  %3 = alloca %T17ClosureABIControl7SettingO, align 2\n  %4 = load i16, ptr %2, align 2\n  call void @llvm.lifetime.start.p0(i64 2, ptr nonnull %3)\n  store i16 %4, ptr %3, align 2\n  %5 = call swiftcc i1 %0(ptr noalias nonnull captures(none) dereferenceable(2) %3, ptr swiftself %1)\n  call void @llvm.lifetime.end.p0(i64 2, ptr nonnull %3)\n  ret i1 %5\n}"
+    },
+    {
+      "profile": "frozen",
+      "enum_descriptor_flags": 82,
+      "cases": 297,
+      "reflected_sendable": true,
+      "reflected_result": "Bool",
+      "value_witness_size": "16",
+      "field_offset": 0,
+      "owned_ir_argument": "i16",
+      "argument_abi": "unresolved",
+      "invoke_ir": "define swiftcc i1 @\"$s17ClosureABIControl6invokeySbAA6ClientV_AA7SettingOtF\"(ptr readonly captures(none) %0, ptr %1, i16 %2) #6 {\nentry:\n  %3 = tail call swiftcc i1 %0(i16 %2, ptr swiftself %1)\n  ret i1 %3\n}"
+    }
+  ],
+  "shared_helper_does_not_bind_owner": true,
+  "measured_partial_coverage": true,
+  "offsets_survive_unknown_copy_target": true,
+  "arc": {
+    "metadata": "0x1042c8ac0",
+    "owner": "0x103d648c4",
+    "field_offsets": [
+      0,
+      16,
+      32,
+      48,
+      64,
+      80,
+      96,
+      112,
+      128,
+      144,
+      160,
+      176,
+      192,
+      208,
+      224,
+      240,
+      256,
+      272,
+      288,
+      304,
+      320,
+      336,
+      352
+    ],
+    "value_witness": "0x1042c8a58",
+    "initialize_with_copy": "0x100d97b04",
+    "size": 368,
+    "stride": 368,
+    "argument_abi": "unresolved",
+    "wrapper_instructions": 15,
+    "copy_instructions": 118,
+    "getter_instructions": 34
+  },
+  "target_executed": false,
+  "limitations": [
+    "Reflection, current value-witness size and a nominal descriptor do not prove direct versus indirect argument passing; controlled compiler outputs demonstrate both.",
+    "Static metadata binds field offsets and VWT identity, not a live source buffer, constructor signature, closure code/context origin, VWT purity, post-copy stability or runtime dependency selection.",
+    "The selected normal-VWT source snapshot is a conditional analyst derivation from exact metadata and wrapper instructions, not an automatic complete invocation-context producer.",
+    "No helper-global 297-case CFG/table override is created; item63 remains open."
+  ]
+}

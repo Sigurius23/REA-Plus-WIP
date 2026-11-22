@@ -187,7 +187,23 @@ complete observation.
   only in a return type supplies no parameter domain; identical names/counts
   never replace descriptor identity. Fields, cases and pointer records share
   `max_records`; budget exhaustion stays partial. No code is executed or mutated.
-  Field ordinals are not physical instance offsets. This query does not prove
+  Optional `swift_metadata_address` (CLI `--swift-metadata-address`) binds one
+  file-encoded nongeneric **struct** metadata instance to that indexed owner.
+  The reader checks metadata kind `0x200`, exact descriptor backpointer and
+  field count, then uses the descriptor's vector offset in pointer-sized words
+  to read **uint32** field offsets. `static_metadata` preserves source slots,
+  pointer/fixup/bind identities, value-witness size/stride/flags and executable
+  `initializeWithCopy` slot identity. Its separate `swift_static_struct_layout`
+  coverage can be partial while declaration facts survive. All these records
+  share `max_records`; no metadata is instantiated. Incomplete layouts, wrong
+  owners, unsupported pointers, invalid offsets and exhausted budgets remain
+  partial. A shared VWT helper address does not establish nominal ownership,
+  copying purity, nonescape or byte origin.
+  Complete reflected function types report `argument_abi.status: unresolved`:
+  resilience and abstraction lowering can change direct value versus indirect
+  address passing even when reflected declaration shape/case counts agree.
+  Native argument passing requires separate selected-context evidence.
+  Reflection ordinals alone are not physical instance offsets. This query does not prove
   a typed buffer, closure code/context origin, an invocation, native argument
   register lowering or a helper-global input bound/CFG. Those remain separate
   facts. Historical Evidence may omit this opt-in result.

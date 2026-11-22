@@ -4,6 +4,7 @@ import {
   nativeDispatchFacetSchema,
   nativeSwiftClassAddressSchema,
   nativeSwiftTypeAddressSchema,
+  nativeSwiftMetadataAddressSchema,
   nativeSwiftConformanceAddressSchema,
   nativeSwiftConformanceFilterSchema,
   nativeDispatchFileBudgetSchema,
@@ -18,6 +19,7 @@ export const enhancedInputSchemas = {
   trace_native_values: nativeValueTraceInputSchema,
   inspect_native_dispatch_metadata: z.strictObject({
     swift_type_address: nativeSwiftTypeAddressSchema,
+    swift_metadata_address: nativeSwiftMetadataAddressSchema,
     swift_class_address: nativeSwiftClassAddressSchema,
     swift_conformance_address: nativeSwiftConformanceAddressSchema,
     swift_conformance_filter: nativeSwiftConformanceFilterSchema

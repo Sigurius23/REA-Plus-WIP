@@ -24,7 +24,22 @@ export const inspectNativeDispatch = async (
   swiftConformanceFilter?: NativeSwiftConformanceFilter,
   swiftClassAddress?: string,
   swiftTypeAddress?: string,
+  swiftMetadataAddress?: string,
 ): EnhancedResult => {
+  if (
+    swiftMetadataAddress !== undefined &&
+    (facet !== "swift-fields" || swiftTypeAddress === undefined)
+  )
+    return err(
+      new AnalysisInputError("inspect_native_dispatch_metadata", undefined, [
+        {
+          path: ["swift_metadata_address"],
+          reason: "invalid_value",
+          message:
+            "Static metadata selection requires facet swift-fields and swift_type_address.",
+        },
+      ]),
+    );
   if (
     (facet === "swift-fields") !== (swiftTypeAddress !== undefined) ||
     (swiftTypeAddress !== undefined &&
@@ -84,6 +99,9 @@ export const inspectNativeDispatch = async (
     {
       max_records: maxRecords,
       facet,
+      ...(swiftMetadataAddress === undefined
+        ? {}
+        : { swift_metadata_address: swiftMetadataAddress }),
       ...(swiftTypeAddress === undefined
         ? {}
         : { swift_type_address: swiftTypeAddress }),
@@ -107,6 +125,7 @@ export const inspectNativeDispatch = async (
       ),
     );
   if (
+    swiftMetadataAddress !== undefined ||
     swiftTypeAddress !== undefined ||
     swiftClassAddress !== undefined ||
     swiftConformanceAddress !== undefined ||

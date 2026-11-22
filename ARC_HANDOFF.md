@@ -26,6 +26,49 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest static metadata / ABI checkpoint (2026-11-22)
+
+Read `field-tests/arc-closure-abi-2026-11-22.md`, its `analysis-addendum.md`,
+`qualification-verification.json`, `abi-control-layout.json` and `fact-index.json`.
+The metadata tool's optional `swift_metadata_address` now binds one static
+nongeneric struct instance to the selected indexed owner. It decodes the
+uint32 field-offset vector, VWT layout and copy-slot identity with separate
+coverage. Shared helper identity cannot replace the owner backpointer; unknown
+copy targets preserve independent offsets. Complete function declarations now
+explicitly leave `argument_abi` unresolved.
+
+Arc: metadata `0x1042c8ac0` -> owner `0x103d648c4`; vector `0x1042c8ad0` contains
+23 offsets `0,16,...,352`; VWT `0x1042c8a58` size/stride 368 -> copy target
+`0x100d97b04`. Thus boolForSetting is at physical offset 0. Fresh Ghidra reads
+bind wrapper `0x100cce81c` to that metadata and VWT+16 call. Getter source is
+SP+0x170 at `0x100d929f8`. Under normal VWT/stable metadata/valid source premises,
+this is a concrete conditional source-type anchor, not a full invocation proof.
+The copy body stores the first pair before its later calls; post-call stability
+and relevant code/context origin remain unknown.
+
+Owned 297-case controls demonstrate ordinary/frozen direct i16 versus resilient
+indirect pointer closure passing despite the same reflected type/case count
+and current enum size 2. Do not implement a direct-register lowerer from that
+metadata alone. Enum VWT flags differ (0x00200001 / 0x02200001); no general ABI
+rule is inferred from that one compiler-specific trait. The merged nominal
+owners share copy helper 0x2004 and still fail a mismatched backpointer check.
+
+Final runtime: `rea-local/.cache/arc-runtime-closure-abi-final-2026-11-22`,
+1,871 files. Verification: 136 tests, build/fast/docs/package; 41 public MCP
+calls (39 successes/two intentional invalid requests), three exact CLI/MCP
+comparisons, final exports and empty lineages. Metadata uses native-macos;
+selected Ghidra calls use v10 plus 2,507 caller-asserted seeds. No bridge change
+or repeat of the 110-case engine matrix. Earlier captures/source versions and
+nine historical snapshots are preserved/authenticated. Only test grouping
+changed after the final freeze for lint; all production source hashes match.
+
+**Continue item 63** with selected ABI and closed code/context origin, then
+unchanged forwarding and an observation-only invocation carrier. Physical field
+offsets and the conditional VWT-source anchor are now available; do not restart
+that metadata work or silently turn the source premise into a global type.
+Full Arc and the broader runtime/durability limits remain open. No target was
+executed. This checkpoint and the previous two local commits are not pushed.
+
 ## Latest selected field-type checkpoint (2026-11-22)
 
 Read `field-tests/arc-field-types-2026-11-22.md`, its `qualification-verification.json`

@@ -1142,3 +1142,26 @@ closure code/context origin in closed memory windows, unchanged forwarding
 and the per-invocation observation carrier remain open. No target was executed.
 Broader browser/apply/UI routes, higher restore caller/writeback, active
 injection, actual readback/durability and pixels remain unknown.
+
+
+## Static Client metadata and ABI ambiguity (2026-11-22)
+
+The [new reader and retest](arc-closure-abi-2026-11-22.md) bind exact Client
+metadata to its descriptor, all 23 physical uint32 field offsets and VWT
+copy identity. `boolForSetting` is at offset 0; size/stride is 368. Fresh Ghidra
+instructions connect metadata and VWT+16 in wrapper 0x100cce81c, reached with
+source SP+0x170 from the selected getter. This supplies an operation-specific
+conditional typed source anchor under normal VWT/stable metadata/valid-source
+premises. It does not establish constructor declaration ownership or relevant
+closure code/context origin/post-copy stability.
+
+Three owned compiler profiles demonstrate direct i16 versus indirect pointer
+passing for the same reflected 297-case closure shape and current enum size.
+Enum VWT flags differ and remain explicit; no universal rule is inferred from
+that correlation. `argument_abi` stays unresolved. A shared-copy-helper control
+rejects a wrong metadata owner; missing copy targets retain independent offsets.
+Verification covers 136 source tests, 41 public calls (39 successes/two expected
+invalid requests), three exact CLI comparisons, installed package checks,
+exports and empty lineages. No target was executed. Item 63's selected ABI,
+closed origin chain, unchanged forwarding and invocation-scoped mapping
+carrier, as well as broader Arc/runtime/durability questions, remain open.

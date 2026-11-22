@@ -1,3 +1,4 @@
+import { decodeSwiftStructMetadata } from "./AppleSwiftStructMetadata.js";
 import { decodeSwiftTypeFields } from "./AppleSwiftFieldTypes.js";
 import { createHash } from "node:crypto";
 import {
@@ -44,6 +45,7 @@ export const decodeAppleDispatchMetadata = (
     readonly swiftConformanceFilter?: NativeSwiftConformanceFilter;
     readonly swiftClassAddress?: string;
     readonly swiftTypeAddress?: string;
+    readonly swiftMetadataAddress?: string;
   } = {},
 ): ObjcSwiftMetadata => {
   const {
@@ -53,7 +55,24 @@ export const decodeAppleDispatchMetadata = (
     swiftConformanceFilter,
     swiftClassAddress,
     swiftTypeAddress,
+    swiftMetadataAddress,
   } = selection;
+  if (
+    swiftMetadataAddress !== undefined &&
+    (facet !== "swift-fields" || swiftTypeAddress === undefined)
+  )
+    throw new AnalysisInputError(
+      "inspect_native_dispatch_metadata",
+      undefined,
+      [
+        {
+          path: ["swift_metadata_address"],
+          reason: "invalid_value",
+          message:
+            "Static metadata selection requires facet swift-fields and swift_type_address.",
+        },
+      ],
+    );
   if (
     (facet === "swift-fields") !== (swiftTypeAddress !== undefined) ||
     (swiftTypeAddress !== undefined &&
@@ -397,6 +416,26 @@ export const decodeAppleDispatchMetadata = (
           budget: fieldBudget,
           result,
         });
+  const metadataCoverage: ObjcSwiftMetadata["coverage"][number] =
+    swiftMetadataAddress === undefined ||
+    swiftTypeAddress === undefined ||
+    result.swift_type_fields === undefined
+      ? {
+          facet: "swift_static_struct_layout",
+          status: "not_requested",
+          reason: null,
+          examined: 0,
+          decoded: 0,
+        }
+      : decodeSwiftStructMetadata({
+          bytes,
+          address: BigInt(swiftMetadataAddress),
+          descriptor: BigInt(swiftTypeAddress),
+          fields: result.swift_type_fields,
+          read: { ...readers, pointer: decodePointer },
+          budget: fieldBudget,
+          segments,
+        });
   pushDispatchCoverage({
     result,
     facet,
@@ -417,7 +456,7 @@ export const decodeAppleDispatchMetadata = (
     ...(resilient === undefined ? {} : { resilient: resilient.facts() }),
     ...(templates === undefined ? {} : { templates: templates.facts() }),
   });
-  result.coverage.push(fieldCoverage);
+  result.coverage.push(fieldCoverage, metadataCoverage);
   return objcSwiftMetadataSchema.parse(result);
 };
 
@@ -432,6 +471,7 @@ export const inspectAppleDispatchMetadata = async (
   swiftConformanceFilter?: NativeSwiftConformanceFilter,
   swiftClassAddress?: string,
   swiftTypeAddress?: string,
+  swiftMetadataAddress?: string,
 ) => {
   if (target.kind !== "executable" || target.format !== "mach-o")
     throw new TypeError("Apple dispatch metadata requires a Mach-O target");
@@ -486,6 +526,9 @@ export const inspectAppleDispatchMetadata = async (
             : { swiftConformanceFilter }),
           ...(swiftClassAddress === undefined ? {} : { swiftClassAddress }),
           ...(swiftTypeAddress === undefined ? {} : { swiftTypeAddress }),
+          ...(swiftMetadataAddress === undefined
+            ? {}
+            : { swiftMetadataAddress }),
         },
       ),
     });

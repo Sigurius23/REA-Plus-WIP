@@ -1,0 +1,25 @@
+: 
+lint:   ! eslint(max-lines-per-function): The function has too many lines (158). Maximum allowed is 100.
+lint:      ,-[src/artifacts/apple/InterfaceBuilderDecodeBudget.ts:192:45]
+lint:  191 |      */
+lint:  192 | ,-> export const estimateBinaryPlistExpansion = (
+lint:  193 | |     bytes: Buffer,
+lint:  194 | |     maxBytes: number,
+lint:  195 | |     {
+lint:  196 | |       budget = "the aggregate Interface Builder decode budget",
+lint:  197 | |       fail = interfaceBuilderBudgetFailure,
+lint:  198 | |       bounds = "strict",
+lint:  199 | |     }: BinaryPlistExpansionOptions = {},
+lint:  200 | |   ): PlistDecodePreflight => {
+lint:  201 | |     if (bytes.length < 40)
+lint:  202 | |       throw new TypeError("binary plist trailer is truncated");
+lint:  203 | |     const trailer = bytes.length - 32;
+lint:  204 | |     const offsetSize = bytes[trailer + 6] ?? 0;
+lint:  205 | |     const referenceSize = bytes[trailer + 7] ?? 0;
+lint:  206 | |     if (
+lint:  207 | |       ![1, 2, 4, 8].includes(offsetSize) ||
+lint:  208 | |       ![1, 2, 4, 8].includes(referenceSize)
+lint:  209 | |     )
+lint:  210 | |       throw new TypeError("binary plist trailer integer sizes are invalid");
+lint:  211 | |     const readInteger = (offset: number, size: number): number => {
+lint:  212 | |       if (offset < 0 || size < 1 || offset + size 
