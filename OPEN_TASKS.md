@@ -1735,3 +1735,34 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     runtime dependency selection, store durability and broader Arc coverage
     remain open. This is an offline investigation; no Arc
     executable, fixture library, profile, account or service was used at runtime.
+
+
+66. **Report an expired field recorder as incomplete, not completed.** Fixed
+    in the new research harness (2026-11-22); no production REA+ defect or
+    producer change. The first feature-metadata session retained 73 successful
+    replies, then its continuation expired. The old recorder incorrectly
+    summarized this as completed. Original outputs remain intact; current
+    verification classifies that session as partial, with transport cleanup
+    verified empty and no invented explicit-close calls. The new recorder
+    throws and reports failure on expiration. A real target-free MCP check
+    confirms expected nonzero exit / failed summary / zero targets and
+    verified empty lineage. The completed follow-up has 236/236 replies,
+    final export, two explicit closes and empty lineage. See the
+    [report and verification](field-tests/arc-features-storage-2026-11-22.md).
+
+    Arc findings from these 309 successful public replies also close the
+    selected `featuresUsed` payload/completion gap: a plain array of seven
+    possible labels, computed from the original model, goes through a separate
+    awaited `setData:merge:completion:` request after primary model success.
+    Its error propagates; two model-data merges are not the whole request
+    count. Exact inclusion predicates and the color comparison simplification
+    are source-bound in the independent review.
+
+    The selected store expects version 0. Its fallback is a version-only
+    diagnostic decode, not migration. Backup flags differ by caller; local
+    enable save passes backup off and discards its save error. Timestamped
+    copy/0600 permissions, empty selected retention schedule, and explicit
+    `synchronizeAndReturnError:` before close/replacement are now traced.
+    Actual I/O/durability, complete restore ordering/caller behavior, item 63
+    and broader browser features remain open. Item 47's generic-call warning
+    remains explicit; no unsafe blanket x21/CFG repair was introduced.

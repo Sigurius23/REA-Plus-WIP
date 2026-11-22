@@ -1032,3 +1032,28 @@ errors. A focused profile adds 18 exact original function-start/code-reference
 entries. All sessions export/close twice and verify empty lineage. Production
 source and the qualified runtime are unchanged. Durability, migration/backup,
 post-write feature tracking, item 63 and broader Arc coverage remain open.
+
+
+## Feature metadata and selected storage policy (2026-11-22)
+
+[The new continuation](arc-features-storage-2026-11-22.md) closes the selected
+post-model feature-metadata path and substantial persistence policy. The
+original model produces ordered labels css/js/font/textTransform/textZoom/
+zaps/colorScheme, using exact source-bound presence/trim/value predicates.
+A separate awaited merge request writes that array as `featuresUsed`; its
+error forwards after the primary model request succeeds. No execution,
+rendering, atomic union or final remote state follows from these labels.
+
+The selected version is 0; the fallback decodes version only for diagnostics,
+not migration. Local read failure uses an empty Set; its save has backup off
+and releases save errors. Backup copying/0600 attributes, timestamp naming,
+empty selected retention schedule and explicit file synchronization before
+close/replacement are traced. Runtime durability and complete restore
+ordering/caller writeback remain unresolved. Physical guards, rather than
+qualified pseudocode that omits them, carry the generic error branches.
+
+There are 309 successful replies: 73 in a correctly classified partial
+idle-expired session, 236 in a completed/exported/doubly-closed session. All
+lineages are verified empty. The field recorder's expired/completed status
+bug is fixed and tested through real target-free MCP. Native production source
+and the prior qualified runtime remain unchanged. Full Arc remains incomplete.

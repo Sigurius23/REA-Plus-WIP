@@ -1,0 +1,831 @@
+{
+  "format": "rea-feature-predicate-review-v1",
+  "created_utc": "2026-11-21T22:25:59.387395+00:00",
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "scope": {
+    "source": "retained canonical Evidence only",
+    "providers_started": 0,
+    "target_or_fixture_executed": false,
+    "production_edited": false,
+    "git_invoked": false,
+    "outputs": [
+      "field-tests/arc-features-used-2026-11-21/feature-predicate-review.md",
+      "field-tests/arc-features-used-2026-11-21/feature-predicate-review.json"
+    ]
+  },
+  "root": {
+    "procedure": "0x101160524",
+    "body": {
+      "available": true,
+      "provenance": "ghidra-function-body-address-set",
+      "ranges": [
+        {
+          "start": "0x101160524",
+          "end": "0x101160cc7"
+        }
+      ],
+      "total_bytes": 1956,
+      "span_bytes": 1956,
+      "non_contiguous": false,
+      "contains_entry": true
+    },
+    "self_register": "X20",
+    "stability_premise": "Ordinary valid stable Swift input storage, admitted Swift/Foundation ABI and normal helper/import returns. Raw loads can alternatively be interpreted at their individual instruction times."
+  },
+  "common_gate": {
+    "helper": "0x101159224",
+    "formula": "(min(u64(P+0x48),0xffffffff)+1) mod2^32",
+    "result_equals_one_iff": "u64(P+0x48)==0",
+    "optional_none_name": "not assigned without exact outer type/ABI binding"
+  },
+  "predicates": [
+    {
+      "label": "css",
+      "exact_predicate": "q != 0 && ((Blank101159ec4(u64(P),u64(P+8)) &1)==0)",
+      "input_offsets": [
+        "0x0",
+        "0x8"
+      ],
+      "gate": "0x101160544..0x101160564",
+      "predicate": "0x10116056c..0x10116057c",
+      "append": "0x1011605c0..0x1011605cc",
+      "semantic_interpretation": "Non-nil/nonblank CSS after the whitespace/newline trimming pipeline, under the admitted String/Foundation ABI.",
+      "semantic_status": "supported ABI interpretation; raw helper predicate is exact"
+    },
+    {
+      "label": "js",
+      "exact_predicate": "q != 0 && ((Blank101159ec4(u64(P+16),u64(P+24)) &1)==0)",
+      "input_offsets": [
+        "0x10",
+        "0x18"
+      ],
+      "gate": "0x1011605d8..0x1011605f8",
+      "predicate": "0x101160600..0x101160610",
+      "append": "0x101160638..0x101160640",
+      "semantic_interpretation": "Same blank test for JS; not a code-execution or locally-enabled test.",
+      "semantic_status": "supported ABI interpretation; raw helper predicate is exact"
+    },
+    {
+      "label": "font",
+      "exact_predicate": "q != 0 && u64(P+0x28) != 0",
+      "input_offsets": [
+        "0x28"
+      ],
+      "gate": "0x101160648..0x101160654",
+      "predicate": "0x101160658",
+      "append": "0x101160680..0x10116068c",
+      "semantic_interpretation": "Tests only the stored second word for nonzero. It does not call the blank-string predicate or prove a nonempty font name.",
+      "semantic_status": "exact assembly; Optional/String meaning requires complete field type"
+    },
+    {
+      "label": "textTransform",
+      "exact_predicate": "q != 0 && u8(P+0x30) != 3",
+      "input_offsets": [
+        "0x30"
+      ],
+      "gate": "0x101160694..0x1011606a0",
+      "predicate": "0x1011606a4..0x1011606a8",
+      "append": "0x1011606d0..0x1011606f0",
+      "semantic_interpretation": "Byte discriminator differs from3; no transform-case name assigned.",
+      "semantic_status": "exact assembly; semantic tag name remains unproved here"
+    },
+    {
+      "label": "textZoom",
+      "exact_predicate": "q != 0 && u8(P+0x40) != 1 && u64(P+0x38) != 100",
+      "input_offsets": [
+        "0x38",
+        "0x40"
+      ],
+      "gate": "0x1011606fc..0x101160708",
+      "predicate": "0x10116070c..0x101160718",
+      "append": "0x101160740..0x101160754",
+      "semantic_interpretation": "Tag byte differs from1 and stored 64-bit word differs from integer100. No floating-point comparison is present.",
+      "semantic_status": "exact assembly; optional/presentation meaning requires type proof"
+    },
+    {
+      "label": "zaps",
+      "exact_predicate": "q != 0 && u64(q+0x10) != 0",
+      "input_offsets": [
+        "0x48",
+        "indirect+0x10"
+      ],
+      "gate": "0x101160760..0x10116076c",
+      "predicate": "0x101160770..0x101160774",
+      "append": "0x10116079c..0x1011607a8",
+      "semantic_interpretation": "Reads the collection-header word conventionally used as count; it does not query DOM matches.",
+      "semantic_status": "exact indirect word test; collection interpretation assumes valid Swift field ABI"
+    },
+    {
+      "label": "colorScheme",
+      "exact_predicate": "q != 0 && u8(P+0x68) != 3",
+      "input_offsets": [
+        "0x50..0xe9",
+        "discriminator+0x18=0x68"
+      ],
+      "gate": "0x101160810..0x101160828",
+      "predicate": "0x101160908..0x10116096c with known baseline tag3",
+      "append": "0x101160994..0x1011609b0",
+      "semantic_interpretation": "Selected colorScheme representation differs from the constructed tag3 baseline. No RGB/theme/default-component meaning assigned.",
+      "semantic_status": "exact assembly simplification under ordinary stable memory and normal helper calls"
+    }
+  ],
+  "metadata": {
+    "descriptor": "0x103d77978",
+    "name": "InternalData",
+    "nominal_ancestor": "BoostData",
+    "field_descriptor": "0x103eb25f8",
+    "static_metadata": "0x104306a00",
+    "field_offset_vector_word_offset": 2,
+    "fields": [
+      {
+        "index": 0,
+        "name": "css",
+        "record": "0x103eb2608",
+        "instance_offset": "0x0",
+        "type_mangle": "0x103bd12ac",
+        "name_address": "0x103e1d9e4"
+      },
+      {
+        "index": 1,
+        "name": "js",
+        "record": "0x103eb2614",
+        "instance_offset": "0x10",
+        "type_mangle": "0x103bd12ac",
+        "name_address": "0x103e1d9e8"
+      },
+      {
+        "index": 2,
+        "name": "font",
+        "record": "0x103eb2620",
+        "instance_offset": "0x20",
+        "type_mangle": "0x103bd12b2",
+        "name_address": "0x103e1d9eb"
+      },
+      {
+        "index": 3,
+        "name": "textTransform",
+        "record": "0x103eb262c",
+        "instance_offset": "0x30",
+        "type_mangle": "0x103bd12ba",
+        "name_address": "0x103e1d9f0"
+      },
+      {
+        "index": 4,
+        "name": "textZoom",
+        "record": "0x103eb2638",
+        "instance_offset": "0x38",
+        "type_mangle": "0x103bd12c2",
+        "name_address": "0x103e1d9fe"
+      },
+      {
+        "index": 5,
+        "name": "zaps",
+        "record": "0x103eb2644",
+        "instance_offset": "0x48",
+        "type_mangle": "0x103bd12d2",
+        "name_address": "0x103e1da13"
+      },
+      {
+        "index": 6,
+        "name": "colorScheme",
+        "record": "0x103eb2650",
+        "instance_offset": "0x50",
+        "type_mangle": "0x103bd12ca",
+        "name_address": "0x103e1da07"
+      }
+    ],
+    "order_warning": "Reflection string-pool byte order is not field-record order; index5 is zaps, index6 colorScheme.",
+    "field_type_bytes": "not yet read/decoded by this review"
+  },
+  "color_simplification": {
+    "initializer": "0x10115923c",
+    "initialized_extent_bytes": 154,
+    "nonzero_bytes": {
+      "0x18": 3
+    },
+    "input_projection": "[P+0x50,P+0xea),154bytes",
+    "selected_A": "projection if common gate present; else initializer result",
+    "baseline_B": "initializer result on every path",
+    "decoder": "0x101164904",
+    "decoder_formula": "0 if t<=2 else t-2",
+    "decoder_equals_one_iff": "t==3",
+    "proof_anchors": [
+      "0x1011607ac..0x101160878",
+      "0x10116087c..0x101160904",
+      "0x101160908..0x101160928",
+      "0x101160960..0x10116096c"
+    ],
+    "baseline_tag_unchanged": "Constructor is stores-only; subsequent local copies preserve byte+0x18; tag helpers are read-only and have no calls.",
+    "unreachable_under_premises": [
+      "0x1011609d0",
+      "0x101160a3c",
+      "0x101160b1c",
+      "0x101163360 calls in color suffix",
+      "0x101161674 payload comparison",
+      "0x1011614b4 nested payload comparison"
+    ],
+    "simplified_predicate": "q!=0 && u8(P+0x68)!=3",
+    "semantic_color_names": "not established"
+  },
+  "arithmetic_verification": {
+    "mode": "pure arithmetic over retained instruction formulas, not target/fixture execution",
+    "decoder101164904_all256_bytes": "passed; unique result1 at t3",
+    "decoder101163360_all256_bytes": "passed; unique result1 at t2",
+    "metadata_signed_pointer_and_offset_assertions": "passed",
+    "selected_main_instruction_anchor_assertions": "passed"
+  },
+  "remaining_queries": [
+    {
+      "operation": "read_bytes",
+      "address": "0x103bd12ac",
+      "length_suggestion": 48,
+      "purpose": "Decode exact stored field manglings before assigning Optional none or concrete enum names; follow only exact selected symbolic references."
+    }
+  ],
+  "not_required_for_this_question": [
+    "New function admission or detached probes of1011614b4",
+    "A full recursive color equality investigation",
+    "Runtime featuresUsed state or write execution"
+  ],
+  "limitations": [
+    "The public captures describe a stable partial Ghidra Program; missing functions/types/callers are unknown.",
+    "Read_bytes includes loader fixups; static import identity is not an observed runtime binding.",
+    "No persistent model state, write success, readback, DOM result, color appearance or active dependency choice established.",
+    "Normal helper/import ABI and stable input semantics are explicit premises; no race/interposition observation made."
+  ],
+  "sources": [
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x101160524-read_function_instructions.evidence.json",
+      "sha256": "06b7cb3ebb393302fdb22b47934bccc2a6f7840c6b44affd80608d1094e2d575",
+      "evidence_id": "ev_5ef21fbb813fc36b45ace25b9e291aa7b40605204d0d64e174aa7d6020560c7b",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x101160524"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4",
+      "procedure": {
+        "address": "0x101160524",
+        "name": "FUN_101160524",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x101160524",
+              "end": "0x101160cc7"
+            }
+          ],
+          "total_bytes": 1956,
+          "span_bytes": 1956,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 489,
+      "instruction_text_sha256": "f24f9851980b74ce4a53c7f2db604c131ee8af343adb57948a5770187dcf693e"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x101160524-procedure_pseudo_code.evidence.json",
+      "sha256": "03dc28ffe1a6828cd92746c506e2ef42321daa1d006a4180fdec5bc9a794b334",
+      "evidence_id": "ev_d0ea84be69c2411550dad46d886842269df173f8e3589b4ce747c07641e290af",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x101160524"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x101159ec4-read_function_instructions.evidence.json",
+      "sha256": "56bd782e9244ae3401cfc8e88574f38aa904652112565668d87b1a35e8ca034f",
+      "evidence_id": "ev_88b62af4ceddf1ead6e92442a9cbeb348563ec4dfbf0da5019c4308e1e7b6dfe",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x101159ec4"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4",
+      "procedure": {
+        "address": "0x101159ec4",
+        "name": "FUN_101159ec4",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x101159ec4",
+              "end": "0x101159fd3"
+            }
+          ],
+          "total_bytes": 272,
+          "span_bytes": 272,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 68,
+      "instruction_text_sha256": "4bb1c78424d556e508896660e25f082494ad9ccf8d9b699f3d85024800e32bb1"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x101159ec4-procedure_pseudo_code.evidence.json",
+      "sha256": "904bb8c4136a75e8a989786ada4093a90d9c5304df87015212c94d8bf648c63d",
+      "evidence_id": "ev_b86d6e7a19753ba1f088727a75c6a77a4abe9196be6c002a186a711ed3db9be6",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x101159ec4"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x101164904-read_function_instructions.evidence.json",
+      "sha256": "f670f92c998d55ecdb67d4407e482d1e1a2cc56c9b5de5ffa8bae6a4c6a6887e",
+      "evidence_id": "ev_51fb2248b44d4e48a360bd6f29c4a53b085503dad5cd3185c323fd3354d6943b",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x101164904"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4",
+      "procedure": {
+        "address": "0x101164904",
+        "name": "FUN_101164904",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x101164904",
+              "end": "0x101164933"
+            }
+          ],
+          "total_bytes": 48,
+          "span_bytes": 48,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 12,
+      "instruction_text_sha256": "73efe711fd47330784c0a86dee69fff884b4d3fba0419a7b9cf01b2e5d481f59"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x101164904-procedure_pseudo_code.evidence.json",
+      "sha256": "6bc68166671197aa459a7a50a54a81cc583d5546905f14a3e566abad946e5b4d",
+      "evidence_id": "ev_047a5829efd5d1506d7ce5eb8bac79fa8afbbd10adfd843a422322a8934d6876",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x101164904"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x101163360-read_function_instructions.evidence.json",
+      "sha256": "73ea5327be673c3017890b0e857e8dc48fcfb8a4c14905ac423998ea2606c05b",
+      "evidence_id": "ev_eaf95fb8a91a7c32cfa5b7e39af19952c0d64f8900c103a065407f895ba19986",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x101163360"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4",
+      "procedure": {
+        "address": "0x101163360",
+        "name": "FUN_101163360",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x101163360",
+              "end": "0x10116337b"
+            }
+          ],
+          "total_bytes": 28,
+          "span_bytes": 28,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 7,
+      "instruction_text_sha256": "20ee2896392997b22d1e959e87937de433edd9ce15a185478ad1982d20f345b3"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x101163360-procedure_pseudo_code.evidence.json",
+      "sha256": "be204b76715f952bd2ae54949d688eb754b847a4b194d71ba5434152af2d171a",
+      "evidence_id": "ev_278a45e7f8b7ddde4bd8bb5452912a099836e2f3d0fc3965bde0ffb35b78cd6e",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x101163360"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x101161674-read_function_instructions.evidence.json",
+      "sha256": "e966ef38ae6a6872612cb44dd5ddf015de4351d67507fffeab053aac3ffd770e",
+      "evidence_id": "ev_7d78f841ec7db0d84e8dc602a11d2527716d30757de8f05e5f4bd447d24bfb5a",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x101161674"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4",
+      "procedure": {
+        "address": "0x101161674",
+        "name": "FUN_101161674",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x101161674",
+              "end": "0x101161827"
+            }
+          ],
+          "total_bytes": 436,
+          "span_bytes": 436,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 109,
+      "instruction_text_sha256": "807b36f5b2518c67b4256ee2cb3019bda3c2930005b224d1a0f17b33aa9c706e"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x101161674-procedure_pseudo_code.evidence.json",
+      "sha256": "fabe022b8f4be1f130a3c19eedb73ee1db557ab859e779d22745894ccf5daf88",
+      "evidence_id": "ev_f11131a2ade535d95db4a124e41fb0a5a2380e69f0a031a7dd7c09ba580c43be",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x101161674"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x10115923c-read_function_instructions.evidence.json",
+      "sha256": "cebd12af93c1be6d5df89cd6bac544f46046835417e9e090dbcc07e5bc98566c",
+      "evidence_id": "ev_0be2acf08ad07c1617345f73348aeca1f83e1b0f0ca5cb43b80722bd79f3a71e",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x10115923c"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4",
+      "procedure": {
+        "address": "0x10115923c",
+        "name": "FUN_10115923c",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x10115923c",
+              "end": "0x101159263"
+            }
+          ],
+          "total_bytes": 40,
+          "span_bytes": 40,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 10,
+      "instruction_text_sha256": "312a17bf6a1de475bfcedcf1911ea8588648e207a0708cc6c3d212ef8e85f6f8"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x10115923c-procedure_pseudo_code.evidence.json",
+      "sha256": "09827a90965d62120ee8f384d5849390f159bbffb6fe759940e9368be12f4420",
+      "evidence_id": "ev_444cbd1e07147b3777bc5ac4afb8dad9811a3aa9e12374dfb9de4ca92066d278",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x10115923c"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x101158e5c-read_function_instructions.evidence.json",
+      "sha256": "835f8088c0ea2f1a9e5ea11b53503156a6ae82d2499488ea639ec6f262154e73",
+      "evidence_id": "ev_8adcb88100a314295df158daecea9059784728f1fe4138143b45d0b301471f72",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x101158e5c"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4",
+      "procedure": {
+        "address": "0x101158e5c",
+        "name": "FUN_101158e5c",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x101158e5c",
+              "end": "0x101158e77"
+            }
+          ],
+          "total_bytes": 28,
+          "span_bytes": 28,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 7,
+      "instruction_text_sha256": "0b2e9a17359763141d6c644053ec43c757ce592c8c79c992ad9d8306708a0404"
+    },
+    {
+      "path": "field-tests/arc-features-used-2026-11-21/mcp/0x101158e5c-procedure_pseudo_code.evidence.json",
+      "sha256": "12687e12ab60180c23c47a9ccd60f851e542f47082efb9174a9b85c2b9e4ee6d",
+      "evidence_id": "ev_1110a8105720c7537d5cea9081a9e2593c9149ebe1f3686f043c77952915b5df",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x101158e5c"
+      },
+      "analysis_profile_digest": "ebf232d7b482f6f11b64f0734e95b9376ed6fe917ac3cd5d5f7b2d2738c544c4"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-storage/function-0x101159224-read_function_instructions.evidence.json",
+      "sha256": "8fea56e44e67cd3598e18b7f25d40c7ff4370d6faf0bfd454b08a603743e3d4c",
+      "evidence_id": "ev_aa68ac9d3558d7bbb84286b2c965d0a61b78e1d9d5053f6dda05add8b2ad2da9",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x101159224"
+      },
+      "analysis_profile_digest": "f58db55c14270b27ad4dfc11b84426aa95ca7fc486a38742f168d7d074654112",
+      "procedure": {
+        "address": "0x101159224",
+        "name": "FUN_101159224",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x101159224",
+              "end": "0x10115923b"
+            }
+          ],
+          "total_bytes": 24,
+          "span_bytes": 24,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 6,
+      "instruction_text_sha256": "1532b528ccfb37f628572334dd254c439298f5dfd1cbabfa142d965dd3559613"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-storage/function-0x101159224-procedure_pseudo_code.evidence.json",
+      "sha256": "63f082f21fe77dcaedf535e69eab033f9c8aeb7e99771ee10b9a52b52b83eab9",
+      "evidence_id": "ev_be454b74e4bdac47d648089fd3a324af796d107e4c20274bd619087aa784e97e",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x101159224"
+      },
+      "analysis_profile_digest": "f58db55c14270b27ad4dfc11b84426aa95ca7fc486a38742f168d7d074654112"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x10080fc90-read_function_instructions.evidence.json",
+      "sha256": "2950b5e155220288cecc742b6bbffaa692709375463354cb90db2230cc8ae05c",
+      "evidence_id": "ev_c84eea95dfecef650fdcc75ce52ec4ac6bcdd453279c19ca76a4c1fa6d9b9867",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x10080fc90"
+      },
+      "analysis_profile_digest": "3fc3c4f6594c3bb363a4cdc89d3d916d0d4b74faef097e754d56dd0607731be5",
+      "procedure": {
+        "address": "0x10080fc90",
+        "name": "FUN_10080fc90",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x10080fc90",
+              "end": "0x10080fef7"
+            }
+          ],
+          "total_bytes": 616,
+          "span_bytes": 616,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 154,
+      "instruction_text_sha256": "888f2c53866c9930a37b68e2a4ac9b56152ea63b204bfb0a8e39b7c9725c4e93"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x10080fc90-procedure_pseudo_code.evidence.json",
+      "sha256": "739928fb9c06a9e6a095cce7e9c986743d75ce79ae57590788e4595a7eb9247e",
+      "evidence_id": "ev_cf0d6fe6b71caf8bbb602131bcc64b116f0c037b2d995bfcc519e869ee4fa427",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x10080fc90"
+      },
+      "analysis_profile_digest": "3fc3c4f6594c3bb363a4cdc89d3d916d0d4b74faef097e754d56dd0607731be5"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x10115aa74-read_function_instructions.evidence.json",
+      "sha256": "74e3605cfa4a95489cb3a5b4fc1133174b462ee1c3a0903af8dcec1395137b88",
+      "evidence_id": "ev_8e764d7a0aebab238a17ffa577ed13cdeb3caee983be297557cee477163687a3",
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x10115aa74"
+      },
+      "analysis_profile_digest": "3fc3c4f6594c3bb363a4cdc89d3d916d0d4b74faef097e754d56dd0607731be5",
+      "procedure": {
+        "address": "0x10115aa74",
+        "name": "FUN_10115aa74",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x10115aa74",
+              "end": "0x10115aab3"
+            }
+          ],
+          "total_bytes": 64,
+          "span_bytes": 64,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instruction_count": 16,
+      "instruction_text_sha256": "a74bb19e08d29f24067440c9d89dd5be9546f4a88f2b615b8c0e1744be83c842"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x10115aa74-procedure_pseudo_code.evidence.json",
+      "sha256": "e0f71c16fb5df563a62f1dc077b606b424a50aa2af43915dd12aa83ad555b332",
+      "evidence_id": "ev_4e917a3de5601f0adbb6d6d280210400ce5bdaa69e4ded2ac05d21a406c3cf5d",
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x10115aa74"
+      },
+      "analysis_profile_digest": "3fc3c4f6594c3bb363a4cdc89d3d916d0d4b74faef097e754d56dd0607731be5"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp/json-payload-descriptor.evidence.json",
+      "sha256": "03213911a1310e81abf882acd57b0609df3797f9bd7937b25df9d542bad0f5c7",
+      "evidence_id": "ev_c116445e884ace0097b11fa76f0bb69a03a1949132c79ce026eaad1680f8dba3",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103d77978",
+        "length": 40
+      },
+      "analysis_profile_digest": "8ee0aeef23a0bb6b4994152a9366448ad5aad5486a893833bb60be6cc51961fc",
+      "address": "0x103d77978",
+      "returned_bytes": 40,
+      "read_bytes_sha256": "3c3d92b3ff7d6ceeeee59558979c9864ed512cd166117e503fb66721fb2f9798"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp/json-payload-field-records.evidence.json",
+      "sha256": "4b08e507dbd0533d61f69f90f0d7e72330946f1842795217808e72ecfa999601",
+      "evidence_id": "ev_72242907e6c9bd9315357ce23e1447eb52f224e4e6f8e5df7b8182eac7b1ddc7",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103eb25f8",
+        "length": 100
+      },
+      "analysis_profile_digest": "8ee0aeef23a0bb6b4994152a9366448ad5aad5486a893833bb60be6cc51961fc",
+      "address": "0x103eb25f8",
+      "returned_bytes": 100,
+      "read_bytes_sha256": "02027d114d032d804919033e856c8a3f8effcf1b7bc58b032530f493cdb1d1a9"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp/json-payload-field-names.evidence.json",
+      "sha256": "4c5f91ca924c9dbc6e7ac006b59a51febb91fcf17c1d79d67bde5e806cc0100c",
+      "evidence_id": "ev_9ea1100ac3008409323f21b2ae5035f2b63671dd0f295efc8593e71ed3f3b4f5",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103e1d9e4",
+        "length": 95
+      },
+      "analysis_profile_digest": "8ee0aeef23a0bb6b4994152a9366448ad5aad5486a893833bb60be6cc51961fc",
+      "address": "0x103e1d9e4",
+      "returned_bytes": 95,
+      "read_bytes_sha256": "3c70043b2a9f805379188ec7714002caff5ab710c6668ff0d4f9cf62df362749"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp/json-payload-static-metadata.evidence.json",
+      "sha256": "329a50f0b9decce67e6f16c2df078b6642b551ba643b7632502f4a15623a30ad",
+      "evidence_id": "ev_c41d18dd860da7a0beee7b772a138813f1f2dfc4067428af276002f30b9d2dc7",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x104306a00",
+        "length": 160
+      },
+      "analysis_profile_digest": "8ee0aeef23a0bb6b4994152a9366448ad5aad5486a893833bb60be6cc51961fc",
+      "address": "0x104306a00",
+      "returned_bytes": 160,
+      "read_bytes_sha256": "eb966ba6dba2d5b04aa029244609a4ca5d70a55b48845cc65492cb20b63276c6"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp/json-payload-name.evidence.json",
+      "sha256": "0c3b624800b5d721ab1d6bd49ead54e8e17424f00dbee89226e98e75cdea378a",
+      "evidence_id": "ev_69d1f3bf62143d164ceae6c2afafcbbbaac1cdd5066e8eb46f7a38a875bc8761",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x10377ce76",
+        "length": 64
+      },
+      "analysis_profile_digest": "8ee0aeef23a0bb6b4994152a9366448ad5aad5486a893833bb60be6cc51961fc",
+      "address": "0x10377ce76",
+      "returned_bytes": 64,
+      "read_bytes_sha256": "ac14a2e96b30d4ed9660ad706f36a041ecd6d57968a940bd46360ba47e067176"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp/json-payload-parent-descriptor.evidence.json",
+      "sha256": "d2bca6d234bedbc81699b233f5d7087280ea91aeee1fcfbb6d1063d6eff0ad36",
+      "evidence_id": "ev_e8762a1c2dbb0a1967910341fffb5cdf68c4b52f1d34c62908f16fbb3638979e",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103d77970",
+        "length": 40
+      },
+      "analysis_profile_digest": "8ee0aeef23a0bb6b4994152a9366448ad5aad5486a893833bb60be6cc51961fc",
+      "address": "0x103d77970",
+      "returned_bytes": 40,
+      "read_bytes_sha256": "d6c68738d98f2920853f346ea38926f8341398e47d11622fbb8c44ec182de403"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp/json-payload-nominal-ancestor.evidence.json",
+      "sha256": "416f0d5ab166469625333459d80ff0960eef68c78863972628b644ea5024050c",
+      "evidence_id": "ev_881daddbf9ea3f1b7aa38cc9a8d8ee57343daf4a0f42b824832553f1b59dbe87",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103d77648",
+        "length": 40
+      },
+      "analysis_profile_digest": "8ee0aeef23a0bb6b4994152a9366448ad5aad5486a893833bb60be6cc51961fc",
+      "address": "0x103d77648",
+      "returned_bytes": 40,
+      "read_bytes_sha256": "82153f125de24549763a2f60fc25f299da53b08f421ff3e13afe3de4c58ca3e5"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp/json-payload-nominal-ancestor-name.evidence.json",
+      "sha256": "5d75b748b6fbbc91d160746b9fcb41db4c0cc70b069616ad58e0dc2106542ec5",
+      "evidence_id": "ev_9f0c501c0dd0656fe44e0a77de11822d9c1db735e44b0d617a32f5e56d1636a8",
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x10377cc81",
+        "length": 48
+      },
+      "analysis_profile_digest": "8ee0aeef23a0bb6b4994152a9366448ad5aad5486a893833bb60be6cc51961fc",
+      "address": "0x10377cc81",
+      "returned_bytes": 48,
+      "read_bytes_sha256": "ee184d68cfec3cbac361d6303fb2c0deb92b6f72b4f9cc946495a438291b1a3c"
+    }
+  ],
+  "markdown_sha256": "f0c51322ca7f5e95c39baa3478c1e711fc09b6b0d561c65681c3a3e8b051f49f"
+}

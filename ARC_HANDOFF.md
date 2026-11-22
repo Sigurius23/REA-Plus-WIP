@@ -1,4 +1,4 @@
-# Arc / REA+ handoff — updated 2026-11-21
+# Arc / REA+ handoff — updated 2026-11-22
 
 ## Start here
 
@@ -25,6 +25,49 @@ this run. Their written artifacts survive; do not depend on their chat memory.
 URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
+
+## Latest feature/storage checkpoint (2026-11-22)
+
+Read `field-tests/arc-features-storage-2026-11-22.md` and
+`field-tests/arc-storage-features-2026-11-22/{capture-verification,fact-index}.json`.
+The prior directory checkpoint is pushed as `8e48a0914d6d`. Production source
+and the 1,869-file frozen runtime are unchanged; this is research plus a field
+recorder correction, not a new native producer qualification. All owned
+sessions are closed and lineages verified empty.
+
+The post-model `featuresUsed` write is now closed as a selected static chain:
+original model -> feature-label array -> dictionary -> separate awaited
+`setData:merge:completion:` with merge 1. It uses the same document receiver;
+its error forwards after primary model success. Labels in order: css, js,
+font, textTransform, textZoom, zaps, colorScheme. Read the independent predicate
+review for exact gates/field offsets. The color baseline makes nested payload
+comparison unreachable for this question. These labels do not prove execution
+or rendering, and the feature request is additional to the two model merges.
+
+The selected StorableBoostsData contract expects version 0. `StorableVersion`
+fallback improves error diagnosis; it does not migrate payloads. Local enable
+read failure proceeds from an empty Set; its save passes backup flag 0 and
+releases a save error, retaining the insertion result. Read backup attempts
+can still leave the original error. Backup names insert a formatted date
+before .json; format yyyy-MM-dd-HH-mm-ss-SSS. Public bytes bind POSIX locale,
+setCalendar (not setTimeZone), copy/0600 attributes, synchronization, close and
+best-effort temporary removal. The selected retention schedule is empty.
+Do not claim runtime fsync, crash consistency, every generic backup policy or
+a selected restore caller; ordering/writeback remain qualified.
+
+Two sessions total 309/309 successful replies. The first expired after 73 and
+is correctly classified partial despite its original recorder's 'completed'
+summary; cleanup is verified. The second has 236 replies, final export and two
+explicit closes. New harness expiration is verified as a real target-free
+expected failure. This field-recording defect is item 66. The independent
+predicate review was saved before worker quota limits; root completed storage
+queries/interpretation and verification without a formal storage-agent report.
+
+Next: item 63's safe typed-context producer; preview method slot +0x2e8; final
+apply/UI effects, browser reducers, restore ordering/caller behavior and other
+broader feature routes. Runtime dependency selection and actual local/remote
+readback remain unobserved. Earlier 'featuresUsed full effects' and broad
+no-sync/version-policy gaps below are superseded by this section/report.
 
 ## Latest default-directory checkpoint (2026-11-21)
 
