@@ -377,6 +377,23 @@ and does not accept this option. The macOS compiler/Ghidra verification lane
 ARM64/x86-64 decoding, CLI/MCP agreement, boundary exclusions and unchanged
 Listing/function bodies without executing either fixture.
 
+For AArch64 listed calls, optional `call_preparation` reports a supported
+adjacent immediate MOV, optionally separated by one non-clobbering register
+MOV. It retains the source instructions/bytes and a conditional static X0-X7
+constant. Supported MOVZ/MOVN and logical-immediate MOV encodings are validated
+and decoded from their original instruction words, including when Ghidra prints
+the ORR-with-zero-register spelling. Scalar lane indexes are never treated as
+assigned values. W-register writes include their architectural zero extension;
+register aliases and known entries that bypass the definition prevent the
+inference. MOVK, vector-lane operands and broader preparation sequences remain
+unresolved. This is an observed fallthrough suffix, not complete reaching
+state: hidden computed entries, reachability, actual runtime values, ABI/type
+identity, memory and hidden arguments remain unproved. Detached byte decoding
+requires separate Listing/function context and cannot acquire this inference.
+Historical/other-provider records may omit it; unrecognized patterns report an
+explicit unresolved status. The profile is
+`ghidra-aarch64-mov-call-preparation-v1`.
+
 `inspect_native_instruction` also returns `incoming_references` to the exact
 queried address, including data, interior-instruction and undecodable addresses.
 Ghidra enumerates its ReferenceManager, excludes synthetic entry-point

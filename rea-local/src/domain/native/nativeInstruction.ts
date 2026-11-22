@@ -126,6 +126,33 @@ export const nativeInstructionSchema = z.strictObject({
     .describe(
       "Static references to this exact code or data address, excluding synthetic entry-point references. An empty array means the provider examined the address and found none; null or omission means unavailable. Analyzer references do not prove literal addressing or runtime access.",
     ),
+  call_preparation: z
+    .strictObject({
+      provenance: z.literal("ghidra-aarch64-mov-call-preparation-v1"),
+      scope: z.literal("observed-fallthrough-suffix"),
+      status: z.enum(["derived", "unresolved", "unsupported"]),
+      reason: z.string().nullable(),
+      instructions: z.array(
+        z.strictObject({
+          address: z.string(),
+          bytes: z.string(),
+          disassembly: z.string(),
+        }),
+      ),
+      register_constants: z.array(
+        z.strictObject({
+          register: z.string().regex(/^x[0-7]$/u),
+          value_hex: z.string().regex(/^0x[0-9a-f]{1,16}$/u),
+          write_bits: z.union([z.literal(32), z.literal(64)]),
+          definition_address: z.string(),
+        }),
+      ),
+      limitations: z.array(z.string()),
+    })
+    .exactOptional()
+    .describe(
+      "Optional measured call-preparation pattern. Constants are conditional static instruction semantics if execution reaches this call through the retained suffix, not observed runtime arguments or a complete ABI/type model. Other providers and historical records may omit it.",
+    ),
   limitations: z.array(z.string()),
 });
 

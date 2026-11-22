@@ -1,5 +1,17 @@
 # Arc 1.172.1 analysis dossier
 
+Selected closure-call addendum **2026-11-22**:
+[the call/origin checkpoint](arc-closure-origin-2026-11-22.md) binds the actual
+call at `0x1012ab840` to an observed conditional X0=49 preparation suffix.
+The selected pair's Client/VWT-destroy source anchor requires valid storage,
+normal VWT and field stability. Exact enum metadata has alignment 2; under a
+valid normal one-argument Swift closure ABI, 49 cannot be an aligned indirect
+pointer. Actual code/context origin and default dependency selection remain
+unresolved. This narrows item 63 without adding a helper-wide type/CFG bound.
+20 native controls and five exact CLI/MCP comparisons qualify the new optional
+instruction observations; earlier experimental failures remain explicit. Full
+Arc and runtime/durability claims below remain partial.
+
 Snapshot assembled **2026-11-08**, Europe/Berlin; fixed-version identity,
 signed attributes and selector completion observations added **2026-11-09**.
 Selector coordinate and cleanup follow-up verified **2026-11-13**.

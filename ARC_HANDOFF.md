@@ -26,7 +26,54 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
-## Latest static metadata / ABI checkpoint (2026-11-22)
+## Latest selected call / origin checkpoint (2026-11-22)
+
+Read `field-tests/arc-closure-origin-2026-11-22.md`, its `fact-index.json`,
+`qualification-verification.json` and `cli-parity-verification.json`.
+Do not restart completed field-type or physical-layout work. The new optional
+instruction `call_preparation` is a conditional observed fallthrough suffix,
+not full reaching state or an ABI/type/target resolver. Native MOVZ/MOVN and
+logical MOV-equivalent encodings, including Ghidra's ORR spelling, determine
+values; operand Scalars cannot distinguish a vector lane index from a constant.
+Two failed experimental captures and source versions are retained; final
+qualification passes all 20 semantic native controls.
+
+Actual call `0x1012ab840` in `0x1012ab5c8` loads code/context from X22+0x10,
+retains the context, destroys that same Client source through wrapper
+`0x1000078a4`, sets W0=0x31 and X20=context, then BLR X23. The wrapper binds
+metadata `0x1042c8ac0` / VWT+8 destroy. Its 13 instructions cover 52 bytes.
+The source-type anchor requires normal VWT, valid live/disjoint storage and
+selected-field stability across that window. Retain is not assumed pure.
+The surrounding function uses an async frame; the selected closure's own
+normal synchronous ABI remains a separately stated premise.
+
+Enum accessor `0x1005ad394` returns metadata `0x10426d770`, bound exactly to
+descriptor `0x103d41568`; VWT `0x10426d6f0` size/stride 2, flags 0x00200001,
+alignment 2. Under the normal valid one-argument typed-closure premises,
+X0=49 cannot be an aligned indirect enum pointer. This conditional selected
+ABI discrimination does not bind the actual code/context to the default
+constructor. Metadata `argument_abi` stays globally unresolved. Owned constant
+49/50 controls still distinguish ordinary/frozen direct i16 from resilient
+indirect storage. Exact import identities do not imply pure calls or immutable
+dependency selection; the v10 hidden-argument safety rule is unchanged.
+
+Final runtime: `rea-local/.cache/arc-runtime-call-preparation-final-2026-11-22`,
+1,871 files. 67 final public MCP calls, five whole-Evidence CLI/MCP comparisons,
+85 source tests and fast/build/docs/package checks pass. One earlier parity
+attempt retained differing one-second measured outcomes; final fixture parity
+uses the same 60-second policy. Arc remains explicitly partial at one second,
+with 2,508 caller-asserted seeds. All completed lineages are empty. Reducer
+mapping equality remains 28 / 10,072 bytes, Setting helper 14 / 56 / zero tables.
+Ten historical snapshots are authenticated. No new run of the old 110-case
+enum matrix is claimed. Independent workers remain unavailable due to quota.
+
+**Next item 63 step:** close selected code/context origin and field stability,
+then unchanged argument forwarding and an observation-only invocation mapping
+carrier. Current positive facts are sufficient to narrow that task, not to
+install a helper-wide 297-case bound. Full Arc remains open. This checkpoint
+and the previous three commits are local and unpushed.
+
+## Previous static metadata / ABI checkpoint (2026-11-22)
 
 Read `field-tests/arc-closure-abi-2026-11-22.md`, its `analysis-addendum.md`,
 `qualification-verification.json`, `abi-control-layout.json` and `fact-index.json`.

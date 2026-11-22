@@ -1028,6 +1028,8 @@ public final class ReaGhidraBridge extends HeadlessScript {
         result.add("operands", operands);
         result.add("flow", flow);
         result.add("references", references);
+        if (instruction != null && instruction.getFlowType().isCall())
+            result.add("call_preparation", callPreparation(instruction, function, unlisted));
         if (includeIncoming) {
             TreeMap<String, Reference> incoming = new TreeMap<>();
             ReferenceIterator incomingIterator = currentProgram.getReferenceManager().getReferencesTo(address);
@@ -1048,6 +1050,156 @@ public final class ReaGhidraBridge extends HeadlessScript {
         if (flow.get("kind").getAsString().equals("terminal")) limitations.add("No RETURN operation was observed in the provider's instruction p-code; terminal classification remains generic.");
         result.add("limitations", GSON.toJsonTree(limitations));
         return result;
+    }
+
+    /** A deliberately narrow pattern, not a general reaching-definition or
+     * ABI proof: MOV immediate immediately before a call, optionally separated
+     * by one non-clobbering register MOV. No Program facts are changed. */
+    private JsonObject callPreparation(Instruction call, Function owner, boolean unlisted) throws Exception {
+        JsonObject result = new JsonObject();
+        result.addProperty("provenance", "ghidra-aarch64-mov-call-preparation-v1");
+        result.addProperty("scope", "observed-fallthrough-suffix");
+        result.addProperty("status", "unresolved");
+        result.addProperty("reason", "No supported adjacent immediate MOV preparation was established");
+        JsonArray instructions = new JsonArray(), constants = new JsonArray();
+        result.add("instructions", instructions);
+        result.add("register_constants", constants);
+        result.add("limitations", GSON.toJsonTree(List.of(
+            "Conditional static instruction semantics: execution must reach the call through this exact fallthrough suffix. Unknown computed/bypass entries and incomplete analysis remain unproved.",
+            "Only a directly adjacent immediate MOV, optionally followed by one register MOV, is supported. No general register, memory, ABI, type, target, reachability or runtime argument proof follows.",
+            "Only X0-X7 constants are reported. X8 indirect results, Swift context registers and other hidden arguments are not modeled."
+        )));
+        if (!currentProgram.getLanguageID().getIdAsString().startsWith("AARCH64:LE:") || currentProgram.getDefaultPointerSize() != 8) {
+            result.addProperty("status", "unsupported");
+            result.addProperty("reason", "The call-preparation pattern supports little-endian AArch64 only");
+            return result;
+        }
+        if (unlisted || owner == null) {
+            result.addProperty("reason", "Listed instructions within one known function are required");
+            return result;
+        }
+        Instruction nearest = currentProgram.getListing().getInstructionBefore(call.getAddress());
+        if (!preparationMove(nearest) || !preparationFallthrough(nearest, call, owner)) return result;
+        Instruction definition = nearest;
+        boolean registerMove = preparationRegisterMove(nearest);
+        if (registerMove) {
+            definition = currentProgram.getListing().getInstructionBefore(nearest.getAddress());
+            if (!preparationMove(definition) || !preparationFallthrough(definition, nearest, owner)) return result;
+        }
+        Register destination = preparationRegister(definition, 0);
+        Long literal = preparationImmediate(definition);
+        if (destination == null || literal == null) return result;
+        String name = destination.getName().toLowerCase(Locale.ROOT);
+        if (!name.matches("[xw][0-7]") || destination.getBitLength() != (name.startsWith("w") ? 32 : 64)) return result;
+        String canonical = "x" + name.substring(1);
+        if (registerMove) {
+            if ((preparationBits(nearest) & 31) == (preparationBits(definition) & 31)) {
+                result.addProperty("reason", "The intervening register MOV overwrites the candidate register");
+                return result;
+            }
+        }
+        // Known entries into the middle/end of this suffix invalidate its
+        // interpretation at the call. An entry at the definition still executes it.
+        if (preparationBypass(call, registerMove ? nearest : definition, owner) ||
+            (registerMove && preparationBypass(nearest, definition, owner))) {
+            result.addProperty("reason", "A known function/flow entry bypasses the immediate definition");
+            return result;
+        }
+        for (Instruction item : registerMove ? List.of(definition, nearest) : List.of(definition)) {
+            JsonObject source = new JsonObject();
+            source.addProperty("address", canonicalAddress(item.getAddress()));
+            source.addProperty("bytes", java.util.HexFormat.of().formatHex(item.getBytes()));
+            source.addProperty("disassembly", item.toString());
+            instructions.add(source);
+        }
+        long value = literal;
+        if (name.startsWith("w")) value &= 0xffffffffL;
+        JsonObject constant = new JsonObject();
+        constant.addProperty("register", canonical);
+        constant.addProperty("value_hex", "0x" + Long.toUnsignedString(value, 16));
+        constant.addProperty("write_bits", destination.getBitLength());
+        constant.addProperty("definition_address", canonicalAddress(definition.getAddress()));
+        constants.add(constant);
+        result.addProperty("status", "derived");
+        result.add("reason", JsonNull.INSTANCE);
+        return result;
+    }
+
+    private static Register preparationRegister(Instruction instruction, int index) {
+        if (instruction == null || index >= instruction.getNumOperands()) return null;
+        Object[] objects = instruction.getOpObjects(index);
+        return objects.length == 1 && objects[0] instanceof Register register ? register : null;
+    }
+
+    private static Integer preparationBits(Instruction instruction) {
+        if (instruction == null || instruction.getLength() != 4) return null;
+        try {
+            byte[] bytes = instruction.getBytes();
+            return (bytes[0] & 255) | ((bytes[1] & 255) << 8) | ((bytes[2] & 255) << 16) | ((bytes[3] & 255) << 24);
+        } catch (ghidra.program.model.mem.MemoryAccessException failure) { return null; }
+    }
+
+    /** Operand Scalars also represent lane indexes. Validate native encoding
+     * and derive the complete MOV value from its bit fields instead. */
+    private static Long preparationImmediate(Instruction instruction) {
+        Integer encoded = preparationBits(instruction);
+        Register destination = preparationRegister(instruction, 0);
+        if (encoded == null || destination == null) return null;
+        int bits = encoded, width = (bits >>> 31) == 0 ? 32 : 64;
+        if (!destination.getName().equalsIgnoreCase((width == 32 ? "w" : "x") + (bits & 31))) return null;
+        int family = bits & 0x7f800000;
+        long value;
+        if (family == 0x52800000 || family == 0x12800000) {
+            int shift = ((bits >>> 21) & 3) * 16;
+            if (shift >= width) return null;
+            value = ((long)((bits >>> 5) & 65535)) << shift;
+            if (family == 0x12800000) value = ~value;
+        } else if (family == 0x32000000 && ((bits >>> 5) & 31) == 31) {
+            int n = (bits >>> 22) & 1, imms = (bits >>> 10) & 63, immr = (bits >>> 16) & 63;
+            int length = 31 - Integer.numberOfLeadingZeros((n << 6) | ((~imms) & 63));
+            if (length < 1 || (width == 32 && n != 0)) return null;
+            int element = 1 << length, levels = element - 1, ones = (imms & levels) + 1, rotate = immr & levels;
+            if (element > width || ones == element) return null;
+            long mask = element == 64 ? -1L : (1L << element) - 1;
+            long unit = (1L << ones) - 1;
+            if (rotate != 0) unit = element == 64 ? Long.rotateRight(unit, rotate) : ((unit >>> rotate) | (unit << (element - rotate))) & mask;
+            value = 0;
+            for (int offset = 0; offset < width; offset += element) value |= unit << offset;
+        } else return null;
+        return width == 32 ? value & 0xffffffffL : value;
+    }
+
+    private static boolean preparationRegisterMove(Instruction instruction) {
+        Integer bits = preparationBits(instruction);
+        // MOV register is ORR with Rn=ZR, no shift or inversion. Exclude
+        // vector-lane moves and all other instructions sharing the alias.
+        return bits != null && (bits & 0x7fe0ffe0) == 0x2a0003e0 &&
+            preparationRegister(instruction, 0) != null && preparationRegister(instruction, 1) != null;
+    }
+
+    private static boolean preparationMove(Instruction instruction) {
+        // Ghidra may print the native ORR-with-ZR encoding instead of its
+        // MOV alias. The encoding validators, not mnemonic/operand count,
+        // establish the supported write semantics.
+        return instruction != null && instruction.getLength() == 4 &&
+            preparationRegister(instruction, 0) != null &&
+            (preparationImmediate(instruction) != null || preparationRegisterMove(instruction));
+    }
+
+    private static boolean preparationFallthrough(Instruction before, Instruction after, Function owner) {
+        return before != null && before.getFallThrough() != null && before.getFallThrough().equals(after.getAddress()) &&
+            owner.getBody().contains(before.getAddress()) && owner.getBody().contains(after.getAddress());
+    }
+
+    private boolean preparationBypass(Instruction instruction, Instruction predecessor, Function owner) throws Exception {
+        if (owner.getEntryPoint().equals(instruction.getAddress())) return true;
+        ReferenceIterator incoming = currentProgram.getReferenceManager().getReferencesTo(instruction.getAddress());
+        while (incoming.hasNext()) {
+            monitor.checkCancelled();
+            Reference reference = incoming.next();
+            if (reference.getReferenceType().isFlow() && !reference.getFromAddress().equals(predecessor.getAddress())) return true;
+        }
+        return false;
     }
 
     private JsonObject resolveNativeCallTargets(JsonObject params) throws Exception {

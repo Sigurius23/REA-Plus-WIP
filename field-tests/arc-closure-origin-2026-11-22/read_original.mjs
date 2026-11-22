@@ -1,0 +1,12 @@
+import fs from 'node:fs/promises';import path from 'node:path';import {fileURLToPath,pathToFileURL} from 'node:url';import {createHash} from 'node:crypto';
+const out=path.dirname(fileURLToPath(import.meta.url)),root=path.resolve(out,'../..');
+const manifest=JSON.parse(await fs.readFile(path.join(root,'field-tests/arc-closure-abi-2026-11-22/runtime-final-manifest.json'),'utf8')),pkg=manifest.runtime_root;
+const {parseMachoLayout}=await import(pathToFileURL(pkg+'/dist/native/AppleMachoSelection.js'));
+const {parsePointerFixups}=await import(pathToFileURL(pkg+'/dist/native/AppleMachoFixups.js'));
+const original=path.join(root,'rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64'),bytes=await fs.readFile(original),sha=createHash('sha256').update(bytes).digest('hex');if(sha!=='6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578')throw Error('identity');
+const layout=parseMachoLayout(bytes,'arm64'),fixups=parsePointerFixups(bytes,layout.fixups,layout.segments,layout.baseAddress);
+const pointer=address=>{const offset=layout.offset(address,8),raw=bytes.readBigUInt64LE(offset);return {address:'0x'+address.toString(16),file_offset:offset,raw_hex:raw.toString(16).padStart(16,'0'),decoded:fixups.decode(address,raw)};};
+const metadata=0x10426d770n,vwt=pointer(metadata-8n);if(vwt.decoded.kind!=='rebase')throw Error('VWT binding');
+const at=layout.offset(vwt.decoded.target,88),size=bytes.readBigUInt64LE(at+64),stride=bytes.readBigUInt64LE(at+72),flags=bytes.readUInt32LE(at+80);
+const record={scope:'Supplemental direct read using qualified REA+ binary parser; not a public MCP operation or runtime observation',artifact_path:original,sha256:sha,runtime_manifest:'../arc-closure-abi-2026-11-22/runtime-final-manifest.json',fixups:{kind:fixups.kind,formats:fixups.formats,failures:fixups.failures},imports:[0x10423f818n,0x104237340n,0x104237ba0n,0x10423fad0n].map(pointer),enum:{metadata:'0x10426d770',kind_word:bytes.readBigUInt64LE(layout.offset(metadata,8)).toString(16),descriptor:pointer(metadata+8n),vwt,size,stride,flags,alignment:(flags&255)+1}};
+await fs.writeFile(path.join(out,'original-pointer-observations.json'),JSON.stringify(record,(_k,v)=>typeof v==='bigint'?'0x'+v.toString(16):v,2)+'\n');console.log(JSON.stringify({imports:record.imports,enum:record.enum},(_k,v)=>typeof v==='bigint'?'0x'+v.toString(16):v));

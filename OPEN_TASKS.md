@@ -4,6 +4,17 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc selected closure call, item 63 partial (2026-11-22):** REA+ now retains
+  conditional AArch64 call-preparation constants with exact source words.
+  The actual call at `0x1012ab840` sets X0=49; exact enum alignment 2 excludes
+  indirect pointer passing under the stated valid normal typed-closure
+  premises. Field stability and selected code/context origin remain open.
+  Two defects caught during qualification (vector-lane scalar confusion and
+  ORR alias omission) are fixed, with failed captures preserved. 20 native
+  controls, 85 source tests, 67 final public calls, five exact CLI/MCP pairs
+  and build/fast/docs/package checks pass. Reducer mappings/body are unchanged.
+  See the [call and origin checkpoint](field-tests/arc-closure-origin-2026-11-22.md).
+
 - **Arc static Client layout / ABI boundary, item 63 partial (2026-11-22):**
   Exact metadata binding now recovers all 23 physical field offsets and the
   VWT copy identity. The selected wrapper provides a conditional typed source
@@ -1646,6 +1657,27 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-22 selected-call preparation done; item remains open.**
+    Optional instruction `call_preparation` reports a native-encoding-validated
+    immediate suffix, its source bytes and conditional X0–X7 constants. The
+    selected actual closure call `0x1012ab840` sets X0=0x31. Its loaded pair
+    shares a Client-buffer/VWT-destroy source anchor, conditional on normal
+    VWT, valid live/disjoint source and a stable field window. Exact enum VWT
+    alignment 2 excludes X0=49 as an aligned indirect pointer under the valid
+    normal one-argument Swift-closure premise. This is a selected analyst
+    discrimination, not a metadata-wide lowerer or a default-target proof.
+    Code/context origin, relevant field stability, unchanged forwarding into
+    the selected converter and the per-invocation mapping carrier remain open.
+    Initial new-feature qualification falsely treated a vector lane index as
+    an immediate; an intermediate version omitted Ghidra's ORR spelling of
+    logical MOV constants. Both producer defects are fixed and failed evidence
+    retained. 20/20 native controls, 85 affected source tests, 67 final public
+    replies, five exact CLI/MCP comparisons and build/fast/docs/package checks
+    pass. One parity attempt had differing truthful one-second analysis limits;
+    final fixture parity uses a matching 60-second policy. Existing v10 enum
+    recovery is unchanged: reducer 28 mappings/10,072 bytes, helper zero tables.
+    See the [selected-call report](field-tests/arc-closure-origin-2026-11-22.md).
+
     **2026-11-22 static-metadata follow-up done; item remains open.**
     Optional `swift_metadata_address` now binds Arc's exact Client metadata,
     physical uint32 field offsets (0,16,...,352) and VWT/copy role. The selected

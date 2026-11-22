@@ -1,0 +1,182 @@
+import { z } from "zod";
+
+/** Exact code or data location within the active analysis program. */
+export const nativeInstructionInputSchema = z.strictObject({
+  address: z.string().min(1),
+  document: z.string().optional(),
+  decode_unlisted: z
+    .boolean()
+    .optional()
+    .describe(
+      "Explicitly interpret unlisted initialized executable bytes without adding database instructions, functions or control-flow edges, where supported. Omission uses analyzed instructions only. Byte decoding does not establish reachability or runtime mode.",
+    ),
+});
+export const nativeCallTargetsInputSchema = nativeInstructionInputSchema.pick({
+  address: true,
+  document: true,
+});
+const reference = z.strictObject({
+  target_address: z.string(),
+  type: z.string(),
+  call: z.boolean(),
+  jump: z.boolean(),
+  indirect: z.boolean(),
+  computed: z.boolean(),
+  operand_index: z.number().int(),
+  source_address: z.string().min(1).nullable().optional(),
+  data: z.boolean().nullable().optional(),
+  read: z.boolean().nullable().optional(),
+  write: z.boolean().nullable().optional(),
+  primary: z
+    .boolean()
+    .nullable()
+    .optional()
+    .describe(
+      "Provider primary-reference status, not proof of literal addressing or a runtime access. Null or omission means unavailable.",
+    ),
+  provenance: z
+    .string()
+    .min(1)
+    .nullable()
+    .optional()
+    .describe(
+      "Provider subsystem reporting this reference; null or omission means unavailable.",
+    ),
+  source: z
+    .string()
+    .min(1)
+    .nullable()
+    .optional()
+    .describe(
+      "Provider reference origin, such as analysis, default, imported or user_defined; null or omission means unavailable.",
+    ),
+});
+/** Provider-decoded facts for one instruction; operand tokens preserve their native ordering. */
+export const nativeInstructionSchema = z.strictObject({
+  address: z.string(),
+  status: z.enum([
+    "decoded",
+    "not-instruction-boundary",
+    "data",
+    "undecodable",
+    "outside-memory",
+  ]),
+  procedure: z.string().nullable(),
+  architecture: z.string(),
+  mode: z.string(),
+  bytes: z.string().nullable(),
+  length: z.number().int().positive().nullable(),
+  mnemonic: z.string().nullable(),
+  raw_disassembly: z.string().nullable(),
+  decode_source: z
+    .enum(["listing", "unlisted_program_bytes"])
+    .nullable()
+    .optional(),
+  references_available: z
+    .boolean()
+    .optional()
+    .describe(
+      "Whether outgoing analyzed instruction references are available. False keeps an empty references array from implying absence; direct decoded flow is reported separately. Older records may omit this fact.",
+    ),
+  operands: z.array(
+    z.strictObject({
+      index: z.number().int().nonnegative(),
+      raw: z.string(),
+      provider_type: z.number().int(),
+      components: z.array(
+        z.strictObject({
+          kind: z.enum(["register", "immediate", "address", "unknown"]),
+          text: z.string(),
+          value: z.string().nullable(),
+          bit_width: z.number().int().nonnegative().nullable(),
+        }),
+      ),
+      memory_addressing: z.literal("unavailable"),
+    }),
+  ),
+  flow: z.strictObject({
+    kind: z.enum([
+      "call",
+      "jump",
+      "return",
+      "fallthrough",
+      "terminal",
+      "unavailable",
+    ]),
+    conditional: z.boolean(),
+    computed: z.boolean(),
+    direct_destinations: z.array(z.string()),
+    classification_evidence: z
+      .array(
+        z.strictObject({
+          source: z.string().min(1),
+          value: z.string().min(1),
+        }),
+      )
+      .optional()
+      .describe(
+        "Observed provider facts used to classify flow; older captures or other providers may omit them.",
+      ),
+  }),
+  references: z.array(reference),
+  incoming_references: z
+    .array(reference)
+    .nullable()
+    .optional()
+    .describe(
+      "Static references to this exact code or data address, excluding synthetic entry-point references. An empty array means the provider examined the address and found none; null or omission means unavailable. Analyzer references do not prove literal addressing or runtime access.",
+    ),
+  call_preparation: z
+    .strictObject({
+      provenance: z.literal("ghidra-aarch64-mov-call-preparation-v1"),
+      scope: z.literal("observed-fallthrough-suffix"),
+      status: z.enum(["derived", "unresolved", "unsupported"]),
+      reason: z.string().nullable(),
+      instructions: z.array(
+        z.strictObject({
+          address: z.string(),
+          bytes: z.string(),
+          disassembly: z.string(),
+        }),
+      ),
+      register_constants: z.array(
+        z.strictObject({
+          register: z.string().regex(/^x[0-7]$/u),
+          value_hex: z.string().regex(/^0x[0-9a-f]{1,16}$/u),
+          write_bits: z.union([z.literal(32), z.literal(64)]),
+          definition_address: z.string(),
+        }),
+      ),
+      limitations: z.array(z.string()),
+    })
+    .exactOptional()
+    .describe(
+      "Optional measured call-preparation pattern. Constants are conditional static instruction semantics if execution reaches this call through the retained suffix, not observed runtime arguments or a complete ABI/type model. Other providers and historical records may omit it.",
+    ),
+  limitations: z.array(z.string()),
+});
+
+/** Static target resolution preserves provider references as evidence, never runtime certainty. */
+export const nativeCallTargetsSchema = z.strictObject({
+  call_site: z.string(),
+  procedure: z.string().nullable(),
+  status: z.enum([
+    "direct",
+    "resolved-indirect",
+    "ambiguous",
+    "unresolved",
+    "not-call",
+    "unavailable",
+  ]),
+  mechanism: z.enum(["direct", "computed", "indirect", "unavailable"]),
+  targets: z.array(
+    z.strictObject({
+      address: z.string(),
+      procedure: z.string().nullable(),
+      status: z.enum(["direct", "resolved-indirect", "candidate"]),
+      basis: z.literal("provider-reference"),
+      references: z.array(reference),
+    }),
+  ),
+  limitations: z.array(z.string()),
+});

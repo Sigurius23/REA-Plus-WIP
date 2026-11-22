@@ -191,6 +191,13 @@ describe("Ghidra Mach-O slice support", () => {
       expect(resolved.ok).toBe(true);
       if (!resolved.ok) throw resolved.error;
       expect(
+        resolved.value.profile?.parameters.instruction_call_preparation,
+      ).toBe(
+        architecture === "arm64"
+          ? "ghidra-aarch64-mov-call-preparation-v1"
+          : undefined,
+      );
+      expect(
         resolved.value.profile?.parameters.swift_enum_switch_recovery,
       ).toBe(enabled ? "abi-signed-word-cfg-v10" : undefined);
       expect(

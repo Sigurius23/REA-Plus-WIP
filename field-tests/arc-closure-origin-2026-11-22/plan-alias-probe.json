@@ -1,0 +1,67 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-closure-origin-2026-11-22/mcp-alias-probe",
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-closure-origin-2026-11-22/call-preparation-v2.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x3d0"
+      },
+      "label": "alias-0x3d0",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x3dc"
+      },
+      "label": "alias-0x3dc",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x3e8"
+      },
+      "label": "alias-0x3e8",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-closure-origin-2026-11-22/mcp-alias-probe/final.bundle.json"
+      },
+      "label": "final-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "close-first",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "close-second",
+      "expect_success": true
+    }
+  ],
+  "timeout_ms": 390000,
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-closure-origin-2026-11-22/call-preparation/seeds-v2.tsv"
+  },
+  "runtime_manifest": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-closure-origin-2026-11-22/call-preparation-qualified-runtime-manifest.json"
+}

@@ -150,6 +150,12 @@ export const resolveGhidraAnalysisProfile = async (
         location_resolution: "explicit-address-exact-entry-symbol-first-v3",
         instruction_flow_evidence: "decoded-return-pcode-v1",
         instruction_references: "exact-address-incoming-v1",
+        ...(target.architecture === "arm64"
+          ? {
+              instruction_call_preparation:
+                "ghidra-aarch64-mov-call-preparation-v1",
+            }
+          : {}),
         function_boundary_observations: "ghidra-terminal-call-limitations-v1",
         no_return_repair:
           installation.platform === "win32"

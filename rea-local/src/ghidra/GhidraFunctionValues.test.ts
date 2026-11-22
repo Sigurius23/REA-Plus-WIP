@@ -92,6 +92,63 @@ describe("Ghidra instruction byte-decode boundaries", () => {
   });
 });
 
+describe("Ghidra conditional call-preparation observations", () => {
+  it("preserves static suffix semantics without filling historical omissions", () => {
+    const value = {
+      ...compactInstruction(),
+      call_preparation: {
+        provenance: "ghidra-aarch64-mov-call-preparation-v1",
+        scope: "observed-fallthrough-suffix",
+        status: "derived",
+        reason: null,
+        instructions: [
+          { address: "0x1000", bytes: "20068052", disassembly: "mov w0,#0x31" },
+        ],
+        register_constants: [
+          {
+            register: "x0",
+            value_hex: "0x31",
+            write_bits: 32,
+            definition_address: "0x1000",
+          },
+        ],
+        limitations: [
+          "Conditional on execution through this suffix; ABI remains unknown",
+        ],
+      },
+    };
+    const parsed = parseFunctionValueFixture(
+      "inspect_native_instruction",
+      value,
+    );
+    if (!parsed.ok) throw parsed.error;
+    expect(parsed.value).toEqual(value);
+    const historical = parseFunctionValueFixture(
+      "inspect_native_instruction",
+      compactInstruction(),
+    );
+    if (!historical.ok) throw historical.error;
+    expect(historical.value).not.toHaveProperty("call_preparation");
+  });
+  it("rejects a claimed runtime scope or noncanonical register value", () => {
+    const value = {
+      ...compactInstruction(),
+      call_preparation: {
+        provenance: "ghidra-aarch64-mov-call-preparation-v1",
+        scope: "runtime",
+        status: "derived",
+        reason: null,
+        instructions: [],
+        register_constants: [],
+        limitations: [],
+      },
+    };
+    expect(
+      parseFunctionValueFixture("inspect_native_instruction", value).ok,
+    ).toBe(false);
+  });
+});
+
 describe("Ghidra function-analysis result values", () => {
   it.each([...observationOperations])(
     "requires the function-observation limitations envelope for %s",
