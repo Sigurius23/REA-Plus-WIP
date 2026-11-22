@@ -35,6 +35,7 @@ export const pushDispatchCoverage = (input: {
     readonly objcCategories: boolean;
     readonly swift: boolean;
     readonly vtables: boolean;
+    readonly swiftFields: boolean;
   };
   readonly fixups: PointerFixups;
   readonly vtables: FacetDecodeFacts;

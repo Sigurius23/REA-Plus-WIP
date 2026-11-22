@@ -26,6 +26,47 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest selected field-type checkpoint (2026-11-22)
+
+Read `field-tests/arc-field-types-2026-11-22.md`, its `qualification-verification.json`
+and `fact-index.json`. Item 63 has a completed **field-type inspection step**,
+not a completed typed invocation proof. The existing metadata operation adds
+opt-in `swift-fields` with required exact `swift_type_address`; `all` inventories
+retain their previous scope. Exact complete supported symbolic field function
+shapes and pure-enum declaration ordinals are observation-only, with false
+`program_mutations`. Field ordinals are not physical offsets.
+
+Arc's exact `boolForSetting` declaration is now producer-bound as
+`@Sendable (ArcUserDefaultSettings) -> Bool`, enum descriptor `0x103d41568`,
+zero payload / 297 empty cases. The full index scan examines 11,125 entries
+with no unresolved identity for this selection. All 23 fields are retained;
+four supported functions decode, nineteen types remain unsupported. The owned
+merged typed/UInt16/foreign-owner controls keep nominal identities separate;
+return-only enums supply no parameter domain. New compiler controls also pin
+unsupported optional/async/throwing/zero-argument/generic shapes.
+
+The public MCP run has 20 successful calls and two intentional invalid-input
+errors; two CLI runs match exact Evidence. Exports, schema/Evidence/raw-byte
+verification, two closes per session and empty lineages pass. This operation
+uses the native-macos byte reader inside Ghidra-selected public sessions;
+no Ghidra analysis or fixture/Arc execution was requested. The frozen runtime
+has 1,870 files at `rea-local/.cache/arc-runtime-field-types-qualified-2026-11-22`.
+All qualified production/test source hashes match. The earlier runtime/captures
+and recorder/verifier failures remain separate and preserved. Regression tests
+caught and fixed coverage ordering/field-budget propagation before the qualified
+public retest. There are 124 affected source tests; fast/build/docs/package checks
+pass, including installed CLI/MCP and empty package-verifier lineage. Eight prior
+snapshots authenticate against their original committed source versions.
+
+**Continue item 63** with native ABI argument lowering, exact typed root and
+physical field offset, closed memory-window code/context origin, ordered
+argument forwarding and an observation-only invocation mapping carrier. Never
+install a helper-global bound/JumpTable override from this declaration alone.
+The earlier v10/110-case safety qualification remains valid historical evidence;
+this independent reader did not change Ghidra recovery code or repeat it.
+All broader Arc/runtime/durability limits below remain. Changes in this
+checkpoint and local `60c75d904` have not been pushed.
+
 ## Latest ABI frame-escape safety checkpoint (2026-11-22)
 
 Read `field-tests/arc-frame-escape-2026-11-22.md` and its

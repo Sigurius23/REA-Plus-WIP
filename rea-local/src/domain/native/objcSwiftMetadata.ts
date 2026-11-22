@@ -21,8 +21,15 @@ export const nativeDispatchFacetSchema = z.enum([
   "objc",
   "swift-conformances",
   "swift-vtables",
+  "swift-fields",
 ]);
 const nativeMetadataAddressSchema = z.string().regex(/^0x[0-9a-fA-F]{1,16}$/u);
+/** Opt-in exact indexed nominal type for reflection field inspection. */
+export const nativeSwiftTypeAddressSchema = nativeMetadataAddressSchema
+  .optional()
+  .describe(
+    "Required with facet swift-fields: exact indexed nominal struct or enum descriptor. Reports declared field types, not instance offsets, invocation targets or runtime validity. Cannot combine with class/conformance selectors.",
+  );
 /** Exact unslid class descriptor address from the indexed Swift type section. */
 export const nativeSwiftClassAddressSchema = nativeMetadataAddressSchema
   .optional()
@@ -477,7 +484,78 @@ export const dbSaveResultSchema = z.strictObject({
 });
 
 /** Result of deeper ObjC/Swift metadata extraction. */
+const swiftFieldAtomSchema = z.strictObject({
+  kind: z.enum(["builtin", "nominal"]),
+  name: z.string(),
+  descriptor: nativeMetadataLocationSchema.nullable(),
+});
+const swiftFieldFunctionSchema = z.strictObject({
+  convention: z.literal("swift-thick"),
+  sendable: z.boolean(),
+  result: swiftFieldAtomSchema,
+  parameter: swiftFieldAtomSchema,
+  declared_argument_domain: z
+    .strictObject({
+      enum_descriptor: nativeMetadataLocationSchema,
+      lower_inclusive: z.literal(0),
+      upper_exclusive: z.number().int().positive(),
+      premise: z.literal(
+        "Valid value of this declared field's exact enum parameter; no invocation or helper-global type is established",
+      ),
+    })
+    .nullable(),
+});
+const swiftTypeFieldsSchema = z.strictObject({
+  address: z.string(),
+  index_entries: z.number().int().nonnegative(),
+  examined_index_entries: z.number().int().nonnegative(),
+  matching_index_entries: z.number().int().nonnegative(),
+  unresolved_index_entries: z.number().int().nonnegative(),
+  matched: z.boolean(),
+  descriptor: nativeMetadataLocationSchema.nullable(),
+  name: z.string().nullable(),
+  kind: z.enum(["struct", "enum"]).nullable(),
+  field_descriptor: nativeMetadataLocationSchema.nullable(),
+  declared_field_count: z.number().int().nonnegative().nullable(),
+  fields: z.array(
+    z.strictObject({
+      ordinal: z.number().int().nonnegative(),
+      record: nativeMetadataLocationSchema,
+      flags: z.number().int().nonnegative(),
+      name: z.string().nullable(),
+      type_location: nativeMetadataLocationSchema.nullable(),
+      mangling_hex: z
+        .string()
+        .regex(/^(?:[0-9a-f]{2})*$/u)
+        .nullable(),
+      function_type: swiftFieldFunctionSchema.nullable(),
+      decode: nativeMetadataDecodeSchema,
+      evidence: z.array(nativeMetadataEvidenceSchema),
+    }),
+  ),
+  referenced_enums: z.array(
+    z.strictObject({
+      descriptor: nativeMetadataLocationSchema,
+      name: z.string(),
+      payload_cases: z.literal(0),
+      empty_cases: z.number().int().positive(),
+      field_descriptor: nativeMetadataLocationSchema,
+      cases: z.array(
+        z.strictObject({
+          ordinal: z.number().int().nonnegative(),
+          name: z.string(),
+          record: nativeMetadataLocationSchema,
+        }),
+      ),
+      evidence: z.array(nativeMetadataEvidenceSchema),
+    }),
+  ),
+  program_mutations: z.literal(false),
+  limitations: z.array(z.string()),
+  decode: nativeMetadataDecodeSchema,
+});
 export const objcSwiftMetadataSchema = z.strictObject({
+  swift_type_fields: swiftTypeFieldsSchema.optional(),
   swift_vtable_selection: z
     .strictObject({
       address: z.string(),
@@ -554,10 +632,24 @@ export const inspectNativeDispatchMetadata = (
   maxRecords = 5_000,
   facet: NativeDispatchFacet = "all",
 ): ObjcSwiftMetadata => {
-  if (facet === "swift-conformances" || facet === "swift-vtables")
+  if (
+    facet === "swift-conformances" ||
+    facet === "swift-vtables" ||
+    facet === "swift-fields"
+  )
     return objcSwiftMetadataSchema.parse({
       db_save_result: null,
       coverage: [
+        {
+          facet: "swift_type_fields",
+          status: facet === "swift-fields" ? "unsupported" : "not_requested",
+          reason:
+            facet === "swift-fields"
+              ? "provider_name_inventory_does_not_decode_swift_field_types"
+              : null,
+          examined: 0,
+          decoded: 0,
+        },
         {
           facet: "objc_class_symbols",
           status: "not_requested",

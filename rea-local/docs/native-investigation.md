@@ -174,6 +174,23 @@ complete observation.
   partial. Other facets, conformance selectors and symbol-only fallback cannot
   satisfy or combine with this selector. Historical unselected Evidence may
   omit the new selection record.
+  With `facet: "swift-fields"`, required `swift_type_address` (CLI
+  `--swift-type-address`) selects one exact indexed nongeneric struct/enum.
+  This explicit declaration query is excluded from the default `all` inventory
+  and cannot combine with class/conformance selectors. `swift_type_fields`
+  preserves index coverage, field records, complete symbolic mangling bytes,
+  supported synchronous native thick function shapes and exact nominal identities.
+  Embedded NULs in symbolic references do not terminate manglings. Generic,
+  async, throwing, tuple, optional, foreign and unrecognized shapes remain
+  unsupported. A complete pure-enum parameter can supply a **declared** valid
+  argument domain, after case counts and all no-payload records agree. An enum
+  only in a return type supplies no parameter domain; identical names/counts
+  never replace descriptor identity. Fields, cases and pointer records share
+  `max_records`; budget exhaustion stays partial. No code is executed or mutated.
+  Field ordinals are not physical instance offsets. This query does not prove
+  a typed buffer, closure code/context origin, an invocation, native argument
+  register lowering or a helper-global input bound/CFG. Those remain separate
+  facts. Historical Evidence may omit this opt-in result.
   Before scanning either Swift index, the reader validates its complete aligned
   span within one file-backed mapped range, including address-space overflow.
   Malformed extents fail as `unsupported_target` with an intact-artifact remedy;

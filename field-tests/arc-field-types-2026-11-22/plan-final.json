@@ -1,0 +1,197 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-field-types-2026-11-22/mcp-final",
+  "timeout_ms": 390000,
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1"
+  },
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-typed-dispatch-2026-11-21/fixture/libTypedClientControls.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "merged-open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x332c",
+        "max_file_bytes": 134217728
+      },
+      "label": "merged-0x332c",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x3348",
+        "max_file_bytes": 134217728
+      },
+      "label": "merged-0x3348",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x3364",
+        "max_file_bytes": 134217728
+      },
+      "label": "merged-0x3364",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-field-types-2026-11-22/mcp-final/merged.bundle.json"
+      },
+      "label": "merged-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "merged-close-first",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "merged-close-second",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-field-types-2026-11-22/libFieldControls.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "controls-open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x15c4",
+        "max_file_bytes": 134217728
+      },
+      "label": "controls-0x15c4",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x15e0",
+        "max_file_bytes": 134217728
+      },
+      "label": "controls-0x15e0",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x15c4",
+        "max_records": 8
+      },
+      "label": "controls-budget",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x1500"
+      },
+      "label": "controls-unindexed",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields"
+      },
+      "label": "controls-missing-selector",
+      "expect_success": false
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x15c4",
+        "swift_class_address": "0x15c4"
+      },
+      "label": "controls-incompatible-selector",
+      "expect_success": false
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-field-types-2026-11-22/mcp-final/controls.bundle.json"
+      },
+      "label": "controls-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "controls-close-first",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "controls-close-second",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "arc-open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x103d648c4",
+        "max_file_bytes": 134217728
+      },
+      "label": "arc-0x103d648c4",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-field-types-2026-11-22/mcp-final/arc.bundle.json"
+      },
+      "label": "arc-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "arc-close-first",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "arc-close-second",
+      "expect_success": true
+    }
+  ],
+  "runtime_manifest": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-field-types-2026-11-22/runtime-manifest.json"
+}

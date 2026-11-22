@@ -1,0 +1,933 @@
+{
+  "version": 1,
+  "scope": "Item63 selected closure-field declaration inspection; no native argument lowering or typed invocation recovery",
+  "source_parent": "60c75d904c67ae2a22d5ece74dc80fe930075914",
+  "target_executed": false,
+  "files": [
+    {
+      "path": "ARC_HANDOFF.md",
+      "bytes": 48878,
+      "sha256": "a83d71fc59e561e5a1243feec098ab4d3137ef2fca7d67f102af0dcdeb2cd35f"
+    },
+    {
+      "path": "OPEN_TASKS.md",
+      "bytes": 130907,
+      "sha256": "3721bc3cdda9aed00cedb63bb61f175dae8557bb978bb140a89b32d8b0c4f3d1"
+    },
+    {
+      "path": "field-tests/arc-analysis-dossier-2026-11-08.md",
+      "bytes": 89400,
+      "sha256": "30137f9cc22418749711dc4a29695c6c48bf09af03df83577564d4903037c650"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/arc-0x103d648c4.cli.json",
+      "bytes": 317257,
+      "sha256": "6a89e6dfaf7f6f57c039b268c58a2da78086c9d8fe8f09bb8152b25348aa8d99"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/arc-0x103d648c4.cli.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/arc-0x103d648c4.qualified.cli.json",
+      "bytes": 317257,
+      "sha256": "3977313bb997ab84f7c599c76d540726825dbd657e1e18869afb83426dccb326"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/arc-0x103d648c4.qualified.cli.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/build_snapshot.py",
+      "bytes": 1216,
+      "sha256": "2fdd0497f80a68346c26c99f56f29ef1ef4a5406c9191650dc99904128190c65"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/capture-verification-initial.log",
+      "bytes": 568,
+      "sha256": "ec36acbb7185b538f31d0b3e6657211b14a88c1df108bed2903497f9414ae234"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/capture-verification.json",
+      "bytes": 6424,
+      "sha256": "7378983f920154633da9d17a34120b0332e2b365192610d31b7f0c0db7d6778e"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/capture-verification.log",
+      "bytes": 5539,
+      "sha256": "87688055d9e1d6524aab16ed19108c0d1f79a4f09d7923c1ed958a77989b1b8d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/checks.json",
+      "bytes": 747,
+      "sha256": "299aa0691a12750148f09a3c03e4cd4ecd4c9b9942e9200e2e0191b98b1102e2"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/cli-qualified-verification.json",
+      "bytes": 2033,
+      "sha256": "1622ac011cbe39cae4b7609617589c00401fccca435a3fff5484c5fc15ef7dad"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/cli-qualified.log",
+      "bytes": 286,
+      "sha256": "bcbdb90af437a04dbd7154aa9245e8cbdb12dada4ada2dc4051bb5cf785ab3b9"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/cli-verification.json",
+      "bytes": 2008,
+      "sha256": "ce195dcfe6e9f41b1eab5fdd8c0f80bd34c424e90eeda50e7d840b7ba316ae2c"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/cli.log",
+      "bytes": 281,
+      "sha256": "f27267033ae5655eb6d1ea65e27d9802d3741bbf3d6bebc4c9506bb0196f76be"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/fact-index.json",
+      "bytes": 1461,
+      "sha256": "5ed47675fb4341291a7a26d1486c0490b54035709cbcbe2f4b4b3a95fe9e9611"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/final.log",
+      "bytes": 3140,
+      "sha256": "12d30a4f399700bbb31d21fae26fe5c660dcb78824806ad100edad20bc12c22b"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/fixture/FieldControls.swift",
+      "bytes": 758,
+      "sha256": "b3606097ee6b8af77fbff829377fec85f01f845615e5bb5f13849c5b7437213f"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/fixture/build-stderr.txt",
+      "bytes": 676,
+      "sha256": "6fce768fcbbcf9e437ec76a92981e937d90e5d3652a8512f6697d45c2fdd1da4"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/fixture/build.json",
+      "bytes": 1276,
+      "sha256": "b1fb3ef53046602dd24c4267b3717f07197e97a448668b21e89d6956704dd5eb"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/fixture/build.py",
+      "bytes": 1107,
+      "sha256": "53e717969f12ff110581daa67467311452fae075cf099b864dd1f98c52970d64"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/fixture/symbols.txt",
+      "bytes": 15505,
+      "sha256": "7362e70aa863ae2a2f8d39cd89ae6b28f83b076efe63247b29e43d6b7d56bf90"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze-source/rea-local/src/application/EnhancedTools.ts",
+      "bytes": 18418,
+      "sha256": "6d66a4cb5253f55767ff265a936e8e772434d41b654ed03e43046feee5612de0"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze-source/rea-local/src/application/native/EnhancedNativeInvestigation.test.ts",
+      "bytes": 18970,
+      "sha256": "644ae2b6b4c1f3a4e025c39955f0a7aae64aa55afaa84876294ac7e9b41e74db"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze-source/rea-local/src/application/native/NativeDispatchMetadataInspection.ts",
+      "bytes": 5172,
+      "sha256": "db541132388f3ae036669951aaa10b8ebd75e3cf144bbb5db756f620828b3275"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze-source/rea-local/src/cli/coreNativeCommands.ts",
+      "bytes": 17045,
+      "sha256": "5175f39433bbe83c78d4bb1e90b895f0a517d8c5f2563d95922dbcb64a867d85"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze-source/rea-local/src/contracts/enhancedInputs.ts",
+      "bytes": 4024,
+      "sha256": "216cc640c0b79adb91459deb28b6e0dc39691ba9a9b2c73c92a91aec82a83b8f"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze-source/rea-local/src/contracts/enhancedToolContracts.ts",
+      "bytes": 7516,
+      "sha256": "53154f8b90d44ef2d008c6c2198a5a1356a89a3355a3ba371fb295f5c1c21207"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze-source/rea-local/src/domain/native/objcSwiftMetadata.ts",
+      "bytes": 31920,
+      "sha256": "25e93eaf9d04aa14536338a1e5ce6fc21c83c6ca3ca0e1806253822686afded7"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze-source/rea-local/src/native/AppleDispatchMetadata.ts",
+      "bytes": 16978,
+      "sha256": "46f84e914e6dadfb8f462ba25e9741440002acf65a7a1c08d46a37f34be89a17"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze-source/rea-local/src/native/AppleMachoSelection.ts",
+      "bytes": 11282,
+      "sha256": "5429a687e2299a11f2686ecda9865d408f0bec3af9f678392e77f71585c7fda0"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze-source/rea-local/src/native/AppleSwiftFieldTypes.test.ts",
+      "bytes": 8322,
+      "sha256": "f5d7661be4baef5abcd5949994b7f3296fa8799b82491124f92900691941fdf8"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze-source/rea-local/src/native/AppleSwiftFieldTypes.ts",
+      "bytes": 13355,
+      "sha256": "b4a08b621f384e2bb7089540d48290960635bccb8c760db44ba410d25170d4e5"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze-source/rea-local/src/native/NativeMacOSProvider.ts",
+      "bytes": 37540,
+      "sha256": "5937cc31c306a663ad19e83bd7684c99abde57a5f603b1fa82a3254e482c0649"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze_qualified.py",
+      "bytes": 2037,
+      "sha256": "1538c934784a7eb5c58434ec8d468deafd7a6ea39adb457494ce55b73a1694c2"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/freeze_runtime.py",
+      "bytes": 1978,
+      "sha256": "1ff488592e2ea17e2fb1da0f08198e5adc93ee4d218af79a84c8c34c8c041e6b"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/gates/initial-required-budget-fixture-error.log",
+      "bytes": 1475,
+      "sha256": "793818c596d52d2d815c58cb8904594001332fc79e5ad6ef8ee448c2b0d8ec47"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/gates/initial-test-lint-error.txt",
+      "bytes": 1510,
+      "sha256": "2b2bb7aafd19b067fabbe7b8703d2ee38ef0002cc240557dfbd2f3527d35cd1e"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/gates/swift-fields-build-qualified.log",
+      "bytes": 920,
+      "sha256": "4496f0f07be7fbf6d9fc1fec5c9ef622af1d754f2380d55a88d2136c8954e1d0"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/gates/swift-fields-check-fast-complete.log",
+      "bytes": 385,
+      "sha256": "c9b1548717ccd024bb044788fcbbead6e5b8589c6ed68ff7f9c17bdef5acdf50"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/gates/swift-fields-docs-qualified.log",
+      "bytes": 2377,
+      "sha256": "487b6979e1f6b410bc5cc440b9a3c34561f99b10262106c40c29fe50e38c0d8a"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/gates/swift-fields-package-qualified.log",
+      "bytes": 4556,
+      "sha256": "768ce89f54dcafeabef64d289dbd74d0e27836fe6b0783052fe7baa8b6d53343"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/gates/swift-fields-regression-tests.log",
+      "bytes": 4411,
+      "sha256": "9caeed1b1c86f03d68f58c6a474c449ec34219022c8c2ad6b1fd8b9ac921d8c9"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/gates/swift-fields-tests-qualified.log",
+      "bytes": 1494,
+      "sha256": "ce7ea7ded21ee139b4dc07a5bd5979a5ec77d5fab4dc003c33b6d48c85141949"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/gates/swift-fields-tests.log",
+      "bytes": 3464,
+      "sha256": "af4c08ed7e6c4de78b8e261f29b323fb4e5321008829099660e6c0e0752d646c"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/gates/swift-fields-verify-package.log",
+      "bytes": 3686,
+      "sha256": "e318999123ce4c9214692b0f7c7f0cdab0beb00d207381be563e05870011a2e5"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/gates/swift-fields-vtable-regression.log",
+      "bytes": 539,
+      "sha256": "174e997289aa99a573dc607cc35423e7231ce087f4d38d48272acafa2477497c"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/history-complete.log",
+      "bytes": 7351,
+      "sha256": "5b0981367a06ca00839e49e9f6c719b6569b668a2d760cd93047923fcac938ea"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/history-qualified.log",
+      "bytes": 436,
+      "sha256": "c2485b04201f01b9d1c8a9b2f9207abf6d9336a42b6449b4d66337d24bc4ca3d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/history-verification-final.log",
+      "bytes": 6905,
+      "sha256": "520d078a40ccabfe30ca82f2e607ac9eda24e37b94b804350c5bf95b103cd3d3"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/history-verification.json",
+      "bytes": 9291,
+      "sha256": "e1b9272dd64a048f4bccb219edf6753dbee3e07eb89b66a92072ee0451ddd38f"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/history-verification.log",
+      "bytes": 439,
+      "sha256": "95128f0e8f4a78da31fc1b65cf055f722388518d45647bc528831d23965fb82e"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-driver.mjs",
+      "bytes": 5887,
+      "sha256": "f5eac65dd1c29bf2dac3aad64577d7539b9a566ce80fe185c8845d4927e3ba70"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/arc-0x103d648c4.evidence.json",
+      "bytes": 528556,
+      "sha256": "e567f390b9638d5b770f97261c88184fa76fcd1d5ec9a77428239f1f04c5e015"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/arc-0x103d648c4.reply.json",
+      "bytes": 905116,
+      "sha256": "6eb2537d6a86bc77f8543c8ada9879d505a8b054aa8d841fb566408f03495461"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/arc-close-first.reply.json",
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/arc-close-second.reply.json",
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/arc-export.reply.json",
+      "bytes": 603,
+      "sha256": "21eee3027dd1f7e282475a3dd0a2e0a3e5236a1a5c741966a92956af650b962b"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/arc-open.reply.json",
+      "bytes": 795,
+      "sha256": "f78bb09933f87882374d2ed2409ef5c019a340493793f3cb0fad0bc8e24764b0"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/arc.bundle.json",
+      "bytes": 317571,
+      "sha256": "e0784780d744bc91d615ce762eafd02ea37bba42e6812f62f7e351e018cd646d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/catalog.json",
+      "bytes": 6182817,
+      "sha256": "a5ccf9b97d1df59b3c5181cf923b23aaac5beb09da07f95be2a17e4078c39382"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-0x15c4.evidence.json",
+      "bytes": 69757,
+      "sha256": "683c60c26465117205b767d69fc3f29a07bf9f761837e25526a6d81c87de28b1"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-0x15c4.reply.json",
+      "bytes": 121165,
+      "sha256": "6c06e4a2ae5687ba48b2cf37777373a96232f1d212c0c4f78c22c5fa19e15d7f"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-0x15e0.evidence.json",
+      "bytes": 8742,
+      "sha256": "c6c038de6b4c9b420b80f3fb41a5e4b1272c0de0af748f472474a25421774bc8"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-0x15e0.reply.json",
+      "bytes": 16289,
+      "sha256": "6c2a2dc2cf8088d8eddcd7c56fa218efde099540cf3fe8ae0fee75e01fda8398"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-budget.evidence.json",
+      "bytes": 15464,
+      "sha256": "0393c24ab9fc204a23b3a4ea860c0ffb4329c39dc8723b58e30d8222219f2387"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-budget.reply.json",
+      "bytes": 27898,
+      "sha256": "e191e754f6d1deb4802a94daa4fa83ef3dec4deae3959d616b54b8859cf13bff"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-close-first.reply.json",
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-close-second.reply.json",
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-export.reply.json",
+      "bytes": 611,
+      "sha256": "44319806cab69be2bd7f54ce121b41d58fa5b97cd600d6ed1c23ec0de2c673b7"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-incompatible-selector.reply.json",
+      "bytes": 595,
+      "sha256": "328c1eee76f93685275045bd0c74e06b0da2e40c47dfd32132bfc2d50e0848a2"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-missing-selector.reply.json",
+      "bytes": 595,
+      "sha256": "328c1eee76f93685275045bd0c74e06b0da2e40c47dfd32132bfc2d50e0848a2"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-open.reply.json",
+      "bytes": 819,
+      "sha256": "5bf6ea07a0d4ebd3842bd5ee5b7edad161fcf6094192d0cd7b9c6ca9b04e2863"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-unindexed.evidence.json",
+      "bytes": 7654,
+      "sha256": "44b1741cbd1d06e9ef20a711e6423aa0f1edb2a4d2797f167b0f863180bc25b3"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls-unindexed.reply.json",
+      "bytes": 14407,
+      "sha256": "2f63b58aababeaa58272c9a6965d83491c1073530f97a4cdc521422f799bbbaa"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/controls.bundle.json",
+      "bytes": 66458,
+      "sha256": "35722971959efbf38e6bc4b2e072c8ac5722621a25061807d40e235a50f1a73e"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/invocations.json",
+      "bytes": 6762,
+      "sha256": "0d56d0ddafe4522ea6e283aa83ca3a869ef852b0b3b3fe50a6740fbab5d652be"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/merged-0x332c.evidence.json",
+      "bytes": 412946,
+      "sha256": "66bd0bfe276197083ab45279860b4e5cb05d7a8ff16fb214e2c10a3137dcf3b7"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/merged-0x332c.reply.json",
+      "bytes": 702416,
+      "sha256": "41b65b1ec810cca5298a13ddcab688be7537fc52a51034b7c519b6c0b2897ec5"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/merged-0x3348.evidence.json",
+      "bytes": 15861,
+      "sha256": "688ee316d86af18ba2cf0a8605d97b4fbb1b653f16a56750cc79c517a24cbe97"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/merged-0x3348.reply.json",
+      "bytes": 28623,
+      "sha256": "40c0fc8e27150ee426386ee430a47bc3bf73ef5616f22ba0c7da385342dae0a1"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/merged-0x3364.evidence.json",
+      "bytes": 412952,
+      "sha256": "f88a6428bd2ba7a2687bed807dacc8f13c3773aa8abc498b0ff5f208f55fb4ea"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/merged-0x3364.reply.json",
+      "bytes": 702428,
+      "sha256": "3a22bb3638af1d38db196e12463af44e767b8d8842914baaf68dd5463531b50f"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/merged-close-first.reply.json",
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/merged-close-second.reply.json",
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/merged-export.reply.json",
+      "bytes": 609,
+      "sha256": "d40696ba8cde618efd665b6c7c25758576dac77a746e60f6e29bed03943ef4d8"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/merged-open.reply.json",
+      "bytes": 843,
+      "sha256": "9629d6dbbffec20628a3b2f9af43a45e6379a61c6c4d200584e101785917afac"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/merged.bundle.json",
+      "bytes": 494777,
+      "sha256": "1e0454bd8f9e2571c8600b55a6260ab702de76fb371263c38c7c7c79ebf1e1ea"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final/summary.json",
+      "bytes": 450,
+      "sha256": "2869e7b8794e2f28377750a3f35db0d48ead6e54694e868236d5379282c8f8dc"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-final.mjs",
+      "bytes": 5929,
+      "sha256": "a37e76960f45a95da2bd7268dfce1e69b66588661d110c5c3d56f4569e9ce8eb"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-probe/catalog.json",
+      "bytes": 6182817,
+      "sha256": "a5ccf9b97d1df59b3c5181cf923b23aaac5beb09da07f95be2a17e4078c39382"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-probe/fatal.json",
+      "bytes": 299,
+      "sha256": "3ebb08904f78ac5e13a48a493988e22d6a2ecacdc0d3787ccdd50afead2725e2"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-probe/invocations.json",
+      "bytes": 398,
+      "sha256": "11ebe63e963dbc22a8c2e25a4353bf5d361f44caa09ffd27ba3b0651cfccc5c8"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-probe/merged-open.reply.json",
+      "bytes": 3450,
+      "sha256": "ee19b02071ee4489d7563bbd156a6dcd19fa894cc76e31fc8f2c39bfd35843ec"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-probe/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-probe/summary.json",
+      "bytes": 445,
+      "sha256": "6a2d4f0fc017d362a2efe2295e1a349f8f714990791dfad2babd198680060206"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/arc-0x103d648c4.evidence.json",
+      "bytes": 528556,
+      "sha256": "8230657f6f954fbef28a77294faf9a707d15d435cf36f78122192060b0d30f95"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/arc-0x103d648c4.reply.json",
+      "bytes": 905116,
+      "sha256": "8e45d27edc199ba92837b3effc60c654ad75f68b69d62b01e0e1e232e6bcb042"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/arc-close-first.reply.json",
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/arc-close-second.reply.json",
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/arc-export.reply.json",
+      "bytes": 611,
+      "sha256": "441f7f732eeaa047a6c048015d4d45c6ee14e9834228376f65347dc7c84a9349"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/arc-open.reply.json",
+      "bytes": 795,
+      "sha256": "f78bb09933f87882374d2ed2409ef5c019a340493793f3cb0fad0bc8e24764b0"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/arc.bundle.json",
+      "bytes": 317571,
+      "sha256": "936adf1cd1b238ef17bc4c46ff8155908a1cc5b651e633e1c7581dc606b44ea3"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/catalog.json",
+      "bytes": 6182817,
+      "sha256": "a5ccf9b97d1df59b3c5181cf923b23aaac5beb09da07f95be2a17e4078c39382"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-0x15c4.evidence.json",
+      "bytes": 69757,
+      "sha256": "6cc458356a8d774e58595a42748808946197e828e330a7e3bd41e2679d36b04b"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-0x15c4.reply.json",
+      "bytes": 121165,
+      "sha256": "c078aa7daa0725a365e360d4e0cbd2935ce17341e35fa65d21cd1ae2dc0b8c86"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-0x15e0.evidence.json",
+      "bytes": 8742,
+      "sha256": "92d172aac49913ae3685baeb164909403091e55338f93b6d72260a55ffc53d7f"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-0x15e0.reply.json",
+      "bytes": 16289,
+      "sha256": "4ce43815eeb18b7bbc1a3583c91c687d0bd682fe843b7fd21a259c873445ebda"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-budget.evidence.json",
+      "bytes": 15507,
+      "sha256": "f66e259c2e08ed238b041a45008ea1d5d165bcef73b912dd7de1ae3ff644d78b"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-budget.reply.json",
+      "bytes": 27985,
+      "sha256": "d66f766ae75c13470cf0cf0d7314c3f8e9f77aa5228c8fb4ab1b5a0ecf8549ca"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-close-first.reply.json",
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-close-second.reply.json",
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-export.reply.json",
+      "bytes": 619,
+      "sha256": "33c4c41726f8525d5c387db0bfe0c9e15c6a881dfc36f7257b0d600adff536ae"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-incompatible-selector.reply.json",
+      "bytes": 595,
+      "sha256": "328c1eee76f93685275045bd0c74e06b0da2e40c47dfd32132bfc2d50e0848a2"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-missing-selector.reply.json",
+      "bytes": 595,
+      "sha256": "328c1eee76f93685275045bd0c74e06b0da2e40c47dfd32132bfc2d50e0848a2"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-open.reply.json",
+      "bytes": 819,
+      "sha256": "5bf6ea07a0d4ebd3842bd5ee5b7edad161fcf6094192d0cd7b9c6ca9b04e2863"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-unindexed.evidence.json",
+      "bytes": 7654,
+      "sha256": "6e3812a8168e0bfdeb854b29731f1ac84a154a8ad3bcc69b103452e869a7cea5"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls-unindexed.reply.json",
+      "bytes": 14407,
+      "sha256": "4deae77897bc67a57c648b33515ce65505f7f190fefa2e973d388f8615204329"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/controls.bundle.json",
+      "bytes": 66496,
+      "sha256": "eb304035f1c87b198898243cb2b035b866432b0439822b270da27352d7768deb"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/invocations.json",
+      "bytes": 6778,
+      "sha256": "854aa1f2470b5c6a039ee61496c5502f7f00edb94be34c4e8016bf60d0e0e900"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/merged-0x332c.evidence.json",
+      "bytes": 412946,
+      "sha256": "d836d956c49a721878be6e820c146fab798add5dfe8b70a9a4f7fed5c821cea2"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/merged-0x332c.reply.json",
+      "bytes": 702416,
+      "sha256": "e6591e22fcf84f17febd1e7cf853670f7ceb82786c0f846f81411151d5ac1264"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/merged-0x3348.evidence.json",
+      "bytes": 15861,
+      "sha256": "793255cde6379a5d40e2216b411f844ea1585d9004ec06ba8656f8745d59b1d1"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/merged-0x3348.reply.json",
+      "bytes": 28623,
+      "sha256": "4eacf2011ee35601d437169d8d4d0809c9402cf4a2b4d6a139bebcf8e05a48b7"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/merged-0x3364.evidence.json",
+      "bytes": 412952,
+      "sha256": "25a38fc5be1ca498f291e1935f0af2727a7f599feffcb4e069a9022ea18144ed"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/merged-0x3364.reply.json",
+      "bytes": 702428,
+      "sha256": "262b0481f7fef7973b0d3e9ad13955253a73fb515296e0dd6cdf31edb7ffe179"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/merged-close-first.reply.json",
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/merged-close-second.reply.json",
+      "bytes": 140,
+      "sha256": "ca82b91e779bad3a72ee58e39fbaaf09b81affadf49ff1db9f30e1ab8e56bc4d"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/merged-export.reply.json",
+      "bytes": 617,
+      "sha256": "668770e60d19898aa56eb200ab27a56a2bac2e6cf7e2d5fcd49c57ac25786bce"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/merged-open.reply.json",
+      "bytes": 843,
+      "sha256": "9629d6dbbffec20628a3b2f9af43a45e6379a61c6c4d200584e101785917afac"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/merged.bundle.json",
+      "bytes": 494777,
+      "sha256": "81085416f60b29598ecc10042147e77222ae66baae33807c4fde2b83a5c491e3"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified/summary.json",
+      "bytes": 450,
+      "sha256": "5d35c5e046800ddf399d09cb9a27ba616d1b9e70e4b3adab28c3df0a1bc9ab41"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/mcp-qualified.mjs",
+      "bytes": 5939,
+      "sha256": "f8d7209f0d664432cc9e763f3be8431141c7f841e2f0cc36ed5753964f0d3fb9"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/merged-0x332c.cli.json",
+      "bytes": 241815,
+      "sha256": "92d1a3a8625da1d4cc3993fe806c1c8944c5380da413ee1038e80287424cbe59"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/merged-0x332c.cli.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/merged-0x332c.qualified.cli.json",
+      "bytes": 241815,
+      "sha256": "0c061e333048a86896bb5c92b240f1ae60947e973f4277712320adddf8404b97"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/merged-0x332c.qualified.cli.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/plan-final.json",
+      "bytes": 6035,
+      "sha256": "c931ac64248c0e5f9ee1098df7e3bfd496d68019991159d4fdbb4b87b4cd5648"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/plan-probe.json",
+      "bytes": 4645,
+      "sha256": "f4cd059511fbbeaf5613c978ceb9920c31a16e759494112a278cb252d8eeb965"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/plan-qualified.json",
+      "bytes": 6061,
+      "sha256": "6854889822ffd2fbb87f4900924bc23fc7a623672db8b6280122c43be66abcf0"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/probe.log",
+      "bytes": 705,
+      "sha256": "58c6d09ba1375bd044a44b01bc96a2cde65341cc3d4843eeaea4782443bcec3a"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualification-verification.json",
+      "bytes": 5505,
+      "sha256": "6379a0f5e233a1121c583274ccd2a3fdf7ec6ccc487a5520c7e22d36dc1f692a"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualification-verification.log",
+      "bytes": 4682,
+      "sha256": "c849ef77c013b63a834a4726919772bdad6d08434baf8a4166789bbcaf09422e"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/application/EnhancedTools.ts",
+      "bytes": 18418,
+      "sha256": "6d66a4cb5253f55767ff265a936e8e772434d41b654ed03e43046feee5612de0"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/application/native/EnhancedNativeInvestigation.test.ts",
+      "bytes": 18970,
+      "sha256": "644ae2b6b4c1f3a4e025c39955f0a7aae64aa55afaa84876294ac7e9b41e74db"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/application/native/NativeDispatchMetadataInspection.ts",
+      "bytes": 5172,
+      "sha256": "db541132388f3ae036669951aaa10b8ebd75e3cf144bbb5db756f620828b3275"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/cli/coreNativeCommands.ts",
+      "bytes": 17045,
+      "sha256": "5175f39433bbe83c78d4bb1e90b895f0a517d8c5f2563d95922dbcb64a867d85"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/contracts/enhancedInputs.ts",
+      "bytes": 4024,
+      "sha256": "216cc640c0b79adb91459deb28b6e0dc39691ba9a9b2c73c92a91aec82a83b8f"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/contracts/enhancedToolContracts.ts",
+      "bytes": 7516,
+      "sha256": "53154f8b90d44ef2d008c6c2198a5a1356a89a3355a3ba371fb295f5c1c21207"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/domain/native/objcSwiftMetadata.ts",
+      "bytes": 31920,
+      "sha256": "25e93eaf9d04aa14536338a1e5ce6fc21c83c6ca3ca0e1806253822686afded7"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/native/AppleDispatchCoverage.ts",
+      "bytes": 11452,
+      "sha256": "77c5a9ce97bbd0b9e8c74d42c849b222d8b8605412f46ece7661534c4b46e833"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/native/AppleDispatchMetadata.ts",
+      "bytes": 17175,
+      "sha256": "c8d566e9990deb547f575abb4e08b98276504358c26d469d406568cfb8416439"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/native/AppleMachoSelection.ts",
+      "bytes": 11282,
+      "sha256": "5429a687e2299a11f2686ecda9865d408f0bec3af9f678392e77f71585c7fda0"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/native/AppleSwiftFieldTypes.test.ts",
+      "bytes": 8544,
+      "sha256": "3209a70e226bbe2d784c9c9751ae8e0c552e76e7d0b56519658881383b1f86f8"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/native/AppleSwiftFieldTypes.ts",
+      "bytes": 13373,
+      "sha256": "9318e9b40e2d9d6963d402338cf84f1795fa39d6460843843e30f50f9a73f16b"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/native/AppleSwiftVtables.test.ts",
+      "bytes": 7393,
+      "sha256": "fc7a6372638fbfa4988dcc71682fb478c393c7442b0e91e22e11e72645976dba"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified-source/rea-local/src/native/NativeMacOSProvider.ts",
+      "bytes": 37540,
+      "sha256": "5937cc31c306a663ad19e83bd7684c99abde57a5f603b1fa82a3254e482c0649"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/qualified.log",
+      "bytes": 3144,
+      "sha256": "731d2a2af45f7bfc432faa1cc7649caa071b41fc8c0385d011d5044a433b973a"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/runtime-manifest.json",
+      "bytes": 327979,
+      "sha256": "875798c8d067eb2cb1056ae48190f57726cd8fe08e903e4a7a0f7b6b29ee3079"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/runtime-qualified-manifest.json",
+      "bytes": 328148,
+      "sha256": "bf8cf31c9b879e7489fac33be89ff7b2c0350edbe552aaa3d31b36355872cbcb"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/verify_capture-initial.mjs",
+      "bytes": 9150,
+      "sha256": "6da0757cbf1622607477f96c5df0e65fcad44b3358954b2383b12edfb2c51705"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/verify_capture.mjs",
+      "bytes": 9431,
+      "sha256": "ee3021b882e1d49fb99b3b00815c99a002d6e79bac8106d4fe71d74b1beb61bc"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/verify_cli.mjs",
+      "bytes": 2429,
+      "sha256": "1e2cda680296e2acb2c1c22c10e185718b6934168d4ae299ce748cbcd287c0bf"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/verify_cli_qualified.mjs",
+      "bytes": 2477,
+      "sha256": "1ab5345366037d3be878b67cd411aed7d99cdf371f379592956d92f45331b0b9"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/verify_history.py",
+      "bytes": 3939,
+      "sha256": "e5f19800ebf0dc59938b1ab798cc630b706cd0b55139f0a205b42a22a33c223c"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22/verify_qualified.mjs",
+      "bytes": 9739,
+      "sha256": "643ef478fb079a488fb4c058f9fdf20a223c13faba2b1731b04f781ef20217e6"
+    },
+    {
+      "path": "field-tests/arc-field-types-2026-11-22.md",
+      "bytes": 8968,
+      "sha256": "63b9f4f6354435ace455ad2f27402fb0b841125a9d94673ccfa949509e384222"
+    },
+    {
+      "path": "rea-local/docs/native-investigation.md",
+      "bytes": 42927,
+      "sha256": "ff68db6cf0695603b38b20db28eba0af5ce8788ea695555fe375af7b1cd504a2"
+    },
+    {
+      "path": "rea-local/src/application/EnhancedTools.ts",
+      "bytes": 18418,
+      "sha256": "6d66a4cb5253f55767ff265a936e8e772434d41b654ed03e43046feee5612de0"
+    },
+    {
+      "path": "rea-local/src/application/native/EnhancedNativeInvestigation.test.ts",
+      "bytes": 18970,
+      "sha256": "644ae2b6b4c1f3a4e025c39955f0a7aae64aa55afaa84876294ac7e9b41e74db"
+    },
+    {
+      "path": "rea-local/src/application/native/NativeDispatchMetadataInspection.ts",
+      "bytes": 5172,
+      "sha256": "db541132388f3ae036669951aaa10b8ebd75e3cf144bbb5db756f620828b3275"
+    },
+    {
+      "path": "rea-local/src/cli/coreNativeCommands.ts",
+      "bytes": 17045,
+      "sha256": "5175f39433bbe83c78d4bb1e90b895f0a517d8c5f2563d95922dbcb64a867d85"
+    },
+    {
+      "path": "rea-local/src/contracts/enhancedInputs.ts",
+      "bytes": 4024,
+      "sha256": "216cc640c0b79adb91459deb28b6e0dc39691ba9a9b2c73c92a91aec82a83b8f"
+    },
+    {
+      "path": "rea-local/src/contracts/enhancedToolContracts.ts",
+      "bytes": 7516,
+      "sha256": "53154f8b90d44ef2d008c6c2198a5a1356a89a3355a3ba371fb295f5c1c21207"
+    },
+    {
+      "path": "rea-local/src/domain/native/objcSwiftMetadata.ts",
+      "bytes": 31920,
+      "sha256": "25e93eaf9d04aa14536338a1e5ce6fc21c83c6ca3ca0e1806253822686afded7"
+    },
+    {
+      "path": "rea-local/src/native/AppleDispatchCoverage.ts",
+      "bytes": 11452,
+      "sha256": "77c5a9ce97bbd0b9e8c74d42c849b222d8b8605412f46ece7661534c4b46e833"
+    },
+    {
+      "path": "rea-local/src/native/AppleDispatchMetadata.ts",
+      "bytes": 17175,
+      "sha256": "c8d566e9990deb547f575abb4e08b98276504358c26d469d406568cfb8416439"
+    },
+    {
+      "path": "rea-local/src/native/AppleMachoSelection.ts",
+      "bytes": 11282,
+      "sha256": "5429a687e2299a11f2686ecda9865d408f0bec3af9f678392e77f71585c7fda0"
+    },
+    {
+      "path": "rea-local/src/native/AppleSwiftFieldTypes.test.ts",
+      "bytes": 8544,
+      "sha256": "3209a70e226bbe2d784c9c9751ae8e0c552e76e7d0b56519658881383b1f86f8"
+    },
+    {
+      "path": "rea-local/src/native/AppleSwiftFieldTypes.ts",
+      "bytes": 13373,
+      "sha256": "9318e9b40e2d9d6963d402338cf84f1795fa39d6460843843e30f50f9a73f16b"
+    },
+    {
+      "path": "rea-local/src/native/AppleSwiftVtables.test.ts",
+      "bytes": 7393,
+      "sha256": "fc7a6372638fbfa4988dcc71682fb478c393c7442b0e91e22e11e72645976dba"
+    },
+    {
+      "path": "rea-local/src/native/NativeMacOSProvider.ts",
+      "bytes": 37540,
+      "sha256": "5937cc31c306a663ad19e83bd7684c99abde57a5f603b1fa82a3254e482c0649"
+    }
+  ]
+}

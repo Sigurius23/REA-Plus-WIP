@@ -1,0 +1,70 @@
+
+> rea-agents@6.4.0 test:local
+> node scripts/run-development-tests.mjs local src/native/AppleSwiftFieldTypes.test.ts src/native/AppleSwiftClassSelection.test.ts src/native/AppleSwiftWitnessData.test.ts src/native/AppleDispatchMetadata.test.ts src/native/AppleMachoSelection.test.ts src/native/AppleMachoFixups.test.ts src/native/NativeMacOSProviderInput.test.ts src/domain/native/objcSwiftMetadata.test.ts src/application/native/EnhancedNativeInvestigation.test.ts
+
+Source-test feedback; compiled boundaries and real providers need explicit verification.
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |adapters| src/native/AppleSwiftFieldTypes.test.ts (17 tests) 30ms
+ ❯ |adapters| src/native/AppleDispatchMetadata.test.ts (23 tests | 1 failed) 38ms
+   ✓ Apple dispatch metadata facet admission (5)
+     ✓ directs one aggregate budget to swift-conformances without earlier Objective-C work 12ms
+     ✓ directs one aggregate budget to swift-vtables without earlier Objective-C work 1ms
+     ✓ does not retroactively mark completed Objective-C work truncated by a later Swift family 1ms
+     ✓ attributes caught category protocol failures to categories without poisoning completed classes 1ms
+     ✓ keeps measured empty property/category lists complete when only class work exhausts 0ms
+   ❯ Apple dispatch binary metadata (4)
+     ✓ decodes stripped absolute/relative method lists (relative=false) with exact offsets 1ms
+     ✓ decodes stripped absolute/relative method lists (relative=true) with exact offsets 1ms
+     × keeps unsupported pointers and record truncation explicit 12ms
+     ✓ rejects malformed command and section boundaries 1ms
+   ✓ universal Apple dispatch metadata (2)
+     ✓ decodes selected FAT slices (fat64=false) 2ms
+     ✓ decodes selected FAT slices (fat64=true) 3ms
+   ✓ FAT64 dispatch slice validation (5)
+     ✓ rejects a truncated architecture table 0ms
+     ✓ checks the full 64-bit slice extent at field 16 0ms
+     ✓ checks the full 64-bit slice extent at field 24 0ms
+     ✓ rejects ambiguous matching architectures 0ms
+     ✓ rejects a missing selected architecture 0ms
+   ✓ byte-swapped universal Apple dispatch metadata (7)
+     ✓ decodes selected little-endian FAT slices (fat64=false) 1ms
+     ✓ decodes selected little-endian FAT slices (fat64=true) 1ms
+     ✓ states the header byte order when its architecture table is truncated at 6 bytes 0ms
+     ✓ states the header byte order when its architecture table is truncated at 16 bytes 0ms
+     ✓ validates the selected thin slice's own byte order 0ms
+     ✓ rejects a 32-bit slice payload inside a little-endian container 0ms
+     ✓ checks the full little-endian FAT64 slice extent 0ms
+ ✓ |adapters| src/native/AppleSwiftClassSelection.test.ts (13 tests) 15ms
+ ✓ |adapters| src/native/AppleSwiftWitnessData.test.ts (10 tests) 16ms
+ ✓ |adapters| src/native/AppleMachoFixups.test.ts (10 tests) 7ms
+ ✓ |adapters| src/native/AppleMachoSelection.test.ts (9 tests) 5ms
+ ✓ |domain| src/domain/native/objcSwiftMetadata.test.ts (5 tests) 7ms
+ ✓ |services| src/application/native/EnhancedNativeInvestigation.test.ts (32 tests) 69ms
+ ✓ |adapters| src/native/NativeMacOSProviderInput.test.ts (2 tests) 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |adapters| src/native/AppleDispatchMetadata.test.ts > Apple dispatch binary metadata > keeps unsupported pointers and record truncation explicit
+AssertionError: expected 'Field declarations require explicit f…' to contain 'max_records_reached'
+
+Expected: "max_records_reached"
+Received: "Field declarations require explicit facet swift-fields and swift_type_address; all retains inventory semantics"
+
+ ❯ src/native/AppleDispatchMetadata.test.ts:361:43
+    359|     });
+    360|     const truncated = decodeAppleDispatchMetadata(fixture(), 1, proven…
+    361|     expect(truncated.coverage[0]?.reason).toContain("max_records_reach…
+       |                                           ^
+    362|     expect(
+    363|       truncated.coverage.find(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  1 failed | 120 passed (121)
+   Start at  19:58:27
+   Duration  4.22s (transform 67%, import 27%, tests 4%, worker 2%)
+

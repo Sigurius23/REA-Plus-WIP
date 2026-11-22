@@ -10,6 +10,7 @@ export interface Segment {
   size: bigint;
   offset: number;
   executable: boolean;
+  writable?: boolean;
 }
 
 /** Named Mach-O section within a loaded segment. */
@@ -248,6 +249,7 @@ const collectSegment = (
     size: fileSize,
     offset: state.slice + Number(fileOffset),
     executable: (bytes.readUInt32LE(cursor + 60) & 4) !== 0,
+    writable: (bytes.readUInt32LE(cursor + 60) & 2) !== 0,
   });
   if (fileOffset === 0n && fileSize > 0n) state.baseAddress ??= address;
   const count = bytes.readUInt32LE(cursor + 64);

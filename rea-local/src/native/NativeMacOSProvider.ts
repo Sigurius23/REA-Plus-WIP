@@ -186,6 +186,7 @@ class NativeMacOSClient implements AnalysisClient {
           input.data.swift_conformance_address,
           input.data.swift_conformance_filter,
           input.data.swift_class_address,
+          input.data.swift_type_address,
         );
         return ok(
           createAnalysisExecution(result, result.provider, {

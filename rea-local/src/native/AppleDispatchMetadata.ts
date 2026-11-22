@@ -1,3 +1,4 @@
+import { decodeSwiftTypeFields } from "./AppleSwiftFieldTypes.js";
 import { createHash } from "node:crypto";
 import {
   objcSwiftMetadataSchema,
@@ -42,6 +43,7 @@ export const decodeAppleDispatchMetadata = (
     readonly swiftConformanceAddress?: string;
     readonly swiftConformanceFilter?: NativeSwiftConformanceFilter;
     readonly swiftClassAddress?: string;
+    readonly swiftTypeAddress?: string;
   } = {},
 ): ObjcSwiftMetadata => {
   const {
@@ -50,7 +52,27 @@ export const decodeAppleDispatchMetadata = (
     swiftConformanceAddress,
     swiftConformanceFilter,
     swiftClassAddress,
+    swiftTypeAddress,
   } = selection;
+  if (
+    (facet === "swift-fields") !== (swiftTypeAddress !== undefined) ||
+    (swiftTypeAddress !== undefined &&
+      (swiftClassAddress !== undefined ||
+        swiftConformanceAddress !== undefined ||
+        swiftConformanceFilter !== undefined))
+  )
+    throw new AnalysisInputError(
+      "inspect_native_dispatch_metadata",
+      undefined,
+      [
+        {
+          path: ["swift_type_address"],
+          reason: "invalid_value",
+          message:
+            "facet swift-fields requires swift_type_address and cannot combine with class/conformance selectors.",
+        },
+      ],
+    );
   if (
     swiftClassAddress !== undefined &&
     (facet !== "swift-vtables" ||
@@ -111,7 +133,9 @@ export const decodeAppleDispatchMetadata = (
   for (const section of sections) {
     const requested =
       (section.name === "__swift5_types" &&
-        (facet === "all" || facet === "swift-vtables")) ||
+        (facet === "all" ||
+          facet === "swift-vtables" ||
+          facet === "swift-fields")) ||
       (section.name === "__swift5_proto" &&
         (facet === "all" || facet === "swift-conformances"));
     if (!requested || section.size === 0) continue;
@@ -347,6 +371,32 @@ export const decodeAppleDispatchMetadata = (
           exhaustive: true,
           issues: [],
         };
+  const fieldBudget = createBudget();
+  const fieldCoverage: ObjcSwiftMetadata["coverage"][number] =
+    swiftTypeAddress === undefined
+      ? {
+          facet: "swift_type_fields",
+          status: "not_requested",
+          reason:
+            "Field declarations require explicit facet swift-fields and swift_type_address; all retains inventory semantics",
+          examined: 0,
+          decoded: 0,
+        }
+      : decodeSwiftTypeFields({
+          bytes,
+          address: BigInt(swiftTypeAddress),
+          sections,
+          segments,
+          read: { ...readers, pointer: decodePointer },
+          relative: createSwiftRelativeReader({
+            bytes,
+            readers: { ...readers, pointer: decodePointer },
+            budget: fieldBudget,
+            result,
+          }),
+          budget: fieldBudget,
+          result,
+        });
   pushDispatchCoverage({
     result,
     facet,
@@ -359,6 +409,7 @@ export const decodeAppleDispatchMetadata = (
       objcCategories: objc.categoriesTruncated,
       swift: swiftBudget.truncated,
       vtables: vtableBudget.truncated,
+      swiftFields: fieldBudget.truncated,
     },
     fixups,
     vtables,
@@ -366,6 +417,7 @@ export const decodeAppleDispatchMetadata = (
     ...(resilient === undefined ? {} : { resilient: resilient.facts() }),
     ...(templates === undefined ? {} : { templates: templates.facts() }),
   });
+  result.coverage.push(fieldCoverage);
   return objcSwiftMetadataSchema.parse(result);
 };
 
@@ -379,6 +431,7 @@ export const inspectAppleDispatchMetadata = async (
   swiftConformanceAddress?: string,
   swiftConformanceFilter?: NativeSwiftConformanceFilter,
   swiftClassAddress?: string,
+  swiftTypeAddress?: string,
 ) => {
   if (target.kind !== "executable" || target.format !== "mach-o")
     throw new TypeError("Apple dispatch metadata requires a Mach-O target");
@@ -432,6 +485,7 @@ export const inspectAppleDispatchMetadata = async (
             ? {}
             : { swiftConformanceFilter }),
           ...(swiftClassAddress === undefined ? {} : { swiftClassAddress }),
+          ...(swiftTypeAddress === undefined ? {} : { swiftTypeAddress }),
         },
       ),
     });

@@ -23,7 +23,25 @@ export const inspectNativeDispatch = async (
   swiftConformanceAddress?: string,
   swiftConformanceFilter?: NativeSwiftConformanceFilter,
   swiftClassAddress?: string,
+  swiftTypeAddress?: string,
 ): EnhancedResult => {
+  if (
+    (facet === "swift-fields") !== (swiftTypeAddress !== undefined) ||
+    (swiftTypeAddress !== undefined &&
+      (swiftClassAddress !== undefined ||
+        swiftConformanceAddress !== undefined ||
+        swiftConformanceFilter !== undefined))
+  )
+    return err(
+      new AnalysisInputError("inspect_native_dispatch_metadata", undefined, [
+        {
+          path: ["swift_type_address"],
+          reason: "invalid_value",
+          message:
+            "facet swift-fields requires swift_type_address and cannot combine with class/conformance selectors.",
+        },
+      ]),
+    );
   if (
     swiftClassAddress !== undefined &&
     (facet !== "swift-vtables" ||
@@ -66,6 +84,9 @@ export const inspectNativeDispatch = async (
     {
       max_records: maxRecords,
       facet,
+      ...(swiftTypeAddress === undefined
+        ? {}
+        : { swift_type_address: swiftTypeAddress }),
       ...(swiftClassAddress === undefined
         ? {}
         : { swift_class_address: swiftClassAddress }),
@@ -86,6 +107,7 @@ export const inspectNativeDispatch = async (
       ),
     );
   if (
+    swiftTypeAddress !== undefined ||
     swiftClassAddress !== undefined ||
     swiftConformanceAddress !== undefined ||
     swiftConformanceFilter !== undefined ||

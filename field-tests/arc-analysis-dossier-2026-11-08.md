@@ -1114,3 +1114,31 @@ reducer is retained/exported behind a summary; the derived view's null profile
 is distinguished from its exact v10 source parent. No Arc or compiled fixture
 was executed. Full browser effects, higher restore caller/writeback and runtime
 dependencies, readback, durability and pixels remain unobserved.
+
+
+## Selected Swift closure-field declarations (2026-11-22)
+
+[The new field-type reader](arc-field-types-2026-11-22.md) closes one producer
+step of item 63. `UserDefaultsClient.boolForSetting` is now exact public Evidence
+for `@Sendable (ArcUserDefaultSettings) -> Bool`, parameter descriptor
+`0x103d41568`, zero payload / 297 empty cases. The selected index scan covers
+11,125 entries without unresolved identity. All 23 field records remain;
+four complete supported function shapes decode and nineteen types remain
+unsupported. This is a declared conditional case-ordinal domain, not a machine
+argument bound or a recovered helper table.
+
+Owned shared-code controls keep typed, raw/imported and same-name foreign-owner
+paths distinct. An enum return supplies no argument domain; optional, async,
+throwing, generic and zero-argument shapes stay unsupported. The existing
+metadata CLI/MCP surface gains an explicit `swift-fields` / `swift_type_address`
+query, excluded from `all` inventories. Field ordinals are not physical offsets;
+no code/CFG is mutated. Twenty successful public MCP calls, two expected invalid
+requests and two exact full-Evidence CLI comparisons pass, with exports and
+empty owned lineages. This is native byte-reader verification within
+Ghidra-selected sessions, not a new real-Ghidra-analysis qualification.
+
+Native argument lowering, exact typed root/physical selected field offset,
+closure code/context origin in closed memory windows, unchanged forwarding
+and the per-invocation observation carrier remain open. No target was executed.
+Broader browser/apply/UI routes, higher restore caller/writeback, active
+injection, actual readback/durability and pixels remain unknown.

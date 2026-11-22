@@ -3,6 +3,7 @@ import { nativeValueTraceInputSchema } from "../domain/native/nativeValueTrace.j
 import {
   nativeDispatchFacetSchema,
   nativeSwiftClassAddressSchema,
+  nativeSwiftTypeAddressSchema,
   nativeSwiftConformanceAddressSchema,
   nativeSwiftConformanceFilterSchema,
   nativeDispatchFileBudgetSchema,
@@ -16,6 +17,7 @@ const traceLiteralInputSchema = z.strictObject({
 export const enhancedInputSchemas = {
   trace_native_values: nativeValueTraceInputSchema,
   inspect_native_dispatch_metadata: z.strictObject({
+    swift_type_address: nativeSwiftTypeAddressSchema,
     swift_class_address: nativeSwiftClassAddressSchema,
     swift_conformance_address: nativeSwiftConformanceAddressSchema,
     swift_conformance_filter: nativeSwiftConformanceFilterSchema

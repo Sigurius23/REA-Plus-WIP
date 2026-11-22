@@ -1,0 +1,28 @@
+lint:   x eslint(max-lines-per-function): The function has too many lines (167). Maximum allowed is 150.
+lint:      ,-[src/native/AppleSwiftFieldTypes.test.ts:86:64]
+lint:   85 |     
+lint:   86 | ,-> describe("selected symbolic Swift closure field declarations", () => {
+lint:   87 | |     it("finds a late indexed owner before admission and decodes complete Sendable function shape", () => {
+lint:   88 | |       const f = fixture(),
+lint:   89 | |         result = inspect(f.bytes),
+lint:   90 | |         observation = result.swift_type_fields!;
+lint:   91 | |       expect(observation).toMatchObject({
+lint:   92 | |         matched: true,
+lint:   93 | |         index_entries: 3,
+lint:   94 | |         matching_index_entries: 1,
+lint:   95 | |         name: "Client",
+lint:   96 | |         declared_field_count: 1,
+lint:   97 | |         program_mutations: false,
+lint:   98 | |         decode: { status: "decoded" },
+lint:   99 | |       });
+lint:  100 | |       expect(observation.fields[0]).toMatchObject({
+lint:  101 | |         ordinal: 0,
+lint:  102 | |         record: { address: hex(0x810) },
+lint:  103 | |         name: "boolForSetting",
+lint:  104 | |         function_type: {
+lint:  105 | |           sendable: true,
+lint:  106 | |           result: { kind: "builtin", name: "Bool" },
+lint:  107 | |           parameter: { kind: "nominal", descriptor: { address: hex(0x600) } },
+lint:  108 | |           declared_argument_domain: {
+lint:  109 | |             lower_inclusive: 0,
+lint:  110 

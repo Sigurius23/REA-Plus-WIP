@@ -1,0 +1,32 @@
+
+> rea-agents@6.4.0 precheck:fast
+> npm run deps:check
+
+
+> rea-agents@6.4.0 deps:check
+> node scripts/check-dependency-install.mjs
+
+
+> rea-agents@6.4.0 check:fast
+> turbo run typecheck lint --output-logs=errors-only
+
+
+   • turbo 2.11.7
+   • Running typecheck, lint
+   • Remote caching disabled
+
+typecheck: cache miss, executing da327dd492f8b6e1
+typecheck: 
+typecheck: > rea-agents@6.4.0 typecheck
+typecheck: > tsc --noEmit
+typecheck: 
+typecheck: src/native/AppleSwiftVtables.test.ts(64,7): error TS2741: Property 'swiftFields' is missing in type '{ objc: false; objcCategories: false; swift: false; vtables: false; }' but required in type '{ readonly objc: boolean; readonly objcCategories: boolean; readonly swift: boolean; readonly vtables: boolean; readonly swiftFields: boolean; }'.
+typecheck: src/native/AppleSwiftVtables.test.ts(190,7): error TS2741: Property 'swiftFields' is missing in type '{ objc: false; objcCategories: false; swift: false; vtables: false; }' but required in type '{ readonly objc: boolean; readonly objcCategories: boolean; readonly swift: boolean; readonly vtables: boolean; readonly swiftFields: boolean; }'.
+typecheck:  ERROR  command (/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/) /usr/local/bin/npm run typecheck exited (1)
+
+ Tasks:    1 successful, 2 total
+Cached:    0 cached, 2 total
+  Time:    12.962s 
+Failed:    //#typecheck
+
+ ERROR  run failed: command  exited (1)

@@ -4,6 +4,16 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Selected Swift field types, item 63 partial (2026-11-22):** The existing
+  metadata tool now binds Arc's complete supported `boolForSetting` declaration
+  to its exact 297-case enum. Shared-code typed/raw/foreign-owner controls stay
+  distinct. All 23 field records are retained; nineteen field types remain
+  unsupported. Qualified CLI/MCP Evidence, explicit negative/error coverage,
+  124 affected source tests and cleanup pass. Native ABI lowering, typed
+  buffer/field offset, code/context origin and per-invocation dispatch remain
+  open; no helper-global CFG bound is installed. See the
+  [field-type checkpoint](field-tests/arc-field-types-2026-11-22.md).
+
 - **Static Swift witness data, item 64 (2026-11-21):** Implemented and
   qualified on unchanged Arc bytes. Inherited protocol and associated-type
   data retain typed identity/provenance separately from executable targets;
@@ -1626,6 +1636,24 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-22 field-type step implemented and verified; item remains open.**
+    The existing metadata tool's opt-in `swift-fields` facet with exact
+    `swift_type_address` now decodes selected reflection declarations and the
+    complete supported symbolic closure type. Public Arc evidence binds
+    `UserDefaultsClient.boolForSetting` to `@Sendable (ArcUserDefaultSettings)
+    -> Bool`, exact enum `0x103d41568`, zero payload / 297 empty cases.
+    All 23 field records are retained; four function types decode and nineteen
+    remain unsupported, so overall coverage stays partial. Owned merged
+    typed/UInt16/foreign-owner controls remain distinct, and an enum only in the
+    return type supplies no parameter domain. Verification includes 22 public
+    MCP calls (20 successful / two intentional invalid-input errors), two exact
+    CLI/MCP Evidence comparisons and empty owned lineages. No code/CFG mutation
+    or target execution. Native argument lowering, typed root/physical offset,
+    closed code/context origin, argument flow and per-invocation mapping carrier
+    remain open. Coverage ordering and shared-budget propagation regressions
+    were fixed before the qualified retest; 124 affected source tests pass.
+    See the [field-type report](field-tests/arc-field-types-2026-11-22.md).
+
     Open; actual Arc omission and owned compiler encoding controls retained.
     The anonymous Setting-to-key converter at `0x1005aa5e4` masks its input to
     16 bits, loads unsigned halfwords from `0x1036db410`, and dispatches relative
@@ -1654,8 +1682,10 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     CFG/table override. Implement an observation-only typed context first, or
     separately prove every entry's domain. Constructor output-pointer writes
     and an associated `Value` identity alone do not prove the constructor's
-    declaration. The enum-recovery class remains unchanged; the prior
-    102-case matrix was not repeated. See the
+    declaration. That earlier typed-design pass left the enum-recovery class
+    unchanged. The later prerequisite item 67 repairs hidden ABI frame escapes
+    and qualifies the v10 profile with all 110 native cases; it does not close
+    this typed-invocation gap. See the
     [Arc results](field-tests/arc-persistence-2026-11-21.md) and
     [bounded fixture/design](field-tests/arc-persistence-2026-11-20/halfword-fixture/DESIGN.md).
 

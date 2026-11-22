@@ -376,8 +376,27 @@ describe("native dispatch metadata requests", () => {
     });
   });
 
+  it("does not replace an indexed Swift field selection with symbol-only names", async () => {
+    const result = await new EnhancedTools(testAnalysis()).execute(
+      "inspect_native_dispatch_metadata",
+      { facet: "swift-fields", swift_type_address: "0x1000" },
+    );
+    expect(result).toMatchObject({
+      ok: false,
+      error: { _tag: "AnalysisCapabilityUnavailableError" },
+    });
+  });
+
   it.each([
     { swift_conformance_filter: {} },
+    { facet: "swift-fields" },
+    { facet: "objc", swift_type_address: "0x1000" },
+    { facet: "swift-fields", swift_type_address: "invalid" },
+    {
+      facet: "swift-fields",
+      swift_type_address: "0x1000",
+      swift_class_address: "0x2000",
+    },
     { swift_class_address: "0x1000" },
     { facet: "objc", swift_class_address: "0x1000" },
     { facet: "swift-vtables", swift_class_address: "0xnothex" },
