@@ -1766,3 +1766,29 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     Actual I/O/durability, complete restore ordering/caller behavior, item 63
     and broader browser features remain open. Item 47's generic-call warning
     remains explicit; no unsafe blanket x21/CFG repair was introduced.
+
+    **Restore/preview continuation (2026-11-22):** selected restore ordering is
+    now closed: stable descending `date ?? Date.distantPast`, with equal keys
+    retaining directory enumeration order. Prefix-based eligibility and the
+    first successful decoded backup return are traced. Neither the leaf nor
+    its queue callback requests a save; a higher invoking application caller
+    and later writeback remain open. Exact suffix collection import identities
+    also remain qualified.
+
+    The selected preview field returns `WebContent?` for a
+    `WebContentFrameIdentifier`. Exact metadata/ABI and saved pair flow bind
+    protocol-witness dispatch. The observed Chromium target calls
+    `captureViewport:` with an NSImage block; the selected Swift continuation
+    payload is NSImage?. A second observed local implementation is a return
+    stub. Partial discovery does not establish exhaustive implementations or
+    runtime selection/pixels. See the
+    [new report](field-tests/arc-restore-preview-2026-11-22.md) and its additive
+    interpretation, which supersede those two earlier narrow gaps.
+
+    **227/227 successful public replies** and **115 original-byte-matching
+    instruction probes** verify. The 199-call first session correctly reports
+    failed/partial after idle expiration; the fresh 28-call follow-up exports
+    and closes twice. Both owned lineages are verified empty. Item 66 behaves
+    correctly; no new production REA+ defect was established. Item 63,
+    higher restore caller/writeback, full apply/UI/browser coverage and runtime
+    I/O/durability remain open. No target was executed.

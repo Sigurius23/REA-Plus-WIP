@@ -1,0 +1,3244 @@
+{
+  "kind": "arc-independent-restore-order-resolution",
+  "date": "2026-11-22",
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "supersedes_only_prior_gaps": [
+    "Publicqueuecallbackboundary",
+    "Recordeligibility/date-selectionhelpers",
+    "Comparatorandnormal-sortorder/stability"
+  ],
+  "preserved_prior_review": {
+    "path": "field-tests/arc-restore-preview-2026-11-22/restore-review.json",
+    "sha256": "02cc91e8ef56e7f681648d580c9faa0cb9679cc3e3355825be93226344c7a5a7",
+    "markdown_sha256": "70dd414b169a7f9baa7bcd470bf71e73e219524142bc31d5c404f379868bcbc0",
+    "modified": false
+  },
+  "premises": [
+    "Valid stable Swift type/object/value storage and normal ARM64 Swift ABI/self/context/result/error conventions as traced at the actual callers.",
+    "Normal Swift value-witness and array-copy/move behavior; normal helper returns and a strict-weak-ordering comparableDate domain.",
+    "No active injected dependency, directory listing, filesystem readback or restored-state observation.",
+    "Code names/pseudocode alone are not used to invent order, tie-breaks or error semantics."
+  ],
+  "facts": [
+    {
+      "id": "F01",
+      "classification": "observed-public-code-and-metadata-with-normal-Swift-ABI-derivation",
+      "claim": "Record is StorableFile with reflected fields url,isBackup,date. Descriptor declares3fields and UInt32 field-offset vector at metadata word2. Classifier stores URL atrecordbase, isBackup atrecord+i32(metadata+0x14), and optionalDate atrecord+i32(metadata+0x18); no concrete runtime offset values are claimed.",
+      "sources": [
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S05"
+      ],
+      "anchors": [
+        "100db84f4..100db8504",
+        "103d653d4",
+        "103e98560",
+        "100dc1708..100dc1730",
+        "100dc17c8..100dc17d0"
+      ]
+    },
+    {
+      "id": "F02",
+      "classification": "observed-instructions-and-conditional-ABI-derivation",
+      "claim": "LetB=originalURL.deletingPathExtension().lastPathComponent andN=candidateURL.lastPathComponent. Classifier returnsnone unlessN.hasPrefix(B). For acceptedURL, isBackup is (candidateURL.deletingPathExtension().lastPathComponent != B). It does not require successful date decoding; no additional extension/separator check appears in this classifier body.",
+      "sources": [
+        "S01",
+        "S05"
+      ],
+      "anchors": [
+        "100dbeab4..100dbeac4",
+        "100dbeef4..100dbef04",
+        "100dc16c8..100dc1700",
+        "100dc1738..100dc17d0"
+      ]
+    },
+    {
+      "id": "F03",
+      "classification": "observed-physical-code-and-selector-bytes",
+      "claim": "Date selection first invokes100dc124c with candidateURL and implementation.dateFormatter. Its String construction scans backward in the last component after deleting the final extension, stopping at a period, and passes the constructed String todateFromString:. On parseabsence100dc1814 invokesattributesOfItemAtPath:error:, looks upNSFileCreationDate, and attempts anAny->Date cast. Missing/differentlytyped attribute or attribute-read failure yields nil; error is released. The exact nested reversed-collection type/character order of first-stage suffix extraction is a remaining public-type-binding boundary.",
+      "sources": [
+        "S06",
+        "S07",
+        "S08",
+        "S09",
+        "A0",
+        "A1",
+        "A2",
+        "K0",
+        "K1",
+        "K2",
+        "T0",
+        "T1",
+        "T2"
+      ],
+      "anchors": [
+        "100dc18c0..100dc18f0",
+        "100dc1318..100dc13ec",
+        "100dc1404..100dc1418",
+        "100dc1940..100dc1ad4"
+      ]
+    },
+    {
+      "id": "F04",
+      "classification": "observed-instructions-and-imported-operation-binding",
+      "claim": "Comparator100dc1ff8 returns (lhs.date ?? Date.distantPast) > (rhs.date ?? Date.distantPast). Firstargumentdate is materialized atx23, secondargument atx22; those addresses become x0,x1 atGreaterThan call103639334. It compares no filename or backup flag. Equal normalized dates comparefalsebothways; nil ties with a real distantPast, and is not unconditionally less than every possible realDate.",
+      "sources": [
+        "S10",
+        "S11"
+      ],
+      "anchors": [
+        "100dc20e4..100dc2168",
+        "100dc216c..100dc21f4",
+        "100dc2218..100dc2248"
+      ]
+    },
+    {
+      "id": "F05",
+      "classification": "derived-static-normal-return-sort-proof",
+      "claim": "Insertion branch compares currentrecord topreviousrecord and swaps only when comparatorbit0istrue. WithDate> it sorts descending and leaves equal normalized keys in their input order. The run builder uses the same true-only insertion extension.",
+      "sources": [
+        "S12",
+        "S14",
+        "S13"
+      ],
+      "anchors": [
+        "100dc2320..100dc2334",
+        "100dc2ca0..100dc2d50",
+        "100dc28c4..100dc2984"
+      ]
+    },
+    {
+      "id": "F06",
+      "classification": "derived-static-normal-return-sort-proof",
+      "claim": "Runbuilder compares next,current at100dc25a0/262c and extends a run while resultbit matches the initialbit. Reversal is guarded by initialtrue at100dc26a0, so reversed runs are strictly comparator-true and contain no equal keys; false runs, including equals, are not reversed.",
+      "sources": [
+        "S13"
+      ],
+      "anchors": [
+        "100dc255c..100dc25a0",
+        "100dc261c..100dc2670",
+        "100dc269c..100dc27a4"
+      ]
+    },
+    {
+      "id": "F07",
+      "classification": "derived-static-normal-return-sort-proof",
+      "claim": "Forward merge compares righthead,leftbufferhead and selectsleft whenfalse, so equal keys retain leftbeforeright. Backward merge compares rightbuffertail,lefttail and selectsright for the later output position whenfalse, again preserving original leftbeforeright order. Dispatcher merges adjacent indexed runs.",
+      "sources": [
+        "S16",
+        "S17",
+        "S15",
+        "S13"
+      ],
+      "anchors": [
+        "100dc32d4..100dc3304",
+        "100dc3334..100dc33e8",
+        "100dc34b8..100dc3504",
+        "100dc353c..100dc35c8",
+        "100dc2a48..100dc2a80",
+        "100dc2d7c..100dc3000"
+      ]
+    },
+    {
+      "id": "F08",
+      "classification": "observed-public-instruction-probes-and-normal-runtime-move-semantics",
+      "claim": "Residual helper100dc36dc computes (bufferEnd-bufferCursor)/stride, then tailcalls Swift arrayInitWithTakeBackToFront orFrontToBack for overlapping/disjoint storage, or returns when cursors equal. It performs no comparisons/permutation; normal Swift move semantics preserve residual sequence. All44probes through3788 match exact original sourcebytes.",
+      "sources": [
+        "R00",
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12",
+        "R13",
+        "R14",
+        "R15",
+        "R16",
+        "R17",
+        "R18",
+        "R19",
+        "R20",
+        "R21",
+        "R22",
+        "R23",
+        "R24",
+        "R25",
+        "R26",
+        "R27",
+        "R28",
+        "R29",
+        "R30",
+        "R31",
+        "R32",
+        "R33",
+        "R34",
+        "R35",
+        "R36",
+        "R37",
+        "R38",
+        "R39",
+        "R40",
+        "R41",
+        "R42",
+        "R43",
+        "S17"
+      ],
+      "anchors": [
+        "100dc36ec..100dc3724",
+        "100dc3728..100dc3780"
+      ]
+    },
+    {
+      "id": "F09",
+      "classification": "derived-static-normal-return-composition",
+      "claim": "Under ordinary comparableDate, validbounds/type/storage, value-witness/Swift array-move semantics and normal returns, this enumeration path stably sorts by descending normalizedDate. Ties preserve the relative order supplied bycontentsOfDirectoryAtPath:error: through order-preserving URL/record filtering. That concrete enumeration sequence was not observed; no filename tie-break or actual chosen backup is established.",
+      "sources": [
+        "S01",
+        "D0",
+        "D1",
+        "D2",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "R00",
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12",
+        "R13",
+        "R14",
+        "R15",
+        "R16",
+        "R17",
+        "R18",
+        "R19",
+        "R20",
+        "R21",
+        "R22",
+        "R23",
+        "R24",
+        "R25",
+        "R26",
+        "R27",
+        "R28",
+        "R29",
+        "R30",
+        "R31",
+        "R32",
+        "R33",
+        "R34",
+        "R35",
+        "R36",
+        "R37",
+        "R38",
+        "R39",
+        "R40",
+        "R41",
+        "R42",
+        "R43"
+      ]
+    },
+    {
+      "id": "F10",
+      "classification": "observed-instructions-and-conditional-ABI-derivation",
+      "claim": "Queuecallback100dc4378 loads implementation-object and forwarded argument fromcapture+0x10/+0x18, placesobject inSwiftselfx20 andcalls100dbe518 with the original resultbuffer. It restoresincomingx21 aftercall and adds no save call. Restoreleaf checksisBackupbit, tries increasing sorted indices with readflag0, releasesper-candidateerrors, returnsfirstpresent decodedvalue ornone. Selected highercaller/writeback and actual restoredstate remain unproved.",
+      "sources": [
+        "S03",
+        "S04",
+        "S02"
+      ],
+      "anchors": [
+        "100dc4384..100dc43a0",
+        "100dbe718..100dbe798",
+        "100dbe7b0..100dbe83c"
+      ]
+    }
+  ],
+  "normal_sort_proof": {
+    "ordering_key": "date ?? Date.distantPast",
+    "strict_relation": "lhsKey > rhsKey",
+    "run_normalization": "Only strictly comparator-true runs reverse; ties stay in nonreversed runs.",
+    "insertion": "Swaps onlytrue; no equal swaps.",
+    "merge_forward": "On equal, chooses earlier(left)run at earlier output position.",
+    "merge_backward": "On equal, chooses later(right)run at later output position.",
+    "residual": "Order-preserving block moves.",
+    "conclusion": "Stable descending normalizedDate under the stated normal-return/runtime-semantics premises; concrete equal-key order depends on unobserved directory enumeration."
+  },
+  "source_index": [
+    {
+      "id": "S04",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc4378-read_function_instructions.evidence.json",
+      "evidence_id": "ev_e7a9bf5c07e9fee3d1b7a4b75297c07db668561a8c9936e2eedd374f0b67fd32",
+      "sha256": "530cddcddc06bd3a9c635a77a794e041b74320cab9ac081583edf4b6b70a182f",
+      "bytes": 8150,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dc4378"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc4378-read_function_instructions.reply.json",
+        "reply_sha256": "0caf0abd1c962f8ad6fc688b2b796eb45c18361b47ff8bcab26c7570556ad49a",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "048c32caa8ae175791a58329b6fc7f0eb70c12b8f6f84b480a594237c3d25e60",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S05",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc1658-read_function_instructions.evidence.json",
+      "evidence_id": "ev_aace9d31b261a38c2b706ab85996dacd43581188c30d68e5b3e46b146c0ffd7c",
+      "sha256": "a54fa1ee4eaff841c2d1eb14c766ea7db1a97a465b421ebbb800a10206a7a205",
+      "bytes": 15902,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dc1658"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc1658-read_function_instructions.reply.json",
+        "reply_sha256": "773d2c87e0518c3ff2fe97e583831fe40902620b4fea7ea00c6d22eacbfe5685",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "6b3afef8bb8a508ad4ec9fbd539ac6aa61af080eaccfc30e456500da69baf2b2",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S06",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc1814-read_function_instructions.evidence.json",
+      "evidence_id": "ev_195b71866f44566f7a48f401a00d83b8fd3931ee8061927f46704143234de450",
+      "sha256": "b959791019cb7ba104bde7783d1c6fa37b68d075309c33c2d2b3da5d07cc5577",
+      "bytes": 25876,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dc1814"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc1814-read_function_instructions.reply.json",
+        "reply_sha256": "f4a87608180940bf6c1245521ca6f56b9d607c87a316f75d4d2906050a95b276",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "dec67cd317cfc58f4f11989537399176cfab09810e2755c8fa51804da22deae0",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S08",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc124c-read_function_instructions.evidence.json",
+      "evidence_id": "ev_bd64f31fc6a5397a420be887ef7e05e892f70b1f0bec18cbb3f9f1a1719a654c",
+      "sha256": "2b7036011dc889d3107369e7e3feb2b984a21e0a5f295e58ece58f7a97e4a985",
+      "bytes": 18740,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dc124c"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc124c-read_function_instructions.reply.json",
+        "reply_sha256": "480023b6e8af745f0735c1f2d69667fd30db74c67a7620b8d9d55656a1ce88e9",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "235b92d4992cb08155ffdeae09c35c91b9c8a350ffe7124298bf0b3bdce24316",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S10",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc1ff8-read_function_instructions.evidence.json",
+      "evidence_id": "ev_5b71dac69f1a19cc8f9617e7cd0568da7ae84f453b418c9c5c18cf41f5a39b62",
+      "sha256": "ca4d6fea58b089f9abc414b835e01b7e813e22ecb30538447a2ec7f91ec91ba0",
+      "bytes": 19626,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dc1ff8"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc1ff8-read_function_instructions.reply.json",
+        "reply_sha256": "38434c0027fcf7dc16fdacc76ed087088b56d1910c739eaa7edb17a27ba493e8",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "3c3c34491b2d20fadf20fc48d47aeb3b6eab949135b260f30c07ee33daeb7c09",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S12",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc2270-read_function_instructions.evidence.json",
+      "evidence_id": "ev_09b7330749b6fe81b4bc54aa939fb9dc37f3638b91f3e266611078d3347eea6e",
+      "sha256": "dac8a828a79e1ccf8da924f65b474cc6e38f15a6854b470c974de4d9f6b35b6c",
+      "bytes": 13720,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dc2270"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc2270-read_function_instructions.reply.json",
+        "reply_sha256": "5076c882737ae04236683861790ccded6b8bb124deec53f90d0ab4c43c0155b7",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "3bbaaca0ed286a81903d7033cc7c5108ff9796e5fc42ba2df5a040862d23f131",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S13",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc23b4-read_function_instructions.evidence.json",
+      "evidence_id": "ev_4c4a48a3bf0fc2fb1e3d5d382713198dd91ae1fc9f9abfb281ab711c0a84886e",
+      "sha256": "1b7800b6ad794e3ab381698de94d98adb4fe9d85f1d6f3f3d8c270f5819a9294",
+      "bytes": 47390,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dc23b4"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc23b4-read_function_instructions.reply.json",
+        "reply_sha256": "6e5003c5a3d20d48d18fc22da55498674c5fe23efb5e7f9e29360587201c91c0",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "3e660eb47c497cf1c5fe62c0680b90bcb872af510f88f0f34d7f679bfc10768d",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S14",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc2b88-read_function_instructions.evidence.json",
+      "evidence_id": "ev_a69fdc172652c99bac4475374e68a148e2bdfafcb3d90958908a3f69e7cc3565",
+      "sha256": "c939ecfd42a665e7d9077df10db50f238f6ab3be63d8ada675c75741fa0cae01",
+      "bytes": 17282,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dc2b88"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc2b88-read_function_instructions.reply.json",
+        "reply_sha256": "cf71ec4f16afc72ae72c19ef70f1f4cabc60b99b2d718103f0fa1fade06dcf5c",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "557d3c1f84988a96a1a69dd597a1b4dd09723103977eea09ba47c451f156750d",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S15",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc2d7c-read_function_instructions.evidence.json",
+      "evidence_id": "ev_120dad6c75c1ecf5db9c78bfb0830002ee882932541255e00ced4939bfd63a0b",
+      "sha256": "ba9d57ec8010cfa6f0ed522da8f2b74762c5ef71adbf2204f453b7cba8daf0e9",
+      "bytes": 20340,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dc2d7c"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc2d7c-read_function_instructions.reply.json",
+        "reply_sha256": "c7c651289004a2ddd9911ce680a074c6e129324825a74ef54b31a738759ccb8a",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "7a7bc735fa8988aba68d4ab6838fbea8e54dd94489b29b64962e1229e37ca874",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S16",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc3104-read_function_instructions.evidence.json",
+      "evidence_id": "ev_f9911b623e337c371a88e63d47b7ea693db563f6741967d5ffd01e59f0ae333a",
+      "sha256": "719a1d45cca2206589519b19065b56dc54ecf6f22b5ea6c059f9f1377ada3cb4",
+      "bytes": 34280,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dc3104"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc3104-read_function_instructions.reply.json",
+        "reply_sha256": "9421b341bf0284f15c6bf29a80fceb9098dfb66886eff97318872e51c847d96f",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "66b76d13a33911359e42aa55d816716a2c9dc4f21f43893df6b7c367c919dec0",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S18",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100db84f4-read_function_instructions.evidence.json",
+      "evidence_id": "ev_ecd4c048af5fc21b734e83534c393a3b3e4777bedacbd6b8c6d51699d08c5474",
+      "sha256": "db7c74c0fd9d35a88715492fd60675d21bd7e332e56086e38d5c23ae022bd65d",
+      "bytes": 7648,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100db84f4"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100db84f4-read_function_instructions.reply.json",
+        "reply_sha256": "d97d802d5571332b567976fabac29a91cf31de652d07dcac0ec21562ee17b8d8",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "a497424c06ac6e34194ff11b6cb4fea5497157745640395672feda34aede4f4e",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S07",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc1814-procedure_pseudo_code.evidence.json",
+      "evidence_id": "ev_4fe9b45ba4f1d4fcd8407be0a43b5c9f6b60a51f23478990729d2dd1f282db58",
+      "sha256": "51a1eab6d7efc807c82eb2948db7319a59685fca4aac48dcf403b8568941d576",
+      "bytes": 14994,
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x100dc1814"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc1814-procedure_pseudo_code.reply.json",
+        "reply_sha256": "b2dd3c1e7ea6f8b0d74bac9560403d5407d4b248733d839493098ed9b96fc822",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "61f4add2ac852f29a17068cc5487581875c87a63e3dbbbc99a8697b0330828d0",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S09",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc124c-procedure_pseudo_code.evidence.json",
+      "evidence_id": "ev_6194258bc05674328a5db50e46fb02b6d5a6642e57a24830255190b9c172a9df",
+      "sha256": "4cfbaca3e7acebafeff203a27eec744f6af260355642bda8a79f1534dc011926",
+      "bytes": 13234,
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x100dc124c"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc124c-procedure_pseudo_code.reply.json",
+        "reply_sha256": "b9ca3921bc180b10f34a64f34f4f2f7f36596a06ba46d8cf28d800af1e225f1c",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "29762836c0f941d8e81bd9af386598562ee72810b48c20656a05bf75ea9646d6",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S11",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc1ff8-procedure_pseudo_code.evidence.json",
+      "evidence_id": "ev_48eac16e7b61775e8b85f2443c59208e5aef5a2206ee61f98b8fe65e57243538",
+      "sha256": "bf457aaf90bea70ba884467af3498e62a8e583381ab1110b896c5b6a35c4d4ed",
+      "bytes": 11648,
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x100dc1ff8"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc1ff8-procedure_pseudo_code.reply.json",
+        "reply_sha256": "2b2d78bd62a480457534d52a9f902454202686a46b0d21e7241cca242e8cc057",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "6299d6617f0a6f868b2d39ad6c77ca8b026a6a58b24f0227a1ff6ded9a013759",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S17",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc3104-procedure_pseudo_code.evidence.json",
+      "evidence_id": "ev_1e8aa6b485f5c180807eaff9e25c0c65fc2fb68132c91292ba4bd68724755cdc",
+      "sha256": "fc1388ed5185824ca1701822e80e4351bce26ea23c343f81a27860e34046a988",
+      "bytes": 19116,
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x100dc3104"
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/0x100dc3104-procedure_pseudo_code.reply.json",
+        "reply_sha256": "0cba6784d41672733d36e586539bfca93aeeec41f283cae911410ff05a56dde1",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "1781572b775457d91ef8be871f58f300a5bfe5e2c44f70a571aa02cb3d166a31",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S19",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/storable-file-descriptor.evidence.json",
+      "evidence_id": "ev_b3a6b1d66d95aba07004adfc792b540b1995e7b7eb82e7bd2ceef76ca412cba2",
+      "sha256": "cbacf5ef8f1ff146aaf1039d295146f881ccea8f74f7514e1da4d66514d19c45",
+      "bytes": 5756,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103d653d4",
+        "length": 28
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/storable-file-descriptor.reply.json",
+        "reply_sha256": "003826abac297556ed53012e6b3bf954565c3be407289ed6ee063195a42e4f1b",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "4c9dd5b40dc441615ac7c4d133ecb2c0305ee1f61e8a6fe4c6017d287906ed44",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-bytes",
+          "address": "0x103d653d4",
+          "length": 28
+        }
+      }
+    },
+    {
+      "id": "S20",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/storable-file-fields.evidence.json",
+      "evidence_id": "ev_f917f6f13b6294cc5493c3970c3b1e355c3c2c7d566d9e46f9a13b4e7ae08a51",
+      "sha256": "54ad7a3b7f85a381fb0d5f908715d2788c6882b9339a2f68d5060c41f95a726d",
+      "bytes": 5852,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103e98560",
+        "length": 52
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/storable-file-fields.reply.json",
+        "reply_sha256": "c4dedee6928c40a82cb3e46854b52064d368553527b18f78d9a92fc0ed47a522",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "972abaed389fdc53b6e7b115b446e8fbf3e278240f99736ee10deb1a48d74005",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-bytes",
+          "address": "0x103e98560",
+          "length": 52
+        }
+      }
+    },
+    {
+      "id": "S21",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/storable-file-name.evidence.json",
+      "evidence_id": "ev_a62624a3a5b54ba900bcf5b7c91e2dbcbca73c08c62817dd5ef68b91e9e8e2a6",
+      "sha256": "0761059eb2801efd02bd18da8d551b129df31f421613a99aa0a8af59cf6e9957",
+      "bytes": 5696,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x10373f162",
+        "length": 13
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/storable-file-name.reply.json",
+        "reply_sha256": "63a150af06fd7c5cf4e31ebbe1373707a10a698e13ab86a26dec5b8b086c7df9",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "a24b7d24b1acb19e229f1b676d7b14bf40149ef9b03746a991121c54847dbcbc",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-bytes",
+          "address": "0x10373f162",
+          "length": 13
+        }
+      }
+    },
+    {
+      "id": "S22",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/storable-file-field-names.evidence.json",
+      "evidence_id": "ev_b35d01793d7fa4037c119b34140bea4f3cc6dc4c9e2f1fc5f034ee10d5e4c0a3",
+      "sha256": "37ed22f32b98a871f058c495b086cd9a0debbc72d62515230a2feca994dc88a1",
+      "bytes": 5716,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103e04044",
+        "length": 18
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/storable-file-field-names.reply.json",
+        "reply_sha256": "3c8dc337071568b77ceb1a210d3317d58ff4dcc65bfe0427c84f16cc02ebee19",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "aa208edb0068957fdfb34edc81a699e13f0380087d7b6b282d310fc5660409b8",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-bytes",
+          "address": "0x103e04044",
+          "length": 18
+        }
+      }
+    },
+    {
+      "id": "D0",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-enumeration-stub.evidence.json",
+      "evidence_id": "ev_73a3c82e2b736123e0b201bd5f8db0c1eb9a9d90708100bd4652f3a9aa305133",
+      "sha256": "c7b9cd4fd4796fd07cf18ff7fc453d940aad8219c781cc7ea595a919cf3208da",
+      "bytes": 5772,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103647a40",
+        "length": 32
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-enumeration-stub.reply.json",
+        "reply_sha256": "1f1535b2a1df809892b10686ef40035cca574ee7c5638655baefb943f1f6e286",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "894d1bc92aec518e5ce8fa8de255dcd945d2c0254a78ff897d0599fa2c023b3f",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-bytes",
+          "address": "0x103647a40",
+          "length": 32
+        }
+      }
+    },
+    {
+      "id": "D1",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-enumeration-selector-slot.evidence.json",
+      "evidence_id": "ev_2b8c24e40ffc64210b306de92f9063d2cdc5bdaba10643154e8de9749cbb686d",
+      "sha256": "701b871b0c51a9021f0b065d517976c490e177be1edb8195f04d4f19b800064e",
+      "bytes": 5671,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x104541d10",
+        "length": 8
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-enumeration-selector-slot.reply.json",
+        "reply_sha256": "30adfb52ae82bd91d80c22c13338aa56c36a43cf056fae64a77715927447e504",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "4d907cc52d86bba1b2db99e2feeb886359236336dcadfb1c75c5b45ccca2209a",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "rebased-program-pointer-matches-original-chained-fixup-target",
+          "address": "0x104541d10",
+          "original_stored_word": "0x10000003fa7f0a",
+          "program_pointer": "0x103fa7f0a",
+          "premise": "DYLD_CHAINED_PTR_64_OFFSET local unauthenticated rebase, as source image format and previous pointer-fixup Evidence establish"
+        }
+      }
+    },
+    {
+      "id": "D2",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-enumeration-selector.evidence.json",
+      "evidence_id": "ev_47f47ebe66a739f3b941a74246cd0211106009fc9add6aef26dd2eb0d53608d5",
+      "sha256": "0947ff342781d52390ec1af2454cb159496953d02903b98c00ca163865376b29",
+      "bytes": 5776,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103fa7f0a",
+        "length": 33
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-enumeration-selector.reply.json",
+        "reply_sha256": "0be07931947532e2d83164b717a2959405454382a6f791381303190e2db4f341",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "e3ed4230e3d70eb5d13aa7b22411e73973f455025aedb5421a586013fe2fa77b",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-bytes",
+          "address": "0x103fa7f0a",
+          "length": 33
+        }
+      }
+    },
+    {
+      "id": "A0",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-file-attributes-stub.evidence.json",
+      "evidence_id": "ev_75484f5fe8ec544d0674e14f46df0423628b44caa1e020e5cc10c029c043b7a9",
+      "sha256": "dbd76dd86f83dd27403fd3cf38255486cace454f44498f8f8f8f11bde03334f4",
+      "bytes": 5772,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103643bc0",
+        "length": 32
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-file-attributes-stub.reply.json",
+        "reply_sha256": "34f7e96e8c555b123347f1537433a9a6dc7cd0e09245e7394052c7c2d77a13d2",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "cf0246fbe485238b0676410cf5ca8ff0c46c5db1d8ca4504d52177d8bf0be57e",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-bytes",
+          "address": "0x103643bc0",
+          "length": 32
+        }
+      }
+    },
+    {
+      "id": "A1",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-file-attributes-slot.evidence.json",
+      "evidence_id": "ev_fc88ad8f1025781a31cbaa0a774efe6af65939ccff00db35e503193f17a2820c",
+      "sha256": "ddc36ddc1b62c3683255fda49f91c5cfbee381c2f8c66bc7dfdbf4a465251768",
+      "bytes": 5671,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x104540d70",
+        "length": 8
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-file-attributes-slot.reply.json",
+        "reply_sha256": "c793b306f46232822e284c0400d7e967237a34de09451077e6d6787bf9fb153b",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "89979d94b6fe0b5bb0745db0482da68d71d8b95f08453b1f8ef0c6cd6b900b52",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "rebased-program-pointer-matches-original-chained-fixup-target",
+          "address": "0x104540d70",
+          "original_stored_word": "0x10000003fa191e",
+          "program_pointer": "0x103fa191e",
+          "premise": "DYLD_CHAINED_PTR_64_OFFSET local unauthenticated rebase, as source image format and previous pointer-fixup Evidence establish"
+        }
+      }
+    },
+    {
+      "id": "A2",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-file-attributes-selector.evidence.json",
+      "evidence_id": "ev_29c46d0a2d03c16d889606a0d2fe66823b2edebcb3c1760a024ce8e9e8e87f0d",
+      "sha256": "0ea0705d5a5804041e60182afe7d3d6c9e577d9ea385ee4b54caaa4f4dcf6543",
+      "bytes": 5764,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103fa191e",
+        "length": 30
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-file-attributes-selector.reply.json",
+        "reply_sha256": "96d2d9e55cfe963d1492a97679f5e106eb99fb14fe5638c8a6911efc5dcfd6e3",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "62e62a237c985e688225c3846768478ec251b95271ae3dc48116926f92704da7",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-bytes",
+          "address": "0x103fa191e",
+          "length": 30
+        }
+      }
+    },
+    {
+      "id": "K0",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-attribute-lookup-stub.evidence.json",
+      "evidence_id": "ev_0e42c1583325a8750b9119d5dc94875e7cc9301a3a8569e0402c500151b231fe",
+      "sha256": "c7204a43c86959329e9a22ce639f34230606afa4788c3a70e7831c31829784ab",
+      "bytes": 5772,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103641500",
+        "length": 32
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-attribute-lookup-stub.reply.json",
+        "reply_sha256": "dc06bc7d5b45d6761da40c5ac716e7fd8b5a05b0d2d9415bffa81228f43b584f",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "4d47179c227e60a5a21fd8ea19764d9296f562c824e54ddf6e4107c3572b57c8",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-bytes",
+          "address": "0x103641500",
+          "length": 32
+        }
+      }
+    },
+    {
+      "id": "K1",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-attribute-lookup-slot.evidence.json",
+      "evidence_id": "ev_0a23d3e69aff09ef54480134b4fa38c39f687f9a386159cb3891d465b932d82f",
+      "sha256": "96803bd126c678aa8abb948c6343ca8ed63a1513c6153e2806850a9e6e85a4b8",
+      "bytes": 5671,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x1045403c0",
+        "length": 8
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-attribute-lookup-slot.reply.json",
+        "reply_sha256": "0604d8147e1ebd4036d98ffc0aef3f0b880fe456201d15dbb1d249902acebdc3",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "581d1075bc5eecf5d4e091cb54d336e6bf49158bb5094b5d70a1c6edb8da7bb2",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "rebased-program-pointer-matches-original-chained-fixup-target",
+          "address": "0x1045403c0",
+          "original_stored_word": "0x10000003f97f07",
+          "program_pointer": "0x103f97f07",
+          "premise": "DYLD_CHAINED_PTR_64_OFFSET local unauthenticated rebase, as source image format and previous pointer-fixup Evidence establish"
+        }
+      }
+    },
+    {
+      "id": "K2",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-attribute-lookup-selector.evidence.json",
+      "evidence_id": "ev_b0df1a246ae5cca3c3cf862f494739c386f8bee0c456dc546233b4ae36681dbf",
+      "sha256": "5f229226792b51d8eb114d7f02f38bcad408dfd041f32ae891f4f3cfeeaeb650",
+      "bytes": 5776,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103f97f07",
+        "length": 33
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-attribute-lookup-selector.reply.json",
+        "reply_sha256": "8653d26e47c08a1d6605e8982f3946a7a7244625e00210d47d452fd995dbf3ca",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "7f9b11d67b74da343bf29455295848d65699ffd6412ad1c714a0f7dca5360a63",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-bytes",
+          "address": "0x103f97f07",
+          "length": 33
+        }
+      }
+    },
+    {
+      "id": "T0",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-date-parser-stub.evidence.json",
+      "evidence_id": "ev_24d8ae666877daaa814b8567704fdd85b490f1351489646297afb002ff99cb51",
+      "sha256": "a6f4820acd4366ea7ded73396227a17cc7c75232f9c62a002424e1f5ccdce3a3",
+      "bytes": 5772,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x1036492c0",
+        "length": 32
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-date-parser-stub.reply.json",
+        "reply_sha256": "b956d1c54f48bb914f6d3bf5a2dc4c6ae3edfc573c53b31431dddf6c82c3abbc",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "163726fe836ab1ee89c5f16da24d66b57badcc7c37ee1dcd7b4e5cf2f548344d",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-bytes",
+          "address": "0x1036492c0",
+          "length": 32
+        }
+      }
+    },
+    {
+      "id": "T1",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-date-parser-slot.evidence.json",
+      "evidence_id": "ev_ece7885fdaa3f258522813ea854631a4fff5483df249cb2170becf31adba4e20",
+      "sha256": "d96ae240e032c864caae3c7ded321de9a66eb16096369c7aca76b04f4150c882",
+      "bytes": 5671,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x104542330",
+        "length": 8
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-date-parser-slot.reply.json",
+        "reply_sha256": "0c4363f958c42e96956c52a4076916ec50d5872db92e595dbecad121b74dfa0d",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "6c8dfc4190a05b8196b45df90bff7243cf845cc42a5192b708fa018399f55958",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "rebased-program-pointer-matches-original-chained-fixup-target",
+          "address": "0x104542330",
+          "original_stored_word": "0x10000003f8df61",
+          "program_pointer": "0x103f8df61",
+          "premise": "DYLD_CHAINED_PTR_64_OFFSET local unauthenticated rebase, as source image format and previous pointer-fixup Evidence establish"
+        }
+      }
+    },
+    {
+      "id": "T2",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-date-parser-selector.evidence.json",
+      "evidence_id": "ev_fb9ddcfd506eb0f45053ded094ec2648e7e7d5dc79a8f03ca20dd2858158c082",
+      "sha256": "5e3c338cb7503f5b25062cf54bfbd8bb03d52daec07183b8e8d586728e768cb4",
+      "bytes": 5708,
+      "operation": "read_bytes",
+      "parameters": {
+        "address": "0x103f8df61",
+        "length": 16
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-date-parser-selector.reply.json",
+        "reply_sha256": "6a1fba6c1777fa6069ceb4b5c44c7fb2a0be6235077246191a8a16183e6a1b16",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "d5aa7850c4da15d09e6b944f398f409232f89c6ae4e68304ace3973321341beb",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-bytes",
+          "address": "0x103f8df61",
+          "length": 16
+        }
+      }
+    },
+    {
+      "id": "R00",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36dc.evidence.json",
+      "evidence_id": "ev_6953461eee2e554b91268d41d92480c14e44f156199252ce91caf54894a2fe28",
+      "sha256": "0a9563115bf41fe35753a65630c6fa0ac5565bfb6ab7590161381b9db59d6f0c",
+      "bytes": 12520,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc36dc",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36dc.reply.json",
+        "reply_sha256": "146a8918d9f7ccdeb5123eb972d27181553479b3cbb21ae172718e63ccf9da97",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "abae8a33b6273e4f28155c63ebbd3473f89e24d794602406f350fe6469518bb4",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc36dc",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R01",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36e0.evidence.json",
+      "evidence_id": "ev_3e8f3dfc31e2cef51bb12c28aad5a6f4a61a344feecc2da08df3ea7af67a687f",
+      "sha256": "c3c706991eaef34b812c183c14e0ea4e7a1ceef2ca3d4779ef16dd3b28c8851a",
+      "bytes": 9886,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc36e0",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36e0.reply.json",
+        "reply_sha256": "4fc3af4e10b047e57c3cd7bfdef9e5e8a3a4ba79e877f249d1d681420de19dd5",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "6499deef24703c648a1604e167532f9cedb9e659c1fc29323ea0b1735b62a3ed",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc36e0",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R02",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36e4.evidence.json",
+      "evidence_id": "ev_92090723ba30bfd5ccf75d8fe392859c23a21a67b57f9e74b5ac61d2b8ade5c4",
+      "sha256": "ea1995839555f2d0f3a399446b63a2df8226bc1db963416ccaf97a8f57500074",
+      "bytes": 9886,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc36e4",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36e4.reply.json",
+        "reply_sha256": "451f92f2b4015c7f78f6b3dfbf32f5560421665f8089f524871a0dcabb6ecfff",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "f3a2ba257cdba38e354669612e31a47f9ef7f5962a530c64523d2d4aa1770aca",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc36e4",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R03",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36e8.evidence.json",
+      "evidence_id": "ev_d27db8b4cb73f9eeda16ee92afb6d649674d507746afc09f951ba19f2656ca20",
+      "sha256": "b8dac4643cb719e1910ca23164ebd9f059eac7b1b72834a4dc0008f4ad05f142",
+      "bytes": 9574,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc36e8",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36e8.reply.json",
+        "reply_sha256": "c38a1d451514412a143de37dd9b0d4f832cb7c5ccbb3740f30715461004c6449",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "1380e11cd13d9f6e340417fa56482b7048f8203c71810b0fe4dce05938678a9c",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc36e8",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R04",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36ec.evidence.json",
+      "evidence_id": "ev_d7e799a409d6dde4e560fd8774d655692c72f77d6bc4694f3bef828ba645cd1e",
+      "sha256": "64136dfde9780b6a6248f0b6f5def6127d59d0184a11aceda08c29223e61f796",
+      "bytes": 8952,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc36ec",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36ec.reply.json",
+        "reply_sha256": "210ad3b2b485e266bfe45d4c3fd27b2662a6996bf15d6ea16bd1d767b342f1a9",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "7c75c16d1567b14c051a119b05d3827db4d40011a470b0e756bcd8de67262d3d",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc36ec",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R05",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36f0.evidence.json",
+      "evidence_id": "ev_5f2749dc328299f7bbe56ad3fbb01fc3787307e204ebd30d409edb8790bcf39f",
+      "sha256": "09952f2c1b630b10d2106f806e455509d30704a866f007920f808017f3242759",
+      "bytes": 8952,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc36f0",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36f0.reply.json",
+        "reply_sha256": "350d202c3d83d60c8b1b19808070619f79a80ddb35d9ea3f09c281d731582b82",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "cc498d33da23469aed3721b200d3216b4fda29926af9e86896367fffcfd96e0f",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc36f0",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R06",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36f4.evidence.json",
+      "evidence_id": "ev_2ed2595c1fa502a9b62344b62a3d25fce509f0e7ef64795d1e7af18e78b84c7a",
+      "sha256": "df879b338a9942823b1894cae947e141cd64d56d6579c7e9e6793eb2b01b6659",
+      "bytes": 8952,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc36f4",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36f4.reply.json",
+        "reply_sha256": "fb0982f7c087351b7b975a9b16fbfb524c1f8fb8fa11c497e14745c3222bab39",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "c3a22e6821be66127dd2ff9fdc5e918b609e787f658db229bad0cf30a2b664a0",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc36f4",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R07",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36f8.evidence.json",
+      "evidence_id": "ev_151d8bce36419601474d7105c8a900f250d4f7e336359d1437d34ceebfe84cd3",
+      "sha256": "25e40c9748c96d2d48670f44fb3125f99279e4b5ae0dc89bffd08179f3a8c5d4",
+      "bytes": 8946,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc36f8",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36f8.reply.json",
+        "reply_sha256": "571bafe8ab9a4306a9b637d3666674f10f994fbb3e780d8a8e1e09657dcc8d20",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "18261d23c21bb61b7c6b336ed791a390041f724902a89d647756fe0dd02458a6",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc36f8",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R08",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36fc.evidence.json",
+      "evidence_id": "ev_7a7bb1930a64267664d31efb253f0b26560d5881a485b5d7c7889cc8107d155e",
+      "sha256": "c0af150095ecf0f4c7d5210da7feece666c7e32e73636afcaf53cc17f717f2ad",
+      "bytes": 9322,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc36fc",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc36fc.reply.json",
+        "reply_sha256": "882b17e3ac54fdf3d1969a8687540bf109aaa20e064f25ff5732fcd89d43cc94",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "343b6ccf74d255c4e094c3de08b9c5b593efcd0f4c9e84c6bc47a4a6d07226c1",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc36fc",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R09",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3700.evidence.json",
+      "evidence_id": "ev_1fc40ec4618e4470eabe83bd135dc2c604248468396901cde9ab4ed8c50678f1",
+      "sha256": "70556fff29305cf234d3f850cbc059ce277bd076c3497bc91e097685266461ed",
+      "bytes": 9274,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3700",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3700.reply.json",
+        "reply_sha256": "4011ee2414a4fd49de70c70ee2f8613becbe01cfa98a37b802736c37c69c150f",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "ddf5627c87bb7f7296a7aa22760846e0f2fff85dd76042caa140fd3b5b6fcd6b",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3700",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R10",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3704.evidence.json",
+      "evidence_id": "ev_8ea46ca175ad31d59734e8032e02d600f6fa347931fa69b14c264e75d2f730cb",
+      "sha256": "e23db1732edd7aafd162c5724c85a6ec45f612b8c3c368957023e01a7b2e5b89",
+      "bytes": 9258,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3704",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3704.reply.json",
+        "reply_sha256": "39c292db4de37bfdc428cc2774793291c829de70ca853f198b31c76e57e2e063",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "72b83f7f57ae8c7b735ce368f4d85e210c16962efd5f51102094325d3538f1d5",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3704",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R11",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3708.evidence.json",
+      "evidence_id": "ev_08fadc3ca9fab6c48b95872d174f4d6bd474361561a368f4f25d83f6dea30665",
+      "sha256": "c32f38114ceb5cacbc70b2b27013aab07ad6b3e4964c0a0b4fd19f6346d19390",
+      "bytes": 9928,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3708",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3708.reply.json",
+        "reply_sha256": "8895ab33d4f3b1414a528654f43f8405f47e96bde24dadafa7053c00f3e3c0b0",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "1557accb3090c4bc7d0a6a349a678d7b6ac7d459e27c0493e0b54497f4073b81",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3708",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R12",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc370c.evidence.json",
+      "evidence_id": "ev_133f3a48d223b6b604051e09b11afbeea3e2d9dadded50e5b80c715c49edba72",
+      "sha256": "e9bbb9064f7bdfddd0ded8dadb9aa32da7e8556c0743c4994f39b0e908b741b2",
+      "bytes": 9080,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc370c",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc370c.reply.json",
+        "reply_sha256": "06ff8c8e9767be0203e15d890e42aacf9b6282814cc11df3387975d558463d11",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "8795d224d5c020d3713b98a983089c79417241e1694c035a71cd5c784a702c8d",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc370c",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R13",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3710.evidence.json",
+      "evidence_id": "ev_ce180359188c6e59fca630d70edc3e3f5d7f3c0582084bdfecba4c67a8c2833a",
+      "sha256": "d44984fa5cd9623cfea15c3b47d15c550c5de7fd097496e7aeda43cc300fec7d",
+      "bytes": 9556,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3710",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3710.reply.json",
+        "reply_sha256": "7b85eb721ee87b35bf12bca5f7f03eb05ad1b69d6189c6a9496c43926ae4c03f",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "4bdb90f9b5662883daebc08086a7df5b488da780462dc8c3256719da41a6cbd0",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3710",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R14",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3714.evidence.json",
+      "evidence_id": "ev_27bd74e784e07baf350e171f9cced45d80d17591d085147ea0a8333f818fdf35",
+      "sha256": "e806a51cd5bb82bddbf43fe929c3378afc70e4e7373148a821ba7c5224d1bca6",
+      "bytes": 8936,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3714",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3714.reply.json",
+        "reply_sha256": "daf25d8095c7f75a9211274d6a01d4740ad0d5dd7951468dab6c95b569c1fbc3",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "ecde556e25411588bc4d0925aebf69f13c2130e4ef9f8f27bccff880d3228a1e",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3714",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R15",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3718.evidence.json",
+      "evidence_id": "ev_87a1213be2f7a35fbdae90afaad4f840b2baddcdb69b616b19c57b104507b6f4",
+      "sha256": "cf16391ed18355629b2c80e406abe8fc20bdb0f8839e16c566644f3ba4f54b3f",
+      "bytes": 9898,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3718",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3718.reply.json",
+        "reply_sha256": "a1d8ad82d841b958dda1e6e8ad970026a1443ffccf3ae5cf0d6c332cc713ffa7",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "32b30cb7aa8622ac2913514f8fca01e8e94545e05ee14cdf1c11cc447bc0ac3b",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3718",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R16",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc371c.evidence.json",
+      "evidence_id": "ev_fef98da4c32838c75e4debfb38df2afc90fe41a5d9fc17fc6125d2862901d73a",
+      "sha256": "e1c6224a0238f82eb622c94b8c9bf12944d9041a775b1a23fe638b348ef636c4",
+      "bytes": 9320,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc371c",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc371c.reply.json",
+        "reply_sha256": "86b643d170b062e4557e82c43bac703bbf68d94cb827b802833678605f4cc498",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "7f682dcc6af392bd58258e9fa0a161419e037318f884d324b4fc87f838fa5d0c",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc371c",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R17",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3720.evidence.json",
+      "evidence_id": "ev_ef394628590259441dc0e7deb19dc978702031c0a44d4e20a5cecd87735518f7",
+      "sha256": "a6c3755baa0a823c9cfb5e8e14be8a76945de8c536ffa79570d41624432b5954",
+      "bytes": 8928,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3720",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3720.reply.json",
+        "reply_sha256": "1d313e24cc89e25d1621ad29e8645bee0e1d158de55048981f54719802f533ef",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "acfbd164f6c0ffee4dac8581bd4eb115cc50eb51ba9431d04ad5a0c0c7b83942",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3720",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R18",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3724.evidence.json",
+      "evidence_id": "ev_49a3de0371a5042baa45685139fff098ffb7e28cb2c9cdcd56a12b3e9fd92934",
+      "sha256": "2ab3d2e85c44ab21177ed4a92e818b9b9595d6df96566aecf968a3e0fec0c7fc",
+      "bytes": 9544,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3724",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3724.reply.json",
+        "reply_sha256": "8b7b376f440583e66a8b237a13c7f4b326b975a16d897da3c10a81a004ade952",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "9b6ba54c750940fdbc8ba98bfbdac821534b3cbe942a931a30dc9c6ce11ecc2f",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3724",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R19",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3728.evidence.json",
+      "evidence_id": "ev_e109eff5741102b4746b3834a3abd079153cb1b7611c87067f3e77ef098631bf",
+      "sha256": "adfc4b7823d621dc84cbe9549a39f3bfe1317f90e21bf2ff0a268be214d4f90f",
+      "bytes": 8944,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3728",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3728.reply.json",
+        "reply_sha256": "68e0cccd9a8559e2f10bfa805cea050c78398f88fd9b2c431ade61473e49bd82",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "3049dfd38a1f9fe714e276eef70ba2ac17d0b579a55519afd4186abb644ba3d3",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3728",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R20",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc372c.evidence.json",
+      "evidence_id": "ev_e2eb956de3cf31ec0feffe83aeb1d7de647676351690bc40e01f860efbaa4bb6",
+      "sha256": "5f6d9fba6841cf22972dba5b78557ac33abe5f08524f1786e54de308b0f04137",
+      "bytes": 9320,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc372c",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc372c.reply.json",
+        "reply_sha256": "f079c1e577ef7b061d4ff862c91e9c938073982dc07781703c0492fd2c4863a2",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "5ade267ec44fad63ebc348ca159b19814bc035cb730a4c16cd4e4749d356bf00",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc372c",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R21",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3730.evidence.json",
+      "evidence_id": "ev_0b7a7f7256069f2966c2e5eaa3e5195ba357365df3d4436407315ba29fc09b83",
+      "sha256": "475d4b1af1c153243fd947a2e8b768ce1a9b8eebd829e1c06c163607b109edb8",
+      "bytes": 10164,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3730",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3730.reply.json",
+        "reply_sha256": "10e6439d482f703b665ac032b10b6dd714ed7d9f79045776761f81b85a513a45",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "b392ecea13b69ea23f8bf84fb64c1805ce7bf19cc8138b5bf78b3a18fb2e1a4c",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3730",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R22",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3734.evidence.json",
+      "evidence_id": "ev_de38da7e2b3f12f9840853c7c00b2cbd2a22ac38e58bf7eda4d6331590f6c18c",
+      "sha256": "dde77284e0cad503e07528c3e89bfdc1f0007d2758f69b2173673243689331f5",
+      "bytes": 8936,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3734",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3734.reply.json",
+        "reply_sha256": "dd181c886f9b7575781a2f767cef314a6ca6d24087f3c070cb98087ecb22763b",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "e257bc1984792c481963aaa19088549eac8d278ba129095b7357b20ae5cd3d8e",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3734",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R23",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3738.evidence.json",
+      "evidence_id": "ev_cff5f68bed737f291de498c096f3a74a500d7aa84309286563ff32b7c072cecb",
+      "sha256": "86b52b6664f7387a1b56eed50343718d3ed90ff6e618f863b9d8c19bd8faa953",
+      "bytes": 9320,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3738",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3738.reply.json",
+        "reply_sha256": "acea5bbb570433e47586c25d79894e074b38c9863b115afbf34bbb4ec7c30ff2",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "8847504e957e2fe35b264ef48e4cc9bb93f33fb9741e71171c1a9bf11acee6e2",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3738",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R24",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc373c.evidence.json",
+      "evidence_id": "ev_d8d980d73db519f1b4cb87e8aa89cc42ccbfcab0e47f6b78ecc8fe589590f349",
+      "sha256": "a19139ca8fcf6b1c0a7bed99a7ed5b38df26e3a93a1264702350b901d0bef87f",
+      "bytes": 8944,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc373c",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc373c.reply.json",
+        "reply_sha256": "8826e45d0f3c55c652bc7b508420ffd7db71d09474b7e2ed6f8460cfe23d029a",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "13422f20d0a43d7147ff4a6351b878ede236b8d3342097ed4de3f4b707182022",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc373c",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R25",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3740.evidence.json",
+      "evidence_id": "ev_a701b5c5b370d1488a135d8bbbb0badbd5c62376e7eab9b2b4a84d6720721825",
+      "sha256": "061068e0642d792d9d28b520ee86d053b9ba75a60288c1114cb831a0681bae30",
+      "bytes": 9320,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3740",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3740.reply.json",
+        "reply_sha256": "fc7f08efe7633a418b1dd30c0fa75accfc82ca4d4fd33e9b8aff43082d49bb14",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "ddd917c00738302827139b6b5de16e1b9502f0df5d3e72ee5b67bdb297c01337",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3740",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R26",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3744.evidence.json",
+      "evidence_id": "ev_c0a5335ba556e2be7606b83eb4eacd32f5b2c45928d2b3a256852e208d09afda",
+      "sha256": "c152c356d447f00ab4d4a3ed2d1f9431d22a3f7b1537230fda022c2f809f692e",
+      "bytes": 8936,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3744",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3744.reply.json",
+        "reply_sha256": "003d29484344bf5890d0f8abf6b61158e6b555219b3c77106cbf5192a485284d",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "feaee7b8ed58eb1245b95433fe09caf20e88e069cd172dfe59065a641be6b84b",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3744",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R27",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3748.evidence.json",
+      "evidence_id": "ev_011f5ad394508b0d09b90dd5e588bf06b8e2e95da91781d78009503cc8194fb4",
+      "sha256": "de5407936c2da536c5be9f300e61f2fec37924203092ec1d8693caa2e016f82a",
+      "bytes": 8936,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3748",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3748.reply.json",
+        "reply_sha256": "76a78055c0146554fbbeac8c2b50c3fd9a6e5cbc651c5bdacddf4874e91e157f",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "5856d7089bd7b1b73a1dcbefd027a97fc7e46ff70cbcbe507bbb971db5743421",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3748",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R28",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc374c.evidence.json",
+      "evidence_id": "ev_1a7f377866da1d7f2931978af11b8ecbbcb3f25a9ba038a137dbfec29a85796e",
+      "sha256": "3a38bf75795582a21bab5f0f4c92091b6ea961204581a03236136ed8f432658e",
+      "bytes": 9886,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc374c",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc374c.reply.json",
+        "reply_sha256": "4f06f6a4237f9f743dee17850a28c5b8edb92a02a142903b9a32fee4a9a545dd",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "15c92be97a42ee98f4e2fe48f466244215f8a1be5ed925a3b1e08a4276365852",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc374c",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R29",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3750.evidence.json",
+      "evidence_id": "ev_32e493ad656ee2ba29e12dfcff82baeb447dacaa8ebab624ee3b271b4c69bdc7",
+      "sha256": "a827a04de27d8c1959626ba321ea112b1d476156c0e811219beb9eb1a98d0b75",
+      "bytes": 9886,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3750",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3750.reply.json",
+        "reply_sha256": "977029df26fb9d5ad32bcfe7de432f30f8c043e897d9a7b2a991642025a477ae",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "6a2618c62094901f53a5fb8980bc41742317d8e9b4e79cf242f34d0f7f63ada2",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3750",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R30",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3754.evidence.json",
+      "evidence_id": "ev_2874774768b466a5d8a22b545b46defd5e8322c4ae5848cb797ebd4c012f02de",
+      "sha256": "5260a22e398aa3af8c82712956e46f6aace202d664353686886eda6691c7486b",
+      "bytes": 9886,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3754",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3754.reply.json",
+        "reply_sha256": "bf5157364986d9109929fca54cd2fd0b14df72ced4fdf5e86daa4027de1093e1",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "8730735c3b2ad4e4ea7ca300d996835f2b56a1a9ff48cc719a5aa66b22a7f7b1",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3754",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R31",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3758.evidence.json",
+      "evidence_id": "ev_9c39ee693fa170373a34a093fbed10fe60a57ac540e4031706ced6536b0115a5",
+      "sha256": "40754210ff9ff4a55d4d612213a9cb402fc0263726e32c0c83c45df81288193b",
+      "bytes": 9318,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3758",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3758.reply.json",
+        "reply_sha256": "4d3951bbbe7d3515bb56c02c3179c8a14e962a3e8c7dadef4e4c77557079d1f6",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "61c829e4d8ceee445004baf8ab31b095f4b0df95121644a74732cd398fb0fcf0",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3758",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R32",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc375c.evidence.json",
+      "evidence_id": "ev_d0e4acd6534abd3c72ae149a9f6c8b81ae28e7710bca93bcdd155ffd7a36e759",
+      "sha256": "8423a78ff87377d996bf2004b213ad5f43d89042e71d8e017c9541f36fe28863",
+      "bytes": 10684,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc375c",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc375c.reply.json",
+        "reply_sha256": "5cf56a394dc9264cd9efebf9245c03bc885d523aff63d338a85b0adf2f609ef6",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "29c45938187f44d42223d5f2c67074dca7a7de7c7ea27691bbf031df4334e2c8",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc375c",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R33",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3760.evidence.json",
+      "evidence_id": "ev_46e972ccaaae2cec861a8a47c8c5848a4d0e0888a0fb440294707ff6068fd9fe",
+      "sha256": "bfbffaa603368f7370055e97d2528ffd3d858d64fa09688f74ee9ca576ee026f",
+      "bytes": 8936,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3760",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3760.reply.json",
+        "reply_sha256": "d0b6a2bdcf32836b93185ff4fc63c26e033c516f207b46b86209da0b70a260f7",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "86f00c7133a25012bc671f690493bfbed231eb8a5bb1174d38419c998999f8ee",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3760",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R34",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3764.evidence.json",
+      "evidence_id": "ev_429954a497f974a41b92b1818ce875aed344d30ac1e6997112310ac585fc0b16",
+      "sha256": "2969597e8339a23e61206ebc627443f0e1848a5df55777edee6acd15c1e0a3ed",
+      "bytes": 9886,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3764",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3764.reply.json",
+        "reply_sha256": "e16f46b242b378777480cfea8eb83a6fba1ff6ebf31e020cebdcffcd66b69419",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "5e4c91f83f0eafab5c5e9828d9d771d33dbd852462eda7c7fda1f3100139b1cf",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3764",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R35",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3768.evidence.json",
+      "evidence_id": "ev_5730bf46118f786e065d4d82010ac47f44aecbdb3936874a8ad3e04e084e02e2",
+      "sha256": "d16d4ff91668c9035f0da01d19a8132cd016cc572728dda1394608740a4329d3",
+      "bytes": 9886,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3768",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3768.reply.json",
+        "reply_sha256": "318fdc6090cd811e534d9420db1d85ce4524ec4cc4e4cc86ae980c8410f6ad9d",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "95787633141e170515ec37806f846586df0cc2431dfe5e441eb75f5b795e5f38",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3768",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R36",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc376c.evidence.json",
+      "evidence_id": "ev_12a42eb41b6d64d17c351240b69f9e5fa264ee59112a6ce87ad6d6c6c1103e25",
+      "sha256": "95675d85bc41059447b25331b8042e2e9435bac7627f1ee94e8fcd0444cf212d",
+      "bytes": 9886,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc376c",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc376c.reply.json",
+        "reply_sha256": "56e15470dd7cbd6226474a384b476c8b532721aa1eece8af45635f800710b7c4",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "7a2dde4e1515ce22c3effd88a21a1e2f0355896812f81d5d40c9d720d0e9d437",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc376c",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R37",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3770.evidence.json",
+      "evidence_id": "ev_dd903ba3c460875bf1419ec016ee8e194384b59be79a30a2c14c174f78342873",
+      "sha256": "32b41953d8debbce5671122148e4f484bcf7d28ec99b402b45abaf80b2030494",
+      "bytes": 9318,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3770",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3770.reply.json",
+        "reply_sha256": "961bd4e40dfcd430e2a6c650ecea00484f7c1b9337d9dbf05caacd7d30987dcc",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "29bdd26e307b46b9bed8ccc370f7e2b160c4e63212a100b100233205fe38b840",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3770",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R38",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3774.evidence.json",
+      "evidence_id": "ev_ec70e0a5919cf0ba97b0cef377815b48efddbc365a7831de72a3947bb4f5665d",
+      "sha256": "1679d759b6d699aa1699fe73b88f92bb33d0ae0bb9e13b240ef1a2e99bf80e52",
+      "bytes": 10764,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3774",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3774.reply.json",
+        "reply_sha256": "efed085e2177b4e61d44fcca660fbcc31c5618b68931f3731f469f743ecb7970",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "417f89bedf15a5cf4fbd54282c9625574f9485db2c3158a229483d8a9f38b1b6",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3774",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R39",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3778.evidence.json",
+      "evidence_id": "ev_3c7d1bbd3de52cd2d4b7d678afcb5002b2ae2af6398ca61027426d6ca6872df5",
+      "sha256": "ede85c79479d8cf31a690c46a0165c37842571431de1297b6023a500407fb883",
+      "bytes": 9886,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3778",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3778.reply.json",
+        "reply_sha256": "3fc4e95035f531a4eb9381d5e5d46766f1ed11d1bd1525fb1d81807de2f43f8e",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "1522fa649c44a0b8b6a1fdda66244d65beb12cbdccca4b2c4b9752dead9e3244",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3778",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R40",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc377c.evidence.json",
+      "evidence_id": "ev_716ab80d62bb09de15d9c968dbb2ad64bf73601a12f71a82388068971e7f55a4",
+      "sha256": "ea6cc0d8cc19d7b3f8d39304e014b4656c6f0fcb23e76630de8041f3619fb98f",
+      "bytes": 9886,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc377c",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc377c.reply.json",
+        "reply_sha256": "89a3baa721cbecfc3473eb484883c9fc161bc6a1375b09594a6fc3b997241771",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "8dc3ff0cae60bfb75baa13f844dcd5d0c02da70da45cdd98c10fd281c0f50222",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc377c",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R41",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3780.evidence.json",
+      "evidence_id": "ev_8bb637ef03bb369e9549b865ba38245bb26d34ea47dec54c6f8aab738ce01586",
+      "sha256": "301c62723525bdc32b87ea0aa45ee88af7771927d9d6b676499b8e9d63f20ddd",
+      "bytes": 7876,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3780",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3780.reply.json",
+        "reply_sha256": "3d5a5fdaa7a5b6d68775d6903482608fe429262401584611ddb75d37fd18f68e",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "f4f484406c5ebcdef52b1e0eb10938d8b56729f06745c1ed18c3270a5628b339",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3780",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R42",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3784.evidence.json",
+      "evidence_id": "ev_d368dbc00e911267f6798781c3e81a3cc93ce0a3017923693347e5f60063dbf8",
+      "sha256": "e1d03881e75e49bcf33c58075207a9def888df3b22270350a317618195bcc273",
+      "bytes": 9196,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3784",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3784.reply.json",
+        "reply_sha256": "e5484fec4a6a699d55bd54f91d77a719933c3e5339ce3c6b02a5333c07a2832d",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "1dda540a73da0c036d6f2260844615b88ad65e5ac0a917e72406557a3770ea5a",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3784",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "R43",
+      "path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3788.evidence.json",
+      "evidence_id": "ev_c2b3d3cd7c9a0d2422ac3bd0799d4286defe913f0c9207e17ef1ddd91c787d1a",
+      "sha256": "56864673eb90f01be9f05db34ed147fa546e3765000ff6c5b5d29fc9be714457",
+      "bytes": 9196,
+      "operation": "inspect_native_instruction",
+      "parameters": {
+        "address": "0x100dc3788",
+        "decode_unlisted": true
+      },
+      "analysis_profile_digest": "71d92e26fbcf6353753a2fac3b51e3fe1d28922a13b11d4cff4baf88ed726bc3",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-restore-preview-2026-11-22/mcp/restore-residual-byte-0x100dc3788.reply.json",
+        "reply_sha256": "2f4e5744230389bdc6cc5f32e3efab55bbf3eae1f34763f618cd40e3a28c29d4",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/invocations.json",
+          "record_sha256": "cc1c670930c4e7af4d44f7109a8360f898ee6c3b7fd7746feadcd102a93f1b82",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-restore-preview-2026-11-22/mcp/phase-6.bundle.json",
+          "sha256": "2596095353ada98d96e9d8c1cedef17788681a42027e738b8c0b62e0dd468af5"
+        },
+        "seed_sha256": "b211c85295895f5879216f350ed7189d882f0a73cb6299b1f0164a5ae44b95c0",
+        "prior_snapshot": null,
+        "original_byte_comparison": {
+          "kind": "exact-original-instruction-bytes",
+          "address": "0x100dc3788",
+          "length": 4
+        }
+      }
+    },
+    {
+      "id": "S01",
+      "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbe848-read_function_instructions.evidence.json",
+      "evidence_id": "ev_940da8e92222ecc39a9c759b222b195cc8b9a883a72b16144722755fa9e6f693",
+      "sha256": "e1da87ad8f8a18f6e7425caf3f131b27dc0a79401079b0e3d1e4ffb510b2f7fd",
+      "bytes": 51076,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dbe848"
+      },
+      "analysis_profile_digest": "c9d01c7fa48c43242874140b065c797483ac772354bd4bffddf0d6ae792d46fb",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbe848-read_function_instructions.reply.json",
+        "reply_sha256": "a361dac43649d1d8075aa03bf95d98b2291cda26fd7be5dc64c00891c7ccc487",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/invocations.json",
+          "record_sha256": "20f3c46c0a4502d77af3db3e419a6635d767329e1993e5aa384ab7d64f91f75e",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/final.bundle.json",
+          "sha256": "d47a05ea3cd4b9238439983a915e3768abdcf9980bc6610a44b12dc32a21767a"
+        },
+        "seed_sha256": "a747fe4b0a1d4ccc375c48c8b44ff45a0b67e8157f9e6463ac38e921e49b4663",
+        "prior_snapshot": {
+          "path": "field-tests/arc-storage-features-2026-11-22/snapshot-manifest.json",
+          "sha256": "35d84c3af1f4df3eb1775f02629a07e85a76278480811afefb0435a2a18f8c55"
+        },
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S02",
+      "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbe518-read_function_instructions.evidence.json",
+      "evidence_id": "ev_aeaf21f64b1be2bfb13dd717f4f3118087b93dc2266c06bf446eab0b628fbccf",
+      "sha256": "5b8757d05f2937c616089f0d94edb9bdb6fa00070862350423dc4982563352a2",
+      "bytes": 23398,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dbe518"
+      },
+      "analysis_profile_digest": "c9d01c7fa48c43242874140b065c797483ac772354bd4bffddf0d6ae792d46fb",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbe518-read_function_instructions.reply.json",
+        "reply_sha256": "2bb84001a65d2e9384fe4fc1d229ee56980a02a28093dcb09854bc7329c5405e",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/invocations.json",
+          "record_sha256": "23c535a6b147f45ae2ef46f03f49f4b1cbccbd3e92d1201670efe32addafec88",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/final.bundle.json",
+          "sha256": "d47a05ea3cd4b9238439983a915e3768abdcf9980bc6610a44b12dc32a21767a"
+        },
+        "seed_sha256": "a747fe4b0a1d4ccc375c48c8b44ff45a0b67e8157f9e6463ac38e921e49b4663",
+        "prior_snapshot": {
+          "path": "field-tests/arc-storage-features-2026-11-22/snapshot-manifest.json",
+          "sha256": "35d84c3af1f4df3eb1775f02629a07e85a76278480811afefb0435a2a18f8c55"
+        },
+        "original_byte_comparison": null
+      }
+    },
+    {
+      "id": "S03",
+      "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbb45c-read_function_instructions.evidence.json",
+      "evidence_id": "ev_574739b8a208e8314f5c6ac68c9eb3e839e1c397de3a617fc33a09c3048c3316",
+      "sha256": "92ebd573742e1704a13d20b5ee23fb7363e021b6c960becd0c6fcb785369b963",
+      "bytes": 9480,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dbb45c"
+      },
+      "analysis_profile_digest": "c9d01c7fa48c43242874140b065c797483ac772354bd4bffddf0d6ae792d46fb",
+      "authentication": {
+        "subject_target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+        "reply_path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbb45c-read_function_instructions.reply.json",
+        "reply_sha256": "8ef9b12fe531e8905f521f46fa311bab4b24d54f8f4d2f61058a4ca6992def66",
+        "text_and_structured_equal": true,
+        "successful_journal_record": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/invocations.json",
+          "record_sha256": "e48f47a3231ed8bccd65bfbea43b5856042ef68704c0f9d169d31150667a36bb",
+          "note": "Hash binds this successful row, not the whole still-growing live-session journal."
+        },
+        "bundle": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/final.bundle.json",
+          "sha256": "d47a05ea3cd4b9238439983a915e3768abdcf9980bc6610a44b12dc32a21767a"
+        },
+        "seed_sha256": "a747fe4b0a1d4ccc375c48c8b44ff45a0b67e8157f9e6463ac38e921e49b4663",
+        "prior_snapshot": {
+          "path": "field-tests/arc-storage-features-2026-11-22/snapshot-manifest.json",
+          "sha256": "35d84c3af1f4df3eb1775f02629a07e85a76278480811afefb0435a2a18f8c55"
+        },
+        "original_byte_comparison": null
+      }
+    }
+  ],
+  "residual_instructions": [
+    {
+      "source": "R00",
+      "address": "0x100dc36dc",
+      "instruction": "stp x22,x21,[sp, #-0x30]!"
+    },
+    {
+      "source": "R01",
+      "address": "0x100dc36e0",
+      "instruction": "stp x20,x19,[sp, #0x10]"
+    },
+    {
+      "source": "R02",
+      "address": "0x100dc36e4",
+      "instruction": "stp x29,x30,[sp, #0x20]"
+    },
+    {
+      "source": "R03",
+      "address": "0x100dc36e8",
+      "instruction": "add x29,sp,#0x20"
+    },
+    {
+      "source": "R04",
+      "address": "0x100dc36ec",
+      "instruction": "ldr x20,[x0]"
+    },
+    {
+      "source": "R05",
+      "address": "0x100dc36f0",
+      "instruction": "ldr x19,[x1]"
+    },
+    {
+      "source": "R06",
+      "address": "0x100dc36f4",
+      "instruction": "ldr x21,[x2]"
+    },
+    {
+      "source": "R07",
+      "address": "0x100dc36f8",
+      "instruction": "mov x0,#0x0"
+    },
+    {
+      "source": "R08",
+      "address": "0x100dc36fc",
+      "instruction": "bl 0x100db84f4"
+    },
+    {
+      "source": "R09",
+      "address": "0x100dc3700",
+      "instruction": "ldur x8,[x0, #-0x8]"
+    },
+    {
+      "source": "R10",
+      "address": "0x100dc3704",
+      "instruction": "ldr x8,[x8, #0x48]"
+    },
+    {
+      "source": "R11",
+      "address": "0x100dc3708",
+      "instruction": "cbz x8,0x100dc3784"
+    },
+    {
+      "source": "R12",
+      "address": "0x100dc370c",
+      "instruction": "mov x10,#-0x8000000000000000"
+    },
+    {
+      "source": "R13",
+      "address": "0x100dc3710",
+      "instruction": "sub x9,x21,x19"
+    },
+    {
+      "source": "R14",
+      "address": "0x100dc3714",
+      "instruction": "cmp x9,x10"
+    },
+    {
+      "source": "R15",
+      "address": "0x100dc3718",
+      "instruction": "ccmn x8,#0x1,#0x0,eq"
+    },
+    {
+      "source": "R16",
+      "address": "0x100dc371c",
+      "instruction": "b.eq 0x100dc3788"
+    },
+    {
+      "source": "R17",
+      "address": "0x100dc3720",
+      "instruction": "mov x3,x0"
+    },
+    {
+      "source": "R18",
+      "address": "0x100dc3724",
+      "instruction": "sdiv x2,x9,x8"
+    },
+    {
+      "source": "R19",
+      "address": "0x100dc3728",
+      "instruction": "cmp x20,x19"
+    },
+    {
+      "source": "R20",
+      "address": "0x100dc372c",
+      "instruction": "b.cc 0x100dc375c"
+    },
+    {
+      "source": "R21",
+      "address": "0x100dc3730",
+      "instruction": "madd x8,x2,x8,x19"
+    },
+    {
+      "source": "R22",
+      "address": "0x100dc3734",
+      "instruction": "cmp x20,x8"
+    },
+    {
+      "source": "R23",
+      "address": "0x100dc3738",
+      "instruction": "b.cs 0x100dc375c"
+    },
+    {
+      "source": "R24",
+      "address": "0x100dc373c",
+      "instruction": "cmp x20,x19"
+    },
+    {
+      "source": "R25",
+      "address": "0x100dc3740",
+      "instruction": "b.eq 0x100dc3774"
+    },
+    {
+      "source": "R26",
+      "address": "0x100dc3744",
+      "instruction": "mov x0,x20"
+    },
+    {
+      "source": "R27",
+      "address": "0x100dc3748",
+      "instruction": "mov x1,x19"
+    },
+    {
+      "source": "R28",
+      "address": "0x100dc374c",
+      "instruction": "ldp x29,x30,[sp, #0x20]"
+    },
+    {
+      "source": "R29",
+      "address": "0x100dc3750",
+      "instruction": "ldp x20,x19,[sp, #0x10]"
+    },
+    {
+      "source": "R30",
+      "address": "0x100dc3754",
+      "instruction": "ldp x22,x21,[sp], #0x30"
+    },
+    {
+      "source": "R31",
+      "address": "0x100dc3758",
+      "instruction": "b 0x103640024"
+    },
+    {
+      "source": "R32",
+      "address": "0x100dc375c",
+      "instruction": "mov x0,x20"
+    },
+    {
+      "source": "R33",
+      "address": "0x100dc3760",
+      "instruction": "mov x1,x19"
+    },
+    {
+      "source": "R34",
+      "address": "0x100dc3764",
+      "instruction": "ldp x29,x30,[sp, #0x20]"
+    },
+    {
+      "source": "R35",
+      "address": "0x100dc3768",
+      "instruction": "ldp x20,x19,[sp, #0x10]"
+    },
+    {
+      "source": "R36",
+      "address": "0x100dc376c",
+      "instruction": "ldp x22,x21,[sp], #0x30"
+    },
+    {
+      "source": "R37",
+      "address": "0x100dc3770",
+      "instruction": "b 0x103640030"
+    },
+    {
+      "source": "R38",
+      "address": "0x100dc3774",
+      "instruction": "ldp x29,x30,[sp, #0x20]"
+    },
+    {
+      "source": "R39",
+      "address": "0x100dc3778",
+      "instruction": "ldp x20,x19,[sp, #0x10]"
+    },
+    {
+      "source": "R40",
+      "address": "0x100dc377c",
+      "instruction": "ldp x22,x21,[sp], #0x30"
+    },
+    {
+      "source": "R41",
+      "address": "0x100dc3780",
+      "instruction": "ret"
+    },
+    {
+      "source": "R42",
+      "address": "0x100dc3784",
+      "instruction": "brk #0x1"
+    },
+    {
+      "source": "R43",
+      "address": "0x100dc3788",
+      "instruction": "brk #0x1"
+    }
+  ],
+  "next_public_queries": [
+    {
+      "priority": 1,
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x10373f2e8",
+        "length": 8
+      },
+      "why": "Concrete20-byte nested collection type carrier for the date String construction."
+    },
+    {
+      "priority": 2,
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103bb3e4e",
+        "length": 21
+      },
+      "why": "Supplemental-source symbolicmangle is expected ReversedCollection<Slice<ReversedCollection<String>>>; bind its bytes publicly before exact normal-order suffix claim."
+    },
+    {
+      "priority": 3,
+      "name": "address_name",
+      "arguments": {
+        "address": "0x10423e708"
+      },
+      "why": "First indirectsymbolic nominal descriptor import, expectedReversedCollection."
+    },
+    {
+      "priority": 4,
+      "name": "address_name",
+      "arguments": {
+        "address": "0x10423f2b0"
+      },
+      "why": "Secondindirectsymbolic nominal descriptor import, expectedSlice."
+    },
+    {
+      "priority": 5,
+      "name": "procedure_references",
+      "arguments": {
+        "procedure": "0x100dba020",
+        "direction": "incoming"
+      },
+      "why": "Bound storedrestorethunk references; doesnotbyitself prove an indirectapplicationcaller/writeback."
+    }
+  ],
+  "remaining_unknowns": [
+    "Exact nested collection/import binding for normal-order first-stage timestamp suffix; seeconcretequeries.",
+    "Selectedapplicationrestoreinvocation and anyhigher-levelwriteback.",
+    "Actualcandidatefiles/datevalues/creationtimes,activeformatter/calendar/timezone andactualchosenbackup.",
+    "RuntimeI/Osuccess,crashconsistency,durableeffects andbroadfeaturecoverage."
+  ],
+  "verification": {
+    "status": "passed",
+    "sources": 78,
+    "instruction_byte_probes": 44,
+    "all_evidence_target_hashes_match": true,
+    "saved_reply_text_and_structured_equal": true,
+    "successful_invocation_rows_and_exported_bundle_records_match": true,
+    "all_used_source_seed_hashes_recomputed": true,
+    "main_sha256_recomputed": true,
+    "byte_sources_compared_to_original_or_explicit_rebased_fixup_targets": true,
+    "main_input": {
+      "path": "rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "bytes": 80498448
+    },
+    "prior_snapshot_manifest": {
+      "path": "field-tests/arc-storage-features-2026-11-22/snapshot-manifest.json",
+      "sha256": "35d84c3af1f4df3eb1775f02629a07e85a76278480811afefb0435a2a18f8c55"
+    },
+    "limits": [
+      "Currentprovider lifecycle belongs toroot; thisindependentreviewstartednoprovider and claimsnocurrent cleanupstate.",
+      "Sourceidentityverification doesnotestablish actualexecution or allpossiblecallingcontexts.",
+      "Only new restore-resolution.md/json werewritten; oldreviews/captureswereunchanged."
+    ]
+  }
+}

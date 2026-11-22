@@ -1,0 +1,687 @@
+{
+  "kind": "arc-independent-retained-restore-review",
+  "date": "2026-11-22",
+  "scope": "Backup enumeration/order, queue adapter and caller/writeback; no provider or target execution",
+  "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "premises": [
+    "Stable valid Swift object/type storage and ordinary Swift ARM64 ABI: self/contextX20, indirect resultX8, synchronous throwing errorX21 where shown by physical callers.",
+    "Generic/unknown throwing-call semantics are not repaired or inferred from misleading pseudocode; item47 limitations persist.",
+    "Selected static constructor/witness relations do not establish active runtime injection, invocation or successful I/O."
+  ],
+  "facts": [
+    {
+      "id": "F01",
+      "classification": "observed-instructions-and-conditional-ABI-derivation",
+      "claim": "Constructor writes thick pair (code100dba020, implementation object) to output+0x40. Thunk branches100dbb45c. Boost factory copies the complete96-byte result to staticglobal104622168; the constructed restore pair therefore occupies1046221a8/1046221b0. This is static construction, not active dependency selection or a restore invocation.",
+      "sources": [
+        "E07",
+        "E08",
+        "E09"
+      ],
+      "anchors": [
+        "100db8e80..100db8e88",
+        "100dba020",
+        "10118c57c..10118c598"
+      ]
+    },
+    {
+      "id": "F02",
+      "classification": "observed-instructions-and-conditional-ABI-derivation",
+      "claim": "Queue adapter100dbb45c stores (implementation-self,incomingx0) in its capture, passes code100dc4378/context to Dispatch.sync, and forwards its indirect Optional result buffer. No direct B/BL to100dbe518 is present in this adapter. Callback body100dc4378 is a missing public boundary in this review.",
+      "sources": [
+        "E05",
+        "E06"
+      ],
+      "anchors": [
+        "100dbb470",
+        "100dbb484",
+        "100dbb498..100dbb4b0"
+      ]
+    },
+    {
+      "id": "F03",
+      "classification": "observed-instructions",
+      "claim": "Enumeration helper100dbe848 derives the parent URL and base filename, invokes ObjCstub103647a40 with an error-out pointer, bridges a nonnil return to[String], builds candidate URLs in increasing source-array order, applies100dc1658 and appends only present parsed records. It then passes comparator100dc1ff8 to100dc2270 with an inout record array. The latter helpers are not public-body sources in this review; no newest-first ordering is established.",
+      "sources": [
+        "E01"
+      ],
+      "anchors": [
+        "100dbeab0..100dbeac4",
+        "100dbeb28..100dbeb70",
+        "100dbec2c..100dbed8c",
+        "100dbef04..100dbef90",
+        "100dbf024..100dbf050"
+      ]
+    },
+    {
+      "id": "F04",
+      "classification": "observed-instructions-and-conditional-ABI-derivation",
+      "claim": "A nil enumeration result takes100dbee1c; its NSError is converted, swift_willThrow is called, then the converted error is released and an empty array returned. Do not call this propagated caller failure. Unexpected parser/sort errors instead reach retained brk paths100dbf0b0/0cc; normal-return claims presume those helpers return normally.",
+      "sources": [
+        "E01",
+        "E02"
+      ],
+      "anchors": [
+        "100dbeb5c",
+        "100dbee1c..100dbee60",
+        "100dbef08",
+        "100dbf044",
+        "100dbf0b0..100dbf0d4"
+      ]
+    },
+    {
+      "id": "F05",
+      "classification": "observed-instructions-and-conditional-ABI-derivation",
+      "claim": "Restore leaf100dbe518 iterates record indices from0 upward. It obtains a record flag offset from metadata+0x14 and skips if bit0 is clear. For an eligible record it invokes readImpl100dbf0d8 withw1=0 and the incoming decoder-info value. A nonzero read error inx21 is released, Optional.none is formed, x21 is cleared, and the loop advances.",
+      "sources": [
+        "E03"
+      ],
+      "anchors": [
+        "100dbe698..100dbe6c8",
+        "100dbe718..100dbe738",
+        "100dbe73c..100dbe76c",
+        "100dbe6cc..100dbe6e0"
+      ]
+    },
+    {
+      "id": "F06",
+      "classification": "observed-instructions-and-conditional-ABI-derivation",
+      "claim": "The first eligible read returning Optional.some is copied through type value witnesses to the original result pointer and tagged present. Exhausted/empty candidate lists return Optional.none. Success means decoded return value, not writeback or restored filesystem state.",
+      "sources": [
+        "E03"
+      ],
+      "anchors": [
+        "100dbe784..100dbe798",
+        "100dbe7f0..100dbe83c",
+        "100dbe7b0..100dbe7cc"
+      ]
+    },
+    {
+      "id": "F07",
+      "classification": "bounded-negative-observation",
+      "claim": "No save/file-replacement call is constructed within the retained100dbe518 body. The ordinary readImpl body handles selected failures by backup/error handling rather than invoking this separate restore leaf. An invoking application caller and any later writeback are unproved; neither global absence nor automatic recovery follows.",
+      "sources": [
+        "E03",
+        "E10"
+      ],
+      "anchors": [
+        "100dbe518..100dbe844",
+        "100dbf0d8..100dbfb5c"
+      ]
+    }
+  ],
+  "unknowns": [
+    "Comparator and sort implementation, including descending/ascending direction, equal dates and missing dates.",
+    "Parsed file record eligibility and its exact reflected type/field bindings.",
+    "Public callback body100dc4378.",
+    "An application restore caller and any higher-level writeback; no actual restored state or readback was observed."
+  ],
+  "next_public_queries": [
+    {
+      "priority": 1,
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100dc4378"
+      },
+      "why": "Exact callback passed by queue adapter; close code/context/result forwarding and whether adapter adds writeback."
+    },
+    {
+      "priority": 2,
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100dc1658"
+      },
+      "why": "Candidate filename matching, eligibility-bit/date construction and rejection policy."
+    },
+    {
+      "priority": 3,
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100dc1ff8"
+      },
+      "why": "Actual comparator relation and nil-date tie/eligibility behavior; names do not establish descending order."
+    },
+    {
+      "priority": 4,
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100dc2270"
+      },
+      "why": "Determine comparator meaning, array reordering direction and sort assumptions."
+    },
+    {
+      "priority": 5,
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100db84f4"
+      },
+      "why": "Record metadata accessor, permitting exact field descriptor/name/offset binding after public bytes."
+    },
+    {
+      "priority": 6,
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x103647a40",
+        "length": 32
+      },
+      "why": "Bind directory-enumeration ObjC selector; then exact slot104541d10(8B) and CString103fa7f0a(33B). Supplemental original-byte targets only until captured."
+    },
+    {
+      "priority": 7,
+      "name": "procedure_references",
+      "arguments": {
+        "procedure": "0x100dba020",
+        "direction": "incoming"
+      },
+      "why": "Bound references to the stored restore thunk; indirect field invocations may remain unresolved."
+    },
+    {
+      "priority": 8,
+      "name": "procedure_references",
+      "arguments": {
+        "procedure": "0x100dbb45c",
+        "direction": "incoming"
+      },
+      "why": "Bound callers/references to queue adapter; do not interpret incomplete static xrefs as global nonuse."
+    }
+  ],
+  "sources": [
+    {
+      "id": "E01",
+      "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbe848-read_function_instructions.evidence.json",
+      "evidence_id": "ev_940da8e92222ecc39a9c759b222b195cc8b9a883a72b16144722755fa9e6f693",
+      "sha256": "e1da87ad8f8a18f6e7425caf3f131b27dc0a79401079b0e3d1e4ffb510b2f7fd",
+      "bytes": 51076,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dbe848"
+      },
+      "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "analysis_profile_digest": "c9d01c7fa48c43242874140b065c797483ac772354bd4bffddf0d6ae792d46fb",
+      "authentication": {
+        "snapshot_manifests": [
+          "field-tests/arc-storage-features-2026-11-22/snapshot-manifest.json"
+        ],
+        "reply": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbe848-read_function_instructions.reply.json",
+          "sha256": "a361dac43649d1d8075aa03bf95d98b2291cda26fd7be5dc64c00891c7ccc487",
+          "structured_and_text_equal": true
+        },
+        "invocation_journal": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/invocations.json",
+          "sha256": "05155c034fb67ef4a03d85cb9883a91c2a349b8f37cad642f466cc8b5f8f9c95",
+          "matching_successful_records": 1
+        },
+        "bundle": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/final.bundle.json",
+          "sha256": "d47a05ea3cd4b9238439983a915e3768abdcf9980bc6610a44b12dc32a21767a"
+        },
+        "seed": {
+          "path": "field-tests/arc-storage-features-2026-11-22/storage-policy-seeds-2491.tsv",
+          "sha256": "a747fe4b0a1d4ccc375c48c8b44ff45a0b67e8157f9e6463ac38e921e49b4663"
+        }
+      }
+    },
+    {
+      "id": "E02",
+      "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbe848-procedure_pseudo_code.evidence.json",
+      "evidence_id": "ev_ef2d6962c735fb403198beb13d261f0dad2fe48e65024923fe71ace1c0b768a5",
+      "sha256": "453c96868ab23505c23b0d3a2ae23f40eeabebd6986748418555a4da06b863b2",
+      "bytes": 30168,
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x100dbe848"
+      },
+      "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "analysis_profile_digest": "c9d01c7fa48c43242874140b065c797483ac772354bd4bffddf0d6ae792d46fb",
+      "authentication": {
+        "snapshot_manifests": [
+          "field-tests/arc-storage-features-2026-11-22/snapshot-manifest.json"
+        ],
+        "reply": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbe848-procedure_pseudo_code.reply.json",
+          "sha256": "5dd2ac16f0710e10f0888ea9bb7a83b00e0de5e5114e75d6cc51808d74445e5b",
+          "structured_and_text_equal": true
+        },
+        "invocation_journal": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/invocations.json",
+          "sha256": "05155c034fb67ef4a03d85cb9883a91c2a349b8f37cad642f466cc8b5f8f9c95",
+          "matching_successful_records": 1
+        },
+        "bundle": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/final.bundle.json",
+          "sha256": "d47a05ea3cd4b9238439983a915e3768abdcf9980bc6610a44b12dc32a21767a"
+        },
+        "seed": {
+          "path": "field-tests/arc-storage-features-2026-11-22/storage-policy-seeds-2491.tsv",
+          "sha256": "a747fe4b0a1d4ccc375c48c8b44ff45a0b67e8157f9e6463ac38e921e49b4663"
+        }
+      }
+    },
+    {
+      "id": "E03",
+      "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbe518-read_function_instructions.evidence.json",
+      "evidence_id": "ev_aeaf21f64b1be2bfb13dd717f4f3118087b93dc2266c06bf446eab0b628fbccf",
+      "sha256": "5b8757d05f2937c616089f0d94edb9bdb6fa00070862350423dc4982563352a2",
+      "bytes": 23398,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dbe518"
+      },
+      "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "analysis_profile_digest": "c9d01c7fa48c43242874140b065c797483ac772354bd4bffddf0d6ae792d46fb",
+      "authentication": {
+        "snapshot_manifests": [
+          "field-tests/arc-storage-features-2026-11-22/snapshot-manifest.json"
+        ],
+        "reply": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbe518-read_function_instructions.reply.json",
+          "sha256": "2bb84001a65d2e9384fe4fc1d229ee56980a02a28093dcb09854bc7329c5405e",
+          "structured_and_text_equal": true
+        },
+        "invocation_journal": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/invocations.json",
+          "sha256": "05155c034fb67ef4a03d85cb9883a91c2a349b8f37cad642f466cc8b5f8f9c95",
+          "matching_successful_records": 1
+        },
+        "bundle": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/final.bundle.json",
+          "sha256": "d47a05ea3cd4b9238439983a915e3768abdcf9980bc6610a44b12dc32a21767a"
+        },
+        "seed": {
+          "path": "field-tests/arc-storage-features-2026-11-22/storage-policy-seeds-2491.tsv",
+          "sha256": "a747fe4b0a1d4ccc375c48c8b44ff45a0b67e8157f9e6463ac38e921e49b4663"
+        }
+      }
+    },
+    {
+      "id": "E04",
+      "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbe518-procedure_pseudo_code.evidence.json",
+      "evidence_id": "ev_30a640ca86609f21aaae04f6b2cba13a56185b8158ae6cada71a1929cae6b87a",
+      "sha256": "5a141f8701db7968842c17f3c0fc1def628863b04cd75754c243cfd38f5005f2",
+      "bytes": 15302,
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x100dbe518"
+      },
+      "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "analysis_profile_digest": "c9d01c7fa48c43242874140b065c797483ac772354bd4bffddf0d6ae792d46fb",
+      "authentication": {
+        "snapshot_manifests": [
+          "field-tests/arc-storage-features-2026-11-22/snapshot-manifest.json"
+        ],
+        "reply": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbe518-procedure_pseudo_code.reply.json",
+          "sha256": "6d6c552742b400e4f3d0d1c5dd84a3425412fe3070e99bc548b444a3bd580be7",
+          "structured_and_text_equal": true
+        },
+        "invocation_journal": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/invocations.json",
+          "sha256": "05155c034fb67ef4a03d85cb9883a91c2a349b8f37cad642f466cc8b5f8f9c95",
+          "matching_successful_records": 1
+        },
+        "bundle": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/final.bundle.json",
+          "sha256": "d47a05ea3cd4b9238439983a915e3768abdcf9980bc6610a44b12dc32a21767a"
+        },
+        "seed": {
+          "path": "field-tests/arc-storage-features-2026-11-22/storage-policy-seeds-2491.tsv",
+          "sha256": "a747fe4b0a1d4ccc375c48c8b44ff45a0b67e8157f9e6463ac38e921e49b4663"
+        }
+      }
+    },
+    {
+      "id": "E05",
+      "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbb45c-read_function_instructions.evidence.json",
+      "evidence_id": "ev_574739b8a208e8314f5c6ac68c9eb3e839e1c397de3a617fc33a09c3048c3316",
+      "sha256": "92ebd573742e1704a13d20b5ee23fb7363e021b6c960becd0c6fcb785369b963",
+      "bytes": 9480,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dbb45c"
+      },
+      "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "analysis_profile_digest": "c9d01c7fa48c43242874140b065c797483ac772354bd4bffddf0d6ae792d46fb",
+      "authentication": {
+        "snapshot_manifests": [
+          "field-tests/arc-storage-features-2026-11-22/snapshot-manifest.json"
+        ],
+        "reply": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbb45c-read_function_instructions.reply.json",
+          "sha256": "8ef9b12fe531e8905f521f46fa311bab4b24d54f8f4d2f61058a4ca6992def66",
+          "structured_and_text_equal": true
+        },
+        "invocation_journal": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/invocations.json",
+          "sha256": "05155c034fb67ef4a03d85cb9883a91c2a349b8f37cad642f466cc8b5f8f9c95",
+          "matching_successful_records": 1
+        },
+        "bundle": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/final.bundle.json",
+          "sha256": "d47a05ea3cd4b9238439983a915e3768abdcf9980bc6610a44b12dc32a21767a"
+        },
+        "seed": {
+          "path": "field-tests/arc-storage-features-2026-11-22/storage-policy-seeds-2491.tsv",
+          "sha256": "a747fe4b0a1d4ccc375c48c8b44ff45a0b67e8157f9e6463ac38e921e49b4663"
+        }
+      }
+    },
+    {
+      "id": "E06",
+      "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbb45c-procedure_pseudo_code.evidence.json",
+      "evidence_id": "ev_04c892073e74038e60f096169f205c8bda851d1341bd4057b96eee4c7d6a485e",
+      "sha256": "bc45f7f939557c75d7653aa75f04317bc53baa9ec1298a350d307c5318b5634a",
+      "bytes": 7256,
+      "operation": "procedure_pseudo_code",
+      "parameters": {
+        "procedure": "0x100dbb45c"
+      },
+      "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "analysis_profile_digest": "c9d01c7fa48c43242874140b065c797483ac772354bd4bffddf0d6ae792d46fb",
+      "authentication": {
+        "snapshot_manifests": [
+          "field-tests/arc-storage-features-2026-11-22/snapshot-manifest.json"
+        ],
+        "reply": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/0x100dbb45c-procedure_pseudo_code.reply.json",
+          "sha256": "ea42a769b7076eef8fa8ea62d86d5efb2130f06953886b0907d02234d0e721a2",
+          "structured_and_text_equal": true
+        },
+        "invocation_journal": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/invocations.json",
+          "sha256": "05155c034fb67ef4a03d85cb9883a91c2a349b8f37cad642f466cc8b5f8f9c95",
+          "matching_successful_records": 1
+        },
+        "bundle": {
+          "path": "field-tests/arc-storage-features-2026-11-22/mcp/final.bundle.json",
+          "sha256": "d47a05ea3cd4b9238439983a915e3768abdcf9980bc6610a44b12dc32a21767a"
+        },
+        "seed": {
+          "path": "field-tests/arc-storage-features-2026-11-22/storage-policy-seeds-2491.tsv",
+          "sha256": "a747fe4b0a1d4ccc375c48c8b44ff45a0b67e8157f9e6463ac38e921e49b4663"
+        }
+      }
+    },
+    {
+      "id": "E07",
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x100db8d80-read_function_instructions.evidence.json",
+      "evidence_id": "ev_38d5e65fde9eb015377ffb2061b97d2ee4d1fce2f2597c370e1637c11706dcf3",
+      "sha256": "20cba2c76d143bc1ba8f1591e9f057a914dc7f62ca4c8ea96902c4b04bc29130",
+      "bytes": 13700,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100db8d80"
+      },
+      "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "analysis_profile_digest": "3fc3c4f6594c3bb363a4cdc89d3d916d0d4b74faef097e754d56dd0607731be5",
+      "authentication": {
+        "snapshot_manifests": [
+          "field-tests/arc-callbacks-2026-11-21/snapshot-manifest.json"
+        ],
+        "reply": {
+          "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x100db8d80-read_function_instructions.reply.json",
+          "sha256": "fb00e1eaedf9368c8ea0fdb01df1b81ea7aa39ad23130b029d4fc223c95f5268",
+          "structured_and_text_equal": true
+        },
+        "invocation_journal": {
+          "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/invocations.json",
+          "sha256": "ac9e2f0df74e058544e6b0d29eea3480f88e27fa33ab2b06e72b6a94fd46375b",
+          "matching_successful_records": 1
+        },
+        "bundle": {
+          "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/phase-2.bundle.json",
+          "sha256": "9569650069a8ae054494e1a95bc6255c788f559840bad303fcbf62537fe91926"
+        },
+        "seed": {
+          "path": "field-tests/arc-callbacks-2026-11-21/store-callers-seeds-2427.tsv",
+          "sha256": "1f0b0d93436801c74f314c81ba57ab40f4d73fd3417c747db46f77582abb061d"
+        }
+      }
+    },
+    {
+      "id": "E08",
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x100dba020-read_function_instructions.evidence.json",
+      "evidence_id": "ev_c2435fd03f21505d359724d31be9a78875a5bd3d35c786b31667a0150f43f1d1",
+      "sha256": "d999fc7e02939884822985e01788a7f2f5385e963942c0ae6d72b2e93b5872df",
+      "bytes": 7304,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dba020"
+      },
+      "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "analysis_profile_digest": "3fc3c4f6594c3bb363a4cdc89d3d916d0d4b74faef097e754d56dd0607731be5",
+      "authentication": {
+        "snapshot_manifests": [
+          "field-tests/arc-callbacks-2026-11-21/snapshot-manifest.json"
+        ],
+        "reply": {
+          "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x100dba020-read_function_instructions.reply.json",
+          "sha256": "c54557b3e0468e8af6df98aa8bd1e39871f36fc11d9c58ea089116781c89ea59",
+          "structured_and_text_equal": true
+        },
+        "invocation_journal": {
+          "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/invocations.json",
+          "sha256": "ac9e2f0df74e058544e6b0d29eea3480f88e27fa33ab2b06e72b6a94fd46375b",
+          "matching_successful_records": 1
+        },
+        "bundle": {
+          "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/phase-2.bundle.json",
+          "sha256": "9569650069a8ae054494e1a95bc6255c788f559840bad303fcbf62537fe91926"
+        },
+        "seed": {
+          "path": "field-tests/arc-callbacks-2026-11-21/store-callers-seeds-2427.tsv",
+          "sha256": "1f0b0d93436801c74f314c81ba57ab40f4d73fd3417c747db46f77582abb061d"
+        }
+      }
+    },
+    {
+      "id": "E09",
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x10118c418-read_function_instructions.evidence.json",
+      "evidence_id": "ev_1d9aaeece2e14bd3403a045f1ec3c85fb85e912c2df0ae5c33112d7a7b32617e",
+      "sha256": "ae218366d6cbc70ce1ad3e998135e287e59b2c934bb534f9461f38d118b45577",
+      "bytes": 15482,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x10118c418"
+      },
+      "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "analysis_profile_digest": "3fc3c4f6594c3bb363a4cdc89d3d916d0d4b74faef097e754d56dd0607731be5",
+      "authentication": {
+        "snapshot_manifests": [
+          "field-tests/arc-callbacks-2026-11-21/snapshot-manifest.json"
+        ],
+        "reply": {
+          "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/function-0x10118c418-read_function_instructions.reply.json",
+          "sha256": "2e22cd4e1c611bdb890db01f57f13057888cc099c03720357c18869d563e48a0",
+          "structured_and_text_equal": true
+        },
+        "invocation_journal": {
+          "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/invocations.json",
+          "sha256": "ac9e2f0df74e058544e6b0d29eea3480f88e27fa33ab2b06e72b6a94fd46375b",
+          "matching_successful_records": 1
+        },
+        "bundle": {
+          "path": "field-tests/arc-callbacks-2026-11-21/mcp-finish/phase-2.bundle.json",
+          "sha256": "9569650069a8ae054494e1a95bc6255c788f559840bad303fcbf62537fe91926"
+        },
+        "seed": {
+          "path": "field-tests/arc-callbacks-2026-11-21/store-callers-seeds-2427.tsv",
+          "sha256": "1f0b0d93436801c74f314c81ba57ab40f4d73fd3417c747db46f77582abb061d"
+        }
+      }
+    },
+    {
+      "id": "E10",
+      "path": "field-tests/arc-callbacks-2026-11-21/mcp-leaf/function-0x100dbf0d8-read_function_instructions.evidence.json",
+      "evidence_id": "ev_61dab22712b6c2fc573a48e50b7589ea63909b27ef55028d9c19fbbe88c8e1c2",
+      "sha256": "288e15a09d7815e4d2e5ee681a60832e2bc7ac03f57c1f2ee71d49f30d9644ec",
+      "bytes": 61661,
+      "operation": "read_function_instructions",
+      "parameters": {
+        "procedure": "0x100dbf0d8"
+      },
+      "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "analysis_profile_digest": "85a64404d45e1e86c420ecb5ed44218a1f59c5c3b50fad5fda4c3ef25976227e",
+      "authentication": {
+        "snapshot_manifests": [
+          "field-tests/arc-callbacks-2026-11-21/snapshot-manifest.json"
+        ],
+        "reply": {
+          "path": "field-tests/arc-callbacks-2026-11-21/mcp-leaf/function-0x100dbf0d8-read_function_instructions.reply.json",
+          "sha256": "9c4ea7d2116653af2864887a563deba7a84117aafb12b5f8c589f04e355c7d38",
+          "structured_and_text_equal": true
+        },
+        "invocation_journal": {
+          "path": "field-tests/arc-callbacks-2026-11-21/mcp-leaf/invocations.json",
+          "sha256": "cf68b414db490f0c6025d0a1eb59105b9c0d0d36b05dd61f686f9c2bfd11d11c",
+          "matching_successful_records": 1
+        },
+        "bundle": {
+          "path": "field-tests/arc-callbacks-2026-11-21/mcp-leaf/final.bundle.json",
+          "sha256": "69c6f21b91cd5b914aec4398ae720faf31920a9e400f8d397093c62e129c9f25"
+        },
+        "seed": {
+          "path": "field-tests/arc-callbacks-2026-11-21/storage-leaf-seeds-2435.tsv",
+          "sha256": "4417711a37ca05b8b186a8c8fceb09393c43d8540e0e6aec8b0cdf5bab23e56a"
+        }
+      }
+    }
+  ],
+  "immutable_inputs": [
+    {
+      "path": "rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "bytes": 80498448,
+      "authentication": "recomputed full-file SHA256"
+    },
+    {
+      "path": "field-tests/arc-callbacks-2026-11-21/snapshot-manifest.json",
+      "sha256": "f0302015cdad8bec15b1c8a0f2e403ce15599a5e30edf6815a79e271a5a0554b",
+      "bytes": 182143
+    },
+    {
+      "path": "field-tests/arc-storage-features-2026-11-22/snapshot-manifest.json",
+      "sha256": "35d84c3af1f4df3eb1775f02629a07e85a76278480811afefb0435a2a18f8c55",
+      "bytes": 150898
+    }
+  ],
+  "context_inputs": [
+    {
+      "path": "ARC_HANDOFF.md",
+      "sha256": "8a859fd713aedd9efd95715cef902b67e7e6122354166d9bf245e4146fb591fd",
+      "bytes": 40439,
+      "role": "read-only context/instructions; living document revision, not immutable executable Evidence"
+    },
+    {
+      "path": "field-tests/arc-features-storage-2026-11-22.md",
+      "sha256": "c8769f662419eee98039f9cc953e3d7fd4ae00b55124ec3247e8d71108c78523",
+      "bytes": 10484,
+      "role": "read-only context/instructions; living document revision, not immutable executable Evidence"
+    },
+    {
+      "path": "rea-local/AGENTS.md",
+      "sha256": "3e6c1254a05bf0e8bad4970b1abb7fc9428da51f6f8fd321ac74a0147cf869e7",
+      "bytes": 6584,
+      "role": "read-only context/instructions; living document revision, not immutable executable Evidence"
+    },
+    {
+      "path": "rea-local/.agents/skills/reverse-engineer-anything/SKILL.md",
+      "sha256": "001dc0e81f4fab33b115e03c09904d8d4c17ca15642f972c785fc035ff3ef60e",
+      "bytes": 22684,
+      "role": "read-only context/instructions; living document revision, not immutable executable Evidence"
+    }
+  ],
+  "supplemental_planning": {
+    "description": "Read original ARM64 bytes only; no fixture/target/provider invocation. Stub+slot words plan contentsOfDirectoryAtPath:error:; callback original44B has sole directBL100dbe518 at100dc4390. These are not promoted to public-Evidence claims.",
+    "segments": [
+      {
+        "name": "__PAGEZERO",
+        "vmaddr": "0x0",
+        "vmsize": 4294967296,
+        "fileoff": 0,
+        "filesize": 0
+      },
+      {
+        "name": "__TEXT",
+        "vmaddr": "0x100000000",
+        "vmsize": 69386240,
+        "fileoff": 0,
+        "filesize": 69386240
+      },
+      {
+        "name": "__DATA_CONST",
+        "vmaddr": "0x10422c000",
+        "vmsize": 2441216,
+        "fileoff": 69386240,
+        "filesize": 2441216
+      },
+      {
+        "name": "__DATA",
+        "vmaddr": "0x104480000",
+        "vmsize": 5455872,
+        "fileoff": 71827456,
+        "filesize": 2588672
+      },
+      {
+        "name": "__LINKEDIT",
+        "vmaddr": "0x1049b4000",
+        "vmsize": 6094848,
+        "fileoff": 74416128,
+        "filesize": 6082320
+      }
+    ],
+    "ranges": [
+      {
+        "address": "0x100dc4378",
+        "length": 44,
+        "file_offset": 14435192,
+        "segment": "__TEXT",
+        "bytes_hex": "f44fbea9fd7b01a9fd430091f30315aa890241a9f40309aa62e8ff97f50313aafd7b41a9f44fc2a8c0035fd6",
+        "sha256": "e0057dd06c9df657795ca9c4f6077a5b98b08c540a88906af5ba63d17b71c45c",
+        "classification": "supplemental-original-bytes-for-query-planning-not-public-Evidence"
+      },
+      {
+        "address": "0x103647a40",
+        "length": 32,
+        "file_offset": 56916544,
+        "segment": "__TEXT",
+        "bytes_hex": "c17700d0218846f9905f0090107e41f900021fd6200020d4200020d4200020d4",
+        "sha256": "7dad6d8e06f63d284500b992c65f6b283ed44f9d8b6537d4186fcfab147e12cb",
+        "classification": "supplemental-original-bytes-for-query-planning-not-public-Evidence"
+      },
+      {
+        "address": "0x104541d10",
+        "length": 8,
+        "file_offset": 72621328,
+        "segment": "__DATA",
+        "bytes_hex": "0a7ffa0300001000",
+        "sha256": "27a8f63812c6667cae43c79a8f6fe7426cd7e68245823b01c5aa788c70b47174",
+        "classification": "supplemental-original-bytes-for-query-planning-not-public-Evidence"
+      },
+      {
+        "address": "0x103fa7f0a",
+        "length": 33,
+        "file_offset": 66748170,
+        "segment": "__TEXT",
+        "bytes_hex": "636f6e74656e74734f664469726563746f72794174506174683a6572726f723a00",
+        "sha256": "838eb03b6a454ad37639cbaaf9f4aa3fe049b699467ea200702dc4e40ba64ed3",
+        "classification": "supplemental-original-bytes-for-query-planning-not-public-Evidence"
+      }
+    ]
+  },
+  "verification": {
+    "status": "passed",
+    "used_evidence_records": 10,
+    "all_source_hashes_match_immutable_snapshot_entries": true,
+    "all_subject_target_hashes_match": true,
+    "all_saved_replies_match_structured_and_text": true,
+    "all_sources_match_successful_invocation_and_exported_bundle_record": true,
+    "all_source_seed_profiles_recomputed": true,
+    "main_sha256_recomputed": true,
+    "limits": [
+      "This verifies retained source identity/integrity, not semantic truth or target execution.",
+      "Source manifests and living documents are read-only; no prior captures, source files or Git state were modified.",
+      "Only restore-review.md/json were written."
+    ]
+  }
+}

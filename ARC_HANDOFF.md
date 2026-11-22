@@ -26,6 +26,50 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest restore/preview checkpoint (2026-11-22)
+
+Read `field-tests/arc-restore-preview-2026-11-22.md`, then the directory's
+`analysis-addendum.md`, `capture-verification.json` and `fact-index.json`.
+The preceding feature/storage checkpoint is pushed as `a7fd989921b1`.
+Production source and the 1,869-file frozen runtime are unchanged. All owned
+sessions are closed with verified empty lineage.
+
+Restore ordering is now a stable descending sort of
+`date ?? Date.distantPast`; equal keys retain directory enumeration order.
+The classifier uses the original basename prefix and a separate backup flag;
+date validity is not an exclusion. The selected leaf returns the first
+eligible successfully decoded value, discards per-candidate read errors and
+does not request a save. Its now-captured queue callback also adds no save.
+A higher invoking application caller and later writeback remain unknown.
+Exact suffix collection typing stays qualified: the complete mangling is
+retained, but the selected imported-slot name queries returned null.
+
+Preview's field type is `(WebContentFrameIdentifier) -> (any WebContent)?`.
+Exact descriptor identity, pair flow and the official Swift ABI bind the
+`+0x2e8` call as protocol-witness dispatch. Two observed local conformances
+map word 93 to Chromium `0x10054bbf4` and Stub `0x100006b90`. The former calls
+`captureViewport:` with an NSImage block and forwards its image argument to
+the supplied Swift callback. The selected continuation payload is NSImage?.
+The latter is a return stub. Modern/fallback callbacks converge through
+distinct trampoline addresses. Discovery is partial and runtime selection,
+callback delivery and image pixels are unobserved. Reflected
+`webView: ArcWebContents` is not promoted into a proved receiver-field mapping.
+
+Verification: 227/227 successful public replies, 115 original-byte-matching
+instruction probes, advertised/named schemas, Evidence/export membership,
+four preserved review artifacts and all frozen runtime/source hashes. The
+199-call first session expired and correctly reports failed/partial; its
+late continuation did not run. The fresh 28-call follow-up exports, closes
+twice and verifies empty lineage. Item 66 behaves correctly; no new production
+defect or native producer qualification is claimed. Old captures/reviews are
+unchanged; the addendum resolves the earlier review's pending ABI premise.
+
+Next: item 63's safe invocation-scoped typed-context producer; complete
+apply/UI effects and broader browser routes; selected higher restore
+caller/writeback. Active injected dependencies, actual I/O, durability and
+pixels remain unobserved. Full Arc is not complete. The previous checkpoint's
+restore-ordering and unnamed preview-slot gaps are superseded by this section.
+
 ## Latest feature/storage checkpoint (2026-11-22)
 
 Read `field-tests/arc-features-storage-2026-11-22.md` and

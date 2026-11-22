@@ -1057,3 +1057,33 @@ idle-expired session, 236 in a completed/exported/doubly-closed session. All
 lineages are verified empty. The field recorder's expired/completed status
 bug is fixed and tested through real target-free MCP. Native production source
 and the prior qualified runtime remain unchanged. Full Arc remains incomplete.
+
+
+## Restore ordering and preview capture method (2026-11-22)
+
+[The restore/preview follow-up](arc-restore-preview-2026-11-22.md) closes two
+more narrow static questions. Restore uses stable descending normalized-Date
+ordering, `date ?? Date.distantPast`; equal keys retain directory enumeration
+order. It tries eligible backups until one returns a present decoded value.
+No lexical filename tie-break or save request appears in the selected leaf
+or queue callback. Higher invoking application code and later writeback remain
+unresolved; this is not an observed restoration or filesystem result.
+
+The selected preview client field has type
+`(WebContentFrameIdentifier) -> (any WebContent)?`. Exact protocol identity,
+saved pair flow and the official Swift ABI bind its indirect operation as
+protocol-witness dispatch. The observed Chromium conformance's selected target
+calls `captureViewport:` with an NSImage block and forwards its argument to
+the supplied Swift callback. The selected continuation payload is NSImage?.
+A second observed local conformance is a return stub. Partial discovery and
+static metadata do not establish active selection, callback delivery or pixels.
+
+Verification covers 227 successful public replies and 115 original-byte-matching
+instruction probes, canonical/advertised schemas, Evidence IDs and exports,
+four preserved review artifacts, prior historical snapshots and unchanged
+runtime/source hashes. The first 199-call session accurately reports partial
+completion after idle expiration. The fresh 28-call session exports and closes
+twice; both owned lineages are verified empty. No new production defect or
+producer qualification is claimed. Item 63's typed invocation proof, full
+apply/UI/browser effects, higher restore caller/writeback, active dependencies
+and actual I/O/durability remain open. No target was executed.
