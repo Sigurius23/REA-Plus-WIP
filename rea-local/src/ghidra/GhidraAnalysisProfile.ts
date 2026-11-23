@@ -176,7 +176,7 @@ export const resolveGhidraAnalysisProfile = async (
         ...(installation.platform !== "win32" &&
         target.architecture === "arm64" &&
         target.format === "mach-o"
-          ? { runtime_call_signatures: "swift-alloc-object-c-abi-v1" }
+          ? { runtime_call_signatures: "swift-runtime-c-signatures-v2" }
           : {}),
         ...(installation.platform !== "win32" &&
         target.format === "mach-o" &&

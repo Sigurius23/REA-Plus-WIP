@@ -1,0 +1,180 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/mcp-arc-final",
+  "runtime_manifest": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/runtime-final-manifest.json",
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 240000,
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/seeds-keypath.tsv"
+  },
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x10373ccb8",
+        "length": 32
+      },
+      "label": "data-0x10373ccb8",
+      "expect_success": true
+    },
+    {
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x10422e110",
+        "length": 8
+      },
+      "label": "data-0x10422e110",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1012a5544"
+      },
+      "label": "instructions-0x1012a5544",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012a5544",
+        "detail": "summary"
+      },
+      "label": "summary-0x1012a5544",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1006fa228"
+      },
+      "label": "instructions-0x1006fa228",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1006fa228",
+        "detail": "summary"
+      },
+      "label": "summary-0x1006fa228",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1003b5454"
+      },
+      "label": "instructions-0x1003b5454",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1003b5454",
+        "detail": "summary"
+      },
+      "label": "summary-0x1003b5454",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100ccc400"
+      },
+      "label": "instructions-0x100ccc400",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100ccc400",
+        "detail": "summary"
+      },
+      "label": "summary-0x100ccc400",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100d92a28"
+      },
+      "label": "instructions-0x100d92a28",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100d92a28",
+        "detail": "summary"
+      },
+      "label": "summary-0x100d92a28",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1012a571c"
+      },
+      "label": "instructions-0x1012a571c",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1012a571c",
+        "detail": "summary"
+      },
+      "label": "summary-0x1012a571c",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1005aa5e4"
+      },
+      "label": "setting-helper",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_instruction",
+      "arguments": {
+        "address": "0x1012ab840"
+      },
+      "label": "selected-call",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/mcp-arc-final/final.bundle.json"
+      },
+      "label": "final-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "close2",
+      "expect_success": true
+    }
+  ]
+}

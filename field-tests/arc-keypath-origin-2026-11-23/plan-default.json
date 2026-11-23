@@ -1,0 +1,108 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/mcp-default",
+  "runtime_manifest": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/runtime-final-manifest.json",
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 240000,
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/seeds-default.tsv"
+  },
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "open",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1006fbea4"
+      },
+      "label": "instructions-0x1006fbea4",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x1006fbea4",
+        "detail": "summary"
+      },
+      "label": "summary-0x1006fbea4",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100d8c154"
+      },
+      "label": "instructions-0x100d8c154",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100d8c154",
+        "detail": "summary"
+      },
+      "label": "summary-0x100d8c154",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x100d8c1dc"
+      },
+      "label": "instructions-0x100d8c1dc",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x100d8c1dc",
+        "detail": "summary"
+      },
+      "label": "summary-0x100d8c1dc",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-conformances",
+        "swift_conformance_filter": {
+          "type_name": "UserDefaultsClient"
+        },
+        "max_file_bytes": 100663296,
+        "max_records": 20000
+      },
+      "label": "client-conformances",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/mcp-default/final.bundle.json"
+      },
+      "label": "final-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "close2",
+      "expect_success": true
+    }
+  ]
+}

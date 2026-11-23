@@ -1669,6 +1669,25 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-23 keypath/dependency trace advanced; item remains open.**
+    Item 69 repairs the missing C return from keypath instantiation. Selected
+    pattern `0x103788708` binds `DependencyValues` -> `UserDefaultsClient`;
+    its external property descriptor is trivial, selecting local getter
+    `0x1003b5454` via `0x1012b283c`. The getter passes exact Client metadata
+    and TestDependencyKey witness `0x1045ee8b0` into lookup `0x1006fb0c0`.
+    The storage/context/cache paths and two exact Client conformances are now
+    public Evidence. On a cache miss, context 0 resolves DependencyKey slot 2
+    (`0x100d929a0` for the retained static conformance); contexts 1/other valid
+    select TestDependencyKey slots 2/3 (`0x100d8c154`/`0x100d8c1dc`). The first
+    also copies the known global Client; the second constructs other closures.
+    This is conditional selection, not an observed live default. Candidate
+    initializer ownership/use, generic wrapper representation, relevant field
+    stability through aliases, unchanged forwarding and invocation-only mapping
+    remain open. Generic metadata-response/stack-probe conventions still make
+    lookup pseudocode incomplete; the retained native instructions support
+    this conditional trace. Do not give Swift metadata responses the new C ABI. No helper-global 297-case override. See
+    [the keypath/dependency report](field-tests/arc-keypath-origin-2026-11-23.md).
+
     **2026-11-23 captured reducer environment bound; item remains open.**
     The selected reducer effect copies 640 bytes into its async context.
     Descriptor `0x1037887f8` -> thunk `0x1012b3670` -> entry `0x1012ab2d0`
@@ -1954,3 +1973,22 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     constructor body and reducer mappings are unchanged. Preserved first-runtime
     false authority, failed harness attempts and exact final receipts are in
     [the report](field-tests/arc-invocation-origin-2026-11-23.md).
+
+
+69. **Preserve the C ABI return of imported Swift keypath construction.** Done
+    and verified while continuing item 63 (2026-11-23). A source-built literal
+    keypath reproduces the dropped X0 result: the old Program substitutes its
+    pattern address for the returned object. The shared exact-import registry
+    now models `swift_getKeyPath` with pointer inputs X0/X1 and pointer result
+    X0, retains unknown memory effects and the item 68 identity/override
+    exclusions, and publishes `swift-keypath-c-abi-v1`. The analysis-profile
+    component advances to `swift-runtime-c-signatures-v2`. All eight Arc
+    candidate-initializer returns are retained; 23 allocator results, reducer
+    mappings/body and helper limits are unchanged. Verification: 86 source
+    tests, 94 successful final-runtime MCP calls, four exact CLI/MCP pairs,
+    six real boundary probes, stock Swift-error coexistence and build/fast/
+    docs/package checks. Twelve historical snapshots authenticate. Qualified
+    lineages are empty. Recorder expiration, two sandbox launch failures,
+    missing frozen fixture and a verifier label typo remain honestly retained.
+    This repairs return flow, not keypath type/origin or active dependency
+    selection. See [the report](field-tests/arc-keypath-origin-2026-11-23.md).

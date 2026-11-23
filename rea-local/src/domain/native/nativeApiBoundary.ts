@@ -88,6 +88,34 @@ const inferredJumpTableSchema = z
   })
   .strict();
 
+const runtimeCallSignatureBase = z.strictObject({
+  call_address: z.string().min(1),
+  callee_address: z.string().min(1),
+  original_symbol: z.string().min(1),
+  library: z.string().min(1),
+  original_signature: z.string().min(1),
+  effective_signature: z.string().min(1),
+  effective_calling_convention: z.string().min(1),
+  return_register: z.literal("x0"),
+  memory_effects: z.literal("unknown"),
+  provenance: z.literal("external-library-runtime-contract"),
+});
+
+const runtimeCallSignatureSchema = z.discriminatedUnion("contract", [
+  runtimeCallSignatureBase.extend({
+    contract: z.literal("swift-alloc-object-c-abi-v1"),
+    parameter_registers: z.tuple([
+      z.literal("x0"),
+      z.literal("x1"),
+      z.literal("x2"),
+    ]),
+  }),
+  runtimeCallSignatureBase.extend({
+    contract: z.literal("swift-keypath-c-abi-v1"),
+    parameter_registers: z.tuple([z.literal("x0"), z.literal("x1")]),
+  }),
+]);
+
 const availableNativeApiBoundarySchema = z
   .object({
     available: z.literal(true),
@@ -119,26 +147,7 @@ const availableNativeApiBoundarySchema = z
       )
       .exactOptional(),
     runtime_call_signatures: z
-      .array(
-        z.strictObject({
-          call_address: z.string().min(1),
-          callee_address: z.string().min(1),
-          original_symbol: z.string().min(1),
-          library: z.string().min(1),
-          original_signature: z.string().min(1),
-          effective_signature: z.string().min(1),
-          effective_calling_convention: z.string().min(1),
-          contract: z.literal("swift-alloc-object-c-abi-v1"),
-          return_register: z.literal("x0"),
-          parameter_registers: z.tuple([
-            z.literal("x0"),
-            z.literal("x1"),
-            z.literal("x2"),
-          ]),
-          memory_effects: z.literal("unknown"),
-          provenance: z.literal("external-library-runtime-contract"),
-        }),
-      )
+      .array(runtimeCallSignatureSchema)
       .exactOptional(),
     pseudocode: z
       .object({

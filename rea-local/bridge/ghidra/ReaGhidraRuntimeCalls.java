@@ -25,13 +25,26 @@ import org.w3c.dom.*;
 /** Exact imported runtime signatures. This supplies no memory-effect summary. */
 final class ReaGhidraRuntimeCalls {
     private static final String MODEL = "__rea_apple_cdecl";
+    private enum Kind { POINTER, SIZE }
+    private record Argument(String name, Kind kind) {}
+    private record Contract(String id, List<Argument> arguments) {}
+    private static final Map<String, Contract> CONTRACTS = Map.of(
+        "swift_allocObject", new Contract("swift-alloc-object-c-abi-v1", List.of(
+            new Argument("metadata", Kind.POINTER), new Argument("requiredSize", Kind.SIZE), new Argument("requiredAlignmentMask", Kind.SIZE))),
+        "swift_getKeyPath", new Contract("swift-keypath-c-abi-v1", List.of(
+            new Argument("pattern", Kind.POINTER), new Argument("arguments", Kind.POINTER)))
+    );
     private final Program program;
     private final TaskMonitor monitor;
     private final Map<Address, Adjustment> adjustments = new HashMap<>();
-    private final Map<Address, List<String>> unknowns = new HashMap<>();
+    private final Map<Address, Set<String>> unknowns = new HashMap<>();
     private boolean supported;
     private String setupFailure;
-    private record Adjustment(String symbol, String library, String original, String effective) {}
+    private sealed interface Identification permits KnownImport, UnsupportedImport, OtherCall {}
+    private record KnownImport(Contract contract, String symbol, String library) implements Identification {}
+    private record UnsupportedImport(String reason) implements Identification {}
+    private enum OtherCall implements Identification { INSTANCE }
+    private record Adjustment(KnownImport identity, String original, String effective) {}
 
     ReaGhidraRuntimeCalls(Program program, TaskMonitor monitor) {
         this.program = program;
@@ -80,50 +93,38 @@ final class ReaGhidraRuntimeCalls {
 
     boolean prepare(Function owner) throws Exception {
         if (!supported || owner.isExternal() || owner.isThunk()) return false;
-        List<String> unknown = new ArrayList<>();
+        Set<String> unknown = new LinkedHashSet<>();
         unknowns.put(owner.getEntryPoint(), unknown);
         boolean changed = false;
         for (Instruction call : program.getListing().getInstructions(owner.getBody(), true)) {
             monitor.checkCancelled();
             if (!call.getFlowType().isCall()) continue;
             Function target = target(call);
-            if (target == null || !target.isExternal()) continue;
-            ExternalLocation external = target.getExternalLocation();
-            String symbol = external == null ? null : external.getOriginalImportedName();
-            if (symbol == null) {
-                if (external == null || external.getSymbol().getSource() != SourceType.IMPORTED) {
-                    if (target.getName().equals("_swift_allocObject") || target.getName().equals("swift_allocObject"))
-                        unknown.add("The analyst allocator label is preserved; no original imported identity establishes its runtime ABI.");
-                    continue;
-                }
-                symbol = external.getLabel();
-            }
-            if (!symbol.equals("_swift_allocObject") && !symbol.equals("swift_allocObject")) continue;
+            Identification identified = identify(target);
+            if (identified instanceof UnsupportedImport unsupported) { unknown.add(unsupported.reason); continue; }
+            if (!(identified instanceof KnownImport known)) continue;
             if (overridden(owner, call.getAddress()) || target.getSignatureSource() == SourceType.USER_DEFINED || target.getSignatureSource() == SourceType.IMPORTED) {
-                unknown.add("An explicit signature/call-site override for the allocator is preserved; its runtime ABI was not changed.");
-                continue;
-            }
-            String library = external == null ? null : external.getLibraryName();
-            if (!Set.of("libswiftCore.dylib", "libswiftCore", "/usr/lib/swift/libswiftCore.dylib").contains(library == null ? "" : library)) {
-                unknown.add("The allocator name is not bound to the supported libswiftCore import; no runtime signature was applied.");
+                unknown.add("An explicit signature/call-site override for the runtime import is preserved; its ABI was not changed.");
                 continue;
             }
             if (setupFailure != null) { unknown.add(setupFailure); continue; }
             Adjustment existing = adjustments.get(target.getEntryPoint());
-            if (existing != null && target.getCallingConventionName().equals(MODEL) && target.getSignature().getPrototypeString().equals(existing.effective)) continue;
+            if (existing != null && existing.identity.equals(known) && Objects.equals(target.getCallingConventionName(), MODEL) && target.getSignature().getPrototypeString().equals(existing.effective)) continue;
             String original = target.getSignature().getPrototypeString();
-            int transaction = program.startTransaction("REA+ exact libswiftCore allocator C signature");
+            int transaction = program.startTransaction("REA+ exact libswiftCore runtime C signature");
             boolean commit = false;
             try {
                 var manager = program.getDataTypeManager();
                 var pointer = new PointerDataType(manager);
-                var size = UnsignedLongLongDataType.dataType;
+                List<Parameter> parameters = new ArrayList<>();
+                for (Argument argument : known.contract.arguments)
+                    parameters.add(new ParameterImpl(argument.name, argument.kind == Kind.POINTER ? pointer : UnsignedLongLongDataType.dataType, program));
                 target.updateFunction(MODEL, new ReturnParameterImpl(pointer, program),
-                    List.of(new ParameterImpl("metadata", pointer, program), new ParameterImpl("requiredSize", size, program), new ParameterImpl("requiredAlignmentMask", size, program)),
+                    parameters,
                     Function.FunctionUpdateType.DYNAMIC_STORAGE_ALL_PARAMS, true, SourceType.ANALYSIS);
                 commit = true;
             } finally { program.endTransaction(transaction, commit); }
-            adjustments.put(target.getEntryPoint(), new Adjustment(symbol, library, original, target.getSignature().getPrototypeString()));
+            adjustments.put(target.getEntryPoint(), new Adjustment(known, original, target.getSignature().getPrototypeString()));
             changed = true;
         }
         return changed;
@@ -136,19 +137,19 @@ final class ReaGhidraRuntimeCalls {
             if (!call.getFlowType().isCall() || overridden(owner, call.getAddress())) continue;
             Function target = target(call);
             Adjustment adjustment = target == null ? null : adjustments.get(target.getEntryPoint());
-            if (adjustment == null || target.getSignatureSource() != SourceType.ANALYSIS || !Objects.equals(target.getCallingConventionName(), MODEL) || !target.getSignature().getPrototypeString().equals(adjustment.effective)) continue;
+            if (adjustment == null || !adjustment.identity.equals(identify(target)) || target.getSignatureSource() != SourceType.ANALYSIS || !Objects.equals(target.getCallingConventionName(), MODEL) || !target.getSignature().getPrototypeString().equals(adjustment.effective)) continue;
             JsonObject row = new JsonObject();
             row.addProperty("call_address", ReaGhidraBridge.canonicalAddress(call.getAddress()));
             row.addProperty("callee_address", ReaGhidraBridge.canonicalAddress(target.getEntryPoint()));
-            row.addProperty("original_symbol", adjustment.symbol);
-            row.addProperty("library", adjustment.library);
+            row.addProperty("original_symbol", adjustment.identity.symbol);
+            row.addProperty("library", adjustment.identity.library);
             row.addProperty("original_signature", adjustment.original);
             row.addProperty("effective_signature", adjustment.effective);
             row.addProperty("effective_calling_convention", MODEL);
-            row.addProperty("contract", "swift-alloc-object-c-abi-v1");
+            row.addProperty("contract", adjustment.identity.contract.id);
             row.addProperty("return_register", "x0");
             JsonArray parameters = new JsonArray();
-            for (String register : List.of("x0", "x1", "x2")) parameters.add(register);
+            for (int index = 0; index < adjustment.identity.contract.arguments.size(); index++) parameters.add("x" + index);
             row.add("parameter_registers", parameters);
             row.addProperty("memory_effects", "unknown");
             row.addProperty("provenance", "external-library-runtime-contract");
@@ -158,9 +159,33 @@ final class ReaGhidraRuntimeCalls {
     }
 
     List<String> limitations(Function owner) {
-        List<String> result = new ArrayList<>(unknowns.getOrDefault(owner.getEntryPoint(), List.of()));
-        if (observations(owner).size() > 0) result.add("The exact libswiftCore swift_allocObject import uses its declared normal C ABI (metadata/size/alignment in x0/x1/x2, pointer result in x0). This is a runtime contract assumption, not dynamic library authenticity, pure memory effects, noescape, allocation success, or closed constructor/dependency provenance. Explicit signatures and call-site overrides are preserved.");
+        List<String> result = new ArrayList<>(unknowns.getOrDefault(owner.getEntryPoint(), Set.of()));
+        if (observations(owner).size() > 0) result.add("The selected exact libswiftCore runtime import uses its declared normal C ABI with explicit pointer/size arguments and pointer result in x0. This is a runtime contract assumption, not dynamic library authenticity, pure memory effects, noescape, allocation/keypath instantiation success, keypath type/getter identity, or closed constructor/dependency provenance. Explicit signatures and call-site overrides are preserved.");
         return result;
+    }
+
+    private static Contract contract(String symbol) {
+        return symbol == null ? null : CONTRACTS.get(symbol.startsWith("_") ? symbol.substring(1) : symbol);
+    }
+
+    /** Mutable display names never grant a runtime contract. Reused for both
+     * preparation and observations so a stale identity cannot retain proof. */
+    private Identification identify(Function target) {
+        if (target == null || !target.isExternal()) return OtherCall.INSTANCE;
+        ExternalLocation external = target.getExternalLocation();
+        String symbol = external == null ? null : external.getOriginalImportedName();
+        if (symbol == null) {
+            if (external == null || external.getSymbol().getSource() != SourceType.IMPORTED)
+                return contract(target.getName()) == null ? OtherCall.INSTANCE : new UnsupportedImport(
+                    "The analyst runtime label is preserved; no original imported identity establishes its ABI.");
+            symbol = external.getLabel();
+        }
+        Contract selected = contract(symbol);
+        if (selected == null) return OtherCall.INSTANCE;
+        String library = external.getLibraryName();
+        if (!Set.of("libswiftCore.dylib", "libswiftCore", "/usr/lib/swift/libswiftCore.dylib").contains(library == null ? "" : library))
+            return new UnsupportedImport("The runtime name is not bound to the supported libswiftCore import; no signature was applied.");
+        return new KnownImport(selected, symbol, library);
     }
 
     private Function target(Instruction call) {

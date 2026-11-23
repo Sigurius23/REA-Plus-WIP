@@ -26,7 +26,56 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
-## Latest allocator / captured-origin checkpoint (2026-11-23)
+## Latest keypath / dependency-selection checkpoint (2026-11-23)
+
+Read `field-tests/arc-keypath-origin-2026-11-23.md`, its `fact-index.json`,
+`qualification-verification.json`, `cli-verification.json` and snapshot.
+Item 69 is complete. The shared exact-import runtime registry preserves the
+C pointer return of `swift_getKeyPath` (two pointer arguments, X0 result), with
+unknown memory effects and the same identity/override protections as item 68.
+The profile component is `swift-runtime-c-signatures-v2`; the public contract
+is `swift-keypath-c-abi-v1`. Do not apply that C signature to Swift metadata
+response imports such as `swift_getAssociatedTypeWitness`.
+
+All eight keypath returns in candidate initializer `0x1012a5544` are retained.
+It emits eight 80-byte Dependency wrappers and 640 output bytes; the seventh
+uses pattern `0x103788708`, stored by Dependency.init at wrapper+16. This is
+compatible with BoostsEditor field 6 at 480, but source paths and layout alone
+do not prove constructor declaration ownership or actual captured Root origin.
+
+Selected pattern root/leaf symbolic atoms bind `DependencyValues` descriptor
+`0x103d46e58` and Client `0x103d648c4`. The external property descriptor
+`0x10373ccb8` has a zero header, selecting local getter thunk `0x1012b283c` ->
+`0x1003b5454`. It passes Client metadata `0x1042c8ac0` and TestDependencyKey
+witness `0x1045ee8b0` to lookup `0x1006fb0c0`. Public conformances bind that
+witness and the DependencyKey witness `0x1042c8348` exactly. The lookup checks
+storage/casts/context, then its cache path is `0x1006fbea4` -> callback
+`0x1006fe650` -> selector `0x1006fc894`. Cache-miss context 0 resolves the
+DependencyKey slot 2 getter (`0x100d929a0` for this static conformance). Context
+1 uses TestDependencyKey slot 2 (`0x100d8c154`, same global Client copy);
+other valid context uses slot 3 (`0x100d8c1dc`, different closure construction).
+Method names are absent; do not invent them or claim actual active selection.
+
+**Continue item 63** at generic wrapper/type representation and candidate
+constructor ownership/use, then relevant keypath/Client stability through
+aliases, unchanged argument forwarding and an observation-only invocation-domain
+carrier. A conditional default-target path is now traced; active injected
+values are not observed. Do not restart completed allocator, Root physical
+layout, keypath-return, pattern or witness-target work. No helper-wide 297-case
+CFG/type override. Broader browser and durability work remains open.
+
+Frozen runtime: `rea-local/.cache/arc-runtime-keypath-abi-2026-11-23`, 1,872
+files. Verification: 86 source tests, 94 successful final-runtime public MCP
+calls, four exact CLI/MCP pairs, six real boundary probes, stock Swift-error
+coexistence and build/fast/docs/package checks. Twelve historical snapshots
+authenticate. All qualified lineages are empty. Arc retains 23 allocator
+returns, 28 reducer mappings/10,072 bytes and the 14-instruction/56-byte helper
+with zero tables. Original recorder expiration and sandbox launch failures
+remain distinct from qualified success; read the report's harness notes.
+No target or fixture library was executed. Workers remain unavailable.
+This checkpoint follows local `a3b2505f8`; no new push was requested.
+
+## Previous allocator / captured-origin checkpoint (2026-11-23)
 
 Read `field-tests/arc-invocation-origin-2026-11-23.md`, its
 `qualification-verification.json`, `cli-verification.json` and `fact-index.json`.

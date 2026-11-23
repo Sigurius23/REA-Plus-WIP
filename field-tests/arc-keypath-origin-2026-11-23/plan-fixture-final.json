@@ -1,0 +1,284 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/mcp-fixture-final",
+  "runtime_manifest": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/runtime-final-manifest.json",
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 240000,
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "60"
+  },
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-keypath-origin-2026-11-23/fixture/trusted.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "trusted-open",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x8c4"
+      },
+      "label": "trusted-wrapper",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x8c4"
+      },
+      "label": "trusted-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/mcp-fixture-final/trusted.bundle.json"
+      },
+      "label": "trusted-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "trusted-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "trusted-close2",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-keypath-origin-2026-11-23/fixture/wrong-library.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "wrong-library-open",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x90c"
+      },
+      "label": "wrong-library-wrapper",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x90c"
+      },
+      "label": "wrong-library-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/mcp-fixture-final/wrong-library.bundle.json"
+      },
+      "label": "wrong-library-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "wrong-library-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "wrong-library-close2",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-keypath-origin-2026-11-23/fixture/local.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "local-open",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x8c4"
+      },
+      "label": "local-wrapper",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x8c4"
+      },
+      "label": "local-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/mcp-fixture-final/local.bundle.json"
+      },
+      "label": "local-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "local-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "local-close2",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/trusted.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "allocator-trusted-open",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x7c4"
+      },
+      "label": "allocator-trusted-make",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x7c4"
+      },
+      "label": "allocator-trusted-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/mcp-fixture-final/allocator-trusted.bundle.json"
+      },
+      "label": "allocator-trusted-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "allocator-trusted-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "allocator-trusted-close2",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/wrong-library.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "allocator-wrong-library-open",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x804"
+      },
+      "label": "allocator-wrong-library-make",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x804"
+      },
+      "label": "allocator-wrong-library-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/mcp-fixture-final/allocator-wrong-library.bundle.json"
+      },
+      "label": "allocator-wrong-library-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "allocator-wrong-library-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "allocator-wrong-library-close2",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/local.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "allocator-local-open",
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "arguments": {
+        "procedure": "0x7c4"
+      },
+      "label": "allocator-local-make",
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x7c4"
+      },
+      "label": "allocator-local-instructions",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/mcp-fixture-final/allocator-local.bundle.json"
+      },
+      "label": "allocator-local-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "allocator-local-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "allocator-local-close2",
+      "expect_success": true
+    }
+  ]
+}

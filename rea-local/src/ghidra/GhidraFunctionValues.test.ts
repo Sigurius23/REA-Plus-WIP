@@ -415,6 +415,29 @@ describe("Ghidra imported runtime call signatures", () => {
     const parsed = parseFunctionValueFixture("analyze_function", value);
     if (!parsed.ok) throw parsed.error;
     expect(parsed.value).toEqual(value);
+    const keypath = {
+      ...signature,
+      original_symbol: "_swift_getKeyPath",
+      contract: "swift-keypath-c-abi-v1",
+      parameter_registers: ["x0", "x1"],
+    };
+    expect(
+      parseFunctionValueFixture("analyze_function", {
+        ...value,
+        native_api: { ...value.native_api, runtime_call_signatures: [keypath] },
+      }).ok,
+    ).toBe(true);
+    expect(
+      parseFunctionValueFixture("analyze_function", {
+        ...value,
+        native_api: {
+          ...value.native_api,
+          runtime_call_signatures: [
+            { ...keypath, parameter_registers: ["x0", "x1", "x2"] },
+          ],
+        },
+      }).ok,
+    ).toBe(false);
     expect(
       parseFunctionValueFixture("analyze_function", {
         ...value,

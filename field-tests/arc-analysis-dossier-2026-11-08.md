@@ -1188,3 +1188,33 @@ invalid requests), three exact CLI comparisons, installed package checks,
 exports and empty lineages. No target was executed. Item 63's selected ABI,
 closed origin chain, unchanged forwarding and invocation-scoped mapping
 carrier, as well as broader Arc/runtime/durability questions, remain open.
+
+
+## Keypath return repair and conditional dependency selection (2026-11-23)
+
+[The new report](arc-keypath-origin-2026-11-23.md) repairs item 69 and advances
+item 63. The exact imported keypath C signature now retains X0's object result;
+all eight candidate-initializer results are corrected. Owned literal-keypath,
+wrong-library and local controls plus six authority probes preserve the narrow
+contract. Public signature Evidence retains unknown memory effects. The 23
+allocator results and reducer/helper recovery are unchanged.
+
+Pattern `0x103788708` binds DependencyValues -> UserDefaultsClient. Its trivial
+external descriptor selects the local getter, which passes exact Client metadata
+and TestDependencyKey witness into dependency lookup. Both exact conformances
+and the storage/context/cache branches are now observed. A cache miss in context
+0 resolves the DependencyKey getter; contexts 1/other valid select distinct
+TestDependencyKey slots. One copies the same default global Client, the other
+constructs different closures. This is a conditional target path. Actual
+selection, candidate constructor ownership/use and relevant field stability
+through aliases remain unresolved; argument forwarding and an invocation-only
+mapping carrier still need implementation. Generic metadata-response imports
+retain incomplete pseudocode; source-bound branch interpretation uses native
+instructions. No target was executed.
+
+Verification: 86 source tests, 94 successful final-runtime public MCP calls,
+four whole-Evidence CLI comparisons, six real boundary probes, stock Swift-error
+coexistence and build/fast/docs/package checks. Qualified lineages are empty;
+twelve historical snapshots authenticate. Initial partial/failed recorder,
+sandbox and harness attempts remain explicitly classified in the report.
+Full Arc, broader browser/UI/apply/writeback, readback and durability are open.
