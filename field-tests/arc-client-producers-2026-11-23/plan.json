@@ -1,0 +1,142 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-client-producers-2026-11-23/mcp",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-client-producers-2026-11-23/seeds-producers.tsv"
+  },
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 900000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "arc-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "instructions-0x1006fde3c",
+      "arguments": {
+        "procedure": "0x1006fde3c"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "summary-0x1006fde3c",
+      "arguments": {
+        "procedure": "0x1006fde3c",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "instructions-0x1006d4ca8",
+      "arguments": {
+        "procedure": "0x1006d4ca8"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "summary-0x1006d4ca8",
+      "arguments": {
+        "procedure": "0x1006d4ca8",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "instructions-0x1007ed818",
+      "arguments": {
+        "procedure": "0x1007ed818"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "summary-0x1007ed818",
+      "arguments": {
+        "procedure": "0x1007ed818",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "instructions-0x1005a4e64",
+      "arguments": {
+        "procedure": "0x1005a4e64"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "summary-0x1005a4e64",
+      "arguments": {
+        "procedure": "0x1005a4e64",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "instructions-0x100ccc400",
+      "arguments": {
+        "procedure": "0x100ccc400"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "summary-0x100ccc400",
+      "arguments": {
+        "procedure": "0x100ccc400",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "procedure_callers",
+      "label": "procedure_callers-client-setter",
+      "arguments": {
+        "procedure": "0x100ccc400"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "procedure_references",
+      "label": "procedure_references-client-setter",
+      "arguments": {
+        "procedure": "0x100ccc400"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "initial-export",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-client-producers-2026-11-23/mcp/initial.bundle.json"
+      },
+      "expect_success": true
+    }
+  ],
+  "continuations": [
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-client-producers-2026-11-23/phase1.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-client-producers-2026-11-23/phase2.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-client-producers-2026-11-23/phase3.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-client-producers-2026-11-23/phase4.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-client-producers-2026-11-23/phase5.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-client-producers-2026-11-23/phase6.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-client-producers-2026-11-23/phase7.json",
+    "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-client-producers-2026-11-23/phase8.json"
+  ]
+}

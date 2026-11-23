@@ -4,6 +4,21 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc suite/context/store producers advanced (2026-11-23, item 63 partial):**
+  The suite suffix is a wrapping 64-bit UTF-8 hash seeded at 5381 with multiplier
+  33, described as UInt64. Seven bounded Arc/C replay pairs agree. The custom
+  directory/suite gate tests bundle-ID prefix `company.thebrowser.dia`, falling
+  back to `__CFBundleIdentifier` only without a bundle ID; the original Arc
+  identifier does not match. XCTest markers, executable-name/extension and
+  current-test fallback are traced. Generic storage has explicit insert/replace
+  paths; incoming setter references remain despite no direct callers in the
+  bounded Program. Actual Client choice stays open at unknown revision 2.
+  796 attempts (ten unlisted-procedure errors), four CLI/MCP pairs, 1,114 main
+  bundle records, 20 historical snapshots and empty lineages verify. A typed
+  blob-text defect discovered during verification is item 73. See
+  [the checkpoint](field-tests/arc-client-producers-2026-11-23.md).
+
+
 - **Arc dependency/default policy advanced (2026-11-23, item 63 partial):**
   The observed scope selects NavigationIDPathKey with Value NavigationIDPath,
   separate from the Client key. Native observations support current-over-captured
@@ -1741,8 +1756,10 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     selected code/context, relevant instance/copy stability and the qualified
     typed invocation join remain open. This is retained explicitly as unknown
     `unk_c0e6ba9f746d440571369f088d47997bb6ee28307db89ca5026e9d1fe44c5d04`.
-    Preferences object selection now has source-bound suite/standard selector
-    evidence; current suite, suffix algorithm and durability remain unresolved.
+    Preferences object selection has source-bound suite/standard selectors. The
+    newer [producer checkpoint](field-tests/arc-client-producers-2026-11-23.md)
+    closes the suffix algorithm, Dia-specific gate and static test predicate;
+    current suite and durability remain unresolved.
     No new producer defect was established. See
     [the dependency-policy report](field-tests/arc-dependency-policy-2026-11-23.md).
 
@@ -2220,3 +2237,15 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     profile and physical metadata sources are unchanged. Actual captured
     instance/stability and item 63's invocation carrier remain open. See
     [the report](field-tests/arc-member-templates-2026-11-23.md).
+
+
+73. **Preserve valid controls in declared CBOR/MessagePack UTF-8 text.** Open
+    (2026-11-23, found during Arc item 63 verification). Typed string producers
+    reuse a printable-text heuristic, converting valid NUL/other control text
+    into `str-bytes`; the public strings view then drops it. The original Arc
+    selector range happens to be valid CBOR text and exposes this distinction.
+    Keep auto-detection ambiguity explicit; fix UTF-8 decoding at the typed
+    producer while retaining raw/Protobuf byte heuristics and malformed UTF-8
+    identity. Reproduce with owned CBOR/MessagePack inputs, verify tree/strings
+    and CLI/MCP Evidence, then recheck the original range. Discovery evidence:
+    [producer checkpoint](field-tests/arc-client-producers-2026-11-23.md).

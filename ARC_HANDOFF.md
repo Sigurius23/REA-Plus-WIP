@@ -26,6 +26,44 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest suite/context/store producer checkpoint (2026-11-23)
+
+Read `field-tests/arc-client-producers-2026-11-23.md` and its qualification,
+CLI, history and snapshot receipts. This evidence-only pass uses the unchanged
+frozen table runtime and 25 source hashes; no Arc host process was launched.
+
+The suite hash is UTF-8 djb2-style, seed 5381, multiplier 33, wrapping UInt64;
+the standard UInt64 description is appended to `com.dia.instance.`. Seven
+explicit Arc/C replay pairs match, including Unicode and native literal paths;
+a missing mapping stops honestly. The application gate tests whether
+NSBundle.mainBundle.bundleIdentifier has prefix `company.thebrowser.dia`,
+falling back to environment `__CFBundleIdentifier` only if no bundle ID exists.
+The original Arc plist says `company.thebrowser.Browser`: under ordinary bundle
+binding this shared custom-directory/suite branch is disabled. No host bundle
+or environment was queried. Current suite and persistence remain unobserved.
+
+The cached test predicate checks membership of the three XCTest environment
+keys, first argument URL's `xctest` filename/extension, then XCTestObservationCenter
+-> sharedTestObservationCenter -> observers -> XCTestMisuseObserver ->
+currentTestCase, retaining its nil/cast/trap paths. Generic store instructions
+now show present-value same-key replacement and insertion under ordinary
+Dictionary/COW/VWT semantics. Broad memory effects and active Client/copy
+stability remain open. Setter thunk incoming references exist even when the
+bounded Program's direct caller list is empty.
+
+796 attempts include ten expected unlisted-procedure errors; three captures,
+four exact CLI/MCP pairs, 696 byte checks, 20 historical snapshots and four
+empty lineages verify. The main bundle has 1,114 records and both revisions of
+the still-open Client unknown (latest revision 2). Its preceding policy and
+hash bundles are imported. The exact-selector recovery is a separate bundle.
+
+**Next:** fix new item 73: CBOR/MessagePack declared UTF-8 strings currently use
+a printable-only heuristic, so valid NUL/control text disappears from the
+strings view. Preserve the original failing auto-CBOR capture. Separate valid
+UTF-8 from raw-byte printability at the producer, qualify with owned fixtures
+and public CLI/MCP, then retest the original selector range. Afterwards resume
+actual Client override/instance/invocation proof; do not claim full Arc done.
+
 ## Latest dependency/default policy checkpoint (2026-11-23)
 
 Read `field-tests/arc-dependency-policy-2026-11-23.md`, `selection-policy.json`,
@@ -45,15 +83,16 @@ The wrapper's ordinary merge uses current storage entries to replace captured
 ones and installs captured cache plus merged storage for keypath projection.
 This is a native/ABI analyst derivation, not a new automatic memory-flow field.
 Context overrides live/preview/test map to 0/1/2; otherwise preview flag then
-cached test predicate determine the default. Full test-predicate production is
-not traced. Live/preview retained Client getters copy the same global; the
+cached test predicate determine the default. The newer producer checkpoint traces the full selected static test-predicate
+route; current process values remain unobserved. Live/preview retained Client getters copy the same global; the
 test-default first closure `0x100003b60` is MOV W0,#0; RET, nil context. Thus
 valid Client typing and X0=49 alone cannot select the shared helper.
 
 Global preferences initializer `0x100d91000` attempts `initWithSuiteName:` for
 a present optional suite, otherwise or on nil takes `standardUserDefaults`.
 The gated user-data-dir suite route constructs prefix `com.dia.instance.`;
-its suffix helper and current suite remain unknown. This is distinct from the
+the newer producer checkpoint closes the suffix helper and gate, while
+current suite remains unknown. This is distinct from the
 already recovered Application Support/Arc JSON store default path.
 
 Final export: 335 records and explicit open unknown
@@ -68,9 +107,8 @@ unused synthetic import targets. Failed captures remain intact.
 
 **Next:** trace remaining Client override producers and relevant typed copy/
 instance stability, preserving input-dependent choices. The selected scope's
-key identity and ordinary context/default branches are now documented. The
-inner generic store `0x1006fde3c`, full cached-test predicate and suite suffix
-are concrete secondary static questions. Actual preference I/O/durability,
+key identity and ordinary context/default branches are now documented. The newer producer checkpoint traces the
+selected inner generic store `0x1006fde3c`, cached-test predicate and suite suffix. Actual preference I/O/durability,
 qualified typed invocation mapping and full Arc remain incomplete. All owned
 sessions are closed. No new runtime authority was added.
 

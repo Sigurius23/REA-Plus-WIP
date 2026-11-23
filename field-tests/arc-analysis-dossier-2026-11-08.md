@@ -1,5 +1,14 @@
 # Arc 1.172.1 analysis dossier
 
+Suite/context/store addendum **2026-11-23**:
+[The producer checkpoint](arc-client-producers-2026-11-23.md) closes the selected
+suite hash and Dia-specific bundle-ID gate, cached test-predicate route and
+ordinary generic insertion/replacement paths. Seven Arc/C emulator pairs match.
+With the original Arc bundle ID supplied normally, the shared Dia custom-suite
+branch is disabled; this is not observed runtime state. Actual Client choice,
+instance stability and durability remain open. Typed blob text dropping valid
+controls was discovered and recorded as item 73 for immediate repair.
+
 Dependency/default policy addendum **2026-11-23**:
 [the new checkpoint](arc-dependency-policy-2026-11-23.md) identifies the scope's
 NavigationIDPathKey, the ordinary captured/current merge and context factory
