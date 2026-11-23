@@ -28,7 +28,7 @@ const nativeMetadataAddressSchema = z.string().regex(/^0x[0-9a-fA-F]{1,16}$/u);
 export const nativeSwiftTypeAddressSchema = nativeMetadataAddressSchema
   .optional()
   .describe(
-    "Required with facet swift-fields: exact indexed nominal struct or enum descriptor. Reports declared field types, not instance offsets, invocation targets or runtime validity. Cannot combine with class/conformance selectors.",
+    "Required with facet swift-fields: exact indexed nominal struct or enum descriptor, including generic declaration inventories. Reports declared fields and raw symbolic types; generic substitutions, instance offsets, invocation targets and runtime validity require separate evidence. Cannot combine with class/conformance selectors.",
   );
 /** File-encoded metadata instance, independently bound to the selected descriptor. */
 export const nativeSwiftMetadataAddressSchema = nativeMetadataAddressSchema
@@ -578,6 +578,7 @@ const swiftTypeFieldsSchema = z.strictObject({
   descriptor: nativeMetadataLocationSchema.nullable(),
   name: z.string().nullable(),
   kind: z.enum(["struct", "enum"]).nullable(),
+  is_generic: z.boolean().nullable().optional(),
   field_descriptor: nativeMetadataLocationSchema.nullable(),
   declared_field_count: z.number().int().nonnegative().nullable(),
   fields: z.array(

@@ -175,12 +175,16 @@ complete observation.
   satisfy or combine with this selector. Historical unselected Evidence may
   omit the new selection record.
   With `facet: "swift-fields"`, required `swift_type_address` (CLI
-  `--swift-type-address`) selects one exact indexed nongeneric struct/enum.
+  `--swift-type-address`) selects one exact indexed struct/enum declaration.
   This explicit declaration query is excluded from the default `all` inventory
   and cannot combine with class/conformance selectors. `swift_type_fields`
   preserves index coverage, field records, complete symbolic mangling bytes,
   supported synchronous native thick function shapes and exact nominal identities.
-  Embedded NULs in symbolic references do not terminate manglings. Generic,
+  `is_generic` reports the descriptor's generic flag; historical Evidence may
+  omit it. Generic owners retain their declaration fields and raw manglings
+  without substituting generic parameters or decoding requirements. Concrete
+  supported function shapes can be decoded independently of generic ownership.
+  Embedded NULs in symbolic references do not terminate manglings. Generic types,
   async, throwing, tuple, optional, foreign and unrecognized shapes remain
   unsupported. A complete pure-enum parameter can supply a **declared** valid
   argument domain, after case counts and all no-payload records agree. An enum
@@ -196,7 +200,8 @@ complete observation.
   `initializeWithCopy` slot identity. Its separate `swift_static_struct_layout`
   coverage can be partial while declaration facts survive. All these records
   share `max_records`; no metadata is instantiated. Incomplete layouts, wrong
-  owners, unsupported pointers, invalid offsets and exhausted budgets remain
+  owners, generic owners requiring specialization evidence, unsupported pointers,
+  invalid offsets and exhausted budgets remain
   partial. A shared VWT helper address does not establish nominal ownership,
   copying purity, nonescape or byte origin.
   Complete reflected function types report `argument_abi.status: unresolved`:

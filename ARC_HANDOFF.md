@@ -26,7 +26,61 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
-## Latest keypath / dependency-selection checkpoint (2026-11-23)
+## Latest generic declaration / typed Root-use checkpoint (2026-11-23)
+
+Read `field-tests/arc-generic-declarations-2026-11-23.md`, its fact index,
+qualification, CLI parity and snapshot manifests. Item 70 is done. The native
+field reader inventories generic struct/enum declarations separately from
+its nongeneric function-atom interpretation. Optional `is_generic` retains the
+original descriptor flag. Generic substitutions, requirements and instantiated
+layout remain unresolved. Keep the physical metadata reader's new explicit
+original-descriptor generic guard; it no longer relies on narrower owner
+admission. A forged owner-matching metadata record is a negative control.
+
+Arc Dependency `0x103d46d5c` now retains `initialValues`, `keyPath`, `file`,
+`fileID`, `line`. Root field 6 still preserves raw Dependency<Client> mangling;
+there is no new automatic specialization or generic instance layout support.
+Owned generic structs/enums and same-name foreign owners remain distinct.
+A concrete closure in a generic owner can decode independently, while generic
+parameter types and native argument ABI remain unresolved.
+
+New item 63 native trace: caller `0x10150478c` calls candidate initializer
+`0x1012a5544` at `0x10150486c` with X8=SP+0x1680, then sends that source in X1
+and exact Root metadata `0x104316db8` at caller stack+0x20 to `0x100876de8`
+(call `0x10150490c`). The consumer saves source in X26, metadata in X28;
+`0x100876ee8` uses VWT+0x20 with X1=source/X2=metadata. This is
+**initializeWithTake**, not copy: VWT `0x104316d50`, slot `0x104316d70` ->
+`0x1012b4074`, which sets W2=0x280 and tail-calls memcpy. Under normal VWT,
+valid/live/disjoint storage and stable metadata, it is an operation-specific
+typed constructor-output use. Intervening unknown calls/aliases still prevent
+claiming unchanged constructor bytes or the exact later captured instance.
+
+Public conformance `0x103788ae8` binds BoostsEditor:Reducer table `0x1046270d8`.
+Slot 4 -> `0x1012a9870` copies 640 bytes from incoming X20 to SP, sets X20=SP
+and calls `0x1012a571c` at `0x1012a98b4`. Slot 5 -> `0x1012a98d0` ends in
+BRK at `0x1012a9984`; do not invent a reducing method from slot order. These
+supply separate typed-use/protocol-entry anchors, not a complete instance flow.
+
+**Continue item 63** at supported concrete generic specialization/substitution,
+relevant unchanged keypath/Client windows, captured-instance/default relation,
+argument forwarding and an observation-only invocation-domain/mapping carrier.
+Do not restart generic declaration inventory, Root layout, keypath-return,
+pattern selection, default witness targets or these typed-use anchors.
+No helper-global 297-case override. Full Arc and browser/durability remain open.
+
+Frozen runtime: `rea-local/.cache/arc-runtime-generic-declarations-2026-11-23`,
+1,872 files. Verification: 67 source tests, 55 final-runtime public calls plus
+18 baseline calls, four exact CLI/MCP pairs and build/fast/docs/package checks.
+Thirteen historical snapshots authenticate. All owned lineages are verified
+empty. Native bridge, enum recovery, Swift-error model, runtime-call registry
+and Ghidra profile code are unchanged; no fresh full enum matrix is claimed.
+The guide's stale v9 profile label is corrected to existing v10. Metadata field
+checks use the native Apple reader; constructor/witness checks use real Ghidra
+with its explicit one-second partial policy and caller-asserted seeds.
+No target/fixture code was executed. Workers remain unavailable. This checkpoint
+follows local `4da794cf7`; no new push was requested.
+
+## Previous keypath / dependency-selection checkpoint (2026-11-23)
 
 Read `field-tests/arc-keypath-origin-2026-11-23.md`, its `fact-index.json`,
 `qualification-verification.json`, `cli-verification.json` and snapshot.

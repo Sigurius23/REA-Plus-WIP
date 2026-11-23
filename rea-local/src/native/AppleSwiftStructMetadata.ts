@@ -99,6 +99,12 @@ export const decodeSwiftStructMetadata = (input: {
       throw new RangeError("Misaligned struct metadata or descriptor");
     read.offset(address - 8n, 24);
     read.offset(descriptor, 28);
+    // Declaration inventory admits generic owners. The generic metadata
+    // layout/argument area is outside this nongeneric physical-layout lane.
+    if ((read.u32(descriptor) & 0x80) !== 0)
+      throw new RangeError(
+        "Generic struct metadata binding requires specialization evidence; only declaration fields are retained",
+      );
     out.location = read.location(address);
     const kind = word(address);
     out.kind_word = `0x${kind.toString(16)}`;

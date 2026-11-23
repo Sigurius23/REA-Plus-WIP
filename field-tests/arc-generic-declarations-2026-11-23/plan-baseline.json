@@ -1,0 +1,175 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-generic-declarations-2026-11-23/mcp-baseline",
+  "runtime_manifest": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-keypath-origin-2026-11-23/runtime-final-manifest.json",
+  "timeout_ms": 390000,
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1"
+  },
+  "steps": [
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-generic-declarations-2026-11-23/Declarations.dylib",
+        "provider_id": "ghidra"
+      },
+      "label": "owned-open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x2bc0",
+        "max_records": 5000
+      },
+      "label": "owned-10DependencyVMn",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x2bf0",
+        "max_records": 5000
+      },
+      "label": "owned-14GenericClosureVMn",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x2c20",
+        "max_records": 5000
+      },
+      "label": "owned-11GenericEnumOMn",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x2b88",
+        "max_records": 5000
+      },
+      "label": "owned-6ClientVMn",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x2c9c",
+        "max_records": 5000
+      },
+      "label": "owned-4RootVMn",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x2c6c",
+        "max_records": 5000
+      },
+      "label": "owned-foreign-dependency",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x2bc0",
+        "swift_metadata_address": "0x4418",
+        "max_records": 5000
+      },
+      "label": "owned-generic-layout-rejected",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-generic-declarations-2026-11-23/mcp-baseline/owned.bundle.json"
+      },
+      "label": "owned-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "owned-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "owned-close2",
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "label": "arc-open",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x103d46d5c",
+        "max_records": 20000,
+        "max_file_bytes": 100663296
+      },
+      "label": "arc-dependency",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x103d7b1ac",
+        "max_records": 20000,
+        "max_file_bytes": 100663296
+      },
+      "label": "arc-root",
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x103d648c4",
+        "max_records": 20000,
+        "max_file_bytes": 100663296
+      },
+      "label": "arc-client",
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-generic-declarations-2026-11-23/mcp-baseline/arc.bundle.json"
+      },
+      "label": "arc-export",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "arc-close1",
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "arguments": {},
+      "label": "arc-close2",
+      "expect_success": true
+    }
+  ]
+}

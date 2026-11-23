@@ -1669,6 +1669,22 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-23 generic declarations and typed constructor use advanced.**
+    Item 70 now retains the five generic Dependency field declarations while
+    refusing generic physical-layout inference. Public code also binds candidate
+    initializer output at caller SP+0x1680 to consumer `0x100876de8`, supplied
+    with exact Root metadata `0x104316db8`. At `0x100876ee8`, source X26 and
+    metadata X28 reach VWT+0x20: Root's initializeWithTake witness `0x1012b4074`
+    copies 640 bytes. This is a conditional typed-use anchor, not unchanged
+    construction bytes across aliases or proof of the actual captured instance.
+    Exact BoostsEditor:Reducer conformance binds witness `0x1046270d8`; slot 4
+    (`0x1012a9870`) copies incoming Self to SP and calls reducer `0x1012a571c`.
+    Slot 5 is a diagnostic/trap, so slot order supplies no method-name shortcut.
+    Concrete generic specialization/substitution, relevant field stability,
+    captured-instance/default relation, forwarding and invocation-only mapping
+    remain open. No helper-wide override. See
+    [the generic/constructor-use report](field-tests/arc-generic-declarations-2026-11-23.md).
+
     **2026-11-23 keypath/dependency trace advanced; item remains open.**
     Item 69 repairs the missing C return from keypath instantiation. Selected
     pattern `0x103788708` binds `DependencyValues` -> `UserDefaultsClient`;
@@ -1992,3 +2008,23 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     missing frozen fixture and a verifier label typo remain honestly retained.
     This repairs return flow, not keypath type/origin or active dependency
     selection. See [the report](field-tests/arc-keypath-origin-2026-11-23.md).
+
+
+70. **Inventory generic Swift field declarations independently of ABI lowering.**
+    Done and verified (2026-11-23, item 63). The selected field reader formerly
+    reused its nongeneric function-atom restriction for the declaration owner,
+    retaining no name/fields for indexed `Dependency<Value>`. Declaration
+    inventory now retains owner identity, optional `is_generic`, field records
+    and complete raw manglings without substituting generic parameters or
+    instantiating layout. The physical metadata reader independently rejects
+    generic owners, including an owner-matching fabricated layout control.
+    Generic structs/enums, same-name foreign owners, concrete closure fields,
+    budget exhaustion and unindexed selectors are covered. Arc retains all
+    five Dependency records; its type interpretation remains partial.
+    Verification: 67 source tests, 55 final-runtime public MCP calls plus 18
+    baseline calls, four exact CLI/MCP comparisons, build/fast/docs/package
+    checks, empty owned lineages and thirteen historical snapshots. The stale
+    Ghidra guide's v9 profile label now matches the existing v10 code. Native
+    bridge/recovery/runtime-call implementations are unchanged. Specialization,
+    actual captured-instance relation and field stability remain item 63 work.
+    See [the report](field-tests/arc-generic-declarations-2026-11-23.md).

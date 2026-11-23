@@ -170,6 +170,29 @@ describe("file-encoded Swift struct metadata identity and offsets", () => {
 });
 
 describe("Swift static metadata partial facts and capacity", () => {
+  it("retains generic declarations but rejects even an owner-matching fabricated metadata layout", () => {
+    const f = fixture();
+    f.u32(0x500, 0x80 | 17);
+    const result = inspect(f.bytes).swift_type_fields!;
+    expect(result).toMatchObject({
+      matched: true,
+      is_generic: true,
+      name: "Owner",
+      declared_field_count: 3,
+      fields: [{ name: "field0" }, { name: "field1" }, { name: "field2" }],
+      static_metadata: {
+        owner_matched: false,
+        kind_word: null,
+        field_offsets: [],
+        pointers: [],
+        value_witness: null,
+        decode: {
+          status: "partial",
+          reason: expect.stringContaining("specialization evidence"),
+        },
+      },
+    });
+  });
   it("rejects incomplete or inconsistent VWT layout without declaring field offsets", () => {
     const f = fixture();
     f.u32(0xa50, 0x400007);

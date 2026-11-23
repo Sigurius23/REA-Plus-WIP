@@ -280,7 +280,7 @@ for values outside the valid enum. This recovers control flow, not state
 reachability, original source declarations or every Swift calling convention.
 
 The analysis profile commits `swift_enum_switch_recovery:
-"abi-signed-word-cfg-v9"` and `darwin_stack_probe_call_summary:
+"abi-signed-word-cfg-v10"` and `darwin_stack_probe_call_summary:
 "trusted-darwin-arm64-chkstk-v1"`, plus `swift_dynamic_typed_snapshot:
 "swift-dynamic-typed-snapshot-v1"` for supported targets. Earlier snapshots cannot replay
 as this recovery. Windows P0 retains its no-database-mutation boundary.

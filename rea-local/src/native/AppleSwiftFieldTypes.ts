@@ -36,6 +36,7 @@ export const decodeSwiftTypeFields = (input: {
     descriptor: null,
     name: null,
     kind: null,
+    is_generic: null,
     field_descriptor: null,
     declared_field_count: null,
     fields: [],
@@ -43,6 +44,7 @@ export const decodeSwiftTypeFields = (input: {
     program_mutations: false,
     limitations: [
       "Reflection field ordinals are not physical instance offsets.",
+      "Generic owners are declaration inventories only: generic parameters, requirements, substitutions and instantiated layout are not resolved.",
       "Declared function types do not establish a typed buffer, code/context origin, an invocation, active dependency selection or a helper-global input domain.",
       "Only complete synchronous nonthrowing native thick function manglings with one supported atomic parameter and result are decoded; other encodings remain unsupported.",
     ],
@@ -92,17 +94,27 @@ export const decodeSwiftTypeFields = (input: {
       );
     return target.address;
   };
-  const nominal = (descriptor: bigint): Atom => {
+  const declaration = (descriptor: bigint) => {
     read.offset(descriptor, 20);
     const flags = read.u32(descriptor);
-    if ((flags & 0x80) !== 0 || ![17, 18].includes(flags & 31))
+    if (![17, 18].includes(flags & 31))
+      throw new RangeError("Only struct/enum field declarations are supported");
+    return {
+      name: read.string(local(descriptor + 8n)),
+      descriptor: read.location(descriptor),
+      is_generic: (flags & 0x80) !== 0,
+    };
+  };
+  const nominal = (descriptor: bigint): Atom => {
+    const owner = declaration(descriptor);
+    if (owner.is_generic)
       throw new RangeError(
         "Only nongeneric struct/enum symbolic type identities are supported",
       );
     return {
       kind: "nominal",
-      name: read.string(local(descriptor + 8n)),
-      descriptor: read.location(descriptor),
+      name: owner.name,
+      descriptor: owner.descriptor,
     };
   };
   const enums = new Map<bigint, Fields["referenced_enums"][number]>();
@@ -292,11 +304,12 @@ export const decodeSwiftTypeFields = (input: {
       (read.u32(firstMatch) & 3) === 1 ? "indirectable" : "direct",
     );
     if (!budget.admit()) throw new RangeError("max_records_reached");
-    const owner = nominal(address),
+    const owner = declaration(address),
       kind = read.u32(address) & 31;
     out.descriptor = owner.descriptor;
     out.name = owner.name;
     out.kind = kind === 17 ? "struct" : "enum";
+    out.is_generic = owner.is_generic;
     const fieldDescriptor = local(address + 16n);
     out.field_descriptor = read.location(fieldDescriptor);
     read.offset(fieldDescriptor, 16);

@@ -1218,3 +1218,30 @@ coexistence and build/fast/docs/package checks. Qualified lineages are empty;
 twelve historical snapshots authenticate. Initial partial/failed recorder,
 sandbox and harness attempts remain explicitly classified in the report.
 Full Arc, broader browser/UI/apply/writeback, readback and durability are open.
+
+
+## Generic declarations and typed constructor use (2026-11-23)
+
+[The new report](arc-generic-declarations-2026-11-23.md) completes item 70 and
+advances item 63. REA+ retains generic owner identity/flag and field declarations
+without instantiating layout or interpreting unresolved generic parameters.
+Arc Dependency now has all five named raw field records. The nongeneric
+physical metadata lane has an independent generic-owner guard; an owner-matching
+fabricated layout cannot bypass it. Supported concrete closure declarations
+remain independent of generic ownership and keep argument ABI unresolved.
+
+A public constructor-use trace now connects candidate output SP+0x1680 to a
+consumer supplied with exact BoostsEditor metadata. Its VWT+0x20 move uses the
+640-byte take witness. The exact Root Reducer conformance also binds a separate
+entry that copies Self and calls the known reducer. Another slot traps; no
+method name is inferred from slot number. These are conditional typed-use and
+entry anchors, not unchanged values through unknown aliases or proof of the
+actual later captured Root. Generic specialization, relevant field windows,
+active/default relation, forwarding and invocation-scoped mapping stay open.
+
+Verification includes 67 source tests, 55 final-runtime public MCP calls and
+18 baseline calls, four complete-Evidence CLI comparisons and build/fast/docs/
+package checks, with empty owned lineages and thirteen authenticated historical
+snapshots. Native recovery/runtime-call code is unchanged. Field queries use
+the Apple byte reader; constructor/witness captures use explicitly partial real
+Ghidra. No target/fixture was executed. Full Arc remains incomplete.

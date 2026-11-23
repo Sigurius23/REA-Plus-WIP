@@ -178,6 +178,41 @@ describe("selected symbolic Swift closure field declarations", () => {
 });
 
 describe("Swift field declaration boundaries", () => {
+  it("retains generic owner declarations without lowering generic parameter types", () => {
+    const f = fixture();
+    f.u32(0x500, 0x80 | 17);
+    f.bytes.fill(0, 0xa00, 0xa80);
+    f.bytes.write("x\0", 0xa00);
+    expect(inspect(f.bytes).swift_type_fields).toMatchObject({
+      matched: true,
+      name: "Client",
+      kind: "struct",
+      is_generic: true,
+      declared_field_count: 1,
+      fields: [
+        {
+          name: "boolForSetting",
+          mangling_hex: "7800",
+          function_type: null,
+          decode: { status: "unsupported" },
+        },
+      ],
+      referenced_enums: [],
+      decode: { status: "partial" },
+    });
+  });
+  it("can decode a concrete closure declaration owned by a generic type", () => {
+    const f = fixture();
+    f.u32(0x500, 0x80 | 17);
+    const result = inspect(f.bytes).swift_type_fields!;
+    expect(result.is_generic).toBe(true);
+    expect(result.fields[0]!.function_type!.parameter.descriptor!.address).toBe(
+      hex(0x600),
+    );
+    expect(result.fields[0]!.function_type!.argument_abi!.status).toBe(
+      "unresolved",
+    );
+  });
   it("rejects generic identities, payload cases and count disagreement", () => {
     const generic = fixture();
     generic.u32(0x600, 0x80 | 18);
