@@ -1245,3 +1245,31 @@ package checks, with empty owned lineages and thirteen authenticated historical
 snapshots. Native recovery/runtime-call code is unchanged. Field queries use
 the Apple byte reader; constructor/witness captures use explicitly partial real
 Ghidra. No target/fixture was executed. Full Arc remains incomplete.
+
+
+## Concrete generic applications and default forwarding (2026-11-23)
+
+[The new report](arc-generic-applications-2026-11-23.md) completes item 71.
+REA+ now validates complete flat concrete field applications against the
+original top-level struct/module/generic signature. Seven Root fields decode;
+field 6 binds exact Dependencies.Dependency<UserDefaultsClient>. Signature and
+argument identities remain declaration-only: no generic member substitution,
+physical generic layout or native ABI is inferred. Function/application roles
+are exclusive; an enum argument supplies no closure domain. Root layout and
+existing Client function declarations remain intact.
+
+The next member boundary is the imported KeyPath class descriptor and generic
+value parameter in the wrapper's raw keyPath type. Applying the selected Client
+substitution remains open, along with relevant field/alias stability and actual
+captured-instance/default relation. Reused public instructions and eight exact
+original encodings separately verify X0 unchanged along the exact default
+adapter/reader prefix to helper call 0x100d910f0. This conditional analyst
+relation neither selects the actual target nor supplies an automatic invocation
+carrier or helper-wide bound.
+
+Verification: 78 source tests, 31 final public MCP calls plus 13 baseline, four
+whole-Evidence CLI pairs and build/fast/docs/package checks, including owned
+positive/boundary and three malformed metadata controls. Fourteen prior
+snapshots authenticate; owned lineages are empty. Native bridge/recovery and
+physical-layout code are unchanged. No target/fixture was executed. Item 63,
+full Arc and browser/runtime/durability questions remain incomplete.

@@ -28,7 +28,7 @@ const nativeMetadataAddressSchema = z.string().regex(/^0x[0-9a-fA-F]{1,16}$/u);
 export const nativeSwiftTypeAddressSchema = nativeMetadataAddressSchema
   .optional()
   .describe(
-    "Required with facet swift-fields: exact indexed nominal struct or enum descriptor, including generic declaration inventories. Reports declared fields and raw symbolic types; generic substitutions, instance offsets, invocation targets and runtime validity require separate evidence. Cannot combine with class/conformance selectors.",
+    "Required with facet swift-fields: exact indexed nominal struct or enum descriptor, including generic declaration inventories. Reports declared fields, raw symbolic types and supported flat unconstrained generic applications; member substitutions, instance offsets, invocation targets and runtime validity require separate evidence. Cannot combine with class/conformance selectors.",
   );
 /** File-encoded metadata instance, independently bound to the selected descriptor. */
 export const nativeSwiftMetadataAddressSchema = nativeMetadataAddressSchema
@@ -519,6 +519,56 @@ const swiftFieldFunctionSchema = z.strictObject({
     })
     .nullable(),
 });
+const swiftBoundGenericFieldSchema = z.strictObject({
+  kind: z.literal("bound-generic-struct"),
+  name: z.string(),
+  descriptor: nativeMetadataLocationSchema,
+  module: z.strictObject({
+    name: z.string(),
+    descriptor: nativeMetadataLocationSchema,
+  }),
+  arguments: z.array(swiftFieldAtomSchema).min(1),
+  signature: z.strictObject({
+    location: nativeMetadataLocationSchema,
+    parameter_count: z.number().int().positive(),
+    requirement_count: z.literal(0),
+    key_argument_count: z.number().int().positive(),
+    flags: z.literal(0),
+    parameters: z.array(
+      z.strictObject({
+        index: z.number().int().nonnegative(),
+        flags: z.literal(128),
+        location: nativeMetadataLocationSchema,
+      }),
+    ),
+  }),
+  interpretation: z.literal("declaration-only"),
+  limitations: z.array(z.string()),
+  evidence: z.array(nativeMetadataEvidenceSchema),
+});
+const swiftTypeFieldBase = z.strictObject({
+  ordinal: z.number().int().nonnegative(),
+  record: nativeMetadataLocationSchema,
+  flags: z.number().int().nonnegative(),
+  name: z.string().nullable(),
+  type_location: nativeMetadataLocationSchema.nullable(),
+  mangling_hex: z
+    .string()
+    .regex(/^(?:[0-9a-f]{2})*$/u)
+    .nullable(),
+  decode: nativeMetadataDecodeSchema,
+  evidence: z.array(nativeMetadataEvidenceSchema),
+});
+const swiftTypeFieldSchema = z.union([
+  swiftTypeFieldBase.extend({
+    function_type: swiftFieldFunctionSchema.nullable(),
+    bound_generic_type: z.null().optional(),
+  }),
+  swiftTypeFieldBase.extend({
+    function_type: z.null(),
+    bound_generic_type: swiftBoundGenericFieldSchema,
+  }),
+]);
 const swiftTypeFieldsSchema = z.strictObject({
   static_metadata: z
     .strictObject({
@@ -581,22 +631,7 @@ const swiftTypeFieldsSchema = z.strictObject({
   is_generic: z.boolean().nullable().optional(),
   field_descriptor: nativeMetadataLocationSchema.nullable(),
   declared_field_count: z.number().int().nonnegative().nullable(),
-  fields: z.array(
-    z.strictObject({
-      ordinal: z.number().int().nonnegative(),
-      record: nativeMetadataLocationSchema,
-      flags: z.number().int().nonnegative(),
-      name: z.string().nullable(),
-      type_location: nativeMetadataLocationSchema.nullable(),
-      mangling_hex: z
-        .string()
-        .regex(/^(?:[0-9a-f]{2})*$/u)
-        .nullable(),
-      function_type: swiftFieldFunctionSchema.nullable(),
-      decode: nativeMetadataDecodeSchema,
-      evidence: z.array(nativeMetadataEvidenceSchema),
-    }),
-  ),
+  fields: z.array(swiftTypeFieldSchema),
   referenced_enums: z.array(
     z.strictObject({
       descriptor: nativeMetadataLocationSchema,

@@ -181,11 +181,22 @@ complete observation.
   preserves index coverage, field records, complete symbolic mangling bytes,
   supported synchronous native thick function shapes and exact nominal identities.
   `is_generic` reports the descriptor's generic flag; historical Evidence may
-  omit it. Generic owners retain their declaration fields and raw manglings
-  without substituting generic parameters or decoding requirements. Concrete
-  supported function shapes can be decoded independently of generic ownership.
-  Embedded NULs in symbolic references do not terminate manglings. Generic types,
-  async, throwing, tuple, optional, foreign and unrecognized shapes remain
+  omit it. Generic owners retain their declaration fields and raw manglings.
+  Optional `bound_generic_type` decodes a complete flat concrete application of
+  a top-level version-zero generic struct. The original module parent, generic
+  header, ordinary key type parameters, absence of requirements/packs and exact
+  argument count must agree. Arguments are supported nongeneric struct/enum or
+  builtin identities. The record retains signature/parameter locations and
+  source evidence; it describes the declaration only. Nested generic contexts,
+  generic arguments, constraints, packs, retroactive conformances, annotations
+  and trailing operators remain unsupported. It neither substitutes member
+  types nor determines instance offsets, value size or native argument ABI.
+  Function and generic-application records are mutually exclusive; an enum
+  used as a generic argument supplies no function argument domain.
+  Concrete supported function shapes can decode independently of generic owner
+  admission. Embedded NULs in symbolic references do not terminate manglings;
+  alignment padding is skipped between operators. Other generic, async,
+  throwing, tuple, optional, foreign and unrecognized function shapes remain
   unsupported. A complete pure-enum parameter can supply a **declared** valid
   argument domain, after case counts and all no-payload records agree. An enum
   only in a return type supplies no parameter domain; identical names/counts

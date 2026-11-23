@@ -1,0 +1,92 @@
+{
+  "status": "passed",
+  "interpretation": "conditional analyst derivation, not automatic invocation provenance",
+  "input_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "sources": [
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/function-0x100d92ebc-read_function_instructions.evidence.json",
+      "sha256": "8182c526e09987932d6476a0172c58fcb3e35e4f687ad54696d85d8ee7f15a58",
+      "evidence_id": "ev_5cdd6ecdeb1dd319136a365ee7f153dacb03ad0db1dd2da04bc96e520530aeac"
+    },
+    {
+      "path": "field-tests/arc-dispatch-provenance-2026-11-21/mcp/function-0x100d910dc-read_function_instructions.evidence.json",
+      "sha256": "91ca0a6b5ba8b6bc73a5497d771b35b257670aa2623cd7c349f059926a952ffa",
+      "evidence_id": "ev_a5c05294c45e254bc63f6613e0c08dc3c83a07bcf1bf689adb0f52a336130b2a"
+    },
+    {
+      "path": "field-tests/arc-closure-origin-2026-11-22/mcp-arc-final/call-0x100d910f0.evidence.json",
+      "sha256": "da9a3ef20084ae3e8eac3802ff2234d6a592dc2796a59b09edc4b58bc805417a",
+      "evidence_id": "ev_7c9bbe94b76c864da640248a9e9cf02f70d4cfa161ec6765f8a24d5b389f4e47"
+    }
+  ],
+  "checked_instructions": [
+    {
+      "address": "0x100d92ebc",
+      "bytes": "810a40f9",
+      "register_writes": [
+        "x1"
+      ]
+    },
+    {
+      "address": "0x100d910dc",
+      "bytes": "f657bda9",
+      "register_writes": [
+        "sp"
+      ]
+    },
+    {
+      "address": "0x100d910e0",
+      "bytes": "f44f01a9",
+      "register_writes": []
+    },
+    {
+      "address": "0x100d910e4",
+      "bytes": "fd7b02a9",
+      "register_writes": []
+    },
+    {
+      "address": "0x100d910e8",
+      "bytes": "fd830091",
+      "register_writes": [
+        "x29"
+      ]
+    },
+    {
+      "address": "0x100d910ec",
+      "bytes": "f30301aa",
+      "register_writes": [
+        "x19"
+      ]
+    },
+    {
+      "address": "0x100d92ec0",
+      "branch_target": "0x100d910dc",
+      "register_writes": []
+    },
+    {
+      "address": "0x100d910f0",
+      "branch_target": "0x1005aa5e4",
+      "register_writes": [
+        "x30"
+      ]
+    }
+  ],
+  "relation": {
+    "from": "X0 at exact default adapter entry 0x100d92ebc",
+    "to": "X0 at helper entry 0x1005aa5e4 through 0x100d910f0",
+    "unchanged": true,
+    "context_branch_changes": "Adapter changes X1 from context; reader saves X1 in X19. Neither changes X0 before the helper call.",
+    "conditional_selected_value": "If the actual selected call uses this default code path, its separately observed X0=49 reaches this helper as 49."
+  },
+  "premises": [
+    "Exact entry at the identified default adapter and normal execution through its fixed reader prefix",
+    "Stable image bytes/common load slide, normal AArch64 instruction semantics and no asynchronous register interference",
+    "Valid readable context and valid private stack stores; normal completion of the prefix"
+  ],
+  "not_established": [
+    "Actual active default target/code-context selection",
+    "Client field/alias stability or actual captured-instance identity",
+    "Native enum argument lowering, a full invocation-domain carrier or helper-global type/CFG bounds"
+  ],
+  "target_executed": false
+}

@@ -1669,6 +1669,20 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-23 concrete generic declaration binding advanced.**
+    Item 71 now binds Root field 6 to Dependencies.Dependency<UserDefaultsClient>
+    using exact wrapper/module/signature/argument descriptors, rather than raw
+    bytes alone. Seven of eight Root applications decode; the mainQueue argument
+    stays unsupported. No generic layout, native argument ABI or function domain
+    is inferred. The next member boundary is imported `_$ss7KeyPathCMn` in the
+    wrapper's parameterized keyPath type; interpreting that template and applying
+    the selected Client substitution remain open. A conditional analyst check of
+    retained adapter/reader instructions verifies that X0 is unchanged along
+    the exact default entry to helper call `0x100d910f0`. This does not select the
+    actual active target or establish field/alias stability. Actual-instance/
+    default relation and a first-class invocation-domain/mapping carrier remain
+    open. See [the generic application report](field-tests/arc-generic-applications-2026-11-23.md).
+
     **2026-11-23 generic declarations and typed constructor use advanced.**
     Item 70 now retains the five generic Dependency field declarations while
     refusing generic physical-layout inference. Public code also binds candidate
@@ -2028,3 +2042,24 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     bridge/recovery/runtime-call implementations are unchanged. Specialization,
     actual captured-instance relation and field stability remain item 63 work.
     See [the report](field-tests/arc-generic-declarations-2026-11-23.md).
+
+
+71. **Decode concrete flat Swift generic field applications.** Done and verified
+    (2026-11-23, item 63). Optional `bound_generic_type` validates a complete
+    flat argument list against the original top-level version-zero struct,
+    module parent, ordinary key parameter flags/counts and absence of encoded
+    requirements/packs. Signature and argument identities remain declaration-only;
+    generic member substitution, instance layout and native ABI stay unresolved.
+    Function/application records are mutually exclusive, and enum type arguments
+    supply no function domain. Arc now decodes seven of eight Root applications,
+    including exact Dependency<UserDefaultsClient>; `_mainQueue` remains partial.
+    Source-built one/two-parameter, builtin/enum/same-name and boundary controls,
+    plus three deliberate malformed derivatives, qualify arity and bounds.
+    Verification: 78 source tests, 31 final public MCP calls plus 13 baseline,
+    four exact CLI/MCP pairs, build/fast/docs/package checks, fourteen historical
+    snapshots and empty owned lineages. Existing Root layout and Client closure
+    declarations are unchanged. The generic metadata guard remains intact.
+    Conditional default-path X0 forwarding is also authenticated from three
+    retained public observations and eight exact native instructions; actual
+    default selection and an invocation carrier remain open. See
+    [the report](field-tests/arc-generic-applications-2026-11-23.md).

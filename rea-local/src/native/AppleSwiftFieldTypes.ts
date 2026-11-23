@@ -9,6 +9,9 @@ import type {
 type Fields = NonNullable<ObjcSwiftMetadata["swift_type_fields"]>;
 type FunctionType = NonNullable<Fields["fields"][number]["function_type"]>;
 type Atom = FunctionType["parameter"];
+type BoundGenericType = NonNullable<
+  Fields["fields"][number]["bound_generic_type"]
+>;
 const decoded = { status: "decoded" as const, reason: null };
 const reason = (cause: unknown) =>
   cause instanceof Error ? cause.message : String(cause);
@@ -44,9 +47,10 @@ export const decodeSwiftTypeFields = (input: {
     program_mutations: false,
     limitations: [
       "Reflection field ordinals are not physical instance offsets.",
-      "Generic owners are declaration inventories only: generic parameters, requirements, substitutions and instantiated layout are not resolved.",
+      "Generic owners are declaration inventories. Supported flat concrete applications retain their signature and argument identities; parameters are not substituted into member fields and instantiated layout remains unresolved.",
       "Declared function types do not establish a typed buffer, code/context origin, an invocation, active dependency selection or a helper-global input domain.",
       "Only complete synchronous nonthrowing native thick function manglings with one supported atomic parameter and result are decoded; other encodings remain unsupported.",
+      "Concrete generic field types are limited to top-level version-zero structs with ordinary key type parameters, no requirements or packs, and one complete flat argument list of supported nongeneric atoms. No native ABI, live value, storage layout or invocation domain is established.",
     ],
     decode: decoded,
   };
@@ -212,19 +216,23 @@ export const decodeSwiftTypeFields = (input: {
       read.offset(start, length) + length,
     );
   };
-  const functionType = (start: bigint, raw: Buffer): FunctionType => {
+  const typeCursor = (start: bigint, raw: Buffer) => {
     let cursor = 0;
     const padding = () => {
       while (raw[cursor] === 0xff) cursor++;
     };
-    const atom = (): Atom => {
+    const reference = () => {
       padding();
       const tag = raw[cursor];
-      if (tag === 1 || tag === 2) {
-        const field = start + BigInt(cursor + 1);
-        cursor += 5;
-        return nominal(local(field, tag === 2 ? "indirect" : "direct"));
-      }
+      if (tag !== 1 && tag !== 2)
+        throw new RangeError("Expected a local symbolic nominal reference");
+      const field = start + BigInt(cursor + 1);
+      cursor += 5;
+      return local(field, tag === 2 ? "indirect" : "direct");
+    };
+    const atom = (): Atom => {
+      padding();
+      if (raw[cursor] === 1 || raw[cursor] === 2) return nominal(reference());
       for (const [token, name] of [
         ["Sb", "Bool"],
         ["Si", "Int"],
@@ -245,24 +253,34 @@ export const decodeSwiftTypeFields = (input: {
         }
       }
       throw new RangeError(
-        "Unsupported complete field function type: expected supported atomic type",
+        "Unsupported field type: expected supported nongeneric atomic type",
       );
     };
-    const returned = atom(),
-      parameter = atom();
+    const take = (token: string) => {
+      padding();
+      if (
+        !raw.subarray(cursor, cursor + token.length).equals(Buffer.from(token))
+      )
+        return false;
+      cursor += token.length;
+      return true;
+    };
+    const end = () => {
+      padding();
+      return raw[cursor] === 0 && cursor + 1 === raw.length;
+    };
+    return { atom, reference, take, end };
+  };
+  const functionType = (start: bigint, raw: Buffer): FunctionType => {
+    const cursor = typeCursor(start, raw);
+    const returned = cursor.atom(),
+      parameter = cursor.atom();
     if (parameter.kind === "builtin" && parameter.name === "Void")
       throw new RangeError(
         "Zero-parameter function signatures are outside the single-argument lane",
       );
-    padding();
-    const sendable = raw[cursor] === 0x59 && raw[cursor + 1] === 0x62;
-    if (sendable) cursor += 2;
-    padding();
-    if (
-      raw[cursor] !== 0x63 ||
-      raw[cursor + 1] !== 0 ||
-      cursor + 2 !== raw.length
-    )
+    const sendable = cursor.take("Yb");
+    if (!cursor.take("c") || !cursor.end())
       throw new RangeError(
         "Unsupported complete field function type: annotations, convention, tuple/generic shape or trailing operators",
       );
@@ -291,6 +309,102 @@ export const decodeSwiftTypeFields = (input: {
                 "Valid value of this declared field's exact enum parameter; no invocation or helper-global type is established",
             },
     };
+  };
+  const boundGenericType = (start: bigint, raw: Buffer): BoundGenericType => {
+    const cursor = typeCursor(start, raw),
+      descriptor = cursor.reference(),
+      flags = read.u32(descriptor),
+      owner = declaration(descriptor);
+    if ((flags & 31) !== 17 || !owner.is_generic || (flags & 0xff00) !== 0)
+      throw new RangeError(
+        "Concrete generic applications require a version-zero generic struct descriptor",
+      );
+    const parent = local(descriptor + 4n, "indirectable");
+    read.offset(parent, 12);
+    const parentFlags = read.u32(parent);
+    if (
+      (parentFlags & 31) !== 0 ||
+      (parentFlags & 0xff80) !== 0 ||
+      read.u32(parent + 4n) !== 0
+    )
+      throw new RangeError(
+        "Nested, generic, extension or unknown parent contexts are outside the flat application lane",
+      );
+    const module = {
+      name: read.string(local(parent + 8n)),
+      descriptor: read.location(parent),
+    };
+    // StructDescriptor is 28 bytes. Its trailing TypeGenericContext header
+    // has two relative pointers followed by four uint16 base-header words.
+    const header = descriptor + 28n;
+    read.offset(header, 16);
+    const u16 = (offset: number) =>
+      bytes.readUInt16LE(read.offset(header + BigInt(offset), 2));
+    const count = u16(8);
+    if (count === 0 || u16(10) !== 0 || u16(12) !== count || u16(14) !== 0)
+      throw new RangeError(
+        "Only ordinary key type parameters without generic requirements or packs are supported",
+      );
+    const parameters = header + 16n;
+    read.offset(parameters, count);
+    if (!budget.admit()) throw new RangeError("max_records_reached");
+    const signature: BoundGenericType["signature"] = {
+      location: read.location(header),
+      parameter_count: count,
+      requirement_count: 0,
+      key_argument_count: count,
+      flags: 0,
+      parameters: [],
+    };
+    for (let index = 0; index < count; index++) {
+      if (!budget.admit()) throw new RangeError("max_records_reached");
+      const source = parameters + BigInt(index);
+      if (read.u8(source) !== 0x80)
+        throw new RangeError("Nonordinary generic parameter descriptor");
+      signature.parameters.push({
+        index,
+        flags: 128,
+        location: read.location(source),
+      });
+    }
+    if (!cursor.take("y"))
+      throw new RangeError("Generic application argument list is absent");
+    const args: Atom[] = [];
+    for (let index = 0; index < count; index++) {
+      if (!budget.admit()) throw new RangeError("max_records_reached");
+      args.push(cursor.atom());
+    }
+    if (!cursor.take("G") || !cursor.end())
+      throw new RangeError(
+        "Generic application arity, nesting, annotations or trailing operators are unsupported",
+      );
+    return {
+      kind: "bound-generic-struct",
+      name: owner.name,
+      descriptor: owner.descriptor,
+      module,
+      arguments: args,
+      signature,
+      interpretation: "declaration-only",
+      limitations: [
+        "Concrete type arguments describe the declared field specialization; they are not substituted into generic member fields.",
+        "No generic metadata instantiation, field offsets, value size, native argument ABI, live typed buffer, code/context origin or invocation domain is established.",
+      ],
+      evidence: [
+        ...read.evidence(start, "Complete symbolic generic field application"),
+        ...read.evidence(descriptor, "Exact generic struct declaration"),
+        ...read.evidence(header, "Ordinary unconstrained generic signature"),
+        ...read.evidence(parent, "Top-level module context"),
+      ],
+    };
+  };
+  const looksBoundGeneric = (raw: Buffer) => {
+    let index = 0;
+    while (raw[index] === 0xff) index++;
+    if (raw[index] !== 1 && raw[index] !== 2) return false;
+    index += 5;
+    while (raw[index] === 0xff) index++;
+    return raw[index] === 0x79; // 'y' starts a bound generic argument list.
   };
   try {
     if (firstMatch === undefined)
@@ -331,7 +445,7 @@ export const decodeSwiftTypeFields = (input: {
     for (let i = 0; i < count; i++) {
       if (!budget.admit()) throw new RangeError("max_records_reached");
       const record = fieldDescriptor + 16n + BigInt(i * 12);
-      const field: Fields["fields"][number] = {
+      let field: Fields["fields"][number] = {
         ordinal: i,
         record: read.location(record),
         flags: read.u32(record),
@@ -339,6 +453,7 @@ export const decodeSwiftTypeFields = (input: {
         type_location: null,
         mangling_hex: null,
         function_type: null,
+        bound_generic_type: null,
         decode: decoded,
         evidence: read.evidence(
           record,
@@ -359,7 +474,14 @@ export const decodeSwiftTypeFields = (input: {
         field.type_location = read.location(start);
         const raw = mangling(start);
         field.mangling_hex = raw.toString("hex");
-        field.function_type = functionType(start, raw);
+        if (looksBoundGeneric(raw)) {
+          field = {
+            ...field,
+            function_type: null,
+            bound_generic_type: boundGenericType(start, raw),
+          };
+          out.fields[out.fields.length - 1] = field;
+        } else field.function_type = functionType(start, raw);
       } catch (cause) {
         field.decode = { status: "unsupported", reason: reason(cause) };
       }

@@ -82,6 +82,114 @@ const inspect = (bytes: Buffer, maximum = 200, selected = hex(0x500)) =>
     { facet: "swift-fields", swiftTypeAddress: selected },
   );
 const field = (bytes: Buffer) => inspect(bytes).swift_type_fields!.fields[0]!;
+const applicationFixture = (indirect = false, argument = "enum") => {
+  const f = fixture();
+  f.u32(0x700, 0x80 | 17);
+  f.rel(0x704, 0x740);
+  f.rel(0x708, 0xb60);
+  f.bytes.write("Dependency\0", 0xb60);
+  f.rel(0x748, 0xb80);
+  f.bytes.write("Owned\0", 0xb80);
+  f.bytes.writeUInt16LE(1, 0x724);
+  f.bytes.writeUInt16LE(1, 0x728);
+  f.bytes[0x72c] = 0x80;
+  f.bytes.fill(0, 0xa00, 0xa80);
+  f.bytes[0xa00] = indirect ? 2 : 1;
+  f.rel(0xa01, indirect ? 0xd20 : 0x700);
+  if (indirect) f.u64(0xd20, base + 0x700n);
+  f.bytes.write("y", 0xa05);
+  if (argument === "enum") {
+    f.bytes[0xa06] = 1;
+    f.rel(0xa07, 0x600);
+    f.bytes.write("G\0", 0xa0b);
+  } else f.bytes.write("SbG\0", 0xa06);
+  return f;
+};
+
+describe("concrete flat generic field applications", () => {
+  it("retains complete generic declaration/argument identity without creating a function domain", () => {
+    const result = inspect(applicationFixture().bytes).swift_type_fields!,
+      value = result.fields[0]!;
+    expect(value).toMatchObject({
+      function_type: null,
+      bound_generic_type: {
+        kind: "bound-generic-struct",
+        name: "Dependency",
+        descriptor: { address: hex(0x700) },
+        module: { name: "Owned", descriptor: { address: hex(0x740) } },
+        arguments: [{ kind: "nominal", descriptor: { address: hex(0x600) } }],
+        signature: {
+          parameter_count: 1,
+          requirement_count: 0,
+          key_argument_count: 1,
+          parameters: [{ index: 0, flags: 128 }],
+        },
+        interpretation: "declaration-only",
+      },
+      decode: { status: "decoded" },
+    });
+    expect(result.referenced_enums).toEqual([]);
+    expect(result.program_mutations).toBe(false);
+  });
+  it("supports indirect references and builtin arguments", () => {
+    const value = field(applicationFixture(true, "bool").bytes);
+    expect(value.bound_generic_type?.arguments).toEqual([
+      { kind: "builtin", name: "Bool", descriptor: null },
+    ]);
+    expect(value.function_type).toBeNull();
+  });
+  it.each([
+    [
+      "requirements",
+      (f: ReturnType<typeof fixture>) => f.bytes.writeUInt16LE(1, 0x726),
+    ],
+    [
+      "pack flag",
+      (f: ReturnType<typeof fixture>) => f.bytes.writeUInt16LE(1, 0x72a),
+    ],
+    [
+      "non-key parameter",
+      (f: ReturnType<typeof fixture>) => {
+        f.bytes[0x72c] = 0;
+      },
+    ],
+    [
+      "parameter count mismatch",
+      (f: ReturnType<typeof fixture>) => f.bytes.writeUInt16LE(2, 0x724),
+    ],
+    ["version", (f: ReturnType<typeof fixture>) => f.u32(0x700, 0x180 | 17)],
+    ["nested parent", (f: ReturnType<typeof fixture>) => f.u32(0x740, 18)],
+    [
+      "trailing optional",
+      (f: ReturnType<typeof fixture>) => f.bytes.write("GSg\0", 0xa0b),
+    ],
+    [
+      "missing closer",
+      (f: ReturnType<typeof fixture>) => {
+        f.bytes[0xa0b] = 0;
+      },
+    ],
+  ] as const)("rejects %s while retaining raw mangling", (_name, change) => {
+    const f = applicationFixture();
+    change(f);
+    const value = field(f.bytes);
+    expect(value.bound_generic_type).toBeNull();
+    expect(value.function_type).toBeNull();
+    expect(value.mangling_hex).not.toBeNull();
+    expect(value.decode.status).toBe("unsupported");
+  });
+  it("does not publish a generic application when its shared record budget is exhausted", () => {
+    const result = inspect(applicationFixture().bytes, 8);
+    expect(result.swift_type_fields!.fields[0]!).toMatchObject({
+      bound_generic_type: null,
+      function_type: null,
+      decode: { status: "unsupported" },
+    });
+    expect(result.swift_type_fields!.decode.reason).toContain("max_records");
+    expect(result.relative_pointers.length).toBeLessThanOrEqual(8);
+    expect(result.swift_type_fields!.referenced_enums).toEqual([]);
+  });
+});
 
 describe("selected symbolic Swift closure field declarations", () => {
   it("finds a late indexed owner before admission and decodes complete Sendable function shape", () => {

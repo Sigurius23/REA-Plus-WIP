@@ -26,7 +26,61 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
-## Latest generic declaration / typed Root-use checkpoint (2026-11-23)
+## Latest concrete generic application checkpoint (2026-11-23)
+
+Read `field-tests/arc-generic-applications-2026-11-23.md`, its fact index,
+qualification/CLI/forwarding receipts and snapshot manifest. Item 71 is done.
+The selected field reader now has optional `bound_generic_type` for complete
+flat concrete applications of top-level version-zero generic structs with
+ordinary key parameters and no encoded requirements/packs. It checks the
+original module/header/parameter identities and exact argument count. Shared
+bounded atom/operator parsing preserves symbolic NULs and padding. Function
+and application records are mutually exclusive. An enum generic argument
+supplies no closure parameter domain. Interpretation stays declaration-only:
+no member substitution, instantiated layout, live buffer or native ABI claim.
+
+Arc Root has seven of eight applications decoded. Field 6 `_userDefaultsClient`
+now binds wrapper `0x103d46d5c`, module Dependencies `0x103d46d50`, signature
+`0x103d46d78` (one parameter / zero requirements / one key argument / flag
+0x80), and exact Client argument `0x103d648c4`. MainQueue remains unsupported.
+Root's 640-byte nongeneric layout/offsets and four supported Client closure
+declarations are unchanged; the independent generic-layout refusal remains.
+
+**Continue item 63** at generic member-template interpretation/substitution.
+The keyPath member's symbolic reference `0x103b91e3d` binds imported class
+`_$ss7KeyPathCMn` in libswiftCore; its raw mangling contains the generic value
+parameter. This flat local-struct lane does not decode that foreign class
+signature or substitute the selected Client into its template. Relevant
+wrapper/keypath/Client stability and actual captured-instance/default relation
+are still open, followed by a first-class observation-only invocation mapping.
+Do not restart exact Root/wrapper/Client identities, constructor typed use,
+protocol entry, keypath instantiation/default paths or the new application proof.
+
+The local default X0 corridor is now separately authenticated in
+`forwarding-verification.json`: adapter 0x100d92ebc changes X1 and branches to
+0x100d910dc; the reader prefix preserves X0 through BL 0x100d910f0 to helper
+0x1005aa5e4. Eight exact native encodings corroborate three reused qualified
+public observations. If this exact default code path is selected, the observed
+49 reaches the helper as 49. This is a conditional analyst derivation, not a
+new automatic invocation/target proof or helper-global 297-case override.
+Normal stable instruction/context/stack and no async-register interference
+premises remain explicit; actual default selection is unobserved.
+
+Frozen runtime: `rea-local/.cache/arc-runtime-generic-applications-2026-11-23`,
+1,872 files. Verification: 78 source tests, 31 final public MCP calls plus
+13 baseline, four exact CLI/MCP pairs and build/fast/docs/package checks.
+Five owned positive and four unsupported-boundary cases, two parameters,
+same-name arguments, enum non-domain behavior and budget degradation qualify.
+Three deliberately malformed derivatives reject missing/extra arguments and
+oversized signature bounds. Fourteen historical snapshots authenticate. All
+owned lineages are verified empty. Native bridge/recovery/runtime-call/profile
+and physical metadata reader code are unchanged; no new full enum or allocator
+matrix is claimed. New field checks use the native Apple byte reader within
+Ghidra-selected sessions, not new Ghidra algorithm verification. No Arc or
+fixture code was executed. Workers remain unavailable. This follows local
+`20235139d`; no new push was requested. Full Arc remains incomplete.
+
+## Previous generic declaration / typed Root-use checkpoint (2026-11-23)
 
 Read `field-tests/arc-generic-declarations-2026-11-23.md`, its fact index,
 qualification, CLI parity and snapshot manifests. Item 70 is done. The native
