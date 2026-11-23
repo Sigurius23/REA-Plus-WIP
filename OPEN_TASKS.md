@@ -4,6 +4,17 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc constructed-child / projection route advanced (2026-11-23, item 63):**
+  The wrapper's keypath output word, indirect X8 projection ABI, dynamic
+  _IfLetReducer child field, dependency-writing scope and exact final Root
+  witness dispatch now have source-bound checks. The route is conditional on
+  valid typed storage/copies, branch predicates and entry into the stored
+  scope callback. Actual TaskLocal/default Client selection and a first-class
+  invocation-only mapping remain open. 117 successful public calls, two exact
+  CLI/MCP pairs and sixteen historical snapshots verify on the unchanged
+  item 72 runtime. One disk-failed capture is preserved; after space was freed,
+  full-image retry succeeded. See [the checkpoint](field-tests/arc-instance-flow-2026-11-23.md).
+
 - **Arc generic member templates, item 72 done (2026-11-23):** The selected
   wrapper's keyPath now retains exact DependencyValues and owner-parameter
   identities plus the unresolved external import. Joining the exact Root
@@ -1678,6 +1689,31 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-23 constructed-child / scoped callback route advanced.**
+    The selected wrapper writes its saved keypath to output+16 in a checked
+    18-instruction call-free window; the Root+496 relationship stays conditional
+    on the later copy/alias window. Source-built compiler IR and real public
+    native observations corroborate Swift keypath projection's X8 result.
+    The constructed Root is moved into _IfLetReducer.child using the declared
+    vector entry at metadata+0x34, without inventing a runtime generic offset.
+    That composition's shipped witness entry reaches child reduction, which
+    builds _DependencyKeyWritingReducer with the exact Child metadata/witness.
+    Stored operation callback `0x1008719b4` dispatches Child witness+0x20; for
+    the retained Root instantiation it reaches `0x1012a9870` -> `0x1012a571c`.
+    This is a conditional static value path, not observed execution. Scope
+    helper `0x10070d148` -> `0x10070d1ec` checks the update error register and
+    uses synchronous TaskLocal.withValue; trampoline `0x10071069c` and helper
+    `0x10070d2f8` unpack and invoke the saved operation/context. The zero-error,
+    standard import-binding, child-branch and unchanged instance/copy premises
+    remain explicit. Active
+    TaskLocal/default selection and the Client's actual code/context are not
+    established. The invocation-only carrier stays open; no helper-global bound.
+    Verification: 117 successful new public MCP calls, two complete-Evidence
+    CLI/MCP pairs, sixteen historical snapshots and empty owned lineages on
+    unchanged item 72 production code. One correctly reported disk failure is
+    preserved, followed by a successful full-image retry after user cleanup.
+    See [the constructed/scoped path report](field-tests/arc-instance-flow-2026-11-23.md).
+
     **2026-11-23 member-template binding advanced; item remains open.**
     Item 72 retains Dependency's keyPath template with DependencyValues
     descriptor `0x103d46e58` and depth-zero parameter 0 at `0x103d46d88`.

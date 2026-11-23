@@ -1,0 +1,108 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-instance-flow-2026-11-23/mcp-arc",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-instance-flow-2026-11-23/seeds-instance.tsv"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "arc-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "witness-metadata-instructions",
+      "arguments": {
+        "procedure": "0x10000a9c8"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "witness-metadata-summary",
+      "arguments": {
+        "procedure": "0x10000a9c8",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "composition-metadata-instructions",
+      "arguments": {
+        "procedure": "0x100876f50"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "composition-metadata-summary",
+      "arguments": {
+        "procedure": "0x100876f50",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_instruction",
+      "label": "projection-call",
+      "arguments": {
+        "address": "0x1006fa618"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_instruction",
+      "label": "projection-result",
+      "arguments": {
+        "address": "0x1006fa614"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_instruction",
+      "label": "wrapper-keypath-save",
+      "arguments": {
+        "address": "0x1006fa290"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_instruction",
+      "label": "wrapper-result-store",
+      "arguments": {
+        "address": "0x1006fa2d4"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "arc-export",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-instance-flow-2026-11-23/mcp-arc/final.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "arc-close1",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "arc-close2",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}

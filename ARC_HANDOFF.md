@@ -26,7 +26,66 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
-## Latest generic member-template checkpoint (2026-11-23)
+## Latest constructed-child / projection checkpoint (2026-11-23)
+
+Read `field-tests/arc-instance-flow-2026-11-23.md`, qualification/fact index,
+flow/child-route verification and snapshot manifest. This pass uses the
+unchanged item 72 runtime; no production repair is claimed.
+
+The selected wrapper's 18-instruction call-free store window writes incoming
+keypath to indirect result+16. Root+496 follows only under the named later
+copy/alias premises. Owned Swift IR/native controls corroborate projection's
+indirect X8 result, root X0 and keypath X1. No C return model was applied.
+
+The constructed Root is consumed as _IfLetReducer.child. Descriptor
+`0x103d4d5d0` names seven fields; vector word 6 gives child ordinal 1's
+uint32 metadata entry at +0x34. Its value stays dynamic. Distinguish parent
+Reduce conformance `0x1036f45d0` from composition _IfLetReducer conformance
+`0x1036f3c28`; their shipped patterns are not observed runtime witness tables.
+
+Composition pattern word 4 -> `0x10087847c` -> `0x1008770c4` -> child helper
+`0x10087794c`. The child address uses that dynamic +0x34 entry. Child metadata
+and witness come from composition metadata+0x18/+0x28. Helper `0x100871440`
+copies/takes that child into _DependencyKeyWritingReducer (`0x103d4d4c8`,
+fields base/update). Helper `0x1008718c8` captures metadata/witness/Self/State/
+Action and passes operation callback `0x1008719b4` to `0x10070d148` at
+`0x10087194c`. If entered with this context, the callback loads witness+0x20
+and dispatches saved Self. For exact Root metadata/witness this is slot 4
+`0x1012a9870`, which calls reducer `0x1012a571c`. Update entry `0x1008716a4`
+has a noncontiguous shared tail at `0x1008715b0`; preserve both body ranges.
+
+Scope entry is now traced too: `0x10070d148` -> `0x10070d1ec` invokes the
+update callback, skips the operation on nonzero X21, and passes the saved
+operation/context to the standard synchronous TaskLocal.withValue import.
+Trampoline `0x10071069c` unpacks that pair; `0x10070d2f8` sets X20 to its
+context and invokes the original code at `0x10070d31c`. Import authenticity and
+normal zero-error/ABI/storage semantics remain premises. Its later return-value
+processing was not analyzed as part of this input-origin question.
+
+**Next:** implement/qualify the observation-only invocation carrier with the
+existing typed/raw/foreign-owner controls. Preserve unresolved active Client
+code/context and relevant stable instance/copy windows. Do not
+repeat the keypath-word, projection ABI, composition field or final witness
+load studies. Child state/action predicates, normal metadata/VWT/runtime ABI
+and callback-entry/copy premises stay explicit. This is a conditional static
+route, not a live event or proof of active TaskLocal/default Client selection.
+Actual Client code/context, every later captured Root instance and full Arc
+remain unresolved. Never install a helper-wide 297-case CFG override.
+
+Verification: 117 successful new public calls, two exact CLI/MCP Evidence pairs,
+sixteen authenticated older snapshots, unchanged 1,872-file runtime/six source
+hashes and empty owned lineages. No fresh build/source suite/package/enum matrix
+is claimed. One original full-image capture correctly failed for disk capacity
+(two attempts: one open success / one disk error); it and its cleanup are
+retained. Seven exact-byte catalog copies from this run were hardlinked without
+losing content. The user freed space; 11 GiB was checked, and full-image retry
+succeeded. No excerpt fallback exists. An automatic approval review usage-limit
+failure was resolved by retrying the same reviewed action after continuation.
+
+All sessions are closed. Source/compiled fixture code was never executed.
+Workers remain unavailable. This follows local `370825a90`; no push was done.
+
+## Previous generic member-template checkpoint (2026-11-23)
 
 Read `field-tests/arc-member-templates-2026-11-23.md`, its fact index,
 qualification/CLI/substitution receipts and snapshot manifest. Item 72 is done.

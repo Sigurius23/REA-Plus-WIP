@@ -1,0 +1,311 @@
+{
+  "status": "passed",
+  "interpretation": "Conditional analyst derivations over public REA+ observations with original-byte checks; not automatic origin recovery",
+  "input_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "sources": [
+    {
+      "path": "field-tests/arc-keypath-origin-2026-11-23/mcp-arc-qualified/instructions-0x1006fa228.evidence.json",
+      "sha256": "5785ab1ba32531b8e57b3fdbfd8a506dfc82e1dba162a9ef8815e4ac82ff2782",
+      "evidence_id": "ev_85468abe7dd1cf57ce4576c68c89859daa2219bc8eb40949934627b63d272334"
+    },
+    {
+      "path": "field-tests/arc-generic-declarations-2026-11-23/mcp-constructor/candidate-instructions.evidence.json",
+      "sha256": "c24d8a818d2cf15cc2083cde7217025eb4413b90a4bce86028c461c89cd5cd59",
+      "evidence_id": "ev_47b82fa34dcb08652583be259fbd302f8e0807f4386da1d332d54c069719bc72"
+    },
+    {
+      "path": "field-tests/arc-generic-declarations-2026-11-23/mcp-constructor/caller-instructions.evidence.json",
+      "sha256": "f8f247ab70cfeae762af056b55cb10e9da8eb2ec323b18d787dd6845d4622927",
+      "evidence_id": "ev_abe85a8ac2c0c6d0e66b117a762ebf328a6814bbffb5d3f0bd9c32f1f0dd2eb1"
+    },
+    {
+      "path": "field-tests/arc-generic-declarations-2026-11-23/mcp-typed-consumer/consumer-instructions.evidence.json",
+      "sha256": "39fa9c4528ca72d997767af43cb1543bf0164777674c56b109d1d6e1301af640",
+      "evidence_id": "ev_e02c2ce3726e45a55a8f0cc7afe7aa869a0423b44119435c5b3d0ecdc0454d15"
+    },
+    {
+      "path": "field-tests/arc-invocation-origin-2026-11-23/mcp/instructions-0x1006fa5bc.evidence.json",
+      "sha256": "e97c55e528e522db2a6a11541453d2f9c4d38d33ed1cf65b392d3e53d98d5238",
+      "evidence_id": "ev_1093a2b0a4fd62fd59d110ef4160dfc3ecccc54b4f286fcce06e8bf445af879d"
+    },
+    {
+      "path": "field-tests/arc-invocation-origin-2026-11-23/mcp/instructions-0x1006faab0.evidence.json",
+      "sha256": "bd8be968e5ad913d7cecf093695d0e5d58410833a7281a48f219bc383dcfb6de",
+      "evidence_id": "ev_74eceeb8c64b43d8dede74511d878ee74cfb063a303c57bf6dc0843535b326ee"
+    },
+    {
+      "path": "field-tests/arc-member-templates-2026-11-23/mcp-final/arc-root-layout.evidence.json",
+      "sha256": "e2e5518d6773978369dc7c3107a068b7300d4781e1ff24f3209732a09d270ebe",
+      "evidence_id": "ev_bec9c3f627bcef8c7ff1aa93247da6f9ba407698e2a6ab0c6effd7fd4a31b2e5"
+    },
+    {
+      "path": "field-tests/arc-instance-flow-2026-11-23/mcp-composition/composition-fields.evidence.json",
+      "sha256": "423ce27f9b18bba952db9d2f983a808484321b2a74f83900fcee46625e411b54",
+      "evidence_id": "ev_6f6bcfd3df765afc43f5509e4838fd78a6e129634d9ea1745549b7478a33a425"
+    },
+    {
+      "path": "field-tests/arc-instance-flow-2026-11-23/mcp-composition/composition-descriptor.evidence.json",
+      "sha256": "1a9aeeaea06147ef5341ca25f14a8ae98e2ce3adddf29fa418b8819991359a2e",
+      "evidence_id": "ev_caea03529f117e29fbe89356993f4225711291f1802fe34043cc48a819508ff3"
+    }
+  ],
+  "checked_instructions": [
+    {
+      "address": "0x1006fa264",
+      "bytes": "fc0300aa",
+      "public_instruction": "mov x28, x0"
+    },
+    {
+      "address": "0x1006fa268",
+      "bytes": "f30308aa",
+      "public_instruction": "mov x19, x8"
+    },
+    {
+      "address": "0x1006fa5d4",
+      "bytes": "f70300aa",
+      "public_instruction": "mov x23, x0"
+    },
+    {
+      "address": "0x1006fa5d8",
+      "bytes": "f60308aa",
+      "public_instruction": "mov x22, x8"
+    },
+    {
+      "address": "0x1006fa60c",
+      "bytes": "e10a40f9",
+      "public_instruction": "ldr x1, [x23, #0x10]"
+    },
+    {
+      "address": "0x1006fa610",
+      "bytes": "e0430091",
+      "public_instruction": "add x0, sp, #0x10"
+    },
+    {
+      "address": "0x1006fa614",
+      "bytes": "e80316aa",
+      "public_instruction": "mov x8, x22"
+    },
+    {
+      "address": "0x1006faab8",
+      "bytes": "810241a9",
+      "public_instruction": "ldp x1, x0, [x20, #0x10]"
+    },
+    {
+      "address": "0x100876ed0",
+      "bytes": "683780b9",
+      "public_instruction": "ldrsw x8, [x27, #0x34]"
+    },
+    {
+      "address": "0x1006faabc",
+      "bytes": "c0feff97",
+      "target": "0x1006fa5bc",
+      "call": true
+    },
+    {
+      "address": "0x1006fa618",
+      "bytes": "0117bd94",
+      "target": "0x10364021c",
+      "call": true
+    },
+    {
+      "address": "0x1012a569c",
+      "bytes": "076b8e94",
+      "target": "0x1036402b8",
+      "call": true
+    },
+    {
+      "address": "0x1012a56c0",
+      "bytes": "da52d197",
+      "target": "0x1006fa228",
+      "call": true
+    },
+    {
+      "address": "0x1012a56cc",
+      "bytes": "fb6a8e94",
+      "target": "0x1036402b8",
+      "call": true
+    },
+    {
+      "address": "0x1012a56f0",
+      "bytes": "ce52d197",
+      "target": "0x1006fa228",
+      "call": true
+    },
+    {
+      "address": "0x1012a5700",
+      "bytes": "e8678e94",
+      "target": "0x10363f6a0",
+      "call": true
+    },
+    {
+      "address": "0x1006fa290",
+      "bytes": "fc6f01a9",
+      "public_instruction": "stp x28, x27, [sp, #0x10]"
+    },
+    {
+      "address": "0x1006fa294",
+      "bytes": "fa1300f9",
+      "public_instruction": "str x26, [sp, #0x20]"
+    },
+    {
+      "address": "0x1006fa298",
+      "bytes": "f9a30039",
+      "public_instruction": "strb w25, [sp, #0x28]"
+    },
+    {
+      "address": "0x1006fa29c",
+      "bytes": "f85f03a9",
+      "public_instruction": "stp x24, x23, [sp, #0x30]"
+    },
+    {
+      "address": "0x1006fa2a0",
+      "bytes": "f6030139",
+      "public_instruction": "strb w22, [sp, #0x40]"
+    },
+    {
+      "address": "0x1006fa2a4",
+      "bytes": "f52700f9",
+      "public_instruction": "str x21, [sp, #0x48]"
+    },
+    {
+      "address": "0x1006fa2a8",
+      "bytes": "e00740ad",
+      "public_instruction": "ldp q0, q1, [sp]"
+    },
+    {
+      "address": "0x1006fa2ac",
+      "bytes": "e08702ad",
+      "public_instruction": "stp q0, q1, [sp, #0x50]"
+    },
+    {
+      "address": "0x1006fa2b0",
+      "bytes": "e00741ad",
+      "public_instruction": "ldp q0, q1, [sp, #0x20]"
+    },
+    {
+      "address": "0x1006fa2b4",
+      "bytes": "e08703ad",
+      "public_instruction": "stp q0, q1, [sp, #0x70]"
+    },
+    {
+      "address": "0x1006fa2b8",
+      "bytes": "e013c03d",
+      "public_instruction": "ldr q0, [sp, #0x40]"
+    },
+    {
+      "address": "0x1006fa2bc",
+      "bytes": "e027803d",
+      "public_instruction": "str q0, [sp, #0x90]"
+    },
+    {
+      "address": "0x1006fa2c0",
+      "bytes": "e08743ad",
+      "public_instruction": "ldp q0, q1, [sp, #0x70]"
+    },
+    {
+      "address": "0x1006fa2c4",
+      "bytes": "600601ad",
+      "public_instruction": "stp q0, q1, [x19, #0x20]"
+    },
+    {
+      "address": "0x1006fa2c8",
+      "bytes": "e027c03d",
+      "public_instruction": "ldr q0, [sp, #0x90]"
+    },
+    {
+      "address": "0x1006fa2cc",
+      "bytes": "6012803d",
+      "public_instruction": "str q0, [x19, #0x40]"
+    },
+    {
+      "address": "0x1006fa2d0",
+      "bytes": "e18342ad",
+      "public_instruction": "ldp q1, q0, [sp, #0x50]"
+    },
+    {
+      "address": "0x1006fa2d4",
+      "bytes": "610200ad",
+      "public_instruction": "stp q1, q0, [x19]"
+    }
+  ],
+  "store_window": {
+    "start": "0x1006fa290",
+    "end": "0x1006fa2d4",
+    "instructions": 18,
+    "call_free": true,
+    "relation": "On normal return, incoming X0 keypath pointer reaches indirect-result buffer +16 through X28, stack and vector copies",
+    "result_byte_origins": [
+      "incoming-keypath[0]",
+      "incoming-keypath[1]",
+      "incoming-keypath[2]",
+      "incoming-keypath[3]",
+      "incoming-keypath[4]",
+      "incoming-keypath[5]",
+      "incoming-keypath[6]",
+      "incoming-keypath[7]"
+    ],
+    "not_claimed": "Padding/full-value initialization, keypath object authenticity or later alias/field stability"
+  },
+  "sidecar_controls": [
+    {
+      "label": "wrong-keypath-register",
+      "result": "rejected",
+      "scope": "Sidecar derivation control, not a REA+ recovery regression"
+    },
+    {
+      "label": "mixed-output-vector-pair",
+      "result": "rejected",
+      "scope": "Sidecar derivation control, not a REA+ recovery regression"
+    },
+    {
+      "label": "missing-final-store",
+      "result": "rejected",
+      "scope": "Sidecar derivation control, not a REA+ recovery regression"
+    },
+    {
+      "label": "unknown-instruction",
+      "result": "rejected",
+      "scope": "Sidecar derivation control, not a REA+ recovery regression"
+    }
+  ],
+  "constructed_root": {
+    "field_ordinal": 6,
+    "field_name": "_userDefaultsClient",
+    "wrapper_offset": 480,
+    "keypath_word_offset_within_wrapper": 16,
+    "derived_root_keypath_word_offset": 496,
+    "selected_pattern": "0x103788708",
+    "selected_wrapper_call": "0x1012a56c0",
+    "final_copy_call": "0x1012a5700",
+    "final_copy_bytes": 640,
+    "premise": "Normal imported getKeyPath and memcpy contracts, valid private/disjoint buffers, preserved callee-saved registers, successful normal returns and no intervening writes through escaped aliases"
+  },
+  "projection": {
+    "call": "0x1006fa618",
+    "runtime_entry": "0x10364021c",
+    "input_root": "SP+16 at projection wrapper",
+    "keypath": "incoming wrapper word +16",
+    "result_buffer": "incoming X8 preserved in X22",
+    "abi": "Owned compiler IR/native controls corroborate indirect X8 result, root X0 and keypath X1; no C return model applied",
+    "value_type": "Conditional UserDefaultsClient under exact typed keypath, valid-wrapper and import-binding premises"
+  },
+  "composition": {
+    "descriptor": "0x103d4d5d0",
+    "name": "_IfLetReducer",
+    "field_offset_vector_word_offset": 6,
+    "child_ordinal": 1,
+    "metadata_vector_entry_byte_offset": 52,
+    "child_offset_value": "Runtime metadata value; not instantiated or assigned a numeric instance offset",
+    "source": "constructed Root at caller SP+0x1680",
+    "destination": "consumer output + dynamic child-field offset",
+    "typed_move_call": "0x100876ee8",
+    "type_anchor": "exact Root metadata and initializeWithTake witness retained at item70"
+  },
+  "not_established": [
+    "Identity of every later captured Root across composed copies/aliases",
+    "Actual TaskLocal storage/cache/default selection, runtime keypath object or Client code/context",
+    "Automatic member substitution or context-scoped invocation-domain/mapping carrier",
+    "A helper-global enum bound or mutated CFG"
+  ],
+  "target_executed": false
+}

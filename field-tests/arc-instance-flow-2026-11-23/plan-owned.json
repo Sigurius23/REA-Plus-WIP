@@ -1,0 +1,143 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-instance-flow-2026-11-23/mcp-owned",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "owned-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-instance-flow-2026-11-23/ProjectionControls.dylib",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "generic-project-instructions",
+      "arguments": {
+        "procedure": "0xaec"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "generic-project-summary",
+      "arguments": {
+        "procedure": "0xaec",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "specialized-project-instructions",
+      "arguments": {
+        "procedure": "0xab8"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "specialized-project-summary",
+      "arguments": {
+        "procedure": "0xab8",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "first-instructions",
+      "arguments": {
+        "procedure": "0xaf0"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "first-summary",
+      "arguments": {
+        "procedure": "0xaf0",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "second-instructions",
+      "arguments": {
+        "procedure": "0xafc"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "second-summary",
+      "arguments": {
+        "procedure": "0xafc",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "get-instructions",
+      "arguments": {
+        "procedure": "0xb7c"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "get-summary",
+      "arguments": {
+        "procedure": "0xb7c",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "rebind-instructions",
+      "arguments": {
+        "procedure": "0xb80"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "rebind-summary",
+      "arguments": {
+        "procedure": "0xb80",
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "owned-export",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-instance-flow-2026-11-23/mcp-owned/final.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "owned-close1",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "owned-close2",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}

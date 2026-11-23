@@ -1,0 +1,241 @@
+{
+  "status": "passed",
+  "interpretation": "Conditional static operation bridge with standard synchronous TaskLocal.withValue semantics; not observed runtime entry or an automatic invocation proof",
+  "sources": [
+    {
+      "path": "field-tests/arc-instance-flow-2026-11-23/mcp-scope-entry/instructions-0x10070d148.evidence.json",
+      "sha256": "5b208de7df79aa9143f8cce9ee25c449ca88b7c56765a9ab4504730226d31419",
+      "evidence_id": "ev_5b81fd6f5ab9d871805963a229ddb3d7d180fe50051fd38087e351e06ac7ae73"
+    },
+    {
+      "path": "field-tests/arc-instance-flow-2026-11-23/mcp-scope-body/instructions-0x10070d1ec.evidence.json",
+      "sha256": "9348812e67bf74853f5deb51eaeed43fb5d48d951a0ece4ac3fd6cb4c1002540",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "path": "field-tests/arc-instance-flow-2026-11-23/mcp-scope-trampoline/instructions-0x10071069c.evidence.json",
+      "sha256": "09560ae27655a59b648220197f8aee6d6c19c83254d614951dfd8aaf0ddf0e99",
+      "evidence_id": "ev_63054e60f8dbc7e3b8303b1bef41c76a90bb473772c54dde65112cec49e9545a"
+    },
+    {
+      "path": "field-tests/arc-instance-flow-2026-11-23/mcp-scope-call/instructions-0x10070d2f8.evidence.json",
+      "sha256": "12e501875c4ec55507a7da2fde3d8a2b3d356d16b1a20ee60f409056a2116957",
+      "evidence_id": "ev_2b300dbd258becc1d67b2359434628ca17ada3612177b41ca4b2b6a02e17a6e7"
+    },
+    {
+      "path": "field-tests/arc-instance-flow-2026-11-23/mcp-scope-body/summary-0x10070d1ec.evidence.json",
+      "sha256": "a762aa70f2881e5a6c16f73ead0274594fb72ae95f98e6c42f3d7c19c961cbf9",
+      "evidence_id": "ev_8195ceb88f1a6939da9b885e83510a176ea76ffce292e990ab6ee62e3b127e5f"
+    },
+    {
+      "path": "field-tests/arc-instance-flow-2026-11-23/mcp-scope-body/final.bundle.json",
+      "sha256": "236ee43fbde13f512948e95b3fe45920bc7387b725d32c6ff9c7f513938d452a",
+      "evidence_id": "ev_3ad30b0745754e83e5dcaa9c0fd00fba2c556b1081a589f1f8ea0e23bf6ca709",
+      "container": "export records"
+    }
+  ],
+  "checked_instruction_anchors": [
+    {
+      "address": "0x10070d150",
+      "instruction": "bl 0x10070d1ec",
+      "bytes": "27000094",
+      "evidence_id": "ev_5b81fd6f5ab9d871805963a229ddb3d7d180fe50051fd38087e351e06ac7ae73"
+    },
+    {
+      "address": "0x10070d210",
+      "instruction": "mov x19, x4",
+      "bytes": "f30304aa",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d214",
+      "instruction": "mov x23, x3",
+      "bytes": "f70303aa",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d218",
+      "instruction": "mov x24, x2",
+      "bytes": "f80302aa",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d21c",
+      "instruction": "mov x28, x1",
+      "bytes": "fc0301aa",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d220",
+      "instruction": "mov x27, x0",
+      "bytes": "fb0300aa",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d224",
+      "instruction": "mov x22, x8",
+      "bytes": "f60308aa",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d250",
+      "instruction": "add x0, sp, #0x30",
+      "bytes": "e0c30091",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d254",
+      "instruction": "mov x20, x28",
+      "bytes": "f4031caa",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d25c",
+      "instruction": "blr x27",
+      "bytes": "60033fd6",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d260",
+      "instruction": "cbnz x21, 0x10070d2a8",
+      "bytes": "550200b5",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d264",
+      "instruction": "stp x19, x24, [sp, #0x10]",
+      "bytes": "f36301a9",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d268",
+      "instruction": "str x23, [sp, #0x20]",
+      "bytes": "f71300f9",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d278",
+      "instruction": "adrp x1, 0x100710000",
+      "bytes": "010000f0",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d27c",
+      "instruction": "add x1, x1, #0x69c",
+      "bytes": "21701a91",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d280",
+      "instruction": "add x0, sp, #0x30",
+      "bytes": "e0c30091",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d284",
+      "instruction": "mov x2, sp",
+      "bytes": "e2030091",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d28c",
+      "instruction": "mov x8, x22",
+      "bytes": "e80316aa",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d29c",
+      "instruction": "mov x6, x19",
+      "bytes": "e60313aa",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x10070d2a4",
+      "instruction": "bl 0x10363d324",
+      "bytes": "20c0bc94",
+      "evidence_id": "ev_8e615a3b6385e0269814a50b2119d3cad1bbf127b0b8f78c4033af1572b669aa"
+    },
+    {
+      "address": "0x1007106a4",
+      "instruction": "ldp x2, x0, [x20, #0x10]",
+      "bytes": "820241a9",
+      "evidence_id": "ev_63054e60f8dbc7e3b8303b1bef41c76a90bb473772c54dde65112cec49e9545a"
+    },
+    {
+      "address": "0x1007106a8",
+      "instruction": "ldr x1, [x20, #0x20]",
+      "bytes": "811240f9",
+      "evidence_id": "ev_63054e60f8dbc7e3b8303b1bef41c76a90bb473772c54dde65112cec49e9545a"
+    },
+    {
+      "address": "0x1007106ac",
+      "instruction": "bl 0x10070d2f8",
+      "bytes": "13f3ff97",
+      "evidence_id": "ev_63054e60f8dbc7e3b8303b1bef41c76a90bb473772c54dde65112cec49e9545a"
+    },
+    {
+      "address": "0x10070d310",
+      "instruction": "mov x22, x2",
+      "bytes": "f60302aa",
+      "evidence_id": "ev_2b300dbd258becc1d67b2359434628ca17ada3612177b41ca4b2b6a02e17a6e7"
+    },
+    {
+      "address": "0x10070d314",
+      "instruction": "mov x23, x8",
+      "bytes": "f70308aa",
+      "evidence_id": "ev_2b300dbd258becc1d67b2359434628ca17ada3612177b41ca4b2b6a02e17a6e7"
+    },
+    {
+      "address": "0x10070d318",
+      "instruction": "mov x20, x1",
+      "bytes": "f40301aa",
+      "evidence_id": "ev_2b300dbd258becc1d67b2359434628ca17ada3612177b41ca4b2b6a02e17a6e7"
+    },
+    {
+      "address": "0x10070d31c",
+      "instruction": "blr x0",
+      "bytes": "00003fd6",
+      "evidence_id": "ev_2b300dbd258becc1d67b2359434628ca17ada3612177b41ca4b2b6a02e17a6e7"
+    },
+    {
+      "address": "0x10070d320",
+      "instruction": "cbnz x21, 0x10070d3b0",
+      "bytes": "950400b5",
+      "evidence_id": "ev_2b300dbd258becc1d67b2359434628ca17ada3612177b41ca4b2b6a02e17a6e7"
+    }
+  ],
+  "independently_checked_encodings": 4,
+  "scope": {
+    "forwarder": "0x10070d148",
+    "body": "0x10070d1ec",
+    "update_call": "0x10070d25c",
+    "operation_guard": "X21 must be zero at 0x10070d260; nonzero skips operation scope",
+    "tasklocal_call": "0x10070d2a4",
+    "imported_symbol": "_$ss9TaskLocalC9withValue_9operation4file4lineqd__x_qd__yKXESSSutKlF",
+    "stored_operation": "entry X2",
+    "stored_context": "entry X3",
+    "tasklocal_context_words": {
+      "16": "Return metadata",
+      "24": "Original operation code",
+      "32": "Original operation context"
+    },
+    "operation_trampoline": "0x10071069c",
+    "closure_call_helper": "0x10070d2f8",
+    "actual_operation_call": "0x10070d31c",
+    "relation": "The trampoline loads the saved operation/context; the helper moves that context to X20 and calls the original code in X0 before later result processing",
+    "selected_operation": "0x1008719b4",
+    "selected_context": "constructed child callback packet from 0x1008718c8"
+  },
+  "standard_library_reference": "https://raw.githubusercontent.com/swiftlang/swift/swift-5.9-RELEASE/stdlib/public/Concurrency/TaskLocal.swift",
+  "premises": [
+    "Normal valid ABI/storage and preserved relevant values; scope update returns with X21=0",
+    "The imported symbol binds the standard synchronous TaskLocal.withValue implementation, whose operation executes within the bound value scope",
+    "The previously checked child action/state and exact constructed metadata/witness conditions hold"
+  ],
+  "not_established": [
+    "Actual runtime import authenticity, event execution, TaskLocal values or active/default UserDefaultsClient",
+    "All post-operation processing in 0x10070d2f8 or arbitrary alias/instance stability",
+    "Any helper-global domain or CFG mutation"
+  ],
+  "target_executed": false
+}

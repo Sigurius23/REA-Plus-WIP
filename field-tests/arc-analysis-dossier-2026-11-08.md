@@ -1,5 +1,18 @@
 # Arc 1.172.1 analysis dossier
 
+Constructed-child / projection addendum **2026-11-23**:
+[the new checkpoint](arc-instance-flow-2026-11-23.md) binds the constructed
+BoostsEditor to _IfLetReducer.child, then follows a dependency-writing scope
+and its stored callback to the exact Root witness slot and known reducer.
+Keypath output-word and indirect projection ABI checks narrow the earlier
+construction gaps. The scope helper's update error guard and saved operation
+bridge through standard synchronous TaskLocal.withValue are also traced. This remains conditional on valid typed storage/copies,
+child predicates and callback entry; active TaskLocal/default Client selection
+and relevant instance stability remain unresolved. The invocation-only carrier
+is still open. 117 successful public calls and two CLI/MCP pairs verify on
+unchanged production code. The disk-failed capture and successful full-image
+retry are preserved. No target code was executed.
+
 Generic member declaration addendum **2026-11-23**:
 [the new checkpoint](arc-member-templates-2026-11-23.md) now represents the
 selected Dependency keyPath's external symbolic application, exact
