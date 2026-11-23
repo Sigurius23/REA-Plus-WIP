@@ -1,5 +1,16 @@
 # Arc 1.172.1 analysis dossier
 
+Captured dependency / allocator addendum **2026-11-23**:
+[the new checkpoint](arc-invocation-origin-2026-11-23.md) traces the selected
+async worker's environment back to a reducer effect context and binds exact
+`BoostsEditor` metadata, its eight physical fields and `_userDefaultsClient`
+at byte offset 480. The selected generic wrapper's typeref matches the
+worker's metadata-instantiation reference; its keypath and runtime/default
+selection remain open. A confirmed REA+ allocator C ABI defect is fixed:
+all 23 Client contexts now use returned allocations in pseudocode, with
+original bytes/body unchanged and explicit unknown memory effects. Item 68
+is verified; item 63's complete closure-origin and invocation proof remain open.
+
 Selected closure-call addendum **2026-11-22**:
 [the call/origin checkpoint](arc-closure-origin-2026-11-22.md) binds the actual
 call at `0x1012ab840` to an observed conditional X0=49 preparation suffix.

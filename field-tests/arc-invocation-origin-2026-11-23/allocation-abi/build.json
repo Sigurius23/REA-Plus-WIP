@@ -1,0 +1,271 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "clang",
+        "-target",
+        "arm64-apple-macos14.0",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk",
+        "-O2",
+        "-dynamiclib",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/alternative.c",
+        "-Wl,-install_name,@rpath/libAlternative.dylib",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/libAlternative.dylib"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "clang",
+        "-target",
+        "arm64-apple-macos14.0",
+        "-isysroot",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk",
+        "-O2",
+        "-c",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/alternative.c",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/alternative.o"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "swiftc",
+        "-target",
+        "arm64-apple-macos14.0",
+        "-O",
+        "-whole-module-optimization",
+        "-parse-as-library",
+        "-module-name",
+        "AllocationABIControl",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/module",
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/module-cache",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/control.swift",
+        "-emit-ir",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/trusted.ll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "swiftc",
+        "-target",
+        "arm64-apple-macos14.0",
+        "-O",
+        "-whole-module-optimization",
+        "-parse-as-library",
+        "-module-name",
+        "AllocationABIControl",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/module",
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/module-cache",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/control.swift",
+        "-emit-assembly",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/trusted.s"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "swiftc",
+        "-target",
+        "arm64-apple-macos14.0",
+        "-O",
+        "-whole-module-optimization",
+        "-parse-as-library",
+        "-module-name",
+        "AllocationABIControl",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/module",
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/module-cache",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/control.swift",
+        "-emit-library",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/trusted.dylib"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "swiftc",
+        "-target",
+        "arm64-apple-macos14.0",
+        "-O",
+        "-whole-module-optimization",
+        "-parse-as-library",
+        "-module-name",
+        "AllocationABIControl",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/module",
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/module-cache",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/control.swift",
+        "-emit-ir",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/wrong-library.ll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "swiftc",
+        "-target",
+        "arm64-apple-macos14.0",
+        "-O",
+        "-whole-module-optimization",
+        "-parse-as-library",
+        "-module-name",
+        "AllocationABIControl",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/module",
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/module-cache",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/control.swift",
+        "-emit-assembly",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/wrong-library.s"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "swiftc",
+        "-target",
+        "arm64-apple-macos14.0",
+        "-O",
+        "-whole-module-optimization",
+        "-parse-as-library",
+        "-module-name",
+        "AllocationABIControl",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/module",
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/module-cache",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/control.swift",
+        "-emit-library",
+        "-L",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi",
+        "-lAlternative",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/wrong-library.dylib"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "swiftc",
+        "-target",
+        "arm64-apple-macos14.0",
+        "-O",
+        "-whole-module-optimization",
+        "-parse-as-library",
+        "-module-name",
+        "AllocationABIControl",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/module",
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/module-cache",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/control.swift",
+        "-emit-ir",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/local.ll"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "swiftc",
+        "-target",
+        "arm64-apple-macos14.0",
+        "-O",
+        "-whole-module-optimization",
+        "-parse-as-library",
+        "-module-name",
+        "AllocationABIControl",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/module",
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/module-cache",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/control.swift",
+        "-emit-assembly",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/local.s"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "swiftc",
+        "-target",
+        "arm64-apple-macos14.0",
+        "-O",
+        "-whole-module-optimization",
+        "-parse-as-library",
+        "-module-name",
+        "AllocationABIControl",
+        "-I",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/module",
+        "-module-cache-path",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/module-cache",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi/control.swift",
+        "-emit-library",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/alternative.o",
+        "-o",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/local.dylib"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "binaries": [
+    {
+      "label": "trusted",
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/trusted.dylib",
+      "sha256": "b10222ebc980aac0335f98f3df2029af76eaa904c94d54a4a399bd0fa31698d1",
+      "bytes": 36912
+    },
+    {
+      "label": "wrong-library",
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/wrong-library.dylib",
+      "sha256": "75622ff25b1932e85b11364aa99f6c508ac1b7d69cb943e697efd7f2823a5752",
+      "bytes": 36912
+    },
+    {
+      "label": "local",
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/local.dylib",
+      "sha256": "e70bd2ee6c4eb4161fccc9a515097f1798df11853ed560057518a04972737e49",
+      "bytes": 36904
+    }
+  ],
+  "target_executed": false
+}

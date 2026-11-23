@@ -4,6 +4,18 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc allocator ABI repair, item 68 done (2026-11-23):** Exact supported
+  libswiftCore allocation calls now preserve their C-ABI X0 return instead of
+  reusing the metadata argument in pseudocode. All 23 Arc constructor results
+  are corrected. Wrong-library/local namesakes, explicit signatures/overrides
+  and analyst-created external labels retain their authority; memory effects
+  remain unknown. 86 source tests, 28 final public replies, five exact CLI/MCP
+  pairs, six boundary probes and build/fast/docs/package checks pass, alongside
+  the final Swift error-model lane. Item 63 now binds the captured reducer
+  layout and `_userDefaultsClient` at byte offset 480; keypath/default selection
+  and actual closure origin remain open. See the
+  [repair and origin checkpoint](field-tests/arc-invocation-origin-2026-11-23.md).
+
 - **Arc selected closure call, item 63 partial (2026-11-22):** REA+ now retains
   conditional AArch64 call-preparation constants with exact source words.
   The actual call at `0x1012ab840` sets X0=49; exact enum alignment 2 excludes
@@ -1657,6 +1669,23 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-23 captured reducer environment bound; item remains open.**
+    The selected reducer effect copies 640 bytes into its async context.
+    Descriptor `0x1037887f8` -> thunk `0x1012b3670` -> entry `0x1012ab2d0`
+    carries that environment into the worker. Exact `BoostsEditor` metadata
+    `0x104316db8` / owner `0x103d7b1ac` binds eight physical offsets and field 6
+    `_userDefaultsClient` at 480, matching the worker's 80-byte wrapper load.
+    The Root copy wrapper supplies a conditional typed source anchor under
+    normal copy/VWT, validity and field-stability premises. The field's raw
+    generic typeref matches the worker's instantiation typeref; generic shape
+    interpretation remains explicitly unsupported. The precise next gap is
+    the captured keypath/construction and selected/default Client's code/context
+    origin, then relevant unchanged forwarding and invocation mapping.
+    Item 68 repairs the allocator return defect found along this path without
+    inferring pure calls or a helper-global type/CFG bound. Reducer mappings
+    and body, helper limits and X0=49 call preparation remain unchanged. See
+    [the captured-origin and repair report](field-tests/arc-invocation-origin-2026-11-23.md).
+
     **2026-11-22 selected-call preparation done; item remains open.**
     Optional instruction `call_preparation` reports a native-encoding-validated
     immediate suffix, its source bytes and conditional X0–X7 constants. The
@@ -1903,3 +1932,25 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     code was executed. This is a prerequisite safety repair; item 63's typed
     root, closure origin and invocation-scoped carrier remain open. See the
     [report and verification](field-tests/arc-frame-escape-2026-11-22.md).
+
+
+68. **Preserve the C ABI return of imported Swift runtime allocation.** Done
+    and verified while continuing item 63 (2026-11-23).
+    In a Swift-compiler-spec Program, the exact libswiftCore allocator import
+    is decompiled as if X0 still held its metadata input after the call.
+    The Arc constructor consequently appears to write into metadata instead
+    of the returned allocation. A source-built Swift caller using a Clang
+    C declaration reproduces it; compiler IR and native instructions retain
+    the real return flow. The producer now copies the installed Apple C model
+    and applies the exact supported import signature. Optional public runtime
+    signature observations retain identity, original/effective signatures,
+    parameter/return registers and unknown memory effects. Original imported
+    names or unchanged importer-owned labels establish identity; analyst labels
+    cannot grant it. Explicit user/imported signatures and call-site overrides
+    are preserved; wrong-library/local namesakes are unchanged. Verification:
+    86 source tests, 28 final public calls, five exact CLI/MCP pairs, six real
+    boundary probes, final Swift error-model coexistence and build/fast/docs/
+    package checks. All 23 Arc allocations are corrected; original assembly,
+    constructor body and reducer mappings are unchanged. Preserved first-runtime
+    false authority, failed harness attempts and exact final receipts are in
+    [the report](field-tests/arc-invocation-origin-2026-11-23.md).

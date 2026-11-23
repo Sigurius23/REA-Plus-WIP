@@ -1,0 +1,15 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath,pathToFileURL} from 'node:url';
+import {createHash} from 'node:crypto';
+const out=path.dirname(fileURLToPath(import.meta.url)),root=path.resolve(out,'../..');
+const manifest=JSON.parse(await fs.readFile(path.join(root,'field-tests/arc-closure-origin-2026-11-22/call-preparation-final-runtime-manifest.json'),'utf8')),runtime=manifest.runtime_root;
+const {parseMachoLayout}=await import(pathToFileURL(runtime+'/dist/native/AppleMachoSelection.js'));
+const {parsePointerFixups}=await import(pathToFileURL(runtime+'/dist/native/AppleMachoFixups.js'));
+const input=path.join(root,'rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64'),bytes=await fs.readFile(input),digest=createHash('sha256').update(bytes).digest('hex');
+if(digest!=='6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578')throw Error('input identity');
+const layout=parseMachoLayout(bytes,'arm64'),fixups=parsePointerFixups(bytes,layout.fixups,layout.segments,layout.baseAddress);
+const slots=[0x10422dc98n,0x104230a08n].map(address=>{const offset=layout.offset(address,8),word=bytes.readBigUInt64LE(offset);return {address,offset,word,decoded:fixups.decode(address,word)};});
+const record={scope:'Supplemental direct use of qualified REA+ Mach-O parser on selected symbolic-reference slots, not public MCP or runtime Evidence',runtime_manifest:'../arc-closure-origin-2026-11-22/call-preparation-final-runtime-manifest.json',input,sha256:digest,slots};
+await fs.writeFile(path.join(out,'selected-slot-observations.json'),JSON.stringify(record,(_k,v)=>typeof v==='bigint'?'0x'+v.toString(16):v,2)+'\n');
+console.log(JSON.stringify(slots,(_k,v)=>typeof v==='bigint'?'0x'+v.toString(16):v));

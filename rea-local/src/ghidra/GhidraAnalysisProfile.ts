@@ -174,6 +174,11 @@ export const resolveGhidraAnalysisProfile = async (
           : {}),
         jump_table_evidence: "typed-case-default-blocks-v1",
         ...(installation.platform !== "win32" &&
+        target.architecture === "arm64" &&
+        target.format === "mach-o"
+          ? { runtime_call_signatures: "swift-alloc-object-c-abi-v1" }
+          : {}),
+        ...(installation.platform !== "win32" &&
         target.format === "mach-o" &&
         target.architecture === "arm64"
           ? {

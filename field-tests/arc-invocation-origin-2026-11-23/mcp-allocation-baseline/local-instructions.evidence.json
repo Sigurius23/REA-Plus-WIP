@@ -1,0 +1,185 @@
+{
+  "evidence_id": "ev_550cac3f79139478183f4c59d5acbad2a8a1c6e43446a0078d449ef28a16e9cc",
+  "subject": {
+    "name": "local.dylib",
+    "digest": {
+      "sha256": "e70bd2ee6c4eb4161fccc9a515097f1798df11853ed560057518a04972737e49"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/local.dylib"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "mach-o",
+      "architecture": "arm64",
+      "available_architectures": [
+        "arm64"
+      ],
+      "import_mode": "ephemeral-source-immutable",
+      "annotation_policy": "atomic-function-entry-metadata-v1",
+      "load_image_observations": "source-mappings-entry-context-v2",
+      "function_body_evidence": "complete-inclusive-ranges-v1",
+      "function_references": "complete-body-and-entry-reference-manager-v2",
+      "string_inventory_evidence": "defined-data-coverage-v1",
+      "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+      "instruction_flow_evidence": "decoded-return-pcode-v1",
+      "instruction_references": "exact-address-incoming-v1",
+      "instruction_call_preparation": "ghidra-aarch64-mov-call-preparation-v1",
+      "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+      "no_return_repair": "returning-imports-decoded-return-v2",
+      "process_launch": "inspected-jvm-launch-support-v1",
+      "jump_table_evidence": "typed-case-default-blocks-v1",
+      "swift_enum_switch_recovery": "abi-signed-word-cfg-v10",
+      "swift_dynamic_typed_snapshot": "swift-dynamic-typed-snapshot-v1",
+      "darwin_stack_probe_call_summary": "trusted-darwin-arm64-chkstk-v1",
+      "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+      "decompiler_jump_loads": true,
+      "loader": "auto-from-header",
+      "language_id": "auto-from-header",
+      "compiler_spec_id": "auto-default",
+      "analyzer_preset": "ghidra-default",
+      "analysis_policy": "bounded-autoanalysis-v1",
+      "analysis_timeout_seconds": 60
+    },
+    "digest": "2e65253a072d7d048988f5ab837f2df9bee452ee498a45482dbd353620510581"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "read_function_instructions",
+  "parameters": {
+    "procedure": "0x7c4"
+  },
+  "raw_result": {
+    "value": {
+      "procedure": {
+        "address": "0x7c4",
+        "name": "AllocationABIControl::makeClient",
+        "classification": {
+          "external": false,
+          "thunk": false,
+          "thunk_target": null,
+          "provenance": "ghidra-function-manager"
+        },
+        "body": {
+          "available": true,
+          "provenance": "ghidra-function-body-address-set",
+          "ranges": [
+            {
+              "start": "0x7c4",
+              "end": "0x813"
+            }
+          ],
+          "total_bytes": 80,
+          "span_bytes": 80,
+          "non_contiguous": false,
+          "contains_entry": true
+        }
+      },
+      "instructions": [
+        "0x7c4: stp x22, x21, [sp, #-0x30]!",
+        "0x7c8: stp x20, x19, [sp, #0x10]",
+        "0x7cc: stp x29, x30, [sp, #0x20]",
+        "0x7d0: add x29, sp, #0x20",
+        "0x7d4: mov x19, x2",
+        "0x7d8: mov x21, x1",
+        "0x7dc: mov x20, x8",
+        "0x7e0: mov w1, #0x18",
+        "0x7e4: mov w2, #0x7",
+        "0x7e8: bl 0x00000994",
+        "0x7ec: cbz x0, 0x00000810",
+        "0x7f0: str x21, [x0, #0x10]",
+        "0x7f4: stp x19, x0, [x20]",
+        "0x7f8: stp x19, x0, [x20, #0x10]",
+        "0x7fc: stp x19, x0, [x20, #0x20]",
+        "0x800: ldp x29, x30, [sp, #0x20]",
+        "0x804: ldp x20, x19, [sp, #0x10]",
+        "0x808: ldp x22, x21, [sp], #0x30",
+        "0x80c: ret",
+        "0x810: brk 0x1"
+      ],
+      "limitations": [
+        "Instruction text and ordering are Ghidra-specific representations.",
+        "The fast path does not invoke the decompiler or scan whole-program names and strings."
+      ]
+    },
+    "limitations": []
+  },
+  "normalized_result": {
+    "procedure": {
+      "address": "0x7c4",
+      "name": "AllocationABIControl::makeClient",
+      "classification": {
+        "external": false,
+        "thunk": false,
+        "thunk_target": null,
+        "provenance": "ghidra-function-manager"
+      },
+      "body": {
+        "available": true,
+        "provenance": "ghidra-function-body-address-set",
+        "ranges": [
+          {
+            "start": "0x7c4",
+            "end": "0x813"
+          }
+        ],
+        "total_bytes": 80,
+        "span_bytes": 80,
+        "non_contiguous": false,
+        "contains_entry": true
+      }
+    },
+    "instructions": [
+      "0x7c4: stp x22, x21, [sp, #-0x30]!",
+      "0x7c8: stp x20, x19, [sp, #0x10]",
+      "0x7cc: stp x29, x30, [sp, #0x20]",
+      "0x7d0: add x29, sp, #0x20",
+      "0x7d4: mov x19, x2",
+      "0x7d8: mov x21, x1",
+      "0x7dc: mov x20, x8",
+      "0x7e0: mov w1, #0x18",
+      "0x7e4: mov w2, #0x7",
+      "0x7e8: bl 0x00000994",
+      "0x7ec: cbz x0, 0x00000810",
+      "0x7f0: str x21, [x0, #0x10]",
+      "0x7f4: stp x19, x0, [x20]",
+      "0x7f8: stp x19, x0, [x20, #0x10]",
+      "0x7fc: stp x19, x0, [x20, #0x20]",
+      "0x800: ldp x29, x30, [sp, #0x20]",
+      "0x804: ldp x20, x19, [sp, #0x10]",
+      "0x808: ldp x22, x21, [sp], #0x30",
+      "0x80c: ret",
+      "0x810: brk 0x1"
+    ],
+    "limitations": [
+      "Instruction text and ordering are Ghidra-specific representations.",
+      "The fast path does not invoke the decompiler or scan whole-program names and strings."
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+    "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
+    "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "This fast path reads only the requested function and does not invoke the decompiler or whole-program string/name inventories.",
+    "Instruction text is Ghidra-specific and does not claim textual equivalence with Hopper output.",
+    "Ghidra auto-analysis state: analysis_complete=true; analysis_timed_out=false; analysis_timeout_seconds=60.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

@@ -387,6 +387,46 @@ describe("Ghidra compact reference provenance", () => {
   );
 });
 
+describe("Ghidra imported runtime call signatures", () => {
+  it("retains the external ABI assumption without claiming memory effects", () => {
+    const dossier = functionDossierSchema.parse(ghidraFunctionDossier());
+    const boundary = dossier.native_api;
+    if (boundary?.available !== true)
+      throw new TypeError("Ghidra native API fixture is unavailable");
+    const signature = {
+      call_address: "0x401010",
+      callee_address: "EXTERNAL:0x1",
+      original_symbol: "_swift_allocObject",
+      library: "libswiftCore.dylib",
+      original_signature: "void swift_allocObject()",
+      effective_signature:
+        "void * swift_allocObject(void *, ulonglong, ulonglong)",
+      effective_calling_convention: "__rea_apple_cdecl",
+      contract: "swift-alloc-object-c-abi-v1",
+      return_register: "x0",
+      parameter_registers: ["x0", "x1", "x2"],
+      memory_effects: "unknown",
+      provenance: "external-library-runtime-contract",
+    };
+    const value = {
+      ...dossier,
+      native_api: { ...boundary, runtime_call_signatures: [signature] },
+    };
+    const parsed = parseFunctionValueFixture("analyze_function", value);
+    if (!parsed.ok) throw parsed.error;
+    expect(parsed.value).toEqual(value);
+    expect(
+      parseFunctionValueFixture("analyze_function", {
+        ...value,
+        native_api: {
+          ...value.native_api,
+          runtime_call_signatures: [{ ...signature, memory_effects: "pure" }],
+        },
+      }).ok,
+    ).toBe(false);
+  });
+});
+
 describe("Ghidra jump-table mapping contract", () => {
   it("preserves evidenced defaults separately from cases and unresolved targets", () => {
     const dossier = functionDossierSchema.parse(ghidraFunctionDossier());

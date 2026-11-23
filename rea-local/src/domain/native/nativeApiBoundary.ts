@@ -118,6 +118,28 @@ const availableNativeApiBoundarySchema = z
         }),
       )
       .exactOptional(),
+    runtime_call_signatures: z
+      .array(
+        z.strictObject({
+          call_address: z.string().min(1),
+          callee_address: z.string().min(1),
+          original_symbol: z.string().min(1),
+          library: z.string().min(1),
+          original_signature: z.string().min(1),
+          effective_signature: z.string().min(1),
+          effective_calling_convention: z.string().min(1),
+          contract: z.literal("swift-alloc-object-c-abi-v1"),
+          return_register: z.literal("x0"),
+          parameter_registers: z.tuple([
+            z.literal("x0"),
+            z.literal("x1"),
+            z.literal("x2"),
+          ]),
+          memory_effects: z.literal("unknown"),
+          provenance: z.literal("external-library-runtime-contract"),
+        }),
+      )
+      .exactOptional(),
     pseudocode: z
       .object({
         classification: z.literal("decompiler-generated-non-source"),

@@ -377,6 +377,25 @@ and does not accept this option. The macOS compiler/Ghidra verification lane
 ARM64/x86-64 decoding, CLI/MCP agreement, boundary exclusions and unchanged
 Listing/function bodies without executing either fixture.
 
+In non-Windows AppleSilicon Mach-O Programs using Ghidra's Swift compiler
+specification, `native_api.runtime_call_signatures` reports an applied exact
+libswiftCore `swift_allocObject` C ABI signature. Its three explicit arguments
+are metadata/size/alignment in X0/X1/X2 and its pointer return is in X0, following
+the [runtime declaration](https://github.com/swiftlang/swift/blob/main/include/swift/Runtime/RuntimeFunctions.def).
+REA+ copies the installed language's Apple C calling model into the private
+Program, preserving its register/stack rules. This prevents treating the
+metadata argument as the allocation returned by a void/unknown Swift call.
+Each observation retains the import/library, original and effective signatures,
+calling model and unknown memory effects. It does not establish pure calls,
+noescape, allocation success, library authenticity or closed dependency origin.
+
+Original imported names or unchanged importer-owned labels establish identity;
+analyst display names, wrong-library namesakes and local implementations cannot
+grant this contract. Explicit user/imported signatures and call-site overrides
+are preserved. Historical/provider records may omit the optional observations.
+The profile component is `swift-alloc-object-c-abi-v1`; this supplies a signature
+for the one supported import, not a general runtime-call or C ABI inference.
+
 For AArch64 listed calls, optional `call_preparation` reports a supported
 adjacent immediate MOV, optionally separated by one non-clobbering register
 MOV. It retains the source instructions/bytes and a conditional static X0-X7

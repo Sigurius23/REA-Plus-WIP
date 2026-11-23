@@ -1,0 +1,132 @@
+{
+  "status": "failed",
+  "failure": {
+    "name": "Error",
+    "message": "ENOENT: no such file or directory, open '/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/probes-final-five/renamed-external.probe.json'",
+    "stack": "Error: ENOENT: no such file or directory, open '/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/probes-final-five/renamed-external.probe.json'\n    at async open (node:internal/fs/promises:1345:25)\n    at async Object.readFile (node:internal/fs/promises:2003:14)\n    at async file:///Users/sigur/Desktop/projekte/reverse%20engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/verify_probes_final_five.mjs:23:27",
+    "stdout": null,
+    "stderr": null
+  },
+  "records": [
+    {
+      "program": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec/support/analyzeHeadless",
+      "args": [
+        "/private/tmp/rea-allocator-probes-859HrE",
+        "positive",
+        "-import",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/trusted.dylib",
+        "-scriptPath",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-runtime-allocation-abi-final-2026-11-23/bridge/ghidra;/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi",
+        "-postScript",
+        "ReaRuntimeAllocatorProbe.java",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-runtime-allocation-abi-final-2026-11-23/bridge/ghidra",
+        "0x7c4",
+        "positive",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/probes-final-five",
+        "-deleteProject"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "mode": "positive",
+      "library": "/usr/lib/swift/libswiftCore.dylib",
+      "before_signature": "undefined _swift_allocObject()",
+      "after_signature": "pointer __rea_apple_cdecl _swift_allocObject(pointer metadata, ulonglong requiredSize, ulonglong requiredAlignmentMask)",
+      "source_preserved": false,
+      "target_executed": false
+    },
+    {
+      "program": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec/support/analyzeHeadless",
+      "args": [
+        "/private/tmp/rea-allocator-probes-859HrE",
+        "override",
+        "-import",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/trusted.dylib",
+        "-scriptPath",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-runtime-allocation-abi-final-2026-11-23/bridge/ghidra;/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi",
+        "-postScript",
+        "ReaRuntimeAllocatorProbe.java",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-runtime-allocation-abi-final-2026-11-23/bridge/ghidra",
+        "0x7c4",
+        "override",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/probes-final-five",
+        "-deleteProject"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "mode": "override",
+      "library": "/usr/lib/swift/libswiftCore.dylib",
+      "before_signature": "undefined _swift_allocObject()",
+      "after_signature": "undefined _swift_allocObject()",
+      "source_preserved": true,
+      "target_executed": false
+    },
+    {
+      "program": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec/support/analyzeHeadless",
+      "args": [
+        "/private/tmp/rea-allocator-probes-859HrE",
+        "user-signature",
+        "-import",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/trusted.dylib",
+        "-scriptPath",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-runtime-allocation-abi-final-2026-11-23/bridge/ghidra;/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi",
+        "-postScript",
+        "ReaRuntimeAllocatorProbe.java",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-runtime-allocation-abi-final-2026-11-23/bridge/ghidra",
+        "0x7c4",
+        "user-signature",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/probes-final-five",
+        "-deleteProject"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "mode": "user-signature",
+      "library": "/usr/lib/swift/libswiftCore.dylib",
+      "before_signature": "undefined _swift_allocObject(void)",
+      "after_signature": "undefined _swift_allocObject(void)",
+      "source_preserved": true,
+      "target_executed": false
+    },
+    {
+      "program": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec/support/analyzeHeadless",
+      "args": [
+        "/private/tmp/rea-allocator-probes-859HrE",
+        "imported-signature",
+        "-import",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/trusted.dylib",
+        "-scriptPath",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-runtime-allocation-abi-final-2026-11-23/bridge/ghidra;/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi",
+        "-postScript",
+        "ReaRuntimeAllocatorProbe.java",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-runtime-allocation-abi-final-2026-11-23/bridge/ghidra",
+        "0x7c4",
+        "imported-signature",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/probes-final-five",
+        "-deleteProject"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "mode": "imported-signature",
+      "library": "/usr/lib/swift/libswiftCore.dylib",
+      "before_signature": "undefined _swift_allocObject(void)",
+      "after_signature": "undefined _swift_allocObject(void)",
+      "source_preserved": true,
+      "target_executed": false
+    }
+  ],
+  "binary_sha256": "b10222ebc980aac0335f98f3df2029af76eaa904c94d54a4a399bd0fa31698d1",
+  "script_sha256": "b40eca180212884f33bf98550b720164ca39831783d704717392e1102db1c79d",
+  "target_executed": false,
+  "verifier_run": {
+    "run_id": "a94071fb-09ef-442c-a149-ec89cf0a4cdc",
+    "verifier_pid": 58500,
+    "parent_pid": 1280,
+    "process_lineage": {
+      "status": "verified",
+      "observed_at": "2026-11-23T00:35:45.434Z",
+      "launcher_pid": 58500,
+      "launcher_parent_pid": 1280,
+      "process_group_id": 58500,
+      "descendants": []
+    }
+  }
+}

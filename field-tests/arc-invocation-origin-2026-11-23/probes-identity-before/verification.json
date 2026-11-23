@@ -1,0 +1,55 @@
+{
+  "status": "failed",
+  "failure": {
+    "name": "Error",
+    "message": "ENOENT: no such file or directory, open '/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/probes-identity-before/renamed-external.probe.json'",
+    "stack": "Error: ENOENT: no such file or directory, open '/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/probes-identity-before/renamed-external.probe.json'\n    at async open (node:internal/fs/promises:1345:25)\n    at async Object.readFile (node:internal/fs/promises:2003:14)\n    at async file:///Users/sigur/Desktop/projekte/reverse%20engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/verify_probes_identity_before.mjs:23:27",
+    "stdout": null,
+    "stderr": null
+  },
+  "records": [
+    {
+      "program": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec/support/analyzeHeadless",
+      "args": [
+        "/private/tmp/rea-allocator-probes-Uq5Scy",
+        "positive",
+        "-import",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-invocation-origin-2026-11-23/allocation-abi/trusted.dylib",
+        "-scriptPath",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-runtime-allocation-abi-v1-2026-11-23/bridge/ghidra;/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/allocation-abi",
+        "-postScript",
+        "ReaRuntimeAllocatorProbe.java",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-runtime-allocation-abi-v1-2026-11-23/bridge/ghidra",
+        "0x7c4",
+        "positive",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-invocation-origin-2026-11-23/probes-identity-before",
+        "-deleteProject"
+      ],
+      "exit_code": 0,
+      "status": "passed",
+      "mode": "positive",
+      "library": "/usr/lib/swift/libswiftCore.dylib",
+      "import_label_source": "IMPORTED",
+      "before_signature": "undefined _swift_allocObject()",
+      "after_signature": "pointer __rea_apple_cdecl _swift_allocObject(pointer metadata, ulonglong requiredSize, ulonglong requiredAlignmentMask)",
+      "source_preserved": false,
+      "target_executed": false
+    }
+  ],
+  "binary_sha256": "b10222ebc980aac0335f98f3df2029af76eaa904c94d54a4a399bd0fa31698d1",
+  "script_sha256": "709a2ea5edd11c8c5edc03da53e1430f2c12b49e8f2cd823b436aa1cadc7e1b3",
+  "target_executed": false,
+  "verifier_run": {
+    "run_id": "fe9feac6-f0fd-4ad8-a421-8e7899d36cc4",
+    "verifier_pid": 53835,
+    "parent_pid": 1280,
+    "process_lineage": {
+      "status": "verified",
+      "observed_at": "2026-11-23T00:28:57.022Z",
+      "launcher_pid": 53835,
+      "launcher_parent_pid": 1280,
+      "process_group_id": 53835,
+      "descendants": []
+    }
+  }
+}

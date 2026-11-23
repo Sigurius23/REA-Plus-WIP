@@ -222,6 +222,8 @@ const ghidraNativeApiBoundary = nativeApiBoundarySchema.superRefine(
     ]);
     for (const adjustment of value.call_model_adjustments ?? [])
       addresses.push(adjustment.call_address, adjustment.callee_address);
+    for (const signature of value.runtime_call_signatures ?? [])
+      addresses.push(signature.call_address, signature.callee_address);
     if (
       addresses.some(
         (address) => !ghidraCanonicalAddressSchema.safeParse(address).success,

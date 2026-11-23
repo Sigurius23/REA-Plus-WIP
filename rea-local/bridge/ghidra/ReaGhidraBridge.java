@@ -162,6 +162,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
     private final ReaGhidraExtensions analysisExtensions = new ReaGhidraExtensions();
     private ReaGhidraSwiftEnumSwitches swiftEnumSwitches;
     private ReaGhidraSwiftErrorCalls swiftErrorCalls;
+    private ReaGhidraRuntimeCalls runtimeCalls;
     private static AddressSpace sessionDefaultAddressSpace;
 
     @Override
@@ -662,6 +663,10 @@ public final class ReaGhidraBridge extends HeadlessScript {
     }
 
     private void initializeDecompiler() throws Exception {
+        if (runtimeCalls == null) {
+            runtimeCalls = new ReaGhidraRuntimeCalls(currentProgram, monitor);
+            runtimeCalls.initialize();
+        }
         if (swiftErrorCalls == null) {
             swiftErrorCalls = new ReaGhidraSwiftErrorCalls(currentProgram, monitor);
             swiftErrorCalls.initialize();
@@ -687,6 +692,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
             currentProgram.getListing().getInstructions(function.getBody(), true)
         ));
         limitations.addAll(swiftErrorCalls.limitations(function));
+        limitations.addAll(runtimeCalls.limitations(function));
         return functionObservation(
             value == null ? JsonNull.INSTANCE : GSON.toJsonTree(value),
             limitations
@@ -1445,6 +1451,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
         );
         List<String> boundaryLimitations = new ArrayList<>(noReturnCallLimitations(scan.instructions));
         boundaryLimitations.addAll(swiftErrorCalls.limitations(function));
+        boundaryLimitations.addAll(runtimeCalls.limitations(function));
         for (String limitation : boundaryLimitations) {
             limitations.add(limitation);
         }
@@ -2063,6 +2070,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
         result.addProperty("provenance", "ghidra-high-function");
         result.addProperty("signature_source", signatureSource);
         result.add("call_model_adjustments", swiftErrorCalls.observations(function));
+        result.add("runtime_call_signatures", runtimeCalls.observations(function));
         String callingConvention = prototype.getModelName();
         result.addProperty(
             "calling_convention",
@@ -3112,7 +3120,8 @@ public final class ReaGhidraBridge extends HeadlessScript {
         if (function.isExternal() || function.getBody().isEmpty()) {
             return null;
         }
-        if (swiftErrorCalls.prepare(function)) decompiler.flushCache();
+        boolean runtimeChanged = runtimeCalls.prepare(function);
+        if (swiftErrorCalls.prepare(function) || runtimeChanged) decompiler.flushCache();
         DecompileResults results = decompiler.decompileFunction(
             function,
             0,
@@ -3635,7 +3644,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
         );
     }
 
-    private static String canonicalAddress(Address address) {
+    static String canonicalAddress(Address address) {
         return canonicalOffset(
             address.getAddressSpace(),
             new BigInteger(Long.toUnsignedString(address.getOffset()))

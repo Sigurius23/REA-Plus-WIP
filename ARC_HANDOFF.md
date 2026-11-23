@@ -1,4 +1,4 @@
-# Arc / REA+ handoff — updated 2026-11-22
+# Arc / REA+ handoff — updated 2026-11-23
 
 ## Start here
 
@@ -26,7 +26,55 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
-## Latest selected call / origin checkpoint (2026-11-22)
+## Latest allocator / captured-origin checkpoint (2026-11-23)
+
+Read `field-tests/arc-invocation-origin-2026-11-23.md`, its
+`qualification-verification.json`, `cli-verification.json` and `fact-index.json`.
+Item 68 is complete: exact supported libswiftCore `swift_allocObject` imports
+now receive their declared C ABI, preserving X0 allocation results rather than
+the metadata input. The helper copies the installed Apple C compiler prototype
+into the private Swift Program; it supplies no memory-effect/noescape summary.
+Public `native_api.runtime_call_signatures` retains assumptions and identities.
+Wrong libraries, local namesakes, user/imported signatures, call-site overrides
+and analyst-created external labels are protected. Do not apply the contract
+from a display name or interpret the result as library authenticity/purity.
+
+The actual constructor now retains all 23 allocation returns. Its assembly and
+body are unchanged. Final verification: 86 source tests, 28 final-runtime public
+MCP calls, five whole-Evidence CLI pairs, six production-boundary probes,
+Swift error-model coexistence and build/fast/docs/package checks. Research and
+baseline transports total 159 public calls (158 successes/one correct file-size
+refusal). The first authority counterexample and harness failures remain
+explicit. Archived Java sources under a script root caused stale probe classes;
+the uniquely named final probe sources are authoritative. Private diagnostics
+are not normalized public Evidence. All owned lineages are empty.
+
+New item 63 facts: the reducer allocates a 0x2a0 context and copies 0x280 bytes
+of its environment into context+0x10. Async descriptor `0x1037887f8` selects
+`0x1012b3670`, which passes that environment to `0x1012ab2d0`; the entry stores
+it at async frame+0x348, later used by the selected worker. Adjacent descriptor
+`0x1037887f0` selects the entry itself, not this capture thunk.
+Exact Root metadata `0x104316db8` -> `BoostsEditor` owner `0x103d7b1ac` has
+size 640 and offsets `0,80,...,560`: field 6 `_userDefaultsClient` is at 480.
+Its raw generic typeref at `0x103bd6880` matches the worker's type-instantiation
+reference. Wrapper `0x1012b2920` passes source X24 and this exact metadata to
+VWT copy target `0x1012b3904`; this is a conditional typed source anchor, not
+proof of all intervening aliases or active dependency values.
+
+**Continue item 63** at generic Dependency/keypath construction and
+selected/default Client code/context origin, then field stability/forwarding
+and observation-only invocation mapping. The captured Root and physical field
+offset are now concrete; do not restart those steps. No helper-wide 297-case
+type/CFG override. Reducer remains 28 mappings/10,072 bytes; Setting helper
+14 instructions/56 bytes/zero tables. Full Arc remains incomplete.
+
+Final runtime: `rea-local/.cache/arc-runtime-allocation-abi-final-2026-11-23`,
+1,872 files. Eleven historical snapshots are authenticated. The enum recovery
+class is unchanged; no new run of its 110-case matrix is claimed. No target,
+helper or fixture library was executed. Workers remain unavailable due to quota.
+This checkpoint and the previous four commits are local and unpushed.
+
+## Previous selected call / origin checkpoint (2026-11-22)
 
 Read `field-tests/arc-closure-origin-2026-11-22.md`, its `fact-index.json`,
 `qualification-verification.json` and `cli-parity-verification.json`.

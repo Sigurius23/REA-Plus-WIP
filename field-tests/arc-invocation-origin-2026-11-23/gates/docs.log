@@ -1,0 +1,46 @@
+
+> rea-agents@6.4.0 docs:check
+> node scripts/check-dependency-install.mjs && node scripts/run-exclusive.mjs artifacts turbo run docs:check:built
+
+
+   • turbo 2.11.7
+   • Running docs:check:built
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs e8299ea5ac99cf22
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:product-catalog: cache miss, executing 0086ab999de7781e
+artifacts:skills: cache hit, replaying logs ae599f5aa70c4fe6
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+artifacts:managed-evidence: cache miss, executing c4ee7ff1650771f6
+artifacts:managed-evidence: 
+artifacts:managed-evidence: > rea-agents@6.4.0 artifacts:managed-evidence
+artifacts:managed-evidence: > node scripts/generate-completion-ledger.mjs
+artifacts:managed-evidence: 
+artifacts:product-catalog: 
+artifacts:product-catalog: > rea-agents@6.4.0 artifacts:product-catalog
+artifacts:product-catalog: > node scripts/generate-product-catalog.mjs
+artifacts:product-catalog: 
+artifacts:managed-evidence: {"manifest_id":"ecm_72fa1586c0dc59bb681a835d3ad94bac0aa421f46f03d9ac1121e79b65ba5897","ledger_id":"ecl_cae29b5be6164d4cbdd39d47489adf95619efb7521885322cd7d781c7e67c021","claims":13,"complete":false}
+docs:check:built: cache miss, executing 3a8e25349b3f05f2
+docs:check:built: 
+docs:check:built: > rea-agents@6.4.0 docs:check:built
+docs:check:built: > node scripts/generate-package-metadata.mjs --check && node scripts/generate-skill-metadata.mjs --check && node scripts/generate-product-catalog.mjs --check && node scripts/generate-completion-ledger.mjs --check && node scripts/check-doc-facts.mjs && node scripts/generate-error-schema.mjs --check
+docs:check:built: 
+docs:check:built: {"manifest_id":"ecm_72fa1586c0dc59bb681a835d3ad94bac0aa421f46f03d9ac1121e79b65ba5897","ledger_id":"ecl_cae29b5be6164d4cbdd39d47489adf95619efb7521885322cd7d781c7e67c021","claims":13,"complete":false}
+
+ Tasks:    6 successful, 6 total
+Cached:    3 cached, 6 total
+  Time:    6.231s 
+

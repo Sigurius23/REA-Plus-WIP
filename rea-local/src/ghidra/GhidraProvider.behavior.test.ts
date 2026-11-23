@@ -209,6 +209,9 @@ describe("Ghidra Mach-O slice support", () => {
       expect(
         resolved.value.profile?.parameters.swift_error_register_model,
       ).toBe(enabled ? "proved-native-synchronous-callee-x21-v3" : undefined);
+      expect(resolved.value.profile?.parameters.runtime_call_signatures).toBe(
+        enabled ? "swift-alloc-object-c-abi-v1" : undefined,
+      );
     }
     const windows = await provider({
       ...installationHost(),
@@ -224,6 +227,9 @@ describe("Ghidra Mach-O slice support", () => {
     ).toBeUndefined();
     expect(
       windows.value.profile?.parameters.swift_error_register_model,
+    ).toBeUndefined();
+    expect(
+      windows.value.profile?.parameters.runtime_call_signatures,
     ).toBeUndefined();
   });
 
