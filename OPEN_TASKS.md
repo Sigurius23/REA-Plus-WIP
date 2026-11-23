@@ -4,6 +4,20 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc dependency/default policy advanced (2026-11-23, item 63 partial):**
+  The observed scope selects NavigationIDPathKey with Value NavigationIDPath,
+  separate from the Client key. Native observations support current-over-captured
+  storage merge under ordinary copy/dictionary semantics, explicit context
+  override/fallback rules, and different default bool behavior: live/preview
+  copy the global Client; the test-default first closure returns false without
+  the table. Global preferences select an optional suite attempt or standard
+  defaults; the gated custom suite prefix is `com.dia.instance.`. Actual Client
+  code/context remains an explicit open REA+ unknown. 337 attempts (two unlisted
+  procedure errors), two exact CLI/MCP pairs, 335 exported records, unchanged
+  frozen source/runtime and 19 historical snapshots verify. No new product
+  defect or runtime observation is claimed. See
+  [the policy checkpoint](field-tests/arc-dependency-policy-2026-11-23.md).
+
 - **Arc selected helper outputs replayed (2026-11-23, item 63 partial):**
   Bounded REA+ emulation now reaches the helper's outer return for inputs 49
   and 50, with source-bound literal reads confirming the associated
@@ -1713,6 +1727,25 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-23 static dependency/default policy advanced; actual choice stays open.**
+    The surrounding scope's computed keypath selects NavigationIDPathKey
+    (`0x103d4d1e4`, metadata `0x10428b940`, witness `0x1045c82f0`) with associated
+    Value NavigationIDPath. Its metadata/witness differ from the Client's.
+    Wrapper instructions support current-over-captured storage with the captured
+    cache under normal copy/dictionary semantics; broad alias/store effects
+    remain unproved. Context factory recognizes SWIFT_DEPENDENCIES_CONTEXT
+    live/preview/test and falls back through the preview flag and a cached test
+    predicate. With the retained local conformances, live/preview default getters
+    copy the global Client; the test-default bool closure at `0x100003b60`
+    returns false without consulting the table. Actual overrides/cache contents,
+    selected code/context, relevant instance/copy stability and the qualified
+    typed invocation join remain open. This is retained explicitly as unknown
+    `unk_c0e6ba9f746d440571369f088d47997bb6ee28307db89ca5026e9d1fe44c5d04`.
+    Preferences object selection now has source-bound suite/standard selector
+    evidence; current suite, suffix algorithm and durability remain unresolved.
+    No new producer defect was established. See
+    [the dependency-policy report](field-tests/arc-dependency-policy-2026-11-23.md).
+
     **2026-11-23 selected-index observation carrier implemented; typed proof remains open.**
     New target-free `inspect_native_table_dispatch` reads a stable arm64 Mach-O
     and reports requested indices from a verified straight-line mask16/LDRH/

@@ -1,0 +1,539 @@
+{
+  "evidence_id": "ev_c19048bc9cd787fbf0fd3c07222033427aa06f8d4f89fedb539827cecbb8e8c9",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+  },
+  "provider": {
+    "id": "rea-workflow",
+    "name": "REA+ composed investigation workflow",
+    "version": "1"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "rea-workflow",
+      "name": "REA+ composed investigation workflow",
+      "version": "1"
+    },
+    "parameters": {
+      "upstream_analysis_profile": {
+        "provider": {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        },
+        "parameters": {
+          "target_kind": "executable",
+          "target_format": "mach-o",
+          "architecture": "arm64",
+          "available_architectures": [
+            "arm64"
+          ],
+          "import_mode": "ephemeral-source-immutable",
+          "annotation_policy": "atomic-function-entry-metadata-v1",
+          "load_image_observations": "source-mappings-entry-context-v2",
+          "function_body_evidence": "complete-inclusive-ranges-v1",
+          "function_references": "complete-body-and-entry-reference-manager-v2",
+          "string_inventory_evidence": "defined-data-coverage-v1",
+          "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+          "instruction_flow_evidence": "decoded-return-pcode-v1",
+          "instruction_references": "exact-address-incoming-v1",
+          "instruction_call_preparation": "ghidra-aarch64-mov-call-preparation-v1",
+          "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+          "no_return_repair": "returning-imports-decoded-return-v2",
+          "process_launch": "inspected-jvm-launch-support-v1",
+          "jump_table_evidence": "typed-case-default-blocks-v1",
+          "runtime_call_signatures": "swift-runtime-c-signatures-v2",
+          "swift_enum_switch_recovery": "abi-signed-word-cfg-v10",
+          "swift_dynamic_typed_snapshot": "swift-dynamic-typed-snapshot-v1",
+          "darwin_stack_probe_call_summary": "trusted-darwin-arm64-chkstk-v1",
+          "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+          "decompiler_jump_loads": true,
+          "loader": "auto-from-header",
+          "language_id": "auto-from-header",
+          "compiler_spec_id": "auto-default",
+          "analyzer_preset": "ghidra-default",
+          "analysis_policy": "bounded-autoanalysis-v1",
+          "analysis_timeout_seconds": 1,
+          "analysis_seeds": {
+            "format": "rea-ghidra-seeds-v1",
+            "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dependency-policy-2026-11-23/seeds-policy-final.tsv",
+            "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dependency-policy-2026-11-23/seeds-policy-final.tsv",
+            "sha256": "3356b84c6ac0fee6d3602f9c2e7abcc6bd62c0263a0305233149f060743e7a78",
+            "entries": {
+              "function": 2533,
+              "code": 0,
+              "label": 0
+            }
+          }
+        },
+        "digest": "2a72c042d6bd62221770e9322af86546c56c0dc57dc498e78eb11fecc5c8eaf4"
+      },
+      "workflow_evidence_revision": 1
+    },
+    "digest": "408ade7e830dbf1fe140b6eebecf95331bbafc6e81ee6b7b3e5ac4fb81c83a3e"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_native_dispatch_metadata",
+  "parameters": {
+    "swift_type_address": "0x103d46dac",
+    "swift_metadata_address": "0x104279d68",
+    "max_file_bytes": 100663296,
+    "max_records": 20000,
+    "facet": "swift-fields"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+    "provider": {
+      "id": "native-macos",
+      "name": "macOS native inspection utilities",
+      "version": "apple-metadata-reader-1"
+    },
+    "analysis_profile_digest": null,
+    "result": {
+      "swift_type_fields": {
+        "static_metadata": {
+          "address": "0x104279d68",
+          "location": null,
+          "kind_word": null,
+          "owner_matched": false,
+          "field_offset_vector": null,
+          "field_offset_vector_word_offset": null,
+          "field_offset_entry_bytes": 4,
+          "field_offsets": [],
+          "pointers": [],
+          "value_witness": null,
+          "decode": {
+            "status": "partial",
+            "reason": "An indexed nongeneric struct declaration is required before metadata binding"
+          },
+          "limitations": [
+            "File-encoded metadata snapshot only; no metadata instantiation, runtime stability or live typed-buffer identity is established.",
+            "A shared value-witness function address does not bind nominal ownership. The exact metadata descriptor backpointer supplies this identity.",
+            "Value-witness initializeWithCopy is an ABI role, not a proof of memcpy, purity, nonescape, closure-target origin or native argument lowering."
+          ]
+        },
+        "address": "0x103d46dac",
+        "index_entries": 11125,
+        "examined_index_entries": 11125,
+        "matching_index_entries": 1,
+        "unresolved_index_entries": 0,
+        "matched": true,
+        "descriptor": {
+          "address": "0x103d46dac",
+          "file_offset": 64253356
+        },
+        "name": "DependencyContext",
+        "kind": "enum",
+        "is_generic": false,
+        "field_descriptor": {
+          "address": "0x103e7f62c",
+          "file_offset": 65533484
+        },
+        "declared_field_count": 3,
+        "fields": [
+          {
+            "ordinal": 0,
+            "record": {
+              "address": "0x103e7f63c",
+              "file_offset": 65533500
+            },
+            "flags": 0,
+            "name": "live",
+            "type_location": null,
+            "mangling_hex": null,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift reflection field declaration; ordinal is not an instance offset",
+                "location": {
+                  "address": "0x103e7f63c",
+                  "file_offset": 65533500
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ],
+            "function_type": null,
+            "bound_generic_type": null,
+            "generic_member_type": null
+          },
+          {
+            "ordinal": 1,
+            "record": {
+              "address": "0x103e7f648",
+              "file_offset": 65533512
+            },
+            "flags": 0,
+            "name": "preview",
+            "type_location": null,
+            "mangling_hex": null,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift reflection field declaration; ordinal is not an instance offset",
+                "location": {
+                  "address": "0x103e7f648",
+                  "file_offset": 65533512
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ],
+            "function_type": null,
+            "bound_generic_type": null,
+            "generic_member_type": null
+          },
+          {
+            "ordinal": 2,
+            "record": {
+              "address": "0x103e7f654",
+              "file_offset": 65533524
+            },
+            "flags": 0,
+            "name": "test",
+            "type_location": null,
+            "mangling_hex": null,
+            "decode": {
+              "status": "decoded",
+              "reason": null
+            },
+            "evidence": [
+              {
+                "kind": "binary_metadata",
+                "description": "Swift reflection field declaration; ordinal is not an instance offset",
+                "location": {
+                  "address": "0x103e7f654",
+                  "file_offset": 65533524
+                },
+                "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+                "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+              }
+            ],
+            "function_type": null,
+            "bound_generic_type": null,
+            "generic_member_type": null
+          }
+        ],
+        "referenced_enums": [],
+        "program_mutations": false,
+        "limitations": [
+          "Reflection field ordinals are not physical instance offsets.",
+          "Generic owners are declaration inventories. Supported flat concrete applications retain their signature and argument identities; supported member templates retain owner parameter identities, but concrete arguments are not substituted automatically into member fields and instantiated layout remains unresolved.",
+          "Declared function types do not establish a typed buffer, code/context origin, an invocation, active dependency selection or a helper-global input domain.",
+          "Only complete synchronous nonthrowing native thick function manglings with one supported atomic parameter and result are decoded; other encodings remain unsupported.",
+          "Generic member templates support depth-zero parameters and flat external symbolic applications; external descriptor semantics remain unresolved.",
+          "Concrete generic field types are limited to top-level version-zero structs with ordinary key type parameters, no requirements or packs, and one complete flat argument list of supported nongeneric atoms. No native ABI, live value, storage layout or invocation domain is established."
+        ],
+        "decode": {
+          "status": "decoded",
+          "reason": null
+        }
+      },
+      "objc_classes": [],
+      "objc_protocols": [],
+      "objc_categories": [],
+      "swift_decls": [],
+      "objc_ivars": [],
+      "objc_protocol_records": [],
+      "objc_dispatch_implementations": [],
+      "swift_conformances": [],
+      "swift_dispatch_slots": [],
+      "swift_symbols": [],
+      "relative_pointers": [
+        {
+          "field": {
+            "address": "0x103f77eb4",
+            "file_offset": 66551476
+          },
+          "target": {
+            "address": "0x103d46dac",
+            "file_offset": 64253356
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -2298120,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103f77eb4",
+                "file_offset": 66551476
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103d46db4",
+            "file_offset": 64253364
+          },
+          "target": {
+            "address": "0x1036e5be0",
+            "file_offset": 57564128
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -6689236,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103d46db4",
+                "file_offset": 64253364
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103d46dbc",
+            "file_offset": 64253372
+          },
+          "target": {
+            "address": "0x103e7f62c",
+            "file_offset": 65533484
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": 1280112,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103d46dbc",
+                "file_offset": 64253372
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103e7f644",
+            "file_offset": 65533508
+          },
+          "target": {
+            "address": "0x103df2b87",
+            "file_offset": 64957319
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -576189,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103e7f644",
+                "file_offset": 65533508
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103e7f650",
+            "file_offset": 65533520
+          },
+          "target": {
+            "address": "0x103df2b8c",
+            "file_offset": 64957324
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -576196,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103e7f650",
+                "file_offset": 65533520
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x103e7f65c",
+            "file_offset": 65533532
+          },
+          "target": {
+            "address": "0x103df2b94",
+            "file_offset": 64957332
+          },
+          "indirect_slot": null,
+          "external_reference": null,
+          "displacement": -576200,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Swift ABI signed-relative metadata pointer",
+              "location": {
+                "address": "0x103e7f65c",
+                "file_offset": 65533532
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "coverage": [
+        {
+          "facet": "objc_class_method_ivar_metadata",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "binary_relative_pointers",
+          "status": "complete",
+          "reason": null,
+          "examined": 6,
+          "decoded": 6
+        },
+        {
+          "facet": "objc_properties_categories",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "pointer_fixups",
+          "status": "complete",
+          "reason": "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+          "examined": 2,
+          "decoded": 2
+        },
+        {
+          "facet": "swift_generic_resilient_witnesses_overrides_async_coroutines",
+          "status": "unsupported",
+          "reason": "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_conformances_static_witness_slots",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_resilient_witness_records",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_witness_template_records",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_class_vtable_descriptors",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_type_fields",
+          "status": "complete",
+          "reason": "Coverage is limited to this exact indexed nominal declaration; invocation type/origin remains unproved",
+          "examined": 3,
+          "decoded": 3
+        },
+        {
+          "facet": "swift_static_struct_layout",
+          "status": "partial",
+          "reason": "An indexed nongeneric struct declaration is required before metadata binding",
+          "examined": 0,
+          "decoded": 0
+        }
+      ],
+      "db_save_result": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Derived by an REA+ composed workflow.",
+    "An indexed nongeneric struct declaration is required before metadata binding",
+    "Coverage is limited to this exact indexed nominal declaration; invocation type/origin remains unproved",
+    "Static resilient pairs and witness templates have separate coverage; generic/resilient runtime witness-table instantiation and ordering, overrides, async/coroutine execution and other unsupported Swift layouts are not decoded",
+    "chained fixups: DYLD_CHAINED_PTR_64_OFFSET"
+  ],
+  "locations": [],
+  "evidence_links": []
+}

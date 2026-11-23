@@ -26,6 +26,54 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest dependency/default policy checkpoint (2026-11-23)
+
+Read `field-tests/arc-dependency-policy-2026-11-23.md`, `selection-policy.json`,
+qualification/CLI receipts and snapshot manifest. Production/runtime source is
+unchanged from `98bd69a11` and frozen `b3acb5f00` qualification. This pass uses
+public native instructions/bytes, selected metadata and one explicit residual
+unknown; no Arc host process, profile, UI, shipped JS or service was used.
+
+The scope pattern `0x1036f3c00` binds DependencyValues -> NavigationIDPath.
+Getter/setter thunks reach `0x10085b0d4` / `0x10085b18c`; key metadata
+`0x10428b940` backpoints to NavigationIDPathKey `0x103d4d1e4`, with exact
+TestDependencyKey witness `0x1045c82f0` and Value NavigationIDPath. This
+selects a different nominal key from Client metadata/witness. Full generic
+store effects are still unproved; do not turn key identity into broad purity.
+
+The wrapper's ordinary merge uses current storage entries to replace captured
+ones and installs captured cache plus merged storage for keypath projection.
+This is a native/ABI analyst derivation, not a new automatic memory-flow field.
+Context overrides live/preview/test map to 0/1/2; otherwise preview flag then
+cached test predicate determine the default. Full test-predicate production is
+not traced. Live/preview retained Client getters copy the same global; the
+test-default first closure `0x100003b60` is MOV W0,#0; RET, nil context. Thus
+valid Client typing and X0=49 alone cannot select the shared helper.
+
+Global preferences initializer `0x100d91000` attempts `initWithSuiteName:` for
+a present optional suite, otherwise or on nil takes `standardUserDefaults`.
+The gated user-data-dir suite route constructs prefix `com.dia.instance.`;
+its suffix helper and current suite remain unknown. This is distinct from the
+already recovered Application Support/Arc JSON store default path.
+
+Final export: 335 records and explicit open unknown
+`unk_c0e6ba9f746d440571369f088d47997bb6ee28307db89ca5026e9d1fe44c5d04`.
+337 public attempts include two missing-procedure errors, one failed partial
+capture and two completed captures. Two exact CLI/MCP metadata pairs, 261
+source instruction checks, 19 authenticated prior snapshots, unchanged 1,881
+runtime files/25 source hashes and four empty lineages verify. No new product
+bug or new source/package gate is claimed. Program metadata bytes may contain
+loader-applied rebases/binds; the receipt distinguishes original words and
+unused synthetic import targets. Failed captures remain intact.
+
+**Next:** trace remaining Client override producers and relevant typed copy/
+instance stability, preserving input-dependent choices. The selected scope's
+key identity and ordinary context/default branches are now documented. The
+inner generic store `0x1006fde3c`, full cached-test predicate and suite suffix
+are concrete secondary static questions. Actual preference I/O/durability,
+qualified typed invocation mapping and full Arc remain incomplete. All owned
+sessions are closed. No new runtime authority was added.
+
 ## Latest conditional helper replay checkpoint (2026-11-23)
 
 Read `field-tests/arc-dispatch-replay-2026-11-23.md` and its qualification,

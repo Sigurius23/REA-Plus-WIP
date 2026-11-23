@@ -1,5 +1,13 @@
 # Arc 1.172.1 analysis dossier
 
+Dependency/default policy addendum **2026-11-23**:
+[the new checkpoint](arc-dependency-policy-2026-11-23.md) identifies the scope's
+NavigationIDPathKey, the ordinary captured/current merge and context factory
+rules, a test-default bool closure that returns false, and the selected global
+preferences suite/standard fallback. Actual Client code/context remains an
+explicit open Evidence unknown; these conditional branches do not establish
+current state, preference durability or full app coverage.
+
 Selected-helper replay addendum **2026-11-23**:
 [the dispatch primitive](arc-table-dispatch-2026-11-23.md) now returns explicit
 halfword-table targets without a global enum bound or CFG mutation.

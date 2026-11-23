@@ -1,0 +1,227 @@
+{
+  "evidence_id": "ev_0c26d3756f1b173e70926165bbc6ea9519a3b0c8a6527f70baeb7a5e14a30e35",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+  },
+  "provider": {
+    "id": "rea-native-table-dispatch",
+    "name": "REA+ native table dispatch parser",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_native_table_dispatch",
+  "parameters": {
+    "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+    "entry_address": "0x1005aa5e4",
+    "indices": [
+      49,
+      50
+    ],
+    "max_file_bytes": 134217728,
+    "max_instructions": 128,
+    "call_address": "0x1012ab840"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "artifact": {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+      "bytes": 80498448
+    },
+    "architecture": "arm64",
+    "entry_address": "0x1005aa5e4",
+    "requested_indices": [
+      49,
+      50
+    ],
+    "observation_id": "a8bc8b6f39f7dad35aaacce343519cdea88644652c62c009ed0199796dd8dc27",
+    "prefix": {
+      "instructions": [
+        {
+          "address": "0x1005aa5e4",
+          "file_offset": 5940708,
+          "bytes_hex": "e80300aa",
+          "operation": "MOV register"
+        },
+        {
+          "address": "0x1005aa5e8",
+          "file_offset": 5940712,
+          "bytes_hex": "61ac8cd2",
+          "operation": "MOVZ constant"
+        },
+        {
+          "address": "0x1005aa5ec",
+          "file_offset": 5940716,
+          "bytes_hex": "0140fdf2",
+          "operation": "MOVK constant"
+        },
+        {
+          "address": "0x1005aa5f0",
+          "file_offset": 5940720,
+          "bytes_hex": "200c8ed2",
+          "operation": "MOVZ constant"
+        },
+        {
+          "address": "0x1005aa5f4",
+          "file_offset": 5940724,
+          "bytes_hex": "00aeacf2",
+          "operation": "MOVK constant"
+        },
+        {
+          "address": "0x1005aa5f8",
+          "file_offset": 5940728,
+          "bytes_hex": "204ccef2",
+          "operation": "MOVK constant"
+        },
+        {
+          "address": "0x1005aa5fc",
+          "file_offset": 5940732,
+          "bytes_hex": "20ccedf2",
+          "operation": "MOVK constant"
+        },
+        {
+          "address": "0x1005aa600",
+          "file_offset": 5940736,
+          "bytes_hex": "083d4092",
+          "operation": "AND index mask 0xffff"
+        },
+        {
+          "address": "0x1005aa604",
+          "file_offset": 5940740,
+          "bytes_hex": "898901b0",
+          "operation": "ADRP address"
+        },
+        {
+          "address": "0x1005aa608",
+          "file_offset": 5940744,
+          "bytes_hex": "29411091",
+          "operation": "ADD immediate"
+        },
+        {
+          "address": "0x1005aa60c",
+          "file_offset": 5940748,
+          "bytes_hex": "8a000010",
+          "operation": "ADR address"
+        },
+        {
+          "address": "0x1005aa610",
+          "file_offset": 5940752,
+          "bytes_hex": "2b796878",
+          "operation": "LDRH indexed unsigned halfword"
+        },
+        {
+          "address": "0x1005aa614",
+          "file_offset": 5940756,
+          "bytes_hex": "4a090b8b",
+          "operation": "ADD table value LSL #2"
+        },
+        {
+          "address": "0x1005aa618",
+          "file_offset": 5940760,
+          "bytes_hex": "40011fd6",
+          "operation": "BR computed table target"
+        }
+      ],
+      "stop": {
+        "kind": "table-branch",
+        "address": "0x1005aa618",
+        "detail": "Unsigned-halfword computed branch established for the selected prefix; input domain remains unknown."
+      }
+    },
+    "table": {
+      "address": "0x1036db410",
+      "target_anchor": "0x1005aa61c",
+      "input_register": "x0",
+      "index_mask": 65535,
+      "entry_bytes": 2,
+      "index_scale": 2,
+      "target_scale": 4,
+      "entry_signed": false
+    },
+    "entries": [
+      {
+        "index": 49,
+        "status": "mapped-target",
+        "entry_file_offset": 57521266,
+        "entry_bytes_hex": "b303",
+        "entry_value": 947,
+        "target_address": "0x1005ab4e8"
+      },
+      {
+        "index": 50,
+        "status": "mapped-target",
+        "entry_file_offset": 57521268,
+        "entry_bytes_hex": "8600",
+        "entry_value": 134,
+        "target_address": "0x1005aa834"
+      }
+    ],
+    "invocation": {
+      "call_address": "0x1012ab840",
+      "call_instruction": {
+        "address": "0x1012ab840",
+        "file_offset": 19576896,
+        "bytes_hex": "e0023fd6",
+        "operation": "BLR indirect"
+      },
+      "link": "indirect-unresolved",
+      "direct_target": null,
+      "preparation": [
+        {
+          "address": "0x1012ab838",
+          "file_offset": 19576888,
+          "bytes_hex": "20068052",
+          "operation": "MOVZ input literal"
+        },
+        {
+          "address": "0x1012ab83c",
+          "file_offset": 19576892,
+          "bytes_hex": "f40315aa",
+          "operation": "MOV X20 register"
+        }
+      ],
+      "input_literal": "0x31",
+      "effective_index": 49,
+      "known_bypass": null,
+      "branch_scan": null,
+      "mapping_status": "unresolved",
+      "mapping_index": null
+    },
+    "typed_domain": null,
+    "all_entry_domain_proved": false,
+    "program_mutations": false,
+    "assumptions": [
+      "Derived targets are conditional on normal entry into the selected straight-line prefix with the stated input index; source code and read-only mappings retain the captured bytes.",
+      "Preferred Mach-O addresses are static coordinates, not observed runtime addresses. No relocation or authenticated pointer is evaluated."
+    ],
+    "limitations": [
+      "Requested indices are caller selections, not an exhaustive or typed input domain. The 16-bit machine mask does not prove an enum case count or valid Swift value.",
+      "Executable target bytes do not establish case semantics, function ownership, actual execution or a complete CFG. No program database is modified.",
+      "The decoder supports only a restricted straight-line arm64 unsigned-halfword table pattern; unsupported instructions stop the proof.",
+      "The selected call has no established conditional mapping to this table entry; callee identity, literal preparation or the selected table target is unresolved. Table observations remain independent."
+    ]
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Requested indices are caller selections, not an exhaustive or typed input domain. The 16-bit machine mask does not prove an enum case count or valid Swift value.",
+    "Executable target bytes do not establish case semantics, function ownership, actual execution or a complete CFG. No program database is modified.",
+    "The decoder supports only a restricted straight-line arm64 unsigned-halfword table pattern; unsupported instructions stop the proof.",
+    "The selected call has no established conditional mapping to this table entry; callee identity, literal preparation or the selected table target is unresolved. Table observations remain independent."
+  ],
+  "locations": [
+    {
+      "kind": "artifact-path",
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+    }
+  ],
+  "evidence_links": []
+}

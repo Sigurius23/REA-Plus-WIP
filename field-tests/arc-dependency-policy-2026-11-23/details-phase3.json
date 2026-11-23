@@ -1,0 +1,103 @@
+{
+  "final": true,
+  "steps": [
+    {
+      "name": "import_evidence_bundle",
+      "label": "import-main-observations",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dependency-policy-2026-11-23/mcp-final/final.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "import_evidence_bundle",
+      "label": "import-reused-observations",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dependency-policy-2026-11-23/reused.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "actual-call-table-observation",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "entry_address": "0x1005aa5e4",
+        "indices": [
+          49,
+          50
+        ],
+        "call_address": "0x1012ab840",
+        "max_file_bytes": 134217728
+      },
+      "expect_success": true
+    },
+    {
+      "name": "record_unknown",
+      "label": "selected-client-unknown",
+      "arguments": {
+        "question": "Which concrete boolForSetting code/context is loaded at 0x1012ab840 once captured/current dependency storage and cache/context selection are accounted for? Normal and preview defaults use the global Client; the test-default first closure returns false, and explicit overrides remain possible.",
+        "severity": "high",
+        "domain": "arc.closure-provenance",
+        "required_authority": null,
+        "required_confidence": "derived",
+        "required_environment": null,
+        "recommended_probes": [
+          {
+            "operation": "analyze_function",
+            "rationale": "Trace remaining override producers and actual typed value copies, preserving all selection predicates and unresolved memory edges."
+          }
+        ],
+        "relationships": [],
+        "supporting_evidence_ids": [
+          {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dependency-policy-2026-11-23/mcp-details/navigation-conformance-TestDependencyKey.evidence.json",
+            "select": [
+              "evidence_id"
+            ]
+          },
+          {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dependency-policy-2026-11-23/mcp-details/test-bool-0x100003b60.evidence.json",
+            "select": [
+              "evidence_id"
+            ]
+          },
+          {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dependency-policy-2026-11-23/mcp-details/test-bool-0x100003b64.evidence.json",
+            "select": [
+              "evidence_id"
+            ]
+          },
+          {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dependency-policy-2026-11-23/mcp-details/actual-call-table-observation.evidence.json",
+            "select": [
+              "evidence_id"
+            ]
+          }
+        ],
+        "contradicting_evidence_ids": []
+      },
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "details-final-export",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-dependency-policy-2026-11-23/mcp-details/final.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "arc-close1",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "arc-close2",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}
