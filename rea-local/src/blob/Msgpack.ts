@@ -2,7 +2,7 @@ import {
   BlobFormatError,
   bytesNode,
   node,
-  textOf,
+  utf8Text,
   type BlobNode,
 } from "./BlobTree.js";
 
@@ -146,7 +146,7 @@ class Reader {
   str(key: BlobNode["key"], size: number, start: number): BlobNode {
     const at = this.need(size);
     const bytes = this.bytes.subarray(at, at + size);
-    const text = textOf(bytes);
+    const text = utf8Text(bytes);
     // msgpack str should be UTF-8; old "raw" data may not be.
     return text === null
       ? {

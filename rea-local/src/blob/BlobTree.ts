@@ -43,14 +43,19 @@ export const node = (
 
 const UTF8 = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
 
-/** Text when the bytes are UTF-8 without control characters other than tab, newline and carriage return. */
-export const textOf = (bytes: Buffer): string | null => {
-  let text: string;
+/** Declared UTF-8 text, including valid controls and a leading BOM. */
+export const utf8Text = (bytes: Buffer): string | null => {
   try {
-    text = UTF8.decode(bytes);
+    return UTF8.decode(bytes);
   } catch {
     return null;
   }
+};
+
+/** A text heuristic for untyped bytes, excluding most controls. */
+const printableText = (bytes: Buffer): string | null => {
+  const text = utf8Text(bytes);
+  if (text === null) return null;
   for (const char of text) {
     const code = char.codePointAt(0) ?? 0;
     if (
@@ -68,7 +73,7 @@ export const bytesNode = (
   bytes: Buffer,
   offset: number,
 ): BlobNode => {
-  const text = textOf(bytes);
+  const text = printableText(bytes);
   return node({
     key,
     type: text === null ? "bytes" : "string",

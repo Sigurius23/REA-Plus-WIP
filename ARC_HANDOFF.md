@@ -26,6 +26,28 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest blob text / CLI repair checkpoint (2026-11-23)
+
+Read `field-tests/blob-text-controls-2026-11-23.md` and its final delivery
+runtime, qualification, CLI, history and snapshot receipts. Items 73 and 74
+are done: declared CBOR/MessagePack text retains UTF-8 controls/BOM; malformed
+UTF-8 and untyped bytes are unchanged. The CLI uses `--blob-format` for decoder
+selection because global `--format` belongs to output formatting; MCP/domain
+`format` is unchanged. The guide and a compiled CLI regression cover it.
+
+64 retained MCP calls include 16 final-delivery calls, four full CLI/MCP pairs,
+17 passing tests/four optional skips, 21 prior snapshots and build/fast/docs/
+package gates. Original failures, intermediate immutable runtimes and cleanup
+receipts remain available. The original Arc range still auto-decodes as CBOR;
+its decoded NUL text is now retained, without claiming it is the C selector.
+
+**Next:** resume actual Client override/copy producers and relevant instance/
+cache stability for item 63's typed invocation join. The selected static suite
+hash, Dia-specific gate, test-predicate fallback and generic insertion/replacement
+paths are in the preceding producer checkpoint. Actual Client selection,
+closure provenance, preference I/O/durability and full Arc remain unresolved.
+Keep the Client unknown open at revision 2. No new runtime authority was added.
+
 ## Latest suite/context/store producer checkpoint (2026-11-23)
 
 Read `field-tests/arc-client-producers-2026-11-23.md` and its qualification,
@@ -57,7 +79,7 @@ empty lineages verify. The main bundle has 1,114 records and both revisions of
 the still-open Client unknown (latest revision 2). Its preceding policy and
 hash bundles are imported. The exact-selector recovery is a separate bundle.
 
-**Next:** fix new item 73: CBOR/MessagePack declared UTF-8 strings currently use
+**Historical next action, completed in the newer repair checkpoint:** item 73: CBOR/MessagePack declared UTF-8 strings currently use
 a printable-only heuristic, so valid NUL/control text disappears from the
 strings view. Preserve the original failing auto-CBOR capture. Separate valid
 UTF-8 from raw-byte printability at the producer, qualify with owned fixtures

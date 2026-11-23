@@ -1,4 +1,4 @@
-import { BlobFormatError, node, textOf, type BlobNode } from "./BlobTree.js";
+import { BlobFormatError, node, utf8Text, type BlobNode } from "./BlobTree.js";
 import { keyText } from "./Msgpack.js";
 
 /** CBOR (RFC 8949), one top-level item that must use every byte, indefinite lengths included. */
@@ -85,7 +85,7 @@ class Reader {
         argument === null
           ? this.chunks(major)
           : this.bytes.subarray(this.need(this.count(argument)), this.at);
-      const text = major === 3 ? textOf(bytes) : null;
+      const text = major === 3 ? utf8Text(bytes) : null;
       return text === null
         ? make(major === 2 ? "bytes" : "str-bytes", bytes.toString("hex"))
         : make("string", text);

@@ -7,7 +7,9 @@ ordinary generic insertion/replacement paths. Seven Arc/C emulator pairs match.
 With the original Arc bundle ID supplied normally, the shared Dia custom-suite
 branch is disabled; this is not observed runtime state. Actual Client choice,
 instance stability and durability remain open. Typed blob text dropping valid
-controls was discovered and recorded as item 73 for immediate repair.
+controls was discovered as item 73 and is now repaired, alongside the CLI
+decoder/output-format collision (item 74), in the
+[blob repair checkpoint](blob-text-controls-2026-11-23.md).
 
 Dependency/default policy addendum **2026-11-23**:
 [the new checkpoint](arc-dependency-policy-2026-11-23.md) identifies the scope's

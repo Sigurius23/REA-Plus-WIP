@@ -31,7 +31,7 @@ export const registerDataBlobCommands = (
       path: z.string().describe("Local file holding the blob"),
     }),
     options: z.object({
-      format: z
+      "blob-format": z
         .enum(["auto", ...BLOB_DECODERS, "mca"])
         .optional()
         .describe("auto (default) or a format to force"),
@@ -92,7 +92,7 @@ export const registerDataBlobCommands = (
       },
       (args, options) => ({
         path: resolve(args.path),
-        format: options.format,
+        format: options["blob-format"],
         layers: layerList(options.layers),
         view: options.view,
         node: options.node,

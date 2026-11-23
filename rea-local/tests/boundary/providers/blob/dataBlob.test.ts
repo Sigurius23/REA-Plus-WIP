@@ -78,6 +78,67 @@ const inspect = async (input: Record<string, unknown>) => {
 const rows = (report: DataBlobReport) =>
   report.tree.map(({ path: at, type, value }) => [at, type, value]);
 
+describe("declared text and untyped bytes", () => {
+  it.each(["cbor", "cbor-indefinite", "msgpack"] as const)(
+    "preserves declared %s text containing controls and a leading BOM",
+    async (encoding) => {
+      const value = "\ufeffa\0\u001b\u007f\u0085\u2028🐍";
+      const encoded = encoding === "msgpack" ? msgpack(value) : cbor(value);
+      const bytes =
+        encoding === "cbor-indefinite"
+          ? Buffer.concat([Buffer.from([0x7f]), encoded, Buffer.from([0xff])])
+          : encoded;
+      const file = path(`controls-${encoding}`);
+      await writeFile(file, bytes);
+      const format = encoding === "msgpack" ? "msgpack" : "cbor";
+      const input = { path: file, format, layers: [] };
+      const tree = await inspect(input);
+      expect(rows(tree)).toEqual([["$", "string", value]]);
+      expect(tree.tree[0]).toMatchObject({ offset: 0, length: bytes.length });
+      const strings = await inspect({ ...input, view: "strings" });
+      expect(strings.strings).toEqual([{ path: "$", offset: 0, value }]);
+    },
+  );
+
+  it.each([
+    ["cbor", "62c328"],
+    ["msgpack", "a2c328"],
+  ])("retains malformed %s UTF-8 as original bytes", async (format, hex) => {
+    const file = path(`invalid-${format}`);
+    await writeFile(file, Buffer.from(hex, "hex"));
+    const tree = await inspect({ path: file, format, layers: [] });
+    expect(rows(tree)).toEqual([["$", "str-bytes", "c328"]]);
+    const strings = await inspect({
+      path: file,
+      format,
+      layers: [],
+      view: "strings",
+    });
+    expect(strings.strings).toEqual([]);
+  });
+
+  it.each([
+    ["cbor", "43610062", "$"],
+    ["msgpack", "c403610062", "$"],
+    ["protobuf", "0a03610062", "$.1"],
+  ])(
+    "keeps control-containing %s bytes distinct from declared text",
+    async (format, hex, at) => {
+      const file = path(`bytes-${format}`);
+      await writeFile(file, Buffer.from(hex, "hex"));
+      const tree = await inspect({ path: file, format, layers: [] });
+      expect(rows(tree)).toContainEqual([at, "bytes", "610062"]);
+      const strings = await inspect({
+        path: file,
+        format,
+        layers: [],
+        view: "strings",
+      });
+      expect(strings.strings).toEqual([]);
+    },
+  );
+});
+
 describe("structured formats", () => {
   it("decodes schema-less protobuf like protoc --decode_raw, with other readings", async () => {
     const report = await inspect({ path: path("save.pb") });

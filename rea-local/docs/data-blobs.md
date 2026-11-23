@@ -19,11 +19,16 @@ the result falls back to its printable strings.
 ```sh
 rea inspect-data-blob ~/Games/save/slot1.sav --json
 rea inspect-data-blob slot1.sav --view strings --query gold --json
-rea inspect-data-blob packet.bin --range_offset 12 --range_length 340 --format protobuf --json
+rea inspect-data-blob packet.bin --range_offset 12 --range_length 340 --blob-format protobuf --json
 rea inspect-data-blob settings.dat --layers base64,deflate --json
 rea inspect-data-blob world/region/r.0.0.mca --json
 rea inspect-data-blob world/region/r.0.0.mca --region_chunk 33 --node '$.Level.Sections[2]' --max_depth 1 --json
 ```
+
+Use `--blob-format` to select a decoder in the CLI;
+`--format` selects the CLI output format. The MCP input remains `format`.
+Declared CBOR and MessagePack UTF-8 strings retain valid controls, including
+NUL, in both views. Untyped bytes still use a printable-text heuristic.
 
 ```json
 {

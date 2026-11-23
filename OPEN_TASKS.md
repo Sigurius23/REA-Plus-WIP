@@ -4,6 +4,17 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Blob text and CLI decoder defects repaired (2026-11-23, items 73–74):**
+  Declared CBOR/MessagePack UTF-8 controls survive tree/strings views, while
+  malformed UTF-8 and untyped bytes retain their earlier representation.
+  `--blob-format` now selects the CLI decoder independently of global output
+  `--format`; MCP's `format` input is unchanged. Owned and original Arc
+  retests, 17 passing boundary tests (four optional checks skipped), four exact
+  CLI/MCP pairs, source/runtime/history and build/fast/docs/package checks
+  qualify the repair. Failed harness attempts remain intact. See
+  [the repair checkpoint](field-tests/blob-text-controls-2026-11-23.md).
+
+
 - **Arc suite/context/store producers advanced (2026-11-23, item 63 partial):**
   The suite suffix is a wrapping 64-bit UTF-8 hash seeded at 5381 with multiplier
   33, described as UInt64. Seven bounded Arc/C replay pairs agree. The custom
@@ -2239,13 +2250,24 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     [the report](field-tests/arc-member-templates-2026-11-23.md).
 
 
-73. **Preserve valid controls in declared CBOR/MessagePack UTF-8 text.** Open
-    (2026-11-23, found during Arc item 63 verification). Typed string producers
-    reuse a printable-text heuristic, converting valid NUL/other control text
-    into `str-bytes`; the public strings view then drops it. The original Arc
-    selector range happens to be valid CBOR text and exposes this distinction.
-    Keep auto-detection ambiguity explicit; fix UTF-8 decoding at the typed
-    producer while retaining raw/Protobuf byte heuristics and malformed UTF-8
-    identity. Reproduce with owned CBOR/MessagePack inputs, verify tree/strings
-    and CLI/MCP Evidence, then recheck the original range. Discovery evidence:
-    [producer checkpoint](field-tests/arc-client-producers-2026-11-23.md).
+73. **Preserve valid controls in declared CBOR/MessagePack UTF-8 text.** Done
+    and verified (2026-11-23, found during Arc item 63 verification). The owning
+    typed producers now use strict UTF-8 with BOM/control preservation, while
+    untyped bytes keep a printable-text heuristic. Owned definite/indefinite
+    CBOR and MessagePack tree/strings cases pass; malformed UTF-8 and raw/
+    Protobuf byte identity remain unchanged. The original Arc range retains
+    its auto-CBOR interpretation and now exposes its NUL-containing text.
+    Auto-detection ambiguity is explicit. See
+    [the shared qualification](field-tests/blob-text-controls-2026-11-23.md).
+
+74. **Separate blob decoder selection from the CLI output-format flag.** Done
+    and verified (2026-11-23, exposed by item 73's public parity check). The old
+    documented `--format cbor` collided with Incur's global output format.
+    The command now owns `--blob-format`, mapping to the unchanged MCP/domain
+    `format` input. A compiled regression verifies decoder selection with both
+    JSON-output selectors; the guide is corrected. Combined verification:
+    17 boundary tests pass/four optional skips, 64 successful retained MCP
+    calls (16 final delivery), four exact full CLI/MCP pairs, 21 historical
+    snapshots and build/fast/docs/package checks. Failed attempts are retained;
+    Arc Client, invocation and durability unknowns remain open. See
+    [the repair report](field-tests/blob-text-controls-2026-11-23.md).
