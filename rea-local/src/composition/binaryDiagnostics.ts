@@ -11,6 +11,14 @@ import { UnicornFunctionProvider } from "../native/emulation/UnicornFunctionProv
 import { ChromiumResourcesService } from "../application/binaryDiagnostics/ChromiumResourcesService.js";
 import { ChromiumResourcesProvider } from "../native/chromium/ChromiumResourcesProvider.js";
 
+import { NativeTableDispatchService } from "../application/binaryDiagnostics/NativeTableDispatchService.js";
+import { NativeTableDispatchProvider } from "../native/dispatch/NativeTableDispatchProvider.js";
+
+/** Read-only, source-bound dispatch observations without an engine session. */
+export const createNativeTableDispatchService =
+  (): NativeTableDispatchService =>
+    new NativeTableDispatchService(new NativeTableDispatchProvider());
+
 /** Chromium resource bytes are decoded without loading browser code. */
 export const createChromiumResourcesService = (): ChromiumResourcesService =>
   new ChromiumResourcesService(new ChromiumResourcesProvider());

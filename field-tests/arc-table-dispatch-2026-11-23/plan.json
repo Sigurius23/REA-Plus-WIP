@@ -1,0 +1,192 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-table-dispatch-2026-11-23/mcp",
+  "steps": [
+    {
+      "name": "binary_session",
+      "label": "target-free-session",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "owned-direct",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final",
+        "entry_address": "0x100000310",
+        "indices": [
+          1,
+          0,
+          1,
+          65535
+        ],
+        "call_address": "0x100000348"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "owned-indirect",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final",
+        "entry_address": "0x100000310",
+        "indices": [
+          0,
+          1
+        ],
+        "call_address": "0x100000358"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "owned-bypass",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final",
+        "entry_address": "0x100000310",
+        "indices": [
+          0,
+          1
+        ],
+        "call_address": "0x100000364"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "owned-different",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final",
+        "entry_address": "0x100000310",
+        "indices": [
+          0,
+          1
+        ],
+        "call_address": "0x100000370"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "owned-unselected",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final",
+        "entry_address": "0x100000310",
+        "indices": [
+          0
+        ],
+        "call_address": "0x100000348"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "owned-unsupported",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final",
+        "entry_address": "0x100000330",
+        "indices": [
+          0,
+          1
+        ],
+        "call_address": "0x100000348"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "owned-budget",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final",
+        "entry_address": "0x100000310",
+        "indices": [
+          0,
+          1
+        ],
+        "call_address": "0x100000348",
+        "max_instructions": 3
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "owned-unmapped-call",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final",
+        "entry_address": "0x100000310",
+        "indices": [
+          0,
+          1
+        ],
+        "call_address": "0x0"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "owned-file-limit",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final",
+        "entry_address": "0x100000310",
+        "indices": [
+          0,
+          1
+        ],
+        "call_address": "0x100000348",
+        "max_file_bytes": 32
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "owned-bad-format",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/unsupported.txt",
+        "entry_address": "0x100000310",
+        "indices": [
+          0,
+          1
+        ],
+        "call_address": "0x100000348"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "arc-selected-indirect",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "entry_address": "0x1005aa5e4",
+        "indices": [
+          49,
+          50
+        ],
+        "max_file_bytes": 134217728,
+        "call_address": "0x1012ab840"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_table_dispatch",
+      "label": "arc-direct-input-unknown",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "entry_address": "0x1005aa5e4",
+        "indices": [
+          49,
+          50
+        ],
+        "max_file_bytes": 134217728,
+        "call_address": "0x100d910f0"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "final-export",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-table-dispatch-2026-11-23/mcp/final.bundle.json"
+      },
+      "expect_success": true
+    }
+  ]
+}

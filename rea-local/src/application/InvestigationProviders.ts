@@ -39,6 +39,13 @@ export const MANAGED_STATIC_PROVIDER = Object.freeze({
   version: "1",
 } as const);
 
+/** Provider identity for conditional native dispatch observations. */
+export const NATIVE_TABLE_DISPATCH_PROVIDER = Object.freeze({
+  id: "rea-native-table-dispatch",
+  name: "REA+ native table dispatch parser",
+  version: "1",
+} as const);
+
 /** Provider identity for portable, execution-free PE resource decoding. */
 export const PE_RESOURCES_PROVIDER = Object.freeze({
   id: "rea-pe-resources",

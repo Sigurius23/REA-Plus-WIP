@@ -96,6 +96,7 @@ export const TOOL_EFFECTS: Readonly<Record<string, ToolEffects>> = {
     launchesProcess: true,
   }),
   inspect_pe_resources: evidence,
+  inspect_native_table_dispatch: evidence,
   inspect_chromium_resources: evidence,
   search_chromium_resources: evidence,
   emulate_function: effects({

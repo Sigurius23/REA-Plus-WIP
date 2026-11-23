@@ -1,0 +1,193 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"evidence_id\":\"ev_82755ce09e67e0df83b063f00037050d39b9a7ca531a32950bfaff2e5d2baddb\",\"subject\":{\"name\":\"dispatch-final\",\"digest\":{\"sha256\":\"cb6eee639b34a02109de1ce4d1e2b8fbbc9b08cd69fd9cc2f0d964b6f3cb85a8\"},\"format\":\"mach-o\",\"architecture\":\"arm64\",\"local_path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final\"},\"provider\":{\"id\":\"rea-native-table-dispatch\",\"name\":\"REA+ native table dispatch parser\",\"version\":\"1\"},\"analysis_profile\":null,\"predicate_type\":\"rea.analysis\",\"operation\":\"inspect_native_table_dispatch\",\"parameters\":{\"path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final\",\"entry_address\":\"0x100000310\",\"indices\":[0],\"max_file_bytes\":67108864,\"max_instructions\":128,\"call_address\":\"0x100000348\"},\"raw_result\":null,\"normalized_result\":{\"artifact\":{\"path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final\",\"sha256\":\"cb6eee639b34a02109de1ce4d1e2b8fbbc9b08cd69fd9cc2f0d964b6f3cb85a8\",\"bytes\":17408},\"architecture\":\"arm64\",\"entry_address\":\"0x100000310\",\"requested_indices\":[0],\"observation_id\":\"8f839aa1e13851d9f6589d4b6680d2eaa952a7c695fd17dc9b5c6b81236e0ca8\",\"prefix\":{\"instructions\":[{\"address\":\"0x100000310\",\"file_offset\":784,\"bytes_hex\":\"e80300aa\",\"operation\":\"MOV register\"},{\"address\":\"0x100000314\",\"file_offset\":788,\"bytes_hex\":\"083d4092\",\"operation\":\"AND index mask 0xffff\"},{\"address\":\"0x100000318\",\"file_offset\":792,\"bytes_hex\":\"09000090\",\"operation\":\"ADRP address\"},{\"address\":\"0x10000031c\",\"file_offset\":796,\"bytes_hex\":\"29f10d91\",\"operation\":\"ADD immediate\"},{\"address\":\"0x100000320\",\"file_offset\":800,\"bytes_hex\":\"8a000010\",\"operation\":\"ADR address\"},{\"address\":\"0x100000324\",\"file_offset\":804,\"bytes_hex\":\"2b796878\",\"operation\":\"LDRH indexed unsigned halfword\"},{\"address\":\"0x100000328\",\"file_offset\":808,\"bytes_hex\":\"4a090b8b\",\"operation\":\"ADD table value LSL #2\"},{\"address\":\"0x10000032c\",\"file_offset\":812,\"bytes_hex\":\"40011fd6\",\"operation\":\"BR computed table target\"}],\"stop\":{\"kind\":\"table-branch\",\"address\":\"0x10000032c\",\"detail\":\"Unsigned-halfword computed branch established for the selected prefix; input domain remains unknown.\"}},\"table\":{\"address\":\"0x10000037c\",\"target_anchor\":\"0x100000330\",\"input_register\":\"x0\",\"index_mask\":65535,\"entry_bytes\":2,\"index_scale\":2,\"target_scale\":4,\"entry_signed\":false},\"entries\":[{\"index\":0,\"status\":\"mapped-target\",\"entry_file_offset\":892,\"entry_bytes_hex\":\"0000\",\"entry_value\":0,\"target_address\":\"0x100000330\"}],\"invocation\":{\"call_address\":\"0x100000348\",\"call_instruction\":{\"address\":\"0x100000348\",\"file_offset\":840,\"bytes_hex\":\"f2ffff97\",\"operation\":\"BL direct\"},\"link\":\"direct-to-entry\",\"direct_target\":\"0x100000310\",\"preparation\":[{\"address\":\"0x100000340\",\"file_offset\":832,\"bytes_hex\":\"20008052\",\"operation\":\"MOVZ input literal\"},{\"address\":\"0x100000344\",\"file_offset\":836,\"bytes_hex\":\"f40315aa\",\"operation\":\"MOV X20 register\"}],\"input_literal\":\"0x1\",\"effective_index\":1,\"known_bypass\":null,\"branch_scan\":{\"scope\":\"immutable-__text-only\",\"instructions_examined\":27,\"completed\":true},\"mapping_status\":\"unresolved\",\"mapping_index\":null},\"typed_domain\":null,\"all_entry_domain_proved\":false,\"program_mutations\":false,\"assumptions\":[\"Derived targets are conditional on normal entry into the selected straight-line prefix with the stated input index; source code and read-only mappings retain the captured bytes.\",\"Preferred Mach-O addresses are static coordinates, not observed runtime addresses. No relocation or authenticated pointer is evaluated.\"],\"limitations\":[\"Requested indices are caller selections, not an exhaustive or typed input domain. The 16-bit machine mask does not prove an enum case count or valid Swift value.\",\"Executable target bytes do not establish case semantics, function ownership, actual execution or a complete CFG. No program database is modified.\",\"The decoder supports only a restricted straight-line arm64 unsigned-halfword table pattern; unsupported instructions stop the proof.\",\"The selected call has no established conditional mapping to this table entry; callee identity, literal preparation or the selected table target is unresolved. Table observations remain independent.\"]},\"confidence\":\"derived\",\"authority\":\"shipped-artifact\",\"environment\":null,\"limitations\":[\"Requested indices are caller selections, not an exhaustive or typed input domain. The 16-bit machine mask does not prove an enum case count or valid Swift value.\",\"Executable target bytes do not establish case semantics, function ownership, actual execution or a complete CFG. No program database is modified.\",\"The decoder supports only a restricted straight-line arm64 unsigned-halfword table pattern; unsupported instructions stop the proof.\",\"The selected call has no established conditional mapping to this table entry; callee identity, literal preparation or the selected table target is unresolved. Table observations remain independent.\"],\"locations\":[{\"kind\":\"artifact-path\",\"path\":\"/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final\"}],\"evidence_links\":[]}"
+    }
+  ],
+  "structuredContent": {
+    "evidence_id": "ev_82755ce09e67e0df83b063f00037050d39b9a7ca531a32950bfaff2e5d2baddb",
+    "subject": {
+      "name": "dispatch-final",
+      "digest": {
+        "sha256": "cb6eee639b34a02109de1ce4d1e2b8fbbc9b08cd69fd9cc2f0d964b6f3cb85a8"
+      },
+      "format": "mach-o",
+      "architecture": "arm64",
+      "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final"
+    },
+    "provider": {
+      "id": "rea-native-table-dispatch",
+      "name": "REA+ native table dispatch parser",
+      "version": "1"
+    },
+    "analysis_profile": null,
+    "predicate_type": "rea.analysis",
+    "operation": "inspect_native_table_dispatch",
+    "parameters": {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final",
+      "entry_address": "0x100000310",
+      "indices": [
+        0
+      ],
+      "max_file_bytes": 67108864,
+      "max_instructions": 128,
+      "call_address": "0x100000348"
+    },
+    "raw_result": null,
+    "normalized_result": {
+      "artifact": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final",
+        "sha256": "cb6eee639b34a02109de1ce4d1e2b8fbbc9b08cd69fd9cc2f0d964b6f3cb85a8",
+        "bytes": 17408
+      },
+      "architecture": "arm64",
+      "entry_address": "0x100000310",
+      "requested_indices": [
+        0
+      ],
+      "observation_id": "8f839aa1e13851d9f6589d4b6680d2eaa952a7c695fd17dc9b5c6b81236e0ca8",
+      "prefix": {
+        "instructions": [
+          {
+            "address": "0x100000310",
+            "file_offset": 784,
+            "bytes_hex": "e80300aa",
+            "operation": "MOV register"
+          },
+          {
+            "address": "0x100000314",
+            "file_offset": 788,
+            "bytes_hex": "083d4092",
+            "operation": "AND index mask 0xffff"
+          },
+          {
+            "address": "0x100000318",
+            "file_offset": 792,
+            "bytes_hex": "09000090",
+            "operation": "ADRP address"
+          },
+          {
+            "address": "0x10000031c",
+            "file_offset": 796,
+            "bytes_hex": "29f10d91",
+            "operation": "ADD immediate"
+          },
+          {
+            "address": "0x100000320",
+            "file_offset": 800,
+            "bytes_hex": "8a000010",
+            "operation": "ADR address"
+          },
+          {
+            "address": "0x100000324",
+            "file_offset": 804,
+            "bytes_hex": "2b796878",
+            "operation": "LDRH indexed unsigned halfword"
+          },
+          {
+            "address": "0x100000328",
+            "file_offset": 808,
+            "bytes_hex": "4a090b8b",
+            "operation": "ADD table value LSL #2"
+          },
+          {
+            "address": "0x10000032c",
+            "file_offset": 812,
+            "bytes_hex": "40011fd6",
+            "operation": "BR computed table target"
+          }
+        ],
+        "stop": {
+          "kind": "table-branch",
+          "address": "0x10000032c",
+          "detail": "Unsigned-halfword computed branch established for the selected prefix; input domain remains unknown."
+        }
+      },
+      "table": {
+        "address": "0x10000037c",
+        "target_anchor": "0x100000330",
+        "input_register": "x0",
+        "index_mask": 65535,
+        "entry_bytes": 2,
+        "index_scale": 2,
+        "target_scale": 4,
+        "entry_signed": false
+      },
+      "entries": [
+        {
+          "index": 0,
+          "status": "mapped-target",
+          "entry_file_offset": 892,
+          "entry_bytes_hex": "0000",
+          "entry_value": 0,
+          "target_address": "0x100000330"
+        }
+      ],
+      "invocation": {
+        "call_address": "0x100000348",
+        "call_instruction": {
+          "address": "0x100000348",
+          "file_offset": 840,
+          "bytes_hex": "f2ffff97",
+          "operation": "BL direct"
+        },
+        "link": "direct-to-entry",
+        "direct_target": "0x100000310",
+        "preparation": [
+          {
+            "address": "0x100000340",
+            "file_offset": 832,
+            "bytes_hex": "20008052",
+            "operation": "MOVZ input literal"
+          },
+          {
+            "address": "0x100000344",
+            "file_offset": 836,
+            "bytes_hex": "f40315aa",
+            "operation": "MOV X20 register"
+          }
+        ],
+        "input_literal": "0x1",
+        "effective_index": 1,
+        "known_bypass": null,
+        "branch_scan": {
+          "scope": "immutable-__text-only",
+          "instructions_examined": 27,
+          "completed": true
+        },
+        "mapping_status": "unresolved",
+        "mapping_index": null
+      },
+      "typed_domain": null,
+      "all_entry_domain_proved": false,
+      "program_mutations": false,
+      "assumptions": [
+        "Derived targets are conditional on normal entry into the selected straight-line prefix with the stated input index; source code and read-only mappings retain the captured bytes.",
+        "Preferred Mach-O addresses are static coordinates, not observed runtime addresses. No relocation or authenticated pointer is evaluated."
+      ],
+      "limitations": [
+        "Requested indices are caller selections, not an exhaustive or typed input domain. The 16-bit machine mask does not prove an enum case count or valid Swift value.",
+        "Executable target bytes do not establish case semantics, function ownership, actual execution or a complete CFG. No program database is modified.",
+        "The decoder supports only a restricted straight-line arm64 unsigned-halfword table pattern; unsupported instructions stop the proof.",
+        "The selected call has no established conditional mapping to this table entry; callee identity, literal preparation or the selected table target is unresolved. Table observations remain independent."
+      ]
+    },
+    "confidence": "derived",
+    "authority": "shipped-artifact",
+    "environment": null,
+    "limitations": [
+      "Requested indices are caller selections, not an exhaustive or typed input domain. The 16-bit machine mask does not prove an enum case count or valid Swift value.",
+      "Executable target bytes do not establish case semantics, function ownership, actual execution or a complete CFG. No program database is modified.",
+      "The decoder supports only a restricted straight-line arm64 unsigned-halfword table pattern; unsupported instructions stop the proof.",
+      "The selected call has no established conditional mapping to this table entry; callee identity, literal preparation or the selected table target is unresolved. Table observations remain independent."
+    ],
+    "locations": [
+      {
+        "kind": "artifact-path",
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-table-dispatch-2026-11-23/dispatch-final"
+      }
+    ],
+    "evidence_links": []
+  }
+}

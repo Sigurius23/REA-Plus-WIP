@@ -27,6 +27,16 @@ read a single object.
 
 ## Native targets
 
+For an unguarded arm64 Mach-O halfword dispatch, use
+`inspect_native_table_dispatch` when advertised, with an original absolute
+`path`, prefix `entry_address` and explicit `indices`. It reports byte-derived
+targets for that selection without a disassembler or CFG changes. CLI accepts
+`rea inspect-native-table-dispatch request.json --json`. A requested subset or
+the 16-bit machine mask does not establish a valid Swift enum domain. Optional
+`call_address` can establish a conditional singleton only for a supported
+literal suffix and exact direct BL; indirect callee identity stays unresolved.
+Preserve its assumptions, prefix stop reason and per-entry mapping failures.
+
 For “what does this function produce for these inputs?”, use
 `emulate_function` with explicit original file ranges mapped at selected
 addresses, canonical register bit patterns and fully initialized memory. It

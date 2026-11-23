@@ -548,6 +548,30 @@ scaled ADD/BR instructions and the recovered target set. It reads exactly the
 proven count and preserves unknowns for other forms. Real ELF and host ARM64
 Mach-O fixtures check each case against source-owned return values.
 
+For an unguarded halfword table, `inspect_native_table_dispatch` accepts an
+absolute Mach-O path, `entry_address` and explicit `indices`, independently of
+an active target. CLI accepts the same request as inline JSON or a JSON file:
+`rea inspect-native-table-dispatch request.json --json`. The initial profile
+recognizes immutable little-endian arm64 code with a straight-line 16-bit mask,
+unsigned halfword load and anchor-plus-entry-times-four branch. It stops at
+unsupported instructions or the instruction budget. Source instructions and
+selected entries retain exact bytes, preferred addresses, whole-file offsets
+and the stable artifact SHA-256. Writable, ambiguous and uninitialized mappings
+cannot supply a proof; arm64e/PAC is unsupported.
+
+These are selected-index observations: the tool does not infer a Swift type,
+valid enum domain, exhaustive table extent, case meaning or function ownership.
+It does not change a disassembler's CFG. Optional `call_address` retains a
+direct or indirect call separately. Only an exact direct BL to this entry with
+an adjacent supported literal preparation can yield a conditional singleton
+mapping, and only when that index was requested and its target mapped. A known
+direct branch into the suffix withholds it. That scan covers immutable `__text`
+sections only; a conditional mapping assumes the suffix executes through the
+call without indirect entry. Indirect callee identity and runtime reachability
+remain unresolved. Use `max_file_bytes` for larger artifacts and
+`max_instructions` for longer supported prefixes; an unchanged budget reproduces
+its boundary. Complete Evidence is retained through the usual MCP ledger/export.
+
 For supported AArch64 Mach-O Swift code, a separate pass can recover an
 unguarded `LDRSW` table using a verified multi-payload enum ABI bound. It follows
 the metadata accessor and unchanged runtime-tag value, validates the table and

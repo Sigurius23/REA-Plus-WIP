@@ -26,6 +26,35 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest selected-index dispatch checkpoint (2026-11-23)
+
+Read `field-tests/arc-table-dispatch-2026-11-23.md` and its final qualification,
+CLI parity, runtime and snapshot manifests. New target-free
+`inspect_native_table_dispatch` is implemented and qualified on an owned
+source-built assembly fixture and the fixed Arc slice. It decodes selected
+mask16/LDRH/scaled-target observations without changing a program CFG.
+
+Arc indices 49/50 map to `0x1005ab4e8`/`0x1005aa834`. The actual call at
+`0x1012ab840` retains X0=49 but stays `indirect-unresolved`; no invocation
+mapping is installed. Direct call `0x100d910f0` reaches the selected helper,
+but this narrow primitive has no adjacent literal at that call. No enum domain
+or helper-wide count is inferred. A direct call with a supported literal suffix
+can return a conditional singleton for an explicitly requested mapped index;
+known direct bypasses withhold it, and indirect entry stays a named premise.
+
+Final verification: 25 affected tests, 14 public MCP calls with two expected
+errors, seven exact CLI/MCP Evidence/error pairs, 17 authenticated prior
+snapshots, 1,881 final frozen runtime files and 25 source hashes. Build, fast,
+docs, architecture and package checks pass. Initial qualification caught and
+fixed misleading file-cap guidance; baseline artifacts/runtimes remain intact.
+
+**Next:** continue the typed invocation join from the constructed-child route
+below: exact active keypath/TaskLocal Client selection, actual stored code/context
+origin and relevant instance/copy stability. The first observation-only carrier
+is now implemented; full item 63 and full Arc analysis remain incomplete.
+Do not install the reflected 297-case enum as a global helper bound. No Arc
+runtime authority was added. The new tool needs no Ghidra process/session.
+
 ## Latest constructed-child / projection checkpoint (2026-11-23)
 
 Read `field-tests/arc-instance-flow-2026-11-23.md`, qualification/fact index,
@@ -62,8 +91,8 @@ context and invokes the original code at `0x10070d31c`. Import authenticity and
 normal zero-error/ABI/storage semantics remain premises. Its later return-value
 processing was not analyzed as part of this input-origin question.
 
-**Next:** implement/qualify the observation-only invocation carrier with the
-existing typed/raw/foreign-owner controls. Preserve unresolved active Client
+**Historical next step (observation primitive now implemented above):** qualify
+the typed invocation carrier with the existing typed/raw/foreign-owner controls. Preserve unresolved active Client
 code/context and relevant stable instance/copy windows. Do not
 repeat the keypath-word, projection ABI, composition field or final witness
 load studies. Child state/action predicates, normal metadata/VWT/runtime ABI

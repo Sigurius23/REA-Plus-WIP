@@ -5,6 +5,7 @@ import {
   createRecordedCrashService,
   createBinaryLayoutService,
   createPeResourcesService,
+  createNativeTableDispatchService,
   createFunctionEmulationService,
   createChromiumResourcesService,
   createChromiumResourceSearchService,
@@ -135,6 +136,35 @@ export const registerBinaryDiagnosticsCommands = (
           );
           return result.ok ? result.value : projectAnalysisError(result.error);
         }),
+      ),
+  });
+  const dispatch = createNativeTableDispatchService();
+  cli.command(CLI_COMMANDS.inspectNativeTableDispatch, {
+    description:
+      "Inspect selected native table indices and optional conditional direct-call mapping; accepts JSON or a request file",
+    args: z.object({
+      inputJson: z.string().describe("Dispatch request JSON or file path"),
+    }),
+    run: ({ args }) =>
+      withCommandCancellation((signal) =>
+        logCliCommand(
+          logger,
+          CLI_COMMANDS.inspectNativeTableDispatch,
+          async () => {
+            const input = await parseCliJsonInput(
+              args.inputJson,
+              "inspect_native_table_dispatch",
+            );
+            if (!input.ok) return input.error;
+            const result = await dispatch.inspect(
+              resolveCliJsonPaths(input.value, [["path"]]),
+              { signal },
+            );
+            return result.ok
+              ? result.value
+              : projectAnalysisError(result.error);
+          },
+        ),
       ),
   });
   const pe = createPeResourcesService();

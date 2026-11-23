@@ -4,14 +4,27 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc selected-index dispatch primitive verified (2026-11-23, item 63 partial):**
+  New `inspect_native_table_dispatch` derives explicit halfword-table targets
+  with source bytes/hash and optional conditional direct-call singleton,
+  without CFG mutation or a typed/global input bound. Arc indices 49/50 now
+  return `0x1005ab4e8` / `0x1005aa834` through public Evidence. The actual
+  BLR X23 retains X0=49 but no callee link; typed invocation proof, active
+  Client selection and instance stability stay open. File-cap remediation
+  caught during qualification now names `max_file_bytes` truthfully. 25 affected
+  tests, 14 final MCP calls (two expected errors), seven exact CLI/MCP pairs,
+  frozen-runtime/history checks and package verification pass. See
+  [the checkpoint](field-tests/arc-table-dispatch-2026-11-23.md).
+
 - **Arc constructed-child / projection route advanced (2026-11-23, item 63):**
   The wrapper's keypath output word, indirect X8 projection ABI, dynamic
   _IfLetReducer child field, dependency-writing scope and exact final Root
   witness dispatch now have source-bound checks. The route is conditional on
   valid typed storage/copies, branch predicates and entry into the stored
-  scope callback. Actual TaskLocal/default Client selection and a first-class
-  invocation-only mapping remain open. 117 successful public calls, two exact
-  CLI/MCP pairs and sixteen historical snapshots verify on the unchanged
+  scope callback. Actual TaskLocal/default Client selection and a typed
+  invocation-only mapping remain open; the selected-index primitive is now
+  implemented in the newer checkpoint above. 117 successful public calls,
+  two exact CLI/MCP pairs and sixteen historical snapshots verify on the unchanged
   item 72 runtime. One disk-failed capture is preserved; after space was freed,
   full-image retry succeeded. See [the checkpoint](field-tests/arc-instance-flow-2026-11-23.md).
 
@@ -1689,6 +1702,25 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-23 selected-index observation carrier implemented; typed proof remains open.**
+    New target-free `inspect_native_table_dispatch` reads a stable arm64 Mach-O
+    and reports requested indices from a verified straight-line mask16/LDRH/
+    scaled-ADD/BR prefix. Exact source bytes, file offsets, artifact hash,
+    content-bound observation identity and per-index failures survive CLI/MCP.
+    Optional exact direct BL/literal suffix gives only a conditional singleton;
+    known bypasses, indirect calls and unselected indices withhold it. It never
+    infers a Swift type/domain, extends a function, or changes a global CFG.
+    Arc selected indices 49/50 map to `0x1005ab4e8`/`0x1005aa834`. Actual call
+    `0x1012ab840` remains indirect-unresolved despite its observed X0=49; direct
+    helper call `0x100d910f0` has no proved adjacent literal. Active default/Client
+    selection, exact stored code/context and relevant instance/copy stability
+    remain the typed invocation-proof residuals. File-cap guidance caught in
+    the new adapter's public check was fixed to name `max_file_bytes` and the
+    unchanged-retry failure. 25 affected tests, 14 final MCP calls (two expected
+    errors), seven exact CLI/MCP comparisons, 17 historical snapshots and
+    build/fast/docs/architecture/package checks pass. See
+    [the selected-index checkpoint](field-tests/arc-table-dispatch-2026-11-23.md).
+
     **2026-11-23 constructed-child / scoped callback route advanced.**
     The selected wrapper writes its saved keypath to output+16 in a checked
     18-instruction call-free window; the Root+496 relationship stays conditional

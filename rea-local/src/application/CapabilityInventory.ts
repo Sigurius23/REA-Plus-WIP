@@ -362,6 +362,7 @@ const workflowAvailabilityFor = ({
         };
   if (
     name === "inspect_pe_resources" ||
+    name === "inspect_native_table_dispatch" ||
     name === "inspect_chromium_resources" ||
     name === "search_chromium_resources" ||
     name === "inspect_coverage_log" ||

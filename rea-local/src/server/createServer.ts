@@ -50,12 +50,14 @@ import { registerLibraryIdentificationTools } from "./registerLibraryIdentificat
 import { snapshotEnvironment } from "../process/snapshotEnvironment.js";
 import {
   createPeResourcesService,
+  createNativeTableDispatchService,
   createChromiumResourcesService,
   createChromiumResourceSearchService,
 } from "../composition/binaryDiagnostics.js";
 import { createFunctionEmulationService } from "../composition/binaryDiagnostics.js";
 import type { FunctionEmulationService } from "../application/binaryDiagnostics/FunctionEmulationService.js";
 import { registerFunctionEmulationTool } from "./registerFunctionEmulationTool.js";
+import { registerNativeTableDispatchTool } from "./registerNativeTableDispatchTool.js";
 import { registerPeResourcesTool } from "./registerPeResourcesTool.js";
 import { registerChromiumResourcesTool } from "./registerChromiumResourcesTool.js";
 import type { EvmInterfaceService } from "../application/evm/EvmInterfaceService.js";
@@ -535,6 +537,13 @@ const registerConfiguredAnalysisTools = (
     server,
     toolLogger,
     evidenceById,
+    recordEvidence,
+    withAdmittedAnalysis,
+  );
+  registerNativeTableDispatchTool(
+    server,
+    createNativeTableDispatchService(),
+    toolLogger,
     recordEvidence,
     withAdmittedAnalysis,
   );

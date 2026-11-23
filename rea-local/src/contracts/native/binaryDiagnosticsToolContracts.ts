@@ -30,12 +30,36 @@ import {
   functionEmulationSchema,
 } from "../../domain/native/functionEmulation.js";
 
+import {
+  inspectNativeTableDispatchInputSchema,
+  nativeTableDispatchSchema,
+} from "../../domain/native/nativeTableDispatch.js";
+
 /** Caller-selected delivery of completed binary layout Evidence. */
 export const inspectBinaryLayoutRequestSchema =
   inspectBinaryLayoutInputSchema.extend({ detail: analysisDetailSchema });
 
 /** Offline binary diagnostics are independent of macOS process/UI providers. */
 export const BINARY_DIAGNOSTICS_TOOL_CONTRACTS = [
+  {
+    name: "inspect_native_table_dispatch",
+    ...toolContractMetadata("inspect_native_table_dispatch"),
+    kind: "native-provider",
+    description:
+      "Derive table targets for explicit caller-selected indices from a stable local arm64 Mach-O, without executing it or changing a program database. Recognizes a restricted straight-line 16-bit mask / unsigned-halfword / scaled-target branch prefix; unsupported instructions stop with source evidence. Returns exact instruction/entry bytes, file offsets, artifact hash and conditional targets. Optional call_address checks an adjacent literal preparation and exact direct BL to the selected entry; known direct bypasses withhold the invocation mapping, indirect calls remain unresolved. No Swift type domain, exhaustive table extent, function ownership, case meaning or runtime reachability is inferred. Selected indices are observations, not an enum bound. No active target or disassembler required; arm64e/PAC is unsupported.",
+    inputSchema: inspectNativeTableDispatchInputSchema,
+    outputSchema: evidenceResultOf(nativeTableDispatchSchema),
+    examples: [
+      {
+        title: "Inspect explicit table indices",
+        input: {
+          path: "/artifacts/program",
+          entry_address: "0x100001000",
+          indices: [0, 1],
+        },
+      },
+    ],
+  },
   {
     name: "search_chromium_resources",
     ...toolContractMetadata("search_chromium_resources"),
