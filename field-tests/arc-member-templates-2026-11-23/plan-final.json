@@ -1,0 +1,207 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-member-templates-2026-11-23/mcp-final",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "owned-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-member-templates-qualified-2026-11-23/MemberTemplates.dylib",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-root",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x2348",
+        "max_records": 5000
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-dependency",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x21b4",
+        "max_records": 5000
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-two",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x21e4",
+        "max_records": 5000
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-three",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x2214",
+        "max_records": 5000
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-constrained",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x2244",
+        "max_records": 5000
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-foreign",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x22b8",
+        "max_records": 5000
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-nested",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x2318",
+        "max_records": 5000
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-truncated",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x21b4",
+        "max_records": 9
+      },
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "owned-export",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-member-templates-2026-11-23/mcp-final/owned.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "owned-close1",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "owned-close2",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "arc-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "arc-root",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x103d7b1ac",
+        "max_file_bytes": 100663296,
+        "max_records": 20000
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "arc-dependency",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x103d46d5c",
+        "max_file_bytes": 100663296,
+        "max_records": 20000
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "arc-client",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x103d648c4",
+        "max_file_bytes": 100663296,
+        "max_records": 20000
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "arc-root-layout",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x103d7b1ac",
+        "swift_metadata_address": "0x104316db8",
+        "max_file_bytes": 100663296,
+        "max_records": 20000
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "arc-generic-layout-refused",
+      "arguments": {
+        "facet": "swift-fields",
+        "swift_type_address": "0x103d46d5c",
+        "swift_metadata_address": "0x1042c8ac0",
+        "max_file_bytes": 100663296,
+        "max_records": 20000
+      },
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "arc-export",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-member-templates-2026-11-23/mcp-final/arc.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "arc-close1",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "arc-close2",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}

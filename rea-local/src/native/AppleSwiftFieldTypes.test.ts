@@ -399,3 +399,61 @@ describe("Swift field declaration boundaries", () => {
     ).toBe("not_requested");
   });
 });
+
+describe("generic member parameter templates", () => {
+  const parameterFixture = (token: string, count = 3) => {
+    const f = applicationFixture();
+    // Select the indexed field owner itself as a top-level ordinary generic struct.
+    f.u32(0x500, 0x80 | 17);
+    f.rel(0x504, 0x740);
+    f.bytes.writeUInt16LE(count, 0x524);
+    f.bytes.writeUInt16LE(count, 0x528);
+    f.bytes.fill(0x80, 0x52c, 0x52c + count);
+    f.bytes.fill(0, 0xa00, 0xa80);
+    f.bytes.write(token + "\0", 0xa00);
+    return f;
+  };
+  it.each([
+    ["x", 0],
+    ["qz", 0],
+    ["q_", 1],
+    ["q0_", 2],
+  ] as const)("retains exact depth-zero parameter %s", (token, index) => {
+    const f = parameterFixture(token),
+      result = inspect(f.bytes).swift_type_fields!;
+    expect(result.fields[0]).toMatchObject({
+      function_type: null,
+      bound_generic_type: null,
+      generic_member_type: {
+        owner: { address: hex(0x500) },
+        owner_signature: { parameter_count: 3 },
+        type: {
+          kind: "generic-parameter",
+          depth: 0,
+          index,
+          parameter: { address: hex(0x52c + index) },
+        },
+        interpretation: "declaration-template",
+      },
+      decode: { status: "decoded" },
+    });
+    expect(result.referenced_enums).toEqual([]);
+  });
+  it.each(["q1_", "q999999999999999999999999_", "qd__", "xSg", "q00_"])(
+    "rejects unsupported/out-of-range parameter %s",
+    (token) => {
+      const value = field(parameterFixture(token).bytes);
+      expect(value.generic_member_type).toBeNull();
+      expect(value.decode.status).toBe("unsupported");
+      expect(value.mangling_hex).not.toBeNull();
+    },
+  );
+  it("refuses template interpretation for a constrained owner", () => {
+    const f = parameterFixture("x");
+    f.bytes.writeUInt16LE(1, 0x526);
+    expect(field(f.bytes)).toMatchObject({
+      generic_member_type: null,
+      decode: { status: "unsupported" },
+    });
+  });
+});

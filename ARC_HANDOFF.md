@@ -26,7 +26,49 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
-## Latest concrete generic application checkpoint (2026-11-23)
+## Latest generic member-template checkpoint (2026-11-23)
+
+Read `field-tests/arc-member-templates-2026-11-23.md`, its fact index,
+qualification/CLI/substitution receipts and snapshot manifest. Item 72 is done.
+Optional `generic_member_type` retains complete depth-zero parameter references
+and flat external symbolic applications under an exact checked top-level
+ordinary unconstrained owner signature. Function, concrete application and
+member template are mutually exclusive; historical omissions remain valid.
+External descriptor semantics stay `unresolved-external`: a symbol name is
+not validated external arity, constraints, authenticity or runtime binding.
+
+Arc Dependency's keyPath field now retains import `_$ss7KeyPathCMn`, root
+DependencyValues `0x103d46e58` and parameter 0 at `0x103d46d88`. Owner
+`0x103d46d5c` and signature `0x103d46d78` match the selected Root application
+exactly. `declaration-substitution.json` joins the two public Evidence records
+and substitutes exact UserDefaultsClient `0x103d648c4` in a separate analyst
+derivation. Under the standard Swift import-binding premise that describes
+KeyPath<DependencyValues, UserDefaultsClient>. Automatic substitution, external
+signature validation and generic physical layout remain unimplemented/unresolved.
+
+**Continue item 63** at the actual constructor/captured-wrapper relation and
+relevant keypath/Client field stability, followed by a first-class
+observation-only invocation-domain/mapping carrier. Do not repeat the newly
+closed declaration-template identity or conditional default X0 forwarding.
+The imported type declaration does not prove the actual captured value or
+active default target. Never install a helper-global 297-case override.
+
+Frozen runtime: `rea-local/.cache/arc-runtime-member-templates-2026-11-23`,
+1,872 files and six source/document hashes. Verification: 88 source tests,
+41 final public MCP calls plus 18 baseline, four exact CLI/MCP pairs,
+build/fast/docs/installed-package checks, fifteen historical snapshots and
+empty qualified lineages. Six owned template fields, parameters 0/1/2,
+constrained/nested/foreign boundaries, three malformed derivatives, a foreign
+import identity control and budget degradation qualify the new interpretation.
+The native bridge, enum recovery, runtime-call registry, Ghidra profile and
+physical metadata adapter are unchanged. Metadata uses the Apple byte reader
+in Ghidra-selected sessions; no new full decompiler/enum matrix is claimed.
+Initial sandbox cleanup uncertainty, compile errors and control-preparation
+failures are retained separately from final successful qualification. No Arc
+or fixture code was executed. Workers remain unavailable. This follows local
+`0ce5b24f5`; no push was performed. Full Arc remains incomplete.
+
+## Previous concrete generic application checkpoint (2026-11-23)
 
 Read `field-tests/arc-generic-applications-2026-11-23.md`, its fact index,
 qualification/CLI/forwarding receipts and snapshot manifest. Item 71 is done.

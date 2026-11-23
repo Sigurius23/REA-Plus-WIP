@@ -1,5 +1,15 @@
 # Arc 1.172.1 analysis dossier
 
+Generic member declaration addendum **2026-11-23**:
+[the new checkpoint](arc-member-templates-2026-11-23.md) now represents the
+selected Dependency keyPath's external symbolic application, exact
+DependencyValues descriptor and owner parameter 0. Its owner/signature match
+Root's concrete Dependency<UserDefaultsClient> application; a checked analyst
+composition substitutes that Client identity. External signature/runtime
+binding, actual captured-instance relation and relevant field stability remain
+unresolved. Item 72 passes qualification; item 63's observation-only invocation
+mapping and broader Arc feature work remain open. No target was executed.
+
 Captured dependency / allocator addendum **2026-11-23**:
 [the new checkpoint](arc-invocation-origin-2026-11-23.md) traces the selected
 async worker's environment back to a reducer effect context and binds exact

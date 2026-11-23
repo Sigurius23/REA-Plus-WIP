@@ -1,0 +1,31 @@
+
+> rea-agents@6.4.0 build:cached
+> node scripts/check-dependency-install.mjs && node scripts/run-exclusive.mjs artifacts turbo run artifacts:skills
+
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing d52bd9e220cc3d80
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+compile: src/native/AppleSwiftFieldTypes.ts(494,9): error TS2322: Type '{ address: string | null; file_offset: number | null; } | null | undefined' is not assignable to type '{ address: string | null; file_offset: number | null; } | null'.
+compile:   Type 'undefined' is not assignable to type '{ address: string | null; file_offset: number | null; } | null'.
+compile: src/native/AppleSwiftFieldTypes.ts(517,18): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string | number | bigint | boolean'.
+compile:   Type 'null' is not assignable to type 'string | number | bigint | boolean'.
+compile:  ERROR  command (/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/) /usr/local/bin/npm run compile exited (2)
+
+ Tasks:    1 successful, 2 total
+Cached:    1 cached, 2 total
+  Time:    6.256s 
+Failed:    //#compile
+
+ ERROR  run failed: command  exited (2)

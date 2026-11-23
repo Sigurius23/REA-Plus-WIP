@@ -519,6 +519,20 @@ const swiftFieldFunctionSchema = z.strictObject({
     })
     .nullable(),
 });
+const swiftOrdinaryGenericSignatureSchema = z.strictObject({
+  location: nativeMetadataLocationSchema,
+  parameter_count: z.number().int().positive(),
+  requirement_count: z.literal(0),
+  key_argument_count: z.number().int().positive(),
+  flags: z.literal(0),
+  parameters: z.array(
+    z.strictObject({
+      index: z.number().int().nonnegative(),
+      flags: z.literal(128),
+      location: nativeMetadataLocationSchema,
+    }),
+  ),
+});
 const swiftBoundGenericFieldSchema = z.strictObject({
   kind: z.literal("bound-generic-struct"),
   name: z.string(),
@@ -528,21 +542,34 @@ const swiftBoundGenericFieldSchema = z.strictObject({
     descriptor: nativeMetadataLocationSchema,
   }),
   arguments: z.array(swiftFieldAtomSchema).min(1),
-  signature: z.strictObject({
-    location: nativeMetadataLocationSchema,
-    parameter_count: z.number().int().positive(),
-    requirement_count: z.literal(0),
-    key_argument_count: z.number().int().positive(),
-    flags: z.literal(0),
-    parameters: z.array(
-      z.strictObject({
-        index: z.number().int().nonnegative(),
-        flags: z.literal(128),
-        location: nativeMetadataLocationSchema,
-      }),
-    ),
-  }),
+  signature: swiftOrdinaryGenericSignatureSchema,
   interpretation: z.literal("declaration-only"),
+  limitations: z.array(z.string()),
+  evidence: z.array(nativeMetadataEvidenceSchema),
+});
+const swiftGenericParameterTypeSchema = z.strictObject({
+  kind: z.literal("generic-parameter"),
+  depth: z.literal(0),
+  index: z.number().int().nonnegative(),
+  parameter: nativeMetadataLocationSchema,
+});
+const swiftGenericMemberTypeSchema = z.strictObject({
+  owner: nativeMetadataLocationSchema,
+  owner_signature: swiftOrdinaryGenericSignatureSchema,
+  type: z.union([
+    swiftGenericParameterTypeSchema,
+    z.strictObject({
+      kind: z.literal("external-symbolic-application"),
+      reference: nativeExternalReferenceSchema,
+      source: nativeMetadataLocationSchema,
+      indirect_slot: nativeMetadataLocationSchema.nullable(),
+      arguments: z
+        .array(z.union([swiftFieldAtomSchema, swiftGenericParameterTypeSchema]))
+        .min(1),
+      signature_validation: z.literal("unresolved-external"),
+    }),
+  ]),
+  interpretation: z.literal("declaration-template"),
   limitations: z.array(z.string()),
   evidence: z.array(nativeMetadataEvidenceSchema),
 });
@@ -563,10 +590,17 @@ const swiftTypeFieldSchema = z.union([
   swiftTypeFieldBase.extend({
     function_type: swiftFieldFunctionSchema.nullable(),
     bound_generic_type: z.null().optional(),
+    generic_member_type: z.null().optional(),
   }),
   swiftTypeFieldBase.extend({
     function_type: z.null(),
     bound_generic_type: swiftBoundGenericFieldSchema,
+    generic_member_type: z.null().optional(),
+  }),
+  swiftTypeFieldBase.extend({
+    function_type: z.null(),
+    bound_generic_type: z.null(),
+    generic_member_type: swiftGenericMemberTypeSchema,
   }),
 ]);
 const swiftTypeFieldsSchema = z.strictObject({

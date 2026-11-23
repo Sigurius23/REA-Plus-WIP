@@ -191,7 +191,18 @@ complete observation.
   generic arguments, constraints, packs, retroactive conformances, annotations
   and trailing operators remain unsupported. It neither substitutes member
   types nor determines instance offsets, value size or native argument ABI.
-  Function and generic-application records are mutually exclusive; an enum
+  Optional `generic_member_type` retains a complete depth-zero parameter
+  (`x` or a supported `q` index) or flat external symbolic application template
+  in a top-level version-zero ordinary unconstrained generic struct. Parameter
+  indices and source locations bind to that exact owner's checked signature.
+  External applications retain the original symbol, library, weak flag, addend,
+  source and indirect slot. Their external descriptor kind, arity, constraints,
+  authenticity and runtime binding remain unresolved (`signature_validation:
+  "unresolved-external"`); the record describes encoded syntax, not a validated
+  external specialization. Nested parameters/types, packs and trailing operators
+  remain unsupported. Concrete arguments are not automatically substituted.
+  Function, concrete application and member-template records are mutually exclusive;
+  historical Evidence can omit the new optional fields. An enum
   used as a generic argument supplies no function argument domain.
   Concrete supported function shapes can decode independently of generic owner
   admission. Embedded NULs in symbolic references do not terminate manglings;

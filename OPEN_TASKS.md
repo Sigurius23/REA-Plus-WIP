@@ -4,6 +4,15 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc generic member templates, item 72 done (2026-11-23):** The selected
+  wrapper's keyPath now retains exact DependencyValues and owner-parameter
+  identities plus the unresolved external import. Joining the exact Root
+  application gives a checked analyst declaration substitution to
+  UserDefaultsClient. 88 source tests, 41 final public MCP calls plus 18
+  baseline, four exact CLI/MCP pairs and build/fast/docs/package checks pass.
+  Actual captured-instance/field stability and item 63's invocation mapping
+  remain open. See [the checkpoint](field-tests/arc-member-templates-2026-11-23.md).
+
 - **Arc allocator ABI repair, item 68 done (2026-11-23):** Exact supported
   libswiftCore allocation calls now preserve their C-ABI X0 return instead of
   reusing the metadata argument in pseudocode. All 23 Arc constructor results
@@ -1669,6 +1678,20 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-23 member-template binding advanced; item remains open.**
+    Item 72 retains Dependency's keyPath template with DependencyValues
+    descriptor `0x103d46e58` and depth-zero parameter 0 at `0x103d46d88`.
+    Its owner/signature exactly match Root's Dependency<UserDefaultsClient>
+    application. A separate checked analyst composition substitutes exact
+    Client `0x103d648c4`; REA+ does not automate that substitution. External
+    descriptor kind/arity/constraints/authenticity/runtime binding remain
+    unresolved despite the retained KeyPath import identity. This supersedes
+    the raw member-template gap below. Actual constructor/captured-instance
+    relation, relevant keypath/Client field stability, and an observation-only
+    invocation-domain/mapping carrier remain open. No generic layout or
+    helper-global bound follows. See
+    [the member-template report](field-tests/arc-member-templates-2026-11-23.md).
+
     **2026-11-23 concrete generic declaration binding advanced.**
     Item 71 now binds Root field 6 to Dependencies.Dependency<UserDefaultsClient>
     using exact wrapper/module/signature/argument descriptors, rather than raw
@@ -2063,3 +2086,25 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     retained public observations and eight exact native instructions; actual
     default selection and an invocation carrier remain open. See
     [the report](field-tests/arc-generic-applications-2026-11-23.md).
+
+
+72. **Retain generic Swift member declaration templates.** Done and verified
+    (2026-11-23, item 63). Optional `generic_member_type` preserves complete
+    depth-zero parameter references and flat external symbolic applications
+    under an exact checked top-level ordinary unconstrained owner signature.
+    Import symbol/library/weak/addend and source/slot identities survive;
+    external descriptor semantics remain explicitly unresolved. Three field
+    interpretation forms are mutually exclusive; old omissions stay valid.
+    Owned parameters 0/1/2 and KeyPath fields decode; constrained/nested/foreign
+    owners, malformed parameter/closer/pack controls and budget exhaustion
+    retain their uncertainty. A renamed external symbol grants no validated
+    type semantics. Arc now exposes DependencyValues plus parameter 0 in the
+    selected keyPath template. Joining exact Root application/signature yields
+    a checked analyst declaration substitution to UserDefaultsClient, without
+    automatic projection, physical layout, live-instance or invocation claims.
+    Verification: 88 source tests, 41 final public MCP calls plus 18 baseline,
+    four exact CLI/MCP pairs, build/fast/docs/package checks, fifteen historical
+    snapshots and empty qualified lineages. Native bridge/recovery/runtime-call/
+    profile and physical metadata sources are unchanged. Actual captured
+    instance/stability and item 63's invocation carrier remain open. See
+    [the report](field-tests/arc-member-templates-2026-11-23.md).

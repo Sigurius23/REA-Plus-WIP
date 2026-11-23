@@ -12,6 +12,9 @@ type Atom = FunctionType["parameter"];
 type BoundGenericType = NonNullable<
   Fields["fields"][number]["bound_generic_type"]
 >;
+type GenericMemberType = NonNullable<
+  Fields["fields"][number]["generic_member_type"]
+>;
 const decoded = { status: "decoded" as const, reason: null };
 const reason = (cause: unknown) =>
   cause instanceof Error ? cause.message : String(cause);
@@ -47,9 +50,10 @@ export const decodeSwiftTypeFields = (input: {
     program_mutations: false,
     limitations: [
       "Reflection field ordinals are not physical instance offsets.",
-      "Generic owners are declaration inventories. Supported flat concrete applications retain their signature and argument identities; parameters are not substituted into member fields and instantiated layout remains unresolved.",
+      "Generic owners are declaration inventories. Supported flat concrete applications retain their signature and argument identities; supported member templates retain owner parameter identities, but concrete arguments are not substituted automatically into member fields and instantiated layout remains unresolved.",
       "Declared function types do not establish a typed buffer, code/context origin, an invocation, active dependency selection or a helper-global input domain.",
       "Only complete synchronous nonthrowing native thick function manglings with one supported atomic parameter and result are decoded; other encodings remain unsupported.",
+      "Generic member templates support depth-zero parameters and flat external symbolic applications; external descriptor semantics remain unresolved.",
       "Concrete generic field types are limited to top-level version-zero structs with ordinary key type parameters, no requirements or packs, and one complete flat argument list of supported nongeneric atoms. No native ABI, live value, storage layout or invocation domain is established.",
     ],
     decode: decoded,
@@ -221,14 +225,32 @@ export const decodeSwiftTypeFields = (input: {
     const padding = () => {
       while (raw[cursor] === 0xff) cursor++;
     };
-    const reference = () => {
+    const symbolic = () => {
       padding();
       const tag = raw[cursor];
       if (tag !== 1 && tag !== 2)
-        throw new RangeError("Expected a local symbolic nominal reference");
+        throw new RangeError("Expected a symbolic nominal reference");
       const field = start + BigInt(cursor + 1);
       cursor += 5;
-      return local(field, tag === 2 ? "indirect" : "direct");
+      if (budget.isFull()) {
+        budget.markTruncated();
+        throw new RangeError("max_records_reached");
+      }
+      const observation = relative.inspect(
+        field,
+        tag === 2 ? "indirect" : "direct",
+      );
+      if (!budget.admit()) throw new RangeError("max_records_reached");
+      result.relative_pointers.push(observation.record);
+      return observation;
+    };
+    const reference = () => {
+      const { target } = symbolic();
+      if (target.kind !== "local" || target.address === 0n)
+        throw new RangeError(
+          "Metadata reference is null, external or unresolved",
+        );
+      return target.address;
     };
     const atom = (): Atom => {
       padding();
@@ -269,7 +291,26 @@ export const decodeSwiftTypeFields = (input: {
       padding();
       return raw[cursor] === 0 && cursor + 1 === raw.length;
     };
-    return { atom, reference, take, end };
+    const parameterIndex = () => {
+      padding();
+      if (raw[cursor] === 0x78) {
+        cursor++;
+        return 0n;
+      }
+      // Only depth-zero parameters. Depth markers, packs and associated types
+      // stay outside this grammar; numeric parsing is bounded by raw.length.
+      const match = /^q(z|_|(?:0|[1-9][0-9]*)_)/u.exec(
+        raw.subarray(cursor).toString("latin1"),
+      );
+      if (!match) return null;
+      cursor += match[0].length;
+      return match[1] === "z"
+        ? 0n
+        : match[1] === "_"
+          ? 1n
+          : BigInt(match[1]!.slice(0, -1)) + 2n;
+    };
+    return { atom, reference, symbolic, take, end, parameterIndex };
   };
   const functionType = (start: bigint, raw: Buffer): FunctionType => {
     const cursor = typeCursor(start, raw);
@@ -310,14 +351,12 @@ export const decodeSwiftTypeFields = (input: {
             },
     };
   };
-  const boundGenericType = (start: bigint, raw: Buffer): BoundGenericType => {
-    const cursor = typeCursor(start, raw),
-      descriptor = cursor.reference(),
-      flags = read.u32(descriptor),
+  const genericContext = (descriptor: bigint) => {
+    const flags = read.u32(descriptor),
       owner = declaration(descriptor);
     if ((flags & 31) !== 17 || !owner.is_generic || (flags & 0xff00) !== 0)
       throw new RangeError(
-        "Concrete generic applications require a version-zero generic struct descriptor",
+        "Generic interpretation requires a version-zero generic struct descriptor",
       );
     const parent = local(descriptor + 4n, "indirectable");
     read.offset(parent, 12);
@@ -367,6 +406,14 @@ export const decodeSwiftTypeFields = (input: {
         location: read.location(source),
       });
     }
+    return { owner, module, signature, parent, header };
+  };
+  const boundGenericType = (start: bigint, raw: Buffer): BoundGenericType => {
+    const cursor = typeCursor(start, raw),
+      descriptor = cursor.reference();
+    const { owner, module, signature, parent, header } =
+      genericContext(descriptor);
+    const count = signature.parameter_count;
     if (!cursor.take("y"))
       throw new RangeError("Generic application argument list is absent");
     const args: Atom[] = [];
@@ -395,6 +442,79 @@ export const decodeSwiftTypeFields = (input: {
         ...read.evidence(descriptor, "Exact generic struct declaration"),
         ...read.evidence(header, "Ordinary unconstrained generic signature"),
         ...read.evidence(parent, "Top-level module context"),
+      ],
+    };
+  };
+  const genericMemberType = (start: bigint, raw: Buffer): GenericMemberType => {
+    const { signature, header, parent } = genericContext(address),
+      cursor = typeCursor(start, raw);
+    type Parameter = Extract<
+      GenericMemberType["type"],
+      { kind: "generic-parameter" }
+    >;
+    const parameter = (): Parameter | null => {
+      const index = cursor.parameterIndex();
+      if (index === null) return null;
+      if (index >= BigInt(signature.parameter_count))
+        throw new RangeError(
+          "Generic member parameter is outside the exact owner signature",
+        );
+      const record = signature.parameters[Number(index)]!;
+      return {
+        kind: "generic-parameter",
+        depth: 0,
+        index: Number(index),
+        parameter: record.location,
+      };
+    };
+    let type: GenericMemberType["type"];
+    const value = parameter();
+    if (value) type = value;
+    else {
+      const observation = cursor.symbolic();
+      if (observation.target.kind !== "external")
+        throw new RangeError(
+          "Member template application requires an external symbolic base",
+        );
+      if (!cursor.take("y"))
+        throw new RangeError("Member template argument list is absent");
+      const args: (Atom | Parameter)[] = [];
+      while (!cursor.take("G")) {
+        if (!budget.admit()) throw new RangeError("max_records_reached");
+        args.push(parameter() ?? cursor.atom());
+      }
+      if (args.length === 0)
+        throw new RangeError(
+          "Empty member template argument list is unsupported",
+        );
+      type = {
+        kind: "external-symbolic-application",
+        reference: observation.target.reference,
+        source: observation.record.field,
+        indirect_slot: observation.record.indirect_slot ?? null,
+        arguments: args,
+        signature_validation: "unresolved-external",
+      };
+    }
+    if (!cursor.end())
+      throw new RangeError(
+        "Unsupported complete member template: nesting, annotations or trailing operators",
+      );
+    return {
+      owner: read.location(address),
+      owner_signature: signature,
+      type,
+      interpretation: "declaration-template",
+      limitations: [
+        "Parameters identify this exact top-level ordinary generic owner. Concrete arguments are not substituted automatically.",
+        "External symbolic applications retain encoded syntax and import identity only. External descriptor kind, arity, constraints, library authenticity and runtime binding are unresolved.",
+        "No generic instance layout, native argument ABI, live typed buffer, field stability, active dependency or invocation domain is established.",
+      ],
+      evidence: [
+        ...read.evidence(start, "Complete generic member declaration template"),
+        ...read.evidence(address, "Exact generic declaration owner"),
+        ...read.evidence(header, "Ordinary unconstrained owner signature"),
+        ...read.evidence(parent, "Top-level generic owner module context"),
       ],
     };
   };
@@ -454,6 +574,7 @@ export const decodeSwiftTypeFields = (input: {
         mangling_hex: null,
         function_type: null,
         bound_generic_type: null,
+        generic_member_type: null,
         decode: decoded,
         evidence: read.evidence(
           record,
@@ -474,7 +595,33 @@ export const decodeSwiftTypeFields = (input: {
         field.type_location = read.location(start);
         const raw = mangling(start);
         field.mangling_hex = raw.toString("hex");
-        if (looksBoundGeneric(raw)) {
+        // A generic member has a declaration template rather than a concrete
+        // field application. Parse it first, keeping failed attempts explicit.
+        const templateCursor = typeCursor(start, raw);
+        const startsParameter =
+          owner.is_generic && templateCursor.parameterIndex() !== null;
+        const externalApplication =
+          owner.is_generic &&
+          looksBoundGeneric(raw) &&
+          (() => {
+            let at = 0;
+            while (raw[at] === 0xff) at++;
+            return (
+              relative.inspect(
+                start + BigInt(at + 1),
+                raw[at] === 2 ? "indirect" : "direct",
+              ).target.kind === "external"
+            );
+          })();
+        if (startsParameter || externalApplication) {
+          field = {
+            ...field,
+            function_type: null,
+            bound_generic_type: null,
+            generic_member_type: genericMemberType(start, raw),
+          };
+          out.fields[out.fields.length - 1] = field;
+        } else if (looksBoundGeneric(raw)) {
           field = {
             ...field,
             function_type: null,
