@@ -1,4 +1,4 @@
-# Arc / REA+ handoff — updated 2026-11-23
+# Arc / REA+ handoff — updated 2026-11-24
 
 ## Start here
 
@@ -23,8 +23,47 @@ this run. Their written artifacts survive; do not depend on their chat memory.
 
 **Do not launch Arc, its helpers or shipped JavaScript. Do not visit recorded
 URLs, use accounts/profiles, submit requests to its services, or collect live
-UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
-executed. The earlier HeyClicky UI permission does not authorize Arc execution.
+UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
+replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
+
+## Latest cache/context and local ownership checkpoint (2026-11-24)
+
+Read `field-tests/arc-cache-selection-2026-11-24.md`, its finding index,
+qualification/CLI/history receipts and snapshot manifest. The final blob
+runtime is unchanged: 1,881 runtime files and 32 current source hashes verify.
+No new product defect was found and no source/package gate was rerun.
+
+The cache key comparison retains both raw identity and low context byte. The
+TaskLocal callback bridge at `0x1006fe650` and test wrapper `0x1006fd194` are
+now traced. Seven Arc/C probe pairs match across collisions/wraparound;
+a deliberately full malformed table stops at the instruction limit. The
+supplied hash/table are synthetic, not recovered cache state. Normal cache
+entry/exit request lock/unlock; the lock class is not asserted. Nil assignment
+reaches a same-key/context probe, then unqueried bucket helper `0x100710288`.
+
+Client VWT destroy/copy pointers bind `0x100d97a34` / `0x100d97b04`. The copy
+prefix writes all 368 bytes before the first external retain. Two standalone
+CLI replays stop there, with exact destination bytes. Raw inputs are not valid
+live Client objects and ARC is not emulated. The real worker retains the
+loaded context, destroys the temporary Client through its 23-release VWT,
+calls saved X23 with context X21, then releases it. Standard ABI/ARC therefore
+supports the selected local post-getter pair/lifetime window. Earlier instance
+relations and actual getter output remain separate; no global purity is proved.
+
+237 MCP attempts include one rejected caller seed and four missing-procedure
+queries; 232 calls succeed. The final bundle has 1,431 records, including unknown
+revisions 1–3, latest still open. Four full CLI/MCP pairs, three hashed reused
+records, 172 instruction-byte checks, 22 historical snapshots and four empty
+lineages verify. Original seed/verification mistakes remain preserved. The corrected request
+is `plan-complete.json` with `seeds-cache-corrected.tsv`; all owned sessions
+are closed. This does not implement the typed invocation carrier.
+
+**Next:** trace remaining constructor-to-getter instance/keypath/copy inputs
+and concrete override/cache/factory selection. The bucket-removal helper
+`0x100710288` and unqueried persistence result callbacks are independent static
+follow-ups. Keep the Client-choice unknown open at revision 3. Actual I/O,
+durability and broader browser coverage remain unfinished. No new runtime
+authority was added. The older notes below refer to their historical revisions.
 
 ## Latest blob text / CLI repair checkpoint (2026-11-23)
 

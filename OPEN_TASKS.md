@@ -4,6 +4,19 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc cache/context and local ownership checked (2026-11-24, item 63 partial):**
+  Cache comparison uses the 64-bit key identity plus context byte; live/test
+  entries stay distinct even across hash collisions. Seven bounded Arc/C probe
+  pairs match; a malformed full table hits the declared limit. The VWT copy
+  reproduces all 368 bytes before its first external retain, and source binds
+  the worker's retain/destroy/call/release sequence under normal Swift ABI/ARC.
+  Actual returned Client, earlier instance relations and typed invocation
+  mapping remain open at unknown revision 3. 237 MCP attempts (232 successful),
+  four full CLI/MCP pairs, two standalone copy replays, 22 historical snapshots
+  and unchanged runtime/source hashes verify. No new product defect was found.
+  See [the checkpoint](field-tests/arc-cache-selection-2026-11-24.md).
+
+
 - **Blob text and CLI decoder defects repaired (2026-11-23, items 73–74):**
   Declared CBOR/MessagePack UTF-8 controls survive tree/strings views, while
   malformed UTF-8 and untyped bytes retain their earlier representation.
@@ -1753,6 +1766,19 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-24 cache partition and local post-getter window advanced.**
+    The selected cache probes raw identity/context together; source follows the
+    normal and test-context callback bridge. Under the previously identified
+    live/preview/test byte meanings, a test-context cache entry does not match
+    live. The exact Client VWT copy/destroy slots and worker ownership sequence
+    narrow the local loaded-pair stability gap under ordinary Swift ABI/ARC.
+    Seven Arc/C probe pairs, two budget stops and two copy-prefix stops retain
+    explicit input/stop boundaries. Concrete getter output and earlier Root/
+    wrapper/keypath/copy relations still remain; the typed invocation carrier
+    is not implemented by this analyst composition. Unknown revision 3 stays
+    open. Full bucket repair and persistence callbacks are concrete next static
+    questions. See [the new report](field-tests/arc-cache-selection-2026-11-24.md).
+
     **2026-11-23 static dependency/default policy advanced; actual choice stays open.**
     The surrounding scope's computed keypath selects NavigationIDPathKey
     (`0x103d4d1e4`, metadata `0x10428b940`, witness `0x1045c82f0`) with associated

@@ -1,0 +1,94 @@
+{
+  "authority": "Explicit synthetic raw-leaf inputs and separately compiled C reference; no observed Arc cache or actual Hasher output is claimed",
+  "source_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "owned_source_sha256": "4f80c901bcb53d3d100d9de776aaf3fe040b998219542d6fdec4449cd1bd5298",
+  "owned_sha256": "3a433a191ed3269300c820e9568982e1bc77d8e0f2027f5a8bc2560216745b7e",
+  "compiler_version": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+  "owned_text": {
+    "address": "0x100000310",
+    "file_offset": 784,
+    "size": 116
+  },
+  "cases": [
+    {
+      "name": "type-a-live",
+      "identity": "0x11110000",
+      "context": "0x0",
+      "hash": "0x6",
+      "bitmap": "0xc1",
+      "expected_slot": 6,
+      "expected_found": 1,
+      "expected_stop": "function_return"
+    },
+    {
+      "name": "type-a-test",
+      "identity": "0x11110000",
+      "context": "0x2",
+      "hash": "0x6",
+      "bitmap": "0xc1",
+      "expected_slot": 7,
+      "expected_found": 1,
+      "expected_stop": "function_return"
+    },
+    {
+      "name": "type-a-preview-miss",
+      "identity": "0x11110000",
+      "context": "0x1",
+      "hash": "0x6",
+      "bitmap": "0xc1",
+      "expected_slot": 1,
+      "expected_found": 0,
+      "expected_stop": "function_return"
+    },
+    {
+      "name": "type-b-live-wrap",
+      "identity": "0x22220000",
+      "context": "0x0",
+      "hash": "0x6",
+      "bitmap": "0xc1",
+      "expected_slot": 0,
+      "expected_found": 1,
+      "expected_stop": "function_return"
+    },
+    {
+      "name": "unknown-type-miss",
+      "identity": "0x33330000",
+      "context": "0x0",
+      "hash": "0x6",
+      "bitmap": "0xc1",
+      "expected_slot": 1,
+      "expected_found": 0,
+      "expected_stop": "function_return"
+    },
+    {
+      "name": "masked-context",
+      "identity": "0x11110000",
+      "context": "0x102",
+      "hash": "0x6",
+      "bitmap": "0xc1",
+      "expected_slot": 7,
+      "expected_found": 1,
+      "expected_stop": "function_return"
+    },
+    {
+      "name": "empty-table",
+      "identity": "0x11110000",
+      "context": "0x0",
+      "hash": "0x6",
+      "bitmap": "0x0",
+      "expected_slot": 6,
+      "expected_found": 0,
+      "expected_stop": "function_return"
+    },
+    {
+      "name": "full-table-limited",
+      "identity": "0x33330000",
+      "context": "0x0",
+      "hash": "0x6",
+      "bitmap": "0xff",
+      "expected_slot": null,
+      "expected_found": null,
+      "expected_stop": "instruction_limit"
+    }
+  ]
+}

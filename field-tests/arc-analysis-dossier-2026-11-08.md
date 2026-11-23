@@ -1,5 +1,15 @@
 # Arc 1.172.1 analysis dossier
 
+Cache/context and ownership addendum **2026-11-24**:
+[The new checkpoint](arc-cache-selection-2026-11-24.md) binds cache identity
+plus context byte, its callback bridge and collision/wraparound controls.
+It also binds the selected Client VWT copy/destroy and local post-getter
+retain/call/release window under normal Swift ABI/ARC. Explicit copy-prefix
+replays stop before runtime calls; no live cache or object was fabricated.
+The Client unknown stays open at revision 3. Earlier instance/copy/keypath
+relations, typed invocation mapping, actual persistence and broader features
+remain unresolved. Production code is unchanged.
+
 Suite/context/store addendum **2026-11-23**:
 [The producer checkpoint](arc-client-producers-2026-11-23.md) closes the selected
 suite hash and Dia-specific bundle-ID gate, cached test-predicate route and
