@@ -26,6 +26,31 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled and analyzed, never
 executed. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest conditional helper replay checkpoint (2026-11-23)
+
+Read `field-tests/arc-dispatch-replay-2026-11-23.md` and its qualification,
+CLI parity and snapshot manifests. Production code is unchanged from
+`b3acb5f00`; this is a bounded emulator/static-byte follow-up, not Arc runtime
+observation. The new isolated project-cache Python environment supplies exact
+Unicorn 2.1.2/Capstone 5.0.6 via the plan's `REA_UNICORN_PYTHON`. No host app,
+profile, UI, helper, shipped JavaScript or target service was used.
+
+Owned helper controls return 10/20 for indices 0/1. Arc inputs 49/50 now each
+reach the outer return after 22 instruction entries. Final X0/X1 words are
+retained alongside public original literal-byte reads for
+`hasDismissedBoostsInterstitial` (30 bytes) and `hasDismissedJSWarningBanner`
+(27 bytes). The first two Arc replays stopped at shared tails beyond their
+explicit code range; those captures remain intact. Explicitly adding 128 bytes
+at `0x1005ab7c8` completes both. The helper output is a conditional replay;
+actual BLR X23 callee identity and active Client selection stay unresolved.
+
+Verification: 13 successful MCP calls, four exact CLI/MCP Evidence pairs,
+1,881 unchanged frozen runtime files/25 source hashes, 18 prior snapshots and
+four empty owned lineages. No new product defect or fresh product gate is
+claimed. Existing full source/build/package qualification is in the preceding
+selected-index checkpoint. Continue the typed invocation/default-selection
+join; preference I/O/durability and broader Arc features also remain open.
+
 ## Latest selected-index dispatch checkpoint (2026-11-23)
 
 Read `field-tests/arc-table-dispatch-2026-11-23.md` and its final qualification,

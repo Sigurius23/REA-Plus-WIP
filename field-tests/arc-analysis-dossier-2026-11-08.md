@@ -1,5 +1,14 @@
 # Arc 1.172.1 analysis dossier
 
+Selected-helper replay addendum **2026-11-23**:
+[the dispatch primitive](arc-table-dispatch-2026-11-23.md) now returns explicit
+halfword-table targets without a global enum bound or CFG mutation.
+[Bounded helper replays](arc-dispatch-replay-2026-11-23.md) reach the outer
+return for inputs 49/50 and bind the returned words to public original-byte
+reads of `hasDismissedBoostsInterstitial` / `hasDismissedJSWarningBanner`.
+These are conditional helper results; actual BLR X23 callee/Client selection,
+preference I/O and the full application remain unresolved.
+
 Constructed-child / projection addendum **2026-11-23**:
 [the new checkpoint](arc-instance-flow-2026-11-23.md) binds the constructed
 BoostsEditor to _IfLetReducer.child, then follows a dependency-writing scope

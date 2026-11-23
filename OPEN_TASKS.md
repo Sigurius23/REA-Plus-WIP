@@ -4,6 +4,17 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc selected helper outputs replayed (2026-11-23, item 63 partial):**
+  Bounded REA+ emulation now reaches the helper's outer return for inputs 49
+  and 50, with source-bound literal reads confirming the associated
+  `hasDismissedBoostsInterstitial` and `hasDismissedJSWarningBanner` bytes.
+  Two source-owned controls return their expected values. The initial code-range
+  escapes are retained; explicit shared-tail mappings complete the replays.
+  13 successful public MCP calls, four exact CLI/MCP Evidence pairs, unchanged
+  frozen code/source hashes, 18 historical snapshots and empty lineages verify.
+  This does not resolve actual BLR X23 callee/Client selection, preference I/O,
+  or full Arc analysis. See [the replay checkpoint](field-tests/arc-dispatch-replay-2026-11-23.md).
+
 - **Arc selected-index dispatch primitive verified (2026-11-23, item 63 partial):**
   New `inspect_native_table_dispatch` derives explicit halfword-table targets
   with source bytes/hash and optional conditional direct-call singleton,
