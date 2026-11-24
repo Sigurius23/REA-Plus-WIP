@@ -26,7 +26,50 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
 
-## Latest bucket removal and backend-policy checkpoint (2026-11-24)
+## Latest selected-file sidebar restore checkpoint (2026-11-24)
+
+Read `field-tests/arc-restore-consumer-2026-11-24.md`, its finding index,
+qualification/CLI/history receipts and snapshot manifest. Production code and
+the frozen blob runtime remain unchanged (1,881 files / 32 source hashes).
+
+RestoreSidebarDataFlow worker `0x100305ef0` reads the selected RestorableFile.url
+through StorableDataStore<StorableSidebar>. With a present value, it reads the
+default StorableWindows, attempts to save a copy with an empty windows array,
+clears the restored sidebar's optional sidebarSyncState (ZoneSyncData), then
+requests a sidebar save. Both saves pass W1=1. Windows errors are caught and
+the sidebar stage continues; sidebar save errors are also released. The final
+Boolean follows the original backup-read Optional tag, not save success.
+No target I/O or UI trigger was observed. Normal Swift ABI/layout, valid
+captured wrappers and relevant copy-window premises remain explicit.
+
+Public Windows metadata `0x1043e69b0` binds descriptor `0x103dc373c` and offsets
+0/8/24/32/48, size 49/stride 56. The +24 windows field receives the empty-array
+import; other selected bytes are carried forward. Sidebar metadata vector
+entry+0x18 binds ordinal2 sidebarSyncState; its optional ZoneSyncData type and
+metadata accessor are independently checked. Generic/throwing closure types
+remain unsupported; analyst composition is not normalized typed recovery.
+
+308 MCP calls include four missing-procedure errors; 304 succeed. There are
+246 instruction-byte checks, 16 original-byte reads, two exact CLI/MCP pairs,
+24 authenticated earlier snapshots and four empty verifier lineages. The first
+session failed after 44 successful calls when the analyst passed an unsupported
+path before invocation. `plan-complete.json` is the corrected completed plan.
+The copied `mcp-complete.mjs` also fixes null Ajv input-error diagnostics, with
+an expected-failure, zero-call schema control. All failed captures survive.
+
+The generic `restoreFromBackup` helper remains a separate unresolved consumer
+question: the selected-file worker calls read/save fields instead. Selected
+Boost store default/global copy accessors are now decoded but establish no
+actual restore invocation. Empty partial-Program xrefs and 106 supplemental
+opcode shapes do not prove nonuse or a complete caller inventory.
+
+**Next:** the restore UI/caller and post-save in-memory behavior; a provenance-
+bound consumer of the generic automatic backup helper; or the remaining typed
+Client origin/selection/carrier work. Client unknown remains revision 3/open.
+Actual I/O/durability and wider browser features remain open. Do not repeat the
+closed restore ordering, getter wrappers, Windows layout or save-error study.
+
+## Previous bucket removal and backend-policy checkpoint (2026-11-24)
 
 Read `field-tests/arc-removal-persistence-2026-11-24.md`, its finding index,
 qualification/CLI/history receipts and snapshot manifest. Production code and

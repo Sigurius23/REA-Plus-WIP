@@ -1,5 +1,15 @@
 # Arc 1.172.1 analysis dossier
 
+Selected-file sidebar restore addendum **2026-11-24**:
+[The new checkpoint](arc-restore-consumer-2026-11-24.md) binds the selected
+RestoreSidebarDataFlow worker to a backup read, attempted saved-window reset,
+sidebarSyncState reset and sidebar save request. Its Boolean follows backup
+presence, so caught write errors do not establish a false result or successful
+writeback. Exact Windows metadata/layout and both model identities are checked.
+The generic automatic restore helper's higher consumer, the UI trigger,
+in-memory updates, actual I/O/durability and typed Client selection remain open.
+No Arc/helper/script or service was run; production code is unchanged.
+
 Bucket-removal and backend-policy addendum **2026-11-24**:
 [The new checkpoint](arc-removal-persistence-2026-11-24.md) traces selected
 probe-cluster repair and verifies ten supplied-hash plus four isolated Arc/C

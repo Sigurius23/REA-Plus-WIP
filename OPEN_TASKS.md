@@ -4,6 +4,19 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc selected-file sidebar restore traced (2026-11-24):**
+  The selected RestoreSidebarDataFlow worker reads a RestorableFile URL,
+  attempts to clear the current StorableWindows collection, clears the
+  restored sidebar's sidebarSyncState and requests a sidebar save. Its Boolean
+  follows backup-data presence; caught write errors do not make it false.
+  Windows offsets/49-byte size and both store model identities are verified.
+  308 MCP calls (304 successful), 246 instruction-byte checks, two exact
+  CLI/MCP pairs and 24 historical snapshots qualify the finding. A field
+  recorder's null schema diagnostic was fixed and checked with a zero-call
+  rejection control. Product code is unchanged. The generic automatic backup
+  helper's higher consumer, actual I/O/durability and item 63 remain open.
+  See [the checkpoint](field-tests/arc-restore-consumer-2026-11-24.md).
+
 - **Arc bucket removal and default backend policy checked (2026-11-24, item 63 partial):**
   The selected removal helper repairs its probe cluster and clears the final
   hole; ten supplied-hash and four isolated Arc/C pairs agree. An occupied-next
@@ -1779,7 +1792,24 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 
 ## Arc continuation (2026-11-21)
 
+The 2026-11-24 [selected-file sidebar restore follow-up](field-tests/arc-restore-consumer-2026-11-24.md)
+binds the selected worker's read/reset/save sequence and preserves caught-save
+error semantics. Its return value is not a write-success receipt. This route
+uses read/save fields and does not close the separate generic restoreFromBackup
+consumer gap. A field-harness diagnostic correction is verified; no new
+production defect or helper-global typed domain is claimed.
+
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-24 boundary retained during restore work.** The saved typed-input
+    design still requires a proved closure origin and valid invocation context;
+    actual override/cache/default selection remains unresolved. Adjacent store
+    declaration fields are now retained, including read/save/restore names,
+    but their generic/throwing signatures and nested application lowering remain
+    outside the current narrow decoder. Do not treat the analyst's conditional
+    sidebar composition as automatic typed invocation recovery. Unknown
+    revision 3 stays open; the next independent work is the restore UI caller/
+    post-save route and the generic automatic-restore consumer.
+
     **2026-11-24 bucket repair and backend predicate advanced.**
     Selected helper `0x100710288` now has static move/bookkeeping coverage,
     fourteen matching Arc/C pairs and one explicit runtime-call stop. The
