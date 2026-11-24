@@ -1,14 +1,37 @@
+import {
+  INSPECT_ANALYSIS_VIEW_OPERATION,
+  analysisViewInputError,
+} from "./analysisViewErrors.js";
+import { committedProviderSchema } from "../analysisProfile.js";
+import {
+  nativeInventoryViewRequestSchema,
+  nativeInventorySummarySchema,
+  nativeInventoryViewRowSchema,
+  projectNativeInventoryView,
+} from "./nativeInventoryView.js";
+import {
+  batchDecompileViewRequestSchema,
+  batchDecompileSummarySchema,
+  batchDecompileViewRowSchema,
+  batchTextPageSchema,
+  projectBatchDecompileView,
+} from "./batchDecompileView.js";
+import {
+  NATIVE_INVENTORY_OPERATIONS,
+  isNativeInventoryOperation,
+} from "../native/nativeInventory.js";
+import type { AnalysisProfileCommitment } from "../analysisProfile.js";
 import { z } from "zod";
 
-import {
-  AnalysisInputError,
-  type AnalysisInputIssue,
-  AnalysisUnsupportedTargetError,
-} from "../analysisErrorCore.js";
+import { AnalysisUnsupportedTargetError } from "../analysisErrorCore.js";
 import { digestCanonicalValue } from "../canonicalDigest.js";
 import { digestSchema, prefixedDigestSchema } from "../digests.js";
-import { evidenceSchema } from "../evidence.js";
-import { jsonObjectSchema, jsonValueSchema } from "../jsonValue.js";
+import { evidenceSchema, providerSchema } from "../evidence.js";
+import {
+  jsonObjectSchema,
+  jsonValueSchema,
+  type JsonValue,
+} from "../jsonValue.js";
 import { err, ok, type Result } from "../result.js";
 import type { AnalysisError } from "../analysisErrorBase.js";
 import { binaryLayoutSchema } from "../native/binaryLayout.js";
@@ -23,7 +46,10 @@ import { projectJavaScriptApplicationView } from "./javascriptApplicationView.js
 import { projectNativeFunctionView } from "./nativeFunctionView.js";
 
 /** Public name of the selected-view workflow. */
-export const INSPECT_ANALYSIS_VIEW_OPERATION = "inspect_analysis_view" as const;
+export {
+  INSPECT_ANALYSIS_VIEW_OPERATION,
+  analysisViewInputError,
+} from "./analysisViewErrors.js";
 
 const summaryViewSchema = z.strictObject({ kind: z.literal("summary") });
 const facetViewSchema = z.strictObject({
@@ -160,6 +186,8 @@ export const analysisViewRequestSchema = z.discriminatedUnion("kind", [
   itemViewSchema,
   pageViewSchema,
   nativeViewSchema,
+  nativeInventoryViewRequestSchema,
+  batchDecompileViewRequestSchema,
 ]);
 
 /** Inline Evidence or an exact same-session retained reference. */
@@ -277,10 +305,17 @@ const viewResultBase = {
     "inspect_binary_layout",
     "analyze_javascript_application",
     "analyze_function",
+    ...NATIVE_INVENTORY_OPERATIONS,
+    "batch_decompile",
   ]),
   parent_digest: digestSchema,
   view_digest: digestSchema,
-  artifact: artifactSchema,
+  artifact: artifactSchema.nullable(),
+  source_provider: providerSchema.nullable().optional(),
+  source_analysis_profile_digest: digestSchema.nullable().optional(),
+  source_parameters: jsonValueSchema.optional(),
+  batch: batchDecompileSummarySchema.shape.batch.optional(),
+  decompiling_provider: committedProviderSchema.nullable().optional(),
   coverage: coverageSchema,
   limitations: z.array(z.string()),
   unknowns: z.array(z.string()),
@@ -296,6 +331,8 @@ export const analysisViewResultSchema = z.discriminatedUnion("kind", [
       layoutSummarySchema,
       javascriptSummarySchema,
       nativeFunctionSummarySchema,
+      nativeInventorySummarySchema,
+      batchDecompileSummarySchema,
     ]),
     ...viewResultBase,
   }),
@@ -325,6 +362,19 @@ export const analysisViewResultSchema = z.discriminatedUnion("kind", [
     item: jsonValueSchema,
     ...viewResultBase,
   }),
+  z.strictObject({
+    kind: z.literal("native-inventory"),
+    view: nativeInventoryViewRequestSchema,
+    rows: z.array(nativeInventoryViewRowSchema),
+    ...viewResultBase,
+  }),
+  z.strictObject({
+    kind: z.literal("batch-decompile"),
+    view: batchDecompileViewRequestSchema,
+    rows: z.array(batchDecompileViewRowSchema).optional(),
+    item: batchTextPageSchema.optional(),
+    ...viewResultBase,
+  }),
 ]);
 
 export type AnalysisViewRequest = z.output<typeof analysisViewRequestSchema>;
@@ -339,15 +389,12 @@ export interface AnalysisViewParent {
   readonly evidenceId: string;
   readonly operation: string;
   readonly normalizedResult: unknown;
+  readonly provider?: z.output<typeof providerSchema>;
+  readonly analysisProfile?: AnalysisProfileCommitment | null;
+  readonly parameters?: JsonValue;
   readonly limitations: readonly string[];
   readonly artifact?: { readonly path: string; readonly sha256: string } | null;
 }
-
-/** Construct a typed input failure for one selected-view constraint. */
-export const analysisViewInputError = (
-  issues: readonly AnalysisInputIssue[],
-): AnalysisInputError =>
-  new AnalysisInputError(INSPECT_ANALYSIS_VIEW_OPERATION, undefined, issues);
 
 /** View payload before the content digest is attached. */
 export type UnsignedAnalysisView =
@@ -360,6 +407,14 @@ export type UnsignedAnalysisView =
   | Omit<Extract<AnalysisViewResult, { readonly kind: "page" }>, "view_digest">
   | Omit<
       Extract<AnalysisViewResult, { readonly kind: "native" }>,
+      "view_digest"
+    >
+  | Omit<
+      Extract<AnalysisViewResult, { readonly kind: "native-inventory" }>,
+      "view_digest"
+    >
+  | Omit<
+      Extract<AnalysisViewResult, { readonly kind: "batch-decompile" }>,
       "view_digest"
     >;
 
@@ -406,7 +461,7 @@ const unsupportedParent = (
   new AnalysisUnsupportedTargetError(
     INSPECT_ANALYSIS_VIEW_OPERATION,
     parentArtifactPath(parent),
-    `Parent Evidence operation ${JSON.stringify(parent.operation)} is not inspect_binary_layout, analyze_javascript_application or analyze_function.`,
+    `Parent Evidence operation ${JSON.stringify(parent.operation)} does not support retained analysis views.`,
   );
 
 const parentArtifactPath = (parent: AnalysisViewParent): string => {
@@ -446,6 +501,14 @@ export const projectAnalysisView = (
         },
       ]),
     );
+  if (isNativeInventoryOperation(parent.operation)) {
+    const projected = projectNativeInventoryView(parent, view);
+    return projected.ok ? ok(sealAnalysisView(projected.value)) : projected;
+  }
+  if (parent.operation === "batch_decompile") {
+    const projected = projectBatchDecompileView(parent, view);
+    return projected.ok ? ok(sealAnalysisView(projected.value)) : projected;
+  }
   if (parent.operation === "inspect_binary_layout") {
     const layout = binaryLayoutSchema.safeParse(parent.normalizedResult);
     if (!layout.success)

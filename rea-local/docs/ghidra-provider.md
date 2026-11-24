@@ -375,3 +375,40 @@ It accepts the same architecture and DLL flags and verifies the selected PE role
 in the analysis profile.
 All lanes require matching native controls; package startup alone establishes
 only package compatibility.
+
+## Retained native inventories and batches
+
+`list_names`, `list_procedures`, `list_strings`, `search_procedures` and
+`search_strings` accept `detail: "summary"`. Complete inline output remains
+the default. A summary retains the complete parent Evidence and returns its
+`normalized_result.parent_evidence_id`; use `inspect_analysis_view` with
+`view: {kind:"native-inventory", offset:0, limit:64}` to read source-order rows.
+Rows retain `source_index`, including distinct aliases at one address. Optional
+`fields` projects recorded fields; `value` keeps string/decoding qualifications.
+Counts describe the retained provider inventory, not all program objects.
+
+`batch_decompile` keeps explicit selectors and observed canonical procedure
+identity separate. Reads run sequentially within the batch. Null pseudocode
+returns `status:"unavailable", reason:"no_pseudocode"`; an invalid value is
+an error. Each item keeps its own observation's caveats. Cancellation or
+cleanup uncertainty stops admission and preserves any completed prefix in
+`details.partial_observation` with its request and source identity.
+
+Summary delivery retains the full batch. Select
+`view: {kind:"batch-decompile", collection:"items", offset:0, limit:64}`.
+Optional `where` filters `indices`, `addresses`, `procedure_addresses` and
+`statuses` before pagination; an explicit empty selection matches no items.
+Original batch indices keep duplicate selectors distinct. Rows omit bodies
+unless `include_pseudocode:true`. Page one successful body with
+`{kind:"batch-decompile", collection:"pseudocode", index:0, offset:0, limit:4096}`.
+Text pages count UTF-16 code units and never split a surrogate pair.
+
+CLI equivalents are `rea native-inventory <path> --kind procedures`,
+`rea search <path> <pattern> --kind procedures`, and
+`rea batch-decompile <path> '{"addresses":["symbol","0x1234"]}'`.
+For summary add `--detail summary --evidence-output /new/complete.bundle.json`.
+The bundle is written before the one-shot process returns its summary.
+A new output path is required; existing files are preserved. Use
+`rea inspect-analysis-view` with inline Evidence loaded from that bundle to
+read later pages without reopening a provider. MCP references expire when
+the session is cleared; exported/inline Evidence remains portable.

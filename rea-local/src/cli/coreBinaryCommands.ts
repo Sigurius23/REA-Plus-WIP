@@ -1,3 +1,4 @@
+import { registerNativeInventoryCommands } from "./nativeInventoryCommands.js";
 import { z } from "incur";
 import { stat } from "node:fs/promises";
 import { resolve } from "node:path";
@@ -19,7 +20,7 @@ import type { CliInstance } from "./types.js";
 import { runCliJavaScriptApplicationAnalysis } from "./javascriptApplicationAnalysis.js";
 import { withCommandCancellation } from "./commandCancellation.js";
 import { javascriptApplicationOptions } from "../cliObservationOptions.js";
-import { runCliFunctionAnalysis } from "./functionAnalysis.js";
+import { runCliRetainedAnalysis } from "./retainedAnalysis.js";
 
 const snapshotOption = z
   .string()
@@ -43,7 +44,7 @@ const standardAnalysisOptions = {
   provider: providerSelectionOption,
 };
 
-const functionDeliveryOptions = z.object({
+const nativeDeliveryOptions = z.object({
   detail: z.enum(["complete", "summary"]).default("complete"),
   "evidence-output": z
     .string()
@@ -98,7 +99,7 @@ const registerProcedureSelectorCommand = (
       ...standardAnalysisOptions,
       ...(registration.operation === "analyze_function"
         ? {
-            ...functionDeliveryOptions.shape,
+            ...nativeDeliveryOptions.shape,
           }
         : {}),
     }),
@@ -122,8 +123,8 @@ const registerProcedureSelectorCommand = (
             },
           );
         if (registration.operation !== "analyze_function") return run();
-        const delivery = functionDeliveryOptions.parse(options);
-        return runCliFunctionAnalysis(run, {
+        const delivery = nativeDeliveryOptions.parse(options);
+        return runCliRetainedAnalysis(run, {
           detail: delivery.detail,
           evidenceOutput: delivery["evidence-output"],
         });
@@ -138,6 +139,7 @@ export const registerCoreBinaryCommands = (
   runDirectAnalysis: DirectAnalysis["runDirectAnalysis"],
 ): void => {
   registerOverviewCommands(cli, logger, runDirectAnalysis);
+  registerNativeInventoryCommands(cli, logger, runDirectAnalysis);
   registerProcedureSelectorCommand(cli, logger, runDirectAnalysis, {
     command: CLI_COMMANDS.decompile,
     description: "Read one part of an app as code",
@@ -345,6 +347,7 @@ const registerSearchCommand = (
         .describe("Literal text or regex pattern"),
     }),
     options: z.object({
+      ...nativeDeliveryOptions.shape,
       pattern: z
         .string()
         .min(1)
@@ -368,22 +371,35 @@ const registerSearchCommand = (
     }),
     run: ({ args, options }) =>
       logCliCommand(logger, "search", () =>
-        runDirectAnalysis(
-          args.path,
-          options.kind === "strings" ? "search_strings" : "search_procedures",
-          {
-            pattern: resolveCliAnalysisSelector(
-              args.pattern,
-              options.pattern,
-              "pattern",
+        runCliRetainedAnalysis(
+          (signal) =>
+            runDirectAnalysis(
+              args.path,
               options.kind === "strings"
                 ? "search_strings"
                 : "search_procedures",
+              {
+                pattern: resolveCliAnalysisSelector(
+                  args.pattern,
+                  options.pattern,
+                  "pattern",
+                  options.kind === "strings"
+                    ? "search_strings"
+                    : "search_procedures",
+                ),
+                mode: options.mode,
+                case_sensitive: options.caseSensitive,
+              },
+              { ...directOptions(logger, options), signal },
             ),
-            mode: options.mode,
-            case_sensitive: options.caseSensitive,
+          {
+            detail: options.detail,
+            evidenceOutput: options["evidence-output"],
+            operation:
+              options.kind === "strings"
+                ? "search_strings"
+                : "search_procedures",
           },
-          directOptions(logger, options),
         ),
       ),
   });

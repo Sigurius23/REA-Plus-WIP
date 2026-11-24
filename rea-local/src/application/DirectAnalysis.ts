@@ -59,6 +59,10 @@ type DirectAnalysisTool =
   | "inspect_native_load_image"
   | "read_bytes"
   | "address_to_file_offset"
+  | "batch_decompile"
+  | "list_names"
+  | "list_procedures"
+  | "list_strings"
   | "binary_overview"
   | "procedure_pseudo_code"
   | "read_function_instructions"
@@ -355,6 +359,7 @@ const executeAnalysisTool = async (input: {
   }
   if (
     tool === "binary_overview" ||
+    tool === "batch_decompile" ||
     tool === "inspect_native_api" ||
     tool === "inspect_native_dispatch_metadata" ||
     tool === "trace_feature" ||

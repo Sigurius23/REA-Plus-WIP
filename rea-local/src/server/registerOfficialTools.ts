@@ -1,3 +1,9 @@
+import { isNativeInventoryOperation } from "../domain/native/nativeInventory.js";
+import type { EvidenceLookup } from "../application/EvidenceInputResolver.js";
+import {
+  analysisViewRetentionFailure,
+  summarizeRetainedAnalysis,
+} from "../application/analysisView/AnalysisViewService.js";
 import type { EvidenceMcpServer } from "./EvidenceMcpServer.js";
 import type { EvidenceWriter } from "../application/investigation/InvestigationRecordPort.js";
 import type { ServerContext } from "@modelcontextprotocol/server";
@@ -21,6 +27,7 @@ import type { WithAdmittedAnalysis } from "./analysisAdmission.js";
 
 /** Optional session services used by direct tool registration. */
 export interface OfficialToolRegistration {
+  readonly evidenceById?: EvidenceLookup | undefined;
   readonly logger: Logger;
   readonly activeTarget: (() => BinaryTarget | undefined) | undefined;
   readonly recordEvidence: EvidenceWriter["recordEvidence"] | undefined;
@@ -34,6 +41,7 @@ export const registerOfficialTools = (
 ): void => {
   for (const contract of OFFICIAL_TOOL_CONTRACTS) {
     registerOfficialTool(server, contract, {
+      evidenceById: options.evidenceById,
       logger: options.logger,
       activeTarget: options.activeTarget,
       recordEvidence: options.recordEvidence,
@@ -46,6 +54,7 @@ const registerOfficialTool = (
   server: EvidenceMcpServer,
   contract: (typeof OFFICIAL_TOOL_CONTRACTS)[number],
   registration: {
+    readonly evidenceById?: EvidenceLookup | undefined;
     readonly logger: Logger;
     readonly activeTarget: (() => BinaryTarget | undefined) | undefined;
     readonly recordEvidence: EvidenceWriter["recordEvidence"] | undefined;
@@ -60,9 +69,26 @@ const registerOfficialTool = (
         contract.name,
         context.mcpReq.signal,
         async (admittedAnalysis) => {
-          const arguments_ = jsonObjectSchema.parse(
+          const parsed = jsonObjectSchema.parse(
             contract.inputSchema.parse(input),
           );
+          const summary =
+            isNativeInventoryOperation(contract.name) &&
+            parsed.detail === "summary";
+          const arguments_ = { ...parsed };
+          if (isNativeInventoryOperation(contract.name))
+            delete arguments_.detail;
+          if (summary) {
+            const failure = analysisViewRetentionFailure(contract.name, {
+              recordEvidence: registration.recordEvidence,
+              evidenceById: registration.evidenceById,
+            });
+            if (failure !== undefined)
+              return server.delivery.toCallToolResult(
+                { ok: false, error: failure },
+                contract,
+              );
+          }
           const progress = mcpProgressReporter(context);
           const result = await runOfficialOperation(
             admittedAnalysis,
@@ -92,6 +118,19 @@ const registerOfficialTool = (
               locations: result.value.locations,
             },
           );
+          if (summary) {
+            const selected = summarizeRetainedAnalysis(evidence, {
+              recordEvidence: registration.recordEvidence,
+              evidenceById: registration.evidenceById,
+            });
+            return selected.ok
+              ? server.delivery.toEvidenceToolResult(
+                  selected.value,
+                  contract,
+                  registration.recordEvidence?.(selected.value),
+                )
+              : server.delivery.toCallToolResult(selected, contract);
+          }
           const recorded = registration.recordEvidence?.(evidence);
           return server.delivery.toEvidenceToolResult(
             evidence,

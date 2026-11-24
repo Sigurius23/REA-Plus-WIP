@@ -121,7 +121,11 @@ export const registerEnhancedTools = (
     toolRegistrationOptions(batchDecompile),
     (input, context) =>
       executeEnhancedTool(registration, batchDecompile, {
-        validatedCall: { name: "batch_decompile", input },
+        validatedCall: {
+          name: "batch_decompile",
+          input: { addresses: input.addresses },
+        },
+        detail: input.detail,
         context,
       }),
   );
@@ -243,6 +247,17 @@ const executeEnhancedTool = async (
           parameters,
           detail: request.detail ?? "complete",
         });
+      if (request.detail === "summary") {
+        const failure = analysisViewRetentionFailure(name, {
+          recordEvidence: registration.recordEvidence,
+          evidenceById: registration.evidenceById,
+        });
+        if (failure !== undefined)
+          return registration.delivery.toCallToolResult(
+            { ok: false, error: failure },
+            contract,
+          );
+      }
       const scope = new WorkflowEvidenceScope(
         {
           execute: (operation, operationParameters, executionOptions) =>
@@ -296,6 +311,19 @@ const executeEnhancedTool = async (
         });
         if (!unknowns.ok)
           return registration.delivery.toCallToolResult(unknowns, contract);
+        if (request.detail === "summary") {
+          const summary = summarizeRetainedAnalysis(evidence, {
+            recordEvidence: registration.recordEvidence,
+            evidenceById: registration.evidenceById,
+          });
+          return summary.ok
+            ? registration.delivery.toEvidenceToolResult(
+                summary.value,
+                contract,
+                registration.recordEvidence?.(summary.value),
+              )
+            : registration.delivery.toCallToolResult(summary, contract);
+        }
         return registration.delivery.toEvidenceToolResult(
           evidence,
           contract,

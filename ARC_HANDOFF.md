@@ -26,6 +26,43 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest upstream native inventory/batch integration (2026-11-24)
+
+Read `field-tests/upstream-native-pages-2026-11-24.md` and its qualified receipt,
+source/deletion manifest, raw MCP/CLI captures, bundles and history receipt.
+Item 62 now includes summary delivery for five native inventories/searches and
+batch_decompile, native-inventory source-index pages, batch filtered item pages
+and indexed Unicode-safe text pages. Complete stays default. CLI native-inventory,
+batch-decompile and search share portable complete Evidence bundles for summary.
+
+Batch reads are sequential; null pseudocode is unavailable, not an invented
+output error. Duplicate selectors keep their original indices and observed
+identities. Each item retains its own caveats. Cancellation (including Hopper's
+typed cancellation) and unconfirmed cleanup stop admission and preserve completed
+prefix facts with source identity. Workflow revision 3 separates old semantics.
+The repository-skill verifier's tracked-deletion failure during the CLI helper
+rename is fixed; tracked-only authority and unexpected-missing-path failures remain.
+
+134 selected tests, 47 qualified MCP calls (46 successful), six full CLI/MCP
+Evidence pairs, package/type/docs checks, test discovery and 28 historical
+snapshots qualify. Live provider scope is macOS Ghidra 12.1.4; other providers'
+interruption behavior is fixture-backed. The rejected 256 KiB test budget was
+an invalid input, captured with zero calls and clean lineage. Actual 10 MiB
+runs accept the complete procedure reply (~7.9 MB) and its summary (~13 KB).
+
+Arc's verified existing Program still yields 11,330 retained procedure rows,
+with discovery coverage unknown. The reducer's complete 63,696-code-unit
+pseudocode body reconstructs from 16 pages; duplicate batch selections remain
+separate. Its instruction read is exactly the prior checkpoint Evidence:
+10,072 bytes / 2,518 instructions, preserving the 2,537 seeds and original
+one-second partial-analysis state. No Arc/helper/fixture executable was launched.
+The broader feature frontier and Client unknown revision 3 remain unchanged.
+
+Next upstream scope: other native-observation/context views, analyzed-memory
+search_bytes and all-functions decompilation/export, then the remaining item 62
+groups. Checkpoint extensions/automatic route refresh/stale-lock recovery remain
+open. Keep the offline boundary above and preserve all older captures.
+
 ## Latest upstream owned-checkpoint integration (2026-11-24)
 
 Read `field-tests/upstream-ghidra-checkpoints-2026-11-24.md`, its final runtime
@@ -57,7 +94,7 @@ Checkpoint extensions, Windows/special loaders, automatic profile refresh
 after retirement and automatic stale-lock recovery are not established. Close
 and reopen to bind saved state. A crash can leave `publisher.lock`; preserve
 it until the publisher is independently confirmed stopped, or choose another
-directory. Next upstream block: remaining native inventory/batch pages. The
+directory. The newer integration above qualifies native inventory/batch pages. The
 broader Arc investigation remains open.
 
 ## Latest upstream project-copy checkpoint (2026-11-24)

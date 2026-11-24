@@ -17,9 +17,17 @@ export async function verifyRepositorySkill({ root, workspace }) {
   ).stdout
     .split("\0")
     .filter(Boolean);
+  // Keep tracked-only clone authority while allowing intentional worktree
+  // deletions. A path disappearing after this Git observation still fails cp.
+  const deleted = new Set(
+    (await exec("git", ["ls-files", "--deleted", "-z"], { cwd: root })).stdout
+      .split("\0")
+      .filter(Boolean),
+  );
   for (const entry of tracked) {
     const mode = entry.slice(0, 6);
     const path = entry.slice(7);
+    if (deleted.has(path)) continue;
     const destination = join(snapshot, path);
     // A GitHub clone without submodule initialization has only these directories.
     if (mode === "160000") {

@@ -1,0 +1,108 @@
+{
+  "evidence_id": "ev_07aec59d8686d643ab95f6fac4d1a498d76c542240149b63b9c4374acdf2a734",
+  "subject": {
+    "name": "owned-target",
+    "digest": {
+      "sha256": "7591fdfaf870b9c7ad2b398163b5c6cbb02cbc41c52273f232764b977882097a"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target"
+  },
+  "provider": {
+    "id": "rea-analysis-view",
+    "name": "REA+ analysis view projection",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis-view",
+  "operation": "inspect_analysis_view",
+  "parameters": {
+    "parent_evidence_id": "ev_8d4059aa1e6038d88fafda4d82da1083c70e86b87175b882586f38f4e2514242",
+    "view": {
+      "kind": "summary"
+    }
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "kind": "summary",
+    "view": {
+      "kind": "summary"
+    },
+    "summary": {
+      "collection": "strings",
+      "row_count": 1,
+      "discovery_coverage": "unknown",
+      "selectable_fields": [
+        "address",
+        "value",
+        "symbol",
+        "procedure",
+        "string",
+        "provider_value",
+        "decoding"
+      ]
+    },
+    "parent_evidence_id": "ev_8d4059aa1e6038d88fafda4d82da1083c70e86b87175b882586f38f4e2514242",
+    "parent_operation": "search_strings",
+    "parent_digest": "8d4059aa1e6038d88fafda4d82da1083c70e86b87175b882586f38f4e2514242",
+    "view_digest": "86e4633241925d2c8dc1d640f8af1ebae2c087cda23265a3a3b8918ad0d0b042",
+    "artifact": {
+      "path": "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+      "sha256": "7591fdfaf870b9c7ad2b398163b5c6cbb02cbc41c52273f232764b977882097a"
+    },
+    "source_provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "source_analysis_profile_digest": "cee00b8fdb506419b51ea20e3903dd1b6c2ed4693072a853fcafa49fd530fea2",
+    "source_parameters": {
+      "pattern": "native retained",
+      "mode": "literal",
+      "case_sensitive": true
+    },
+    "coverage": {
+      "status": "complete-within-view",
+      "examined": 1,
+      "total": 1,
+      "next_offset": null,
+      "exhausted": true
+    },
+    "limitations": [
+      "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+      "Owned Ghidra checkpoints save the initial Program and every acknowledged metadata edit. Restores use a verified private copy without rerunning auto-analysis, and preserve the original timeout and seed identity. Original executable bytes are never written.",
+      "After retirement, reopen the target to resolve its saved generation; an old profile cannot silently restart from changed state. Publisher locks are not reclaimed automatically after owner crashes.",
+      "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+      "Only Ghidra-defined string Data is observed; packed or undefined string bytes may be absent. Completeness applies to that inventory, and an empty search does not establish that text is absent from the artifact. If an address is known, use read_bytes and xrefs to inspect bytes and references.",
+      "Regex mode uses Java Pattern semantics. Matcher or compiler stack exhaustion returns a resource constraint without closing the session; literal mode avoids regex recursion and returns complete matching values.",
+      "Ghidra auto-analysis state: analysis_complete=true; analysis_timed_out=false.",
+      "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state."
+    ],
+    "unknowns": [
+      "Counts and pages describe retained provider observations, not complete discovery. A missing match does not establish absence outside this inventory."
+    ]
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "The default profile requires Ghidra to report default auto-analysis complete; an explicitly bounded profile can admit a stable partial Program after its configured deadline. Every observation reports the measured analysis outcome.",
+    "Owned Ghidra checkpoints save the initial Program and every acknowledged metadata edit. Restores use a verified private copy without rerunning auto-analysis, and preserve the original timeout and seed identity. Original executable bytes are never written.",
+    "After retirement, reopen the target to resolve its saved generation; an old profile cannot silently restart from changed state. Publisher locks are not reclaimed automatically after owner crashes.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Only Ghidra-defined string Data is observed; packed or undefined string bytes may be absent. Completeness applies to that inventory, and an empty search does not establish that text is absent from the artifact. If an address is known, use read_bytes and xrefs to inspect bytes and references.",
+    "Regex mode uses Java Pattern semantics. Matcher or compiler stack exhaustion returns a resource constraint without closing the session; literal mode avoids regex recursion and returns complete matching values.",
+    "Ghidra auto-analysis state: analysis_complete=true; analysis_timed_out=false.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state."
+  ],
+  "locations": [
+    {
+      "kind": "artifact-path",
+      "path": "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target"
+    }
+  ],
+  "evidence_links": [
+    "ev_8d4059aa1e6038d88fafda4d82da1083c70e86b87175b882586f38f4e2514242"
+  ]
+}

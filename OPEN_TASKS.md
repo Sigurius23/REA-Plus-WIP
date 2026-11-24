@@ -4,6 +4,17 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Native inventory/batch retained delivery integrated (2026-11-24, item 62 partial):**
+  Five inventory/search tools and explicit decompilation batches now support
+  complete/summary delivery and stable pages through CLI/MCP. Null pseudocode,
+  duplicate selectors, per-item caveats and interrupted-prefix facts remain
+  distinct. The package verifier now handles intentional tracked deletions.
+  134 selected tests pass; 47 qualified MCP calls, six exact CLI/MCP Evidence
+  pairs, package checks and 28 historical snapshots qualify the slice. Arc
+  retains 11,330 observed procedure rows and its unchanged 10,072-byte /
+  2,518-instruction reducer; 63,696 pseudocode units reconstruct from 16 pages.
+  See [the report](field-tests/upstream-native-pages-2026-11-24.md).
+
 - **Owned Ghidra checkpoints integrated (2026-11-24, item 62 partial):**
   Opt-in native Linux/macOS sessions preserve seeded analysis and acknowledged
   metadata edits through verified packed-Program restores. Arc's cold/warm
@@ -1810,11 +1821,21 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
       write failure. Missing checkpoint roots under symlinked parents (such as
       macOS `/tmp`) are now canonicalized before profile binding. Source and
       lifecycle checks pass; see [the qualification](field-tests/upstream-ghidra-checkpoints-2026-11-24.md).
-    - [ ] Port remaining native inventory/batch pages. Checkpoint extensions,
-      Windows/special loaders, automatic profile refresh after retirement and
-      automatic crashed-publisher lock recovery remain separate unqualified
-      scope. Reopen to bind a newly saved generation; a stale profile refuses
-      changed state. No PID-only lock reclamation is attempted.
+    - [x] Port retained native inventory/batch pages (2026-11-24). Five
+      inventories/searches and batch_decompile retain complete parents for
+      summaries, original-index item pages and Unicode-safe body pages. CLI
+      supports portable bundles; complete remains default. Real Ghidra controls
+      qualify null-as-unavailable, duplicate selectors and exact parity. Batch
+      admission is sequential, caveats stay per item and interrupted prefixes
+      retain identity. Workflow revision 3 avoids old replay semantics. Fixed
+      the repository-skill verifier's tracked-deletion copy failure exposed by
+      the shared CLI-helper rename. See [qualification](field-tests/upstream-native-pages-2026-11-24.md).
+    - [ ] Review remaining native-observation/context views, analyzed-memory
+      search_bytes and decompile_all/export against the existing local tools.
+    - [ ] Checkpoint extensions, Windows/special loaders, automatic profile
+      refresh after retirement and automatic crashed-publisher lock recovery
+      remain separate unqualified scope. Reopen to bind a newly saved generation;
+      a stale profile refuses changed state. No PID-only lock reclamation.
     - [ ] Add structured offline firmware readers (HEX/S-record, UF2/DfuSe,
       uImage/FIT/ESP, Android boot/OTA) and devicetree inspection.
     - [ ] Qualify raw-image/RISC-V, expanded MIPS and PowerPC/DOL lanes

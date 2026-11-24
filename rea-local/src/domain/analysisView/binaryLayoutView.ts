@@ -1,3 +1,4 @@
+import { analysisViewInputError } from "./analysisViewErrors.js";
 import {
   AnalysisInputError,
   type AnalysisInputIssue,
@@ -152,7 +153,11 @@ export const projectBinaryLayoutView = (
   view: AnalysisViewRequest,
 ): Result<UnsignedAnalysisView, AnalysisError> => {
   const shared = parentFields(parent, layout);
-  if (view.kind === "native")
+  if (
+    view.kind === "native" ||
+    view.kind === "native-inventory" ||
+    view.kind === "batch-decompile"
+  )
     return err(
       layoutIncompatible("Native views require analyze_function Evidence."),
     );

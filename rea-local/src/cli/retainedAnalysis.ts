@@ -11,23 +11,25 @@ import { EvidenceFileError } from "../domain/evidenceErrors.js";
 import { jsonValueSchema, type JsonValue } from "../domain/jsonValue.js";
 import { withCommandCancellation } from "./commandCancellation.js";
 
-/** Preserve a portable full dossier before a one-shot CLI returns its summary. */
-export const runCliFunctionAnalysis = async (
+/** Preserve portable complete analysis before a one-shot CLI returns its summary. */
+export const runCliRetainedAnalysis = async (
   run: (signal: AbortSignal) => Promise<JsonValue>,
   options: {
+    readonly operation?: string;
     readonly detail: "complete" | "summary";
     readonly evidenceOutput?: string | undefined;
   },
 ): Promise<JsonValue> =>
   withCommandCancellation(async (signal) => {
+    const operation = options.operation ?? "analyze_function";
     if (options.detail === "summary" && options.evidenceOutput === undefined)
       return failure(
-        new AnalysisInputError("analyze_function", undefined, [
+        new AnalysisInputError(operation, undefined, [
           {
             path: ["evidence-output"],
             reason: "invalid_value",
             message:
-              "CLI summary requires --evidence-output with a new bundle path so the complete dossier remains available after this process exits.",
+              "CLI summary requires --evidence-output with a new bundle path so the complete analysis remains available after this process exits.",
           },
         ]),
       );
@@ -74,6 +76,6 @@ export const runCliFunctionAnalysis = async (
   });
 
 const failure = (error: AnalysisError): JsonValue => ({
-  error: "Function analysis delivery failed",
+  error: "Analysis delivery failed",
   ...projectAnalysisError(error),
 });

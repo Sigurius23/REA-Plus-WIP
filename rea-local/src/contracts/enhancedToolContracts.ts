@@ -1,3 +1,4 @@
+import { analysisDetailSchema } from "./analysisDetail.js";
 import { z } from "zod";
 
 import { enhancedInputSchemas } from "./enhancedInputs.js";
@@ -42,8 +43,10 @@ export const ENHANCED_TOOL_CONTRACTS = [
   ),
   enhanced(
     "batch_decompile",
-    "Decompile each explicit procedure symbol or address concurrently. Preserves each input selector in address and reports the observed canonical entry and entry label in procedure; identity or label failures remain explicit without discarding usable pseudocode. Returns ordered per-item success or error results and aggregate counts.",
-    enhancedInputSchemas.batch_decompile,
+    "Decompile explicit procedure symbols or addresses in input order with one provider read active per batch. Preserves each input selector in address and reports the observed canonical entry and entry label in procedure; identity or label failures remain explicit without discarding usable pseudocode. Returns per-item success, unavailable (null pseudocode), or error outcomes and aggregate counts. detail summary retains complete batch Evidence for item and pseudocode pages; complete remains the default.",
+    enhancedInputSchemas.batch_decompile.extend({
+      detail: analysisDetailSchema,
+    }),
   ),
   enhanced(
     "get_call_graph",

@@ -1,0 +1,22 @@
+[verify:package] repository skill: start
+[verify:package] workspace cleanup: start
+[verify:package] workspace cleanup: complete (69 ms)
+node:internal/fs/promises:1741
+  const result = await PromisePrototypeThen(
+                 ^
+
+Error: ENOENT: no such file or directory, lstat '/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/src/cli/functionAnalysis.ts'
+    at async lstat (node:internal/fs/promises:1741:18)
+    at async Promise.all (index 0)
+    at async checkPaths (node:internal/fs/cp/cp:77:39)
+    at async cpFn (node:internal/fs/cp/cp:66:17)
+    at async verifyRepositorySkill (file:///Users/sigur/Desktop/projekte/reverse%20engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/scripts/verify-repository-skill.mjs:30:5)
+    at async runStage (file:///Users/sigur/Desktop/projekte/reverse%20engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/scripts/verify-package.mjs:44:18)
+    at async file:///Users/sigur/Desktop/projekte/reverse%20engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/scripts/verify-package.mjs:52:21 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'lstat',
+  path: '/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/src/cli/functionAnalysis.ts'
+}
+
+Node.js v24.22.3

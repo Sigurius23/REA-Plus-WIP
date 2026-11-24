@@ -1,3 +1,4 @@
+import type { BatchDecompilePartial } from "./native/batchDecompile.js";
 /** Stable tags exposed by safe analysis-error projections. */
 const ANALYSIS_ERROR_TAGS = [
   "AnalysisProtocolError",
@@ -112,6 +113,7 @@ import type { NativeUiObservationResult } from "./native/nativeUiObservation.js"
 
 /** Provider-neutral evidence collected before a typed analysis failure. */
 export type AnalysisPartialObservation =
+  | BatchDecompilePartial
   | PartialProcessCaptureObservation
   | NativeCallPartialObservation
   | FileOffsetPartialObservation

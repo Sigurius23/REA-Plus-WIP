@@ -435,33 +435,7 @@ const availableMemoryPermissions = z.object({
   source: z.enum(["ghidra-memory-block", "radare2-section", "radare2-segment"]),
 });
 
-export const addressedValue = z.object({
-  address: z.string(),
-  value: z.string(),
-  symbol: z
-    .object({
-      primary: z.boolean(),
-      dynamic: z.boolean(),
-      external: z.boolean(),
-      type: z.string(),
-      source: z.enum(["default", "analysis", "ai", "imported", "user_defined"]),
-    })
-    .optional(),
-  procedure: z
-    .object({
-      external: z.boolean(),
-      thunk: z.boolean(),
-      thunk_target: z.string().nullable(),
-    })
-    .optional(),
-  string: z
-    .object({
-      encoding: z.string(),
-      termination: z.enum(["missing", "present_or_not_required"]),
-      byte_length: z.number().int().min(0),
-    })
-    .optional(),
-});
+export { nativeAddressedValueSchema as addressedValue } from "../domain/native/nativeInventory.js";
 
 const memoryRegionOutput = z.object({
   name: z.string(),

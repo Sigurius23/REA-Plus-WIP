@@ -1,3 +1,4 @@
+import { analysisViewInputError } from "./analysisViewErrors.js";
 import {
   AnalysisInputError,
   type AnalysisInputIssue,
@@ -317,7 +318,11 @@ export const projectJavaScriptApplicationView = (
       coverage: pageCoverage(view.offset, items.length, endpoints.length),
     });
   }
-  if (view.kind === "native")
+  if (
+    view.kind === "native" ||
+    view.kind === "native-inventory" ||
+    view.kind === "batch-decompile"
+  )
     return err(
       jsIncompatible("Native views require analyze_function Evidence."),
     );

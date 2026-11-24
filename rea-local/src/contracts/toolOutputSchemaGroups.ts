@@ -1,3 +1,5 @@
+import { analysisDetailOutputSchemaOf } from "./analysisDetail.js";
+import { batchDecompileResultSchema } from "../domain/native/batchDecompile.js";
 import { z } from "zod";
 import { evidenceBundleSummarySchema } from "../domain/evidenceRecordSummary.js";
 import { BINARY_ARCHITECTURES } from "../domain/binaryTargetTypes.js";
@@ -112,10 +114,10 @@ export const officialOutputSchemas: Readonly<Record<string, z.ZodObject>> = {
   inline_comment: evidenceResultOf(nullableText),
   list_bookmarks: evidenceResultOf(z.array(analysisBookmarkSchema)),
   list_documents: evidenceResultOf(z.array(z.string())),
-  list_names: evidenceResultOf(z.array(addressedValue)),
-  list_procedures: evidenceResultOf(z.array(addressedValue)),
+  list_names: analysisDetailOutputSchemaOf(z.array(addressedValue)),
+  list_procedures: analysisDetailOutputSchemaOf(z.array(addressedValue)),
   list_segments: segmentOutput,
-  list_strings: evidenceResultOf(z.array(analysisStringSchema)),
+  list_strings: analysisDetailOutputSchemaOf(z.array(analysisStringSchema)),
   next_address: evidenceResultOf(z.string()),
   prev_address: evidenceResultOf(z.string()),
   procedure_address: evidenceResultOf(z.string()),
@@ -174,10 +176,10 @@ export const officialOutputSchemas: Readonly<Record<string, z.ZodObject>> = {
   ),
   procedure_pseudo_code: evidenceResultOf(nullableText),
   resolve_containing_procedure: evidenceResultOf(containingProcedureResolution),
-  search_procedures: evidenceResultOf(
+  search_procedures: analysisDetailOutputSchemaOf(
     z.array(z.object({ address: z.string(), value: z.string() })),
   ),
-  search_strings: evidenceResultOf(z.array(analysisStringSchema)),
+  search_strings: analysisDetailOutputSchemaOf(z.array(analysisStringSchema)),
   set_address_name: evidenceResultOf(z.boolean()),
   set_addresses_names: evidenceResultOf(z.record(z.string(), z.boolean())),
   set_bookmark: evidenceResultOf(z.boolean()),
@@ -245,23 +247,6 @@ const callPathTraceOutput = evidenceResultOf(
   }),
 );
 
-/** Identity facts attached to one requested batch selector. */
-const batchProcedureIdentity = z.discriminatedUnion("status", [
-  z.object({
-    status: z.literal("resolved"),
-    address: z.string().min(1).describe("Observed canonical procedure entry."),
-    name: z
-      .string()
-      .nullable()
-      .describe("Provider's entry label, or null when unavailable."),
-    name_error: analysisErrorProjectionSchema.optional(),
-  }),
-  z.object({
-    status: z.literal("unknown"),
-    error: analysisErrorProjectionSchema,
-  }),
-]);
-
 /** Exact structured-content schemas for composed analysis workflows. */
 export const enhancedOutputSchemas: Readonly<Record<string, z.ZodObject>> = {
   inspect_native_dispatch_metadata: evidenceResultOf(
@@ -271,33 +256,7 @@ export const enhancedOutputSchemas: Readonly<Record<string, z.ZodObject>> = {
   trace_native_ui_action: evidenceResultOf(nativeInvestigationTraceSchema),
   get_objc_classes: symbolDiscoveryOutput("classes"),
   get_objc_protocols: symbolDiscoveryOutput("protocols"),
-  batch_decompile: evidenceResultOf(
-    z.object({
-      items: z.array(
-        z.discriminatedUnion("status", [
-          z.object({
-            address: z
-              .string()
-              .describe("Original caller-selected symbol or address."),
-            procedure: batchProcedureIdentity,
-            status: z.literal("ok"),
-            pseudocode: z.string().min(1),
-          }),
-          z.object({
-            address: z
-              .string()
-              .describe("Original caller-selected symbol or address."),
-            procedure: batchProcedureIdentity,
-            status: z.literal("error"),
-            error: analysisErrorProjectionSchema,
-          }),
-        ]),
-      ),
-      total: z.number().int().min(0),
-      succeeded: z.number().int().min(0),
-      failed: z.number().int().min(0),
-    }),
-  ),
+  batch_decompile: analysisDetailOutputSchemaOf(batchDecompileResultSchema),
   get_call_graph: evidenceResultOf(z.record(z.string(), z.array(graphNode))),
   analyze_swift_types: evidenceResultOf(
     z.object({

@@ -344,3 +344,15 @@ on annotations; publication failure can leave an in-memory edit whose saved
 state is unconfirmed. Reopen after retirement to bind the saved generation.
 Publisher locks left by a crash require verified manual recovery or a new
 checkpoint directory. Never delete a lock solely from a PID guess.
+
+### Retained native inventories and batches
+
+Use `detail: summary` on native names/procedures/strings inventories, searches
+and explicit `batch_decompile` when a complete reply is too large. Complete
+Evidence remains retained. Page `inspect_analysis_view` with `native-inventory`
+or `batch-decompile`; preserve original row/batch indices and outcome caveats.
+Batch items omit bodies by default, support filtered pages, and expose one
+indexed successful pseudocode body as Unicode-safe UTF-16 pages. A null body
+is unavailable; interrupted batches expose only completed-prefix facts.
+CLI summary requires `--evidence-output` so the complete source survives exit.
+Inventory counts and missing matches never establish complete program discovery.

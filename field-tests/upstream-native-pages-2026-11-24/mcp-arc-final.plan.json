@@ -1,0 +1,536 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-restore-ui-2026-11-24/seeds.tsv",
+    "REA_GHIDRA_CHECKPOINT_DIR": "/private/tmp/rea-ghidra-checkpoint-arc-2026-11-24-final",
+    "REA_MCP_MAX_RESPONSE_BYTES": "10485760"
+  },
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 180000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "arc-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "list_procedures",
+      "label": "arc-procedures-summary",
+      "arguments": {
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "list_procedures",
+      "label": "arc-procedures-complete-budget",
+      "arguments": {
+        "detail": "complete"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-procedures-page",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-procedures-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "native-inventory",
+          "offset": 0,
+          "limit": 16,
+          "fields": [
+            "value",
+            "procedure"
+          ]
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "search_procedures",
+      "label": "arc-search-procedures-summary",
+      "arguments": {
+        "pattern": "sidebar",
+        "mode": "literal",
+        "case_sensitive": false,
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "search_strings",
+      "label": "arc-search-strings-summary",
+      "arguments": {
+        "pattern": "sidebar",
+        "mode": "literal",
+        "case_sensitive": false,
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "arc-reducer-instructions",
+      "arguments": {
+        "procedure": "0x1012a571c"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "batch_decompile",
+      "label": "arc-batch-summary",
+      "arguments": {
+        "addresses": [
+          "0x1012a571c",
+          "missing_arc_native_procedure",
+          "0x1012a571c"
+        ],
+        "detail": "summary"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-items",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "items",
+          "limit": 3
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-first",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 0,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-4096",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 4096,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-8192",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 8192,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-12288",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 12288,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-16384",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 16384,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-20480",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 20480,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-24576",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 24576,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-28672",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 28672,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-32768",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 32768,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-36864",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 36864,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-40960",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 40960,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-45056",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 45056,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-49152",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 49152,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-53248",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 53248,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-57344",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 57344,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_analysis_view",
+      "label": "arc-batch-code-61440",
+      "arguments": {
+        "source": {
+          "kind": "retained-evidence",
+          "evidence_id": {
+            "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/arc-batch-summary.evidence.json",
+            "select": [
+              "normalized_result",
+              "parent_evidence_id"
+            ]
+          }
+        },
+        "view": {
+          "kind": "batch-decompile",
+          "collection": "pseudocode",
+          "index": 0,
+          "offset": 61440,
+          "limit": 4096
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "binary_session",
+      "label": "arc-session",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "arc-export",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-final/final.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "arc-close",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}

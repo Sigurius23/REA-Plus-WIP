@@ -1,0 +1,494 @@
+[
+  {
+    "name": "open_binary",
+    "arguments": {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+      "provider_id": "ghidra"
+    },
+    "reply": "arc-open.reply.json",
+    "elapsed_ms": 4116,
+    "is_error": false,
+    "thrown": null
+  },
+  {
+    "name": "list_procedures",
+    "arguments": {
+      "detail": "summary"
+    },
+    "reply": "arc-procedures-summary.reply.json",
+    "elapsed_ms": 12332,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_2a7268c79c4854b421f4e212894b9809d862561b8dc52eaeb8a7a589596a7c63"
+  },
+  {
+    "name": "list_procedures",
+    "arguments": {
+      "detail": "complete"
+    },
+    "reply": "arc-procedures-complete-budget.reply.json",
+    "elapsed_ms": 689,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_1b847b42769157c01095d257227fdb7e2b81aecbf5792fc77445b94e19723303"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_1b847b42769157c01095d257227fdb7e2b81aecbf5792fc77445b94e19723303"
+      },
+      "view": {
+        "kind": "native-inventory",
+        "offset": 0,
+        "limit": 16,
+        "fields": [
+          "value",
+          "procedure"
+        ]
+      }
+    },
+    "reply": "arc-procedures-page.reply.json",
+    "elapsed_ms": 20,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_e7eaddbc80b1e61b75ee2c4f6b9c16592087c7b2d76b5b6de7a1a736e9398f74"
+  },
+  {
+    "name": "search_procedures",
+    "arguments": {
+      "pattern": "sidebar",
+      "mode": "literal",
+      "case_sensitive": false,
+      "detail": "summary"
+    },
+    "reply": "arc-search-procedures-summary.reply.json",
+    "elapsed_ms": 21,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_be7c1f30500411f1a50906d18b8c4f96fb7a513d777a8dbde1c7368807e3993a"
+  },
+  {
+    "name": "search_strings",
+    "arguments": {
+      "pattern": "sidebar",
+      "mode": "literal",
+      "case_sensitive": false,
+      "detail": "summary"
+    },
+    "reply": "arc-search-strings-summary.reply.json",
+    "elapsed_ms": 1973,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_158a4391e28d3d87db16c47b4973e0ba98b821ec2a33782f69bfdee268789b58"
+  },
+  {
+    "name": "read_function_instructions",
+    "arguments": {
+      "procedure": "0x1012a571c"
+    },
+    "reply": "arc-reducer-instructions.reply.json",
+    "elapsed_ms": 62,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_55fbf993b7a8aadcc8bca2bd6e73189b3d8a79bc8e2efddd23d579f1351fed64"
+  },
+  {
+    "name": "batch_decompile",
+    "arguments": {
+      "addresses": [
+        "0x1012a571c",
+        "missing_arc_native_procedure",
+        "0x1012a571c"
+      ],
+      "detail": "summary"
+    },
+    "reply": "arc-batch-summary.reply.json",
+    "elapsed_ms": 5506,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_6cced7d6d872a0987fe900196fab624406e2b4f63597ad12c25a23237e55e678"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "items",
+        "limit": 3
+      }
+    },
+    "reply": "arc-batch-items.reply.json",
+    "elapsed_ms": 12,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_1c2a3a08a19379082cdf4023a4da22f632b2100550e246ca30247a092cd83182"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 0,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-first.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_d57fb2a6487e37f3d5c337058e0347c07a4355d0a90eeeaba6a869c065efc1ef"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 4096,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-4096.reply.json",
+    "elapsed_ms": 13,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_a7eb00d8151ec6cedb8b992841844e1f097aa5ffb88001a62ec86d93daa9926e"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 8192,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-8192.reply.json",
+    "elapsed_ms": 4,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_9efc890733fb6961804622064a40c770d25536c9f9f34f0860e9b32854a8c105"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 12288,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-12288.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_e99deedee2f658fc84a05d77cc93a534d07517f1a6d4cd92aa4671ec2a15c8a5"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 16384,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-16384.reply.json",
+    "elapsed_ms": 2,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_c50a404447325efdab3f09844c5ef4d6f16c39a41334d757ef8fc95cbc9bf3e7"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 20480,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-20480.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_d229e52f0b11c811f163c927a27b2ed3b6eb1402434d757a76bb588f7da0b02f"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 24576,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-24576.reply.json",
+    "elapsed_ms": 2,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_32738e624310caffa3fc67970d22b2975c6c89475d2a788e1972a048971d5b00"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 28672,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-28672.reply.json",
+    "elapsed_ms": 2,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_ac8a5c059fb7bd8fb13c8745fe0f0f26d88e38c12cf826b87b29315845b8ddf9"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 32768,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-32768.reply.json",
+    "elapsed_ms": 2,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_2fd1ad488fb10ffa2b6fe6de8b7f63dfe7a6081b2bdfa0d559de66d7cc7e5029"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 36864,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-36864.reply.json",
+    "elapsed_ms": 2,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_e5192676204b05220f21fc8ef3330e4cd4342b7e267a0c619e04898ea29401b3"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 40960,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-40960.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_7d119a120ea6dd859345f30d5bf27591295d8d62c02989302298854a98ddcfac"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 45056,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-45056.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_33d83855ec4949dfc08482a102ad99a9c111e3b7772ad75532018167308100e6"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 49152,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-49152.reply.json",
+    "elapsed_ms": 2,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_ca6c449691f70f8d3835b289c05f1f510361cff33b7e1426f099f2dd8004b9b3"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 53248,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-53248.reply.json",
+    "elapsed_ms": 2,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_43f97f3c65f4d3692a2c940c8b98cd0a0bc9f9730e577caeede8119e0b29ef5f"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 57344,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-57344.reply.json",
+    "elapsed_ms": 2,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_28dac91ba15ff0b9d95f2784dd12dff7a0c8d2723f40db8ddecb582e92f99c63"
+  },
+  {
+    "name": "inspect_analysis_view",
+    "arguments": {
+      "source": {
+        "kind": "retained-evidence",
+        "evidence_id": "ev_13d5b0416ee14103ddbed94a8154d4d3a59dbd60b968febb47738f1ffbba4d73"
+      },
+      "view": {
+        "kind": "batch-decompile",
+        "collection": "pseudocode",
+        "index": 0,
+        "offset": 61440,
+        "limit": 4096
+      }
+    },
+    "reply": "arc-batch-code-61440.reply.json",
+    "elapsed_ms": 2,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_8b71ada2dc253211b3a8f34ccc4111953ff2354e6871c00cbc44bfb74a9b5de9"
+  },
+  {
+    "name": "binary_session",
+    "arguments": {},
+    "reply": "arc-session.reply.json",
+    "elapsed_ms": 743,
+    "is_error": false,
+    "thrown": null
+  },
+  {
+    "name": "export_evidence_bundle",
+    "arguments": {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-native-pages-2026-11-24/mcp-arc-accepted-budget/final.bundle.json"
+    },
+    "reply": "arc-export.reply.json",
+    "elapsed_ms": 168,
+    "is_error": false,
+    "thrown": null
+  },
+  {
+    "name": "close_binary",
+    "arguments": {},
+    "reply": "arc-close.reply.json",
+    "elapsed_ms": 1001,
+    "is_error": false,
+    "thrown": null
+  }
+]

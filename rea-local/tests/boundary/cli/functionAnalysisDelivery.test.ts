@@ -1,7 +1,7 @@
 import { join } from "node:path";
 import { readFile, writeFile, access } from "node:fs/promises";
 import { expect, it } from "vitest";
-import { runCliFunctionAnalysis } from "../../../src/cli/functionAnalysis.js";
+import { runCliRetainedAnalysis } from "../../../src/cli/retainedAnalysis.js";
 import { createEvidence } from "../../../src/domain/evidence.js";
 import { readEvidenceBundle } from "../../../src/application/EvidenceBundleFiles.js";
 import { ghidraFunctionDossier } from "../../../src/domain/ghidraValues.fixture.js";
@@ -22,7 +22,7 @@ it("saves the complete source record and returns the same portable native summar
       limitations: ["Provider limitation"],
     },
   );
-  const result = await runCliFunctionAnalysis(
+  const result = await runCliRetainedAnalysis(
     async () => jsonValueSchema.parse(parent),
     { detail: "summary", evidenceOutput: path },
   );
@@ -38,7 +38,7 @@ it("saves the complete source record and returns the same portable native summar
   if (!bundle.ok) throw bundle.error;
   expect(bundle.value.records).toEqual([parent]);
   let calls = 0;
-  const refused = await runCliFunctionAnalysis(
+  const refused = await runCliRetainedAnalysis(
     async () => {
       calls++;
       return jsonValueSchema.parse(parent);
@@ -58,7 +58,7 @@ it("preserves a native failure without writing an incomplete bundle", async () =
   const path = join(root, "absent.json");
   const original = { error: "Native analysis failed", code: "provider_error" };
   expect(
-    await runCliFunctionAnalysis(async () => original, {
+    await runCliRetainedAnalysis(async () => original, {
       detail: "summary",
       evidenceOutput: path,
     }),
