@@ -26,7 +26,48 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
 
-## Latest cache/context and local ownership checkpoint (2026-11-24)
+## Latest bucket removal and backend-policy checkpoint (2026-11-24)
+
+Read `field-tests/arc-removal-persistence-2026-11-24.md`, its finding index,
+qualification/CLI/history receipts and snapshot manifest. Production code and
+the qualified blob runtime are unchanged: 1,881 runtime files and 32 current
+source hashes verify. No new product defect was found.
+
+Helper `0x100710288` repairs the selected probe cluster using circular ideal-
+bucket comparisons, copies 16-byte keys/32-byte values, clears the final hole,
+decrements count and wraps word+0x24. Ten supplied-hash branch pairs and four
+isolated Arc/C removal pairs agree. An occupied-next control stops explicitly
+before `previousHole` at `0x1007102e8`; runtime hashing/full cluster removal are
+not emulated. Synthetic inputs are not live Swift objects or cache contents.
+
+The default BoostsStorage constructor's `0x100b3728c` predicate is now named:
+`ARC_UI_TESTS == "1"` OR cached XCTest predicate OR `ARC_E2E_TESTS == "1"`.
+True selects Memory witness `0x104307db8`, otherwise Firebase `0x104307a30`.
+Public initializer/selector/equality observations establish this cached policy;
+no ambient environment, account, actual backend or request was observed.
+
+Getter thunks join the existing codec via the Objective-C block/capture
+wrappers. Async continuation `0x101180200` tests X20 and its two final exits
+return cleared/saved X20 respectively. Codec, activation and local-enable/save
+flag semantics were already recovered in older reports; do not redo or count
+them as new recovery. Their generic "unqueried callback" frontier was stale.
+
+420 MCP attempts include four expected missing-procedure errors; 416 succeed.
+All 29 emulations, four exact CLI/MCP pairs, 213 decoded instruction-byte
+checks, 23 earlier snapshots and four empty owned lineages verify. A final
+batch omitted `decode_unlisted`, correctly returning 106 limited observations;
+`plan-policy-complete.json` explicitly recovered all 106 in a separate session.
+All raw responses and the caller mistake survive. All sessions are closed.
+
+**Next:** relevant earlier constructor-to-getter instance/keypath/copy inputs,
+concrete override/cache/default Client choice and the invocation-scoped typed
+carrier. The Client-choice unknown stays revision 3/open in the previous cache
+bundle; adjacent storage policy does not resolve it. Higher restore callers/
+writeback, actual I/O/durability and wider browser/apply/UI features remain open.
+No runtime authority was added. Historical next-step notes below are superseded
+where these newer captures explicitly close their question.
+
+## Previous cache/context and local ownership checkpoint (2026-11-24)
 
 Read `field-tests/arc-cache-selection-2026-11-24.md`, its finding index,
 qualification/CLI/history receipts and snapshot manifest. The final blob
@@ -58,10 +99,10 @@ lineages verify. Original seed/verification mistakes remain preserved. The corre
 is `plan-complete.json` with `seeds-cache-corrected.tsv`; all owned sessions
 are closed. This does not implement the typed invocation carrier.
 
-**Next:** trace remaining constructor-to-getter instance/keypath/copy inputs
-and concrete override/cache/factory selection. The bucket-removal helper
-`0x100710288` and unqueried persistence result callbacks are independent static
-follow-ups. Keep the Client-choice unknown open at revision 3. Actual I/O,
+**Historical next:** trace remaining constructor-to-getter instance/keypath/copy inputs
+and concrete override/cache/factory selection. The then-open bucket-removal
+helper and selected callback wrapper/return joins are covered above. Keep the
+Client-choice unknown open at revision 3. Actual I/O,
 durability and broader browser coverage remain unfinished. No new runtime
 authority was added. The older notes below refer to their historical revisions.
 

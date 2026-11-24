@@ -1,0 +1,173 @@
+{
+  "authority": "Explicit synthetic raw headers/bytes and after-hash register inputs, not live caches, valid Swift objects or recovered Hasher outputs",
+  "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+  "reference_source_sha256": "b97a1af28ffbddf54af623d05437acc0911d07b582dc6c0e510f5ccaedef20f4",
+  "reference_sha256": "f17d687e7abe76da43da27717e91b26631e0c8712982b25943e045de69b7e9a0",
+  "compiler_version": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+  "reference_symbols": {
+    "choose_move": "0x100000310",
+    "isolated_remove": "0x100000330"
+  },
+  "reference_text": {
+    "address": "0x100000310",
+    "size": 80,
+    "file_offset": 784
+  },
+  "cases": [
+    {
+      "kind": "decision",
+      "name": "left-edge",
+      "start": 2,
+      "hole": 5,
+      "hash": "0x2",
+      "mask": 7,
+      "expected_move": true,
+      "expected_pc": "0x100710380"
+    },
+    {
+      "kind": "decision",
+      "name": "right-edge",
+      "start": 2,
+      "hole": 5,
+      "hash": "0x5",
+      "mask": 7,
+      "expected_move": true,
+      "expected_pc": "0x100710380"
+    },
+    {
+      "kind": "decision",
+      "name": "below",
+      "start": 2,
+      "hole": 5,
+      "hash": "0x1",
+      "mask": 7,
+      "expected_move": false,
+      "expected_pc": "0x100710304"
+    },
+    {
+      "kind": "decision",
+      "name": "above",
+      "start": 2,
+      "hole": 5,
+      "hash": "0x6",
+      "mask": 7,
+      "expected_move": false,
+      "expected_pc": "0x100710304"
+    },
+    {
+      "kind": "decision",
+      "name": "wrap-upper",
+      "start": 6,
+      "hole": 1,
+      "hash": "0x7",
+      "mask": 7,
+      "expected_move": true,
+      "expected_pc": "0x100710380"
+    },
+    {
+      "kind": "decision",
+      "name": "wrap-lower",
+      "start": 6,
+      "hole": 1,
+      "hash": "0x0",
+      "mask": 7,
+      "expected_move": true,
+      "expected_pc": "0x100710380"
+    },
+    {
+      "kind": "decision",
+      "name": "wrap-outside",
+      "start": 6,
+      "hole": 1,
+      "hash": "0x3",
+      "mask": 7,
+      "expected_move": false,
+      "expected_pc": "0x100710304"
+    },
+    {
+      "kind": "decision",
+      "name": "single-hit",
+      "start": 4,
+      "hole": 4,
+      "hash": "0x4",
+      "mask": 7,
+      "expected_move": true,
+      "expected_pc": "0x100710380"
+    },
+    {
+      "kind": "decision",
+      "name": "single-miss",
+      "start": 4,
+      "hole": 4,
+      "hash": "0x5",
+      "mask": 7,
+      "expected_move": false,
+      "expected_pc": "0x100710304"
+    },
+    {
+      "kind": "decision",
+      "name": "negative-hash",
+      "start": 6,
+      "hole": 1,
+      "hash": "0xfffffffffffffffe",
+      "mask": 7,
+      "expected_move": true,
+      "expected_pc": "0x100710380"
+    },
+    {
+      "kind": "isolated",
+      "name": "only-zero",
+      "hole": 0,
+      "occupied": "0x1",
+      "header_before": "0000000000000000000000000000000001000000000000000600000000000000030000000700000034120000000000000010006000000000002000600000000001ffffffffffffff",
+      "header_after": "0000000000000000000000000000000000000000000000000600000000000000030000000800000034120000000000000010006000000000002000600000000000ffffffffffffff",
+      "keys_hex": "cd81e34f37a8c02d7a2024ada9a870515aa8276cd0ff8512517e6249ffcd8fc2d712b21c0c73ed13936b8d027637de3c1431950319be58fdabb04b8428f08d03ce582a26524657b0e818491ae5c66467e6809c1eeb07ee7d8bb909f7fb0a242668780e63a5a335bbf67224401cd337ca7e9844a1cbee8008306362fa03e627de",
+      "values_hex": "a8d8ced089a463895e26eb8a769ea6d5c685be919a1060ce7b3aa5c841b5b3ab8c87a679dfa3613d154e35e4ca8395fd2e3b1495a2da715be7f4e059800f61ff1869e94e1ca3c540a93d88e5334e27ff3156ba7a6321e4b09cc233acfd144400f223d082887b81aa62b7040a10b82700b447f925462a760384091c8bb41958ffed8852a1a5d8d0eaa2d85b61de155ae5735f98ae65be5fad91a03dd6bcd06b8e2c6127b89160f899103f13a54f2a7219dba7bd041d067fb96f24c0daa7d501a8a59ea781a91de4a2224e25524dcc7211b8dd443f4a74a53f4dcf322cfb4413c9188a194681db85b05048c0e96121823ab3d1a301de97d22ea075fae11b185fa1",
+      "stop": "function_return"
+    },
+    {
+      "kind": "isolated",
+      "name": "only-seven",
+      "hole": 7,
+      "occupied": "0x80",
+      "header_before": "0000000000000000000000000000000001000000000000000600000000000000030000000900000034120000000000000010006000000000002000600000000080ffffffffffffff",
+      "header_after": "0000000000000000000000000000000000000000000000000600000000000000030000000a00000034120000000000000010006000000000002000600000000000ffffffffffffff",
+      "keys_hex": "cd81e34f37a8c02d7a2024ada9a870515aa8276cd0ff8512517e6249ffcd8fc2d712b21c0c73ed13936b8d027637de3c1431950319be58fdabb04b8428f08d03ce582a26524657b0e818491ae5c66467e6809c1eeb07ee7d8bb909f7fb0a242668780e63a5a335bbf67224401cd337ca7e9844a1cbee8008306362fa03e627de",
+      "values_hex": "a8d8ced089a463895e26eb8a769ea6d5c685be919a1060ce7b3aa5c841b5b3ab8c87a679dfa3613d154e35e4ca8395fd2e3b1495a2da715be7f4e059800f61ff1869e94e1ca3c540a93d88e5334e27ff3156ba7a6321e4b09cc233acfd144400f223d082887b81aa62b7040a10b82700b447f925462a760384091c8bb41958ffed8852a1a5d8d0eaa2d85b61de155ae5735f98ae65be5fad91a03dd6bcd06b8e2c6127b89160f899103f13a54f2a7219dba7bd041d067fb96f24c0daa7d501a8a59ea781a91de4a2224e25524dcc7211b8dd443f4a74a53f4dcf322cfb4413c9188a194681db85b05048c0e96121823ab3d1a301de97d22ea075fae11b185fa1",
+      "stop": "function_return"
+    },
+    {
+      "kind": "isolated",
+      "name": "isolated-with-other",
+      "hole": 6,
+      "occupied": "0x44",
+      "header_before": "0000000000000000000000000000000002000000000000000600000000000000030000000f00000034120000000000000010006000000000002000600000000044ffffffffffffff",
+      "header_after": "0000000000000000000000000000000001000000000000000600000000000000030000001000000034120000000000000010006000000000002000600000000004ffffffffffffff",
+      "keys_hex": "cd81e34f37a8c02d7a2024ada9a870515aa8276cd0ff8512517e6249ffcd8fc2d712b21c0c73ed13936b8d027637de3c1431950319be58fdabb04b8428f08d03ce582a26524657b0e818491ae5c66467e6809c1eeb07ee7d8bb909f7fb0a242668780e63a5a335bbf67224401cd337ca7e9844a1cbee8008306362fa03e627de",
+      "values_hex": "a8d8ced089a463895e26eb8a769ea6d5c685be919a1060ce7b3aa5c841b5b3ab8c87a679dfa3613d154e35e4ca8395fd2e3b1495a2da715be7f4e059800f61ff1869e94e1ca3c540a93d88e5334e27ff3156ba7a6321e4b09cc233acfd144400f223d082887b81aa62b7040a10b82700b447f925462a760384091c8bb41958ffed8852a1a5d8d0eaa2d85b61de155ae5735f98ae65be5fad91a03dd6bcd06b8e2c6127b89160f899103f13a54f2a7219dba7bd041d067fb96f24c0daa7d501a8a59ea781a91de4a2224e25524dcc7211b8dd443f4a74a53f4dcf322cfb4413c9188a194681db85b05048c0e96121823ab3d1a301de97d22ea075fae11b185fa1",
+      "stop": "function_return"
+    },
+    {
+      "kind": "isolated",
+      "name": "word24-wrap",
+      "hole": 3,
+      "occupied": "0x8",
+      "header_before": "000000000000000000000000000000000100000000000000060000000000000003000000ffffffff34120000000000000010006000000000002000600000000008ffffffffffffff",
+      "header_after": "0000000000000000000000000000000000000000000000000600000000000000030000000000000034120000000000000010006000000000002000600000000000ffffffffffffff",
+      "keys_hex": "cd81e34f37a8c02d7a2024ada9a870515aa8276cd0ff8512517e6249ffcd8fc2d712b21c0c73ed13936b8d027637de3c1431950319be58fdabb04b8428f08d03ce582a26524657b0e818491ae5c66467e6809c1eeb07ee7d8bb909f7fb0a242668780e63a5a335bbf67224401cd337ca7e9844a1cbee8008306362fa03e627de",
+      "values_hex": "a8d8ced089a463895e26eb8a769ea6d5c685be919a1060ce7b3aa5c841b5b3ab8c87a679dfa3613d154e35e4ca8395fd2e3b1495a2da715be7f4e059800f61ff1869e94e1ca3c540a93d88e5334e27ff3156ba7a6321e4b09cc233acfd144400f223d082887b81aa62b7040a10b82700b447f925462a760384091c8bb41958ffed8852a1a5d8d0eaa2d85b61de155ae5735f98ae65be5fad91a03dd6bcd06b8e2c6127b89160f899103f13a54f2a7219dba7bd041d067fb96f24c0daa7d501a8a59ea781a91de4a2224e25524dcc7211b8dd443f4a74a53f4dcf322cfb4413c9188a194681db85b05048c0e96121823ab3d1a301de97d22ea075fae11b185fa1",
+      "stop": "function_return"
+    },
+    {
+      "kind": "isolated",
+      "name": "cluster-external-stop",
+      "hole": 6,
+      "occupied": "0xc0",
+      "header_before": "0000000000000000000000000000000002000000000000000600000000000000030000000b000000341200000000000000100060000000000020006000000000c0ffffffffffffff",
+      "header_after": "0000000000000000000000000000000002000000000000000600000000000000030000000b000000341200000000000000100060000000000020006000000000c0ffffffffffffff",
+      "keys_hex": "cd81e34f37a8c02d7a2024ada9a870515aa8276cd0ff8512517e6249ffcd8fc2d712b21c0c73ed13936b8d027637de3c1431950319be58fdabb04b8428f08d03ce582a26524657b0e818491ae5c66467e6809c1eeb07ee7d8bb909f7fb0a242668780e63a5a335bbf67224401cd337ca7e9844a1cbee8008306362fa03e627de",
+      "values_hex": "a8d8ced089a463895e26eb8a769ea6d5c685be919a1060ce7b3aa5c841b5b3ab8c87a679dfa3613d154e35e4ca8395fd2e3b1495a2da715be7f4e059800f61ff1869e94e1ca3c540a93d88e5334e27ff3156ba7a6321e4b09cc233acfd144400f223d082887b81aa62b7040a10b82700b447f925462a760384091c8bb41958ffed8852a1a5d8d0eaa2d85b61de155ae5735f98ae65be5fad91a03dd6bcd06b8e2c6127b89160f899103f13a54f2a7219dba7bd041d067fb96f24c0daa7d501a8a59ea781a91de4a2224e25524dcc7211b8dd443f4a74a53f4dcf322cfb4413c9188a194681db85b05048c0e96121823ab3d1a301de97d22ea075fae11b185fa1",
+      "stop": "external_call"
+    }
+  ]
+}

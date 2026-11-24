@@ -4,6 +4,20 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Arc bucket removal and default backend policy checked (2026-11-24, item 63 partial):**
+  The selected removal helper repairs its probe cluster and clears the final
+  hole; ten supplied-hash and four isolated Arc/C pairs agree. An occupied-next
+  control stops before the runtime helper. The default storage constructor
+  selects Memory for `ARC_UI_TESTS == "1"`, the cached XCTest predicate or
+  `ARC_E2E_TESTS == "1"`; otherwise it selects Firebase. Getter wrapper/async
+  return joins are checked, and stale callback frontier notes are corrected.
+  420 MCP attempts (416 successful), 29 emulations, four exact CLI/MCP pairs,
+  213 instruction-byte checks and 23 historical snapshots verify. A caller's
+  omitted unlisted-decode option was corrected with preserved captures; no
+  product defect was found. Actual selection, typed invocation mapping and
+  persistence/durability remain open. See
+  [the checkpoint](field-tests/arc-removal-persistence-2026-11-24.md).
+
 - **Arc cache/context and local ownership checked (2026-11-24, item 63 partial):**
   Cache comparison uses the 64-bit key identity plus context byte; live/test
   entries stay distinct even across hash collisions. Seven bounded Arc/C probe
@@ -1766,6 +1780,20 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
 ## Arc continuation (2026-11-21)
 
 63. **Recover unguarded halfword enum/string dispatch from proved input type.**
+    **2026-11-24 bucket repair and backend predicate advanced.**
+    Selected helper `0x100710288` now has static move/bookkeeping coverage,
+    fourteen matching Arc/C pairs and one explicit runtime-call stop. The
+    default Memory/Firebase constructor's predicate resolves to UI/e2e test
+    environment strings equal to `1` or the previously recovered cached
+    XCTest predicate. Getter block/capture adapters and async X20 return joins
+    are traced; codec/activation and local-enable callback semantics were
+    already recovered and are not counted as new findings. The earlier generic
+    callback frontier was stale. A caller omission of `decode_unlisted` was
+    corrected in a separate retained session; no new product bug was found.
+    Concrete Client/backend choice, earlier instance relations, first-class
+    typed invocation mapping and durable I/O remain open. Unknown revision 3
+    remains open. See [the new report](field-tests/arc-removal-persistence-2026-11-24.md).
+
     **2026-11-24 cache partition and local post-getter window advanced.**
     The selected cache probes raw identity/context together; source follows the
     normal and test-context callback bridge. Under the previously identified
@@ -1776,8 +1804,8 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
     explicit input/stop boundaries. Concrete getter output and earlier Root/
     wrapper/keypath/copy relations still remain; the typed invocation carrier
     is not implemented by this analyst composition. Unknown revision 3 stays
-    open. Full bucket repair and persistence callbacks are concrete next static
-    questions. See [the new report](field-tests/arc-cache-selection-2026-11-24.md).
+    open. Its then-open bucket repair and selected callback joins are covered
+    by the newer checkpoint above. See [the cache report](field-tests/arc-cache-selection-2026-11-24.md).
 
     **2026-11-23 static dependency/default policy advanced; actual choice stays open.**
     The surrounding scope's computed keypath selects NavigationIDPathKey

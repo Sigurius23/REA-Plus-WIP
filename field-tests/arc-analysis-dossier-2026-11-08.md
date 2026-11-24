@@ -1,5 +1,16 @@
 # Arc 1.172.1 analysis dossier
 
+Bucket-removal and backend-policy addendum **2026-11-24**:
+[The new checkpoint](arc-removal-persistence-2026-11-24.md) traces selected
+probe-cluster repair and verifies ten supplied-hash plus four isolated Arc/C
+pairs, with an explicit runtime-call stop. The default constructor chooses
+Memory when `ARC_UI_TESTS == "1"`, the cached XCTest predicate or
+`ARC_E2E_TESTS == "1"`; otherwise it chooses Firebase. Selected getter wrapper/
+async return joins are checked; older codec/activation results are reused.
+The generic unqueried-callback frontier was stale and is corrected. Actual
+Client/backend choice, typed invocation mapping, durability and broader app
+coverage remain open. No product code changed or target runtime was launched.
+
 Cache/context and ownership addendum **2026-11-24**:
 [The new checkpoint](arc-cache-selection-2026-11-24.md) binds cache identity
 plus context byte, its callback bridge and collision/wraparound controls.
