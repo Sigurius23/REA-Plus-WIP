@@ -2,8 +2,8 @@
 
 REA+ imports one target into an ephemeral Ghidra database. Linux/macOS support
 read-only analysis and atomic function-name/entry-comment edits; Windows P0 is
-read-only. GUI controls and persistent database mutation are unavailable.
-Executable bytes remain unchanged.
+read-only. Optional owned checkpoints preserve analysis metadata across sessions.
+GUI controls are unavailable. Executable bytes remain unchanged.
 
 ## Inspect a saved project
 
@@ -30,8 +30,8 @@ analyst annotation/name edits are unavailable. The supported target scope is
 the existing Linux/macOS ELF/PE/thin Mach-O admission profile.
 
 Restore `.grez` archives or import `.gzf` packed Programs into an expanded
-project before selecting it. Automatic owned checkpoints are a separate
-integration task; this workflow does not publish or update saved Programs.
+project before selecting it. Selected-project inspection never updates saved
+Programs; owned checkpoints use the separate workflow below.
 
 Use [installation](installation.md#ghidra) for supported hosts, prerequisites,
 configuration, startup deadlines, resource controls, and cleanup recovery.
@@ -48,6 +48,41 @@ Provider selection and profile identity follow
 provider stays bound to the target; runtime failure never selects another
 provider automatically. The contracts below describe Ghidra observations,
 not equivalence with another engine's pseudocode or analysis database.
+
+## Owned checkpoints
+
+Set `REA_GHIDRA_CHECKPOINT_DIR=/absolute/private/directory` to save the initial
+Program and each acknowledged annotation/name edit. This opt-in mode supports
+Linux/macOS ELF, PE and thin Mach-O, including explicit seeds, import language
+and bounded auto-analysis. Existing-project mode, Windows, special loaders and
+optional analysis extensions are currently refused in checkpoint mode.
+
+The directory is private to the current user (mode 0700). Each target SHA-256,
+complete analysis profile (including seed content), Ghidra version and packaged
+bridge-source digest selects a separate checkpoint. A restored profile also
+commits the exact packed Program SHA-256 and original analysis-completion flag.
+Restoration imports a verified private copy with `-noanalysis`; it does not
+reapply seed names or turn a timed-out analysis into a complete one. Seed
+reports describe the original analysis that produced the saved Program.
+
+Only one publisher can own a checkpoint at once. It exports into its private
+runtime, syncs an immutable blob and manifest, then replaces `current.json`
+atomically. Annotation `effects.persists_after_close` becomes true only after
+publication succeeds. A failed export/publication is an error: an in-memory
+edit may have committed while persistence remains unconfirmed. Cached reads
+are retired at mutation admission; subsequent provider reads refuse the
+unconfirmed-save state until close and reopen. Close retries
+owned descriptor, staging and lease cleanup. The original executable and
+caller-selected saved projects are never written.
+
+After cancellation or another retirement, reopen the target to resolve the
+saved generation. Reusing an older profile refuses changed state rather than
+silently restoring it. Corrupt or stale checkpoints never fall back to a fresh
+import. A crashed owner can leave `publisher.lock`; automatic stale-lock
+reclamation is deliberately unsupported. Preserve the directory and verify
+that its publisher has stopped before manually removing that lock, or select
+a new checkpoint directory. Checkpoints consume disk space and are not Git
+artifacts or portable evidence bundles.
 
 ## Disk-capacity failures
 

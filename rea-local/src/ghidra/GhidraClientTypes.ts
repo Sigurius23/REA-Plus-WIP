@@ -1,3 +1,4 @@
+import type { GhidraCheckpointSelection } from "./GhidraCheckpoint.js";
 import type { Logger } from "pino";
 import type { Result } from "../domain/result.js";
 import type { GhidraLauncher } from "./GhidraLauncher.js";
@@ -32,6 +33,7 @@ export type GhidraDiagnostic =
 
 /** Dependencies and exact profile commitment for one headless import. */
 export interface GhidraClientOptions {
+  readonly checkpoint?: GhidraCheckpointSelection;
   readonly existingProject?: true;
   readonly launcher: GhidraLauncher;
   readonly runId?: string;

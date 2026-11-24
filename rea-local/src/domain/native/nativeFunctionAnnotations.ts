@@ -36,7 +36,7 @@ export const nativeFunctionAnnotationsSchema = z
     effects: z.strictObject({
       scope: z.literal("session-analysis-database"),
       source_bytes_modified: z.literal(false),
-      persists_after_close: z.literal(false),
+      persists_after_close: z.boolean(),
     }),
   })
   .superRefine((value, context) => {

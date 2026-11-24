@@ -159,6 +159,8 @@ public final class ReaGhidraBridge extends HeadlessScript {
     private List<FunctionEntry> procedureInventory;
     private List<InventoryItem> stringInventory;
     private DecompInterface decompiler;
+    private Path checkpointDirectory;
+    private boolean originalAnalysisComplete;
     private String projectIdentityFailure;
     private boolean projectIdentityUnavailable;
     private final ReaGhidraExtensions analysisExtensions = new ReaGhidraExtensions();
@@ -175,6 +177,9 @@ public final class ReaGhidraBridge extends HeadlessScript {
         }
         Path descriptorPath = Path.of(arguments[0]);
         SessionDescriptor descriptor = readDescriptor(descriptorPath);
+        checkpointDirectory = descriptorPath.toAbsolutePath().normalize().getParent();
+        if (descriptor.checkpointEnabled && (descriptor.existingProject || !descriptor.transport.equals("unix-socket")))
+            throw new IllegalArgumentException("Checkpoints require an owned Unix native import");
         // Windows retains a native immutable bearer descriptor lease until
         // runtime_close; POSIX removes it after this read. Normal cleanup removes
         // the Windows file, while abrupt owner death can leave private residue.
@@ -215,6 +220,18 @@ public final class ReaGhidraBridge extends HeadlessScript {
                 "Ghidra imported-byte digest does not match the admitted target"
             );
         }
+        originalAnalysisComplete = !analysisTimeoutOccurred();
+        if (descriptor.checkpointEnabled) {
+            var info = currentProgram.getOptions(ghidra.program.model.listing.Program.PROGRAM_INFO);
+            if (descriptor.restoredAnalysisComplete != null) {
+                if (!info.contains("REA+ checkpoint original analysis complete") ||
+                    info.getBoolean("REA+ checkpoint original analysis complete", false) != descriptor.restoredAnalysisComplete)
+                    throw new IllegalStateException("Checkpoint original analysis state does not match its manifest");
+                originalAnalysisComplete = descriptor.restoredAnalysisComplete;
+            } else {
+                info.setBoolean("REA+ checkpoint original analysis complete", originalAnalysisComplete);
+            }
+        }
         // GhidraScript wraps run() in a transaction. End it before serving so
         // each edit owns a real outer transaction and can roll back immediately.
         end(true);
@@ -224,7 +241,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
             analysisExtensions.analyze(descriptor.analysisExtensions, currentProgram, monitor);
             // Windows P0 retains its no-database-mutation authority. On other
             // hosts this is source-immutable analysis, completed before serving.
-            if (descriptor.transport.equals("unix-socket")) {
+            if (descriptor.transport.equals("unix-socket") && descriptor.restoredAnalysisComplete == null) {
                 swiftEnumSwitches = new ReaGhidraSwiftEnumSwitches(currentProgram, monitor);
                 swiftEnumSwitches.analyze();
                 println(swiftEnumSwitches.summary());
@@ -375,7 +392,17 @@ public final class ReaGhidraBridge extends HeadlessScript {
             requireKeys(request.params, Set.of());
             return sessionInfo(descriptor);
         }
-        if (!descriptor.existingProject && analysisTimeoutOccurred() && descriptor.analysisTimeoutSeconds == null) {
+        if (request.method.equals("checkpoint_program")) {
+            if (!descriptor.checkpointEnabled) throw new RequestFailure("method_unavailable", "Checkpoint export was not selected");
+            requireKeys(request.params, Set.of("path"));
+            Path output = Path.of(requireString(request.params, "path")).toAbsolutePath().normalize();
+            if (!output.getParent().equals(checkpointDirectory) ||
+                !output.getFileName().toString().matches("checkpoint-[0-9a-f-]{36}\\.gzf") || Files.exists(output, LinkOption.NOFOLLOW_LINKS))
+                throw new RequestFailure("invalid_parameters", "Checkpoint export requires a fresh owned runtime path");
+            currentProgram.saveToPackedFile(output.toFile(), monitor);
+            JsonObject saved = new JsonObject(); saved.addProperty("saved", true); saved.addProperty("path", output.toString()); return saved;
+        }
+        if (!descriptor.existingProject && !originalAnalysisComplete && descriptor.analysisTimeoutSeconds == null) {
             throw new RequestFailure(
                 "analysis_incomplete",
                 "Ghidra auto-analysis did not complete for this Program"
@@ -429,7 +456,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
     }
 
     private JsonObject sessionInfo(SessionDescriptor descriptor) throws Exception {
-        boolean timedOut = analysisTimeoutOccurred();
+        boolean timedOut = !originalAnalysisComplete;
         JsonObject provider = new JsonObject();
         provider.addProperty("id", "ghidra");
         provider.addProperty("version", Application.getApplicationVersion());
@@ -3875,7 +3902,16 @@ public final class ReaGhidraBridge extends HeadlessScript {
             keys.add("analysis_timeout_seconds");
         if (parsed.isJsonObject() && parsed.getAsJsonObject().has("existing_project"))
             keys.add("existing_project");
+        if (parsed.isJsonObject() && parsed.getAsJsonObject().has("checkpoint_enabled")) keys.add("checkpoint_enabled");
+        if (parsed.isJsonObject() && parsed.getAsJsonObject().has("restored_analysis_complete")) keys.add("restored_analysis_complete");
         JsonObject object = requireObject(parsed, keys);
+        for (String key : List.of("checkpoint_enabled", "restored_analysis_complete"))
+            if (object.has(key) && (!object.get(key).isJsonPrimitive() || !object.get(key).getAsJsonPrimitive().isBoolean()))
+                throw new IllegalArgumentException("Checkpoint descriptor state must be boolean");
+        if (object.has("checkpoint_enabled") && !object.get("checkpoint_enabled").getAsBoolean())
+            throw new IllegalArgumentException("Checkpoint mode must be true when present");
+        if (object.has("restored_analysis_complete") && !object.has("checkpoint_enabled"))
+            throw new IllegalArgumentException("Restored analysis state requires checkpoint mode");
         if (object.has("existing_project") && (!object.get("existing_project").isJsonPrimitive() ||
             !object.get("existing_project").getAsJsonPrimitive().isBoolean() || !object.get("existing_project").getAsBoolean()))
             throw new IllegalArgumentException("Existing-project mode must be true when present");
@@ -3892,6 +3928,8 @@ public final class ReaGhidraBridge extends HeadlessScript {
             requireString(object, "provider_version"),
             requireString(object, "profile_digest"),
             object.has("existing_project"),
+            object.has("checkpoint_enabled"),
+            object.has("restored_analysis_complete") ? object.get("restored_analysis_complete").getAsBoolean() : null,
             analysisTimeoutSeconds,
             object.has("analysis_extensions") ? object.getAsJsonArray("analysis_extensions") : new JsonArray()
         );
@@ -4090,6 +4128,8 @@ public final class ReaGhidraBridge extends HeadlessScript {
         String providerVersion,
         String profileDigest,
         boolean existingProject,
+        boolean checkpointEnabled,
+        Boolean restoredAnalysisComplete,
         Integer analysisTimeoutSeconds,
         JsonArray analysisExtensions
     ) {}

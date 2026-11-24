@@ -132,6 +132,7 @@ export class GhidraProjectFiles {
     path: string,
     hash: ReturnType<typeof createHash>,
     signal?: AbortSignal,
+    includeLength = true,
   ): Promise<void> {
     const handle = await openRegularFile(path, {
       symlinks: "reject",
@@ -158,7 +159,7 @@ export class GhidraProjectFiles {
       const initial = await handle.stat();
       if (!Number.isSafeInteger(initial.size) || initial.size < 0)
         throw invalid(`Unrepresentable project file size: ${path}`);
-      hash.update(String(initial.size) + "\n");
+      if (includeLength) hash.update(String(initial.size) + "\n");
       const buffer = Buffer.allocUnsafe(64 * 1024);
       let offset = 0;
       while (offset < initial.size) {
@@ -207,6 +208,13 @@ export class GhidraProjectFiles {
         );
       }
     }
+  }
+
+  /** Hash a packed Program without buffering it or losing failed-close ownership. */
+  async hashPackedProgram(path: string, signal?: AbortSignal): Promise<string> {
+    const hash = createHash("sha256");
+    await this.#hashFile(path, hash, signal, false);
+    return hash.digest("hex");
   }
 
   async #visit(

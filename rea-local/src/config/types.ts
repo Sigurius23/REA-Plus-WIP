@@ -20,6 +20,8 @@ export interface AppConfig {
   readonly ghidraAnalysisTimeoutSeconds?: number;
   readonly ghidraLanguageOverride?: GhidraLanguageOverride;
   readonly ghidraSeedFile?: string;
+  /** Opt-in private directory for verified owned packed-Program checkpoints. */
+  readonly ghidraCheckpointDir?: string;
   readonly ghidraExistingProject?: GhidraProjectSelection;
   readonly ghidraNativeAotJar?: string;
   readonly ilspyCmdPath: string | undefined;

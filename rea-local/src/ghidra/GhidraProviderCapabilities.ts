@@ -29,6 +29,11 @@ export const healthLimitations = Object.freeze([
   "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
   "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
 ]);
+export const checkpointLimitations = Object.freeze([
+  ...healthLimitations.slice(0, 1),
+  "Owned Ghidra checkpoints save the initial Program and every acknowledged metadata edit. Restores use a verified private copy without rerunning auto-analysis, and preserve the original timeout and seed identity. Original executable bytes are never written.",
+  "After retirement, reopen the target to resolve its saved generation; an old profile cannot silently restart from changed state. Publisher locks are not reclaimed automatically after owner crashes.",
+]);
 export const projectLimitations = Object.freeze([
   "Only a content-verified private copy of the selected Ghidra project is opened; its original files are never passed to Ghidra or saved by REA+.",
   "Original project auto-analysis completeness and import settings are unknown. Auto-analysis and import-time overrides are not applied; local bridge preparation runs on the private copy.",
@@ -52,18 +57,25 @@ const searchLimitation =
 export const limitationsFor = (
   operation: string,
   existingProject = false,
+  checkpoint = false,
 ): readonly string[] => {
   const common = [
-    ...(existingProject ? projectLimitations : healthLimitations),
+    ...(existingProject
+      ? projectLimitations
+      : checkpoint
+        ? checkpointLimitations
+        : healthLimitations),
     "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
   ];
   switch (operation) {
     case "annotate_native_function":
       return [
         ...common,
-        "Names use Ghidra USER_DEFINED source. Name writes accept a leaf name or a fully qualified name within the existing namespace; readback uses the fully qualified name and can be reused without adding namespace prefixes. Edits retain the current namespace; other namespace-like text remains literal leaf-name text. Regular comments map to PRE and inline comments to EOL at the exact function entry. Changes commit together after readback and refreshed analysis; failure rolls them all back.",
+        "Names use Ghidra USER_DEFINED source. Name writes accept a leaf name or a fully qualified name within the existing namespace; readback uses the fully qualified name and can be reused without adding namespace prefixes. Edits retain the current namespace; other namespace-like text remains literal leaf-name text. Regular comments map to PRE and inline comments to EOL at the exact function entry. Changes commit together after readback and refreshed analysis. Readback or refreshed-analysis failure rolls back the metadata transaction.",
         "Annotation text rejects NUL and unpaired Unicode surrogates before mutation, with the field and UTF-16 index in the error. Supported Unicode and line endings are preserved.",
-        "Metadata edits invalidate immutable analysis snapshots and are discarded on close. CLI returns the updated dossier before session cleanup; this is not a saved Ghidra project.",
+        checkpoint
+          ? "Metadata edits invalidate immutable analysis snapshots. Persistence is acknowledged only after atomic checkpoint publication; export or publication failure can leave an in-memory edit whose persistence is unconfirmed."
+          : "Metadata edits invalidate immutable analysis snapshots and are discarded on close. CLI returns the updated dossier before session cleanup; this is not a saved Ghidra project.",
       ];
     case "set_address_name":
     case "set_addresses_names":
@@ -71,7 +83,9 @@ export const limitationsFor = (
         ...common,
         "Names use Ghidra USER_DEFINED source. A local function entry renames that function; any other mapped address receives a new or renamed primary label. Existing symbols retain their namespace and accept leaf names or qualified names within that namespace; qualified readback can be reused without adding namespace prefixes. Readback compares the primary symbol name.",
         "set_addresses_names applies each address in its own transaction and reports per-address success; invalid names, unmapped addresses, and readback mismatches roll back only that address.",
-        "Metadata edits invalidate immutable analysis snapshots and are discarded on close; this is not a saved Ghidra project.",
+        checkpoint
+          ? "Metadata edits invalidate immutable analysis snapshots. Successful per-address edits are checkpointed before the batch response is acknowledged."
+          : "Metadata edits invalidate immutable analysis snapshots and are discarded on close; this is not a saved Ghidra project.",
       ];
     case "inspect_native_load_image":
       return [

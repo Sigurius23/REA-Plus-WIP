@@ -86,6 +86,13 @@ const fixture = (version = "12.1.4") => {
           if (typeof parameters.name !== "string")
             throw new Error("Expected an annotation name");
           name = parameters.name;
+          if (name === "save_failure")
+            return err(
+              new GhidraSessionError(
+                "process",
+                "Owned edit committed; checkpoint publication failed",
+              ),
+            );
         }
         const dossier = functionDossierSchema.parse(ghidraFunctionDossier());
         dossier.procedure.name = name;
@@ -129,6 +136,29 @@ const open = async (session: ReturnType<typeof fixture>["session"]) => {
   if (!preview.ok) throw preview.error;
   expect((await session.openResolvedTarget(preview.value)).ok).toBe(true);
 };
+
+it("invalidates cached reads when a committed mutation loses its save acknowledgement", async () => {
+  const { session, calls } = fixture();
+  await open(session);
+  const parameters = { procedure: "0x1000", document: "fixture" };
+  expect(
+    await session.execute("procedure_pseudo_code", parameters),
+  ).toMatchObject({ ok: true, value: { result: "void original() {}" } });
+  expect(
+    await session.execute("annotate_native_function", {
+      procedure: "0x1000",
+      name: "save_failure",
+    }),
+  ).toMatchObject({ ok: false });
+  expect(
+    await session.execute("procedure_pseudo_code", parameters),
+  ).toMatchObject({ ok: true, value: { result: "void save_failure() {}" } });
+  expect(
+    calls.filter((operation) => operation === "procedure_pseudo_code"),
+  ).toHaveLength(2);
+  expect(session.exportAnalysisSnapshot().ok).toBe(false);
+  await session.close();
+});
 
 describe("Ghidra snapshot cache", () => {
   it("refuses snapshots whose profile predates typed incoming references", async () => {

@@ -4,13 +4,25 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Owned Ghidra checkpoints integrated (2026-11-24, item 62 partial):**
+  Opt-in native Linux/macOS sessions preserve seeded analysis and acknowledged
+  metadata edits through verified packed-Program restores. Arc's cold/warm
+  reducer results match exactly (10,072 bytes / 2,518 instructions), retaining
+  the original partial-analysis flag and one-second budget. Publication-failure
+  cache handling, write diagnostics and absent-root path aliases are repaired.
+  175 tests pass with one platform skip; final public MCP controls, two exact
+  CLI/MCP Evidence pairs, package checks and 27 historical snapshots qualify.
+  Extensions/special loaders/Windows, automatic retirement refresh and stale-lock
+  recovery remain outside this qualified slice. See
+  [the checkpoint report](field-tests/upstream-ghidra-checkpoints-2026-11-24.md).
+
 - **Upstream saved-project inspection integrated (2026-11-24, item 62 partial):**
   REA+ opens a content-verified private copy selected by `.gpr` and exact root
   Program; original analysis state remains unknown and analyst edits are
   unavailable. Wrong, unavailable and changed identity refusals are qualified.
   The seeded Arc reducer still returns its 10,072-byte body / 2,518 instructions.
-  Automatic checkpoint publication remains open. See
-  [the report](field-tests/upstream-ghidra-projects-2026-11-24.md).
+  Owned checkpoint publication is qualified separately above. See
+  [the saved-project report](field-tests/upstream-ghidra-projects-2026-11-24.md).
 
 - **Arc selected-file sidebar restore traced (2026-11-24):**
   The selected RestoreSidebarDataFlow worker reads a RestorableFile URL,
@@ -1785,11 +1797,24 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
       regression, package/fast/docs checks and 26 historical snapshots qualify
       this slice. Arc retains its 10,072-byte / 2,518-instruction reducer body.
       See [the integration report](field-tests/upstream-ghidra-projects-2026-11-24.md).
-    - [ ] Port and qualify automatic owned Ghidra checkpoints and remaining
-      native inventory/batch pages. Stock checkpoints reject seeds/extensions;
-      the Arc workflow needs seed-compatible state identity, publication leases,
-      restore/save and retirement ownership. Selected-project inspection does
-      not save active Programs or restore former deleted ephemeral sessions.
+    - [x] Port opt-in owned Ghidra checkpoints for native Linux/macOS
+      ELF/PE/thin Mach-O, including seeded and bounded analysis (2026-11-24).
+      `REA_GHIDRA_CHECKPOINT_DIR` binds the full profile, bridge, target and
+      saved Program hash. Initial analysis and acknowledged metadata edits are
+      saved; verified private restores preserve the original completion flag.
+      Publication ownership, failed-cleanup retention and stale/corrupt-state
+      refusal are implemented. Real Arc cold/warm results retain all 10,072
+      reducer bytes / 2,518 instructions with the original one-second timeout.
+      Public refusal controls exposed and repaired stale snapshot reuse after
+      failed publication and misleading read-permission diagnostics for a
+      write failure. Missing checkpoint roots under symlinked parents (such as
+      macOS `/tmp`) are now canonicalized before profile binding. Source and
+      lifecycle checks pass; see [the qualification](field-tests/upstream-ghidra-checkpoints-2026-11-24.md).
+    - [ ] Port remaining native inventory/batch pages. Checkpoint extensions,
+      Windows/special loaders, automatic profile refresh after retirement and
+      automatic crashed-publisher lock recovery remain separate unqualified
+      scope. Reopen to bind a newly saved generation; a stale profile refuses
+      changed state. No PID-only lock reclamation is attempted.
     - [ ] Add structured offline firmware readers (HEX/S-record, UF2/DfuSe,
       uImage/FIT/ESP, Android boot/OTA) and devicetree inspection.
     - [ ] Qualify raw-image/RISC-V, expanded MIPS and PowerPC/DOL lanes

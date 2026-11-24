@@ -1,3 +1,7 @@
+import {
+  GhidraCheckpoint,
+  ghidraCheckpointFailure,
+} from "./GhidraCheckpoint.js";
 import { snapshotEnvironment } from "../process/snapshotEnvironment.js";
 import {
   GhidraProjectFiles,
@@ -75,6 +79,7 @@ const SUPPORTED_ARCHITECTURES = new Set([
 
 /** Ghidra candidate backed by an isolated ephemeral headless import. */
 export class GhidraProvider implements AnalysisProviderCandidate {
+  readonly #checkpointSelections = new Set<GhidraCheckpoint>();
   readonly #projectFiles = new GhidraProjectFiles();
   #installation: GhidraInstallationInspection | undefined;
   private readonly environment: NodeJS.ProcessEnv;
@@ -114,6 +119,11 @@ export class GhidraProvider implements AnalysisProviderCandidate {
               limitations: limitationsFor(capability.operation, true),
             },
       );
+    if (this.config.ghidraCheckpointDir !== undefined)
+      return CAPABILITIES.map((capability) => ({
+        ...capability,
+        limitations: limitationsFor(capability.operation, false, true),
+      }));
     return (this.installationHost?.platform ?? process.platform) === "win32"
       ? windowsP0Capabilities()
       : CAPABILITIES;
@@ -218,6 +228,27 @@ export class GhidraProvider implements AnalysisProviderCandidate {
     options?: AnalysisProfileResolutionOptions,
   ) {
     const installation = this.#inspectInstallation();
+    if (
+      this.config.ghidraCheckpointDir !== undefined &&
+      (installation.platform === "win32" ||
+        this.config.ghidraExistingProject !== undefined ||
+        this.config.ghidraNativeAotJar !== undefined ||
+        !["elf", "pe", "mach-o"].includes(target.format))
+    )
+      return err(
+        new ConfigurationError(
+          "Owned Ghidra checkpoints require Linux/macOS ELF/PE/thin Mach-O analysis without existing-project or extension mode",
+          {
+            settings: [
+              {
+                setting: "REA_GHIDRA_CHECKPOINT_DIR",
+                constraint:
+                  "Select a supported native target; seeds, language overrides and bounded analysis are supported",
+              },
+            ],
+          },
+        ),
+      );
     if (this.config.ghidraExistingProject !== undefined) {
       const project = this.config.ghidraExistingProject;
       if (
@@ -331,20 +362,41 @@ export class GhidraProvider implements AnalysisProviderCandidate {
       return err(new AnalysisCancelledError("open_binary"));
     const seeds = await resolveGhidraAnalysisSeeds(this.config.ghidraSeedFile);
     if (!seeds.ok) return seeds;
-    if (extensions.value.length === 0 && seeds.value === undefined)
-      return resolved;
-    return ok({
-      ...resolved.value,
-      profile: createAnalysisProfile(resolved.value.profile.provider, {
-        ...resolved.value.profile.parameters,
-        ...(extensions.value.length === 0
-          ? {}
-          : { analysis_extensions: jsonValueSchema.parse(extensions.value) }),
-        ...(seeds.value === undefined
-          ? {}
-          : { analysis_seeds: jsonValueSchema.parse(seeds.value) }),
-      }),
+    const baseProfile = createAnalysisProfile(resolved.value.profile.provider, {
+      ...resolved.value.profile.parameters,
+      ...(extensions.value.length === 0
+        ? {}
+        : { analysis_extensions: jsonValueSchema.parse(extensions.value) }),
+      ...(seeds.value === undefined
+        ? {}
+        : { analysis_seeds: jsonValueSchema.parse(seeds.value) }),
     });
+    if (this.config.ghidraCheckpointDir === undefined)
+      return ok({ ...resolved.value, profile: baseProfile });
+    try {
+      const checkpoint = await GhidraCheckpoint.resolve(
+        this.config.ghidraCheckpointDir,
+        target.sha256,
+        baseProfile.digest,
+        await this.#projectFiles.bridgeDigest(options?.signal),
+        this.#checkpointSelections,
+        options?.signal,
+      );
+      return ok({
+        profile: createAnalysisProfile(baseProfile.provider, {
+          ...baseProfile.parameters,
+          checkpoint: jsonValueSchema.parse(checkpoint),
+        }),
+      });
+    } catch (cause: unknown) {
+      return err(
+        ghidraCheckpointFailure(
+          "resolve_analysis_profile",
+          this.config.ghidraCheckpointDir,
+          cause,
+        ),
+      );
+    }
   }
 
   createClient(

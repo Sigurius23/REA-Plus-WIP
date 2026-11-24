@@ -1,3 +1,4 @@
+import type { GhidraPackedProgram } from "./GhidraCheckpoint.js";
 import {
   GHIDRA_SEED_SCRIPT,
   snapshotGhidraAnalysisSeeds,
@@ -44,6 +45,8 @@ import {
 
 /** Private paths and identity material for one headless Ghidra import. */
 export interface GhidraLaunchSession {
+  readonly checkpoint?: true;
+  readonly packedProgram?: GhidraPackedProgram;
   readonly runtimeRoot: string;
   readonly transport: GhidraTransportKind;
   readonly endpointPath: string;
@@ -181,7 +184,8 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
           options.signal,
         );
       const seedPath =
-        this.options.analysisSeeds === undefined
+        this.options.analysisSeeds === undefined ||
+        session.packedProgram !== undefined
           ? undefined
           : await snapshotGhidraAnalysisSeeds(
               this.options.analysisSeeds,
@@ -201,6 +205,15 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
           target_sha256: session.targetSha256,
           provider_version: session.providerVersion,
           profile_digest: session.profileDigest,
+          ...(session.checkpoint === undefined
+            ? {}
+            : { checkpoint_enabled: true }),
+          ...(session.packedProgram === undefined
+            ? {}
+            : {
+                restored_analysis_complete:
+                  session.packedProgram.analysis_complete,
+              }),
           ...(this.options.existingProject === undefined
             ? {}
             : { existing_project: true }),
@@ -216,6 +229,9 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
       if (isAborted(options.signal))
         return err(new AnalysisCancelledError("open_binary"));
       const headlessArguments = ghidraHeadlessArguments({
+        ...(session.packedProgram === undefined
+          ? {}
+          : { packedProgramPath: session.packedProgram.path }),
         ...(session.analysisTimeoutSeconds === undefined
           ? {}
           : { analysisTimeoutSeconds: session.analysisTimeoutSeconds }),
@@ -428,6 +444,7 @@ const ghidraBatchStep = <T>(step: () => T): T => {
 
 /** Paths encoded into one bounded analyzeHeadless invocation. */
 export interface GhidraHeadlessArgumentOptions {
+  readonly packedProgramPath?: string;
   readonly existingProject?: GhidraProjectCommitment;
   readonly analysisTimeoutSeconds?: number;
   readonly platform?: NodeJS.Platform;
@@ -522,54 +539,57 @@ export const ghidraHeadlessArguments = (
     options.projectRoot,
     "rea-project",
     "-import",
-    options.targetPath,
-    ...(options.dosMz === true
-      ? [
-          "-loader",
-          "MzLoader",
-          "-processor",
-          "x86:LE:16:Real Mode",
-          "-cspec",
-          "default",
-        ]
-      : options.dosCom === true
+    options.packedProgramPath ?? options.targetPath,
+    ...(options.packedProgramPath !== undefined ? ["-noanalysis"] : []),
+    ...(options.packedProgramPath !== undefined
+      ? []
+      : options.dosMz === true
         ? [
             "-loader",
-            "BinaryLoader",
-            "-loader-baseAddr",
-            "1000:0100",
+            "MzLoader",
             "-processor",
             "x86:LE:16:Real Mode",
             "-cspec",
             "default",
           ]
-        : options.psp === true
+        : options.dosCom === true
           ? [
               "-loader",
-              "PspElfLoader",
+              "BinaryLoader",
+              "-loader-baseAddr",
+              "1000:0100",
               "-processor",
-              "Allegrex:LE:32:default",
+              "x86:LE:16:Real Mode",
               "-cspec",
               "default",
             ]
-          : options.dex !== undefined
+          : options.psp === true
             ? [
                 "-loader",
-                "DexLoader",
+                "PspElfLoader",
                 "-processor",
-                options.dex,
+                "Allegrex:LE:32:default",
                 "-cspec",
                 "default",
               ]
-            : override !== undefined
+            : options.dex !== undefined
               ? [
+                  "-loader",
+                  "DexLoader",
                   "-processor",
-                  override.languageId,
-                  ...(override.compilerSpecId === undefined
-                    ? []
-                    : ["-cspec", override.compilerSpecId]),
+                  options.dex,
+                  "-cspec",
+                  "default",
                 ]
-              : []),
+              : override !== undefined
+                ? [
+                    "-processor",
+                    override.languageId,
+                    ...(override.compilerSpecId === undefined
+                      ? []
+                      : ["-cspec", override.compilerSpecId]),
+                  ]
+                : []),
     ...(options.analysisTimeoutSeconds === undefined
       ? []
       : ["-analysisTimeoutPerFile", String(options.analysisTimeoutSeconds)]),
@@ -604,7 +624,8 @@ export const ghidraHeadlessArguments = (
           "-postScript",
           scriptPath.join(bridgeDirectory, "ReaGhidraPrepareDex.java"),
         ]),
-    ...((options.platform ?? process.platform) === "win32"
+    ...((options.platform ?? process.platform) === "win32" ||
+    options.packedProgramPath !== undefined
       ? []
       : [
           "-postScript",

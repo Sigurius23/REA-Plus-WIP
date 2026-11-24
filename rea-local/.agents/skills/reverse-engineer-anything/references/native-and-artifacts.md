@@ -332,3 +332,15 @@ identity (`expected_sha256` on continuation). Match/scan/aggregate limits do not
 establish whole-pack absence. Search reports first occurrences per payload;
 optional text ranges require lossless decoding. No original filename or feature
 mapping follows from a string match.
+
+### Owned Ghidra checkpoints
+
+With `REA_GHIDRA_CHECKPOINT_DIR`, native Linux/macOS ELF/PE/thin Mach-O sessions
+can save initial analysis and acknowledged metadata edits. Seed content, full
+profile and bridge sources identify the checkpoint; restoration verifies its
+packed Program and preserves original partial-analysis status. Existing-project
+mode, extensions and Windows are refused. Inspect `effects.persists_after_close`
+on annotations; publication failure can leave an in-memory edit whose saved
+state is unconfirmed. Reopen after retirement to bind the saved generation.
+Publisher locks left by a crash require verified manual recovery or a new
+checkpoint directory. Never delete a lock solely from a PID guess.

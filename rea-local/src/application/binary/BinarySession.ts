@@ -561,6 +561,10 @@ export class BinarySession
     if (!prepared.ok) return prepared;
     const { active, capability, profile, cacheable, cached } = prepared.value;
     if (cached !== undefined) return ok(cached);
+    // An admitted mutation can change state before its acknowledgement fails
+    // (for example a committed Ghidra edit followed by checkpoint ENOSPC).
+    // Retiring snapshots at admission also covers partial and cancelled edits.
+    if (capability.effects.mutatesArtifact) this.invalidateSnapshot();
     const call = active.client.execute(name, arguments_, options);
     const result = await call;
     const profiled = bindExecutionTarget(
@@ -600,8 +604,6 @@ export class BinarySession
         parameters: arguments_,
         execution: profiled.value,
       });
-    } else if (profiled.ok && capability.effects.mutatesArtifact) {
-      this.invalidateSnapshot();
     }
     return profiled;
   }

@@ -26,6 +26,40 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest upstream owned-checkpoint integration (2026-11-24)
+
+Read `field-tests/upstream-ghidra-checkpoints-2026-11-24.md`, its final runtime
+manifest and verification receipt. Item 62 now includes opt-in
+`REA_GHIDRA_CHECKPOINT_DIR` for native Linux/macOS ELF/PE/thin Mach-O with
+seeded and bounded analysis. The complete profile, packaged bridge, executable
+and selected packed Program identify state. Initial analysis and acknowledged
+metadata edits are published atomically under one private publisher lease.
+Restores import a verified private copy with `-noanalysis` and preserve the
+original completion flag and seed report. User projects and executables are
+never saved. No Arc or fixture executable was launched.
+
+The final Arc cold/warm public MCP comparison returns identical normalized
+results: 10,072 reducer bytes and 2,518 instructions, retaining
+`analysis_complete=false`, `analysis_timed_out=true`, and the one-second budget.
+Cold query plus initial publication took 57.0 seconds; warm query 10.4 seconds
+on this run. This improves repeated static analysis, not the Arc feature
+frontier or Client unknown revision 3.
+
+Confirmed fixes: retire immutable snapshots at mutation admission because
+publication can fail after the in-memory edit commits; latch that failure
+until close/reopen; preserve write-failure and ENOSPC context in public errors;
+canonicalize absent roots beneath symlinked parents. Failed cleanup keeps its
+owners. Source/composition tests pass (118), lifecycle tests pass (57 plus one
+platform skip), and real CLI persistence, MCP readback, changed seeds and
+corrupt/publication-refusal controls qualify the boundary.
+
+Checkpoint extensions, Windows/special loaders, automatic profile refresh
+after retirement and automatic stale-lock recovery are not established. Close
+and reopen to bind saved state. A crash can leave `publisher.lock`; preserve
+it until the publisher is independently confirmed stopped, or choose another
+directory. Next upstream block: remaining native inventory/batch pages. The
+broader Arc investigation remains open.
+
 ## Latest upstream project-copy checkpoint (2026-11-24)
 
 Read `field-tests/upstream-ghidra-projects-2026-11-24.md` and its final
@@ -45,11 +79,9 @@ profile, 2,537 seed functions, 10,072-byte reducer body and 2,518 instructions.
 No Arc/helper/fixture executable was run. Swift recovery implementations are
 unchanged; Java bridge changes add selected-project authority/identity handling.
 
-Next upstream work: automatic owned checkpoint publication with seed-compatible
-profile/source identity and truthful leases, save/restore and retirement.
-Current saved-project inspection neither saves active REA+ Programs nor restores
-former deleted ephemeral Arc sessions. The Arc feature frontier and Client
-unknown revision 3 remain unchanged below.
+The newer checkpoint integration above adds owned persistence separately.
+Selected-project inspection still never updates caller projects. The Arc
+feature frontier and Client unknown revision 3 remain unchanged below.
 
 ## Latest controller/selector checkpoint (2026-11-24)
 

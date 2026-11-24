@@ -1,3 +1,4 @@
+import { ghidraCheckpointFailure } from "./GhidraCheckpoint.js";
 import type { GhidraSeedReport } from "./GhidraAnalysisSeeds.js";
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
@@ -1806,3 +1807,60 @@ it("binds bounded-analysis policy to its own profile and rejects policy drift be
     await client.close();
   }
 });
+
+for (const systemCode of ["EACCES", "ENOSPC"] as const) {
+  it(`preserves checkpoint ${systemCode} context through the public operation error`, async () => {
+    const failure = ghidraCheckpointFailure(
+      "checkpoint_program",
+      "/owned/checkpoints",
+      Object.assign(new Error("owned publication fault"), { code: systemCode }),
+    );
+    const candidate = provider(installationHost(), () => ({
+      start: async () =>
+        err(
+          new GhidraSessionError(
+            "process",
+            "Checkpoint publication failed",
+            {},
+            { cause: failure },
+          ),
+        ),
+      callTool: async () =>
+        err(new GhidraSessionError("process", "Unavailable")),
+      close: async () => ok(null),
+    }));
+    const target: BinaryTarget = {
+      path: "/tmp/owned-fixture",
+      sha256: "a".repeat(64),
+      kind: "executable",
+      format: "elf",
+      architecture: "x86_64",
+      availableArchitectures: ["x86_64"],
+    };
+    const selected = await candidate.resolveAnalysisProfile(target);
+    if (!selected.ok || selected.value.profile === null)
+      throw new Error("Profile unavailable");
+    const client = candidate.createClient(target, selected.value.profile),
+      result = await client.execute("health", {});
+    expect(result.ok).toBe(false);
+    if (result.ok) throw new Error("Expected a publication failure");
+    const projection = projectAnalysisError(result.error);
+    expect(projection.details).toMatchObject({ operation: "health" });
+    expect(JSON.stringify(projection).toLowerCase()).toContain("persistence");
+    if (systemCode === "EACCES") {
+      expect(projection.details).toMatchObject({
+        diagnostics: {
+          boundary: "checkpoint-write",
+          system_code: "EACCES",
+          persistence: "unconfirmed",
+        },
+      });
+      expect(projection.message).toContain("denied write access");
+      expect(projection.remediation.action).toContain("Restore write access");
+    } else {
+      expect(projection.code).toBe("resource_constraint");
+      expect(projection.remediation.action).toContain("unchanged capacity");
+    }
+    await client.close();
+  });
+}

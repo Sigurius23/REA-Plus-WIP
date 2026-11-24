@@ -777,6 +777,12 @@ pseudocode is never treated as original source or Hopper-equivalent text.
 
 ### Ghidra import language and analysis seeds
 
+For opt-in owned checkpoint save/restore, set
+`REA_GHIDRA_CHECKPOINT_DIR=/absolute/private/directory`. The directory must be
+current-user-owned and mode 0700. Native Linux/macOS ELF/PE/thin Mach-O supports
+seeded and bounded analysis; extensions and existing-project mode are refused.
+See [checkpoint identity, persistence and ownership](ghidra-provider.md#owned-checkpoints).
+
 For an already analyzed project, `REA_GHIDRA_PROJECT_PATH=/absolute/project.gpr`
 selects a verified private copy; `REA_GHIDRA_PROGRAM_NAME` optionally chooses
 one exact root Program. Supply the matching original executable as usual.

@@ -61,6 +61,11 @@ const environmentSchema = z.object({
   REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS:
     ghidraAnalysisTimeoutSecondsSchema.optional(),
   REA_GHIDRA_LANGUAGE_ID: ghidraLanguageIdSchema.optional(),
+  REA_GHIDRA_CHECKPOINT_DIR: z
+    .string()
+    .min(1)
+    .refine(isAbsolute, "REA_GHIDRA_CHECKPOINT_DIR must be absolute")
+    .optional(),
   REA_GHIDRA_PROJECT_PATH: ghidraProjectPathSchema.optional(),
   REA_GHIDRA_PROGRAM_NAME: ghidraProgramNameSchema.optional(),
   REA_GHIDRA_COMPILER_SPEC_ID: ghidraCompilerSpecIdSchema.optional(),
@@ -133,6 +138,24 @@ export const parseEnvironment = (
           },
         ],
       }),
+    );
+  if (
+    parsed.data.REA_GHIDRA_CHECKPOINT_DIR !== undefined &&
+    parsed.data.REA_GHIDRA_PROJECT_PATH !== undefined
+  )
+    return err(
+      new ConfigurationError(
+        "Checkpoint and existing-project modes are mutually exclusive",
+        {
+          settings: [
+            {
+              setting: "REA_GHIDRA_CHECKPOINT_DIR",
+              constraint:
+                "Unset REA_GHIDRA_PROJECT_PATH to use owned checkpoints",
+            },
+          ],
+        },
+      ),
     );
   return ok(parsed.data);
 };

@@ -1,3 +1,5 @@
+import { createAnalysisProfile } from "../domain/analysisProfile.js";
+import { ghidraCheckpointSelectionSchema } from "./GhidraCheckpoint.js";
 import { analysisErrorWithCleanupFailure } from "../domain/analysisErrorCleanup.js";
 import { fileURLToPath } from "node:url";
 import { basename } from "node:path";
@@ -76,6 +78,7 @@ import { nativeLoadImageObservationSchema } from "../domain/native/nativeLoadIma
 import {
   GHIDRA_PROVIDER_IDENTITY,
   healthLimitations,
+  checkpointLimitations,
   projectLimitations,
   windowsP0Limitations,
   limitationsFor,
@@ -388,6 +391,32 @@ export const createGhidraProviderClient = (input: {
       }),
     );
   const existingProject = selected.data;
+  const baseCheckpointParameters = { ...committedProfile.parameters };
+  delete baseCheckpointParameters.checkpoint;
+  const checkpoint = ghidraCheckpointSelectionSchema
+    .optional()
+    .safeParse(committedProfile.parameters.checkpoint);
+  if (
+    !checkpoint.success ||
+    checkpoint.data?.configured_directory !== config.ghidraCheckpointDir ||
+    (checkpoint.data !== undefined &&
+      (existingProject !== undefined ||
+        checkpoint.data.target_sha256 !== target.sha256 ||
+        checkpoint.data.base_profile_digest !==
+          createAnalysisProfile(
+            committedProfile.provider,
+            baseCheckpointParameters,
+          ).digest ||
+        installation.platform === "win32"))
+  )
+    return unavailableClient(
+      new ProviderAdapterError("ghidra", "open_binary", {
+        diagnostics: {
+          reason:
+            "Resolve the configured checkpoint and exact saved generation into a fresh analysis profile before opening",
+        },
+      }),
+    );
   const psp = isGhidraPspTarget(target);
   const pspExtension = psp
     ? ghidraPspExtensionSchema.safeParse(
@@ -507,6 +536,7 @@ export const createGhidraProviderClient = (input: {
           ]
         : [];
   const client = clientFactory({
+    ...(checkpoint.data === undefined ? {} : { checkpoint: checkpoint.data }),
     startupTimeoutMs: config.ghidraStartupTimeoutMs,
     ...(analysisTimeoutSeconds === undefined ? {} : { analysisTimeoutSeconds }),
     platform: installation.platform,
@@ -616,6 +646,7 @@ export const createGhidraProviderClient = (input: {
         ]
       : []),
     ...providerLimitations,
+
     ...targetLimitations,
     ...(psp ? GHIDRA_PSP_LIMITATIONS : []),
     ...ghidraExtensionLimitations(extensions),
@@ -662,7 +693,9 @@ export const createGhidraProviderClient = (input: {
             analysisProfile: committedProfile,
             limitations: [
               ...(existingProject === undefined
-                ? healthLimitations
+                ? checkpoint.data === undefined
+                  ? healthLimitations
+                  : checkpointLimitations
                 : projectLimitations),
               ...sessionLimitations(started.value),
             ],
@@ -793,7 +826,11 @@ export const createGhidraProviderClient = (input: {
           rawResult: called.value,
           analysisProfile: committedProfile,
           limitations: [
-            ...limitationsFor(operation, existingProject !== undefined),
+            ...limitationsFor(
+              operation,
+              existingProject !== undefined,
+              checkpoint.data !== undefined,
+            ),
             ...observationLimitations,
             ...sessionLimitations(started.value),
           ],
@@ -906,6 +943,19 @@ const projectPrimarySessionError = (
         ],
       },
     );
+  if (failure.cause instanceof AnalysisResourceConstraintError)
+    return failure.cause.forOperation(operation);
+  if (failure.cause instanceof ConfigurationError) return failure.cause;
+  if (failure.cause instanceof ProviderAdapterError)
+    return new ProviderAdapterError("ghidra", operation, {
+      cause: failure,
+      ...(failure.cause.userMessage === undefined
+        ? {}
+        : { userMessage: failure.cause.userMessage }),
+      ...(failure.cause.diagnostics === undefined
+        ? {}
+        : { diagnostics: failure.cause.diagnostics }),
+    });
   if (failure.cause instanceof AnalysisAccessDeniedError)
     return new AnalysisAccessDeniedError(
       operation,

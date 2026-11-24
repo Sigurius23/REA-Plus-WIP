@@ -1,3 +1,11 @@
+import {
+  ghidraCheckpointFailure,
+  GhidraCheckpoint,
+  type GhidraPackedProgram,
+} from "./GhidraCheckpoint.js";
+import { join } from "node:path";
+import { z } from "zod";
+import { GHIDRA_MUTATING_OPERATIONS } from "./GhidraSessionValues.js";
 import { randomBytes, randomUUID } from "node:crypto";
 import type { Socket } from "node:net";
 
@@ -42,7 +50,7 @@ import {
   type GhidraSessionInfo,
 } from "./GhidraSessionValues.js";
 import { createProviderTargetSnapshot } from "../process/ProviderTargetSnapshot.js";
-import { readFile } from "node:fs/promises";
+import { readFile, rm } from "node:fs/promises";
 import { readBoundedFileBytes } from "../process/BoundedFileBytes.js";
 import {
   openRegularFile,
@@ -86,6 +94,10 @@ export class GhidraClient {
     number,
     Result<JsonValue, GhidraSessionError>
   >();
+  readonly #checkpoint: GhidraCheckpoint | undefined;
+  #checkpointPublication: Promise<void> | undefined;
+  #analysisComplete: boolean | undefined;
+  #checkpointFailure: GhidraSessionError | undefined;
   #socket: Socket | undefined;
   #detachSocket: (() => void) | undefined;
   #launch: GhidraLaunch | undefined;
@@ -150,6 +162,10 @@ export class GhidraClient {
       platform: options.platform ?? process.platform,
       transport: options.transport ?? "unix-socket",
     };
+    this.#checkpoint =
+      options.checkpoint === undefined
+        ? undefined
+        : new GhidraCheckpoint(options.checkpoint);
     this.#logger = options.logger ?? silentLogger;
     this.#wire = new GhidraWire({
       getSocket: () => this.#socket,
@@ -160,8 +176,43 @@ export class GhidraClient {
       failure: this.#failure,
     });
     this.#requestQueue = new GhidraRequestQueue(
-      (method, parameters, requestOptions) =>
-        this.#wire.request(method, parameters, requestOptions),
+      async (method, parameters, requestOptions) => {
+        if (this.#checkpointFailure !== undefined)
+          return err(this.#checkpointFailure);
+        const result = await this.#wire.request(
+          method,
+          parameters,
+          requestOptions,
+        );
+        if (
+          !result.ok ||
+          this.#checkpoint === undefined ||
+          !GHIDRA_MUTATING_OPERATIONS.has(method)
+        )
+          return result;
+        const saved = await this.#saveCheckpoint(requestOptions);
+        if (!saved.ok) {
+          this.#checkpointFailure = saved.error;
+          return saved;
+        }
+        // The Java response describes the in-memory transaction. Persistence is
+        // acknowledged only after the owning publisher confirms atomic save.
+        if (
+          method === "annotate_native_function" &&
+          result.value !== null &&
+          typeof result.value === "object" &&
+          !Array.isArray(result.value)
+        ) {
+          const effects = result.value.effects;
+          if (
+            effects !== null &&
+            typeof effects === "object" &&
+            !Array.isArray(effects)
+          )
+            effects.persists_after_close = true;
+        }
+        return result;
+      },
       (kind, message, cause) => this.#failure(kind, message, cause),
       () => this.#stopAfterActiveCancellation(),
     );
@@ -169,6 +220,8 @@ export class GhidraClient {
 
   /** Launch Ghidra once and require its exact post-analysis handshake. */
   start(signal?: AbortSignal): Promise<GhidraStartResult> {
+    if (this.#checkpointFailure !== undefined)
+      return Promise.resolve(err(this.#checkpointFailure));
     if (this.#closePromise !== undefined)
       return this.#closePromise.then(
         () => this.start(signal),
@@ -521,11 +574,40 @@ export class GhidraClient {
     this.#authenticationTokens.add(this.#token);
     this.#lineage.reset();
     this.#runId = this.#options.runId ?? randomUUID();
+    let packedProgram: GhidraPackedProgram | undefined;
+    try {
+      if (this.#checkpoint !== undefined) {
+        await this.#checkpoint.acquire(this.#runId, deadline.signal);
+        packedProgram = await this.#checkpoint.snapshot(
+          join(this.#runtimeRoot.path, "restored-program.gzf"),
+          deadline.signal,
+        );
+      }
+    } catch (cause: unknown) {
+      if (deadline.signal.aborted) return this.#startupInterrupted(deadline);
+      return this.#startupFailure(
+        this.#failure(
+          "start",
+          "Ghidra checkpoint admission failed",
+          ghidraCheckpointFailure(
+            "open_binary",
+            this.#options.checkpoint?.directory ?? this.#options.targetPath,
+            cause,
+          ),
+        ),
+      );
+    }
+    if (deadline.signal.aborted) return this.#startupInterrupted(deadline);
+    this.#checkpointFailure = undefined;
     this.#phase = "launch";
     const launched = await this.#options.launcher
       .launch(
         {
           runtimeRoot: this.#runtimeRoot.path,
+          ...(this.#checkpoint === undefined
+            ? {}
+            : { checkpoint: true as const }),
+          ...(packedProgram === undefined ? {} : { packedProgram }),
           transport: endpoint.transport,
           endpointPath: endpoint.path,
           token: this.#token,
@@ -593,10 +675,76 @@ export class GhidraClient {
       startupTimeoutMs: this.#options.startupTimeoutMs,
     });
     if (!completed.ok) return this.#startupFailure(completed.error);
+    this.#analysisComplete = completed.value.analysis_complete ?? undefined;
+    if (this.#checkpoint !== undefined && packedProgram === undefined) {
+      const saved = await this.#saveCheckpoint({
+        signal: deadline.signal,
+        timeoutMs: deadline.remainingMs(),
+      });
+      if (!saved.ok) return this.#startupFailure(saved.error);
+    }
     await this.#lineage.observe(this.#launch);
     this.#requestQueue.reopen();
     this.#phase = "operation";
     return completed;
+  }
+
+  async #saveCheckpoint(
+    options: GhidraRequestOptions,
+  ): Promise<Result<null, GhidraSessionError>> {
+    if (
+      this.#checkpoint === undefined ||
+      this.#runtimeRoot === undefined ||
+      this.#analysisComplete === undefined
+    )
+      return err(
+        this.#failure(
+          "protocol",
+          "Checkpoint export lacks its owned runtime or original analysis status",
+        ),
+      );
+    const path = join(this.#runtimeRoot.path, `checkpoint-${randomUUID()}.gzf`);
+    const exported = await this.#wire.request(
+      "checkpoint_program",
+      { path },
+      options,
+    );
+    if (!exported.ok) return exported;
+    const parsed = z
+      .strictObject({ path: z.literal(path), saved: z.literal(true) })
+      .safeParse(exported.value);
+    if (!parsed.success)
+      return err(
+        this.#failure(
+          "protocol",
+          "Checkpoint export acknowledgement is invalid",
+          parsed.error,
+        ),
+      );
+    try {
+      const checkpoint = this.#checkpoint,
+        analysisComplete = this.#analysisComplete;
+      this.#checkpointPublication = (async () => {
+        await checkpoint.publish(path, analysisComplete, options.signal);
+        await rm(path, { force: true });
+      })();
+      await this.#checkpointPublication;
+      return ok(null);
+    } catch (cause: unknown) {
+      return err(
+        this.#failure(
+          "process",
+          "Ghidra checkpoint publication failed; edit persistence is unconfirmed",
+          ghidraCheckpointFailure(
+            "checkpoint_program",
+            this.#options.checkpoint?.directory ?? path,
+            cause,
+          ),
+        ),
+      );
+    } finally {
+      this.#checkpointPublication = undefined;
+    }
   }
 
   async #connect(
@@ -650,6 +798,19 @@ export class GhidraClient {
         ? {}
         : { expectedCompilerSpecId: this.#options.expectedCompilerSpecId }),
     });
+    if (
+      parsed.ok &&
+      this.#options.checkpoint?.source !== null &&
+      this.#options.checkpoint?.source !== undefined &&
+      parsed.value.analysis_complete !==
+        this.#options.checkpoint.source.analysis_complete
+    )
+      return err(
+        this.#failure(
+          "protocol",
+          "Restored Program analysis status differs from its committed checkpoint",
+        ),
+      );
     if (parsed.ok) return parsed;
     return err(
       this.#failure(
@@ -742,6 +903,8 @@ export class GhidraClient {
         await owner.close();
         this.#snapshotOwners.delete(owner);
       }
+      await this.#checkpointPublication?.catch(() => undefined);
+      await this.#checkpoint?.close();
       await this.#options.launcher.close?.();
       try {
         await this.#removeRuntimeRoots();
