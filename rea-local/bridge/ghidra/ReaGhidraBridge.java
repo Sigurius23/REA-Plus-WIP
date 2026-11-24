@@ -159,6 +159,8 @@ public final class ReaGhidraBridge extends HeadlessScript {
     private List<FunctionEntry> procedureInventory;
     private List<InventoryItem> stringInventory;
     private DecompInterface decompiler;
+    private String projectIdentityFailure;
+    private boolean projectIdentityUnavailable;
     private final ReaGhidraExtensions analysisExtensions = new ReaGhidraExtensions();
     private ReaGhidraSwiftEnumSwitches swiftEnumSwitches;
     private ReaGhidraSwiftErrorCalls swiftErrorCalls;
@@ -200,6 +202,15 @@ public final class ReaGhidraBridge extends HeadlessScript {
                 importedSha256.toLowerCase(Locale.ROOT),
                 descriptor.targetSha256
             )) {
+            if (descriptor.existingProject) {
+                projectIdentityUnavailable = importedSha256 == null || !importedSha256.matches("(?i)[0-9a-f]{64}");
+                projectIdentityFailure = projectIdentityUnavailable
+                    ? "Saved Program executable SHA-256 is unavailable or invalid: observed " + importedSha256
+                    : "Saved Program executable SHA-256 does not match the supplied target: expected " + descriptor.targetSha256 + ", observed " + importedSha256;
+                end(false);
+                serve(descriptor);
+                return;
+            }
             throw new IllegalStateException(
                 "Ghidra imported-byte digest does not match the admitted target"
             );
@@ -358,11 +369,13 @@ public final class ReaGhidraBridge extends HeadlessScript {
 
     private JsonElement handleRequest(Request request, SessionDescriptor descriptor)
             throws Exception {
+        if (projectIdentityFailure != null)
+            throw new RequestFailure(projectIdentityUnavailable ? "selected_project_identity_unavailable" : "selected_project_target_mismatch", projectIdentityFailure);
         if (request.method.equals("ping")) {
             requireKeys(request.params, Set.of());
             return sessionInfo(descriptor);
         }
-        if (analysisTimeoutOccurred() && descriptor.analysisTimeoutSeconds == null) {
+        if (!descriptor.existingProject && analysisTimeoutOccurred() && descriptor.analysisTimeoutSeconds == null) {
             throw new RequestFailure(
                 "analysis_incomplete",
                 "Ghidra auto-analysis did not complete for this Program"
@@ -398,13 +411,13 @@ public final class ReaGhidraBridge extends HeadlessScript {
                 yield functionObservation(observation.dossier(), observation.limitations());
             }
             case "set_address_name", "set_addresses_names" -> {
-                if (!descriptor.transport.equals("unix-socket"))
+                if (descriptor.existingProject || !descriptor.transport.equals("unix-socket"))
                     throw new RequestFailure("method_unavailable", "Windows P0 does not admit database mutation");
                 yield request.method.equals("set_address_name")
                     ? setAddressName(request.params) : setAddressesNames(request.params);
             }
             case "annotate_native_function" -> {
-                if (!descriptor.transport.equals("unix-socket"))
+                if (descriptor.existingProject || !descriptor.transport.equals("unix-socket"))
                     throw new RequestFailure("method_unavailable", "Windows P0 does not admit database mutation");
                 yield annotateNativeFunction(request.params);
             }
@@ -440,10 +453,16 @@ public final class ReaGhidraBridge extends HeadlessScript {
         result.addProperty("run_id", descriptor.runId);
         result.addProperty("profile_digest", descriptor.profileDigest);
         result.add("provider", provider);
-        boolean readOnly = !descriptor.transport.equals("unix-socket");
+        boolean readOnly = descriptor.existingProject || !descriptor.transport.equals("unix-socket");
         result.addProperty("read_only", readOnly);
-        result.addProperty("analysis_complete", !timedOut);
-        result.addProperty("analysis_timed_out", timedOut);
+        if (descriptor.existingProject) {
+            result.add("analysis_complete", JsonNull.INSTANCE);
+            result.add("analysis_timed_out", JsonNull.INSTANCE);
+            result.addProperty("existing_project", true);
+        } else {
+            result.addProperty("analysis_complete", !timedOut);
+            result.addProperty("analysis_timed_out", timedOut);
+        }
         if (descriptor.analysisTimeoutSeconds != null)
             result.addProperty("analysis_timeout_seconds", descriptor.analysisTimeoutSeconds);
         result.add("capabilities", GSON.toJsonTree(
@@ -3854,7 +3873,12 @@ public final class ReaGhidraBridge extends HeadlessScript {
             keys.add("analysis_extensions");
         if (parsed.isJsonObject() && parsed.getAsJsonObject().has("analysis_timeout_seconds"))
             keys.add("analysis_timeout_seconds");
+        if (parsed.isJsonObject() && parsed.getAsJsonObject().has("existing_project"))
+            keys.add("existing_project");
         JsonObject object = requireObject(parsed, keys);
+        if (object.has("existing_project") && (!object.get("existing_project").isJsonPrimitive() ||
+            !object.get("existing_project").getAsJsonPrimitive().isBoolean() || !object.get("existing_project").getAsBoolean()))
+            throw new IllegalArgumentException("Existing-project mode must be true when present");
         Integer analysisTimeoutSeconds = object.has("analysis_timeout_seconds")
             ? requireInteger(object, "analysis_timeout_seconds") : null;
         if (analysisTimeoutSeconds != null && (analysisTimeoutSeconds <= 0 || analysisTimeoutSeconds > 2147483))
@@ -3867,6 +3891,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
             requireSha256(object, "target_sha256"),
             requireString(object, "provider_version"),
             requireString(object, "profile_digest"),
+            object.has("existing_project"),
             analysisTimeoutSeconds,
             object.has("analysis_extensions") ? object.getAsJsonArray("analysis_extensions") : new JsonArray()
         );
@@ -4064,6 +4089,7 @@ public final class ReaGhidraBridge extends HeadlessScript {
         String targetSha256,
         String providerVersion,
         String profileDigest,
+        boolean existingProject,
         Integer analysisTimeoutSeconds,
         JsonArray analysisExtensions
     ) {}

@@ -3,6 +3,7 @@ import type { ReferenceSourcePolicy } from "../domain/referenceSourcePolicy.js";
 import type { AnalysisProviderSelector } from "../contracts/providerSelection.js";
 
 import type { GhidraLanguageOverride } from "./ghidraLanguageOverride.js";
+import type { GhidraProjectSelection } from "./ghidraExistingProject.js";
 import type { McpInputSchemaProfile } from "./mcpInputSchemaProfile.js";
 import type { Radare2AnalysisLevel } from "./radare2Settings.js";
 
@@ -19,6 +20,7 @@ export interface AppConfig {
   readonly ghidraAnalysisTimeoutSeconds?: number;
   readonly ghidraLanguageOverride?: GhidraLanguageOverride;
   readonly ghidraSeedFile?: string;
+  readonly ghidraExistingProject?: GhidraProjectSelection;
   readonly ghidraNativeAotJar?: string;
   readonly ilspyCmdPath: string | undefined;
   /** Absolute caller-supplied radare2 executable; unset leaves radare2 unconfigured. */

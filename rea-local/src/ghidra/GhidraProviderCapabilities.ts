@@ -29,6 +29,11 @@ export const healthLimitations = Object.freeze([
   "The imported Program and temporary project are ephemeral and deleted on close. Annotation operations edit session database metadata; original executable bytes are never written.",
   "Cancelling an active Ghidra request terminates its ephemeral database and discards session annotations. The selected target remains open; the next provider query imports the original artifact again.",
 ]);
+export const projectLimitations = Object.freeze([
+  "Only a content-verified private copy of the selected Ghidra project is opened; its original files are never passed to Ghidra or saved by REA+.",
+  "Original project auto-analysis completeness and import settings are unknown. Auto-analysis and import-time overrides are not applied; local bridge preparation runs on the private copy.",
+  "Saved seed reports are historical project metadata, not seeds applied by this session. Mutating analyst operations are unavailable and the private copy is deleted on close.",
+]);
 
 /** Additional limitations applied to the experimental Windows x64 P0 boundary. */
 export const windowsP0Limitations = Object.freeze([
@@ -44,9 +49,12 @@ const searchLimitation =
   "Regex mode uses Java Pattern semantics. Matcher or compiler stack exhaustion returns a resource constraint without closing the session; literal mode avoids regex recursion and returns complete matching values.";
 
 /** Limitation text for one admitted operation, including the common base. */
-export const limitationsFor = (operation: string): readonly string[] => {
+export const limitationsFor = (
+  operation: string,
+  existingProject = false,
+): readonly string[] => {
   const common = [
-    ...healthLimitations,
+    ...(existingProject ? projectLimitations : healthLimitations),
     "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
   ];
   switch (operation) {

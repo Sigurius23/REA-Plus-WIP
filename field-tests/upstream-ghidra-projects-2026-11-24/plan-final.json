@@ -1,0 +1,98 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-ghidra-projects-2026-11-24/mcp-final",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_PROJECT_PATH": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/project/owned.gpr",
+    "REA_GHIDRA_PROGRAM_NAME": "owned-target"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "owned-open",
+      "arguments": {
+        "path": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/owned-target",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "binary_overview",
+      "label": "owned-overview",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "binary_session",
+      "label": "owned-session",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "analyze_function",
+      "label": "owned-saved-function",
+      "arguments": {
+        "procedure": "rea_saved_project_annotation"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "read_function_instructions",
+      "label": "owned-saved-instructions",
+      "arguments": {
+        "procedure": "rea_saved_project_annotation"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "search_procedures",
+      "label": "owned-saved-search",
+      "arguments": {
+        "pattern": "rea_saved_project_annotation",
+        "mode": "literal",
+        "case_sensitive": true
+      },
+      "expect_success": true
+    },
+    {
+      "name": "annotate_native_function",
+      "label": "owned-edit-refused",
+      "arguments": {
+        "procedure": "rea_saved_project_annotation",
+        "name": "must_not_persist"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "read_bytes",
+      "label": "owned-source-word",
+      "arguments": {
+        "address": "0x0000000100000328",
+        "length": 4
+      },
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "owned-export",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-ghidra-projects-2026-11-24/mcp-final/final.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "owned-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "owned-close-repeat",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}

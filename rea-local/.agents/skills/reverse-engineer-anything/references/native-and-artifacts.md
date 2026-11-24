@@ -213,6 +213,15 @@ limitations in conclusions; incomplete inventories do not establish absence.
 The default profile still requires completed auto-analysis. Changing the policy
 requires a fresh binding, and the client's tool deadline must allow startup.
 
+When a saved expanded Ghidra project is available, select its absolute `.gpr`
+through `REA_GHIDRA_PROJECT_PATH`, optionally with one exact root
+`REA_GHIDRA_PROGRAM_NAME`, and supply the matching original executable. REA+
+opens a content-verified private copy without auto-analysis or analyst metadata
+edits. Original completeness/settings remain unknown and saved seed reports
+are historical. Import-time seeds, extensions, language and analysis-timeout
+overrides conflict with this mode. This is saved-project inspection, not
+automatic checkpoint publication or permission to save a caller project.
+
 If a partial Program has no procedure at an entry established by metadata or a
 resolved call, preserve that evidence and try the existing
 `REA_GHIDRA_SEED_FILE` workflow before declaring the code inaccessible. The

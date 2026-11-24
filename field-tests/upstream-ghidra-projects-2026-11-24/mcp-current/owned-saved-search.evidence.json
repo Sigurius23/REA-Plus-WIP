@@ -1,0 +1,74 @@
+{
+  "evidence_id": "ev_c83a72eceefa4569ece1a15f7ab4a0799e370d23f06d7867669a9d7dd7d71cb2",
+  "subject": {
+    "name": "owned-target",
+    "digest": {
+      "sha256": "5506701a7de07d89c2ba3dde0b0893da146364812d818882c6af288bd77f039c"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/owned-target"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "mach-o",
+      "architecture": "arm64",
+      "import_mode": "verified-existing-project-copy-v1",
+      "annotation_policy": "read-only-existing-project",
+      "original_analysis": "unknown",
+      "existing_project": {
+        "configured_path": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/project/owned.gpr",
+        "project_path": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/project",
+        "project_name": "owned",
+        "program_name": "owned-target",
+        "sha256": "ca149fbcf8d089bb788093daef2fbad20fe478c5460c2bf00d8781cbb92a7367",
+        "bridge_sha256": "4c1956505610bdd155faf856f17fbcce4dd262e285aedf4b07d5ff4a80df289b"
+      }
+    },
+    "digest": "7dad54e379316d4ec9eb1e84ce91ac79f8b68623c7142b384745bc4299254d9c"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "search_procedures",
+  "parameters": {
+    "pattern": "rea_saved_project_annotation",
+    "mode": "literal",
+    "case_sensitive": true
+  },
+  "raw_result": [
+    {
+      "address": "0x100000328",
+      "value": "rea_saved_project_annotation"
+    }
+  ],
+  "normalized_result": [
+    {
+      "address": "0x100000328",
+      "value": "rea_saved_project_annotation"
+    }
+  ],
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Only a content-verified private copy of the selected Ghidra project is opened; its original files are never passed to Ghidra or saved by REA+.",
+    "Original project auto-analysis completeness and import settings are unknown. Auto-analysis and import-time overrides are not applied; local bridge preparation runs on the private copy.",
+    "Saved seed reports are historical project metadata, not seeds applied by this session. Mutating analyst operations are unavailable and the private copy is deleted on close.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Regex mode uses Java Pattern semantics. Matcher or compiler stack exhaustion returns a resource constraint without closing the session; literal mode avoids regex recursion and returns complete matching values.",
+    "Ghidra auto-analysis state: analysis_complete=null; analysis_timed_out=null.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

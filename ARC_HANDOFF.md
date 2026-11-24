@@ -26,6 +26,31 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest upstream project-copy checkpoint (2026-11-24)
+
+Read `field-tests/upstream-ghidra-projects-2026-11-24.md` and its final
+`verification-current.json`, `runtime-current-manifest.json`, CLI, history and
+snapshot receipts. Item 62's selected-project slice is done. `REA_GHIDRA_PROJECT_PATH`
+selects an expanded `.gpr`; optional `REA_GHIDRA_PROGRAM_NAME` selects one root
+Program. The full selected pair and local Java bridge sources are committed;
+Ghidra reads a verified private copy without auto-analysis or analyst edits.
+Original completeness/settings are unknown, saved seeds historical. The saved
+Program's declared executable SHA must identify the supplied executable;
+unavailable identity, mismatch and stale copy are explicit refusals.
+
+108 tests pass with one platform skip. Final-runtime MCP, CLI parity and
+malformed controls pass, alongside build/fast/docs/package checks and 26
+historical snapshots. The final seeded Arc regression preserves the previous
+profile, 2,537 seed functions, 10,072-byte reducer body and 2,518 instructions.
+No Arc/helper/fixture executable was run. Swift recovery implementations are
+unchanged; Java bridge changes add selected-project authority/identity handling.
+
+Next upstream work: automatic owned checkpoint publication with seed-compatible
+profile/source identity and truthful leases, save/restore and retirement.
+Current saved-project inspection neither saves active REA+ Programs nor restores
+former deleted ephemeral Arc sessions. The Arc feature frontier and Client
+unknown revision 3 remain unchanged below.
+
 ## Latest controller/selector checkpoint (2026-11-24)
 
 Read `field-tests/arc-restore-ui-2026-11-24.md`, its finding index,

@@ -8,6 +8,10 @@ import type { GhidraLanguageOverride } from "../config/ghidraLanguageOverride.js
 import { snapshotEnvironment } from "../process/snapshotEnvironment.js";
 import { mkdir, realpath } from "node:fs/promises";
 import { basename, dirname, join, posix, win32 } from "node:path";
+import {
+  GhidraProjectFiles,
+  type GhidraProjectCommitment,
+} from "./GhidraProjectSnapshot.js";
 
 import writeFileAtomic from "write-file-atomic";
 
@@ -61,6 +65,7 @@ export type GhidraLaunch = ProviderProcessLaunch & {
 
 /** Provider-owned capability that starts one isolated headless analysis. */
 export interface GhidraLauncher {
+  close?(): Promise<void>;
   launch(
     session: GhidraLaunchSession,
     options?: { readonly signal?: AbortSignal },
@@ -89,6 +94,7 @@ export class GhidraLaunchError extends Error {
 
 /** Static coordinates for an extracted Ghidra release and packaged script. */
 export interface GhidraHeadlessLauncherOptions {
+  readonly existingProject?: GhidraProjectCommitment;
   readonly environment: Readonly<NodeJS.ProcessEnv>;
   readonly analyzeHeadlessPath: string;
   readonly javaHome?: string;
@@ -112,6 +118,10 @@ export interface GhidraHeadlessLauncherOptions {
 
 /** Launch Ghidra without copying scripts into or modifying its installation. */
 export class GhidraHeadlessLauncher implements GhidraLauncher {
+  readonly #projectFiles = new GhidraProjectFiles();
+  close(): Promise<void> {
+    return this.#projectFiles.close();
+  }
   readonly options: GhidraHeadlessLauncherOptions;
   constructor(options: GhidraHeadlessLauncherOptions) {
     this.options = {
@@ -130,6 +140,14 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
     const platform = this.options.platform ?? process.platform;
     let started: ReturnType<typeof withOwnedProviderProcessCleanup> | undefined;
     try {
+      if (
+        this.options.existingProject !== undefined &&
+        (this.options.analysisSeeds !== undefined ||
+          (this.options.analysisExtensions?.length ?? 0) > 0)
+      )
+        throw new GhidraLaunchError(
+          "Existing projects cannot apply fresh seed or extension settings",
+        );
       const psp = this.options.pspExtension;
       if (psp !== undefined) {
         const installedRoot = await realpath(
@@ -156,6 +174,12 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
           );
       }
       await createGhidraRuntimeDirectories(paths, platform);
+      if (this.options.existingProject !== undefined)
+        await this.#projectFiles.copy(
+          this.options.existingProject,
+          paths.projectRoot,
+          options.signal,
+        );
       const seedPath =
         this.options.analysisSeeds === undefined
           ? undefined
@@ -177,6 +201,9 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
           target_sha256: session.targetSha256,
           provider_version: session.providerVersion,
           profile_digest: session.profileDigest,
+          ...(this.options.existingProject === undefined
+            ? {}
+            : { existing_project: true }),
           ...(session.analysisTimeoutSeconds === undefined
             ? {}
             : { analysis_timeout_seconds: session.analysisTimeoutSeconds }),
@@ -193,6 +220,9 @@ export class GhidraHeadlessLauncher implements GhidraLauncher {
           ? {}
           : { analysisTimeoutSeconds: session.analysisTimeoutSeconds }),
         platform,
+        ...(this.options.existingProject === undefined
+          ? {}
+          : { existingProject: this.options.existingProject }),
         ...(psp === undefined ? {} : { psp: true as const }),
         projectRoot: paths.projectRoot,
         targetPath: session.targetPath,
@@ -398,6 +428,7 @@ const ghidraBatchStep = <T>(step: () => T): T => {
 
 /** Paths encoded into one bounded analyzeHeadless invocation. */
 export interface GhidraHeadlessArgumentOptions {
+  readonly existingProject?: GhidraProjectCommitment;
   readonly analysisTimeoutSeconds?: number;
   readonly platform?: NodeJS.Platform;
   readonly projectRoot: string;
@@ -426,6 +457,39 @@ export const ghidraHeadlessArguments = (
     (options.platform ?? process.platform) === "win32" ? win32 : posix;
   const bridgeDirectory = scriptPath.dirname(options.bridgeScriptPath);
   const override = options.languageOverride;
+  const existing = options.existingProject;
+  if (existing !== undefined) {
+    if (
+      (options.platform ?? process.platform) === "win32" ||
+      options.psp ||
+      options.dosMz ||
+      options.dosCom ||
+      options.dex !== undefined ||
+      override !== undefined ||
+      options.seedPath !== undefined ||
+      options.analysisTimeoutSeconds !== undefined
+    )
+      throw new GhidraLaunchError(
+        "Existing projects cannot apply fresh import or analysis settings",
+      );
+    return [
+      options.projectRoot,
+      existing.project_name,
+      "-process",
+      existing.program_name,
+      "-noanalysis",
+      "-readOnly",
+      "-log",
+      options.ghidraLogPath,
+      "-scriptlog",
+      options.scriptLogPath,
+      "-scriptPath",
+      bridgeDirectory,
+      "-postScript",
+      options.bridgeScriptPath,
+      options.descriptorPath,
+    ];
+  }
   ghidraAnalysisTimeoutValueSchema
     .optional()
     .parse(options.analysisTimeoutSeconds);

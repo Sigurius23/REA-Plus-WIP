@@ -559,7 +559,14 @@ export class GhidraClient {
         ? this.#interruptionFailure(deadline, launched.error)
         : launched.error instanceof GhidraSessionError
           ? launched.error
-          : this.#failure("start", launched.error.message, launched.error);
+          : this.#failure(
+              "start",
+              launched.error.message,
+              launched.error instanceof GhidraLaunchError &&
+                launched.error.cause instanceof AnalysisError
+                ? launched.error.cause
+                : launched.error,
+            );
       return this.#startupFailure(failure);
     }
     this.#launch = launched.value;
@@ -622,7 +629,11 @@ export class GhidraClient {
     const parsed = parseGhidraSessionInfo(value, {
       runId,
       expectedReadOnly:
-        this.#options.transport === "authenticated-loopback-tcp",
+        this.#options.transport === "authenticated-loopback-tcp" ||
+        this.#options.existingProject === true,
+      ...(this.#options.existingProject === undefined
+        ? {}
+        : { expectedExistingProject: true }),
       providerVersion: this.#options.providerVersion,
       profileDigest: this.#options.profileDigest,
       targetSha256: this.#options.targetSha256,
@@ -731,6 +742,7 @@ export class GhidraClient {
         await owner.close();
         this.#snapshotOwners.delete(owner);
       }
+      await this.#options.launcher.close?.();
       try {
         await this.#removeRuntimeRoots();
       } catch (cause: unknown) {

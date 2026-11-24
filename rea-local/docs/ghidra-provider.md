@@ -5,6 +5,34 @@ read-only analysis and atomic function-name/entry-comment edits; Windows P0 is
 read-only. GUI controls and persistent database mutation are unavailable.
 Executable bytes remain unchanged.
 
+## Inspect a saved project
+
+On Linux/macOS, set `REA_GHIDRA_PROJECT_PATH` to an absolute expanded `.gpr`
+marker and optionally `REA_GHIDRA_PROGRAM_NAME` to one exact Program in the
+project root. The default Program name is the supplied target's basename.
+Continue to supply the original executable to CLI/MCP; the bridge verifies the
+saved Program's executable SHA-256 against that target.
+
+REA+ hashes only the selected `.gpr`/`.rep` pair and the packaged bridge sources
+into the analysis profile. It copies the pair into its private runtime, checks
+the copy against that commitment, then uses `-process`, `-noanalysis` and
+`-readOnly`. It never passes the original project to Ghidra. Symlinks,
+non-regular entries, overlapping runtime placement and changed copies are
+refused. A missing or changed project requires a corrected selection and a
+fresh target binding; no fresh-import fallback occurs.
+
+The original analysis completeness and import settings are unknown: handshake
+`analysis_complete` / `analysis_timed_out` are explicitly null in this mode.
+Saved seed reports remain historical metadata. Fresh seeds, extensions,
+language/compiler overrides and analysis-timeout settings cannot be combined
+with selected projects. Local bridge preparation runs on the private copy;
+analyst annotation/name edits are unavailable. The supported target scope is
+the existing Linux/macOS ELF/PE/thin Mach-O admission profile.
+
+Restore `.grez` archives or import `.gzf` packed Programs into an expanded
+project before selecting it. Automatic owned checkpoints are a separate
+integration task; this workflow does not publish or update saved Programs.
+
 Use [installation](installation.md#ghidra) for supported hosts, prerequisites,
 configuration, startup deadlines, resource controls, and cleanup recovery.
 [Windows P0](windows-ghidra-p0.md) has its own admission and lifecycle boundary;

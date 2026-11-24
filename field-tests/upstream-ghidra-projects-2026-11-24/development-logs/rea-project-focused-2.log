@@ -1,0 +1,77 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts src/ghidra/GhidraSessionValues.test.ts src/ghidra/GhidraProvider.behavior.test.ts tests/boundary/providers/ghidra/ghidraLauncher.test.ts
+
+Focused tests: tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts, src/ghidra/GhidraSessionValues.test.ts, src/ghidra/GhidraProvider.behavior.test.ts, tests/boundary/providers/ghidra/ghidraLauncher.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs 849f8fb153b306ba
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache hit, replaying logs 279f5f4ec83bdcc9
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    3 cached, 3 total
+  Time:    806ms >>> FULL TURBO
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |adapters| src/ghidra/GhidraSessionValues.test.ts (9 tests) 10ms
+ ❯ |boundary| tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts (7 tests | 1 failed) 589ms
+   ❯ verified existing Ghidra project copies (6)
+     ✓ copies only the committed pair and never edits its original 78ms
+     ✓ refuses content changed after profile resolution 114ms
+     × does not follow a project symlink or overwrite an existing copy 170ms
+     ✓ refuses overlapping runtime placement and a changed bridge commitment 61ms
+     ✓ honors cancellation before copying 41ms
+     ✓ uses exact -process selection with no auto-analysis or source import 110ms
+   ✓ validates project marker and exact Program selection through config 14ms
+ ✓ |boundary| tests/boundary/providers/ghidra/ghidraLauncher.test.ts (17 tests | 1 skipped) 49ms
+ ✓ |adapters| src/ghidra/GhidraProvider.behavior.test.ts (42 tests) 405ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts > verified existing Ghidra project copies > does not follow a project symlink or overwrite an existing copy
+AssertionError: expected SystemError: Target already exists: cp re… { …(5) } to match object { code: 'EEXIST' }
+(9 matching properties omitted from actual)
+
+- Expected
++ Received
+
+- {
+-   "code": "EEXIST",
++ NodeError {
++   "code": "ERR_FS_CP_EEXIST",
+  }
+
+ ❯ tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts:70:6
+     68|     await expect(
+     69|       f.files.copy(f.selection, f.destination),
+     70|     ).rejects.toMatchObject({ code: "EEXIST" });
+       |      ^
+     71|     await symlink(
+     72|       join(f.source, "unrelated.gpr"),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 73 passed | 1 skipped (75)
+   Start at  15:07:34
+   Duration  3.25s (transform 60%, tests 20%, import 19%, worker 2%)
+

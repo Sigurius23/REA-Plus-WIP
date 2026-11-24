@@ -32,6 +32,7 @@ export type GhidraDiagnostic =
 
 /** Dependencies and exact profile commitment for one headless import. */
 export interface GhidraClientOptions {
+  readonly existingProject?: true;
   readonly launcher: GhidraLauncher;
   readonly runId?: string;
   readonly targetPath: string;

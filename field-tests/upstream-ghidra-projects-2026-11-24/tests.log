@@ -1,0 +1,64 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/boundary/providers/ghidra/ghidraClient.test.ts tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts src/ghidra/GhidraSessionValues.test.ts src/ghidra/GhidraProvider.behavior.test.ts tests/boundary/providers/ghidra/ghidraLauncher.test.ts
+
+Focused tests: tests/boundary/providers/ghidra/ghidraClient.test.ts, tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts, src/ghidra/GhidraSessionValues.test.ts, src/ghidra/GhidraProvider.behavior.test.ts, tests/boundary/providers/ghidra/ghidraLauncher.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs 09ececdebcc4a152
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache miss, executing b3b7fe9f09a25d38
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    2 cached, 3 total
+  Time:    1.613s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |adapters| src/ghidra/GhidraSessionValues.test.ts (9 tests) 6ms
+ ✓ |adapters| src/ghidra/GhidraProvider.behavior.test.ts (42 tests) 299ms
+ ✓ |boundary| tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts (8 tests) 91ms
+ ✓ |boundary| tests/boundary/providers/ghidra/ghidraLauncher.test.ts (17 tests | 1 skipped) 7ms
+ ✓ |boundary| tests/boundary/providers/ghidra/ghidraClient.test.ts (33 tests) 13186ms
+   ✓ GhidraClient (11)
+     ✓ accepts an owned-socket result above the former 64 MiB ceiling 485ms
+     ✓ projects malformed startup as protocol 559ms
+     ✓ projects contradictory startup as protocol 560ms
+     ✓ projects future_id startup as protocol 558ms
+   ✓ GhidraClient startup lifecycle (2)
+     ✓ applies one startup deadline and removes the private runtime 465ms
+     ✓ cancels startup promptly and leaves no project or process 506ms
+   ✓ GhidraClient established requests (2)
+     ✓ cancels queued work and stops active provider work on cancellation 611ms
+   ✓ Ghidra launcher rollback ownership (2)
+     ✓ retains the original process and runtime roots after ownership manifest write failure until cleanup succeeds 1501ms
+     ✓ retains the original process and runtime roots after cancellation after process creation until cleanup succeeds 1311ms
+   ✓ retains spawned rollback-discovered foreign detached processes and runtime roots across later closes 3684ms
+   ✓ retains injected rollback-discovered foreign detached processes and runtime roots across later closes 1385ms
+
+ Test Files  5 passed (5)
+      Tests  108 passed | 1 skipped (109)
+   Start at  15:16:29
+   Duration  13.93s (tests 91%, transform 6%, import 3%)
+
+npm notice
+npm notice New major version of npm available! 10.9.2 -> 12.2.3
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.3
+npm notice To update run: npm install -g npm@12.2.3
+npm notice

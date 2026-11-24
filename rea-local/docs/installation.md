@@ -777,6 +777,13 @@ pseudocode is never treated as original source or Hopper-equivalent text.
 
 ### Ghidra import language and analysis seeds
 
+For an already analyzed project, `REA_GHIDRA_PROJECT_PATH=/absolute/project.gpr`
+selects a verified private copy; `REA_GHIDRA_PROGRAM_NAME` optionally chooses
+one exact root Program. Supply the matching original executable as usual.
+This Linux/macOS workflow skips auto-analysis, excludes import-time overrides
+and reports original completeness as unknown. See
+[saved-project semantics](ghidra-provider.md#inspect-a-saved-project).
+
 Ghidra detects the language from the executable header. To set it (for example, Borland C++ PE images):
 
 ```bash

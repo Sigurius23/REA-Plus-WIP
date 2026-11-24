@@ -53,6 +53,40 @@ describe("Ghidra DOS import commitment", () => {
 });
 
 describe("Ghidra mutation handshake", () => {
+  it("admits unknown historical completeness only for the exact read-only project mode", () => {
+    const value = {
+      ...session(),
+      existing_project: true,
+      read_only: true,
+      analysis_complete: null,
+      analysis_timed_out: null,
+      capabilities: GHIDRA_SESSION_CAPABILITIES.filter(
+        (c) => !GHIDRA_MUTATING_OPERATIONS.has(c),
+      ),
+    };
+    expect(
+      parseGhidraSessionInfo(value, {
+        ...expected,
+        expectedReadOnly: true,
+        expectedExistingProject: true,
+      }).ok,
+    ).toBe(true);
+    expect(
+      parseGhidraSessionInfo(value, { ...expected, expectedReadOnly: true }).ok,
+    ).toBe(false);
+    expect(
+      parseGhidraSessionInfo(
+        { ...value, analysis_complete: true, analysis_timed_out: false },
+        { ...expected, expectedReadOnly: true, expectedExistingProject: true },
+      ).ok,
+    ).toBe(false);
+    expect(
+      parseGhidraSessionInfo(
+        { ...session(), analysis_complete: null, analysis_timed_out: null },
+        expected,
+      ).ok,
+    ).toBe(false);
+  });
   it("requires the exact mutation authority and rejects duplicate capabilities", () => {
     const value = session();
     expect(

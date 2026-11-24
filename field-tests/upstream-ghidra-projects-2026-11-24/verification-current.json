@@ -1,0 +1,602 @@
+{
+  "status": "passed",
+  "mcp_calls": 87,
+  "successful_mcp_calls": 77,
+  "counts": {
+    "mcp": {
+      "calls": 11,
+      "successful": 10,
+      "errors": 1
+    },
+    "mcp-changed": {
+      "calls": 4,
+      "successful": 3,
+      "errors": 1
+    },
+    "mcp-wrong-target": {
+      "calls": 4,
+      "successful": 3,
+      "errors": 1
+    },
+    "mcp-final": {
+      "calls": 11,
+      "successful": 10,
+      "errors": 1
+    },
+    "mcp-changed-final": {
+      "calls": 4,
+      "successful": 3,
+      "errors": 1
+    },
+    "mcp-wrong-target-final": {
+      "calls": 4,
+      "successful": 3,
+      "errors": 1
+    },
+    "mcp-cold": {
+      "calls": 7,
+      "successful": 7,
+      "errors": 0
+    },
+    "mcp-arc-regression": {
+      "calls": 6,
+      "successful": 6,
+      "errors": 0
+    },
+    "mcp-current": {
+      "calls": 11,
+      "successful": 10,
+      "errors": 1
+    },
+    "mcp-wrong-current": {
+      "calls": 4,
+      "successful": 3,
+      "errors": 1
+    },
+    "mcp-changed-current": {
+      "calls": 4,
+      "successful": 3,
+      "errors": 1
+    },
+    "mcp-cold-current": {
+      "calls": 7,
+      "successful": 7,
+      "errors": 0
+    },
+    "mcp-arc-current": {
+      "calls": 6,
+      "successful": 6,
+      "errors": 0
+    },
+    "mcp-unknown-current": {
+      "calls": 4,
+      "successful": 3,
+      "errors": 1
+    }
+  },
+  "expected_refusals": [
+    {
+      "directory": "mcp",
+      "operation": "annotate_native_function",
+      "code": "capability_unavailable",
+      "details": {
+        "provider_id": "ghidra",
+        "operation": "annotate_native_function",
+        "reason": "Selected Ghidra projects are inspected through read-only private copies."
+      }
+    },
+    {
+      "directory": "mcp-changed",
+      "operation": "binary_overview",
+      "code": "execution_failure",
+      "details": {
+        "provider_id": "ghidra",
+        "operation": "list_documents",
+        "diagnostics": {
+          "target_path": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/owned-target",
+          "target_sha256": "5506701a7de07d89c2ba3dde0b0893da146364812d818882c6af288bd77f039c",
+          "transport": "unix-socket",
+          "provider_version": "12.1.4",
+          "profile_digest": "e7c84e001324d148573f63b1b116f7bf723d8687ad4eb583883d74cb1f51ee9e",
+          "run_id": "b9f0595a-22d6-49d3-ad99-1acc27943392",
+          "runtime_root": "/tmp/rea-ghidra-IkKMAh",
+          "endpoint_path": "/tmp/rea-ghidra-IkKMAh/bridge.sock",
+          "phase": "startup",
+          "stage": "launch",
+          "startup_timeout_ms": 330000,
+          "analysis_timeout_seconds": null,
+          "failure_cause": {
+            "name": "GhidraLaunchError",
+            "message": "Ghidra headless launch failed"
+          },
+          "failure_kind": "start",
+          "failure_message": "Ghidra headless launch failed"
+        }
+      }
+    },
+    {
+      "directory": "mcp-wrong-target",
+      "operation": "binary_overview",
+      "code": "execution_failure",
+      "details": {
+        "provider_id": "ghidra",
+        "operation": "list_documents",
+        "diagnostics": {
+          "target_path": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/owned-target-mismatch",
+          "target_sha256": "6a411844500fec667c4af0e52c8da8761fa62603b89e84cfd7ca4510204eddf0",
+          "transport": "unix-socket",
+          "provider_version": "12.1.4",
+          "profile_digest": "e7c84e001324d148573f63b1b116f7bf723d8687ad4eb583883d74cb1f51ee9e",
+          "run_id": "ab6cf8e6-2c75-4faa-ab8c-bccdee932ae3",
+          "runtime_root": "/tmp/rea-ghidra-7SYZ12",
+          "endpoint_path": "/tmp/rea-ghidra-7SYZ12/bridge.sock",
+          "project_root": "/tmp/rea-ghidra-7SYZ12/project",
+          "ghidra_log_path": "/tmp/rea-ghidra-7SYZ12/ghidra.log",
+          "script_log_path": "/tmp/rea-ghidra-7SYZ12/script.log",
+          "process_id": 11950,
+          "exit_code": 0,
+          "exit_signal": null,
+          "diagnostic_truncated": false,
+          "stdout": {
+            "text": "INFO  Using log config file: jar:file:/opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml (LoggingInitialization)  \nINFO  Using log file: /tmp/rea-ghidra-7SYZ12/ghidra.log (LoggingInitialization)  \nINFO  Loading user preferences: /tmp/rea-ghidra-7SYZ12/config/sigur-ghidra/ghidra_12.1.4_PUBLIC/preferences (Preferences)  \nINFO  Searching for classes... (ClassSearcher)  \nINFO  Class search complete (831 ms) (ClassSearcher)  \nINFO  Initializing SSL Context (DefaultSSLContextInitializer)  \nINFO  Initializing Random Number Generator... (SecureRandomFactory)  \nINFO  Random Number Generator initialization complete: NativePRNGNonBlocking (SecureRandomFactory)  \nINFO  Trust manager disabled, cacerts have not been set (DefaultTrustManagerFactory)  \nINFO  Starting cache cleanup: /tmp/rea-ghidra-7SYZ12/cache/sigur-ghidra/fscache2 (FileCacheMaintenanceDaemon)  \nINFO  Finished cache cleanup, estimated storage used: 0 (FileCacheMaintenanceDaemon)  \nINFO  Headless startup complete (1910 ms) (AnalyzeHeadless)  \nINFO  Class searcher loaded 59 extension points (20 false positives) (ClassSearcher)  \nINFO  HEADLESS Script Paths:\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/GnuDemangler/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Processors/JVM/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Processors/PIC/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/PyGhidra/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Debug/Debugger/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/WildcardAssembler/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/PDB/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/MicrosoftCodeAnalyzer/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Debug/Debugger-rmi-trace/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/VersionTracking/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/FunctionID/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/BytePatterns/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/DecompilerDependent/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/BSim/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/SwiftDemangler/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/Decompiler/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/SystemEmulation/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Processors/DATA/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/Base/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/FileFormats/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Processors/8051/ghidra_scripts\n    /opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Processors/Atmel/ghidra_scripts\n    /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-ghidra-project-runtime-2026-11-24/bridge/ghidra (HeadlessAnalyzer)  \nINFO  HEADLESS: execution starts (HeadlessAnalyzer)  \nINFO  Opening existing project: /tmp/rea-ghidra-7SYZ12/project/owned (HeadlessAnalyzer)  \nINFO  Opening project: /tmp/rea-ghidra-7SYZ12/project/owned (HeadlessProject)  \nINFO  REPORT: Processing read-only project file: /owned-target (HeadlessAnalyzer)  \nINFO  REPORT: Execute script: /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-ghidra-project-runtime-2026-11-24/bridge/ghidra/ReaGhidraBridge.java '/tmp/rea-ghidra-7SYZ12/session.json'  (HeadlessAnalyzer)  \nINFO  SCRIPT: /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-ghidra-project-runtime-2026-11-24/bridge/ghidra/ReaGhidraBridge.java (HeadlessAnalyzer)  \nERROR REPORT SCRIPT ERROR:  (HeadlessAnalyzer) java.lang.IllegalStateException: Ghidra imported-byte digest does not match the admitted target\n\tat ReaGhidraBridge.run(ReaGhidraBridge.java:203)\n\tat ghidra.app.script.GhidraScript.executeNormal(GhidraScript.java:460)\n\tat ghidra.app.script.GhidraScript.doExecute(GhidraScript.java:314)\n\tat ghidra.app.script.GhidraScript.execute(GhidraScript.java:290)\n\tat ghidra.app.util.headless.HeadlessAnalyzer.runScript(HeadlessAnalyzer.java:585)\n\tat ghidra.app.util.headless.HeadlessAnalyzer.runScriptsList(HeadlessAnalyzer.java:937)\n\tat ghidra.app.util.headless.HeadlessAnalyzer.analyzeProgram(HeadlessAnalyzer.java:1093)\n\tat ghidra.app.util.headless.HeadlessAnalyzer.processFileNoImport(HeadlessAnalyzer.java:1191)\n\tat ghidra.app.util.headless.HeadlessAnalyzer.processFolderNoImport(HeadlessAnalyzer.java:1363)\n\tat ghidra.app.util.headless.HeadlessAnalyzer.processNoImport(HeadlessAnalyzer.java:1392)\n\tat ghidra.app.util.headless.HeadlessAnalyzer.processLocal(HeadlessAnalyzer.java:449)\n\tat ghidra.app.util.headless.AnalyzeHeadless.launch(AnalyzeHeadless.java:199)\n\tat ghidra.GhidraLauncher.launch(GhidraLauncher.java:81)\n\tat ghidra.Ghidra.main(Ghidra.java:54)\n \nWARN  Script does not exist or encountered problems; further processing is aborted. (HeadlessAnalyzer)  \nINFO  Processing aborted as a result of post-script. (HeadlessAnalyzer)  \n",
+            "bytes": 5531,
+            "retained_bytes": 5531
+          },
+          "stderr": {
+            "text": "NOTE: Picked up JDK_JAVA_OPTIONS: \nPicked up JAVA_TOOL_OPTIONS: \nPicked up _JAVA_OPTIONS: \nopenjdk version \"27\" 2026-09-15\nOpenJDK Runtime Environment Homebrew (build 27)\nOpenJDK 64-Bit Server VM Homebrew (build 27, mixed mode)\nWARNING: Final field name in class ghidra.util.charset.CharsetInfo has been mutated reflectively by class com.google.gson.internal.bind.ReflectiveTypeAdapterFactory$2 in unnamed module @3059cbc (file:/opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Framework/Generic/lib/gson-2.13.2.jar)\nWARNING: Use --enable-final-field-mutation=ALL-UNNAMED to avoid a warning\nWARNING: Mutating final fields will be blocked in a future release unless final field mutation is enabled\nWARNING: A terminally deprecated method in sun.misc.Unsafe has been called\nWARNING: sun.misc.Unsafe::staticFieldOffset has been called by org.apache.felix.framework.util.SecureAction (file:/opt/homebrew/Cellar/ghidra/12.1.4/libexec/Ghidra/Features/Base/lib/org.apache.felix.framework-7.0.5.jar)\nWARNING: Please consider reporting this to the maintainers of class org.apache.felix.framework.util.SecureAction\nWARNING: sun.misc.Unsafe::staticFieldOffset will be removed in a future release\n",
+            "bytes": 1185,
+            "retained_bytes": 1185
+          },
+          "phase": "startup",
+          "stage": "awaiting-post-analysis-bridge",
+          "startup_timeout_ms": 330000,
+          "analysis_timeout_seconds": null,
+          "failure_kind": "process",
+          "failure_message": "Ghidra exited before bridge startup"
+        }
+      }
+    },
+    {
+      "directory": "mcp-final",
+      "operation": "annotate_native_function",
+      "code": "capability_unavailable",
+      "details": {
+        "provider_id": "ghidra",
+        "operation": "annotate_native_function",
+        "reason": "Selected Ghidra projects are inspected through read-only private copies."
+      }
+    },
+    {
+      "directory": "mcp-changed-final",
+      "operation": "binary_overview",
+      "code": "artifact_changed",
+      "details": {
+        "operation": "list_documents",
+        "path": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/project",
+        "reason": "Selected project content differs from its committed profile; when it changed is unknown",
+        "boundary": "stable-artifact-read"
+      }
+    },
+    {
+      "directory": "mcp-wrong-target-final",
+      "operation": "binary_overview",
+      "code": "configuration_invalid",
+      "details": {
+        "settings": [
+          {
+            "setting": "REA_GHIDRA_PROJECT_PATH",
+            "constraint": "Saved Program executable SHA-256 does not match the supplied target: expected 6a411844500fec667c4af0e52c8da8761fa62603b89e84cfd7ca4510204eddf0, observed 5506701a7de07d89c2ba3dde0b0893da146364812d818882c6af288bd77f039c; select a saved Program whose executable SHA-256 matches the supplied target"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "mcp-current",
+      "operation": "annotate_native_function",
+      "code": "capability_unavailable",
+      "details": {
+        "provider_id": "ghidra",
+        "operation": "annotate_native_function",
+        "reason": "Selected Ghidra projects are inspected through read-only private copies."
+      }
+    },
+    {
+      "directory": "mcp-wrong-current",
+      "operation": "binary_overview",
+      "code": "configuration_invalid",
+      "details": {
+        "settings": [
+          {
+            "setting": "REA_GHIDRA_PROJECT_PATH",
+            "constraint": "Saved Program executable SHA-256 does not match the supplied target: expected 6a411844500fec667c4af0e52c8da8761fa62603b89e84cfd7ca4510204eddf0, observed 5506701a7de07d89c2ba3dde0b0893da146364812d818882c6af288bd77f039c; select a saved Program whose executable SHA-256 matches the supplied target"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "mcp-changed-current",
+      "operation": "binary_overview",
+      "code": "artifact_changed",
+      "details": {
+        "operation": "list_documents",
+        "path": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/project",
+        "reason": "Selected project content differs from its committed profile; when it changed is unknown",
+        "boundary": "stable-artifact-read"
+      }
+    },
+    {
+      "directory": "mcp-unknown-current",
+      "operation": "binary_overview",
+      "code": "configuration_invalid",
+      "details": {
+        "settings": [
+          {
+            "setting": "REA_GHIDRA_PROJECT_PATH",
+            "constraint": "Saved Program executable SHA-256 is unavailable or invalid: observed unknown; select a saved Program whose executable SHA-256 matches the supplied target"
+          }
+        ]
+      }
+    }
+  ],
+  "final_runtime_mcp_calls": 36,
+  "final_runtime_successes": 32,
+  "exact_cli_mcp_evidence_pairs": 2,
+  "cli_configuration_controls": 2,
+  "source_tests": {
+    "passed": 108,
+    "platform_skips": 1,
+    "final_posix_scope_cases": 8
+  },
+  "frozen_runtimes": {
+    "initial_files": 1883,
+    "final_files": 1883
+  },
+  "current_sources": 18,
+  "test_only_platform_scope": {
+    "path": "rea-local/tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts",
+    "capture_sha256": "197c1144a797a36b2e190e2d07212594a33da5904f6dc4b61157d0b00ec9f229",
+    "current_sha256": "c987a96040a8f2b2140f34d2700c13bd754655e5bbee3bec98eecd3a8f7f85a9",
+    "change": "Skip existing-project filesystem scenarios on Windows, which this provider mode explicitly rejects; production runtime unchanged"
+  },
+  "owned_source_sha256": "5506701a7de07d89c2ba3dde0b0893da146364812d818882c6af288bd77f039c",
+  "project_sha256": "ca149fbcf8d089bb788093daef2fbad20fe478c5460c2bf00d8781cbb92a7367",
+  "project_source_unchanged": true,
+  "bridge_sha256": "4c1956505610bdd155faf856f17fbcce4dd262e285aedf4b07d5ff4a80df289b",
+  "arc_regression": {
+    "same_profile": true,
+    "function_bytes": 10072,
+    "instructions": 2518,
+    "seed_functions": 2537,
+    "analysis_seconds": 1
+  },
+  "historical_snapshots": 26,
+  "owned_lineages": [
+    {
+      "run_id": "84c265bb-4afd-4ef2-8612-d74628bd1cd1",
+      "verifier_pid": 11157,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:17:49.832Z",
+        "launcher_pid": 11157,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 11157,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "6699186e-721b-4b9f-88cc-513853df0da2",
+      "verifier_pid": 11526,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:19:23.273Z",
+        "launcher_pid": 11526,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 11526,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "3f024015-d5ae-4f82-9e51-26759da214dd",
+      "verifier_pid": 11796,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:20:17.810Z",
+        "launcher_pid": 11796,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 11796,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "41078419-41ca-43fa-b2b9-ea46f47b05a3",
+      "verifier_pid": 13904,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:22:29.187Z",
+        "launcher_pid": 13904,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 13904,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "5258d0a5-be79-4a14-864f-9558e70597a1",
+      "verifier_pid": 15415,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:24:31.109Z",
+        "launcher_pid": 15415,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 15415,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "07632d51-38cc-41bd-9b59-22665c84436b",
+      "verifier_pid": 14463,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:23:32.277Z",
+        "launcher_pid": 14463,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 14463,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "ce0b83c5-759d-4de5-ac26-1b7b83e143fd",
+      "verifier_pid": 15244,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:24:00.476Z",
+        "launcher_pid": 15244,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 15244,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "ec85a0f9-bbab-4be3-b7bc-4bd88a5a4240",
+      "verifier_pid": 22130,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:31:21.038Z",
+        "launcher_pid": 22130,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 22130,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "70955dca-6fb5-4425-a330-fa2b485fe301",
+      "verifier_pid": 25976,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:41:07.118Z",
+        "launcher_pid": 25976,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 25976,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "fdeff7fa-ff28-4198-9724-96fae80935c7",
+      "verifier_pid": 25981,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:41:05.626Z",
+        "launcher_pid": 25981,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 25981,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "49055f4a-444b-467f-9f84-44b5b118eaa8",
+      "verifier_pid": 29274,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:44:43.823Z",
+        "launcher_pid": 29274,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 29274,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "38e6fbe0-b4ab-4fd9-8f0e-0660b917373a",
+      "verifier_pid": 25671,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:41:07.117Z",
+        "launcher_pid": 25671,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 25671,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "f0b596b3-ae7e-4562-b574-55a449f8eb95",
+      "verifier_pid": 29290,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:44:56.243Z",
+        "launcher_pid": 29290,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 29290,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "d0d8d7fd-69ef-476e-bb64-2550563aea1d",
+      "verifier_pid": 29247,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:44:31.298Z",
+        "launcher_pid": 29247,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 29247,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "95ac8903-e9c8-4f23-be3a-1278b17a27df",
+      "verifier_pid": 29725,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:46:55.954Z",
+        "launcher_pid": 29725,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 29725,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "b3db3798-936e-4ee9-9449-f2e057d27075",
+      "verifier_pid": 16709,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:25:30.058Z",
+        "launcher_pid": 16709,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 16709,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "08a616e2-370f-4525-8a71-5ccbe6e2a646",
+      "verifier_pid": 19446,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:27:03.867Z",
+        "launcher_pid": 19446,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 19446,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "89986995-cd82-4127-a88e-637d1467c99b",
+      "verifier_pid": 8703,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:11:07.826Z",
+        "launcher_pid": 8703,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 8703,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "edef1d4d-d1a0-4015-bcb9-ae4084164ba1",
+      "verifier_pid": 8870,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:12:13.878Z",
+        "launcher_pid": 8870,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 8870,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "0c573a8e-cad5-451b-ac86-124ae40b9e44",
+      "verifier_pid": 9072,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:13:30.243Z",
+        "launcher_pid": 9072,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 9072,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "1fc22a4e-6889-4bb7-8cc3-03a916fd1e9d",
+      "verifier_pid": 9283,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:14:25.959Z",
+        "launcher_pid": 9283,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 9283,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "3d61ddc6-8f45-4aa7-af9c-f0a99bd0c07a",
+      "verifier_pid": 25070,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:39:16.092Z",
+        "launcher_pid": 25070,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 25070,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "28611895-6436-498b-944a-648ab73bf9c5",
+      "verifier_pid": 26600,
+      "parent_pid": 1224,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:42:08.620Z",
+        "launcher_pid": 26600,
+        "launcher_parent_pid": 1224,
+        "process_group_id": 26600,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "2d725c29-7448-4d13-80dd-f6df6ad11fe0",
+      "verifier_pid": 15901,
+      "parent_pid": 15869,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:26:07.976Z",
+        "launcher_pid": 15901,
+        "launcher_parent_pid": 15869,
+        "process_group_id": 15840,
+        "descendants": []
+      }
+    },
+    {
+      "run_id": "04b99e89-928e-47bd-a172-1421fa3524d5",
+      "verifier_pid": 26896,
+      "parent_pid": 26797,
+      "process_lineage": {
+        "status": "verified",
+        "observed_at": "2026-11-24T14:43:43.044Z",
+        "launcher_pid": 26896,
+        "launcher_parent_pid": 26797,
+        "process_group_id": 26768,
+        "descendants": []
+      }
+    }
+  ],
+  "target_execution": false,
+  "scope": "Verified selected-project copies only; automatic checkpoint publication remains open"
+}

@@ -39,8 +39,9 @@ const sessionInfoSchema = z
       })
       .strict(),
     read_only: z.boolean(),
-    analysis_complete: z.boolean(),
-    analysis_timed_out: z.boolean(),
+    analysis_complete: z.boolean().nullable(),
+    analysis_timed_out: z.boolean().nullable(),
+    existing_project: z.literal(true).optional(),
     analysis_timeout_seconds: ghidraAnalysisTimeoutValueSchema.optional(),
     analysis_extensions: z.array(ghidraExtensionResultSchema).optional(),
     analysis_seeds: ghidraSeedReportSchema.optional(),
@@ -70,6 +71,7 @@ export const parseGhidraSessionInfo = (
     readonly profileDigest: string;
     readonly targetSha256: string;
     readonly expectedReadOnly?: boolean;
+    readonly expectedExistingProject?: boolean;
     readonly analysisTimeoutSeconds?: number;
     readonly expectedLanguageId?: string;
     readonly expectedCompilerSpecId?: string;
@@ -82,6 +84,14 @@ export const parseGhidraSessionInfo = (
   );
   if (
     !parsed.success ||
+    (parsed.success &&
+      (expected.expectedExistingProject === true
+        ? parsed.data.existing_project !== true ||
+          parsed.data.analysis_complete !== null ||
+          parsed.data.analysis_timed_out !== null
+        : parsed.data.existing_project !== undefined ||
+          parsed.data.analysis_complete === null ||
+          parsed.data.analysis_timed_out === null)) ||
     parsed.data.run_id !== expected.runId ||
     parsed.data.analysis_timeout_seconds !== expected.analysisTimeoutSeconds ||
     parsed.data.read_only !== readOnly ||
@@ -98,7 +108,8 @@ export const parseGhidraSessionInfo = (
     expectedCapabilities.some(
       (capability) => !parsed.data.capabilities.includes(capability),
     ) ||
-    parsed.data.analysis_complete === parsed.data.analysis_timed_out
+    (expected.expectedExistingProject !== true &&
+      parsed.data.analysis_complete === parsed.data.analysis_timed_out)
   )
     return err(new Error("Ghidra bridge handshake identity is invalid"));
   return ok(parsed.data);

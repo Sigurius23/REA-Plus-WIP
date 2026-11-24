@@ -1,0 +1,58 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts src/ghidra/GhidraSessionValues.test.ts src/ghidra/GhidraProvider.behavior.test.ts tests/boundary/providers/ghidra/ghidraLauncher.test.ts
+
+Focused tests: tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts, src/ghidra/GhidraSessionValues.test.ts, src/ghidra/GhidraProvider.behavior.test.ts, tests/boundary/providers/ghidra/ghidraLauncher.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing 849f8fb153b306ba
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache miss, executing 279f5f4ec83bdcc9
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    1 cached, 3 total
+  Time:    6.453s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |adapters| src/ghidra/GhidraSessionValues.test.ts (9 tests) 8ms
+ ✓ |boundary| tests/boundary/providers/ghidra/ghidraLauncher.test.ts (17 tests | 1 skipped) 7ms
+ ❯ |boundary| tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts (0 test)
+ ✓ |adapters| src/ghidra/GhidraProvider.behavior.test.ts (42 tests) 217ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |boundary| tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts [ tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts ]
+Error: Cannot find module '../../../../src/config.js' imported from /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts
+ ❯ tests/boundary/providers/ghidra/ghidraProjectSnapshot.test.ts:7:1
+      5| import { GhidraProjectFiles } from "../../../../src/ghidra/GhidraProje…
+      6| import { ghidraHeadlessArguments } from "../../../../src/ghidra/Ghidra…
+      7| import { parseConfig } from "../../../../src/config.js";
+       | ^
+      8|
+      9| async function fixture() {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  67 passed | 1 skipped (68)
+   Start at  15:06:52
+   Duration  849ms (transform 47%, import 26%, tests 21%, worker 6%)
+

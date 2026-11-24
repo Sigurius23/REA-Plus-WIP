@@ -1,0 +1,89 @@
+{
+  "status": "passed",
+  "failure": null,
+  "records": [
+    {
+      "label": "owned-overview",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-ghidra-project-qualified-runtime-2026-11-24/scripts/rea.mjs",
+        "inspect",
+        "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/owned-target",
+        "--provider",
+        "ghidra",
+        "--json"
+      ],
+      "evidence_id": "ev_f9083311c382e9364d6c965eab26d9e29079e0d5ee4084001ec291faf67f76ba",
+      "exact_evidence_equal": true
+    },
+    {
+      "label": "owned-saved-function",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-ghidra-project-qualified-runtime-2026-11-24/scripts/rea.mjs",
+        "function",
+        "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/owned-target",
+        "rea_saved_project_annotation",
+        "--provider",
+        "ghidra",
+        "--json"
+      ],
+      "evidence_id": "ev_cc0d11c24aae33c692c07607b3ca08d78dc85b4d1f88879c8f49424a4af6b731",
+      "exact_evidence_equal": true
+    },
+    {
+      "label": "qualified-conflicting-seeds",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-ghidra-project-qualified-runtime-2026-11-24/scripts/rea.mjs",
+        "inspect",
+        "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/owned-target",
+        "--provider",
+        "ghidra",
+        "--json"
+      ],
+      "overrides": {
+        "REA_GHIDRA_SEED_FILE": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/seeds.tsv"
+      },
+      "expected_error": "configuration_invalid"
+    },
+    {
+      "label": "qualified-missing-project",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-ghidra-project-qualified-runtime-2026-11-24/scripts/rea.mjs",
+        "inspect",
+        "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/owned-target",
+        "--provider",
+        "ghidra",
+        "--json"
+      ],
+      "overrides": {
+        "REA_GHIDRA_PROJECT_PATH": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/project/owned.gpr.missing.gpr"
+      },
+      "expected_error": "configuration_invalid"
+    }
+  ],
+  "original_pair_run": {
+    "run_id": "b3db3798-936e-4ee9-9449-f2e057d27075",
+    "verifier_pid": 16709,
+    "parent_pid": 1224,
+    "process_lineage": {
+      "status": "verified",
+      "observed_at": "2026-11-24T14:25:30.058Z",
+      "launcher_pid": 16709,
+      "launcher_parent_pid": 1224,
+      "process_group_id": 16709,
+      "descendants": []
+    }
+  },
+  "verifier_run": {
+    "run_id": "08a616e2-370f-4525-8a71-5ccbe6e2a646",
+    "verifier_pid": 19446,
+    "parent_pid": 1224,
+    "process_lineage": {
+      "status": "verified",
+      "observed_at": "2026-11-24T14:27:03.867Z",
+      "launcher_pid": 19446,
+      "launcher_parent_pid": 1224,
+      "process_group_id": 19446,
+      "descendants": []
+    }
+  }
+}

@@ -1,5 +1,13 @@
 # Arc 1.172.1 analysis dossier
 
+Upstream saved-project integration addendum **2026-11-24**:
+[The project-copy checkpoint](upstream-ghidra-projects-2026-11-24.md) adds verified
+private copies of selected Ghidra projects, explicit unknown historical
+completeness and read-only analyst authority. Its owned refusal controls and
+CLI/MCP parity pass. The seeded Arc regression retains the same profile,
+10,072-byte reducer body and 2,518 instructions. Automatic checkpoint publication
+remains open; no new Arc feature or typed Client conclusion is claimed.
+
 Controller/action and restart addendum **2026-11-24**:
 [The checkpoint](arc-restore-ui-2026-11-24.md) binds the selected controller's
 file/flow guards and task, conditional SyncEngine CloudKit deletion preparation,

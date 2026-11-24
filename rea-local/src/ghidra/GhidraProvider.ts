@@ -1,4 +1,9 @@
 import { snapshotEnvironment } from "../process/snapshotEnvironment.js";
+import {
+  GhidraProjectFiles,
+  ghidraProjectFileFailure,
+} from "./GhidraProjectSnapshot.js";
+import { ConfigurationError } from "../domain/configurationErrors.js";
 import type {
   AnalysisClient,
   AnalysisClientContext,
@@ -47,6 +52,7 @@ import {
   windowsP0Capabilities,
   GHIDRA_PROVIDER_IDENTITY,
   GHIDRA_OPERATIONS,
+  limitationsFor,
 } from "./GhidraProviderCapabilities.js";
 import {
   createGhidraProviderClient,
@@ -69,6 +75,7 @@ const SUPPORTED_ARCHITECTURES = new Set([
 
 /** Ghidra candidate backed by an isolated ephemeral headless import. */
 export class GhidraProvider implements AnalysisProviderCandidate {
+  readonly #projectFiles = new GhidraProjectFiles();
   #installation: GhidraInstallationInspection | undefined;
   private readonly environment: NodeJS.ProcessEnv;
 
@@ -91,6 +98,22 @@ export class GhidraProvider implements AnalysisProviderCandidate {
   }
 
   capabilities(): readonly CapabilityDescriptor[] {
+    if (this.config.ghidraExistingProject !== undefined)
+      return CAPABILITIES.map((capability): CapabilityDescriptor =>
+        capability.effects.mutatesArtifact
+          ? {
+              ...capability,
+              available: false,
+              availabilityCode: "open_options_invalid",
+              reason:
+                "Selected Ghidra projects are inspected through read-only private copies.",
+              limitations: limitationsFor(capability.operation, true),
+            }
+          : {
+              ...capability,
+              limitations: limitationsFor(capability.operation, true),
+            },
+      );
     return (this.installationHost?.platform ?? process.platform) === "win32"
       ? windowsP0Capabilities()
       : CAPABILITIES;
@@ -195,6 +218,68 @@ export class GhidraProvider implements AnalysisProviderCandidate {
     options?: AnalysisProfileResolutionOptions,
   ) {
     const installation = this.#inspectInstallation();
+    if (this.config.ghidraExistingProject !== undefined) {
+      const project = this.config.ghidraExistingProject;
+      if (
+        installation.platform === "win32" ||
+        target.kind !== "executable" ||
+        !["elf", "pe", "mach-o"].includes(target.format) ||
+        this.config.ghidraSeedFile !== undefined ||
+        this.config.ghidraLanguageOverride !== undefined ||
+        this.config.ghidraNativeAotJar !== undefined ||
+        this.config.ghidraAnalysisTimeoutSeconds !== undefined
+      )
+        return err(
+          new ConfigurationError(
+            "Existing Ghidra projects require a Linux/macOS ELF/PE/Mach-O target without import-time seed, extension, language or analysis-timeout overrides",
+            {
+              settings: [
+                {
+                  setting: "REA_GHIDRA_PROJECT_PATH",
+                  constraint:
+                    "Select the saved project without import overrides, or unset this setting for fresh analysis",
+                },
+              ],
+            },
+          ),
+        );
+      if (installation.status !== "available")
+        return err(
+          new ProviderAdapterError("ghidra", "resolve_analysis_profile"),
+        );
+      try {
+        const selected = await this.#projectFiles.resolve(
+          project,
+          target.path,
+          options?.signal,
+        );
+        return ok({
+          profile: createAnalysisProfile(
+            {
+              ...GHIDRA_PROVIDER_IDENTITY,
+              version: installation.providerVersion,
+            },
+            {
+              target_kind: target.kind,
+              target_format: target.format,
+              architecture: target.architecture,
+              import_mode: "verified-existing-project-copy-v1",
+              annotation_policy: "read-only-existing-project",
+              original_analysis: "unknown",
+              existing_project: jsonValueSchema.parse(selected),
+            },
+          ),
+        });
+      } catch (cause: unknown) {
+        return err(
+          ghidraProjectFileFailure(
+            "resolve_analysis_profile",
+            project.path,
+            cause,
+          ),
+        );
+      }
+    }
     const resolved = await resolveGhidraAnalysisProfile(
       target,
       GHIDRA_PROVIDER_IDENTITY,

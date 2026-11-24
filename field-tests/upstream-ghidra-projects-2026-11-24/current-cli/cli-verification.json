@@ -1,0 +1,76 @@
+{
+  "status": "passed",
+  "failure": null,
+  "records": [
+    {
+      "label": "owned-overview",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-ghidra-project-current-runtime-2026-11-24/scripts/rea.mjs",
+        "inspect",
+        "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/owned-target",
+        "--provider",
+        "ghidra",
+        "--json"
+      ],
+      "evidence_id": "ev_ab9c76df2412b3588654524ecdda5cf8428b5b3332c3e6bc732827952b1815f0",
+      "exact_evidence_equal": true
+    },
+    {
+      "label": "owned-saved-function",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-ghidra-project-current-runtime-2026-11-24/scripts/rea.mjs",
+        "function",
+        "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/owned-target",
+        "rea_saved_project_annotation",
+        "--provider",
+        "ghidra",
+        "--json"
+      ],
+      "evidence_id": "ev_0331febf83ed80017c2827fd7f3031b6ff16cdb88b43cbcf97f62f5a02b7457f",
+      "exact_evidence_equal": true
+    },
+    {
+      "label": "conflicting-seeds",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-ghidra-project-current-runtime-2026-11-24/scripts/rea.mjs",
+        "inspect",
+        "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/owned-target",
+        "--provider",
+        "ghidra",
+        "--json"
+      ],
+      "overrides": {
+        "REA_GHIDRA_SEED_FILE": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/seeds.tsv"
+      },
+      "expected_error": "configuration_invalid"
+    },
+    {
+      "label": "missing-project",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-ghidra-project-current-runtime-2026-11-24/scripts/rea.mjs",
+        "inspect",
+        "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/owned-target",
+        "--provider",
+        "ghidra",
+        "--json"
+      ],
+      "overrides": {
+        "REA_GHIDRA_PROJECT_PATH": "/private/tmp/rea-ghidra-projects-owned-2026-11-24-v4/project/owned.gpr.missing.gpr"
+      },
+      "expected_error": "configuration_invalid"
+    }
+  ],
+  "verifier_run": {
+    "run_id": "95ac8903-e9c8-4f23-be3a-1278b17a27df",
+    "verifier_pid": 29725,
+    "parent_pid": 1224,
+    "process_lineage": {
+      "status": "verified",
+      "observed_at": "2026-11-24T14:46:55.954Z",
+      "launcher_pid": 29725,
+      "launcher_parent_pid": 1224,
+      "process_group_id": 29725,
+      "descendants": []
+    }
+  }
+}

@@ -1,5 +1,8 @@
 import { analysisErrorWithCleanupFailure } from "../domain/analysisErrorCleanup.js";
 import { fileURLToPath } from "node:url";
+import { basename } from "node:path";
+import { ghidraProjectCommitmentSchema } from "./GhidraProjectSnapshot.js";
+import { ConfigurationError } from "../domain/configurationErrors.js";
 
 import {
   createAnalysisExecution,
@@ -73,6 +76,7 @@ import { nativeLoadImageObservationSchema } from "../domain/native/nativeLoadIma
 import {
   GHIDRA_PROVIDER_IDENTITY,
   healthLimitations,
+  projectLimitations,
   windowsP0Limitations,
   limitationsFor,
 } from "./GhidraProviderCapabilities.js";
@@ -360,6 +364,30 @@ export const createGhidraProviderClient = (input: {
   );
   if (!prerequisites.ok) return unavailableClient(prerequisites.error);
   const committedProfile = prerequisites.value.profile;
+  const selected = ghidraProjectCommitmentSchema
+    .optional()
+    .safeParse(committedProfile.parameters.existing_project);
+  if (
+    !selected.success ||
+    (config.ghidraExistingProject === undefined) !==
+      (selected.data === undefined) ||
+    (selected.data !== undefined &&
+      (selected.data.configured_path !== config.ghidraExistingProject?.path ||
+        selected.data.program_name !==
+          (config.ghidraExistingProject?.programName ??
+            basename(target.path)) ||
+        committedProfile.parameters.import_mode !==
+          "verified-existing-project-copy-v1"))
+  )
+    return unavailableClient(
+      new ProviderAdapterError("ghidra", "open_binary", {
+        diagnostics: {
+          reason:
+            "Resolve the selected Ghidra project and exact Program into a fresh analysis profile before opening",
+        },
+      }),
+    );
+  const existingProject = selected.data;
   const psp = isGhidraPspTarget(target);
   const pspExtension = psp
     ? ghidraPspExtensionSchema.safeParse(
@@ -482,7 +510,11 @@ export const createGhidraProviderClient = (input: {
     startupTimeoutMs: config.ghidraStartupTimeoutMs,
     ...(analysisTimeoutSeconds === undefined ? {} : { analysisTimeoutSeconds }),
     platform: installation.platform,
+    ...(existingProject === undefined
+      ? {}
+      : { existingProject: true as const }),
     launcher: new GhidraHeadlessLauncher({
+      ...(existingProject === undefined ? {} : { existingProject }),
       environment: input.environment,
       analyzeHeadlessPath: prerequisites.value.analyzeHeadlessPath,
       javaHome: prerequisites.value.javaHome,
@@ -549,8 +581,15 @@ export const createGhidraProviderClient = (input: {
         extensions,
         info.analysis_extensions ?? [],
         operation,
-      ) ?? ghidraSeedFailure(seeds, info.analysis_seeds, operation);
-    if (extensionFailure === undefined && info.analysis_seeds !== undefined)
+      ) ??
+      (existingProject === undefined
+        ? ghidraSeedFailure(seeds, info.analysis_seeds, operation)
+        : undefined);
+    if (
+      existingProject === undefined &&
+      extensionFailure === undefined &&
+      info.analysis_seeds !== undefined
+    )
       seedLimitations.splice(
         0,
         seedLimitations.length,
@@ -622,7 +661,9 @@ export const createGhidraProviderClient = (input: {
           createAnalysisExecution(started.value, committedProfile.provider, {
             analysisProfile: committedProfile,
             limitations: [
-              ...healthLimitations,
+              ...(existingProject === undefined
+                ? healthLimitations
+                : projectLimitations),
               ...sessionLimitations(started.value),
             ],
           }),
@@ -752,7 +793,7 @@ export const createGhidraProviderClient = (input: {
           rawResult: called.value,
           analysisProfile: committedProfile,
           limitations: [
-            ...limitationsFor(operation),
+            ...limitationsFor(operation, existingProject !== undefined),
             ...observationLimitations,
             ...sessionLimitations(started.value),
           ],
@@ -848,6 +889,23 @@ const projectPrimarySessionError = (
   failure: GhidraSessionError,
   startupTimeoutMs: number,
 ): AnalysisError => {
+  if (
+    failure.kind === "remote" &&
+    (failure.remoteCode === "selected_project_target_mismatch" ||
+      failure.remoteCode === "selected_project_identity_unavailable")
+  )
+    return new ConfigurationError(
+      "The selected Ghidra Program cannot establish the supplied executable's identity; select the matching target and a saved Program with its executable SHA-256 recorded",
+      {
+        cause: failure,
+        settings: [
+          {
+            setting: "REA_GHIDRA_PROJECT_PATH",
+            constraint: `${failure.message}; select a saved Program whose executable SHA-256 matches the supplied target`,
+          },
+        ],
+      },
+    );
   if (failure.cause instanceof AnalysisAccessDeniedError)
     return new AnalysisAccessDeniedError(
       operation,

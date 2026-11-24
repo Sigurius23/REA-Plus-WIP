@@ -1,4 +1,8 @@
 import { z } from "zod";
+import {
+  ghidraProjectPathSchema,
+  ghidraProgramNameSchema,
+} from "./ghidraExistingProject.js";
 import { isAbsolute } from "node:path";
 
 import { ConfigurationError } from "../domain/configurationErrors.js";
@@ -57,6 +61,8 @@ const environmentSchema = z.object({
   REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS:
     ghidraAnalysisTimeoutSecondsSchema.optional(),
   REA_GHIDRA_LANGUAGE_ID: ghidraLanguageIdSchema.optional(),
+  REA_GHIDRA_PROJECT_PATH: ghidraProjectPathSchema.optional(),
+  REA_GHIDRA_PROGRAM_NAME: ghidraProgramNameSchema.optional(),
   REA_GHIDRA_COMPILER_SPEC_ID: ghidraCompilerSpecIdSchema.optional(),
   REA_GHIDRA_SEED_FILE: z
     .string()
@@ -114,5 +120,19 @@ export const parseEnvironment = (
       }),
     );
   }
+  if (
+    parsed.data.REA_GHIDRA_PROGRAM_NAME !== undefined &&
+    parsed.data.REA_GHIDRA_PROJECT_PATH === undefined
+  )
+    return err(
+      new ConfigurationError("Invalid REA+ environment configuration", {
+        settings: [
+          {
+            setting: "REA_GHIDRA_PROGRAM_NAME",
+            constraint: "requires REA_GHIDRA_PROJECT_PATH",
+          },
+        ],
+      }),
+    );
   return ok(parsed.data);
 };
