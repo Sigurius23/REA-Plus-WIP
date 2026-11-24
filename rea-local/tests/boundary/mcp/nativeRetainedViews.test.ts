@@ -145,6 +145,11 @@ it("refuses summary without retention before invoking an expensive provider oper
     "search_procedures",
     "search_strings",
     "batch_decompile",
+    "procedure_address",
+    "procedure_callees",
+    "procedure_callers",
+    "resolve_containing_procedure",
+    "get_call_graph",
   ]) {
     const reply = await client.callTool({
       name,
@@ -152,7 +157,13 @@ it("refuses summary without retention before invoking an expensive provider oper
         ? { pattern: "selected", detail: "summary" }
         : name === "batch_decompile"
           ? { addresses: ["0x10"], detail: "summary" }
-          : { detail: "summary" },
+          : name === "get_call_graph"
+            ? { address: "0x10", detail: "summary" }
+            : name === "resolve_containing_procedure"
+              ? { address: "0x10", detail: "summary" }
+              : name.startsWith("procedure_")
+                ? { procedure: "0x10", detail: "summary" }
+                : { detail: "summary" },
     });
     expect(reply.isError).toBe(true);
     expect(parseMcpToolError(reply).error).toMatchObject({
@@ -160,4 +171,81 @@ it("refuses summary without retention before invoking an expensive provider oper
     });
   }
   expect(calls).toBe(0);
+});
+
+it("validates native observation/context schemas, retained/portable parity and caveats without a provider", async () => {
+  const { client, session } = await connect();
+  const contract = (await client.listTools()).tools.find(
+    (t) => t.name === "inspect_analysis_view",
+  );
+  if (!contract) throw Error("Missing named contract");
+  const ajv = new Ajv2020({ strict: false, validateFormats: false });
+  const input = ajv.compile(jsonObjectSchema.parse(contract.inputSchema)),
+    output = ajv.compile(jsonObjectSchema.parse(contract.outputSchema));
+  for (const [operation, result] of [
+    ["procedure_address", "EXTERNAL:0x1"],
+    ["procedure_callees", ["0x2", "0x2"]],
+    ["procedure_callers", []],
+    ["xrefs", ["0x3"]],
+    [
+      "resolve_containing_procedure",
+      {
+        query_address: "0x10",
+        found: false,
+        procedure: null,
+        reason: "not_in_procedure",
+      },
+    ],
+    [
+      "get_call_graph",
+      { "0": [{ address: "0x1", status: "ok", calls: [] }], "1": [] },
+    ],
+  ] as const) {
+    const parent = createEvidence(
+      undefined,
+      { id: "fixture", name: "Fixture", version: "1" },
+      {
+        operation,
+        parameters: { selected: "unchanged" },
+        result: jsonValueSchema.parse(result),
+        limitations: ["partial analysis", "second caveat"],
+      },
+    );
+    const saved = session.recordEvidence(parent);
+    if (!saved.ok) throw saved.error;
+    for (const view of [
+      { kind: "summary" },
+      { kind: "native-observation", offset: 0, limit: 1 },
+      { kind: "native-context", facet: "overview" },
+      { kind: "native-context", facet: "analysis-profile" },
+      { kind: "native-context", facet: "limitations", offset: 1, limit: 1 },
+    ]) {
+      const args = {
+        source: { kind: "retained-evidence", evidence_id: parent.evidence_id },
+        view,
+      };
+      expect(input(args)).toBe(true);
+      const reply = await client.callTool({
+        name: "inspect_analysis_view",
+        arguments: args,
+      });
+      expect(reply.isError).not.toBe(true);
+      expect(output(reply.structuredContent)).toBe(true);
+      const evidence = parseEvidence(reply.structuredContent);
+      expect(evidence).toMatchObject({
+        evidence_links: [parent.evidence_id],
+        normalized_result: {
+          source_provider: parent.provider,
+          source_context: {
+            evidence_limitation_count: parent.limitations.length,
+          },
+        },
+      });
+      const portable = await client.callTool({
+        name: "inspect_analysis_view",
+        arguments: { source: { kind: "inline", evidence: parent }, view },
+      });
+      expect(portable.structuredContent).toEqual(reply.structuredContent);
+    }
+  }
 });

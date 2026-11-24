@@ -321,6 +321,8 @@ export const projectJavaScriptApplicationView = (
   if (
     view.kind === "native" ||
     view.kind === "native-inventory" ||
+    view.kind === "native-observation" ||
+    view.kind === "native-context" ||
     view.kind === "batch-decompile"
   )
     return err(

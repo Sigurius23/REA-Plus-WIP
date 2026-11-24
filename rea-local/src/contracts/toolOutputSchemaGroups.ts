@@ -120,10 +120,10 @@ export const officialOutputSchemas: Readonly<Record<string, z.ZodObject>> = {
   list_strings: analysisDetailOutputSchemaOf(z.array(analysisStringSchema)),
   next_address: evidenceResultOf(z.string()),
   prev_address: evidenceResultOf(z.string()),
-  procedure_address: evidenceResultOf(z.string()),
+  procedure_address: analysisDetailOutputSchemaOf(z.string()),
   procedure_assembly: evidenceResultOf(z.string()),
-  procedure_callees: evidenceResultOf(addressList),
-  procedure_callers: evidenceResultOf(addressList),
+  procedure_callees: analysisDetailOutputSchemaOf(addressList),
+  procedure_callers: analysisDetailOutputSchemaOf(addressList),
   procedure_info: procedureInfoOutput,
   read_function_instructions: evidenceResultOf(functionInstructionWindowSchema),
   read_bytes: evidenceResultOf(
@@ -175,7 +175,9 @@ export const officialOutputSchemas: Readonly<Record<string, z.ZodObject>> = {
     }),
   ),
   procedure_pseudo_code: evidenceResultOf(nullableText),
-  resolve_containing_procedure: evidenceResultOf(containingProcedureResolution),
+  resolve_containing_procedure: analysisDetailOutputSchemaOf(
+    containingProcedureResolution,
+  ),
   search_procedures: analysisDetailOutputSchemaOf(
     z.array(z.object({ address: z.string(), value: z.string() })),
   ),
@@ -257,7 +259,9 @@ export const enhancedOutputSchemas: Readonly<Record<string, z.ZodObject>> = {
   get_objc_classes: symbolDiscoveryOutput("classes"),
   get_objc_protocols: symbolDiscoveryOutput("protocols"),
   batch_decompile: analysisDetailOutputSchemaOf(batchDecompileResultSchema),
-  get_call_graph: evidenceResultOf(z.record(z.string(), z.array(graphNode))),
+  get_call_graph: analysisDetailOutputSchemaOf(
+    z.record(z.string(), z.array(graphNode)),
+  ),
   analyze_swift_types: evidenceResultOf(
     z.object({
       total: z.number().int().min(0),

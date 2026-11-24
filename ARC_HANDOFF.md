@@ -26,6 +26,32 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest upstream native relationship/context integration (2026-11-24)
+
+Read `field-tests/upstream-native-observations-2026-11-24.md` and its verification
+receipt, frozen runtimes/source versions, raw MCP/CLI captures and bundles.
+Six native families have retained observation/context pages. Summary is additive
+for four primitives and call graphs; complete remains default. CLI portable
+parents and seven exact CLI/MCP Evidence pairs qualify the shared projector.
+Missing profiles retain unknown totals, distinct from examined empty caveats.
+
+Call graphs stop admitting provider reads after cancellation or unsafe cleanup;
+completed nodes, pending identities and source caveats survive in typed partial
+failures. Workflow revision 2 avoids old graph semantics. Ordinary node errors
+remain explicit. CLI coverage metadata now matches the earlier inventory/batch
+commands, and nested delivery settings are refused before target admission.
+
+101 selected tests, public owned/Ghidra controls, package/type/docs checks and
+29 historical snapshots qualify this slice. The qualified core completed 88
+MCP calls (one expected incompatible-view refusal); four final Arc calls passed.
+Arc has 70 recorded reducer callees, reconstructed through 64 + 6 rows. Its
+instruction Evidence remains exactly the prior 10,072 bytes / 2,518 instructions.
+The 2,537 seeds and original one-second partial Program are preserved. No target
+executable, helper, shipped JavaScript, profile, account, UI or service was used.
+
+Next integration scope: analyzed-memory search_bytes and decompile_all/export.
+Broader Arc feature recovery and Client unknown revision 3 remain open.
+
 ## Latest upstream native inventory/batch integration (2026-11-24)
 
 Read `field-tests/upstream-native-pages-2026-11-24.md` and its qualified receipt,

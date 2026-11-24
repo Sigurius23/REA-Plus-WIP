@@ -1,4 +1,17 @@
 import {
+  nativeObservationViewRequestSchema,
+  nativeContextViewRequestSchema,
+  nativeObservationItemsSchema,
+  nativeContextItemsSchema,
+  nativeObservationSummarySchema,
+  nativeSourceContextReferenceSchema,
+  projectNativeObservationView,
+} from "./nativeObservationView.js";
+import {
+  NATIVE_OBSERVATION_OPERATIONS,
+  isNativeObservationOperation,
+} from "../native/nativeObservation.js";
+import {
   INSPECT_ANALYSIS_VIEW_OPERATION,
   analysisViewInputError,
 } from "./analysisViewErrors.js";
@@ -188,6 +201,8 @@ export const analysisViewRequestSchema = z.discriminatedUnion("kind", [
   nativeViewSchema,
   nativeInventoryViewRequestSchema,
   batchDecompileViewRequestSchema,
+  nativeObservationViewRequestSchema,
+  nativeContextViewRequestSchema,
 ]);
 
 /** Inline Evidence or an exact same-session retained reference. */
@@ -208,13 +223,22 @@ export const inspectAnalysisViewInputSchema = z.strictObject({
   view: analysisViewRequestSchema,
 });
 
-const coverageSchema = z.strictObject({
-  status: z.enum(["complete-within-view", "page", "empty"]),
-  examined: z.number().int().nonnegative(),
-  total: z.number().int().nonnegative(),
-  next_offset: z.number().int().nonnegative().nullable(),
-  exhausted: z.boolean(),
-});
+const coverageSchema = z.union([
+  z.strictObject({
+    status: z.enum(["complete-within-view", "page", "empty"]),
+    examined: z.number().int().nonnegative(),
+    total: z.number().int().nonnegative(),
+    next_offset: z.number().int().nonnegative().nullable(),
+    exhausted: z.boolean(),
+  }),
+  z.strictObject({
+    status: z.literal("unavailable"),
+    examined: z.literal(0),
+    total: z.null(),
+    next_offset: z.null(),
+    exhausted: z.literal(false),
+  }),
+]);
 
 const artifactSchema = z.strictObject({
   path: z
@@ -306,6 +330,7 @@ const viewResultBase = {
     "analyze_javascript_application",
     "analyze_function",
     ...NATIVE_INVENTORY_OPERATIONS,
+    ...NATIVE_OBSERVATION_OPERATIONS,
     "batch_decompile",
   ]),
   parent_digest: digestSchema,
@@ -314,6 +339,7 @@ const viewResultBase = {
   source_provider: providerSchema.nullable().optional(),
   source_analysis_profile_digest: digestSchema.nullable().optional(),
   source_parameters: jsonValueSchema.optional(),
+  source_context: nativeSourceContextReferenceSchema.optional(),
   batch: batchDecompileSummarySchema.shape.batch.optional(),
   decompiling_provider: committedProviderSchema.nullable().optional(),
   coverage: coverageSchema,
@@ -327,12 +353,14 @@ export const analysisViewResultSchema = z.discriminatedUnion("kind", [
     kind: z.literal("summary"),
     view: summaryViewSchema,
     procedure_address: z.string().nullable().optional(),
+    items: nativeObservationItemsSchema.optional(),
     summary: z.union([
       layoutSummarySchema,
       javascriptSummarySchema,
       nativeFunctionSummarySchema,
       nativeInventorySummarySchema,
       batchDecompileSummarySchema,
+      nativeObservationSummarySchema,
     ]),
     ...viewResultBase,
   }),
@@ -363,6 +391,19 @@ export const analysisViewResultSchema = z.discriminatedUnion("kind", [
     ...viewResultBase,
   }),
   z.strictObject({
+    kind: z.literal("native-observation"),
+    view: nativeObservationViewRequestSchema,
+    items: nativeObservationItemsSchema,
+    summary: nativeObservationSummarySchema,
+    ...viewResultBase,
+  }),
+  z.strictObject({
+    kind: z.literal("native-context"),
+    view: nativeContextViewRequestSchema,
+    items: nativeContextItemsSchema,
+    ...viewResultBase,
+  }),
+  z.strictObject({
     kind: z.literal("native-inventory"),
     view: nativeInventoryViewRequestSchema,
     rows: z.array(nativeInventoryViewRowSchema),
@@ -389,6 +430,9 @@ export interface AnalysisViewParent {
   readonly evidenceId: string;
   readonly operation: string;
   readonly normalizedResult: unknown;
+  readonly subject?: z.output<typeof evidenceSchema.shape.subject>;
+  readonly authority?: z.output<typeof evidenceSchema.shape.authority>;
+  readonly environment?: z.output<typeof evidenceSchema.shape.environment>;
   readonly provider?: z.output<typeof providerSchema>;
   readonly analysisProfile?: AnalysisProfileCommitment | null;
   readonly parameters?: JsonValue;
@@ -398,6 +442,14 @@ export interface AnalysisViewParent {
 
 /** View payload before the content digest is attached. */
 export type UnsignedAnalysisView =
+  | Omit<
+      Extract<AnalysisViewResult, { readonly kind: "native-observation" }>,
+      "view_digest"
+    >
+  | Omit<
+      Extract<AnalysisViewResult, { readonly kind: "native-context" }>,
+      "view_digest"
+    >
   | Omit<
       Extract<AnalysisViewResult, { readonly kind: "summary" }>,
       "view_digest"
@@ -501,6 +553,10 @@ export const projectAnalysisView = (
         },
       ]),
     );
+  if (isNativeObservationOperation(parent.operation)) {
+    const projected = projectNativeObservationView(parent, view);
+    return projected.ok ? ok(sealAnalysisView(projected.value)) : projected;
+  }
   if (isNativeInventoryOperation(parent.operation)) {
     const projected = projectNativeInventoryView(parent, view);
     return projected.ok ? ok(sealAnalysisView(projected.value)) : projected;

@@ -1,3 +1,4 @@
+import { NATIVE_PRIMITIVE_OBSERVATION_OPERATIONS } from "../domain/native/nativeObservation.js";
 import { isNativeInventoryOperation } from "../domain/native/nativeInventory.js";
 import type { EvidenceLookup } from "../application/EvidenceInputResolver.js";
 import {
@@ -72,12 +73,14 @@ const registerOfficialTool = (
           const parsed = jsonObjectSchema.parse(
             contract.inputSchema.parse(input),
           );
-          const summary =
-            isNativeInventoryOperation(contract.name) &&
-            parsed.detail === "summary";
+          const supportsDetail =
+            isNativeInventoryOperation(contract.name) ||
+            NATIVE_PRIMITIVE_OBSERVATION_OPERATIONS.some(
+              (name) => name === contract.name,
+            );
+          const summary = supportsDetail && parsed.detail === "summary";
           const arguments_ = { ...parsed };
-          if (isNativeInventoryOperation(contract.name))
-            delete arguments_.detail;
+          if (supportsDetail) delete arguments_.detail;
           if (summary) {
             const failure = analysisViewRetentionFailure(contract.name, {
               recordEvidence: registration.recordEvidence,

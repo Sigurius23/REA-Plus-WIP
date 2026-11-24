@@ -406,24 +406,15 @@ export const sessionProvider = z
   .passthrough();
 
 export const nullableText = z.string().nullable();
-export const addressList = z.array(z.string());
 export const addressedEntry = z.object({
   address: z.string(),
   name: z.string(),
 });
-export const containingProcedureResolution = z.discriminatedUnion("found", [
-  z.object({
-    query_address: z.string(),
-    found: z.literal(true),
-    procedure: procedureIdentitySchema,
-  }),
-  z.object({
-    query_address: z.string(),
-    found: z.literal(false),
-    procedure: z.null(),
-    reason: z.enum(["outside_segments", "not_in_procedure"]),
-  }),
-]);
+export {
+  containingProcedureResolutionSchema as containingProcedureResolution,
+  nativeCallGraphNodeSchema as graphNode,
+  nativeAddressListSchema as addressList,
+} from "../domain/native/nativeObservation.js";
 
 const unavailable = z.object({
   available: z.literal(false),
@@ -481,19 +472,6 @@ export const symbolDiscoveryOutput = (property: "classes" | "protocols") =>
       [property]: z.array(addressedEntry),
     }),
   );
-
-export const graphNode = z.discriminatedUnion("status", [
-  z.object({
-    address: z.string(),
-    status: z.literal("ok"),
-    calls: z.array(z.string()),
-  }),
-  z.object({
-    address: z.string(),
-    status: z.literal("error"),
-    error: analysisErrorProjectionSchema,
-  }),
-]);
 
 export const functionDossierOutput = evidenceResultOf(
   z.union([functionDossierSchema, analysisViewResultSchema]),

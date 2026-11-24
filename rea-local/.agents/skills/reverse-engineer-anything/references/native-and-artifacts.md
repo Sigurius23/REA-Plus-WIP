@@ -356,3 +356,14 @@ indexed successful pseudocode body as Unicode-safe UTF-16 pages. A null body
 is unavailable; interrupted batches expose only completed-prefix facts.
 CLI summary requires `--evidence-output` so the complete source survives exit.
 Inventory counts and missing matches never establish complete program discovery.
+
+
+Native relationship summaries and pages: `procedure_address`, `procedure_callees`,
+`procedure_callers`, `resolve_containing_procedure` and `get_call_graph` retain
+complete parents when `detail: "summary"` is selected. Read `native-observation`
+pages and `native-context` overview/profile/limitations from that parent with
+`inspect_analysis_view`. Retained `xrefs` records also support those views.
+Pages preserve duplicate indices and explicit graph node errors; exhaustion is
+only over retained observations. Read source caveats before interpretation.
+Missing profiles have null rows and unavailable coverage, not an empty proof.
+`rea native-observation` provides the same reads and portable summary bundles.

@@ -1,0 +1,612 @@
+import {
+  nativeObservationViewRequestSchema,
+  nativeContextViewRequestSchema,
+  nativeObservationItemsSchema,
+  nativeContextItemsSchema,
+  nativeObservationSummarySchema,
+  nativeSourceContextReferenceSchema,
+  projectNativeObservationView,
+} from "./nativeObservationView.js";
+import {
+  NATIVE_OBSERVATION_OPERATIONS,
+  isNativeObservationOperation,
+} from "../native/nativeObservation.js";
+import {
+  INSPECT_ANALYSIS_VIEW_OPERATION,
+  analysisViewInputError,
+} from "./analysisViewErrors.js";
+import { committedProviderSchema } from "../analysisProfile.js";
+import {
+  nativeInventoryViewRequestSchema,
+  nativeInventorySummarySchema,
+  nativeInventoryViewRowSchema,
+  projectNativeInventoryView,
+} from "./nativeInventoryView.js";
+import {
+  batchDecompileViewRequestSchema,
+  batchDecompileSummarySchema,
+  batchDecompileViewRowSchema,
+  batchTextPageSchema,
+  projectBatchDecompileView,
+} from "./batchDecompileView.js";
+import {
+  NATIVE_INVENTORY_OPERATIONS,
+  isNativeInventoryOperation,
+} from "../native/nativeInventory.js";
+import type { AnalysisProfileCommitment } from "../analysisProfile.js";
+import { z } from "zod";
+
+import { AnalysisUnsupportedTargetError } from "../analysisErrorCore.js";
+import { digestCanonicalValue } from "../canonicalDigest.js";
+import { digestSchema, prefixedDigestSchema } from "../digests.js";
+import { evidenceSchema, providerSchema } from "../evidence.js";
+import {
+  jsonObjectSchema,
+  jsonValueSchema,
+  type JsonValue,
+} from "../jsonValue.js";
+import { err, ok, type Result } from "../result.js";
+import type { AnalysisError } from "../analysisErrorBase.js";
+import { binaryLayoutSchema } from "../native/binaryLayout.js";
+import { functionDossierSchema } from "../hopperValues.js";
+import {
+  parseOwnedJavaScriptApplicationAnalysisSteps,
+  type JavaScriptApplicationAnalysisResult,
+} from "../javascript/javascriptApplicationAnalysis.js";
+import { analysisInputErrorFromIssues } from "../inputIssueProjection.js";
+import { projectBinaryLayoutView } from "./binaryLayoutView.js";
+import { projectJavaScriptApplicationView } from "./javascriptApplicationView.js";
+import { projectNativeFunctionView } from "./nativeFunctionView.js";
+
+/** Public name of the selected-view workflow. */
+export {
+  INSPECT_ANALYSIS_VIEW_OPERATION,
+  analysisViewInputError,
+} from "./analysisViewErrors.js";
+
+const summaryViewSchema = z.strictObject({ kind: z.literal("summary") });
+const facetViewSchema = z.strictObject({
+  kind: z.literal("facet"),
+  facet: z.enum(["mitigations", "linkage"]),
+});
+const indexSelectorSchema = z.strictObject({
+  index: z.number().int().nonnegative(),
+});
+const nameSelectorSchema = z.strictObject({ name: z.string() });
+const pathSelectorSchema = z.strictObject({
+  path: z
+    .string()
+    .describe(
+      "Exact observed module path or original source-map reference from a module page; an empty reference is valid.",
+    ),
+});
+const nodeIdSelectorSchema = z.strictObject({
+  node_id: prefixedDigestSchema("jag_node"),
+});
+const moduleItemViewSchema = z.strictObject({
+  kind: z.literal("item"),
+  collection: z.literal("modules"),
+  selector: z.union([pathSelectorSchema, nodeIdSelectorSchema]),
+});
+const sectionOrSymbolItemViewSchema = z.strictObject({
+  kind: z.literal("item"),
+  collection: z.enum(["sections", "symbols"]),
+  selector: z.union([indexSelectorSchema, nameSelectorSchema]),
+});
+/**
+ * The collection-specific selector alternatives are expressed in the owning
+ * contract so the advertised JSON Schema preserves them: modules accept
+ * path/node_id, sections and symbols accept index/name. Refinement-only
+ * constraints do not survive JSON Schema conversion, so the advertised
+ * schema previously accepted combinations that runtime input validation
+ * rejects.
+ */
+const itemViewSchema = z.discriminatedUnion("collection", [
+  moduleItemViewSchema,
+  sectionOrSymbolItemViewSchema,
+]);
+const pageBounds = {
+  offset: z.number().int().nonnegative(),
+  limit: z.number().int().positive(),
+};
+const pageViewSchema = z.discriminatedUnion("collection", [
+  z.strictObject({
+    kind: z.literal("page"),
+    collection: z.enum([
+      "sections",
+      "symbols",
+      "modules",
+      "shipped_material",
+      "context_bridges",
+    ]),
+    ...pageBounds,
+  }),
+  z.strictObject({
+    kind: z.literal("page"),
+    collection: z.literal("endpoints"),
+    bindings: z
+      .record(z.string(), z.string())
+      .default({})
+      .describe(
+        "Exact source-expression text to caller-supplied substitution. No ambient environment is read.",
+      ),
+    ...pageBounds,
+  }),
+  z.strictObject({
+    kind: z.literal("page"),
+    collection: z.literal("file_statuses"),
+    filter: z.enum(["all", "with-issues"]).default("with-issues"),
+    ...pageBounds,
+  }),
+]);
+
+const fileStatusSummarySchema = z.strictObject({
+  files: z.number().int().nonnegative(),
+  files_with_issues: z.number().int().nonnegative(),
+  files_without_retention_metadata: z.number().int().nonnegative(),
+  inline_scripts: z.number().int().nonnegative().optional(),
+  inline_scripts_with_issues: z.number().int().nonnegative().optional(),
+  inline_scripts_without_retention_metadata: z
+    .number()
+    .int()
+    .nonnegative()
+    .optional(),
+  inline_scripts_without_static_coverage_metadata: z
+    .number()
+    .int()
+    .nonnegative()
+    .optional(),
+  files_without_static_coverage_metadata: z
+    .number()
+    .int()
+    .nonnegative()
+    .optional(),
+  parent_limitation_count: z.number().int().nonnegative(),
+});
+
+/** Bounded native function facets of already authenticated analyze_function Evidence. */
+const nativeViewSchema = z.strictObject({
+  kind: z.literal("native"),
+  facet: z.enum([
+    "procedure",
+    "pseudocode",
+    "assembly",
+    "basic_blocks",
+    "comments",
+    "callers",
+    "callees",
+    "incoming_references",
+    "outgoing_references",
+    "unresolved_calls",
+    "referenced_strings",
+    "referenced_names",
+    "native_api",
+    "value_flow_summary",
+    "value_flow_operations",
+    "value_flow_def_use",
+    "value_flow_effects",
+    "value_flow_parameters",
+    "value_flow_parameter_uses",
+  ]),
+  offset: z.number().int().nonnegative().default(0),
+  limit: z.number().int().positive().default(64),
+});
+
+/** Caller-selected projection of already completed analysis Evidence. */
+export const analysisViewRequestSchema = z.discriminatedUnion("kind", [
+  summaryViewSchema,
+  facetViewSchema,
+  itemViewSchema,
+  pageViewSchema,
+  nativeViewSchema,
+  nativeInventoryViewRequestSchema,
+  batchDecompileViewRequestSchema,
+  nativeObservationViewRequestSchema,
+  nativeContextViewRequestSchema,
+]);
+
+/** Inline Evidence or an exact same-session retained reference. */
+export const analysisViewSourceSchema = z.discriminatedUnion("kind", [
+  z.strictObject({
+    kind: z.literal("retained-evidence"),
+    evidence_id: prefixedDigestSchema("ev"),
+  }),
+  z.strictObject({
+    kind: z.literal("inline"),
+    evidence: evidenceSchema,
+  }),
+]);
+
+/** Public inspect_analysis_view input. */
+export const inspectAnalysisViewInputSchema = z.strictObject({
+  source: analysisViewSourceSchema,
+  view: analysisViewRequestSchema,
+});
+
+const coverageSchema = z.union([
+  z.strictObject({
+    status: z.enum(["complete-within-view", "page", "empty"]),
+    examined: z.number().int().nonnegative(),
+    total: z.number().int().nonnegative(),
+    next_offset: z.number().int().nonnegative().nullable(),
+    exhausted: z.boolean(),
+  }),
+  z.strictObject({
+    status: z.literal("unavailable"),
+    examined: z.literal(0),
+    total: z.null(),
+    next_offset: z.null(),
+    exhausted: z.literal(false),
+  }),
+]);
+
+const artifactSchema = z.strictObject({
+  path: z
+    .string()
+    .describe("Exact recorded artifact path, including an empty string."),
+  sha256: digestSchema,
+});
+
+const layoutSummarySchema = z.strictObject({
+  bytes: z.number().int().nonnegative(),
+  format: z.literal("elf"),
+  architecture: z.strictObject({
+    machine: z.literal("EM_X86_64"),
+    bits: z.literal(64),
+    byte_order: z.literal("little"),
+  }),
+  image_type: z.enum(["ET_EXEC", "ET_DYN", "ET_REL"]),
+  entry: z.strictObject({
+    reported_value: z.string().min(1),
+    meaning: z.enum(["linked-virtual-address", "not-applicable", "absent"]),
+    execution_status: z.literal("unknown"),
+  }),
+  counts: z.strictObject({
+    sections: z.number().int().nonnegative(),
+    segments: z.number().int().nonnegative(),
+    symbols: z.number().int().nonnegative(),
+    relocations: z.number().int().nonnegative(),
+  }),
+  limitation_count: z.number().int().nonnegative(),
+});
+
+const javascriptSummarySchema = z.strictObject({
+  input_path: z.string().min(1),
+  format: z.enum(["asar", "directory"]),
+  root_artifact_sha256: digestSchema,
+  statistics: jsonObjectSchema,
+  module_counts: z.strictObject({
+    bundler_module_registrations: z.number().int().nonnegative(),
+    javascript_assets: z.number().int().nonnegative(),
+    javascript_modules: z.number().int().nonnegative(),
+    source_modules: z.number().int().nonnegative(),
+    module_page_entries: z.number().int().nonnegative(),
+  }),
+  electron: jsonObjectSchema,
+  coverage: jsonObjectSchema,
+  limitation_count: z.number().int().nonnegative(),
+});
+
+/** Counts describe retained rows, without promoting them to complete coverage. */
+const nativeFunctionSummarySchema = z.strictObject({
+  procedure: z.strictObject({ name: z.string(), address: z.string() }),
+  pseudocode: z.strictObject({
+    available: z.boolean().nullable(),
+    code_units: z.number().int().nonnegative(),
+    unit: z.literal("utf16-code-units"),
+  }),
+  value_flow: z.strictObject({
+    available: z.boolean().nullable(),
+    truncated: z.boolean().nullable(),
+  }),
+  native_api: z.strictObject({
+    available: z.boolean().nullable(),
+    jump_tables: z.number().int().nonnegative().nullable(),
+  }),
+  counts: z.strictObject({
+    assembly: z.number().int().nonnegative(),
+    basic_blocks: z.number().int().nonnegative(),
+    comments: z.number().int().nonnegative(),
+    callers: z.number().int().nonnegative(),
+    callees: z.number().int().nonnegative(),
+    incoming_references: z.number().int().nonnegative(),
+    outgoing_references: z.number().int().nonnegative(),
+    unresolved_calls: z.number().int().nonnegative().nullable(),
+    referenced_strings: z.number().int().nonnegative(),
+    referenced_names: z.number().int().nonnegative(),
+    value_flow_operations: z.number().int().nonnegative().nullable(),
+    value_flow_def_use: z.number().int().nonnegative().nullable(),
+    value_flow_effects: z.number().int().nonnegative().nullable(),
+    value_flow_parameters: z.number().int().nonnegative().nullable(),
+    value_flow_parameter_uses: z.number().int().nonnegative().nullable(),
+  }),
+  limitation_count: z.number().int().nonnegative(),
+});
+
+const viewResultBase = {
+  parent_evidence_id: prefixedDigestSchema("ev"),
+  parent_operation: z.enum([
+    "inspect_binary_layout",
+    "analyze_javascript_application",
+    "analyze_function",
+    ...NATIVE_INVENTORY_OPERATIONS,
+    ...NATIVE_OBSERVATION_OPERATIONS,
+    "batch_decompile",
+  ]),
+  parent_digest: digestSchema,
+  view_digest: digestSchema,
+  artifact: artifactSchema.nullable(),
+  source_provider: providerSchema.nullable().optional(),
+  source_analysis_profile_digest: digestSchema.nullable().optional(),
+  source_parameters: jsonValueSchema.optional(),
+  source_context: nativeSourceContextReferenceSchema.optional(),
+  batch: batchDecompileSummarySchema.shape.batch.optional(),
+  decompiling_provider: committedProviderSchema.nullable().optional(),
+  coverage: coverageSchema,
+  limitations: z.array(z.string()),
+  unknowns: z.array(z.string()),
+} as const;
+
+/** Projected facts for one selected view of retained analysis Evidence. */
+export const analysisViewResultSchema = z.discriminatedUnion("kind", [
+  z.strictObject({
+    kind: z.literal("summary"),
+    view: summaryViewSchema,
+    procedure_address: z.string().nullable().optional(),
+    items: nativeObservationItemsSchema.optional(),
+    summary: z.union([
+      layoutSummarySchema,
+      javascriptSummarySchema,
+      nativeFunctionSummarySchema,
+      nativeInventorySummarySchema,
+      batchDecompileSummarySchema,
+      nativeObservationSummarySchema,
+    ]),
+    ...viewResultBase,
+  }),
+  z.strictObject({
+    kind: z.literal("facet"),
+    view: facetViewSchema,
+    facet: jsonValueSchema,
+    ...viewResultBase,
+  }),
+  z.strictObject({
+    kind: z.literal("item"),
+    view: itemViewSchema,
+    item: jsonValueSchema,
+    ...viewResultBase,
+  }),
+  z.strictObject({
+    kind: z.literal("page"),
+    view: pageViewSchema,
+    items: z.array(jsonValueSchema),
+    file_status_summary: fileStatusSummarySchema.optional(),
+    ...viewResultBase,
+  }),
+  z.strictObject({
+    kind: z.literal("native"),
+    view: nativeViewSchema,
+    procedure_address: z.string().nullable(),
+    item: jsonValueSchema,
+    ...viewResultBase,
+  }),
+  z.strictObject({
+    kind: z.literal("native-observation"),
+    view: nativeObservationViewRequestSchema,
+    items: nativeObservationItemsSchema,
+    summary: nativeObservationSummarySchema,
+    ...viewResultBase,
+  }),
+  z.strictObject({
+    kind: z.literal("native-context"),
+    view: nativeContextViewRequestSchema,
+    items: nativeContextItemsSchema,
+    ...viewResultBase,
+  }),
+  z.strictObject({
+    kind: z.literal("native-inventory"),
+    view: nativeInventoryViewRequestSchema,
+    rows: z.array(nativeInventoryViewRowSchema),
+    ...viewResultBase,
+  }),
+  z.strictObject({
+    kind: z.literal("batch-decompile"),
+    view: batchDecompileViewRequestSchema,
+    rows: z.array(batchDecompileViewRowSchema).optional(),
+    item: batchTextPageSchema.optional(),
+    ...viewResultBase,
+  }),
+]);
+
+export type AnalysisViewRequest = z.output<typeof analysisViewRequestSchema>;
+export type InspectAnalysisViewInput = z.output<
+  typeof inspectAnalysisViewInputSchema
+>;
+export type AnalysisViewResult = z.output<typeof analysisViewResultSchema>;
+export type AnalysisViewCoverage = z.output<typeof coverageSchema>;
+
+/** Parent record already resolved from inline Evidence or a session reference. */
+export interface AnalysisViewParent {
+  readonly evidenceId: string;
+  readonly operation: string;
+  readonly normalizedResult: unknown;
+  readonly subject?: z.output<typeof evidenceSchema.shape.subject>;
+  readonly authority?: z.output<typeof evidenceSchema.shape.authority>;
+  readonly environment?: z.output<typeof evidenceSchema.shape.environment>;
+  readonly provider?: z.output<typeof providerSchema>;
+  readonly analysisProfile?: AnalysisProfileCommitment | null;
+  readonly parameters?: JsonValue;
+  readonly limitations: readonly string[];
+  readonly artifact?: { readonly path: string; readonly sha256: string } | null;
+}
+
+/** View payload before the content digest is attached. */
+export type UnsignedAnalysisView =
+  | Omit<
+      Extract<AnalysisViewResult, { readonly kind: "native-observation" }>,
+      "view_digest"
+    >
+  | Omit<
+      Extract<AnalysisViewResult, { readonly kind: "native-context" }>,
+      "view_digest"
+    >
+  | Omit<
+      Extract<AnalysisViewResult, { readonly kind: "summary" }>,
+      "view_digest"
+    >
+  | Omit<Extract<AnalysisViewResult, { readonly kind: "facet" }>, "view_digest">
+  | Omit<Extract<AnalysisViewResult, { readonly kind: "item" }>, "view_digest">
+  | Omit<Extract<AnalysisViewResult, { readonly kind: "page" }>, "view_digest">
+  | Omit<
+      Extract<AnalysisViewResult, { readonly kind: "native" }>,
+      "view_digest"
+    >
+  | Omit<
+      Extract<AnalysisViewResult, { readonly kind: "native-inventory" }>,
+      "view_digest"
+    >
+  | Omit<
+      Extract<AnalysisViewResult, { readonly kind: "batch-decompile" }>,
+      "view_digest"
+    >;
+
+/** Attach the content digest that must change when projected bytes change. */
+export const sealAnalysisView = (
+  projection: UnsignedAnalysisView,
+): AnalysisViewResult =>
+  analysisViewResultSchema.parse({
+    ...projection,
+    view_digest: digestCanonicalValue(projection, "Analysis view"),
+  });
+
+const parentDigest = (evidenceId: string): string => evidenceId.slice(3);
+
+const parseJavaScriptParent = (
+  input: unknown,
+): Result<JavaScriptApplicationAnalysisResult, AnalysisError> => {
+  try {
+    // Only the existing realm-private graph proofs permit reuse. Imported or
+    // merely frozen graphs still receive full canonical validation.
+    const steps = parseOwnedJavaScriptApplicationAnalysisSteps(input);
+    let step = steps.next();
+    while (!step.done) step = steps.next();
+    return ok(step.value);
+  } catch (cause: unknown) {
+    if (!(cause instanceof z.ZodError)) throw cause;
+    return err(
+      analysisInputErrorFromIssues(
+        INSPECT_ANALYSIS_VIEW_OPERATION,
+        cause.issues.map((issue) => ({
+          ...issue,
+          path: ["source", "normalized_result", ...issue.path],
+        })),
+        { source: { normalized_result: input } },
+        { cause },
+      ),
+    );
+  }
+};
+
+const unsupportedParent = (
+  parent: AnalysisViewParent,
+): AnalysisUnsupportedTargetError =>
+  new AnalysisUnsupportedTargetError(
+    INSPECT_ANALYSIS_VIEW_OPERATION,
+    parentArtifactPath(parent),
+    `Parent Evidence operation ${JSON.stringify(parent.operation)} does not support retained analysis views.`,
+  );
+
+const parentArtifactPath = (parent: AnalysisViewParent): string => {
+  if (
+    typeof parent.normalizedResult === "object" &&
+    parent.normalizedResult !== null &&
+    "artifact" in parent.normalizedResult &&
+    typeof parent.normalizedResult.artifact === "object" &&
+    parent.normalizedResult.artifact !== null &&
+    "path" in parent.normalizedResult.artifact &&
+    typeof parent.normalizedResult.artifact.path === "string"
+  )
+    return parent.normalizedResult.artifact.path;
+  if (
+    typeof parent.normalizedResult === "object" &&
+    parent.normalizedResult !== null &&
+    "input_path" in parent.normalizedResult &&
+    typeof parent.normalizedResult.input_path === "string"
+  )
+    return parent.normalizedResult.input_path;
+  return parent.evidenceId;
+};
+
+/** Project one selected view from authenticated parent analysis Evidence. */
+export const projectAnalysisView = (
+  parent: AnalysisViewParent,
+  view: AnalysisViewRequest,
+): Result<AnalysisViewResult, AnalysisError> => {
+  const digest = parentDigest(parent.evidenceId);
+  if (!digestSchema.safeParse(digest).success)
+    return err(
+      analysisViewInputError([
+        {
+          path: ["source"],
+          reason: "invalid_format",
+          message: "Parent Evidence ID is not a digest-backed identifier.",
+        },
+      ]),
+    );
+  if (isNativeObservationOperation(parent.operation)) {
+    const projected = projectNativeObservationView(parent, view);
+    return projected.ok ? ok(sealAnalysisView(projected.value)) : projected;
+  }
+  if (isNativeInventoryOperation(parent.operation)) {
+    const projected = projectNativeInventoryView(parent, view);
+    return projected.ok ? ok(sealAnalysisView(projected.value)) : projected;
+  }
+  if (parent.operation === "batch_decompile") {
+    const projected = projectBatchDecompileView(parent, view);
+    return projected.ok ? ok(sealAnalysisView(projected.value)) : projected;
+  }
+  if (parent.operation === "inspect_binary_layout") {
+    const layout = binaryLayoutSchema.safeParse(parent.normalizedResult);
+    if (!layout.success)
+      return err(
+        analysisViewInputError([
+          {
+            path: ["source"],
+            reason: "invalid_value",
+            message:
+              "Parent Evidence result does not match inspect_binary_layout.",
+          },
+        ]),
+      );
+    const projected = projectBinaryLayoutView(parent, layout.data, view);
+    return projected.ok ? ok(sealAnalysisView(projected.value)) : projected;
+  }
+  if (parent.operation === "analyze_javascript_application") {
+    const analysis = parseJavaScriptParent(parent.normalizedResult);
+    if (!analysis.ok) return analysis;
+    const projected = projectJavaScriptApplicationView(
+      parent,
+      analysis.value,
+      view,
+    );
+    return projected.ok ? ok(sealAnalysisView(projected.value)) : projected;
+  }
+  if (parent.operation === "analyze_function") {
+    const native = functionDossierSchema.safeParse(parent.normalizedResult);
+    if (!native.success)
+      return err(
+        analysisInputErrorFromIssues(
+          INSPECT_ANALYSIS_VIEW_OPERATION,
+          native.error.issues.map((issue) => ({
+            ...issue,
+            path: ["source", "normalized_result", ...issue.path],
+          })),
+          { source: { normalized_result: parent.normalizedResult } },
+          { cause: native.error },
+        ),
+      );
+    const projected = projectNativeFunctionView(parent, native.data, view);
+    return projected.ok ? ok(sealAnalysisView(projected.value)) : projected;
+  }
+  return err(unsupportedParent(parent));
+};

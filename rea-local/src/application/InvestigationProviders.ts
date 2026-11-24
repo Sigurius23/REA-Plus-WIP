@@ -22,7 +22,7 @@ export const workflowAnalysisProfile = (
     workflow_evidence_revision: 1,
     ...(operation === "batch_decompile"
       ? { workflow_revision: 3 }
-      : operation === "binary_overview"
+      : operation === "binary_overview" || operation === "get_call_graph"
         ? { workflow_revision: 2 }
         : {}),
   });

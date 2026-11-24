@@ -1,3 +1,4 @@
+import type { NativeObservationOperation } from "../domain/native/nativeObservation.js";
 import type { ExecutableFormatHint } from "../domain/dosCom.js";
 import type { JsonValue } from "../domain/jsonValue.js";
 import type { DirectAnalysisDependencies } from "./DirectAnalysisDependencies.js";
@@ -55,6 +56,7 @@ import {
 } from "./DirectAnalysisCleanup.js";
 
 type DirectAnalysisTool =
+  | NativeObservationOperation
   | "annotate_native_function"
   | "inspect_native_load_image"
   | "read_bytes"
@@ -74,7 +76,6 @@ type DirectAnalysisTool =
   | "inspect_native_dispatch_metadata"
   | "search_strings"
   | "search_procedures"
-  | "xrefs"
   | "trace_feature"
   | "trace_native_ui_action"
   | "trace_native_values";
@@ -358,6 +359,7 @@ const executeAnalysisTool = async (input: {
       : { output: cliError(result.error) };
   }
   if (
+    tool === "get_call_graph" ||
     tool === "binary_overview" ||
     tool === "batch_decompile" ||
     tool === "inspect_native_api" ||
@@ -557,6 +559,7 @@ const isWorkflowEvidenceTool = (
     | ManagedToolName
     | DirectAnalysisTool,
 ): boolean =>
+  tool === "get_call_graph" ||
   tool === "binary_overview" ||
   tool === "inspect_native_api" ||
   tool === "inspect_native_dispatch_metadata" ||

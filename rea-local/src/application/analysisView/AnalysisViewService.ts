@@ -53,6 +53,9 @@ export const inspectAnalysisViewValidated = (
     {
       evidenceId: parent.evidence_id,
       operation: parent.operation,
+      subject: parent.subject,
+      authority: parent.authority,
+      environment: parent.environment,
       provider: parent.provider,
       analysisProfile: parent.analysis_profile,
       parameters: parent.parameters,

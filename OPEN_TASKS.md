@@ -4,6 +4,17 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Native relationship/context views integrated (2026-11-24, item 62 partial):**
+  Six native observation families now support retained pages and separate source
+  overview/profile/caveat views. Four primitive tools and call graphs add summary
+  delivery; CLI shares portable complete parents. Fixed interrupted graph
+  admission and retained its prefix/caveats; corrected stale CLI coverage metadata
+  and rejected misplaced CLI delivery settings. 101 selected tests, public Ghidra
+  controls, seven CLI/MCP Evidence pairs and package checks qualify this slice.
+  Arc's 70 callees reconstruct through continuation and its exact 10,072-byte /
+  2,518-instruction reducer Evidence is unchanged. See
+  [qualification](field-tests/upstream-native-observations-2026-11-24.md).
+
 - **Native inventory/batch retained delivery integrated (2026-11-24, item 62 partial):**
   Five inventory/search tools and explicit decompilation batches now support
   complete/summary delivery and stable pages through CLI/MCP. Null pseudocode,
@@ -1830,8 +1841,15 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
       retain identity. Workflow revision 3 avoids old replay semantics. Fixed
       the repository-skill verifier's tracked-deletion copy failure exposed by
       the shared CLI-helper rename. See [qualification](field-tests/upstream-native-pages-2026-11-24.md).
-    - [ ] Review remaining native-observation/context views, analyzed-memory
-      search_bytes and decompile_all/export against the existing local tools.
+    - [x] Port native-observation/context delivery for procedure addresses,
+      callers/callees, containing-procedure resolution, xrefs and call graphs
+      (2026-11-24). Complete defaults, source indices, unknown profile coverage
+      and context commitments preserve existing local facts. Interrupted graph
+      admission now stops safely with retained prefix facts/caveats; workflow
+      revision 2 avoids historical replay. Public owned/Arc and CLI/MCP parity
+      qualify the slice; see [report](field-tests/upstream-native-observations-2026-11-24.md).
+    - [ ] Review analyzed-memory search_bytes and decompile_all/export against
+      existing local tools.
     - [ ] Checkpoint extensions, Windows/special loaders, automatic profile
       refresh after retirement and automatic crashed-publisher lock recovery
       remain separate unqualified scope. Reopen to bind a newly saved generation;

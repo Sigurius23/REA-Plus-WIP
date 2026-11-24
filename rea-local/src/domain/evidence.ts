@@ -213,15 +213,20 @@ export interface EvidenceObservation {
 
 type EvidenceWithoutId = Omit<Evidence, "evidence_id">;
 
+/** Semantic subject identity shared by Evidence and retained source-context commitments. */
+export const evidenceSubjectIdentity = (
+  subject: Evidence["subject"],
+): JsonValue =>
+  subject === null
+    ? null
+    : {
+        digest: subject.digest,
+        format: subject.format,
+        architecture: subject.architecture,
+      };
+
 const semanticProjection = (evidence: EvidenceWithoutId): JsonValue => ({
-  subject:
-    evidence.subject === null
-      ? null
-      : {
-          digest: evidence.subject.digest,
-          format: evidence.subject.format,
-          architecture: evidence.subject.architecture,
-        },
+  subject: evidenceSubjectIdentity(evidence.subject),
   provider: evidence.provider,
   analysis_profile: evidence.analysis_profile,
   predicate_type: evidence.predicate_type,

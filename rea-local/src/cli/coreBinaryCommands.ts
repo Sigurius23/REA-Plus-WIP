@@ -1,3 +1,4 @@
+import { registerNativeObservationCommands } from "./nativeObservationCommands.js";
 import { registerNativeInventoryCommands } from "./nativeInventoryCommands.js";
 import { z } from "incur";
 import { stat } from "node:fs/promises";
@@ -140,6 +141,7 @@ export const registerCoreBinaryCommands = (
 ): void => {
   registerOverviewCommands(cli, logger, runDirectAnalysis);
   registerNativeInventoryCommands(cli, logger, runDirectAnalysis);
+  registerNativeObservationCommands(cli, logger, runDirectAnalysis);
   registerProcedureSelectorCommand(cli, logger, runDirectAnalysis, {
     command: CLI_COMMANDS.decompile,
     description: "Read one part of an app as code",

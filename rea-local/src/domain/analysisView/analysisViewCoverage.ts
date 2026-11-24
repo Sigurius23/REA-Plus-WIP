@@ -26,3 +26,12 @@ export const pageViewCoverage = (
     exhausted,
   };
 };
+
+/** Unrecorded data is not an examined empty set and has no continuation. */
+export const unavailableViewCoverage = (): AnalysisViewCoverage => ({
+  status: "unavailable",
+  examined: 0,
+  total: null,
+  next_offset: null,
+  exhausted: false,
+});

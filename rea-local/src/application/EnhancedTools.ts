@@ -1,3 +1,4 @@
+import { nativeCallGraphSchema } from "../domain/native/nativeObservation.js";
 import { analysisErrorProjectionSchema } from "../domain/analysisErrorProjectionSchema.js";
 import {
   batchDecompileResult,
@@ -285,7 +286,7 @@ export class EnhancedTools {
         address,
         signal,
       );
-      if (!resolved.ok && stopsBatch(resolved.error))
+      if (!resolved.ok && stopsNativeTraversal(resolved.error))
         return failure(resolved.error);
       const identity = resolved.ok
         ? await this.#batchProcedureIdentity(resolved.value, signal)
@@ -301,7 +302,8 @@ export class EnhancedTools {
         signal,
       );
       if (!observed.ok) {
-        if (stopsBatch(observed.error)) return failure(observed.error);
+        if (stopsNativeTraversal(observed.error))
+          return failure(observed.error);
         items.push({
           address,
           procedure,
@@ -349,7 +351,7 @@ export class EnhancedTools {
 
   async #batchProcedureIdentity(address: string, signal?: AbortSignal) {
     const observed = await this.#call("address_name", { address }, signal);
-    if (!observed.ok && stopsBatch(observed.error)) return observed;
+    if (!observed.ok && stopsNativeTraversal(observed.error)) return observed;
     const named =
       observed.ok &&
       (typeof observed.value === "string" || observed.value === null);
@@ -394,18 +396,43 @@ export class EnhancedTools {
     ];
     let queueIndex = 0;
     const graph: Record<string, JsonValue[]> = {};
-
+    let source: AnalysisExecution | undefined;
+    const limitations = new Set<string>();
+    const failure = (error: AnalysisError, pending: string[]) => {
+      if (Object.keys(graph).length > 0)
+        error.retainPartialObservation({
+          kind: "native-call-graph-partial",
+          request: input,
+          graph: nativeCallGraphSchema.parse(graph),
+          pending_addresses: pending,
+          complete: false,
+          source: {
+            subject: jsonValueSchema.parse(source?.subject ?? null),
+            provider: jsonValueSchema.parse(source?.provider ?? null),
+            analysis_profile_digest: source?.analysisProfile?.digest ?? null,
+            limitations: [...limitations],
+          },
+        });
+      return err(error);
+    };
     while (queueIndex < queue.length) {
       const current = queue[queueIndex++];
       if (current === undefined) continue;
-      const level = String(current.depth);
-      graph[level] ??= [];
-
-      const result = await this.#call(
+      const pending = () => [
+        current.address,
+        ...queue.slice(queueIndex).map((node) => node.address),
+      ];
+      if (isAborted(signal))
+        return failure(new AnalysisCancelledError("get_call_graph"), pending());
+      const result = await this.#observe(
         tool,
         { procedure: current.address },
         signal,
       );
+      if (!result.ok && stopsNativeTraversal(result.error))
+        return failure(result.error, pending());
+      const level = String(current.depth);
+      graph[level] ??= [];
       if (!result.ok) {
         graph[level].push({
           address: current.address,
@@ -414,7 +441,9 @@ export class EnhancedTools {
         });
         continue;
       }
-      const related = parseRelatedAddresses(result.value, relation);
+      source = result.value;
+      for (const limitation of source.limitations) limitations.add(limitation);
+      const related = parseRelatedAddresses(result.value.result, relation);
       if (!related.ok) {
         graph[level].push({
           address: current.address,
@@ -588,7 +617,7 @@ const isAborted = (signal: AbortSignal | undefined): boolean =>
 const projectBatchError = (error: AnalysisError) =>
   analysisErrorProjectionSchema.parse(projectAnalysisError(error));
 
-const stopsBatch = (error: AnalysisError) =>
+const stopsNativeTraversal = (error: AnalysisError) =>
   error._tag === "AnalysisCancelledError" ||
   error._tag === "HopperCancelledError" ||
   error.cleanupIncomplete ||

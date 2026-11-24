@@ -134,7 +134,11 @@ export const registerEnhancedTools = (
     toolRegistrationOptions(callGraph),
     (input, context) =>
       executeEnhancedTool(registration, callGraph, {
-        validatedCall: { name: "get_call_graph", input },
+        validatedCall: {
+          name: "get_call_graph",
+          input: { address: input.address, direction: input.direction },
+        },
+        detail: input.detail,
         context,
       }),
   );

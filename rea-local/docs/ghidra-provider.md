@@ -412,3 +412,54 @@ A new output path is required; existing files are preserved. Use
 `rea inspect-analysis-view` with inline Evidence loaded from that bundle to
 read later pages without reopening a provider. MCP references expire when
 the session is cleared; exported/inline Evidence remains portable.
+
+
+## Retained native observations and source context
+
+`procedure_address`, `procedure_callees`, `procedure_callers`,
+`resolve_containing_procedure` and `get_call_graph` accept `detail: "summary"`.
+Complete delivery remains the default. Summary delivery retains the complete
+parent before returning up to 64 recorded observations and its Evidence ID.
+Use that parent with `inspect_analysis_view` and
+`{"kind":"native-observation","offset":64,"limit":64}` to continue.
+Retained `xrefs` parents also support these views; its existing tool input stays
+unchanged. Address-only rows never acquire reference kinds or runtime meaning.
+
+Array positions retain `source_index`; duplicate addresses stay separate.
+Graph pages sort level keys by Unicode code point and preserve row order inside
+each level. Their identity is parent + level + source_index. A recorded empty
+level has `status:"empty-level"` and `source_index:null`; summary observation
+counts include these markers. Failed nodes preserve their typed errors.
+Exhaustion describes the retained observations, not exhaustive native discovery.
+Existing graph results have no dedicated relationship-coverage field; a view
+does not invent one.
+
+Each page carries `source_context.digest` and a source caveat count rather than
+repeating the whole profile or limitation inventory. Read the same parent's
+`native-context` view with facet `overview`, `analysis-profile` or `limitations`.
+Overview identifies its recorded subject, provider, authority, environment and
+profile digest. Limitations pages preserve original indices, order and repeats.
+An unavailable profile has `items.rows:null`, `coverage.status:"unavailable"`,
+`total:null`, no next offset and `exhausted:false`; stop paging it and read its
+unknowns. This differs from an examined empty caveat list. Context digests use
+the same semantic subject identity as Evidence; selected display-path aliases
+remain visible but do not change that commitment. Read source caveats before
+interpreting the observations.
+
+The CLI shares these contracts and the same projector:
+
+```sh
+rea native-observation /absolute/target '{"operation":"procedure_callees","parameters":{"procedure":"selected_symbol"}}' --provider ghidra --detail summary --evidence-output /absolute/new.bundle.json --json
+```
+
+It also accepts a JSON file. `operation` selects one of the six native read
+operations above (including `xrefs`); `parameters` uses its named MCP input.
+CLI summary requires a new complete Evidence bundle before provider admission.
+Use `inspect-analysis-view` with its portable parent after the process exits.
+No new MCP tool names or provider operations are needed.
+
+Call-graph traversal stops admitting provider work on cancellation, unsafe
+cleanup, resource/configuration failure or startup timeout. A typed failure
+preserves completed nodes, pending addresses and available source identity;
+ordinary node errors remain recorded and other branches can continue. Workflow
+revision 2 separates these interruption semantics from historical graph replay.
