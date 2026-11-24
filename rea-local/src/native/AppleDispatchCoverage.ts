@@ -58,6 +58,22 @@ export const pushDispatchCoverage = (input: {
     templates,
   } = input;
   const objcRequested = facet === "all" || facet === "objc";
+  const objcSelection = result.objc_class_selection;
+  const objcSelectionIncomplete =
+    objcSelection !== undefined &&
+    (!objcSelection.matched || objcSelection.unresolved > 0);
+  const objcScope =
+    objcSelection === undefined
+      ? []
+      : [
+          "Coverage is limited to indexed classes matching the exact raw Objective-C name and their metaclasses/referenced protocols; standalone protocol and category inventories were not requested",
+          ...(!objcSelection.matched
+            ? ["No matching indexed Objective-C class identity was established"]
+            : []),
+          ...(objcSelection.unresolved > 0
+            ? ["objc_class_filter_identities_unresolved"]
+            : []),
+        ];
   const swiftRequested = facet === "all" || facet === "swift-conformances";
   const vtablesRequested = facet === "all" || facet === "swift-vtables";
   const conformanceSelection = result.swift_conformance_selection;
@@ -92,9 +108,12 @@ export const pushDispatchCoverage = (input: {
       ? {
           facet: "objc_class_method_ivar_metadata",
           status:
-            failures.length > 0 || truncated.objc ? "partial" : "complete",
+            failures.length > 0 || truncated.objc || objcSelectionIncomplete
+              ? "partial"
+              : "complete",
           reason:
             [
+              ...objcScope,
               ...failures,
               ...(truncated.objc ? ["max_records_reached"] : []),
             ].join("; ") || null,
@@ -129,6 +148,7 @@ export const pushDispatchCoverage = (input: {
           facet: "objc_properties_categories",
           status:
             truncated.objcCategories ||
+            objcSelectionIncomplete ||
             categoryFailures.length > 0 ||
             result.objc_categories.some(
               ({ decode }) => decode.status !== "decoded",
@@ -137,6 +157,7 @@ export const pushDispatchCoverage = (input: {
               : "complete",
           reason:
             [
+              ...objcScope,
               ...categoryFailures,
               ...(truncated.objcCategories ? ["max_records_reached"] : []),
             ].join("; ") || null,

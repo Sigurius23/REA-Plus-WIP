@@ -143,6 +143,7 @@ export class EnhancedTools {
           call.input.swift_class_address,
           call.input.swift_type_address,
           call.input.swift_metadata_address,
+          call.input.objc_class_name,
         );
       case "get_objc_classes":
         return this.#objcClasses(call.input.pattern, signal);

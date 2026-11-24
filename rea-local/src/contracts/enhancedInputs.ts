@@ -2,6 +2,7 @@ import { z } from "zod";
 import { nativeValueTraceInputSchema } from "../domain/native/nativeValueTrace.js";
 import {
   nativeDispatchFacetSchema,
+  nativeObjcClassNameSchema,
   nativeSwiftClassAddressSchema,
   nativeSwiftTypeAddressSchema,
   nativeSwiftMetadataAddressSchema,
@@ -18,6 +19,7 @@ const traceLiteralInputSchema = z.strictObject({
 export const enhancedInputSchemas = {
   trace_native_values: nativeValueTraceInputSchema,
   inspect_native_dispatch_metadata: z.strictObject({
+    objc_class_name: nativeObjcClassNameSchema,
     swift_type_address: nativeSwiftTypeAddressSchema,
     swift_metadata_address: nativeSwiftMetadataAddressSchema,
     swift_class_address: nativeSwiftClassAddressSchema,

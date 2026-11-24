@@ -1,0 +1,4695 @@
+{
+  "evidence_id": "ev_16c6de74356eb03cfd96d5badb47c5a408e160bfe702a42bca8c00bddab8e4a7",
+  "subject": {
+    "name": "Arc-arm64",
+    "digest": {
+      "sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64"
+  },
+  "provider": {
+    "id": "rea-workflow",
+    "name": "REA+ composed investigation workflow",
+    "version": "1"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "rea-workflow",
+      "name": "REA+ composed investigation workflow",
+      "version": "1"
+    },
+    "parameters": {
+      "upstream_analysis_profile": {
+        "provider": {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        },
+        "parameters": {
+          "target_kind": "executable",
+          "target_format": "mach-o",
+          "architecture": "arm64",
+          "available_architectures": [
+            "arm64"
+          ],
+          "import_mode": "ephemeral-source-immutable",
+          "annotation_policy": "atomic-function-entry-metadata-v1",
+          "load_image_observations": "source-mappings-entry-context-v2",
+          "function_body_evidence": "complete-inclusive-ranges-v1",
+          "function_references": "complete-body-and-entry-reference-manager-v2",
+          "string_inventory_evidence": "defined-data-coverage-v1",
+          "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+          "instruction_flow_evidence": "decoded-return-pcode-v1",
+          "instruction_references": "exact-address-incoming-v1",
+          "instruction_call_preparation": "ghidra-aarch64-mov-call-preparation-v1",
+          "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+          "no_return_repair": "returning-imports-decoded-return-v2",
+          "process_launch": "inspected-jvm-launch-support-v1",
+          "jump_table_evidence": "typed-case-default-blocks-v1",
+          "runtime_call_signatures": "swift-runtime-c-signatures-v2",
+          "swift_enum_switch_recovery": "abi-signed-word-cfg-v10",
+          "swift_dynamic_typed_snapshot": "swift-dynamic-typed-snapshot-v1",
+          "darwin_stack_probe_call_summary": "trusted-darwin-arm64-chkstk-v1",
+          "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+          "decompiler_jump_loads": true,
+          "loader": "auto-from-header",
+          "language_id": "auto-from-header",
+          "compiler_spec_id": "auto-default",
+          "analyzer_preset": "ghidra-default",
+          "analysis_policy": "bounded-autoanalysis-v1",
+          "analysis_timeout_seconds": 1,
+          "analysis_seeds": {
+            "format": "rea-ghidra-seeds-v1",
+            "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-restore-ui-2026-11-24/seeds.tsv",
+            "configured_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-restore-ui-2026-11-24/seeds.tsv",
+            "sha256": "6e64f691102fa20c9955bb3bf69d01901ba1d028e84d5749c8fc964df29a4a75",
+            "entries": {
+              "function": 2537,
+              "code": 0,
+              "label": 0
+            }
+          }
+        },
+        "digest": "ae3bdc947bac46483d322269399f0ba7b8f297f3f41cd4c62c27c1d26a84494f"
+      },
+      "workflow_evidence_revision": 1
+    },
+    "digest": "0f8cdbe14724842f5aff90dfa51546c351b6a9f4ed908409e7d1bf866a3aab0f"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_native_dispatch_metadata",
+  "parameters": {
+    "objc_class_name": "FIRApp",
+    "max_file_bytes": 134217728,
+    "max_records": 6000,
+    "facet": "objc"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "target_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578",
+    "provider": {
+      "id": "native-macos",
+      "name": "macOS native inspection utilities",
+      "version": "apple-metadata-reader-1"
+    },
+    "analysis_profile_digest": null,
+    "result": {
+      "objc_class_selection": {
+        "name": "FIRApp",
+        "index_entries": 1960,
+        "examined": 1960,
+        "matching_index_entries": 1,
+        "matched": true,
+        "unresolved": 0,
+        "admitted_classes": 1
+      },
+      "objc_classes": [
+        {
+          "name": "FIRApp",
+          "super_class": "NSObject",
+          "is_meta_class": false,
+          "is_root_class": false,
+          "methods": [
+            {
+              "selector": "deleteApp:",
+              "method_type": "instance",
+              "address": 4313699156,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "initInstanceWithName:options:",
+              "method_type": "instance",
+              "address": 4313700068,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "dealloc",
+              "method_type": "instance",
+              "address": 4313700412,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "configureCore",
+              "method_type": "instance",
+              "address": 4313700516,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "options",
+              "method_type": "instance",
+              "address": 4313700756,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "setDataCollectionDefaultEnabled:",
+              "method_type": "instance",
+              "address": 4313700780,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "isDataCollectionDefaultEnabled",
+              "method_type": "instance",
+              "address": 4313701036,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "checkExpectedBundleID",
+              "method_type": "instance",
+              "address": 4313703224,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "isAppIDValid",
+              "method_type": "instance",
+              "address": 4313703420,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "expectedBundleID",
+              "method_type": "instance",
+              "address": 4313704812,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "clearDataCollectionSwitchFromUserDefaults",
+              "method_type": "instance",
+              "address": 4313704820,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "subscribeForAppDidBecomeActiveNotifications",
+              "method_type": "instance",
+              "address": 4313706220,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "appDidBecomeActive:",
+              "method_type": "instance",
+              "address": 4313706340,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "name",
+              "method_type": "instance",
+              "address": 4313706416,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "isDefaultApp",
+              "method_type": "instance",
+              "address": 4313706424,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "container",
+              "method_type": "instance",
+              "address": 4313706432,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "setContainer:",
+              "method_type": "instance",
+              "address": 4313706440,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "heartbeatLogger",
+              "method_type": "instance",
+              "address": 4313706488,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": ".cxx_destruct",
+              "method_type": "instance",
+              "address": 4313706500,
+              "is_required": null,
+              "is_optional": null
+            }
+          ],
+          "properties": [
+            {
+              "name": "isDefaultApp",
+              "type_encoding": "B",
+              "attributes": [
+                {
+                  "name": "T",
+                  "value": "B"
+                },
+                {
+                  "name": "R",
+                  "value": ""
+                },
+                {
+                  "name": "N",
+                  "value": ""
+                },
+                {
+                  "name": "V",
+                  "value": "_isDefaultApp"
+                }
+              ],
+              "atomicity": "nonatomic",
+              "is_readonly": true,
+              "getter": null,
+              "setter": null
+            },
+            {
+              "name": "container",
+              "type_encoding": "@\"FIRComponentContainer\"",
+              "attributes": [
+                {
+                  "name": "T",
+                  "value": "@\"FIRComponentContainer\""
+                },
+                {
+                  "name": "&",
+                  "value": ""
+                },
+                {
+                  "name": "N",
+                  "value": ""
+                },
+                {
+                  "name": "V",
+                  "value": "_container"
+                }
+              ],
+              "atomicity": "nonatomic",
+              "is_readonly": false,
+              "getter": null,
+              "setter": null
+            },
+            {
+              "name": "heartbeatLogger",
+              "type_encoding": "@\"FIRHeartbeatLogger\"",
+              "attributes": [
+                {
+                  "name": "T",
+                  "value": "@\"FIRHeartbeatLogger\""
+                },
+                {
+                  "name": "R",
+                  "value": ""
+                },
+                {
+                  "name": "V",
+                  "value": "_heartbeatLogger"
+                }
+              ],
+              "atomicity": "atomic",
+              "is_readonly": true,
+              "getter": null,
+              "setter": null
+            },
+            {
+              "name": "name",
+              "type_encoding": "@\"NSString\"",
+              "attributes": [
+                {
+                  "name": "T",
+                  "value": "@\"NSString\""
+                },
+                {
+                  "name": "R",
+                  "value": ""
+                },
+                {
+                  "name": "C",
+                  "value": ""
+                },
+                {
+                  "name": "N",
+                  "value": ""
+                },
+                {
+                  "name": "V",
+                  "value": "_name"
+                }
+              ],
+              "atomicity": "nonatomic",
+              "is_readonly": true,
+              "getter": null,
+              "setter": null
+            },
+            {
+              "name": "options",
+              "type_encoding": "@\"FIROptions\"",
+              "attributes": [
+                {
+                  "name": "T",
+                  "value": "@\"FIROptions\""
+                },
+                {
+                  "name": "R",
+                  "value": ""
+                },
+                {
+                  "name": "C",
+                  "value": ""
+                },
+                {
+                  "name": "N",
+                  "value": ""
+                },
+                {
+                  "name": "V",
+                  "value": "_options"
+                }
+              ],
+              "atomicity": "nonatomic",
+              "is_readonly": true,
+              "getter": null,
+              "setter": null
+            },
+            {
+              "name": "dataCollectionDefaultEnabled",
+              "type_encoding": "B",
+              "attributes": [
+                {
+                  "name": "T",
+                  "value": "B"
+                },
+                {
+                  "name": "N",
+                  "value": ""
+                },
+                {
+                  "name": "G",
+                  "value": "isDataCollectionDefaultEnabled"
+                }
+              ],
+              "atomicity": "nonatomic",
+              "is_readonly": false,
+              "getter": "isDataCollectionDefaultEnabled",
+              "setter": null
+            }
+          ],
+          "protocols": [],
+          "ivar_count": 5,
+          "instance_size": 48,
+          "location": {
+            "address": "0x10456fc40",
+            "file_offset": 72809536
+          },
+          "superclass_address": null,
+          "metaclass_address": "0x10456fc68",
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Objective-C class and class_ro_t records",
+              "location": {
+                "address": "0x10456fc40",
+                "file_offset": 72809536
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "name": "FIRApp",
+          "super_class": "NSObject",
+          "is_meta_class": true,
+          "is_root_class": false,
+          "methods": [
+            {
+              "selector": "configure",
+              "method_type": "class",
+              "address": 4313697056,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "configureWithOptions:",
+              "method_type": "class",
+              "address": 4313697176,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "applicationNameAllowedCharacters",
+              "method_type": "class",
+              "address": 4313697272,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "configureWithName:options:",
+              "method_type": "class",
+              "address": 4313697432,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "appWasConfiguredTwice:usingOptions:",
+              "method_type": "class",
+              "address": 4313698240,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "defaultApp",
+              "method_type": "class",
+              "address": 4313698592,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "appNamed:",
+              "method_type": "class",
+              "address": 4313698676,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "allApps",
+              "method_type": "class",
+              "address": 4313698876,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "resetApps",
+              "method_type": "class",
+              "address": 4313699012,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "addAppToAppDictionary:",
+              "method_type": "class",
+              "address": 4313699880,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "sendNotificationsToSDKs:",
+              "method_type": "class",
+              "address": 4313701184,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "errorForMissingOptions",
+              "method_type": "class",
+              "address": 4313701804,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "errorForInvalidAppID",
+              "method_type": "class",
+              "address": 4313702016,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "isDefaultAppConfigured",
+              "method_type": "class",
+              "address": 4313702228,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "registerLibrary:withVersion:",
+              "method_type": "class",
+              "address": 4313702248,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "registerInternalLibrary:withName:",
+              "method_type": "class",
+              "address": 4313702532,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "registerInternalLibrary:withName:withVersion:",
+              "method_type": "class",
+              "address": 4313702632,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "userAgent",
+              "method_type": "class",
+              "address": 4313702984,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "firebaseUserAgent",
+              "method_type": "class",
+              "address": 4313703156,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "validateAppID:",
+              "method_type": "class",
+              "address": 4313703620,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "actualBundleID",
+              "method_type": "class",
+              "address": 4313704072,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "validateAppIDFormat:withVersion:",
+              "method_type": "class",
+              "address": 4313704148,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "validateBundleIDHashWithinAppID:forVersion:",
+              "method_type": "class",
+              "address": 4313704556,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "readDataCollectionSwitchFromUserDefaultsForApp:",
+              "method_type": "class",
+              "address": 4313704960,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "readDataCollectionSwitchFromPlist",
+              "method_type": "class",
+              "address": 4313705188,
+              "is_required": null,
+              "is_optional": null
+            },
+            {
+              "selector": "registerSwiftComponents",
+              "method_type": "class",
+              "address": 4313705396,
+              "is_required": null,
+              "is_optional": null
+            }
+          ],
+          "properties": [
+            {
+              "name": "allApps",
+              "type_encoding": "@\"NSDictionary\"",
+              "attributes": [
+                {
+                  "name": "T",
+                  "value": "@\"NSDictionary\""
+                },
+                {
+                  "name": "R",
+                  "value": ""
+                }
+              ],
+              "atomicity": "atomic",
+              "is_readonly": true,
+              "getter": null,
+              "setter": null
+            }
+          ],
+          "protocols": [],
+          "ivar_count": null,
+          "instance_size": 40,
+          "location": {
+            "address": "0x10456fc68",
+            "file_offset": 72809576
+          },
+          "superclass_address": null,
+          "metaclass_address": null,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Objective-C class and class_ro_t records",
+              "location": {
+                "address": "0x10456fc68",
+                "file_offset": 72809576
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "objc_protocols": [],
+      "objc_categories": [],
+      "swift_decls": [],
+      "objc_ivars": [
+        {
+          "class_name": "FIRApp",
+          "name": "_isDefaultApp",
+          "type_encoding": "B",
+          "offset": 8,
+          "size": 1,
+          "alignment": 1,
+          "location": {
+            "address": "0x1044dadf0",
+            "file_offset": 72199664
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Objective-C ivar entry and encoded offset storage",
+              "location": {
+                "address": "0x1044dadf0",
+                "file_offset": 72199664
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "name": "_options",
+          "type_encoding": "@\"FIROptions\"",
+          "offset": 16,
+          "size": 8,
+          "alignment": 8,
+          "location": {
+            "address": "0x1044dae10",
+            "file_offset": 72199696
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Objective-C ivar entry and encoded offset storage",
+              "location": {
+                "address": "0x1044dae10",
+                "file_offset": 72199696
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "name": "_name",
+          "type_encoding": "@\"NSString\"",
+          "offset": 24,
+          "size": 8,
+          "alignment": 8,
+          "location": {
+            "address": "0x1044dae30",
+            "file_offset": 72199728
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Objective-C ivar entry and encoded offset storage",
+              "location": {
+                "address": "0x1044dae30",
+                "file_offset": 72199728
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "name": "_container",
+          "type_encoding": "@\"FIRComponentContainer\"",
+          "offset": 32,
+          "size": 8,
+          "alignment": 8,
+          "location": {
+            "address": "0x1044dae50",
+            "file_offset": 72199760
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Objective-C ivar entry and encoded offset storage",
+              "location": {
+                "address": "0x1044dae50",
+                "file_offset": 72199760
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "name": "_heartbeatLogger",
+          "type_encoding": "@\"FIRHeartbeatLogger\"",
+          "offset": 40,
+          "size": 8,
+          "alignment": 8,
+          "location": {
+            "address": "0x1044dae70",
+            "file_offset": 72199792
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Objective-C ivar entry and encoded offset storage",
+              "location": {
+                "address": "0x1044dae70",
+                "file_offset": 72199792
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "objc_protocol_records": [],
+      "objc_dispatch_implementations": [
+        {
+          "class_name": "FIRApp",
+          "selector": "deleteApp:",
+          "method_type": "instance",
+          "implementation_address": "0x1011dd354",
+          "location": {
+            "address": "0x10367f768",
+            "file_offset": 57145192
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f768",
+                "file_offset": 57145192
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "initInstanceWithName:options:",
+          "method_type": "instance",
+          "implementation_address": "0x1011dd6e4",
+          "location": {
+            "address": "0x10367f774",
+            "file_offset": 57145204
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f774",
+                "file_offset": 57145204
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "dealloc",
+          "method_type": "instance",
+          "implementation_address": "0x1011dd83c",
+          "location": {
+            "address": "0x10367f780",
+            "file_offset": 57145216
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f780",
+                "file_offset": 57145216
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "configureCore",
+          "method_type": "instance",
+          "implementation_address": "0x1011dd8a4",
+          "location": {
+            "address": "0x10367f78c",
+            "file_offset": 57145228
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f78c",
+                "file_offset": 57145228
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "options",
+          "method_type": "instance",
+          "implementation_address": "0x1011dd994",
+          "location": {
+            "address": "0x10367f798",
+            "file_offset": 57145240
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f798",
+                "file_offset": 57145240
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "setDataCollectionDefaultEnabled:",
+          "method_type": "instance",
+          "implementation_address": "0x1011dd9ac",
+          "location": {
+            "address": "0x10367f7a4",
+            "file_offset": 57145252
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f7a4",
+                "file_offset": 57145252
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "isDataCollectionDefaultEnabled",
+          "method_type": "instance",
+          "implementation_address": "0x1011ddaac",
+          "location": {
+            "address": "0x10367f7b0",
+            "file_offset": 57145264
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f7b0",
+                "file_offset": 57145264
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "checkExpectedBundleID",
+          "method_type": "instance",
+          "implementation_address": "0x1011de338",
+          "location": {
+            "address": "0x10367f7bc",
+            "file_offset": 57145276
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f7bc",
+                "file_offset": 57145276
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "isAppIDValid",
+          "method_type": "instance",
+          "implementation_address": "0x1011de3fc",
+          "location": {
+            "address": "0x10367f7c8",
+            "file_offset": 57145288
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f7c8",
+                "file_offset": 57145288
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "expectedBundleID",
+          "method_type": "instance",
+          "implementation_address": "0x1011de96c",
+          "location": {
+            "address": "0x10367f7d4",
+            "file_offset": 57145300
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f7d4",
+                "file_offset": 57145300
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "clearDataCollectionSwitchFromUserDefaults",
+          "method_type": "instance",
+          "implementation_address": "0x1011de974",
+          "location": {
+            "address": "0x10367f7e0",
+            "file_offset": 57145312
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f7e0",
+                "file_offset": 57145312
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "subscribeForAppDidBecomeActiveNotifications",
+          "method_type": "instance",
+          "implementation_address": "0x1011deeec",
+          "location": {
+            "address": "0x10367f7ec",
+            "file_offset": 57145324
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f7ec",
+                "file_offset": 57145324
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "appDidBecomeActive:",
+          "method_type": "instance",
+          "implementation_address": "0x1011def64",
+          "location": {
+            "address": "0x10367f7f8",
+            "file_offset": 57145336
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f7f8",
+                "file_offset": 57145336
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "name",
+          "method_type": "instance",
+          "implementation_address": "0x1011defb0",
+          "location": {
+            "address": "0x10367f804",
+            "file_offset": 57145348
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f804",
+                "file_offset": 57145348
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "isDefaultApp",
+          "method_type": "instance",
+          "implementation_address": "0x1011defb8",
+          "location": {
+            "address": "0x10367f810",
+            "file_offset": 57145360
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f810",
+                "file_offset": 57145360
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "container",
+          "method_type": "instance",
+          "implementation_address": "0x1011defc0",
+          "location": {
+            "address": "0x10367f81c",
+            "file_offset": 57145372
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f81c",
+                "file_offset": 57145372
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "setContainer:",
+          "method_type": "instance",
+          "implementation_address": "0x1011defc8",
+          "location": {
+            "address": "0x10367f828",
+            "file_offset": 57145384
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f828",
+                "file_offset": 57145384
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "heartbeatLogger",
+          "method_type": "instance",
+          "implementation_address": "0x1011deff8",
+          "location": {
+            "address": "0x10367f834",
+            "file_offset": 57145396
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f834",
+                "file_offset": 57145396
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": ".cxx_destruct",
+          "method_type": "instance",
+          "implementation_address": "0x1011df004",
+          "location": {
+            "address": "0x10367f840",
+            "file_offset": 57145408
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367f840",
+                "file_offset": 57145408
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "configure",
+          "method_type": "class",
+          "implementation_address": "0x1011dcb20",
+          "location": {
+            "address": "0x10367c688",
+            "file_offset": 57132680
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c688",
+                "file_offset": 57132680
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "configureWithOptions:",
+          "method_type": "class",
+          "implementation_address": "0x1011dcb98",
+          "location": {
+            "address": "0x10367c694",
+            "file_offset": 57132692
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c694",
+                "file_offset": 57132692
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "applicationNameAllowedCharacters",
+          "method_type": "class",
+          "implementation_address": "0x1011dcbf8",
+          "location": {
+            "address": "0x10367c6a0",
+            "file_offset": 57132704
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c6a0",
+                "file_offset": 57132704
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "configureWithName:options:",
+          "method_type": "class",
+          "implementation_address": "0x1011dcc98",
+          "location": {
+            "address": "0x10367c6ac",
+            "file_offset": 57132716
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c6ac",
+                "file_offset": 57132716
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "appWasConfiguredTwice:usingOptions:",
+          "method_type": "class",
+          "implementation_address": "0x1011dcfc0",
+          "location": {
+            "address": "0x10367c6b8",
+            "file_offset": 57132728
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c6b8",
+                "file_offset": 57132728
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "defaultApp",
+          "method_type": "class",
+          "implementation_address": "0x1011dd120",
+          "location": {
+            "address": "0x10367c6c4",
+            "file_offset": 57132740
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c6c4",
+                "file_offset": 57132740
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "appNamed:",
+          "method_type": "class",
+          "implementation_address": "0x1011dd174",
+          "location": {
+            "address": "0x10367c6d0",
+            "file_offset": 57132752
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c6d0",
+                "file_offset": 57132752
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "allApps",
+          "method_type": "class",
+          "implementation_address": "0x1011dd23c",
+          "location": {
+            "address": "0x10367c6dc",
+            "file_offset": 57132764
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c6dc",
+                "file_offset": 57132764
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "resetApps",
+          "method_type": "class",
+          "implementation_address": "0x1011dd2c4",
+          "location": {
+            "address": "0x10367c6e8",
+            "file_offset": 57132776
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c6e8",
+                "file_offset": 57132776
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "addAppToAppDictionary:",
+          "method_type": "class",
+          "implementation_address": "0x1011dd628",
+          "location": {
+            "address": "0x10367c6f4",
+            "file_offset": 57132788
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c6f4",
+                "file_offset": 57132788
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "sendNotificationsToSDKs:",
+          "method_type": "class",
+          "implementation_address": "0x1011ddb40",
+          "location": {
+            "address": "0x10367c700",
+            "file_offset": 57132800
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c700",
+                "file_offset": 57132800
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "errorForMissingOptions",
+          "method_type": "class",
+          "implementation_address": "0x1011dddac",
+          "location": {
+            "address": "0x10367c70c",
+            "file_offset": 57132812
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c70c",
+                "file_offset": 57132812
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "errorForInvalidAppID",
+          "method_type": "class",
+          "implementation_address": "0x1011dde80",
+          "location": {
+            "address": "0x10367c718",
+            "file_offset": 57132824
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c718",
+                "file_offset": 57132824
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "isDefaultAppConfigured",
+          "method_type": "class",
+          "implementation_address": "0x1011ddf54",
+          "location": {
+            "address": "0x10367c724",
+            "file_offset": 57132836
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c724",
+                "file_offset": 57132836
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "registerLibrary:withVersion:",
+          "method_type": "class",
+          "implementation_address": "0x1011ddf68",
+          "location": {
+            "address": "0x10367c730",
+            "file_offset": 57132848
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c730",
+                "file_offset": 57132848
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "registerInternalLibrary:withName:",
+          "method_type": "class",
+          "implementation_address": "0x1011de084",
+          "location": {
+            "address": "0x10367c73c",
+            "file_offset": 57132860
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c73c",
+                "file_offset": 57132860
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "registerInternalLibrary:withName:withVersion:",
+          "method_type": "class",
+          "implementation_address": "0x1011de0e8",
+          "location": {
+            "address": "0x10367c748",
+            "file_offset": 57132872
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c748",
+                "file_offset": 57132872
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "userAgent",
+          "method_type": "class",
+          "implementation_address": "0x1011de248",
+          "location": {
+            "address": "0x10367c754",
+            "file_offset": 57132884
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c754",
+                "file_offset": 57132884
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "firebaseUserAgent",
+          "method_type": "class",
+          "implementation_address": "0x1011de2f4",
+          "location": {
+            "address": "0x10367c760",
+            "file_offset": 57132896
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c760",
+                "file_offset": 57132896
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "validateAppID:",
+          "method_type": "class",
+          "implementation_address": "0x1011de4c4",
+          "location": {
+            "address": "0x10367c76c",
+            "file_offset": 57132908
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c76c",
+                "file_offset": 57132908
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "actualBundleID",
+          "method_type": "class",
+          "implementation_address": "0x1011de688",
+          "location": {
+            "address": "0x10367c778",
+            "file_offset": 57132920
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c778",
+                "file_offset": 57132920
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "validateAppIDFormat:withVersion:",
+          "method_type": "class",
+          "implementation_address": "0x1011de6d4",
+          "location": {
+            "address": "0x10367c784",
+            "file_offset": 57132932
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c784",
+                "file_offset": 57132932
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "validateBundleIDHashWithinAppID:forVersion:",
+          "method_type": "class",
+          "implementation_address": "0x1011de86c",
+          "location": {
+            "address": "0x10367c790",
+            "file_offset": 57132944
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c790",
+                "file_offset": 57132944
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "readDataCollectionSwitchFromUserDefaultsForApp:",
+          "method_type": "class",
+          "implementation_address": "0x1011dea00",
+          "location": {
+            "address": "0x10367c79c",
+            "file_offset": 57132956
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c79c",
+                "file_offset": 57132956
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "readDataCollectionSwitchFromPlist",
+          "method_type": "class",
+          "implementation_address": "0x1011deae4",
+          "location": {
+            "address": "0x10367c7a8",
+            "file_offset": 57132968
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c7a8",
+                "file_offset": 57132968
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "class_name": "FIRApp",
+          "selector": "registerSwiftComponents",
+          "method_type": "class",
+          "implementation_address": "0x1011debb4",
+          "location": {
+            "address": "0x10367c7b4",
+            "file_offset": 57132980
+          },
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Encoded relative Objective-C method entry",
+              "location": {
+                "address": "0x10367c7b4",
+                "file_offset": 57132980
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "swift_conformances": [],
+      "swift_dispatch_slots": [],
+      "swift_symbols": [],
+      "relative_pointers": [
+        {
+          "field": {
+            "address": "0x10367f768",
+            "file_offset": 57145192
+          },
+          "target": {
+            "address": "0x10454dfa0",
+            "file_offset": 72671136
+          },
+          "displacement": 15525944,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f768",
+                "file_offset": 57145192
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f770",
+            "file_offset": 57145200
+          },
+          "target": {
+            "address": "0x1011dd354",
+            "file_offset": 18731860
+          },
+          "displacement": -38413340,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f770",
+                "file_offset": 57145200
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f774",
+            "file_offset": 57145204
+          },
+          "target": {
+            "address": "0x104544108",
+            "file_offset": 72630536
+          },
+          "displacement": 15485332,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f774",
+                "file_offset": 57145204
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f77c",
+            "file_offset": 57145212
+          },
+          "target": {
+            "address": "0x1011dd6e4",
+            "file_offset": 18732772
+          },
+          "displacement": -38412440,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f77c",
+                "file_offset": 57145212
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f780",
+            "file_offset": 57145216
+          },
+          "target": {
+            "address": "0x10453f4c8",
+            "file_offset": 72611016
+          },
+          "displacement": 15465800,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f780",
+                "file_offset": 57145216
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f788",
+            "file_offset": 57145224
+          },
+          "target": {
+            "address": "0x1011dd83c",
+            "file_offset": 18733116
+          },
+          "displacement": -38412108,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f788",
+                "file_offset": 57145224
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f78c",
+            "file_offset": 57145228
+          },
+          "target": {
+            "address": "0x104541b80",
+            "file_offset": 72620928
+          },
+          "displacement": 15475700,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f78c",
+                "file_offset": 57145228
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f794",
+            "file_offset": 57145236
+          },
+          "target": {
+            "address": "0x1011dd8a4",
+            "file_offset": 18733220
+          },
+          "displacement": -38412016,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f794",
+                "file_offset": 57145236
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f798",
+            "file_offset": 57145240
+          },
+          "target": {
+            "address": "0x1045462e0",
+            "file_offset": 72639200
+          },
+          "displacement": 15493960,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f798",
+                "file_offset": 57145240
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7a0",
+            "file_offset": 57145248
+          },
+          "target": {
+            "address": "0x1011dd994",
+            "file_offset": 18733460
+          },
+          "displacement": -38411788,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7a0",
+                "file_offset": 57145248
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7a4",
+            "file_offset": 57145252
+          },
+          "target": {
+            "address": "0x10454dfa8",
+            "file_offset": 72671144
+          },
+          "displacement": 15525892,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7a4",
+                "file_offset": 57145252
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7ac",
+            "file_offset": 57145260
+          },
+          "target": {
+            "address": "0x1011dd9ac",
+            "file_offset": 18733484
+          },
+          "displacement": -38411776,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7ac",
+                "file_offset": 57145260
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7b0",
+            "file_offset": 57145264
+          },
+          "target": {
+            "address": "0x104545078",
+            "file_offset": 72634488
+          },
+          "displacement": 15489224,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7b0",
+                "file_offset": 57145264
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7b8",
+            "file_offset": 57145272
+          },
+          "target": {
+            "address": "0x1011ddaac",
+            "file_offset": 18733740
+          },
+          "displacement": -38411532,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7b8",
+                "file_offset": 57145272
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7bc",
+            "file_offset": 57145276
+          },
+          "target": {
+            "address": "0x104541720",
+            "file_offset": 72619808
+          },
+          "displacement": 15474532,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7bc",
+                "file_offset": 57145276
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7c4",
+            "file_offset": 57145284
+          },
+          "target": {
+            "address": "0x1011de338",
+            "file_offset": 18735928
+          },
+          "displacement": -38409356,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7c4",
+                "file_offset": 57145284
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7c8",
+            "file_offset": 57145288
+          },
+          "target": {
+            "address": "0x104544fc0",
+            "file_offset": 72634304
+          },
+          "displacement": 15489016,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7c8",
+                "file_offset": 57145288
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7d0",
+            "file_offset": 57145296
+          },
+          "target": {
+            "address": "0x1011de3fc",
+            "file_offset": 18736124
+          },
+          "displacement": -38409172,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7d0",
+                "file_offset": 57145296
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7d4",
+            "file_offset": 57145300
+          },
+          "target": {
+            "address": "0x104543040",
+            "file_offset": 72626240
+          },
+          "displacement": 15480940,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7d4",
+                "file_offset": 57145300
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7dc",
+            "file_offset": 57145308
+          },
+          "target": {
+            "address": "0x1011de96c",
+            "file_offset": 18737516
+          },
+          "displacement": -38407792,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7dc",
+                "file_offset": 57145308
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7e0",
+            "file_offset": 57145312
+          },
+          "target": {
+            "address": "0x1045417e0",
+            "file_offset": 72620000
+          },
+          "displacement": 15474688,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7e0",
+                "file_offset": 57145312
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7e8",
+            "file_offset": 57145320
+          },
+          "target": {
+            "address": "0x1011de974",
+            "file_offset": 18737524
+          },
+          "displacement": -38407796,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7e8",
+                "file_offset": 57145320
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7ec",
+            "file_offset": 57145324
+          },
+          "target": {
+            "address": "0x10454abe8",
+            "file_offset": 72657896
+          },
+          "displacement": 15512572,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7ec",
+                "file_offset": 57145324
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7f4",
+            "file_offset": 57145332
+          },
+          "target": {
+            "address": "0x1011deeec",
+            "file_offset": 18738924
+          },
+          "displacement": -38406408,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7f4",
+                "file_offset": 57145332
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f7f8",
+            "file_offset": 57145336
+          },
+          "target": {
+            "address": "0x10453fcb0",
+            "file_offset": 72613040
+          },
+          "displacement": 15467704,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f7f8",
+                "file_offset": 57145336
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f800",
+            "file_offset": 57145344
+          },
+          "target": {
+            "address": "0x1011def64",
+            "file_offset": 18739044
+          },
+          "displacement": -38406300,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f800",
+                "file_offset": 57145344
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f804",
+            "file_offset": 57145348
+          },
+          "target": {
+            "address": "0x104545e48",
+            "file_offset": 72638024
+          },
+          "displacement": 15492676,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f804",
+                "file_offset": 57145348
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f80c",
+            "file_offset": 57145356
+          },
+          "target": {
+            "address": "0x1011defb0",
+            "file_offset": 18739120
+          },
+          "displacement": -38406236,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f80c",
+                "file_offset": 57145356
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f810",
+            "file_offset": 57145360
+          },
+          "target": {
+            "address": "0x104545088",
+            "file_offset": 72634504
+          },
+          "displacement": 15489144,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f810",
+                "file_offset": 57145360
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f818",
+            "file_offset": 57145368
+          },
+          "target": {
+            "address": "0x1011defb8",
+            "file_offset": 18739128
+          },
+          "displacement": -38406240,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f818",
+                "file_offset": 57145368
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f81c",
+            "file_offset": 57145372
+          },
+          "target": {
+            "address": "0x104541c60",
+            "file_offset": 72621152
+          },
+          "displacement": 15475780,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f81c",
+                "file_offset": 57145372
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f824",
+            "file_offset": 57145380
+          },
+          "target": {
+            "address": "0x1011defc0",
+            "file_offset": 18739136
+          },
+          "displacement": -38406244,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f824",
+                "file_offset": 57145380
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f828",
+            "file_offset": 57145384
+          },
+          "target": {
+            "address": "0x10454dfb0",
+            "file_offset": 72671152
+          },
+          "displacement": 15525768,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f828",
+                "file_offset": 57145384
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f830",
+            "file_offset": 57145392
+          },
+          "target": {
+            "address": "0x1011defc8",
+            "file_offset": 18739144
+          },
+          "displacement": -38406248,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f830",
+                "file_offset": 57145392
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f834",
+            "file_offset": 57145396
+          },
+          "target": {
+            "address": "0x104543d18",
+            "file_offset": 72629528
+          },
+          "displacement": 15484132,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f834",
+                "file_offset": 57145396
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f83c",
+            "file_offset": 57145404
+          },
+          "target": {
+            "address": "0x1011deff8",
+            "file_offset": 18739192
+          },
+          "displacement": -38406212,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f83c",
+                "file_offset": 57145404
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f840",
+            "file_offset": 57145408
+          },
+          "target": {
+            "address": "0x10454bb18",
+            "file_offset": 72661784
+          },
+          "displacement": 15516376,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f840",
+                "file_offset": 57145408
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367f848",
+            "file_offset": 57145416
+          },
+          "target": {
+            "address": "0x1011df004",
+            "file_offset": 18739204
+          },
+          "displacement": -38406212,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367f848",
+                "file_offset": 57145416
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c688",
+            "file_offset": 57132680
+          },
+          "target": {
+            "address": "0x10454dfb8",
+            "file_offset": 72671160
+          },
+          "displacement": 15538480,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c688",
+                "file_offset": 57132680
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c690",
+            "file_offset": 57132688
+          },
+          "target": {
+            "address": "0x1011dcb20",
+            "file_offset": 18729760
+          },
+          "displacement": -38402928,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c690",
+                "file_offset": 57132688
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c694",
+            "file_offset": 57132692
+          },
+          "target": {
+            "address": "0x104541bc0",
+            "file_offset": 72620992
+          },
+          "displacement": 15488300,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c694",
+                "file_offset": 57132692
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c69c",
+            "file_offset": 57132700
+          },
+          "target": {
+            "address": "0x1011dcb98",
+            "file_offset": 18729880
+          },
+          "displacement": -38402820,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c69c",
+                "file_offset": 57132700
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6a0",
+            "file_offset": 57132704
+          },
+          "target": {
+            "address": "0x104540b70",
+            "file_offset": 72616816
+          },
+          "displacement": 15484112,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6a0",
+                "file_offset": 57132704
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6a8",
+            "file_offset": 57132712
+          },
+          "target": {
+            "address": "0x1011dcbf8",
+            "file_offset": 18729976
+          },
+          "displacement": -38402736,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6a8",
+                "file_offset": 57132712
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6ac",
+            "file_offset": 57132716
+          },
+          "target": {
+            "address": "0x104541bb8",
+            "file_offset": 72620984
+          },
+          "displacement": 15488268,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6ac",
+                "file_offset": 57132716
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6b4",
+            "file_offset": 57132724
+          },
+          "target": {
+            "address": "0x1011dcc98",
+            "file_offset": 18730136
+          },
+          "displacement": -38402588,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6b4",
+                "file_offset": 57132724
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6b8",
+            "file_offset": 57132728
+          },
+          "target": {
+            "address": "0x104540ae8",
+            "file_offset": 72616680
+          },
+          "displacement": 15483952,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6b8",
+                "file_offset": 57132728
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6c0",
+            "file_offset": 57132736
+          },
+          "target": {
+            "address": "0x1011dcfc0",
+            "file_offset": 18730944
+          },
+          "displacement": -38401792,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6c0",
+                "file_offset": 57132736
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6c4",
+            "file_offset": 57132740
+          },
+          "target": {
+            "address": "0x104542480",
+            "file_offset": 72623232
+          },
+          "displacement": 15490492,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6c4",
+                "file_offset": 57132740
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6cc",
+            "file_offset": 57132748
+          },
+          "target": {
+            "address": "0x1011dd120",
+            "file_offset": 18731296
+          },
+          "displacement": -38401452,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6cc",
+                "file_offset": 57132748
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6d0",
+            "file_offset": 57132752
+          },
+          "target": {
+            "address": "0x104540ab0",
+            "file_offset": 72616624
+          },
+          "displacement": 15483872,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6d0",
+                "file_offset": 57132752
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6d8",
+            "file_offset": 57132760
+          },
+          "target": {
+            "address": "0x1011dd174",
+            "file_offset": 18731380
+          },
+          "displacement": -38401380,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6d8",
+                "file_offset": 57132760
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6dc",
+            "file_offset": 57132764
+          },
+          "target": {
+            "address": "0x10454dfc0",
+            "file_offset": 72671168
+          },
+          "displacement": 15538404,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6dc",
+                "file_offset": 57132764
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6e4",
+            "file_offset": 57132772
+          },
+          "target": {
+            "address": "0x1011dd23c",
+            "file_offset": 18731580
+          },
+          "displacement": -38401192,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6e4",
+                "file_offset": 57132772
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6e8",
+            "file_offset": 57132776
+          },
+          "target": {
+            "address": "0x10454dfc8",
+            "file_offset": 72671176
+          },
+          "displacement": 15538400,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6e8",
+                "file_offset": 57132776
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6f0",
+            "file_offset": 57132784
+          },
+          "target": {
+            "address": "0x1011dd2c4",
+            "file_offset": 18731716
+          },
+          "displacement": -38401068,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6f0",
+                "file_offset": 57132784
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6f4",
+            "file_offset": 57132788
+          },
+          "target": {
+            "address": "0x104540558",
+            "file_offset": 72615256
+          },
+          "displacement": 15482468,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6f4",
+                "file_offset": 57132788
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c6fc",
+            "file_offset": 57132796
+          },
+          "target": {
+            "address": "0x1011dd628",
+            "file_offset": 18732584
+          },
+          "displacement": -38400212,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c6fc",
+                "file_offset": 57132796
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c700",
+            "file_offset": 57132800
+          },
+          "target": {
+            "address": "0x104547ae8",
+            "file_offset": 72645352
+          },
+          "displacement": 15512552,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c700",
+                "file_offset": 57132800
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c708",
+            "file_offset": 57132808
+          },
+          "target": {
+            "address": "0x1011ddb40",
+            "file_offset": 18733888
+          },
+          "displacement": -38398920,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c708",
+                "file_offset": 57132808
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c70c",
+            "file_offset": 57132812
+          },
+          "target": {
+            "address": "0x10454dfd0",
+            "file_offset": 72671184
+          },
+          "displacement": 15538372,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c70c",
+                "file_offset": 57132812
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c714",
+            "file_offset": 57132820
+          },
+          "target": {
+            "address": "0x1011dddac",
+            "file_offset": 18734508
+          },
+          "displacement": -38398312,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c714",
+                "file_offset": 57132820
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c718",
+            "file_offset": 57132824
+          },
+          "target": {
+            "address": "0x10454dfd8",
+            "file_offset": 72671192
+          },
+          "displacement": 15538368,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c718",
+                "file_offset": 57132824
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c720",
+            "file_offset": 57132832
+          },
+          "target": {
+            "address": "0x1011dde80",
+            "file_offset": 18734720
+          },
+          "displacement": -38398112,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c720",
+                "file_offset": 57132832
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c724",
+            "file_offset": 57132836
+          },
+          "target": {
+            "address": "0x104545090",
+            "file_offset": 72634512
+          },
+          "displacement": 15501676,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c724",
+                "file_offset": 57132836
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c72c",
+            "file_offset": 57132844
+          },
+          "target": {
+            "address": "0x1011ddf54",
+            "file_offset": 18734932
+          },
+          "displacement": -38397912,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c72c",
+                "file_offset": 57132844
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c730",
+            "file_offset": 57132848
+          },
+          "target": {
+            "address": "0x104546e68",
+            "file_offset": 72642152
+          },
+          "displacement": 15509304,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c730",
+                "file_offset": 57132848
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c738",
+            "file_offset": 57132856
+          },
+          "target": {
+            "address": "0x1011ddf68",
+            "file_offset": 18734952
+          },
+          "displacement": -38397904,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c738",
+                "file_offset": 57132856
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c73c",
+            "file_offset": 57132860
+          },
+          "target": {
+            "address": "0x104546e58",
+            "file_offset": 72642136
+          },
+          "displacement": 15509276,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c73c",
+                "file_offset": 57132860
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c744",
+            "file_offset": 57132868
+          },
+          "target": {
+            "address": "0x1011de084",
+            "file_offset": 18735236
+          },
+          "displacement": -38397632,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c744",
+                "file_offset": 57132868
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c748",
+            "file_offset": 57132872
+          },
+          "target": {
+            "address": "0x104546e60",
+            "file_offset": 72642144
+          },
+          "displacement": 15509272,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c748",
+                "file_offset": 57132872
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c750",
+            "file_offset": 57132880
+          },
+          "target": {
+            "address": "0x1011de0e8",
+            "file_offset": 18735336
+          },
+          "displacement": -38397544,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c750",
+                "file_offset": 57132880
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c754",
+            "file_offset": 57132884
+          },
+          "target": {
+            "address": "0x10454b650",
+            "file_offset": 72660560
+          },
+          "displacement": 15527676,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c754",
+                "file_offset": 57132884
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c75c",
+            "file_offset": 57132892
+          },
+          "target": {
+            "address": "0x1011de248",
+            "file_offset": 18735688
+          },
+          "displacement": -38397204,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c75c",
+                "file_offset": 57132892
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c760",
+            "file_offset": 57132896
+          },
+          "target": {
+            "address": "0x1045434a8",
+            "file_offset": 72627368
+          },
+          "displacement": 15494472,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c760",
+                "file_offset": 57132896
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c768",
+            "file_offset": 57132904
+          },
+          "target": {
+            "address": "0x1011de2f4",
+            "file_offset": 18735860
+          },
+          "displacement": -38397044,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c768",
+                "file_offset": 57132904
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c76c",
+            "file_offset": 57132908
+          },
+          "target": {
+            "address": "0x10454b718",
+            "file_offset": 72660760
+          },
+          "displacement": 15527852,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c76c",
+                "file_offset": 57132908
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c774",
+            "file_offset": 57132916
+          },
+          "target": {
+            "address": "0x1011de4c4",
+            "file_offset": 18736324
+          },
+          "displacement": -38396592,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c774",
+                "file_offset": 57132916
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c778",
+            "file_offset": 57132920
+          },
+          "target": {
+            "address": "0x10454dfe0",
+            "file_offset": 72671200
+          },
+          "displacement": 15538280,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c778",
+                "file_offset": 57132920
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c780",
+            "file_offset": 57132928
+          },
+          "target": {
+            "address": "0x1011de688",
+            "file_offset": 18736776
+          },
+          "displacement": -38396152,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c780",
+                "file_offset": 57132928
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c784",
+            "file_offset": 57132932
+          },
+          "target": {
+            "address": "0x10454b720",
+            "file_offset": 72660768
+          },
+          "displacement": 15527836,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c784",
+                "file_offset": 57132932
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c78c",
+            "file_offset": 57132940
+          },
+          "target": {
+            "address": "0x1011de6d4",
+            "file_offset": 18736852
+          },
+          "displacement": -38396088,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c78c",
+                "file_offset": 57132940
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c790",
+            "file_offset": 57132944
+          },
+          "target": {
+            "address": "0x10454b728",
+            "file_offset": 72660776
+          },
+          "displacement": 15527832,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c790",
+                "file_offset": 57132944
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c798",
+            "file_offset": 57132952
+          },
+          "target": {
+            "address": "0x1011de86c",
+            "file_offset": 18737260
+          },
+          "displacement": -38395692,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c798",
+                "file_offset": 57132952
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c79c",
+            "file_offset": 57132956
+          },
+          "target": {
+            "address": "0x104546cb8",
+            "file_offset": 72641720
+          },
+          "displacement": 15508764,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c79c",
+                "file_offset": 57132956
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c7a4",
+            "file_offset": 57132964
+          },
+          "target": {
+            "address": "0x1011dea00",
+            "file_offset": 18737664
+          },
+          "displacement": -38395300,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c7a4",
+                "file_offset": 57132964
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c7a8",
+            "file_offset": 57132968
+          },
+          "target": {
+            "address": "0x104546cb0",
+            "file_offset": 72641712
+          },
+          "displacement": 15508744,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c7a8",
+                "file_offset": 57132968
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c7b0",
+            "file_offset": 57132976
+          },
+          "target": {
+            "address": "0x1011deae4",
+            "file_offset": 18737892
+          },
+          "displacement": -38395084,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c7b0",
+                "file_offset": 57132976
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c7b4",
+            "file_offset": 57132980
+          },
+          "target": {
+            "address": "0x104546e98",
+            "file_offset": 72642200
+          },
+          "displacement": 15509220,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c7b4",
+                "file_offset": 57132980
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        },
+        {
+          "field": {
+            "address": "0x10367c7bc",
+            "file_offset": 57132988
+          },
+          "target": {
+            "address": "0x1011debb4",
+            "file_offset": 18738100
+          },
+          "displacement": -38394888,
+          "indirectable": false,
+          "indirect": false,
+          "decode": {
+            "status": "decoded",
+            "reason": null
+          },
+          "evidence": [
+            {
+              "kind": "binary_metadata",
+              "description": "Signed-relative Objective-C method-list pointer",
+              "location": {
+                "address": "0x10367c7bc",
+                "file_offset": 57132988
+              },
+              "artifact_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+              "artifact_sha256": "6056139d78d9be98d2da8e64b2e7aab7c2946a130df392fa19af39a77963d578"
+            }
+          ]
+        }
+      ],
+      "coverage": [
+        {
+          "facet": "objc_class_method_ivar_metadata",
+          "status": "complete",
+          "reason": "Coverage is limited to indexed classes matching the exact raw Objective-C name and their metaclasses/referenced protocols; standalone protocol and category inventories were not requested",
+          "examined": 1,
+          "decoded": 2
+        },
+        {
+          "facet": "binary_relative_pointers",
+          "status": "complete",
+          "reason": null,
+          "examined": 90,
+          "decoded": 90
+        },
+        {
+          "facet": "objc_properties_categories",
+          "status": "complete",
+          "reason": "Coverage is limited to indexed classes matching the exact raw Objective-C name and their metaclasses/referenced protocols; standalone protocol and category inventories were not requested",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "pointer_fixups",
+          "status": "complete",
+          "reason": "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+          "examined": 2,
+          "decoded": 2
+        },
+        {
+          "facet": "swift_generic_resilient_witnesses_overrides_async_coroutines",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_conformances_static_witness_slots",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_resilient_witness_records",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_witness_template_records",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_class_vtable_descriptors",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_type_fields",
+          "status": "not_requested",
+          "reason": "Field declarations require explicit facet swift-fields and swift_type_address; all retains inventory semantics",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_static_struct_layout",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        }
+      ],
+      "db_save_result": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Derived by an REA+ composed workflow.",
+    "Coverage is limited to indexed classes matching the exact raw Objective-C name and their metaclasses/referenced protocols; standalone protocol and category inventories were not requested",
+    "Field declarations require explicit facet swift-fields and swift_type_address; all retains inventory semantics",
+    "chained fixups: DYLD_CHAINED_PTR_64_OFFSET"
+  ],
+  "locations": [],
+  "evidence_links": []
+}

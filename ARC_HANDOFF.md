@@ -26,6 +26,44 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest controller/selector checkpoint (2026-11-24)
+
+Read `field-tests/arc-restore-ui-2026-11-24.md`, its finding index,
+qualification/CLI/history receipts and snapshot manifest. Item 75 is done:
+exact `objc_class_name` (CLI `--objc-class-name`, facet objc) scans all local
+class-index identities before bounded decode. It preserves aliases, uncertain
+identities and selected scope, skips standalone protocol/category inventories,
+and retains the aggregate budget. Distinct same-name class summaries now own
+their own methods. Arc FIRApp yields 45 methods / two root-metaclass records
+at the original 6,000 cap; all 1,960 identities were checked. Two controller
+name misses are index-only negatives; Swift positively binds the controller.
+
+The selected controller creates RestoreSidebarDataFlow; handler `0x1001ecfe4`
+guards the Optional selected file and flow box, then starts a MainActor task.
+A cast-success lane creates SyncEngine and enters removeCloudKitZone preparation
+before the local restore worker; the other lane directly calls the worker.
+Public constructors/selectors bind deletion-input operations and enqueue
+requests, not an observed CloudKit result. Worker true reaches `0x10227a774`:
+a restart preference is set, `0x10227b218` prepares `/bin/bash -c` using
+`arc_restart_helper.sh`, and reported launch success leads to terminate:nil.
+Errors are handled separately. The worker Boolean still does not prove saves.
+
+2,207 MCP calls / 2,206 successful / one expected invalid-facet input, 2,023
+original-byte instruction checks, 53 raw reads and six exact CLI/MCP pairs
+qualify this checkpoint. Sixty-seven source tests and build/fast/docs/package
+pass; 25 previous snapshots are authenticated. Eight owned runs have verified
+empty lineages. A separate initial Arc CLI pass has unavailable lineage under
+the sandbox and remains intact beside the qualified repeat. Both frozen
+runtimes retain 1,881 files; old 32 source hashes authenticate at parent274e,
+while 44 merged current source hashes authenticate against the new tree.
+Production native-metadata code changed; the Ghidra bridge/Swift recovery did not.
+
+Next offline questions: bind the final UI control/action installation and
+recover the matching restart script from the fixed package; follow the generic
+automatic restoreFromBackup consumer. Actual Client/backend choice, typed call
+carrier, captured-instance stability and durable I/O remain open at Client
+unknown revision 3. Do not launch Arc/helpers/scripts or contact services.
+
 ## Latest selected-file sidebar restore checkpoint (2026-11-24)
 
 Read `field-tests/arc-restore-consumer-2026-11-24.md`, its finding index,

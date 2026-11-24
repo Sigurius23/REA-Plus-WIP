@@ -69,6 +69,7 @@ export const decodeObjcDispatchFacets = (input: {
   budget: DispatchRecordBudget;
   propertyBudget: DispatchRecordBudget;
   result: ObjcSwiftMetadata;
+  className?: string;
 }): {
   failures: string[];
   categoryIssues: DecodeIssue[];
@@ -88,6 +89,53 @@ export const decodeObjcDispatchFacets = (input: {
   let budget = input.budget;
   const failures: string[] = [];
   const categoryIssues: DecodeIssue[] = [];
+  const classSections = sections.filter(
+    ({ name }) => name === "__objc_classlist",
+  );
+  const selection =
+    input.className === undefined
+      ? undefined
+      : {
+          name: input.className,
+          index_entries: 0,
+          examined: 0,
+          matching_index_entries: 0,
+          matched: false,
+          unresolved: 0,
+          admitted_classes: 0,
+        };
+  // Identity discovery is independent of decode admission. Do not retain an
+  // unbounded match list: the decode pass rereads immutable selected entries.
+  const indexedClass = (field: bigint) => {
+    const address = read.pointer(field);
+    const ro = read.pointer(address + 32n) & ~7n;
+    if (address === 0n || (read.u32(ro) & 1) !== 0)
+      throw new RangeError("Class index does not name a local non-metaclass");
+    return { address, name: read.string(read.pointer(ro + 24n)) };
+  };
+  if (selection !== undefined) {
+    result.objc_class_selection = selection;
+    for (const section of classSections) {
+      if (section.size % 8 !== 0)
+        throw new RangeError("Misaligned Objective-C class-list size");
+      // Validate the entire extent before any full-index enumeration.
+      if (section.size > 0) read.offset(section.address, section.size);
+      for (let index = 0; index < section.size / 8; index++) {
+        selection.index_entries++;
+        selection.examined++;
+        try {
+          if (
+            indexedClass(section.address + BigInt(index * 8)).name ===
+            selection.name
+          )
+            selection.matching_index_entries++;
+        } catch {
+          selection.unresolved++;
+        }
+      }
+    }
+    selection.matched = selection.matching_index_entries > 0;
+  }
   let examined = 0;
   const methods = (
     list: bigint,
@@ -202,7 +250,7 @@ export const decodeObjcDispatchFacets = (input: {
     failures,
   });
   for (const section of sections.filter(
-    ({ name }) => name === "__objc_protolist",
+    ({ name }) => name === "__objc_protolist" && selection === undefined,
   )) {
     if (section.size % 8 !== 0)
       throw new RangeError("Misaligned Objective-C protocol list");
@@ -271,6 +319,7 @@ export const decodeObjcDispatchFacets = (input: {
         });
       }
     }
+    const implementationStart = result.objc_dispatch_implementations.length;
     methods(read.pointer(ro + 32n), name, meta ? "class" : "instance");
     result.objc_classes.push({
       name,
@@ -278,11 +327,7 @@ export const decodeObjcDispatchFacets = (input: {
       is_meta_class: meta,
       is_root_class: root,
       methods: result.objc_dispatch_implementations
-        .filter(
-          (item) =>
-            item.class_name === name &&
-            item.method_type === (meta ? "class" : "instance"),
-        )
+        .slice(implementationStart)
         .map((item) => ({
           selector: item.selector,
           method_type: item.method_type,
@@ -326,21 +371,35 @@ export const decodeObjcDispatchFacets = (input: {
       }
     }
   };
-  for (const section of sections.filter(
-    ({ name }) => name === "__objc_classlist",
-  )) {
+  for (const section of classSections) {
     if (section.size % 8 !== 0)
       throw new RangeError("Misaligned Objective-C class-list size");
     for (let index = 0; index < section.size / 8; index++) {
+      const field = section.address + BigInt(index * 8);
+      let selectedAddress: bigint | undefined;
+      if (selection !== undefined) {
+        try {
+          const candidate = indexedClass(field);
+          if (
+            candidate.name !== selection.name ||
+            visited.has(hex(candidate.address))
+          )
+            continue;
+          selectedAddress = candidate.address;
+        } catch {
+          // Already counted as an unresolved identity by the full scan.
+          continue;
+        }
+      }
       if (budget.isFull()) {
         budget.markTruncated();
         propertyBudget.markTruncated();
         break;
       }
       examined++;
-      const field = section.address + BigInt(index * 8);
+      if (selection !== undefined) selection.admitted_classes++;
       try {
-        readClass(read.pointer(field));
+        readClass(selectedAddress ?? read.pointer(field));
       } catch (cause) {
         failures.push(
           `${hex(field)}: ${cause instanceof Error ? cause.message : String(cause)}`,
@@ -353,17 +412,20 @@ export const decodeObjcDispatchFacets = (input: {
   const classTruncated = budget.truncated;
   budget = propertyBudget;
   const categoryFailures: string[] = [];
-  const categoriesExamined = decodeObjcCategories({
-    sections,
-    read,
-    result,
-    failures: categoryFailures,
-    issues: categoryIssues,
-    admit: () => budget.admit(),
-    methods,
-    protocols: (list) => protocolReader.list(list),
-    localClassName: (address) => localClassName(read, address),
-  });
+  const categoriesExamined =
+    selection === undefined
+      ? decodeObjcCategories({
+          sections,
+          read,
+          result,
+          failures: categoryFailures,
+          issues: categoryIssues,
+          admit: () => budget.admit(),
+          methods,
+          protocols: (list) => protocolReader.list(list),
+          localClassName: (address) => localClassName(read, address),
+        })
+      : 0;
   // The shared protocol reader reports caught dependency failures through its
   // original sink. They belong to the category phase, not completed classes.
   for (const failure of failures.slice(classFailures.length))

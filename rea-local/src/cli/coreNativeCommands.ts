@@ -13,6 +13,7 @@ import {
 import type { CliInstance } from "./types.js";
 import {
   nativeDispatchFacetSchema,
+  nativeObjcClassNameSchema,
   nativeSwiftClassAddressSchema,
   nativeSwiftTypeAddressSchema,
   nativeSwiftMetadataAddressSchema,
@@ -291,6 +292,7 @@ const registerNativeDispatchMetadataCommand = (
       swiftTypeAddress: nativeSwiftTypeAddressSchema,
       swiftMetadataAddress: nativeSwiftMetadataAddressSchema,
       swiftClassAddress: nativeSwiftClassAddressSchema,
+      objcClassName: nativeObjcClassNameSchema,
       swiftProtocolName: z
         .string()
         .min(1)
@@ -335,6 +337,9 @@ const registerNativeDispatchMetadataCommand = (
             max_records: options.maxRecords,
             facet: options.facet,
             max_file_bytes: options.maxFileBytes,
+            ...(options.objcClassName === undefined
+              ? {}
+              : { objc_class_name: options.objcClassName }),
             ...(options.swiftMetadataAddress === undefined
               ? {}
               : { swift_metadata_address: options.swiftMetadataAddress }),

@@ -1,0 +1,118 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-restore-ui-2026-11-24/mcp-owned",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1"
+  },
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "owned-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-restore-ui-2026-11-24/objc-selection.dylib",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-selected",
+      "arguments": {
+        "facet": "objc",
+        "objc_class_name": "REASelectionTarget",
+        "max_records": 24
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-missing",
+      "arguments": {
+        "facet": "objc",
+        "objc_class_name": "NoSuchOwnedClass",
+        "max_records": 24
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-wrong-facet",
+      "arguments": {
+        "facet": "all",
+        "objc_class_name": "REASelectionTarget",
+        "max_records": 24
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-unfiltered",
+      "arguments": {
+        "facet": "objc",
+        "max_records": 24
+      },
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "owned-alias-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-restore-ui-2026-11-24/objc-selection-alias.dylib",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-alias",
+      "arguments": {
+        "facet": "objc",
+        "objc_class_name": "REASelectionTarget",
+        "max_records": 24
+      },
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "owned-unknown-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-restore-ui-2026-11-24/objc-selection-unknown.dylib",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_native_dispatch_metadata",
+      "label": "owned-unknown",
+      "arguments": {
+        "facet": "objc",
+        "objc_class_name": "REASelectionTarget",
+        "max_records": 24
+      },
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "owned-export",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-restore-ui-2026-11-24/mcp-owned/final.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "close-once",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "close-idempotent",
+      "arguments": {},
+      "expect_success": true
+    }
+  ],
+  "timeout_ms": 390000
+}

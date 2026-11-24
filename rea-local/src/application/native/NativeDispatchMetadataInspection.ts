@@ -25,7 +25,18 @@ export const inspectNativeDispatch = async (
   swiftClassAddress?: string,
   swiftTypeAddress?: string,
   swiftMetadataAddress?: string,
+  objcClassName?: string,
 ): EnhancedResult => {
+  if (objcClassName !== undefined && facet !== "objc")
+    return err(
+      new AnalysisInputError("inspect_native_dispatch_metadata", undefined, [
+        {
+          path: ["objc_class_name"],
+          reason: "invalid_value",
+          message: "Objective-C class selection requires facet objc.",
+        },
+      ]),
+    );
   if (
     swiftMetadataAddress !== undefined &&
     (facet !== "swift-fields" || swiftTypeAddress === undefined)
@@ -99,6 +110,9 @@ export const inspectNativeDispatch = async (
     {
       max_records: maxRecords,
       facet,
+      ...(objcClassName === undefined
+        ? {}
+        : { objc_class_name: objcClassName }),
       ...(swiftMetadataAddress === undefined
         ? {}
         : { swift_metadata_address: swiftMetadataAddress }),
@@ -125,6 +139,7 @@ export const inspectNativeDispatch = async (
       ),
     );
   if (
+    objcClassName !== undefined ||
     swiftMetadataAddress !== undefined ||
     swiftTypeAddress !== undefined ||
     swiftClassAddress !== undefined ||

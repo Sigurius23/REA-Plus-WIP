@@ -24,6 +24,14 @@ export const nativeDispatchFacetSchema = z.enum([
   "swift-fields",
 ]);
 const nativeMetadataAddressSchema = z.string().regex(/^0x[0-9a-fA-F]{1,16}$/u);
+/** Exact runtime name from an indexed local Objective-C class_ro_t. */
+export const nativeObjcClassNameSchema = z
+  .string()
+  .min(1)
+  .optional()
+  .describe(
+    "Exact case-sensitive raw Objective-C class name; requires facet objc. Scans the complete local class index before decode admission. Selects matching classes/metaclasses, their properties and referenced protocols; standalone protocol and category inventories are excluded. Swift source names and symbols are not substituted for runtime names.",
+  );
 /** Opt-in exact indexed nominal type for reflection field inspection. */
 export const nativeSwiftTypeAddressSchema = nativeMetadataAddressSchema
   .optional()
@@ -688,6 +696,17 @@ const swiftTypeFieldsSchema = z.strictObject({
   decode: nativeMetadataDecodeSchema,
 });
 export const objcSwiftMetadataSchema = z.strictObject({
+  objc_class_selection: z
+    .strictObject({
+      name: z.string().min(1),
+      index_entries: z.number().int().nonnegative(),
+      examined: z.number().int().nonnegative(),
+      matching_index_entries: z.number().int().nonnegative(),
+      matched: z.boolean(),
+      unresolved: z.number().int().nonnegative(),
+      admitted_classes: z.number().int().nonnegative(),
+    })
+    .optional(),
   swift_type_fields: swiftTypeFieldsSchema.optional(),
   swift_vtable_selection: z
     .strictObject({

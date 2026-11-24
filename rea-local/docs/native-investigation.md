@@ -162,6 +162,16 @@ complete observation.
   explicit. Index completeness does not imply complete witness decoding.
   This filter cannot be combined with an exact conformance address and cannot
   be satisfied by symbol-only fallback.
+  With `facet: "objc"`, `objc_class_name` (CLI `--objc-class-name`) selects
+  matching indexed classes by exact case-sensitive raw runtime name. The full
+  `__objc_classlist` identity scan precedes decode admission;
+  `objc_class_selection` separates examined entries, matching aliases,
+  unresolved identities and admitted classes. Matching classes/metaclasses,
+  their properties and referenced protocols are included; standalone protocol
+  and category inventories are excluded. The aggregate record cap is unchanged.
+  Raw runtime names can differ from Swift source names, and name matches do not
+  establish uniqueness, runtime binding or absence when identities are unknown.
+  Other facets and symbol-only fallback cannot satisfy the selector.
   With `facet: "swift-vtables"`, `swift_class_address` (CLI
   `--swift-class-address`) selects one exact nominal class descriptor. The
   reader scans the complete `__swift5_types` index before admitting its decode,

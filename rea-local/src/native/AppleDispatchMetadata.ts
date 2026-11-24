@@ -46,6 +46,7 @@ export const decodeAppleDispatchMetadata = (
     readonly swiftClassAddress?: string;
     readonly swiftTypeAddress?: string;
     readonly swiftMetadataAddress?: string;
+    readonly objcClassName?: string;
   } = {},
 ): ObjcSwiftMetadata => {
   const {
@@ -56,7 +57,20 @@ export const decodeAppleDispatchMetadata = (
     swiftClassAddress,
     swiftTypeAddress,
     swiftMetadataAddress,
+    objcClassName,
   } = selection;
+  if (objcClassName !== undefined && facet !== "objc")
+    throw new AnalysisInputError(
+      "inspect_native_dispatch_metadata",
+      undefined,
+      [
+        {
+          path: ["objc_class_name"],
+          reason: "invalid_value",
+          message: "Objective-C class selection requires facet objc.",
+        },
+      ],
+    );
   if (
     swiftMetadataAddress !== undefined &&
     (facet !== "swift-fields" || swiftTypeAddress === undefined)
@@ -143,7 +157,7 @@ export const decodeAppleDispatchMetadata = (
       {
         cause,
         remediationAction:
-          "Select an intact Mach-O artifact whose Swift index fits one file-backed mapped range. Unchanged artifact bytes reproduce this failure.",
+          "Select an intact Mach-O artifact whose metadata index fits one file-backed mapped range. Unchanged artifact bytes reproduce this failure.",
       },
     );
   // Selection may scan an entire index before spending decode admission.
@@ -156,19 +170,28 @@ export const decodeAppleDispatchMetadata = (
           facet === "swift-vtables" ||
           facet === "swift-fields")) ||
       (section.name === "__swift5_proto" &&
-        (facet === "all" || facet === "swift-conformances"));
+        (facet === "all" || facet === "swift-conformances")) ||
+      (section.name === "__objc_classlist" && objcClassName !== undefined);
     if (!requested || section.size === 0) continue;
-    if (section.address % 4n !== 0n || section.size % 4 !== 0)
-      throw invalidIndex(`Misaligned Swift metadata index ${section.name}`);
+    const indexName =
+      section.name === "__objc_classlist"
+        ? "Objective-C class"
+        : "Swift metadata";
+    const entryBytes = section.name === "__objc_classlist" ? 8 : 4;
+    if (
+      section.address % BigInt(entryBytes) !== 0n ||
+      section.size % entryBytes !== 0
+    )
+      throw invalidIndex(`Misaligned ${indexName} index ${section.name}`);
     if (section.address + BigInt(section.size) > 1n << 64n)
       throw invalidIndex(
-        `Swift metadata index ${section.name} wraps its address space`,
+        `${indexName} index ${section.name} wraps its address space`,
       );
     try {
       offset(section.address, section.size);
     } catch (cause) {
       throw invalidIndex(
-        `Swift metadata index ${section.name} must lie wholly within one file-backed mapped range`,
+        `${indexName} index ${section.name} must lie wholly within one file-backed mapped range`,
         cause,
       );
     }
@@ -262,6 +285,7 @@ export const decodeAppleDispatchMetadata = (
           budget: objcBudget,
           propertyBudget: objcPropertyBudget,
           result,
+          ...(objcClassName === undefined ? {} : { className: objcClassName }),
         })
       : {
           failures: [],
@@ -472,6 +496,7 @@ export const inspectAppleDispatchMetadata = async (
   swiftClassAddress?: string,
   swiftTypeAddress?: string,
   swiftMetadataAddress?: string,
+  objcClassName?: string,
 ) => {
   if (target.kind !== "executable" || target.format !== "mach-o")
     throw new TypeError("Apple dispatch metadata requires a Mach-O target");
@@ -529,6 +554,7 @@ export const inspectAppleDispatchMetadata = async (
           ...(swiftMetadataAddress === undefined
             ? {}
             : { swiftMetadataAddress }),
+          ...(objcClassName === undefined ? {} : { objcClassName }),
         },
       ),
     });

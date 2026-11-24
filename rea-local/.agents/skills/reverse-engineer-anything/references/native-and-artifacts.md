@@ -142,6 +142,16 @@ Null class/meta flags, ivar counts, atomicity, or read-only values mean the
 selected provider did not establish that fact. Symbol names alone do not prove
 that a class is a root class or has no ivars.
 
+With `facet: "objc"`, `objc_class_name` (CLI `--objc-class-name`) selects an
+exact case-sensitive raw class name from the local Objective-C class index.
+The full identity scan runs before decode admission; preserve aliases,
+unresolved identities and admitted-class counts in `objc_class_selection`.
+The selected scope includes matching classes/metaclasses, properties and
+referenced protocols. Standalone protocol/category inventories are excluded,
+and symbol-only names cannot satisfy the selector. A Swift source name may
+differ from its encoded Objective-C runtime name. This does not change the
+aggregate record cap or prove runtime dispatch.
+
 `inspect_native_dispatch_metadata` can retain static resilient Swift
 requirement/witness pairs independently of instantiated runtime witness slots.
 Imported requirement flags and signatures can remain unknown even when a local

@@ -1,5 +1,18 @@
 # Arc 1.172.1 analysis dossier
 
+Controller/action and restart addendum **2026-11-24**:
+[The checkpoint](arc-restore-ui-2026-11-24.md) binds the selected controller's
+file/flow guards and task, conditional SyncEngine CloudKit deletion preparation,
+local restore worker and restart-helper request. Public selector bytes bind
+operation enqueue, preference writes, bash launch and termination requests;
+actual cloud/disk/restart outcomes and the final UI action installation remain
+unknown. REA+ item 75 adds exact indexed Objective-C name selection before
+budget admission; FIRApp yields 45 methods at the original cap, while the
+controller's two ObjC-name negatives stay scoped alongside positive Swift
+metadata. Same-name class method-summary leakage is also fixed. Sixty-seven
+tests, six CLI/MCP pairs and package/build/fast/docs gates pass. Arc, helpers
+and scripts were not run. Client unknown revision 3 remains open.
+
 Selected-file sidebar restore addendum **2026-11-24**:
 [The new checkpoint](arc-restore-consumer-2026-11-24.md) binds the selected
 RestoreSidebarDataFlow worker to a backup read, attempted saved-window reset,

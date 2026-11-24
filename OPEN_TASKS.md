@@ -2355,3 +2355,26 @@ production defect or helper-global typed domain is claimed.
     snapshots and build/fast/docs/package checks. Failed attempts are retained;
     Arc Client, invocation and durability unknowns remain open. See
     [the repair report](field-tests/blob-text-controls-2026-11-23.md).
+
+75. **Select an indexed Objective-C class before metadata decode admission.**
+    Done and verified (2026-11-24). Optional MCP `objc_class_name` / CLI
+    `--objc-class-name` requires `facet: objc` and checks the complete local
+    class index before decode admission. Exact raw names, aliases, unresolved
+    identities and distinct admitted roots stay explicit. Selected classes,
+    metaclasses and referenced protocols share the unchanged aggregate cap;
+    unrelated standalone protocol/category inventories are outside this scope.
+    Also fixed method-summary leakage between distinct same-name class objects.
+    Arc's unfiltered 6,000-record result correctly stayed partial (320 protocol
+    records / zero classes). The same budget now selects FIRApp: 1,960 identities
+    checked, one root / two class-metaclass records / 45 methods. Two controller
+    name negatives concern the ObjC index only; Swift metadata positively binds
+    RestoreDataViewController. Owned small-budget, miss, alias, unknown-identity
+    and same-name controls pass. Verification: 67 source tests, 2,207 public MCP
+    calls (2,206 successful, one expected invalid request), six exact CLI/MCP
+    Evidence pairs, build/fast/docs/package gates, 25 historical snapshots and
+    eight verified empty owned lineages. One earlier CLI pass could not inspect
+    lineage under the sandbox; it is retained beside the qualified repeat.
+    The conditional controller action now reaches SyncEngine CloudKit deletion
+    preparation, the local restore worker and a restart-helper request. Actual
+    UI action installation, script contents, active Client and I/O outcomes
+    remain Arc investigation work. See [the report](field-tests/arc-restore-ui-2026-11-24.md).

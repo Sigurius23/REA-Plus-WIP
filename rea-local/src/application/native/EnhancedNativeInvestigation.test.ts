@@ -376,6 +376,17 @@ describe("native dispatch metadata requests", () => {
     });
   });
 
+  it("does not replace an indexed Objective-C selection with symbol-only names", async () => {
+    const result = await new EnhancedTools(testAnalysis()).execute(
+      "inspect_native_dispatch_metadata",
+      { facet: "objc", objc_class_name: "SelectedClass" },
+    );
+    expect(result).toMatchObject({
+      ok: false,
+      error: { _tag: "AnalysisCapabilityUnavailableError" },
+    });
+  });
+
   it("does not replace an indexed Swift field selection with symbol-only names", async () => {
     const result = await new EnhancedTools(testAnalysis()).execute(
       "inspect_native_dispatch_metadata",
@@ -392,6 +403,9 @@ describe("native dispatch metadata requests", () => {
   });
 
   it.each([
+    { objc_class_name: "SelectedClass" },
+    { facet: "swift-vtables", objc_class_name: "SelectedClass" },
+    { facet: "objc", objc_class_name: "" },
     { swift_conformance_filter: {} },
     { swift_metadata_address: "0x1000" },
     { facet: "objc", swift_metadata_address: "0x1000" },

@@ -90,6 +90,176 @@ const fixture = (relative = false) => {
 };
 const provenance = { path: "/fixture/app", sha256: "a".repeat(64) };
 
+/** Unrelated protocol declarations precede two indexed class identities. */
+const classSelectionFixture = () => {
+  const bytes = Buffer.alloc(8192);
+  fixture().copy(bytes);
+  const ptr = (at: number, to: number) =>
+    bytes.writeBigUInt64LE(base + BigInt(to), at);
+  bytes.writeBigUInt64LE(8192n, 64);
+  bytes.writeBigUInt64LE(8192n, 80);
+  bytes.writeUInt32LE(232, 20);
+  bytes.writeUInt32LE(232, 36);
+  bytes.writeUInt32LE(2, 96);
+  bytes.write("__objc_protolist", 184);
+  bytes.write("__DATA", 200);
+  ptr(216, 0x198);
+  bytes.writeBigUInt64LE(8n, 224);
+  bytes.writeUInt32LE(0x198, 232);
+  ptr(0x198, 0xb00);
+  ptr(0xb08, 0xb60);
+  bytes.write("NoiseProtocol\0", 0xb60);
+  bytes.writeUInt32LE(72, 0xb40);
+  ptr(0xb28, 0xc00);
+  bytes.writeUInt32LE(24, 0xc00);
+  bytes.writeUInt32LE(64, 0xc04);
+  bytes.write("unrelatedMethod\0", 0xb80);
+  for (let i = 0; i < 64; i++) ptr(0xc08 + i * 24, 0xb80);
+  bytes.writeBigUInt64LE(16n, 144);
+  ptr(0x180, 0x1400);
+  ptr(0x188, 0x200);
+  ptr(0x1400, 0x1480);
+  ptr(0x1420, 0x1500);
+  ptr(0x14a0, 0x1580);
+  bytes.writeUInt32LE(2, 0x1500);
+  bytes.writeUInt32LE(3, 0x1580);
+  ptr(0x1518, 0x1600);
+  ptr(0x1598, 0x1600);
+  bytes.write("Unrelated\0", 0x1600);
+  bytes.writeUInt32LE(2, 0x300);
+  bytes.writeUInt32LE(3, 0x380);
+  return bytes;
+};
+
+describe("indexed Objective-C class selection", () => {
+  it("admits a later class before unrelated standalone protocols spend the budget", () => {
+    const bytes = classSelectionFixture();
+    expect(
+      decodeAppleDispatchMetadata(bytes, 48, provenance, { facet: "objc" })
+        .objc_classes,
+    ).toEqual([]);
+    const selected = decodeAppleDispatchMetadata(bytes, 48, provenance, {
+      facet: "objc",
+      objcClassName: "Fixture",
+    });
+    expect(selected.objc_class_selection).toEqual({
+      name: "Fixture",
+      index_entries: 2,
+      examined: 2,
+      matching_index_entries: 1,
+      matched: true,
+      unresolved: 0,
+      admitted_classes: 1,
+    });
+    expect(selected.objc_classes.map((c) => c.name)).toEqual([
+      "Fixture",
+      "Fixture",
+    ]);
+    expect(selected.objc_classes[0]?.methods[0]?.selector).toBe(
+      "performAction:",
+    );
+    expect(selected.objc_protocol_records.map((p) => p.name)).toEqual([
+      "FixtureProtocol",
+    ]);
+    expect(selected.objc_categories).toEqual([]);
+    expect(
+      selected.coverage.find((c) => c.facet === "objc_properties_categories")
+        ?.reason,
+    ).toContain("category inventories were not requested");
+  });
+  it("scans all identities despite decode exhaustion, retaining aliases and unknowns", () => {
+    const bytes = classSelectionFixture();
+    bytes.writeBigUInt64LE(32n, 144);
+    bytes.writeBigUInt64LE(base + 0x200n, 0x190);
+    // Move the standalone protocol index away from the added fourth entry.
+    bytes.writeBigUInt64LE(base + 0x7000n, 0x198);
+    const selected = decodeAppleDispatchMetadata(bytes, 1, provenance, {
+      facet: "objc",
+      objcClassName: "Fixture",
+    });
+    expect(selected.objc_class_selection).toMatchObject({
+      examined: 4,
+      matching_index_entries: 2,
+      unresolved: 1,
+      admitted_classes: 1,
+    });
+    expect(
+      selected.coverage.find(
+        (c) => c.facet === "objc_class_method_ivar_metadata",
+      )?.status,
+    ).toBe("partial");
+  });
+  it("does not merge methods of distinct classes with the same raw name", () => {
+    const bytes = classSelectionFixture();
+    bytes.writeBigUInt64LE(base + 0x200n, 0x180);
+    bytes.writeBigUInt64LE(base + 0x1400n, 0x188);
+    bytes.fill(0, 0x1600, 0x1620);
+    bytes.write("Fixture\0", 0x1600);
+    const selected = decodeAppleDispatchMetadata(bytes, 64, provenance, {
+      facet: "objc",
+      objcClassName: "Fixture",
+    });
+    expect(selected.objc_class_selection).toMatchObject({
+      matching_index_entries: 2,
+      admitted_classes: 2,
+    });
+    expect(
+      selected.objc_classes.find((c) => c.location?.address === "0x100001400")
+        ?.methods,
+    ).toEqual([]);
+    expect(
+      selected.objc_classes.find((c) => c.location?.address === "0x100000200")
+        ?.methods,
+    ).toHaveLength(1);
+  });
+  it("matches exact raw names and preserves missing selection without symbol inference", () => {
+    const selected = decodeAppleDispatchMetadata(
+      classSelectionFixture(),
+      48,
+      provenance,
+      { facet: "objc", objcClassName: "fixture" },
+    );
+    expect(selected.objc_class_selection).toMatchObject({
+      matched: false,
+      examined: 2,
+      matching_index_entries: 0,
+    });
+    expect(selected.objc_classes).toEqual([]);
+    expect(
+      selected.coverage.find(
+        (c) => c.facet === "objc_class_method_ivar_metadata",
+      )?.status,
+    ).toBe("partial");
+  });
+  it("rejects wrong facets and non-file-backed index extents before discovery", () => {
+    try {
+      decodeAppleDispatchMetadata(fixture(), 48, provenance, {
+        facet: "all",
+        objcClassName: "Fixture",
+      });
+      expect.fail("Expected class/facet input rejection");
+    } catch (cause) {
+      expect(cause).toMatchObject({
+        _tag: "AnalysisInputError",
+        issues: [
+          {
+            path: ["objc_class_name"],
+            message: "Objective-C class selection requires facet objc.",
+          },
+        ],
+      });
+    }
+    const bytes = classSelectionFixture();
+    bytes.writeBigUInt64LE(0x100000000n, 144);
+    expect(() =>
+      decodeAppleDispatchMetadata(bytes, 48, provenance, {
+        facet: "objc",
+        objcClassName: "Fixture",
+      }),
+    ).toThrow("must lie wholly within one file-backed mapped range");
+  });
+});
+
 const mixedFixture = () => {
   const bytes = fixture();
   const u32 = (at: number, value: number) => bytes.writeUInt32LE(value, at);

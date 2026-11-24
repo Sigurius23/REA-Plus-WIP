@@ -1,0 +1,201 @@
+{
+  "evidence_id": "ev_27db696c1ec860e1ad509af60afb160cf0ad38fd04ae7f19e30a6e0c5d7269cd",
+  "subject": {
+    "name": "objc-selection.dylib",
+    "digest": {
+      "sha256": "2bc84594a3a85e6f351827deace84b5ee71434d5e2ffa57603452b53a169889c"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-restore-ui-2026-11-24/objc-selection.dylib"
+  },
+  "provider": {
+    "id": "rea-workflow",
+    "name": "REA+ composed investigation workflow",
+    "version": "1"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "rea-workflow",
+      "name": "REA+ composed investigation workflow",
+      "version": "1"
+    },
+    "parameters": {
+      "upstream_analysis_profile": {
+        "provider": {
+          "id": "ghidra",
+          "name": "Ghidra",
+          "version": "12.1.4"
+        },
+        "parameters": {
+          "target_kind": "executable",
+          "target_format": "mach-o",
+          "architecture": "arm64",
+          "available_architectures": [
+            "arm64"
+          ],
+          "import_mode": "ephemeral-source-immutable",
+          "annotation_policy": "atomic-function-entry-metadata-v1",
+          "load_image_observations": "source-mappings-entry-context-v2",
+          "function_body_evidence": "complete-inclusive-ranges-v1",
+          "function_references": "complete-body-and-entry-reference-manager-v2",
+          "string_inventory_evidence": "defined-data-coverage-v1",
+          "location_resolution": "explicit-address-exact-entry-symbol-first-v3",
+          "instruction_flow_evidence": "decoded-return-pcode-v1",
+          "instruction_references": "exact-address-incoming-v1",
+          "instruction_call_preparation": "ghidra-aarch64-mov-call-preparation-v1",
+          "function_boundary_observations": "ghidra-terminal-call-limitations-v1",
+          "no_return_repair": "returning-imports-decoded-return-v2",
+          "process_launch": "inspected-jvm-launch-support-v1",
+          "jump_table_evidence": "typed-case-default-blocks-v1",
+          "runtime_call_signatures": "swift-runtime-c-signatures-v2",
+          "swift_enum_switch_recovery": "abi-signed-word-cfg-v10",
+          "swift_dynamic_typed_snapshot": "swift-dynamic-typed-snapshot-v1",
+          "darwin_stack_probe_call_summary": "trusted-darwin-arm64-chkstk-v1",
+          "swift_error_register_model": "proved-native-synchronous-callee-x21-v3",
+          "decompiler_jump_loads": true,
+          "loader": "auto-from-header",
+          "language_id": "auto-from-header",
+          "compiler_spec_id": "auto-default",
+          "analyzer_preset": "ghidra-default",
+          "analysis_policy": "bounded-autoanalysis-v1",
+          "analysis_timeout_seconds": 1
+        },
+        "digest": "ad57cb11d30bf9a700a4e8cf9d4c890a5e800cd6aee1973b8a289ad9e72145a6"
+      },
+      "workflow_evidence_revision": 1
+    },
+    "digest": "7f884142cdce46795fa9020db0afd24ff48f0662f5486e63f5e2f6e1e74333cb"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "inspect_native_dispatch_metadata",
+  "parameters": {
+    "objc_class_name": "NoSuchOwnedClass",
+    "max_file_bytes": 67108864,
+    "max_records": 24,
+    "facet": "objc"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "target_sha256": "2bc84594a3a85e6f351827deace84b5ee71434d5e2ffa57603452b53a169889c",
+    "provider": {
+      "id": "native-macos",
+      "name": "macOS native inspection utilities",
+      "version": "apple-metadata-reader-1"
+    },
+    "analysis_profile_digest": null,
+    "result": {
+      "objc_class_selection": {
+        "name": "NoSuchOwnedClass",
+        "index_entries": 2,
+        "examined": 2,
+        "matching_index_entries": 0,
+        "matched": false,
+        "unresolved": 0,
+        "admitted_classes": 0
+      },
+      "objc_classes": [],
+      "objc_protocols": [],
+      "objc_categories": [],
+      "swift_decls": [],
+      "objc_ivars": [],
+      "objc_protocol_records": [],
+      "objc_dispatch_implementations": [],
+      "swift_conformances": [],
+      "swift_dispatch_slots": [],
+      "swift_symbols": [],
+      "relative_pointers": [],
+      "coverage": [
+        {
+          "facet": "objc_class_method_ivar_metadata",
+          "status": "partial",
+          "reason": "Coverage is limited to indexed classes matching the exact raw Objective-C name and their metaclasses/referenced protocols; standalone protocol and category inventories were not requested; No matching indexed Objective-C class identity was established",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "binary_relative_pointers",
+          "status": "complete",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "objc_properties_categories",
+          "status": "partial",
+          "reason": "Coverage is limited to indexed classes matching the exact raw Objective-C name and their metaclasses/referenced protocols; standalone protocol and category inventories were not requested; No matching indexed Objective-C class identity was established",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "pointer_fixups",
+          "status": "complete",
+          "reason": "chained fixups: DYLD_CHAINED_PTR_64_OFFSET",
+          "examined": 2,
+          "decoded": 2
+        },
+        {
+          "facet": "swift_generic_resilient_witnesses_overrides_async_coroutines",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_conformances_static_witness_slots",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_resilient_witness_records",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_witness_template_records",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_class_vtable_descriptors",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_type_fields",
+          "status": "not_requested",
+          "reason": "Field declarations require explicit facet swift-fields and swift_type_address; all retains inventory semantics",
+          "examined": 0,
+          "decoded": 0
+        },
+        {
+          "facet": "swift_static_struct_layout",
+          "status": "not_requested",
+          "reason": null,
+          "examined": 0,
+          "decoded": 0
+        }
+      ],
+      "db_save_result": null
+    }
+  },
+  "confidence": "derived",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Derived by an REA+ composed workflow.",
+    "Coverage is limited to indexed classes matching the exact raw Objective-C name and their metaclasses/referenced protocols; standalone protocol and category inventories were not requested; No matching indexed Objective-C class identity was established",
+    "Field declarations require explicit facet swift-fields and swift_type_address; all retains inventory semantics",
+    "chained fixups: DYLD_CHAINED_PTR_64_OFFSET"
+  ],
+  "locations": [],
+  "evidence_links": []
+}
