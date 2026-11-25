@@ -1,4 +1,5 @@
 import type { ArtifactResourceScope } from "../ArtifactResourceScope.js";
+import type { HexRecordCapacity } from "../../domain/firmware/hexRecords.js";
 
 /** Resolved integrity behavior admitted to the artifact scanner. */
 export type ArtifactIntegrityPolicy =
@@ -11,6 +12,7 @@ export const STRICT_INTEGRITY_POLICY: ArtifactIntegrityPolicy = {
 
 /** Options shared by artifact inventory scans. */
 export interface ArtifactInventoryOptions {
+  readonly firmwareCapacity?: HexRecordCapacity | undefined;
   readonly resourceScope: ArtifactResourceScope;
   readonly signal?: AbortSignal | undefined;
   readonly integrity?: ArtifactIntegrityPolicy | undefined;

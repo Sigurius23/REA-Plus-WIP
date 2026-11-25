@@ -9,14 +9,17 @@ import { requireOutputSchema } from "./toolOutputSchemaPrimitives.js";
 import { appleAssetCatalogInputSchema } from "../domain/apple/appleAssetCatalog.js";
 import { dylibResolutionInputSchema } from "../domain/apple/dylibResolution.js";
 import { keyedArchiveInputSchema } from "../domain/apple/keyedArchive.js";
+import { hexRecordCapacityInputShape } from "../domain/firmware/hexRecordCapacity.js";
 /** Exact caller boundary for deterministic artifact inventory. */
 export const artifactInventoryInputSchema = z.strictObject({
   integrity_policy: artifactIntegrityPolicySchema,
+  ...hexRecordCapacityInputShape,
 });
 
 /** Extraction needs no selector: it materializes every regular child file. */
 export const artifactExtractionInputSchema = z.strictObject({
   integrity_policy: artifactIntegrityPolicySchema,
+  ...hexRecordCapacityInputShape,
 });
 
 /** Provider input containing the destination chosen by the local adapter. */
@@ -67,12 +70,12 @@ const artifact = <
 export const ARTIFACT_TOOL_CONTRACTS = [
   artifact(
     "inspect_artifact",
-    "Inspect an active archive or application package in one call. Returns the complete content-addressed artifact graph once, as the nested inventory Evidence, with root and integrity observations, integrity contradictions, hypotheses, unexplored branches, limitations, and next probes inline. Read-only DMG mounting is used automatically on supported macOS hosts. Integrity mismatches fail by default; record-and-continue keeps mismatches explicitly untrusted. It does not extract files; use extract_artifact to materialize its regular contents.",
+    "Inspect an active archive, application package, Intel HEX or Motorola S-record carrier in one call. Text firmware is decoded into sparse address-contiguous regions with record/start/termination metadata; gaps are unwritten and checksums do not establish authenticity or device behavior. Returns the complete content-addressed artifact graph once, as the nested inventory Evidence, with root and integrity observations, integrity contradictions, hypotheses, unexplored branches, limitations, and next probes inline. Read-only DMG mounting is used automatically on supported macOS hosts. Integrity mismatches fail by default; record-and-continue keeps mismatches explicitly untrusted. It does not extract files; use extract_artifact to materialize its regular contents.",
     artifactInventoryInputSchema,
   ),
   artifact(
     "extract_artifact",
-    "Extract all regular files from the active archive or application package into a fresh temporary directory chosen by REA+. The result includes its location. Rejects traversal and symlink escapes, never overwrites, and verifies cleanup. Integrity mismatches fail by default; record-and-continue extracts the observed bytes and returns each mismatch as an explicitly untrusted integrity contradiction.",
+    "Extract all regular files or decoded firmware regions from the active archive, application package, Intel HEX or S-record carrier into a fresh temporary directory chosen by REA+. The result includes its location. Rejects traversal and symlink escapes, never overwrites, and verifies cleanup. Integrity mismatches fail by default; record-and-continue extracts the observed bytes and returns each mismatch as an explicitly untrusted integrity contradiction.",
     artifactExtractionInputSchema,
   ),
   artifact(

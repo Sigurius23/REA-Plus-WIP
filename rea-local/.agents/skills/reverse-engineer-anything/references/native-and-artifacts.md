@@ -25,6 +25,23 @@ retained, call `inspect_analysis_view` for a summary, mitigations or linkage
 facet, one section or symbol, or a stable page. Do not re-run the decoder to
 read a single object.
 
+## Structured text firmware
+
+Intel HEX/S-record carriers use `open_binary`, then `inspect_artifact` for sparse
+regions and declared header/start/termination metadata, or `extract_artifact`
+for verified region files. No external engine is required. Recognition needs a
+checksum-valid first record at byte zero. Conflicts and malformed checksums
+refuse the carrier; missing termination remains an explicit caveat. Equal bytes
+at different addresses keep distinct occurrence metadata, and gaps are unwritten.
+Carrier checksums do not establish authenticity, CPU semantics or execution.
+
+Use optional `max_firmware_file_bytes`/`max_firmware_runs` for decode admission;
+capacity refusals name the input to change. Do not repeat unchanged limits.
+This slice decodes root carriers; select a nested extracted carrier explicitly.
+Raw CPU/board loading and device operations remain separate. See the repository
+[firmware guide](https://github.com/morluto/rea/blob/main/docs/firmware-analysis.md)
+for the exact supported record profile and limits.
+
 ## Native targets
 
 For an unguarded arm64 Mach-O halfword dispatch, use

@@ -3,6 +3,8 @@ import { lstat, realpath } from "node:fs/promises";
 import { compareUnicodeCodePoints } from "../../domain/unicodeCodePointOrder.js";
 import { digestCanonicalValue } from "../../domain/canonicalDigest.js";
 import { AsarArtifactReader } from "../AsarArtifactReader.js";
+import { HexRecordArtifactReader } from "../HexRecordArtifactReader.js";
+import type { HexRecordCapacity } from "../../domain/firmware/hexRecords.js";
 import {
   ArtifactPathRegistry,
   normalizeArtifactPath,
@@ -40,6 +42,7 @@ import type { ArtifactIntegrityPolicyName } from "../../domain/artifactIntegrity
 
 /** Local extraction input with the output root chosen by the adapter. */
 export interface ArtifactExtractionInput {
+  readonly firmwareCapacity?: HexRecordCapacity | undefined;
   readonly inputPath: string;
   readonly inputFormat: BinaryTarget["format"];
   readonly outputRoot: string;
@@ -68,6 +71,7 @@ const extractArtifactInScope = async (
     signal,
     environment: input.environment,
     integrity: { mode: input.integrityPolicy },
+    firmwareCapacity: input.firmwareCapacity,
   });
   return materializeArtifactInventoryInScope(
     input,
@@ -226,6 +230,8 @@ const materializeSelection = async ({
   let completed: ArtifactExtractionResult | undefined;
   const extracted: ExtractedOccurrence[] = [];
   try {
+    if (reader instanceof HexRecordArtifactReader)
+      await reader.prepareContainer(inventory.manifest.root_sha256, signal);
     try {
       output = await SafeOutputTree.create(input.outputRoot);
     } catch (cause: unknown) {
@@ -438,6 +444,8 @@ const requireExtractableFormat = async (
     format !== "asar" &&
     format !== "mach-o" &&
     format !== "dmg" &&
+    format !== "intel-hex" &&
+    format !== "srec" &&
     !isZipFormat(format)
   )
     throw new AnalysisUnsupportedTargetError(
@@ -452,13 +460,20 @@ const createReader = async (
   path: string,
   input: Pick<
     ArtifactExtractionInput,
-    "inputPath" | "inputFormat" | "environment"
+    "inputPath" | "inputFormat" | "environment" | "firmwareCapacity"
   >,
 ): Promise<ArtifactReader> => {
   const format = input.inputFormat;
   if (await requireExtractableFormat(path, input))
     return new DirectoryArtifactReader(path);
   if (format === "asar") return new AsarArtifactReader(path);
+  if (format === "intel-hex" || format === "srec")
+    return new HexRecordArtifactReader(
+      path,
+      format,
+      undefined,
+      input.firmwareCapacity,
+    );
   if (format === "dmg")
     return new NativeDmgArtifactReader(path, input.environment);
   if (isZipFormat(format)) return new ZipArtifactReader(path, format);

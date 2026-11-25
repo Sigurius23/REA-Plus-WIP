@@ -1,4 +1,6 @@
 import { AsarArtifactReader } from "../AsarArtifactReader.js";
+import { HexRecordArtifactReader } from "../HexRecordArtifactReader.js";
+import type { HexRecordCapacity } from "../../domain/firmware/hexRecords.js";
 import type { ArtifactReader } from "../ArtifactReader.js";
 import { DirectoryArtifactReader } from "../DirectoryArtifactReader.js";
 import { MachOSliceArtifactReader } from "../MachOSliceArtifactReader.js";
@@ -16,10 +18,19 @@ export const createReader = (
   format: ArtifactOccurrence["artifact_format"],
   environment: Readonly<NodeJS.ProcessEnv>,
   rootSource?: StableRegularFileDescriptor,
+  firmwareCapacity?: HexRecordCapacity,
 ): ArtifactReader | undefined => {
   if (isZipPackageFormat(format))
     return new ZipArtifactReader(path, format, undefined, rootSource);
   switch (format) {
+    case "intel-hex":
+    case "srec":
+      return new HexRecordArtifactReader(
+        path,
+        format,
+        rootSource,
+        firmwareCapacity,
+      );
     case "directory":
       return new DirectoryArtifactReader(path);
     case "asar":
@@ -43,7 +54,7 @@ export const inventoryLimitations = (
   if (reader !== undefined)
     return isZipPackageFormat(reader.format)
       ? [ZIP_NON_ENTRY_TAIL_LIMITATION]
-      : [];
+      : [...(reader.limitations?.() ?? [])];
   // dmg and pkg reach here only after classifyRootFormat matched their bytes.
   if (format === "dmg" || format === "pkg")
     return [

@@ -1,3 +1,4 @@
+import { binaryTargetFormatSchema } from "./binaryTargetFormats.js";
 import { z } from "zod";
 
 import { digestCanonicalValue } from "./canonicalDigest.js";
@@ -36,32 +37,8 @@ const subjectSchema = z.object({
   name: z.string().min(1),
   digest: z.object({ sha256: digestSchema }),
   format: z.enum([
+    ...binaryTargetFormatSchema.options,
     "hopper",
-    "analysis-database",
-    "mach-o",
-    "elf",
-    "pe",
-    "dos-mz",
-    "dos-com",
-    "dex",
-    "zip",
-    "ipa",
-    "apk",
-    "xapk",
-    "apks",
-    "aab",
-    "apk-set",
-    "msix",
-    "appx",
-    "hap",
-    "hsp",
-    "app-pack",
-    "asar",
-    "dmg",
-    "pkg",
-    "plist",
-    "javascript",
-    "source-map",
     "directory",
     "file",
     "unknown",

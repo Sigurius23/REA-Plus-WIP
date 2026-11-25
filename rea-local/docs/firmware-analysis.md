@@ -9,6 +9,67 @@ No device, root privilege, mount, emulation or execution of extracted programs
 is needed. Arbitrary firmware bytes do not pass native executable admission;
 select a returned ELF separately for supported Ghidra analysis.
 
+## Intel HEX and Motorola S-record
+
+Use the built-in artifact workflow for these text carriers; no Binwalk, Unblob
+or native engine is required:
+
+```sh
+rea inspect-artifact ./firmware.hex --json
+rea extract-artifact ./firmware.srec --json
+```
+
+In MCP, open the carrier with `open_binary`, then call `inspect_artifact` or
+`extract_artifact`. Recognition requires a complete checksum-valid first record
+at byte zero, independently of its filename. LF/CRLF lines and a final line
+without a newline are supported. BOMs, leading blank lines, arbitrary comments
+and vendor record extensions are outside this recognition profile. Other
+already-recognized package formats keep their existing admission precedence.
+
+The root occurrence's `format_metadata` reports encoding/variant, record and
+payload counts, duplicate bytes, termination, header and declared start facts.
+Intel types 00–05 and Motorola S0/1/2/3/5/6/7/8/9 are decoded. S0 header address
+and source line are retained; that address is not a load address. An S5/S6 count
+is checked against cumulative preceding data records at its own line, with an
+explicit caveat when later records or multiple declarations make it unsuitable
+as a final-file count certificate. CS:IP and linear starts remain declarations,
+not observed execution or inferred processor settings.
+
+Each child is an address-contiguous region with inclusive bounds, contributing
+record count and line span. Identical overlaps are counted; conflicting writes
+are refused. Gaps stay unwritten and produce separate files. Equal region
+payloads can share a content node while keeping distinct occurrence addresses.
+`source_location` is null: decoded addresses are not carrier-file offsets.
+Checksums, data lengths and address bounds are checked for the whole carrier
+before regions are exposed. A missing terminator preserves decoded data with an
+explicit truncation caveat. Intel data records crossing the 16-bit offset boundary
+are refused because supported producer interpretations disagree on wrapping.
+Checksums establish record consistency, not authenticity or safe device use.
+
+`extract_artifact` materializes the regions into its returned new temporary
+directory, using existing containment/hash/cleanup checks. The carrier is never
+modified. This slice decodes a selected root carrier; firmware members nested
+inside other packages can be classified but are not recursively decoded.
+Select their extracted carrier explicitly for a new inspection. Raw CPU loading,
+board memory maps, peripheral models, device acquisition and flashing are
+separate capabilities.
+
+Optional `max_firmware_file_bytes` and `max_firmware_runs` inputs control decoder
+allocation and retained run metadata. Defaults are 134217728 carrier bytes and
+65536 address-discontiguous record runs. The payload arena is at most half the
+carrier size and merging temporarily needs another payload copy; graph/metadata
+cost is additional. These are resource policies, not format limits. CLI accepts
+`--max-firmware-file-bytes` and `--max-firmware-runs`. Limits fail before the
+allocation/admission they control, report `resource_constraint`, and name the
+knob to change. Unchanged limits reproduce the refusal. Supplying these knobs
+for another active format is refused rather than ignored. The schema, source
+Evidence and exported bundle retain explicit caller choices.
+
+The format references are [Keil's Intel HEX guide](https://www.keil.com/support/docs/1584/default.htm)
+and the [SRecord project's format manual](https://srecord.sourceforge.net/reference-1.65.pdf).
+The current filesystem/CLI/MCP qualification was run on macOS; it does not
+establish a board's behavior or native analysis of raw firmware regions.
+
 ## Caller-supplied tools
 
 Provide existing tools using absolute executable paths, scoped to your shell:

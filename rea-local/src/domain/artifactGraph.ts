@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { prefixedDigestSchema } from "./../domain/digests.js";
+import { hexRecordFormatMetadataSchema } from "./firmware/hexRecordMetadata.js";
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/u);
 const artifactIdSchema = prefixedDigestSchema("art");
@@ -38,6 +39,8 @@ const artifactKindSchema = z.enum([
 
 /** Recognized storage or application formats; unknown bytes remain explicit. */
 const artifactFormatSchema = z.enum([
+  "intel-hex",
+  "srec",
   "dmg",
   "zip",
   "pkg",
@@ -71,6 +74,8 @@ const artifactFormatSchema = z.enum([
 
 /** Formats established from bytes or a virtual directory tree, independent of path roles. */
 const artifactContentFormatSchema = artifactFormatSchema.extract([
+  "intel-hex",
+  "srec",
   "zip",
   "mach-o-universal",
   "mach-o",
@@ -116,6 +121,7 @@ const artifactNodeSchema = z.object({
 
 /** One path or virtual location where an artifact occurs in its parent. */
 const artifactOccurrenceSchema = z.object({
+  format_metadata: hexRecordFormatMetadataSchema.exactOptional(),
   occurrence_id: occurrenceIdSchema,
   artifact_id: artifactIdSchema.nullable(),
   parent_occurrence_id: occurrenceIdSchema.nullable(),

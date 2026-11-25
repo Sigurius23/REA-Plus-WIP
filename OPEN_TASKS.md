@@ -4,6 +4,17 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Intel HEX / S-record integrated (2026-11-25, item 62 partial):** Root
+  carriers expose sparse decoded regions, checksums, overlaps, header/start/
+  termination facts and verified extraction through existing artifact tools.
+  Address metadata is separate from carrier-file offsets; caller budgets have
+  typed resource refusals. Shared target-format schemas, stable reader ownership,
+  declaration scope and observed-hash provenance are repaired. 82 selected tests,
+  43 final MCP calls (six expected refusals), three complete CLI/MCP pairs and
+  32 historical snapshots and package/check/docs gates qualify this slice. Arc's complete reducer Evidence
+  is unchanged. UF2/DfuSe and the other firmware/CPU groups remain open. See
+  [qualification](field-tests/upstream-hex-records-2026-11-25.md).
+
 - **File-backed native decompilation integrated (2026-11-25, item 62 partial):**
   decompile_all / CLI decompile-all write per-function pseudocode and return a
   compact manifest/index. Resume binds target/provider/profile, verifies stored
@@ -1889,8 +1900,15 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
       refresh after retirement and automatic crashed-publisher lock recovery
       remain separate unqualified scope. Reopen to bind a newly saved generation;
       a stale profile refuses changed state. No PID-only lock reclamation.
-    - [ ] Add structured offline firmware readers (HEX/S-record, UF2/DfuSe,
-      uImage/FIT/ESP, Android boot/OTA) and devicetree inspection.
+    - [ ] Add structured offline firmware readers and devicetree inspection.
+      - [x] Intel HEX / S-record root carriers (2026-11-25): sparse regions,
+        record integrity, declarations and verified extraction; caller capacity,
+        metadata/source ownership and lifecycle vocabularies qualified. 82 tests,
+        public CLI/MCP, Arc and historical checks pass. See
+        [qualification](field-tests/upstream-hex-records-2026-11-25.md).
+      - [ ] UF2 / DfuSe readers are next; then uImage/FIT/ESP, Android boot/OTA
+        and devicetree. Nested recursive decoding and raw CPU/board loading are
+        not implied by the text-carrier slice.
     - [ ] Qualify raw-image/RISC-V, expanded MIPS and PowerPC/DOL lanes
       separately. Upstream raw ARM remains A32; Cortex-M/Thumb is not established.
     - [ ] Review native diagnostics, APK signing/JNI/R8, standalone packages,

@@ -1,0 +1,88 @@
+{
+  "status": "passed",
+  "records": [
+    {
+      "label": "intel-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/intel.data"
+      ],
+      "evidence_id": "ev_263a264f4bc7ecaa04f85b5e72d66ee55d74cf4065f98091b9de54b9a593b3ae",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "motorola-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/motorola.data"
+      ],
+      "evidence_id": "ev_03fadd950a36180067b8d537edd334fc3bf71af46e7c47b23ed208ce05bcf28d",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "intel-budget",
+      "argv": [
+        "inspect-artifact",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/intel.data",
+        "--max-firmware-file-bytes",
+        "156",
+        "--max-firmware-runs",
+        "2"
+      ],
+      "evidence_id": "ev_480ef83d785008c36c72e7d6d7252f494c0dc6410dadea55938c00722d6e4039",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "intel-extract",
+      "argv": [
+        "extract-artifact",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/intel.data"
+      ],
+      "evidence_id": "ev_064023e0c265642d75ed016a2b5c35f16742b17f4144af3881b8cba644a2daad",
+      "normalized_manifest_and_files_equal": true
+    },
+    {
+      "label": "motorola-extract",
+      "argv": [
+        "extract-artifact",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/motorola.data"
+      ],
+      "evidence_id": "ev_53d0dd86c878e4683605ccf4d57cd145b95f49743f979d1ca2da0b20d928ab1b",
+      "normalized_manifest_and_files_equal": true
+    },
+    {
+      "label": "byte-refusal",
+      "argv": [
+        "inspect-artifact",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/intel.data",
+        "--max-firmware-file-bytes",
+        "1"
+      ],
+      "expected_error": "resource_constraint"
+    },
+    {
+      "label": "checksum-refusal",
+      "argv": [
+        "inspect-artifact",
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/bad-checksum.hex",
+        "--integrity-policy",
+        "record-and-continue"
+      ],
+      "expected_error": "artifact_operation_failed"
+    }
+  ],
+  "failure": null,
+  "verifier_run": {
+    "run_id": "a08817bf-94cb-44d2-afcf-51e30536218b",
+    "verifier_pid": 13900,
+    "parent_pid": 82620,
+    "process_lineage": {
+      "status": "verified",
+      "observed_at": "2026-11-25T16:28:51.671Z",
+      "launcher_pid": 13900,
+      "launcher_parent_pid": 82620,
+      "process_group_id": 13900,
+      "descendants": []
+    }
+  }
+}

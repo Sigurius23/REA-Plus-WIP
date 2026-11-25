@@ -280,6 +280,15 @@ const probesFor = (
   inventory: ArtifactInventoryResult,
 ): ArtifactInspectionResult["next_probes"] => {
   const format = inventory.manifest.root_format;
+  if (format === "intel-hex" || format === "srec")
+    return [
+      {
+        operation: "extract_artifact",
+        rationale:
+          "Materialize decoded sparse address regions. Choose a CPU, load map and execution model separately; carrier addresses do not establish device behavior.",
+        authority: "artifact-bytes",
+      },
+    ];
   if (["asar", "javascript-bundle", "directory"].includes(format))
     return [
       {

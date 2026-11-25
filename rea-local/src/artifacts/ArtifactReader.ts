@@ -1,6 +1,8 @@
 import type { Readable } from "node:stream";
 import type { ArtifactCommand } from "../domain/artifactGraph.js";
 import type { ZipPackageFormat } from "../domain/zipPackageFormat.js";
+import canonicalize from "canonicalize";
+import type { HexRecordFormatMetadata } from "../domain/firmware/hexRecordMetadata.js";
 import type {
   AnalysisCleanupObservation,
   AnalysisPartialObservation,
@@ -24,6 +26,8 @@ export interface ArtifactEntry {
   readonly unpacked: boolean;
   readonly limitations: readonly string[];
   readonly adapterKey: string;
+  /** Format facts belong to this occurrence, independently of byte-content identity. */
+  readonly formatMetadata?: HexRecordFormatMetadata;
   /** Filesystem identity captured during traversal, when supplied by an adapter. */
   readonly sourceIdentity?: {
     readonly device: number;
@@ -35,6 +39,9 @@ export interface ArtifactEntry {
 export const copyArtifactEntry = (entry: ArtifactEntry): ArtifactEntry => ({
   ...entry,
   limitations: [...entry.limitations],
+  ...(entry.formatMetadata === undefined
+    ? {}
+    : { formatMetadata: { ...entry.formatMetadata } }),
   ...(entry.sourceIdentity === undefined
     ? {}
     : { sourceIdentity: { ...entry.sourceIdentity } }),
@@ -55,6 +62,8 @@ export const sameArtifactEntry = (
   entry.declaredSha256 === produced.declaredSha256 &&
   entry.unpacked === produced.unpacked &&
   entry.adapterKey === produced.adapterKey &&
+  canonicalize(entry.formatMetadata) ===
+    canonicalize(produced.formatMetadata) &&
   entry.limitations.length === produced.limitations.length &&
   entry.limitations.every(
     (limitation, index) => limitation === produced.limitations[index],
@@ -64,7 +73,15 @@ export const sameArtifactEntry = (
 
 /** Read-only adapter over one directory, archive, or virtual container. */
 export interface ArtifactReader {
-  readonly format: "directory" | ZipPackageFormat | "asar" | "file";
+  readonly format:
+    | "directory"
+    | ZipPackageFormat
+    | "asar"
+    | "file"
+    | "intel-hex"
+    | "srec";
+  formatMetadata?(): HexRecordFormatMetadata | undefined;
+  limitations?(): readonly string[];
   entries(signal?: AbortSignal): AsyncIterable<ArtifactEntry>;
   open(entry: ArtifactEntry, signal?: AbortSignal): Promise<Readable>;
   provenance(): readonly ArtifactCommand[];

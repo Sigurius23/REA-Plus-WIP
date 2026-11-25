@@ -1,4 +1,5 @@
 import { compareUnicodeCodePoints } from "../../domain/unicodeCodePointOrder.js";
+import { detectHexRecordEncoding } from "../../domain/firmware/hexRecords.js";
 import { digestCanonicalValue } from "../../domain/canonicalDigest.js";
 import {
   artifactEdgeId,
@@ -22,6 +23,7 @@ import { mzWindowsHeaderOffset, parseDosMzHeader } from "../../domain/dosMz.js";
 
 /** Mutable internal occurrence used until root-bound IDs are known. */
 export interface MutableOccurrence {
+  format_metadata?: NonNullable<ArtifactOccurrence["format_metadata"]>;
   occurrence_id: string;
   artifact_id: string | null;
   parent_occurrence_id: string | null;
@@ -71,6 +73,9 @@ export const createOccurrence = (
         ? classifyArtifactPath(path)
         : ({ kind: "unknown", format: "unknown" } as const);
   return {
+    ...(entry.formatMetadata === undefined
+      ? {}
+      : { format_metadata: { ...entry.formatMetadata } }),
     occurrence_id: `occ_${digestCanonicalValue({ path, kind: entry.kind }, "Artifact")}`,
     artifact_id: null,
     parent_occurrence_id: parent,
@@ -219,7 +224,7 @@ export const rootOccurrenceFor = (
   artifact_kind:
     metadata.format === "directory" ||
     isZipPackageFormat(metadata.format) ||
-    ["asar", "dmg", "pkg"].includes(metadata.format)
+    ["asar", "dmg", "pkg", "intel-hex", "srec"].includes(metadata.format)
       ? "container"
       : artifactRoleForFormat(metadata.path, metadata.format).kind,
   artifact_format: metadata.format,
@@ -418,6 +423,8 @@ const artifactRoleForFormat = (
       kind: "container",
       format: zipPackageFormatForPath(path) ?? format,
     };
+  if (format === "intel-hex" || format === "srec")
+    return { kind: "container", format };
   if (format === "plist") return { kind: "plist", format };
   return {
     kind: ["native-addon", "dynamic-library"].includes(byPath.kind)
@@ -432,6 +439,8 @@ export const classifyArtifactBytes = (
   prefix: Buffer,
   fileSize = prefix.length,
 ): ArtifactNode["format"] => {
+  const records = detectHexRecordEncoding(prefix);
+  if (records !== undefined) return records;
   if (hasZipSignature(prefix)) return "zip";
   if (prefix.subarray(0, 8).equals(Buffer.from("bplist00"))) return "plist";
   if (prefix.length >= 4) {

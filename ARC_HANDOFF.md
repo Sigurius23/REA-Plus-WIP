@@ -26,6 +26,37 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest upstream text-firmware integration (2026-11-25)
+
+Read `field-tests/upstream-hex-records-2026-11-25.md` and its verification receipt,
+source/runtime versions, inert text fixtures, raw replies and extraction readback.
+Item 62 now includes Intel HEX / S-record root carriers through existing artifact
+inspection/extraction. Sparse address regions, declaration/checksum facts and
+unknowns survive; decoded addresses never become carrier-file offsets. Typed
+byte/run budgets and stable descriptor/payload ownership are explicit.
+
+The target-format vocabulary is shared by lifecycle, Evidence and snapshots,
+including previously omitted APKS/AAB/APK-set lifecycle outputs. S0 addresses
+and count-declaration scope are retained. Decoders cannot recover success after
+failure/finish, late binding checks the actual decoded carrier, and failed close
+remains owned. Region digests are observed hashes, not invented declarations.
+
+82 selected tests, 43 final MCP calls (37 successful), seven CLI calls including
+three complete Evidence pairs, eight file readbacks and 32 historical snapshots
+qualify the slice. Both frozen runtime generations and initial failures are
+preserved. The final package gate passes with 208 tools, six prompts and verified
+empty lineage; check/docs/discovery pass too.
+Arc's complete reducer Evidence still exactly equals
+`ev_1bea31a590d22c0700ef16b5f4f6d0444fff488bb873e1a73b31e8767677ba45`:
+10,072 bytes / 2,518 instructions, with the same profile and partial-policy caveats.
+No target executable, helper, shipped JavaScript, device/account/profile, UI or
+service was executed or used.
+
+UF2/DfuSe is the next offline integration slice. uImage/FIT/ESP, Android boot/OTA,
+devicetree and separately qualified raw CPU lanes remain open. Root text-carrier
+support does not add recursive nested decoding or board operation. Full Arc,
+Client unknown revision 3 and durable persistence remain open.
+
 ## Latest upstream file-backed export integration (2026-11-25)
 
 Read `field-tests/upstream-decompile-export-2026-11-25.md` and its verification

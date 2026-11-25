@@ -1,3 +1,4 @@
+import { hexRecordCapacityInputShape } from "../domain/firmware/hexRecordCapacity.js";
 import { z } from "incur";
 
 import type { DirectAnalysis } from "../composition/directAnalysis.js";
@@ -196,6 +197,8 @@ const registerExtractionCommand = (
       path: z.string().describe("Application or package path"),
     }),
     options: z.object({
+      maxFirmwareFileBytes: hexRecordCapacityInputShape.max_firmware_file_bytes,
+      maxFirmwareRuns: hexRecordCapacityInputShape.max_firmware_runs,
       integrityPolicy: z
         .enum(["fail", "record-and-continue"])
         .default("fail")
@@ -208,6 +211,12 @@ const registerExtractionCommand = (
           "extract_artifact",
           {
             integrity_policy: options.integrityPolicy,
+            ...(options.maxFirmwareFileBytes === undefined
+              ? {}
+              : { max_firmware_file_bytes: options.maxFirmwareFileBytes }),
+            ...(options.maxFirmwareRuns === undefined
+              ? {}
+              : { max_firmware_runs: options.maxFirmwareRuns }),
             output_root: createArtifactExtractionDestination(),
           },
           logger,
@@ -228,6 +237,8 @@ const registerInspectionCommand = (
       path: z.string().describe("Application or package path"),
     }),
     options: z.object({
+      maxFirmwareFileBytes: hexRecordCapacityInputShape.max_firmware_file_bytes,
+      maxFirmwareRuns: hexRecordCapacityInputShape.max_firmware_runs,
       integrityPolicy: z
         .enum(["fail", "record-and-continue"])
         .default("fail")
@@ -240,6 +251,12 @@ const registerInspectionCommand = (
           "inspect_artifact",
           {
             integrity_policy: options.integrityPolicy,
+            ...(options.maxFirmwareFileBytes === undefined
+              ? {}
+              : { max_firmware_file_bytes: options.maxFirmwareFileBytes }),
+            ...(options.maxFirmwareRuns === undefined
+              ? {}
+              : { max_firmware_runs: options.maxFirmwareRuns }),
           },
           logger,
         ),

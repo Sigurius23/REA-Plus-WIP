@@ -1,0 +1,124 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/acceptance/hexRecordArtifacts.test.ts
+
+Focused tests: tests/acceptance/hexRecordArtifacts.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing 326fda65e26972ac
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache miss, executing 0a0365c967aa7f4d
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    1 cached, 3 total
+  Time:    6.091s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ❯ |acceptance| tests/acceptance/hexRecordArtifacts.test.ts (8 tests | 8 failed) 128ms
+   × inspects and extracts intel-hex sparse regions with full source/metadata and advertised schemas 47ms
+   × inspects and extracts srec sparse regions with full source/metadata and advertised schemas 17ms
+   × deduplicates equal payload bytes without losing distinct region address identity and marks missing termination 9ms
+   × enforces caller byte/run capacity before decoding and can proceed with an increased budget 9ms
+   × refuses malformed checksum carriers even with record-and-continue 8ms
+   × refuses malformed overlap carriers even with record-and-continue 14ms
+   × refuses malformed post-termination carriers even with record-and-continue 8ms
+   × preserves S-record count scope and empty decoded coverage without claiming execution or final-file count certification 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |acceptance| tests/acceptance/hexRecordArtifacts.test.ts > inspects and extracts intel-hex sparse regions with full source/metadata and advertised schemas
+ FAIL  |acceptance| tests/acceptance/hexRecordArtifacts.test.ts > inspects and extracts srec sparse regions with full source/metadata and advertised schemas
+SyntaxError: Unexpected token 'O', "Output val"... is not valid JSON
+ ❯ parseMcpToolError tests/fixtures/mcpToolError.ts:15:17
+     13|     .object({ error: analysisErrorProjectionSchema })
+     14|     .strict()
+     15|     .parse(JSON.parse(text.text));
+       |                 ^
+     16| }
+     17|
+ ❯ fixture tests/acceptance/hexRecordArtifacts.test.ts:27:50
+ ❯ tests/acceptance/hexRecordArtifacts.test.ts:42:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  |acceptance| tests/acceptance/hexRecordArtifacts.test.ts > deduplicates equal payload bytes without losing distinct region address identity and marks missing termination
+SyntaxError: Unexpected token 'O', "Output val"... is not valid JSON
+ ❯ parseMcpToolError tests/fixtures/mcpToolError.ts:15:17
+     13|     .object({ error: analysisErrorProjectionSchema })
+     14|     .strict()
+     15|     .parse(JSON.parse(text.text));
+       |                 ^
+     16| }
+     17|
+ ❯ fixture tests/acceptance/hexRecordArtifacts.test.ts:27:50
+ ❯ tests/acceptance/hexRecordArtifacts.test.ts:73:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  |acceptance| tests/acceptance/hexRecordArtifacts.test.ts > enforces caller byte/run capacity before decoding and can proceed with an increased budget
+SyntaxError: Unexpected token 'O', "Output val"... is not valid JSON
+ ❯ parseMcpToolError tests/fixtures/mcpToolError.ts:15:17
+     13|     .object({ error: analysisErrorProjectionSchema })
+     14|     .strict()
+     15|     .parse(JSON.parse(text.text));
+       |                 ^
+     16| }
+     17|
+ ❯ fixture tests/acceptance/hexRecordArtifacts.test.ts:27:50
+ ❯ tests/acceptance/hexRecordArtifacts.test.ts:86:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  |acceptance| tests/acceptance/hexRecordArtifacts.test.ts > refuses malformed checksum carriers even with record-and-continue
+ FAIL  |acceptance| tests/acceptance/hexRecordArtifacts.test.ts > refuses malformed overlap carriers even with record-and-continue
+ FAIL  |acceptance| tests/acceptance/hexRecordArtifacts.test.ts > refuses malformed post-termination carriers even with record-and-continue
+SyntaxError: Unexpected token 'O', "Output val"... is not valid JSON
+ ❯ parseMcpToolError tests/fixtures/mcpToolError.ts:15:17
+     13|     .object({ error: analysisErrorProjectionSchema })
+     14|     .strict()
+     15|     .parse(JSON.parse(text.text));
+       |                 ^
+     16| }
+     17|
+ ❯ fixture tests/acceptance/hexRecordArtifacts.test.ts:27:50
+ ❯ tests/acceptance/hexRecordArtifacts.test.ts:101:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  |acceptance| tests/acceptance/hexRecordArtifacts.test.ts > preserves S-record count scope and empty decoded coverage without claiming execution or final-file count certification
+SyntaxError: Unexpected token 'O', "Output val"... is not valid JSON
+ ❯ parseMcpToolError tests/fixtures/mcpToolError.ts:15:17
+     13|     .object({ error: analysisErrorProjectionSchema })
+     14|     .strict()
+     15|     .parse(JSON.parse(text.text));
+       |                 ^
+     16| }
+     17|
+ ❯ fixture tests/acceptance/hexRecordArtifacts.test.ts:27:50
+ ❯ tests/acceptance/hexRecordArtifacts.test.ts:110:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed (8)
+   Start at  17:11:58
+   Duration  5.03s (transform 71%, import 26%, tests 3%)
+

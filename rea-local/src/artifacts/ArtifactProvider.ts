@@ -1,5 +1,9 @@
 import { snapshotEnvironment } from "../process/snapshotEnvironment.js";
 import {
+  resolveHexRecordCapacity,
+  type HexRecordCapacityInput,
+} from "../domain/firmware/hexRecordCapacity.js";
+import {
   createAnalysisExecution,
   type AnalysisClient,
   type AnalysisOperation,
@@ -26,6 +30,7 @@ import {
   AnalysisCapabilityUnavailableError,
   AnalysisInputError,
   AnalysisUnsupportedTargetError,
+  AnalysisResourceConstraintError,
 } from "../domain/analysisErrorCore.js";
 import { ArtifactOperationError } from "../domain/artifactOperationError.js";
 import type { AnalysisError } from "../domain/analysisErrorBase.js";
@@ -189,6 +194,7 @@ class ArtifactClient implements AnalysisClient {
             environment: this.environment,
             integrityPolicy: parsed.integrity_policy,
             resourceScope: this.#resourceScope,
+            firmwareCapacity: this.firmwareCapacity(parsed, "extract_artifact"),
           },
           options?.signal,
         );
@@ -329,16 +335,18 @@ class ArtifactClient implements AnalysisClient {
     options?: ExecutionOptions,
   ) {
     const parsed = artifactInventoryInputSchema.parse(parameters);
-    const inventoryParameters = {
-      integrity_policy: parsed.integrity_policy,
-    };
+    const inventoryParameters = parsed;
     await options?.progress?.report({
       phase: "inspect_artifact.inventory",
       completed: 0,
       total: 1,
       message: "inventory substep started",
     });
-    const inventory = await this.inventory(inventoryParameters, options);
+    const inventory = await this.inventory(
+      inventoryParameters,
+      options,
+      "inspect_artifact",
+    );
     const subject = subjectFor(
       this.target.sourcePath ?? this.target.path,
       inventory.manifest,
@@ -372,15 +380,40 @@ class ArtifactClient implements AnalysisClient {
   private inventory(
     parsed: {
       readonly integrity_policy: "fail" | "record-and-continue";
-    },
+    } & HexRecordCapacityInput,
     options?: ExecutionOptions,
+    operation: "inspect_artifact" | "inventory_artifact" = "inventory_artifact",
   ) {
     return inventoryArtifact(this.target.sourcePath ?? this.target.path, {
       resourceScope: this.#resourceScope,
       environment: this.environment,
       ...(options?.signal === undefined ? {} : { signal: options.signal }),
       integrity: { mode: parsed.integrity_policy },
+      firmwareCapacity: this.firmwareCapacity(parsed, operation),
     });
+  }
+
+  private firmwareCapacity(
+    input: HexRecordCapacityInput,
+    operation: "inspect_artifact" | "inventory_artifact" | "extract_artifact",
+  ) {
+    if (this.target.format === "intel-hex" || this.target.format === "srec")
+      return resolveHexRecordCapacity(input);
+    const supplied = Object.entries(input).filter(
+      ([key, value]) => key.startsWith("max_firmware_") && value !== undefined,
+    );
+    if (supplied.length > 0)
+      throw new AnalysisInputError(
+        operation,
+        undefined,
+        supplied.map(([key]) => ({
+          path: [key],
+          reason: "invalid_value" as const,
+          message:
+            "Firmware decode budgets require an active Intel HEX or S-record carrier",
+        })),
+      );
+    return undefined;
   }
 }
 
@@ -396,6 +429,8 @@ export const translateArtifactFailure = (
   operation: ArtifactAnalysisOperation,
   cause: unknown,
 ): AnalysisError => {
+  if (cause instanceof AnalysisResourceConstraintError)
+    return cause.forOperation(operation);
   if (cause instanceof ArtifactReaderFailure)
     return new ArtifactOperationError(
       operation,

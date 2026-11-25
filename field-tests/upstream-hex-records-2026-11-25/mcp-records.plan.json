@@ -1,0 +1,276 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/mcp-records",
+  "environment": {
+    "REA_MCP_MAX_RESPONSE_BYTES": "10485760"
+  },
+  "timeout_ms": 60000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "intel-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/intel.data"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "intel-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "intel-budget",
+      "arguments": {
+        "max_firmware_file_bytes": 156,
+        "max_firmware_runs": 2
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "intel-byte-refusal",
+      "arguments": {
+        "max_firmware_file_bytes": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "intel-run-refusal",
+      "arguments": {
+        "max_firmware_runs": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "extract_artifact",
+      "label": "intel-extract",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "intel-bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/mcp-records/intel.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "intel-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "motorola-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/motorola.data"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "motorola-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "motorola-extract",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "motorola-bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/mcp-records/motorola.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "motorola-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "duplicate-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/duplicate.hex"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "duplicate-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "duplicate-extract",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "duplicate-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "incomplete-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/incomplete.hex"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "incomplete-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "incomplete-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "late-count-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/late-count.srec"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "late-count-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "late-count-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "header-address-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/header-address.srec"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "header-address-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "header-address-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "bad-checksum-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/bad-checksum.hex"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "bad-checksum-inspect",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "checksum-bypass-refusal",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "close_binary",
+      "label": "bad-checksum-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "conflict-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/conflict.hex"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "conflict-inspect",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "close_binary",
+      "label": "conflict-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "offset-wrap-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/offset-wrap.hex"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "offset-wrap-inspect",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "close_binary",
+      "label": "offset-wrap-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "empty-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-hex-records-2026-11-25/fixtures/empty.hex"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "empty-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "empty-close",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}

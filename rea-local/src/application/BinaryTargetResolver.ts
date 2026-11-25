@@ -1,3 +1,4 @@
+import { detectHexRecordEncoding } from "../domain/firmware/hexRecords.js";
 import { constants, type Stats } from "node:fs";
 import { createHash } from "node:crypto";
 import {
@@ -279,7 +280,7 @@ const detectArtifactFormat = async (
 > => {
   throwIfTargetResolutionCancelled(signal);
   const lower = path.toLowerCase();
-  const magic = Buffer.alloc(8);
+  const magic = Buffer.alloc(524);
   const observed = await handle.read(magic, 0, magic.length, 0);
   throwIfTargetResolutionCancelled(signal);
   if (hasZipSignature(magic.subarray(0, observed.bytesRead))) {
@@ -308,6 +309,10 @@ const detectArtifactFormat = async (
         return "dmg";
     }
   }
+  const hexRecordFormat = detectHexRecordEncoding(
+    magic.subarray(0, observed.bytesRead),
+  );
+  if (hexRecordFormat !== undefined) return hexRecordFormat;
   return undefined;
 };
 
@@ -326,7 +331,8 @@ const isArchiveFormat = (
     "analysis-database" | "mach-o" | "elf" | "pe" | "dos-mz" | "dos-com" | "dex"
   >,
 ): format is Extract<BinaryTarget, { kind: "archive" }>["format"] =>
-  isZipPackageFormat(format) || ["asar", "dmg", "pkg"].includes(format);
+  isZipPackageFormat(format) ||
+  ["asar", "dmg", "pkg", "intel-hex", "srec"].includes(format);
 
 const sha256Handle = async (
   handle: FileHandle,

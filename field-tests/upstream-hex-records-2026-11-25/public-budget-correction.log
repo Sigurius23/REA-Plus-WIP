@@ -1,0 +1,78 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/acceptance/hexRecordArtifacts.test.ts tests/boundary/filesystem/hexRecordArtifactReader.test.ts src/domain/firmware/hexRecords.test.ts
+
+Focused tests: tests/acceptance/hexRecordArtifacts.test.ts, tests/boundary/filesystem/hexRecordArtifactReader.test.ts, src/domain/firmware/hexRecords.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing bd8696400ccb5e9a
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache miss, executing 3c1432c91595658a
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    1 cached, 3 total
+  Time:    5.447s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |boundary| tests/boundary/filesystem/hexRecordArtifactReader.test.ts (10 tests) 35ms
+ ✓ |domain| src/domain/firmware/hexRecords.test.ts (44 tests) 16ms
+ ❯ |acceptance| tests/acceptance/hexRecordArtifacts.test.ts (8 tests | 1 failed) 7182ms
+   ✓ inspects and extracts intel-hex sparse regions with full source/metadata and advertised schemas 3749ms
+   ✓ inspects and extracts srec sparse regions with full source/metadata and advertised schemas 3311ms
+   ✓ deduplicates equal payload bytes without losing distinct region address identity and marks missing termination 20ms
+   × enforces caller byte/run capacity before decoding and can proceed with an increased budget 38ms
+   ✓ refuses malformed checksum carriers even with record-and-continue 18ms
+   ✓ refuses malformed overlap carriers even with record-and-continue 10ms
+   ✓ refuses malformed post-termination carriers even with record-and-continue 11ms
+   ✓ preserves S-record count scope and empty decoded coverage without claiming execution or final-file count certification 24ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |acceptance| tests/acceptance/hexRecordArtifacts.test.ts > enforces caller byte/run capacity before decoding and can proceed with an increased budget
+AssertionError: expected { code: 'truncated', …(5) } to match object { …(2) }
+(5 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "code": "artifact_operation_failed",
++   "code": "truncated",
+    "details": {
+      "reason": "limit",
+    },
+  }
+
+ ❯ tests/acceptance/hexRecordArtifacts.test.ts:89:21
+     87|   for (const args of [{ max_firmware_file_bytes: 1 }, { max_firmware_r…
+     88|     const refused = parseMcpToolError(await f.call(args)).error;
+     89|     expect(refused).toMatchObject({ code: "artifact_operation_failed",…
+       |                     ^
+     90|     expect(JSON.stringify(refused)).toContain(Object.keys(args)[0]);
+     91|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 61 passed (62)
+   Start at  17:13:38
+   Duration  11.58s (tests 62%, transform 27%, import 10%)
+

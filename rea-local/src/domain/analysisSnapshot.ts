@@ -1,3 +1,4 @@
+import { binaryTargetFormatSchema } from "./binaryTargetFormats.js";
 import { createHash } from "node:crypto";
 
 import canonicalize from "canonicalize";
@@ -41,39 +42,13 @@ import { canonicalJsonDigestSteps } from "./canonicalJsonDigestSteps.js";
 import { freezeJsonSnapshot } from "./immutableJson.js";
 
 const architectureSchema = z.enum(BINARY_ARCHITECTURES);
-const formatSchema = z.enum([
-  "analysis-database",
-  "mach-o",
-  "elf",
-  "pe",
-  "dos-mz",
-  "dos-com",
-  "dex",
-  "zip",
-  "ipa",
-  "apk",
-  "xapk",
-  "apks",
-  "aab",
-  "apk-set",
-  "msix",
-  "appx",
-  "hap",
-  "hsp",
-  "app-pack",
-  "asar",
-  "dmg",
-  "pkg",
-  "plist",
-  "javascript",
-  "source-map",
-]);
+
 const kindSchema = z.enum(["executable", "database", "archive", "artifact"]);
 const subjectSchema = z.object({
   path: z.string().min(1),
   sha256: digestSchema,
   format: z.enum([
-    ...formatSchema.options,
+    ...binaryTargetFormatSchema.options,
     "hopper",
     "directory",
     "file",
@@ -87,7 +62,7 @@ const subjectSchema = z.object({
 const targetSchema = z.object({
   sha256: digestSchema,
   kind: kindSchema,
-  format: formatSchema,
+  format: binaryTargetFormatSchema,
   architecture: architectureSchema.nullable(),
 });
 const bindingSchema = z

@@ -1,3 +1,4 @@
+import { binaryTargetFormatSchema } from "../domain/binaryTargetFormats.js";
 import { z } from "zod";
 import { analysisViewResultSchema } from "../domain/analysisView/analysisView.js";
 
@@ -50,29 +51,8 @@ export const requireOutputSchema = <
 };
 
 export const targetFormatSchema = z.enum([
+  ...binaryTargetFormatSchema.options,
   "hopper",
-  "analysis-database",
-  "mach-o",
-  "elf",
-  "pe",
-  "dos-mz",
-  "dos-com",
-  "dex",
-  "zip",
-  "ipa",
-  "apk",
-  "xapk",
-  "msix",
-  "appx",
-  "hap",
-  "hsp",
-  "app-pack",
-  "asar",
-  "dmg",
-  "pkg",
-  "plist",
-  "javascript",
-  "source-map",
 ]);
 
 export const targetKindSchema = z.enum([

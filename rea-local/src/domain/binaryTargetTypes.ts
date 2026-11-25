@@ -132,6 +132,8 @@ export type BinaryTarget =
       NonExecutableMetadata & {
         readonly kind: "archive";
         readonly format:
+          | "intel-hex"
+          | "srec"
           | "zip"
           | "ipa"
           | "apk"

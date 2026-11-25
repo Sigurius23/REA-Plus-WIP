@@ -2,6 +2,7 @@ import type { ArtifactInventorySnapshot } from "../../domain/artifactInventorySn
 import { compareUnicodeCodePoints } from "../../domain/unicodeCodePointOrder.js";
 
 import { AsarArtifactReader } from "../AsarArtifactReader.js";
+import { HexRecordArtifactReader } from "../HexRecordArtifactReader.js";
 
 import { lstat } from "node:fs/promises";
 import type { Stats } from "node:fs";
@@ -83,6 +84,7 @@ export const scanCanonicalArtifactInventoryInScope = async (
       rootFormat,
       options.environment ?? {},
       rootSource,
+      options.firmwareCapacity,
     );
   } catch (cause: unknown) {
     readerCreationFailure = { cause };
@@ -93,6 +95,8 @@ export const scanCanonicalArtifactInventoryInScope = async (
     if (readerCreationFailure !== undefined) throw readerCreationFailure.cause;
     if (reader instanceof AsarArtifactReader)
       await reader.prepareContainer(rootDigest?.sha256, options.signal);
+    if (reader instanceof HexRecordArtifactReader && rootDigest !== null)
+      await reader.prepareContainer(rootDigest.sha256, options.signal);
     const {
       nodes,
       occurrences,
@@ -215,6 +219,9 @@ const buildInventorySnapshot = async (
     format: rootFormat,
     path,
   });
+  const formatMetadata = reader?.formatMetadata?.();
+  if (formatMetadata !== undefined)
+    rootOccurrence.format_metadata = formatMetadata;
   for (const occurrence of input.occurrences)
     if (occurrence.parent_occurrence_id === null)
       occurrence.parent_occurrence_id = rootOccurrence.occurrence_id;
