@@ -20,6 +20,10 @@ export class WorkflowEvidenceScope implements AnalysisOperationPort {
     private readonly operation: AnalysisOperation,
   ) {}
 
+  get resourceScope() {
+    return this.source.resourceScope;
+  }
+
   limitations(): readonly string[] {
     return [...this.#limitations].sort(compareUnicodeCodePoints);
   }

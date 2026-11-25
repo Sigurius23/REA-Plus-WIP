@@ -50,6 +50,7 @@ export const CLI_COMMANDS = Object.freeze({
   nativeInventory: "native-inventory",
   nativeObservation: "native-observation",
   batchDecompile: "batch-decompile",
+  decompileAll: "decompile-all",
   importReferenceSource: "import-reference-source",
   inspectArtifact: "inspect-artifact",
   extractArtifact: "extract-artifact",

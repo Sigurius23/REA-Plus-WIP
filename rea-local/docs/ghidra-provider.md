@@ -5,6 +5,43 @@ read-only analysis and atomic function-name/entry-comment edits; Windows P0 is
 read-only. Optional owned checkpoints preserve analysis metadata across sessions.
 GUI controls are unavailable. Executable bytes remain unchanged.
 
+## File-backed native decompilation
+
+`decompile_all` exports analyzed procedures to individual pseudocode files.
+Use `rea decompile-all ./program --output ./decompiled --limit 20 --provider
+ghidra --json`, then continue with the same output and `--resume`. MCP requires
+an absolute `output_directory`. Its parent must exist; a fresh export refuses
+existing directories. `name` is a case-sensitive literal label filter;
+`address_start`/`address_end` are inclusive entry bounds in one address space.
+The limit counts attempts after verified files and recorded external functions
+are skipped. Never-attempted functions precede retries.
+
+The compact manifest includes target/profile identity, per-call counts,
+inventory limitations and the index digest. `decompile-index.json` lists latest
+function outcomes, caveats and source locations without pseudocode. Each written
+record supplies its relative file path, SHA-256 and byte length. Immutable
+attempt JSON files under `records/` retain earlier failures. Files contain exact
+UTF-8 provider text and use address-derived SHA-256 filenames. Inventory-declared
+external functions produce no file. A null body stays unavailable with no
+inferred cause. `batch_decompile` remains the explicit ordered inline batch tool.
+
+Resume requires the same known target SHA-256, provider and committed profile.
+It hashes stored bodies and refuses changed/missing files. Unrecorded files stay
+conflicts. Known session metadata mutations block export until the binary is reopened.
+External database changes that leave the profile unchanged cannot be detected;
+start a new export after such edits.
+Cancellation/resource failures preserve committed output and report a partial
+manifest. A crash can leave an orphan body or stale lock; neither is automatically
+adopted or reclaimed. Failed cleanup remains owned for a later session close.
+Directory identities are checked, but portable Node APIs cannot eliminate
+syscall-boundary pathname races.
+
+Only address-based layout is supported. No debug compilation-unit paths, body
+ranges, original source, complete code discovery or independent-context retries
+are inferred. Export reads do not add new pseudocode bodies to the session
+ledger/snapshot; existing matching immutable observations may be reused. The
+export workflow itself is never replayed from a snapshot.
+
 ## Inspect a saved project
 
 On Linux/macOS, set `REA_GHIDRA_PROJECT_PATH` to an absolute expanded `.gpr`
@@ -413,7 +450,6 @@ A new output path is required; existing files are preserved. Use
 read later pages without reopening a provider. MCP references expire when
 the session is cleared; exported/inline Evidence remains portable.
 
-
 ## Retained native observations and source context
 
 `procedure_address`, `procedure_callees`, `procedure_callers`,
@@ -463,7 +499,6 @@ cleanup, resource/configuration failure or startup timeout. A typed failure
 preserves completed nodes, pending addresses and available source identity;
 ordinary node errors remain recorded and other branches can continue. Workflow
 revision 2 separates these interruption semantics from historical graph replay.
-
 
 ## Masked search of analyzed memory
 
@@ -521,7 +556,6 @@ CLI options are `--mask`, `--start`, `--end`, `--limit` and `--cursor`; malforme
 patterns are refused before opening the target. CLI and MCP share query semantics
 and Evidence. This tool is currently Ghidra-only; other providers retain their
 existing explicit capability unavailability.
-
 
 Native disk failures reported by the bridge carry an explicit disk_exhausted
 code. REA+ projects that as a disk resource constraint with capacity remediation;

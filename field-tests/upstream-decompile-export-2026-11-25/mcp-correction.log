@@ -1,0 +1,93 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused tests/acceptance/decompileDirectoryMcp.test.ts tests/boundary/cli/cliToolCoverage.test.ts
+
+Focused tests: tests/acceptance/decompileDirectoryMcp.test.ts, tests/boundary/cli/cliToolCoverage.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing 1aff80d7c8c60c30
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache miss, executing 7f725364bc3fa0f5
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    1 cached, 3 total
+  Time:    5.956s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |boundary| tests/boundary/cli/cliToolCoverage.test.ts (1 test) 36ms
+ ❯ |acceptance| tests/acceptance/decompileDirectoryMcp.test.ts (5 tests | 2 failed) 322ms
+   ✓ exports file-backed outcomes, skips verified bytes and makes limit/resume progress before retrying failures 151ms
+   ✓ filters aliases before collapsing canonical addresses and rejects malformed bounds before inventory admission 39ms
+   × preserves changed files and refuses a mismatching target instead of overwriting an export 47ms
+   ✓ retains the committed prefix after provider cancellation and resumes without repeating its completed function 56ms
+   × refuses symlink directories and source changes, retaining earlier output without crossing the selected boundary 28ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |acceptance| tests/acceptance/decompileDirectoryMcp.test.ts > preserves changed files and refuses a mismatching target instead of overwriting an export
+AssertionError: expected { …(6) } to match object { code: 'integrity_mismatch' }
+(8 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "code": "integrity_mismatch",
++   "code": "evidence_integrity_mismatch",
+  }
+
+ ❯ tests/acceptance/decompileDirectoryMcp.test.ts:90:45
+     88|   await writeFile(path, "changed by caller");
+     89|   const conflict = await f.call({ resume: true });
+     90|   expect(parseMcpToolError(conflict).error).toMatchObject({ code: "int…
+       |                                             ^
+     91|   expect(await readFile(path, "utf8")).toBe("changed by caller");
+     92|   target = "b".repeat(64);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |acceptance| tests/acceptance/decompileDirectoryMcp.test.ts > refuses symlink directories and source changes, retaining earlier output without crossing the selected boundary
+AssertionError: expected { …(6) } to match object { code: 'integrity_mismatch' }
+(8 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "code": "integrity_mismatch",
++   "code": "evidence_integrity_mismatch",
+  }
+
+ ❯ tests/acceptance/decompileDirectoryMcp.test.ts:118:45
+    116|   changed = true;
+    117|   const mismatch = await f.call({});
+    118|   expect(parseMcpToolError(mismatch).error).toMatchObject({ code: "int…
+       |                                             ^
+    119|   const alias = join(f.root, "alias"); await symlink(f.output, alias, …
+    120|   const refused = await f.client.callTool({ name: "decompile_all", arg…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 4 passed (6)
+   Start at  15:24:53
+   Duration  4.68s (transform 68%, import 27%, tests 5%, worker 1%)
+

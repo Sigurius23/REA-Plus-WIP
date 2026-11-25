@@ -4,6 +4,18 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **File-backed native decompilation integrated (2026-11-25, item 62 partial):**
+  decompile_all / CLI decompile-all write per-function pseudocode and return a
+  compact manifest/index. Resume binds target/provider/profile, verifies stored
+  hashes and preserves conflicts/history. Transient reads avoid retaining all
+  bodies; session cleanup and known metadata-mutation guards preserve ownership
+  and context. 50 selected tests, 18 real Ghidra MCP calls (one expected refusal),
+  two exact CLI/MCP pairs, 31 historical snapshots and package/check/docs gates
+  qualify the slice. Arc's 63,696-code-unit pseudocode and complete 10,072-byte /
+  2,518-instruction reducer match prior observations. Full Arc and the separately
+  listed integration groups remain open. See
+  [qualification](field-tests/upstream-decompile-export-2026-11-25.md).
+
 - **Analyzed-memory byte search integrated (2026-11-25, item 62 partial):**
   Ghidra search_bytes / CLI search-bytes support masks, inclusive bounds,
   overlapping hits, coverage, exclusions and bound continuations. Shared native
@@ -1865,7 +1877,14 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
       and Arc. Fixed auxiliary-source offsets in the existing mapping owner and
       explicit native ENOSPC classification exposed by this run. Complete CLI/MCP
       parity and the release package gate pass; see [report](field-tests/upstream-byte-search-2026-11-24.md).
-    - [ ] Review decompile_all / bulk export against existing local tools.
+    - [x] Review and selectively integrate decompile_all / bulk export (2026-11-25).
+      File-backed manifests, verified resume, immutable attempt history and
+      per-item caveats complement the existing inline batch tool. Fixed export
+      resource/retention plumbing, publication acknowledgment and known-mutation
+      admission; 50 selected tests, owned/Arc Ghidra, complete CLI/MCP parity and
+      package gates pass. Address layout only; independent-context retries and
+      debug compilation-unit facts are not advertised. See
+      [qualification](field-tests/upstream-decompile-export-2026-11-25.md).
     - [ ] Checkpoint extensions, Windows/special loaders, automatic profile
       refresh after retirement and automatic crashed-publisher lock recovery
       remain separate unqualified scope. Reopen to bind a newly saved generation;

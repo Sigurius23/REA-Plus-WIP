@@ -101,6 +101,11 @@ export abstract class BinarySessionRecords {
 
   protected abstract activeAnalysisBinding(): ActiveAnalysisBinding | undefined;
 
+  /** Known metadata changes no longer belong to the originally committed profile. */
+  protected get hasUncommittedMetadataMutation(): boolean {
+    return this.#snapshotInvalidated;
+  }
+
   exportAnalysisSnapshot(): Result<AnalysisSnapshot, AnalysisError> {
     const active = this.activeAnalysisBinding();
     if (this.#snapshotInvalidated)

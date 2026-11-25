@@ -56,6 +56,17 @@ Prefer source-built known-result checks before drawing conclusions from a new
 instruction/runtime shape. See [function emulation](https://github.com/morluto/rea/blob/main/docs/function-emulation.md)
 for register names, page-permission constraints, budgets and verified hosts.
 
+For a file-backed native export, use `decompile_all` with a new absolute
+`output_directory` and an existing parent. Select `name`, inclusive entry bounds
+and `limit` when useful; resume the same directory with `resume: true`.
+The manifest/index carry counts, identity and caveats, while pseudocode stays in
+files. Resume verifies stored hashes and committed target/provider/profile;
+changed files are refused, orphan files preserved and stale locks not reclaimed.
+Reopen after known session metadata edits; start a new export after external
+database edits that do not change the profile. Cancellation preserves committed output. Inventory coverage remains
+qualified; this is not original source or complete application recovery.
+Use `batch_decompile` for explicit ordered selectors and inline retained bodies.
+
 After `open_binary`, use focused search, procedure, or function tools directly.
 Use `binary_overview` when target metadata or inventory context helps answer the
 question. Prefer literal search, names, decompilation, callers, callees, and
@@ -357,7 +368,6 @@ is unavailable; interrupted batches expose only completed-prefix facts.
 CLI summary requires `--evidence-output` so the complete source survives exit.
 Inventory counts and missing matches never establish complete program discovery.
 
-
 Native relationship summaries and pages: `procedure_address`, `procedure_callees`,
 `procedure_callers`, `resolve_containing_procedure` and `get_call_graph` retain
 complete parents when `detail: "summary"` is selected. Read `native-observation`
@@ -367,7 +377,6 @@ Pages preserve duplicate indices and explicit graph node errors; exhaustion is
 only over retained observations. Read source caveats before interpretation.
 Missing profiles have null rows and unavailable coverage, not an empty proof.
 `rea native-observation` provides the same reads and portable summary bundles.
-
 
 Use `search_bytes` for known encoded bytes in Ghidra's initialized analyzed
 memory, including loader fixups. This differs from original-file

@@ -99,6 +99,7 @@ const ENHANCED_REQUIREMENTS: Readonly<Record<string, readonly string[]>> = {
   get_objc_classes: ["list_names"],
   get_objc_protocols: ["list_names"],
   batch_decompile: ["procedure_pseudo_code"],
+  decompile_all: ["list_procedures", "procedure_pseudo_code"],
   get_call_graph: ["procedure_callees", "procedure_callers"],
   analyze_swift_types: ["list_procedures"],
   find_xrefs_to_name: ["list_names", "xrefs"],

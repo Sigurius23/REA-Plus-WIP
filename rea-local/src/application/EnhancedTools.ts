@@ -51,6 +51,7 @@ import { traceCallPath } from "./CallPathTracing.js";
 import { resolveProcedureAddress } from "./ProcedureAddressResolution.js";
 import { traceLiteralFeature } from "./EnhancedLiteralTracing.js";
 import { projectNativeApiInspection } from "./native/NativeApiInspection.js";
+import { decompileDirectory } from "./native/DecompileDirectory.js";
 /**
  * Composes direct provider operations into bounded reverse-engineering tools.
  * Direct callers use `execute`; adapters that own validation use
@@ -83,6 +84,12 @@ export class EnhancedTools {
     if (name === "analyze_function" || name === "inspect_native_api")
       return this.#executeFunctionAnalysis(name, input, signal);
     switch (name) {
+      case "decompile_all": {
+        const parsed = enhancedInputSchemas.decompile_all.safeParse(input);
+        return parsed.success
+          ? this.executeValidated({ name, input: parsed.data }, signal)
+          : invalidEnhancedInput(name, parsed.error);
+      }
       case "inspect_native_dispatch_metadata": {
         const parsed =
           enhancedInputSchemas.inspect_native_dispatch_metadata.safeParse(
@@ -140,6 +147,8 @@ export class EnhancedTools {
     signal?: AbortSignal,
   ): EnhancedResult {
     switch (call.name) {
+      case "decompile_all":
+        return decompileDirectory(this.analysis, call.input, signal);
       case "inspect_native_dispatch_metadata":
         return inspectNativeDispatch(
           this.analysis,

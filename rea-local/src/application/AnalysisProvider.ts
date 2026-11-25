@@ -15,10 +15,13 @@ import type { ProgressReporter } from "./ProgressReporter.js";
 import type { ProviderRejectionCode } from "../contracts/providerSelection.js";
 import type { ProcessLineageObservation } from "../process/ProcessOwnership.js";
 import type { ProviderOperationHealth } from "../domain/providerOperationHealth.js";
+import type { ArtifactResourceScope } from "../artifacts/ArtifactResourceScope.js";
 
 export interface ExecutionOptions {
   readonly signal?: AbortSignal;
   readonly progress?: ProgressReporter;
+  /** Trusted composed reads can consume snapshots without retaining new payloads. */
+  readonly retention?: "transient";
 }
 
 /** Closed operations accepted by provider-backed analysis sessions. */
@@ -75,6 +78,8 @@ export const createAnalysisExecution = (
 
 /** Provider-neutral application capability for one analysis operation. */
 export interface AnalysisOperationPort {
+  /** Session-owned cleanup for composed filesystem outputs, including failed close. */
+  readonly resourceScope?: ArtifactResourceScope | undefined;
   execute(
     operation: AnalysisOperation,
     parameters: Readonly<Record<string, JsonValue>>,

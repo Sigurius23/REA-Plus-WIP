@@ -82,6 +82,7 @@ export const workflowSnapshotRecord = (
   evidence: Evidence,
   operation: AnalysisOperation,
 ): WorkflowSnapshotRecordInput | undefined => {
+  if (operation === "decompile_all") return undefined;
   if (evidence.analysis_profile === null) return undefined;
   return {
     operation,

@@ -52,6 +52,7 @@ export const TOOL_EXAMPLE_OVERRIDES: Readonly<
   trace_feature: { query: "license" },
   trace_call_path: { start: "0x1000", goal: "0x1100" },
   trace_native_ui_action: { action: "buildTapped:" },
+  decompile_all: { output_directory: "/tmp/decompile-output", limit: 10 },
   open_binary: { path: "/tmp/fixture" },
   export_evidence_bundle: { path: "/tmp/evidence.json" },
   get_evidence_bundle: {

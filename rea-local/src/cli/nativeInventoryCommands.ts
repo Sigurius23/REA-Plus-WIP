@@ -1,4 +1,6 @@
 import { z } from "incur";
+import { jsonObjectSchema } from "../domain/jsonValue.js";
+import { resolve } from "node:path";
 import type { DirectAnalysis } from "../composition/directAnalysis.js";
 import type { Logger } from "pino";
 import type { CliInstance } from "./types.js";
@@ -32,6 +34,63 @@ export function registerNativeInventoryCommands(
   logger: Logger,
   run: DirectAnalysis["runDirectAnalysis"],
 ): void {
+  cli.command(CLI_COMMANDS.decompileAll, {
+    description:
+      "Export analyzed native pseudocode to files with verified resume and a compact manifest",
+    args: z.object({ path: z.string() }),
+    options: z.object({
+      provider: providerSelectionOption,
+      "target-format": formatSelectionOption,
+      "staging-dir": stagingDirSelectionOption,
+      output: z
+        .string()
+        .min(1)
+        .describe("New output directory; its parent must exist"),
+      resume: z.boolean().default(false),
+      name: z.string().optional(),
+      "address-start": z.string().optional(),
+      "address-end": z.string().optional(),
+      limit: z.number().int().positive().optional(),
+    }),
+    run: ({ args, options: o }) =>
+      logCliCommand(logger, CLI_COMMANDS.decompileAll, async () => {
+        const input = {
+          output_directory: resolve(o.output),
+          resume: o.resume,
+          ...(o.name === undefined ? {} : { name: o.name }),
+          ...(o["address-start"] === undefined
+            ? {}
+            : { address_start: o["address-start"] }),
+          ...(o["address-end"] === undefined
+            ? {}
+            : { address_end: o["address-end"] }),
+          ...(o.limit === undefined ? {} : { limit: o.limit }),
+        };
+        const parsed = enhancedInputSchemas.decompile_all.safeParse(input);
+        if (!parsed.success)
+          return {
+            error: "Export input is invalid",
+            ...projectAnalysisError(
+              analysisInputErrorFromIssues(
+                "decompile_all",
+                parsed.error.issues,
+                input,
+                { cause: parsed.error },
+              ),
+            ),
+          };
+        return run(
+          args.path,
+          "decompile_all",
+          jsonObjectSchema.parse(parsed.data),
+          directAnalysisOptions(logger, {
+            providerId: o.provider,
+            formatHint: o["target-format"],
+            stagingDir: o["staging-dir"],
+          }),
+        );
+      }),
+  });
   cli.command(CLI_COMMANDS.nativeInventory, {
     description:
       "List analyzed native names, procedures or strings; optionally retain a summary and portable pages",

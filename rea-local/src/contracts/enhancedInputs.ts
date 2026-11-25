@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { decompileDirectoryInputSchema } from "../domain/native/decompileDirectory.js";
 import { nativeValueTraceInputSchema } from "../domain/native/nativeValueTrace.js";
 import {
   nativeDispatchFacetSchema,
@@ -17,6 +18,7 @@ const traceLiteralInputSchema = z.strictObject({
 
 /** Input schemas shared by MCP registration and enhanced application dispatch. */
 export const enhancedInputSchemas = {
+  decompile_all: decompileDirectoryInputSchema,
   trace_native_values: nativeValueTraceInputSchema,
   inspect_native_dispatch_metadata: z.strictObject({
     objc_class_name: nativeObjcClassNameSchema,

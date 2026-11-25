@@ -3,6 +3,7 @@ import type {
   AnalysisProvider,
 } from "../../../src/application/AnalysisProvider.js";
 import type { BinarySession } from "../../../src/application/binary/BinarySession.js";
+import { WorkflowEvidenceScope } from "../../../src/application/WorkflowEvidenceScope.js";
 import { parseBinaryTarget } from "../../../src/application/BinaryTargetResolver.js";
 import type { JsonValue } from "../../../src/domain/jsonValue.js";
 import type { RecordUnknownInput } from "../../../src/domain/residualUnknown.js";
@@ -263,6 +264,237 @@ describe("fresh run identity", () => {
   });
 });
 
+describe("streamed native output ownership", () => {
+  it("keeps streamed pseudocode out of retained state while reusing already retained immutable reads", async () => {
+    const [target] = await createBinarySessionTargets();
+    const calls: string[] = [];
+    const base = createCacheProvider(calls);
+    const session = createTestBinarySession({
+      ...base,
+      capabilities: () =>
+        base
+          .capabilities()
+          .filter((c) => c.operation === "address_name")
+          .map((c) => ({
+            ...c,
+            operation: "procedure_pseudo_code" as const,
+          })),
+      createClient: () => ({
+        execute: async (operation) => {
+          calls.push(operation);
+          return ok("provider pseudocode");
+        },
+        close: async () => resultOk(null),
+      }),
+    });
+    const opened = await session.open(target);
+    if (!opened.ok) throw opened.error;
+    const streamed = await session.withAdmittedAnalysis(
+      "batch_decompile",
+      undefined,
+      async (port) => {
+        const scope = new WorkflowEvidenceScope(port, "batch_decompile");
+        expect(scope.resourceScope).toBe(session.resourceScope);
+        for (let index = 0; index < 64; index++) {
+          const read = await scope.execute(
+            "procedure_pseudo_code",
+            {
+              procedure: `0x${index.toString(16)}`,
+              document: "first",
+            },
+            { retention: "transient" },
+          );
+          if (!read.ok) throw read.error;
+          expect(read.value.result).toBe("provider pseudocode");
+        }
+      },
+    );
+    if (!streamed.ok) throw streamed.error;
+    const empty = session.exportAnalysisSnapshot();
+    if (!empty.ok) throw empty.error;
+    expect(empty.value.entries).toHaveLength(0);
+    expect(session.exportEvidenceBundle().records).toHaveLength(0);
+    const parameters = { procedure: "0x0", document: "first" };
+    const retained = await session.execute("procedure_pseudo_code", parameters);
+    if (!retained.ok) throw retained.error;
+    const reads = calls.length;
+    const cached = await session.execute("procedure_pseudo_code", parameters, {
+      retention: "transient",
+    });
+    if (!cached.ok) throw cached.error;
+    expect(cached.value.result).toBe(retained.value.result);
+    expect(calls).toHaveLength(reads);
+    expect(session.exportEvidenceBundle().records).toHaveLength(1);
+    const snapshot = session.exportAnalysisSnapshot();
+    if (!snapshot.ok) throw snapshot.error;
+    expect(snapshot.value.entries).toHaveLength(1);
+    const closed = await session.close();
+    if (!closed.ok) throw closed.error;
+  });
+
+  it("retains a failed export owner through close and refuses reopening until that same owner releases", async () => {
+    const [target, nextTarget] = await createBinarySessionTargets();
+    let created = 0,
+      providerCloses = 0,
+      exportCloses = 0,
+      allowed = false;
+    const session = createTestBinarySession(() => {
+      created++;
+      return {
+        execute: async () => ok(null),
+        close: async () => {
+          providerCloses++;
+          return resultOk(null);
+        },
+      };
+    });
+    const opened = await session.open(target);
+    if (!opened.ok) throw opened.error;
+    const scope = session.resourceScope;
+    const released = await scope.release({
+      kind: "decompile-export",
+      resource: "/fixture/export/lock",
+      export: {
+        close: async () => {
+          exportCloses++;
+          if (!allowed) throw new Error("owned export lock removal denied");
+        },
+      },
+    });
+    expect(released.kind).toBe("failed");
+    const firstClose = await session.close();
+    if (firstClose.ok) throw new Error("Expected retained export cleanup");
+    expect(firstClose.error.cleanupIncomplete).toBe(true);
+    expect(firstClose.error.cleanupResources).toContain("/fixture/export/lock");
+    expect(session.resourceScope).toBe(scope);
+    expect(providerCloses).toBe(1);
+    expect(session.activeTarget()).toBeUndefined();
+    const refused = await session.open(nextTarget);
+    if (refused.ok) throw new Error("Expected pending cleanup refusal");
+    expect(refused.error.cleanupIncomplete).toBe(true);
+    expect(created).toBe(1);
+    expect(exportCloses).toBe(3);
+    allowed = true;
+    const reopened = await session.open(nextTarget);
+    if (!reopened.ok) throw reopened.error;
+    expect(exportCloses).toBe(4);
+    expect(session.resourceScope).not.toBe(scope);
+    expect(created).toBe(2);
+    const closed = await session.close();
+    if (!closed.ok) throw closed.error;
+  });
+});
+describe("immutable export admission", () => {
+  it("refuses export admission after known metadata mutation until the target is closed and reopened", async () => {
+    const [target] = await createBinarySessionTargets();
+    const session = createTestBinarySession(createCacheProvider([]));
+    const opened = await session.open(target);
+    if (!opened.ok) throw opened.error;
+    let admitted = 0;
+    const exportCall = () =>
+      session.withAdmittedAnalysis("decompile_all", undefined, async () => {
+        admitted++;
+      });
+    const initial = await exportCall();
+    if (!initial.ok) throw initial.error;
+    expect(session.allowsSnapshotReplay("decompile_all")).toBe(false);
+    const mutation = await session.execute("set_address_name", {
+      address: "0x0",
+      name: "renamed",
+      document: "first",
+    });
+    if (!mutation.ok) throw mutation.error;
+    const refused = await exportCall();
+    if (refused.ok)
+      throw new Error("Expected the changed profile to refuse export");
+    expect(refused.error).toMatchObject({
+      _tag: "AnalysisCapabilityUnavailableError",
+      operation: "decompile_all",
+    });
+    expect(refused.error.message).toContain("Close and reopen");
+    expect(admitted).toBe(1);
+    const closed = await session.close();
+    if (!closed.ok) throw closed.error;
+    const reopened = await session.open(target);
+    if (!reopened.ok) throw reopened.error;
+    const fresh = await exportCall();
+    if (!fresh.ok) throw fresh.error;
+    expect(admitted).toBe(2);
+    const finalClose = await session.close();
+    if (!finalClose.ok) throw finalClose.error;
+  });
+
+  it("rejects an export read changed in flight and prevents its next provider read", async () => {
+    const [target] = await createBinarySessionTargets();
+    const calls: string[] = [];
+    const base = createCacheProvider(calls);
+    const entered = createDeferred<void>(),
+      settled = createDeferred<void>();
+    const session = createTestBinarySession({
+      ...base,
+      capabilities: () => [
+        ...base.capabilities(),
+        ...base
+          .capabilities()
+          .filter((c) => c.operation === "address_name")
+          .map((c) => ({ ...c, operation: "procedure_pseudo_code" as const })),
+      ],
+      createClient: () => ({
+        execute: async (operation) => {
+          calls.push(operation);
+          if (operation === "procedure_pseudo_code") {
+            entered.resolve();
+            await settled.promise;
+          }
+          return ok(operation);
+        },
+        close: async () => resultOk(null),
+      }),
+    });
+    const opened = await session.open(target);
+    if (!opened.ok) throw opened.error;
+    const exporting = session.withAdmittedAnalysis(
+      "decompile_all",
+      undefined,
+      async (port) => {
+        const first = await port.execute(
+          "procedure_pseudo_code",
+          { procedure: "0x0" },
+          { retention: "transient" },
+        );
+        const next = await port.execute(
+          "procedure_pseudo_code",
+          { procedure: "0x1" },
+          { retention: "transient" },
+        );
+        return [first, next];
+      },
+    );
+    await entered.promise;
+    const mutation = await session.execute("set_address_name", {
+      address: "0x0",
+      name: "renamed",
+      document: "first",
+    });
+    if (!mutation.ok) throw mutation.error;
+    settled.resolve();
+    const result = await exporting;
+    if (!result.ok) throw result.error;
+    for (const read of result.value) {
+      if (read.ok)
+        throw new Error("A body from changed metadata joined the export");
+      expect(read.error).toMatchObject({
+        _tag: "AnalysisCapabilityUnavailableError",
+        operation: "decompile_all",
+      });
+    }
+    expect(calls.filter((op) => op === "procedure_pseudo_code")).toHaveLength(
+      1,
+    );
+    const closed = await session.close();
+    if (!closed.ok) throw closed.error;
+  });
+});
 describe("evidence metadata imports and snapshot cache", () => {
   it("retains cached queries and exports after additive evidence imports", async () => {
     const [target] = await createBinarySessionTargets();

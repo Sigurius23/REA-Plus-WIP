@@ -59,10 +59,7 @@ import { projectJavaScriptApplicationView } from "./javascriptApplicationView.js
 import { projectNativeFunctionView } from "./nativeFunctionView.js";
 
 /** Public name of the selected-view workflow. */
-export {
-  INSPECT_ANALYSIS_VIEW_OPERATION,
-  analysisViewInputError,
-} from "./analysisViewErrors.js";
+export { INSPECT_ANALYSIS_VIEW_OPERATION } from "./analysisViewErrors.js";
 
 const summaryViewSchema = z.strictObject({ kind: z.literal("summary") });
 const facetViewSchema = z.strictObject({

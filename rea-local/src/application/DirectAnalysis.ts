@@ -63,6 +63,7 @@ type DirectAnalysisTool =
   | "search_bytes"
   | "address_to_file_offset"
   | "batch_decompile"
+  | "decompile_all"
   | "list_names"
   | "list_procedures"
   | "list_strings"
@@ -300,6 +301,7 @@ const runAnalysis = async (
       if (
         isWorkflowEvidenceTool(tool) &&
         tool !== "trace_native_ui_action" &&
+        tool !== "decompile_all" &&
         snapshotPath !== undefined &&
         evidence !== undefined &&
         session.allowsSnapshotReplay(tool)
@@ -313,6 +315,7 @@ const runAnalysis = async (
       }
       if (
         tool !== "trace_native_ui_action" &&
+        tool !== "decompile_all" &&
         snapshotPath !== undefined &&
         evidence !== undefined
       ) {
@@ -363,6 +366,7 @@ const executeAnalysisTool = async (input: {
     tool === "get_call_graph" ||
     tool === "binary_overview" ||
     tool === "batch_decompile" ||
+    tool === "decompile_all" ||
     tool === "inspect_native_api" ||
     tool === "inspect_native_dispatch_metadata" ||
     tool === "trace_feature" ||
@@ -504,7 +508,8 @@ const allowsSnapshotReplay = (
     | ManagedToolName
     | DirectAnalysisTool,
 ): boolean => {
-  if (tool === "trace_native_ui_action") return false;
+  if (tool === "trace_native_ui_action" || tool === "decompile_all")
+    return false;
   const descriptor = route.capabilities?.get(tool);
   return descriptor === undefined
     ? ![...(route.capabilities?.values() ?? [])].some(
@@ -561,6 +566,7 @@ const isWorkflowEvidenceTool = (
     | DirectAnalysisTool,
 ): boolean =>
   tool === "get_call_graph" ||
+  tool === "decompile_all" ||
   tool === "binary_overview" ||
   tool === "inspect_native_api" ||
   tool === "inspect_native_dispatch_metadata" ||

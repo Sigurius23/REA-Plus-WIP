@@ -5,7 +5,10 @@ import {
   analysisProfilesEqual,
   type AnalysisProfileCommitment,
 } from "../../domain/analysisProfile.js";
-import { AnalysisCancelledError } from "../../domain/analysisErrorCore.js";
+import {
+  AnalysisCancelledError,
+  AnalysisCapabilityUnavailableError,
+} from "../../domain/analysisErrorCore.js";
 import type { AnalysisError } from "../../domain/analysisErrorBase.js";
 import { err, ok, type Result } from "../../domain/result.js";
 import type { JsonValue } from "../../domain/jsonValue.js";
@@ -46,6 +49,9 @@ import {
 } from "./BinarySessionExecution.js";
 import { closeAnalysisClient } from "./AnalysisClientCleanup.js";
 import { analysisErrorWithCleanupFailure } from "../../domain/analysisErrorCleanup.js";
+import { ArtifactResourceScope } from "../../artifacts/ArtifactResourceScope.js";
+import { ArtifactReaderFailure } from "../../artifacts/ArtifactReader.js";
+import { ProviderCleanupError } from "../../domain/providerCleanupError.js";
 const OFFICIAL_OPERATIONS: ReadonlySet<string> = new Set(
   OFFICIAL_TOOL_CONTRACTS.map(({ name }) => name),
 );
@@ -73,6 +79,7 @@ export class BinarySession
   implements BinarySessionPort
 {
   #active: SessionBinding | undefined;
+  #resourceScope = new ArtifactResourceScope();
   #pendingCleanup:
     | {
         readonly client: AnalysisClient;
@@ -96,6 +103,10 @@ export class BinarySession
   ) {
     super(records);
     this.#providerRouter = providerRouter;
+  }
+
+  get resourceScope(): ArtifactResourceScope {
+    return this.#resourceScope;
   }
 
   /** Identify the provider producing evidence for this session. */
@@ -131,6 +142,7 @@ export class BinarySession
 
   /** External live state cannot be replayed by a direct or composed CLI workflow. */
   allowsSnapshotReplay(operation: AnalysisOperation): boolean {
+    if (operation === "decompile_all") return false;
     const capabilities = this.#active?.route.capabilities;
     const descriptor = capabilities?.get(operation);
     if (descriptor !== undefined) return descriptor.cachePolicy !== "live";
@@ -243,6 +255,8 @@ export class BinarySession
       await this.#drainCalls(admittedThrough);
       if (isAborted(options.signal))
         return err(new AnalysisCancelledError("open_binary"));
+      const resourcesClosed = await this.#closeWorkflowResources();
+      if (!resourcesClosed.ok) return resourcesClosed;
       const pendingClosed = await this.#retryPendingCleanup();
       if (!pendingClosed.ok) return pendingClosed;
       if (isAborted(options.signal))
@@ -373,6 +387,7 @@ export class BinarySession
       readonly retainProviderDocuments?: boolean;
     },
   ): Promise<Result<null, AnalysisError>> {
+    const resourcesClosed = await this.#closeWorkflowResources();
     const previous = this.#active;
     this.#active = undefined;
     const closed =
@@ -395,7 +410,40 @@ export class BinarySession
           );
     this.clearSessionRecords();
     this.#clearRuntimeAvailability();
+    if (!resourcesClosed.ok)
+      return closed.ok
+        ? resourcesClosed
+        : err(
+            analysisErrorWithCleanupFailure(
+              resourcesClosed.error,
+              closed.error,
+            ),
+          );
     return closed;
+  }
+
+  /** Keep the same scope reachable until every composed output confirms release. */
+  async #closeWorkflowResources(): Promise<Result<null, AnalysisError>> {
+    try {
+      await this.#resourceScope.close();
+      this.#resourceScope = new ArtifactResourceScope();
+      return ok(null);
+    } catch (cause: unknown) {
+      const cleanup = ArtifactReaderFailure.cleanupObservation(
+        cause,
+        "session composed outputs",
+      );
+      return err(
+        new ProviderCleanupError(
+          "rea",
+          cleanup.resources,
+          {
+            reason: cleanup.reason,
+          },
+          { cause },
+        ),
+      );
+    }
   }
 
   async #retireClient(
@@ -497,10 +545,13 @@ export class BinarySession
   execute(
     name: Parameters<AnalysisOperationPort["execute"]>[0],
     arguments_: Readonly<Record<string, JsonValue>>,
-    options?: { readonly signal?: AbortSignal },
+    options?: ExecutionOptions,
   ): Promise<Result<AnalysisExecution, AnalysisError>> {
     const generation = this.#transitionGeneration;
-    const call = this.#execute(name, arguments_, options, this.#transition);
+    const call = this.#execute(name, arguments_, options, {
+      transition: this.#transition,
+      decompileExport: false,
+    });
     this.#calls.set(call, generation);
     return call.finally(() => this.#calls.delete(call));
   }
@@ -520,10 +571,17 @@ export class BinarySession
         transition,
       );
       if (!admission.ok) return admission;
+      const decompileExport = operationName === "decompile_all";
+      if (decompileExport && this.hasUncommittedMetadataMutation)
+        return err(this.#decompileExportMutationError());
       return ok(
         await operation({
+          resourceScope: this.#resourceScope,
           execute: (name, arguments_, options) =>
-            this.#execute(name, arguments_, options, Promise.resolve()),
+            this.#execute(name, arguments_, options, {
+              transition: Promise.resolve(),
+              decompileExport,
+            }),
         }),
       );
     })();
@@ -535,15 +593,20 @@ export class BinarySession
   async #execute(
     name: Parameters<AnalysisOperationPort["execute"]>[0],
     arguments_: Readonly<Record<string, JsonValue>>,
-    options: { readonly signal?: AbortSignal } | undefined,
-    transition: Promise<void>,
+    options: ExecutionOptions | undefined,
+    admission: {
+      readonly transition: Promise<void>;
+      readonly decompileExport: boolean;
+    },
   ): Promise<Result<AnalysisExecution, AnalysisError>> {
     const transitioned = await this.#waitForTransition(
       name,
       options?.signal,
-      transition,
+      admission.transition,
     );
     if (!transitioned.ok) return transitioned;
+    if (admission.decompileExport && this.hasUncommittedMetadataMutation)
+      return err(this.#decompileExportMutationError());
     const prepared = prepareSessionExecution({
       active: this.#active,
       operation: name,
@@ -572,9 +635,18 @@ export class BinarySession
       name,
       active.target,
     );
+    // Another admitted request may mutate metadata while this provider read is
+    // in flight. Its returned body must not join an export under the old profile.
+    if (
+      profiled.ok &&
+      admission.decompileExport &&
+      this.hasUncommittedMetadataMutation
+    )
+      return err(this.#decompileExportMutationError());
     this.#observeRuntimeAvailability(name, profiled);
     if (
       profiled.ok &&
+      options?.retention !== "transient" &&
       cacheable &&
       profile !== undefined &&
       name !== "decode_interface_builder" &&
@@ -606,6 +678,14 @@ export class BinarySession
       });
     }
     return profiled;
+  }
+
+  #decompileExportMutationError(): AnalysisCapabilityUnavailableError {
+    return new AnalysisCapabilityUnavailableError(
+      "rea",
+      "decompile_all",
+      "Analysis metadata changed after this session's profile was committed. Close and reopen the target before exporting or resuming. Reopening an owned checkpoint binds its saved generation into a fresh profile; an export for a different generation requires a new output directory.",
+    );
   }
 
   #observeRuntimeAvailability(

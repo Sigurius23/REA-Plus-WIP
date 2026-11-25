@@ -1,0 +1,105 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-decompile-export-2026-11-25/mcp-owned",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_MCP_MAX_RESPONSE_BYTES": "10485760",
+    "REA_GHIDRA_PROJECT_PATH": "/private/tmp/rea-byte-search-fixture-2026-11-24/project/owned.gpr",
+    "REA_GHIDRA_PROGRAM_NAME": "owned-target"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "open",
+      "arguments": {
+        "path": "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "decompile_all",
+      "label": "pair",
+      "arguments": {
+        "output_directory": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-decompile-export-2026-11-25/mcp-owned/pair-export",
+        "address_start": "0x100000460",
+        "address_end": "0x100000460"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "decompile_all",
+      "label": "first",
+      "arguments": {
+        "output_directory": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-decompile-export-2026-11-25/mcp-owned/bulk-export",
+        "limit": 1
+      },
+      "expect_success": true
+    },
+    {
+      "name": "decompile_all",
+      "label": "next",
+      "arguments": {
+        "output_directory": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-decompile-export-2026-11-25/mcp-owned/bulk-export",
+        "resume": true,
+        "limit": 1
+      },
+      "expect_success": true
+    },
+    {
+      "name": "decompile_all",
+      "label": "rest",
+      "arguments": {
+        "output_directory": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-decompile-export-2026-11-25/mcp-owned/bulk-export",
+        "resume": true
+      },
+      "expect_success": true
+    },
+    {
+      "name": "decompile_all",
+      "label": "resume",
+      "arguments": {
+        "output_directory": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-decompile-export-2026-11-25/mcp-owned/bulk-export",
+        "resume": true
+      },
+      "expect_success": true
+    },
+    {
+      "name": "decompile_all",
+      "label": "exists",
+      "arguments": {
+        "output_directory": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-decompile-export-2026-11-25/mcp-owned/pair-export",
+        "address_start": "0x100000460",
+        "address_end": "0x100000460"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "get_evidence_bundle",
+      "label": "body-retention",
+      "arguments": {
+        "detail": "summary",
+        "filters": {
+          "operation": "procedure_pseudo_code"
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "export",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-decompile-export-2026-11-25/mcp-owned/final.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "close",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}

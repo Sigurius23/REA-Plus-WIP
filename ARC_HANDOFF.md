@@ -1,4 +1,4 @@
-# Arc / REA+ handoff — updated 2026-11-24
+# Arc / REA+ handoff — updated 2026-11-25
 
 ## Start here
 
@@ -25,6 +25,41 @@ this run. Their written artifacts survive; do not depend on their chat memory.
 URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
+
+## Latest upstream file-backed export integration (2026-11-25)
+
+Read `field-tests/upstream-decompile-export-2026-11-25.md` and its verification
+receipt, runtime/source commitments, public replies, bundles and output text.
+Item 62's decompile_all review/selective integration is complete. The new tool
+and CLI decompile-all export analyzed procedures to files with a compact
+manifest/index, verified target/provider/profile resume and immutable attempt
+records. Conflicts and unknowns survive; explicit inline batches remain separate.
+Transient reads do not retain new pseudocode bodies. Known session metadata
+edits block export until reopen, including edits during an in-flight read.
+Resources remain owned through failed cleanup; verified record publication is
+acknowledged before later cleanup can fail. No stale-lock reclamation is inferred.
+
+50 selected tests, 18 real Ghidra MCP calls (17 successful), two exact CLI/MCP
+Evidence pairs and eight identical output files, 31 historical snapshots,
+check/docs/discovery/package gates qualify. The package advertises 208 tools
+and six prompts. The owned four-entry inventory exports three bodies plus one
+external entry; a settled resume skips all four. Both sessions retain zero
+pseudocode records from export reads. Two exploratory Hopper startup failures
+are preserved and excluded from qualification; other hosts/providers remain
+unverified by this slice.
+
+Arc's fixed hash, 2,537 seeds and one-second partial policy remain selected.
+All 11,330 inventory entries remain observed; only the selected reducer is
+exported here. Its complete 63,696-code-unit pseudocode equals the earlier 16
+pages, and the 10,072-byte / 2,518-instruction result is unchanged. The Evidence
+ID changes solely because the checkpoint source is now a verified saved generation
+rather than the prior cold source:null. No target/helper/shipped JavaScript,
+profile/account, UI or service was executed or used.
+
+Full Arc feature recovery, Client unknown revision 3 and durable persistence
+remain open. Item 62's checkpoint extensions/host qualification remain separate;
+structured offline firmware readers are the next independently proceedable
+integration group. Do not equate directory export with original source recovery.
 
 ## Latest upstream analyzed-memory search integration (2026-11-25)
 

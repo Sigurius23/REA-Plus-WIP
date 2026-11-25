@@ -1,4 +1,5 @@
 import type { NativeCallGraphPartial } from "./native/nativeObservation.js";
+import type { DecompileDirectoryPartial } from "./native/decompileDirectory.js";
 import type { BatchDecompilePartial } from "./native/batchDecompile.js";
 /** Stable tags exposed by safe analysis-error projections. */
 const ANALYSIS_ERROR_TAGS = [
@@ -114,6 +115,7 @@ import type { NativeUiObservationResult } from "./native/nativeUiObservation.js"
 
 /** Provider-neutral evidence collected before a typed analysis failure. */
 export type AnalysisPartialObservation =
+  | DecompileDirectoryPartial
   | NativeCallGraphPartial
   | BatchDecompilePartial
   | PartialProcessCaptureObservation

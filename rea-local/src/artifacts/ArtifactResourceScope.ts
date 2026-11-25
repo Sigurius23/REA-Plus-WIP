@@ -9,6 +9,11 @@ import type { SafeOutputTree } from "./SafeOutputTree.js";
 /** One artifact resource and its format-specific cleanup owner. */
 export type ArtifactResourceOwner =
   | {
+      readonly kind: "decompile-export";
+      readonly resource: string;
+      readonly export: { close(): Promise<void> };
+    }
+  | {
       readonly kind: "javascript-source-analysis";
       readonly resource: string;
       readonly analysis: JavaScriptSourceAnalysisPort;
@@ -140,6 +145,9 @@ export class ArtifactResourceScope {
 
 const cleanup = async (owner: ArtifactResourceOwner): Promise<void> => {
   switch (owner.kind) {
+    case "decompile-export":
+      await owner.export.close();
+      return;
     case "javascript-source-analysis":
       await owner.analysis.close();
       return;

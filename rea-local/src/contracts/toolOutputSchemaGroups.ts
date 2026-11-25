@@ -1,6 +1,7 @@
 import { byteSearchResultSchema } from "../domain/native/bytePattern.js";
 import { analysisDetailOutputSchemaOf } from "./analysisDetail.js";
 import { batchDecompileResultSchema } from "../domain/native/batchDecompile.js";
+import { decompileDirectoryManifestSchema } from "../domain/native/decompileDirectory.js";
 import { z } from "zod";
 import { evidenceBundleSummarySchema } from "../domain/evidenceRecordSummary.js";
 import { BINARY_ARCHITECTURES } from "../domain/binaryTargetTypes.js";
@@ -253,6 +254,7 @@ const callPathTraceOutput = evidenceResultOf(
 
 /** Exact structured-content schemas for composed analysis workflows. */
 export const enhancedOutputSchemas: Readonly<Record<string, z.ZodObject>> = {
+  decompile_all: evidenceResultOf(decompileDirectoryManifestSchema),
   inspect_native_dispatch_metadata: evidenceResultOf(
     nativeDispatchMetadataResultSchema,
   ),
