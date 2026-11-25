@@ -36,7 +36,14 @@ export interface DecodedFirmwareRegion {
 export abstract class DecodedRegionArtifactReader<
   Image extends DecodedFirmwareImage,
 > implements ArtifactReader {
-  abstract readonly format: "intel-hex" | "srec" | "uf2" | "dfuse";
+  abstract readonly format:
+    | "intel-hex"
+    | "srec"
+    | "uf2"
+    | "dfuse"
+    | "uimage"
+    | "fit"
+    | "esp-image";
   protected abstract decoder(
     fileBytes: number,
   ): Result<RegionDecoder<Image>, RegionDecodeFailure>;

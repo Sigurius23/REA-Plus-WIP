@@ -1,3 +1,7 @@
+import { recognizeFitCarrier } from "../domain/firmware/fitRecognition.js";
+import { hasUImageMagic } from "../domain/firmware/uimage.js";
+import { recognizeEspImage } from "../domain/firmware/espImage.js";
+import { readFileHandleWindow } from "../filesystem/readFileHandleWindow.js";
 import { hasUf2Block } from "../domain/firmware/uf2.js";
 import {
   DFUSE_SUFFIX_BYTES,
@@ -296,6 +300,19 @@ const detectArtifactFormat = async (
     return zipPackageFormatForPath(lower) ?? "zip";
   }
   const firmwarePrefix = magic.subarray(0, observed.bytesRead);
+  const fileSize = (await handle.stat()).size;
+  if (hasUImageMagic(firmwarePrefix)) return "uimage";
+  if (recognizeEspImage(firmwarePrefix, fileSize) !== undefined)
+    return "esp-image";
+  if (
+    await recognizeFitCarrier(firmwarePrefix, fileSize, (offset, length) =>
+      readFileHandleWindow(handle, offset, length, () =>
+        throwIfTargetResolutionCancelled(signal),
+      ),
+    )
+  )
+    return "fit";
+
   if (hasUf2Block(firmwarePrefix)) return "uf2";
   if (hasDfuSePrefix(firmwarePrefix)) {
     const size = (await handle.stat()).size;
@@ -358,7 +375,18 @@ const isArchiveFormat = (
   >,
 ): format is Extract<BinaryTarget, { kind: "archive" }>["format"] =>
   isZipPackageFormat(format) ||
-  ["asar", "dmg", "pkg", "intel-hex", "srec", "uf2", "dfuse"].includes(format);
+  [
+    "asar",
+    "dmg",
+    "pkg",
+    "intel-hex",
+    "srec",
+    "uf2",
+    "dfuse",
+    "uimage",
+    "fit",
+    "esp-image",
+  ].includes(format);
 
 const sha256Handle = async (
   handle: FileHandle,

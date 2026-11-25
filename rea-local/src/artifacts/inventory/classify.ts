@@ -1,3 +1,7 @@
+import { recognizeFitCarrier } from "../../domain/firmware/fitRecognition.js";
+import { hasUImageMagic } from "../../domain/firmware/uimage.js";
+import { recognizeEspImage } from "../../domain/firmware/espImage.js";
+import { readFileHandleWindow } from "../../filesystem/readFileHandleWindow.js";
 import { hasUf2Block } from "../../domain/firmware/uf2.js";
 import {
   DFUSE_SUFFIX_BYTES,
@@ -19,6 +23,7 @@ import {
   zipPackageFormatForPath,
   type ZipPackageFormat,
 } from "../../domain/zipPackageFormat.js";
+import { abortIfNeeded } from "../ArtifactHash.js";
 import { ArtifactReaderFailure } from "../ArtifactReader.js";
 import type { ArtifactResourceOwner } from "../ArtifactResourceScope.js";
 import type { HashResult } from "../ArtifactHash.js";
@@ -110,7 +115,7 @@ export const classifyAndHashRootForInventory = async (
         "integrity",
         `Root artifact changed before inventory: ${path}`,
       );
-    const format = await classifyRootFormat(path, handle);
+    const format = await classifyRootFormat(path, handle, options.signal);
     const digest = await hashStableRootArtifactHandle(
       path,
       handle,
@@ -123,7 +128,10 @@ export const classifyAndHashRootForInventory = async (
       format === "intel-hex" ||
       format === "srec" ||
       format === "uf2" ||
-      format === "dfuse";
+      format === "dfuse" ||
+      format === "uimage" ||
+      format === "fit" ||
+      format === "esp-image";
     outcome = {
       kind: "completed",
       value: {
@@ -155,10 +163,21 @@ export const classifyAndHashRootForInventory = async (
 const classifyRootFormat = async (
   path: string,
   handle: FileHandle,
+  signal?: AbortSignal,
 ): Promise<ArtifactOccurrence["artifact_format"]> => {
   const magic = Buffer.alloc(ARTIFACT_CLASSIFICATION_PREFIX_BYTES);
   const observed = await handle.read(magic, 0, magic.length, 0);
   const prefix = magic.subarray(0, observed.bytesRead);
+  const fileSize = (await handle.stat()).size;
+  if (hasUImageMagic(prefix)) return "uimage";
+  if (recognizeEspImage(prefix, fileSize) !== undefined) return "esp-image";
+  if (
+    await recognizeFitCarrier(prefix, fileSize, (offset, length) =>
+      readFileHandleWindow(handle, offset, length, () => abortIfNeeded(signal)),
+    )
+  )
+    return "fit";
+
   if (hasUf2Block(prefix)) return "uf2";
   if (hasDfuSePrefix(prefix)) {
     const size = (await handle.stat()).size;

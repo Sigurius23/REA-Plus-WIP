@@ -81,7 +81,10 @@ export interface ArtifactReader {
     | "intel-hex"
     | "srec"
     | "uf2"
-    | "dfuse";
+    | "dfuse"
+    | "uimage"
+    | "fit"
+    | "esp-image";
   formatMetadata?(): FirmwareFormatMetadata | undefined;
   limitations?(): readonly string[];
   entries(signal?: AbortSignal): AsyncIterable<ArtifactEntry>;

@@ -1,0 +1,532 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-uimage-fit-esp-2026-11-25/mcp-carriers",
+  "environment": {
+    "REA_MCP_MAX_RESPONSE_BYTES": "10485760"
+  },
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "uimage-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/multi.uimg"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "uimage-inspect",
+      "arguments": {
+        "max_firmware_elements": 3
+      },
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "uimage-extract",
+      "arguments": {
+        "max_firmware_elements": 3
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "uimage-max_firmware_file_bytes",
+      "arguments": {
+        "max_firmware_file_bytes": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "uimage-max_firmware_elements",
+      "arguments": {
+        "max_firmware_elements": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "uimage-max_firmware_runs",
+      "arguments": {
+        "max_firmware_runs": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "close_binary",
+      "label": "uimage-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "crc-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/bad-crc.uimg"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "crc-strict",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "extract_artifact",
+      "label": "crc-extract-strict",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "crc-inspect",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "crc-extract",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "crc-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "hash-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/bad-hash.fit"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "hash-strict",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "extract_artifact",
+      "label": "hash-extract-strict",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "hash-inspect",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "hash-extract",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "hash-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "checksum-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/bad-checksum.esp"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "checksum-strict",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "extract_artifact",
+      "label": "checksum-extract-strict",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "checksum-inspect",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "checksum-extract",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "checksum-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "signature-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/bad-signature.esp"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "signature-strict",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "extract_artifact",
+      "label": "signature-extract-strict",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "signature-inspect",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "signature-extract",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "signature-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "fit-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/inline.fit"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "fit-inspect",
+      "arguments": {
+        "max_firmware_elements": 2
+      },
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "fit-extract",
+      "arguments": {
+        "max_firmware_elements": 2
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "fit-max_firmware_file_bytes",
+      "arguments": {
+        "max_firmware_file_bytes": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "fit-max_firmware_elements",
+      "arguments": {
+        "max_firmware_elements": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "fit-max_firmware_tree_nodes",
+      "arguments": {
+        "max_firmware_tree_nodes": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "fit-max_firmware_tree_properties",
+      "arguments": {
+        "max_firmware_tree_properties": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "fit-max_firmware_tree_depth",
+      "arguments": {
+        "max_firmware_tree_depth": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "fit-max_firmware_metadata_bytes",
+      "arguments": {
+        "max_firmware_metadata_bytes": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "fit-max_firmware_hash_bytes",
+      "arguments": {
+        "max_firmware_hash_bytes": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "fit-max_firmware_runs",
+      "arguments": {
+        "max_firmware_runs": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "close_binary",
+      "label": "fit-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "external-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/external.fit"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "external-inspect",
+      "arguments": {
+        "max_firmware_elements": 2
+      },
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "external-extract",
+      "arguments": {
+        "max_firmware_elements": 2
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "external-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "late-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/late.fit"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "late-inspect",
+      "arguments": {
+        "max_firmware_elements": 2
+      },
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "late-extract",
+      "arguments": {
+        "max_firmware_elements": 2
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "late-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "esp-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/signed.esp"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "esp-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "esp-extract",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "esp-elements",
+      "arguments": {
+        "max_firmware_elements": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "close_binary",
+      "label": "esp-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "partial-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/partial.esp"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "partial-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "partial-extract",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "partial-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "8266-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/esp8266.bin"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "8266-refusal",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "close_binary",
+      "label": "8266-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "bad-size-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/bad-size.uimg"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "bad-size-fail",
+      "arguments": {
+        "integrity_policy": "fail"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "bad-size-record-and-continue",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "close_binary",
+      "label": "bad-size-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "bad-structure-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/bad-structure.fit"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "bad-structure-fail",
+      "arguments": {
+        "integrity_policy": "fail"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "bad-structure-record-and-continue",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "close_binary",
+      "label": "bad-structure-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-uimage-fit-esp-2026-11-25/mcp-carriers/final.bundle.json"
+      },
+      "expect_success": true
+    }
+  ]
+}

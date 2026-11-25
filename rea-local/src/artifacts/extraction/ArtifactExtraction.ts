@@ -1,3 +1,4 @@
+import { createStoredFirmwareReader } from "../createStoredFirmwareReader.js";
 import { lstat, realpath } from "node:fs/promises";
 
 import { compareUnicodeCodePoints } from "../../domain/unicodeCodePointOrder.js";
@@ -136,7 +137,9 @@ const materializeArtifactInventoryInScope = async (
     if (neededNodes.has(node.artifact_id)) nodes.set(node.artifact_id, node);
   const inventory: ExtractionInventory = {
     manifest: snapshot.manifest,
-    limitations: ["uf2", "dfuse"].includes(snapshot.manifest.root_format)
+    limitations: ["uf2", "dfuse", "uimage", "fit", "esp-image"].includes(
+      snapshot.manifest.root_format,
+    )
       ? snapshot.limitations
       : [],
     integrityContradictions: snapshot.integrity_contradictions.filter(
@@ -456,6 +459,9 @@ const requireExtractableFormat = async (
     format !== "srec" &&
     format !== "uf2" &&
     format !== "dfuse" &&
+    format !== "uimage" &&
+    format !== "fit" &&
+    format !== "esp-image" &&
     !isZipFormat(format)
   )
     throw new AnalysisUnsupportedTargetError(
@@ -480,6 +486,14 @@ const createReader = async (
   const format = input.inputFormat;
   if (await requireExtractableFormat(path, input))
     return new DirectoryArtifactReader(path);
+  if (format === "uimage" || format === "fit" || format === "esp-image")
+    return createStoredFirmwareReader(
+      path,
+      format,
+      undefined,
+      input.firmwareCapacity,
+      input.integrityPolicy,
+    );
   if (format === "uf2")
     return new Uf2ArtifactReader(path, undefined, input.firmwareCapacity);
   if (format === "dfuse")

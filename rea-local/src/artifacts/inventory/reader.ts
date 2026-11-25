@@ -1,3 +1,4 @@
+import { createStoredFirmwareReader } from "../createStoredFirmwareReader.js";
 import { AsarArtifactReader } from "../AsarArtifactReader.js";
 import { Uf2ArtifactReader } from "../Uf2ArtifactReader.js";
 import { DfuSeArtifactReader } from "../DfuSeArtifactReader.js";
@@ -26,6 +27,16 @@ export const createReader = (
   if (isZipPackageFormat(format))
     return new ZipArtifactReader(path, format, undefined, rootSource);
   switch (format) {
+    case "uimage":
+    case "fit":
+    case "esp-image":
+      return createStoredFirmwareReader(
+        path,
+        format,
+        rootSource,
+        firmwareCapacity,
+        integrity,
+      );
     case "uf2":
       return new Uf2ArtifactReader(path, rootSource, firmwareCapacity);
     case "dfuse":

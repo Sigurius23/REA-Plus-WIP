@@ -26,6 +26,34 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest uImage / FIT / standalone ESP integration (2026-11-25)
+
+Read `field-tests/upstream-uimage-fit-esp-2026-11-25.md` and its verification,
+frozen runtime/source commitments, independent fixture builder/hex receipts,
+public replies and stored-byte readbacks. Item 62 now includes legacy uImage,
+FIT and standalone ESP32-family inspection/extraction via existing artifact tools.
+Header/component/segment/configuration/hash/signature facts survive; signatures
+remain unauthenticated and compression/cipher bytes remain stored bytes.
+
+Fixed complete-FDT FIT recognition beyond prefix windows, explicit resource
+admission before metadata/hash work, repeated-digest reuse, CPU diagnostics,
+overlap preservation and exact invalid signature-candidate facts. A bounded
+retaining decoder shares the previous stable source/stream/cleanup owner.
+249 selected tests across 18 files, 76 MCP calls (25 expected refusals), 21 CLI
+calls, six current full Evidence pairs, eight complete historical firmware
+Evidence matches, four extraction manifest/file pairs and 30 readbacks pass.
+34 historical snapshots and check/docs/discovery/package gates pass (208 tools,
+six prompts). Process lineages verify no owned descendants remain. Arc's whole
+2,518-instruction / 10,072-byte reducer Evidence and partial-profile caveats are
+exactly unchanged. No target execution or service/account/profile use occurred.
+
+Continue with **ESP flash-dump origin/layout, partition and OTA selection**,
+then Android boot/OTA and devicetree. Do not mark the broader ESP/firmware or Arc
+investigation complete. UF2 file-container/MD5/tag interpretation, raw CPU/board
+loading, full Arc persistence/features and Client unknown revision 3 remain open.
+Runtime: `rea-local/.cache/upstream-uimage-fit-esp-runtime-2026-11-25`; receipts
+pin source parent `381bf4d4a089d068f0456d03ff24ec78af3d763d`. Preserve prior captures.
+
 ## Latest UF2 / DfuSe integration (2026-11-25)
 
 Read `field-tests/upstream-uf2-dfuse-2026-11-25.md` and its verification/runtime
@@ -48,7 +76,7 @@ and superseded by the qualified capture with verified empty owned lineage.
 Arc's complete reducer Evidence is exactly unchanged, including the 2,518
 instructions / 10,072 bytes and partial-profile caveats. No target execution.
 
-Continue with **uImage/FIT/ESP**. Android boot/OTA, devicetree and separately
+The standalone uImage/FIT/ESP follow-up is recorded above. Android boot/OTA, devicetree and separately
 qualified CPU lanes remain open. UF2 file containers and MD5/tags remain explicit
 unsupported scope. Full Arc, Client unknown revision 3 and broader durable
 persistence remain open. Runtime is frozen in

@@ -4,6 +4,17 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **uImage / FIT / standalone ESP integrated (2026-11-25, item 62 partial):**
+  Existing artifact tools retain stored ranges, declarations and exact integrity
+  facts, with strict or explicit untrusted continuation. Fixed FIT prefix-window
+  recognition, early metadata/hash-work admission, overlap retention and CPU
+  budget diagnostics. 249 tests, 76 qualified MCP calls (25 expected refusals),
+  21 CLI calls, 30 readbacks, 34 historical snapshots and check/docs/discovery/
+  package gates pass. Eight historical firmware Evidence records and Arc's
+  complete reducer Evidence remain exactly unchanged. ESP flash-layout/partition/
+  OTA selection is next; full Arc and later integration groups remain open. See
+  [qualification](field-tests/upstream-uimage-fit-esp-2026-11-25.md).
+
 - **UF2 / DfuSe integrated (2026-11-25, item 62 partial):** Root firmware
   inspection/extraction preserves UF2 family/numbering/coverage facts and DfuSe
   target/element/CRC metadata. Default CRC refusal and explicit untrusted
@@ -12,7 +23,7 @@ Open work on `main` following PR #1 and the field tests.
   129 tests, 40 qualified MCP calls (12 expected refusals), 15 CLI calls, 14
   readbacks, 33 historical snapshots and check/docs/discovery/package gates pass.
   Arc and three historical HEX/S-record Evidence records remain exactly unchanged.
-  uImage/FIT/ESP is next; other firmware/CPU groups and full Arc remain open.
+  The standalone uImage/FIT/ESP follow-up is recorded above; remaining firmware/CPU groups and full Arc stay open.
   See [qualification](field-tests/upstream-uf2-dfuse-2026-11-25.md).
 
 - **Intel HEX / S-record integrated (2026-11-25, item 62 partial):** Root
@@ -1923,10 +1934,17 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
         metadata and nested snapshot ownership. 129 tests, CLI/MCP, historical
         compatibility, unchanged Arc and package gates qualify the slice. See
         [qualification](field-tests/upstream-uf2-dfuse-2026-11-25.md).
-      - [ ] uImage/FIT/ESP readers are next, then Android boot/OTA and devicetree.
-        UF2 file-container reconstruction and MD5/tag interpretation remain
-        unsupported with explicit caveats. Nested recursive decoding and raw
-        CPU/board loading are separate scope.
+      - [x] uImage/FIT and standalone ESP32-family root images (2026-11-25):
+        stored payload/component/segment ranges, integrity facts, configurations
+        and unverified signature metadata. Repaired full-structure FIT recognition,
+        hidden ceilings, aggregate hash admission/CPU diagnostics and overlap
+        retention. 249 tests, public CLI/MCP, historical compatibility, unchanged
+        Arc and package gates qualify the slice. See
+        [qualification](field-tests/upstream-uimage-fit-esp-2026-11-25.md).
+      - [ ] ESP flash-dump origin/layout, partition and OTA selection are next,
+        then Android boot/OTA and devicetree inspection. UF2 file-container
+        reconstruction and MD5/tag interpretation remain unsupported with explicit
+        caveats. Recursive expansion and raw CPU/board loading are separate scope.
     - [ ] Qualify raw-image/RISC-V, expanded MIPS and PowerPC/DOL lanes
       separately. Upstream raw ARM remains A32; Cortex-M/Thumb is not established.
     - [ ] Review native diagnostics, APK signing/JNI/R8, standalone packages,

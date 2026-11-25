@@ -1,3 +1,5 @@
+import { hasUImageMagic } from "../../domain/firmware/uimage.js";
+import { recognizeEspImage } from "../../domain/firmware/espImage.js";
 import { hasUf2Block } from "../../domain/firmware/uf2.js";
 import { compareUnicodeCodePoints } from "../../domain/unicodeCodePointOrder.js";
 import { detectHexRecordEncoding } from "../../domain/firmware/hexRecords.js";
@@ -162,7 +164,7 @@ export const createRootNode = (input: {
     readonly prefix: Buffer;
   } | null;
   readonly occurrences: readonly MutableOccurrence[];
-  readonly verifiedDfuSe?: boolean;
+  readonly observedContentFormat?: ArtifactNode["format"];
 }): ArtifactNode =>
   createArtifactNode({
     sha256:
@@ -185,8 +187,8 @@ export const createRootNode = (input: {
     format:
       input.digest === null
         ? "directory"
-        : input.verifiedDfuSe === true
-          ? "dfuse"
+        : input.observedContentFormat !== undefined
+          ? input.observedContentFormat
           : classifyArtifactBytes(input.digest.prefix, input.digest.bytes),
     contentState: "materialized",
   });
@@ -228,9 +230,18 @@ export const rootOccurrenceFor = (
   artifact_kind:
     metadata.format === "directory" ||
     isZipPackageFormat(metadata.format) ||
-    ["asar", "dmg", "pkg", "intel-hex", "srec", "uf2", "dfuse"].includes(
-      metadata.format,
-    )
+    [
+      "asar",
+      "dmg",
+      "pkg",
+      "intel-hex",
+      "srec",
+      "uf2",
+      "dfuse",
+      "uimage",
+      "fit",
+      "esp-image",
+    ].includes(metadata.format)
       ? "container"
       : artifactRoleForFormat(metadata.path, metadata.format).kind,
   artifact_format: metadata.format,
@@ -429,7 +440,17 @@ const artifactRoleForFormat = (
       kind: "container",
       format: zipPackageFormatForPath(path) ?? format,
     };
-  if (["intel-hex", "srec", "uf2", "dfuse"].includes(format))
+  if (
+    [
+      "intel-hex",
+      "srec",
+      "uf2",
+      "dfuse",
+      "uimage",
+      "fit",
+      "esp-image",
+    ].includes(format)
+  )
     return { kind: "container", format };
   if (format === "plist") return { kind: "plist", format };
   return {
@@ -445,6 +466,8 @@ export const classifyArtifactBytes = (
   prefix: Buffer,
   fileSize = prefix.length,
 ): ArtifactNode["format"] => {
+  if (hasUImageMagic(prefix)) return "uimage";
+  if (recognizeEspImage(prefix, fileSize) !== undefined) return "esp-image";
   if (hasUf2Block(prefix)) return "uf2";
   const records = detectHexRecordEncoding(prefix);
   if (records !== undefined) return records;

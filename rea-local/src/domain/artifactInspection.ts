@@ -1,3 +1,4 @@
+import { firmwareIntegrityObservation } from "./firmware/firmwareIntegrityObservation.js";
 import { z } from "zod";
 
 import {
@@ -208,6 +209,14 @@ const allObservations = (
   ),
   ...inventory.occurrences.flatMap((value) => {
     const metadata = value.format_metadata;
+    const firmware = firmwareIntegrityObservation(
+      metadata,
+      inventory.occurrences,
+    );
+    if (firmware !== undefined)
+      return [
+        observation("integrity", value.occurrence_id, firmware, evidenceId),
+      ];
     if (metadata?.kind !== "dfuse") return [];
     return [
       observation(
@@ -305,7 +314,17 @@ const probesFor = (
   inventory: ArtifactInventoryResult,
 ): ArtifactInspectionResult["next_probes"] => {
   const format = inventory.manifest.root_format;
-  if (["intel-hex", "srec", "uf2", "dfuse"].includes(format))
+  if (
+    [
+      "intel-hex",
+      "srec",
+      "uf2",
+      "dfuse",
+      "uimage",
+      "fit",
+      "esp-image",
+    ].includes(format)
+  )
     return [
       {
         operation: "extract_artifact",

@@ -126,6 +126,69 @@ Format references: [Microsoft UF2 specification](https://github.com/microsoft/uf
 [ST UM0391](https://community.st.com/ysqtg83639/attachments/ysqtg83639/stm32-mcu-products-forum/41233/1/UM0391.pdf),
 and [dfu-util's producer](https://github.com/TexasInstruments/dfu-util/blob/master/dfuse-pack.py).
 
+## U-Boot uImage/FIT and ESP32-family images
+
+These root carriers also use `open_binary` plus `inspect_artifact` and
+`extract_artifact`, or the equivalent CLI commands. Stored compression/cipher
+bytes are preserved; no decompression, decryption or execution is performed.
+Each extracted range has its real carrier offset, separately from any declared
+load/entry address. Names and architecture IDs/labels do not establish device
+identity, a valid load map or observed execution.
+
+uImage retains the 64-byte header, raw name field, enum IDs and pinned name-table
+revision, load/entry declarations, timestamps and exact header/payload CRC pairs.
+Multi-image/script size tables produce separate component files alongside the
+complete payload. Component alignment, truncation and size overruns are checked;
+slack/trailing bytes remain explicit unknown coverage. `max_firmware_elements`
+counts the payload entry plus every component, without a hidden 4096-image cap.
+
+FIT validates the FDT structure, reservation/string extents and unique node/
+property identity, then exposes `/images` inline or external data ranges.
+`data-position` is absolute; `data-offset` is relative to the aligned FDT end.
+Safe one/two-cell locators are supported. Overlapping ranges remain separate
+with explicit metadata. Inconsistent `image-data` ownership declarations fail.
+Configurations/default references and unresolved names survive. Supported
+CRC32/MD5/SHA1/SHA256/SHA384/SHA512 hashes retain declared/computed values; unknown
+algorithms and signature declarations remain unverified. Neither stored hashes
+nor signatures establish trusted boot selection. Recognition scans the declared
+FDT structure in bounded windows, skips opaque property data, and finds `/images`
+after the former 4-KiB window. Plain DTBs are outside this FIT workflow.
+
+ESP32-family images retain header/chip-table facts, segment ranges, descriptor
+fields, XOR checksum, appended SHA-256 and Secure Boot v2 signature candidates.
+Exact signature-slot CRC and image-digest facts are separate from cryptographic
+signature authentication, which is **not performed**. Complete candidates with
+bad CRCs remain inspectable under explicit untrusted continuation. Truncated
+segments and undescribed trailing ranges preserve unknown coverage. ESP8266
+8-byte-header images are explicitly unsupported. Flash origin, partition/OTA
+selection, eFuse policy, peripheral state and boot readiness remain unknown.
+
+The existing `integrity_policy` applies to supported CRC/hash disagreements:
+default `fail` refuses; explicit `record-and-continue` retains exact facts and
+observed-untrusted limitations. Format-specific checks stay in occurrence
+metadata and compact inspection integrity observations, separately from entry
+SHA-256 disagreement records. Malformed structure is refused under either policy.
+
+All three formats admit a retained carrier before allocation using
+`max_firmware_file_bytes` (default 134217728). FIT/uImage also use
+`max_firmware_elements` (65536). FIT adds independently controlled tree nodes
+(65536), properties/reservations (262144), nesting depth (256), metadata bytes
+(33554432) and aggregate supported-hash byte work (1073741824). The inputs are
+`max_firmware_tree_nodes`, `max_firmware_tree_properties`,
+`max_firmware_tree_depth`, `max_firmware_metadata_bytes` and
+`max_firmware_hash_bytes`; CLI spells underscores as hyphens. Admission happens
+before the controlled expansion/work. Repeated algorithm/range digests are
+reused. Hash-work refusals report a CPU resource constraint; metadata/tree
+refusals report memory. These are caller policies, not format ceilings. Raising
+a budget accepts its memory/work cost; unchanged limits reproduce the refusal.
+Irrelevant knobs are rejected. Payload views share one retained carrier;
+metadata, graph, serialization and output file storage are additional.
+
+References: [U-Boot image declarations](https://github.com/u-boot/u-boot/blob/ece349ade2973e220f524ce59e59711cc919263f/include/image.h),
+[FIT format](https://docs.u-boot.org/en/v2024.07/usage/fit/source_file_format.html),
+[ESP image format](https://docs.espressif.com/projects/esptool/en/latest/esp32s2/advanced-topics/firmware-image-format.html)
+and [Secure Boot v2](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/security/secure-boot-v2.html).
+
 ## Caller-supplied tools
 
 Provide existing tools using absolute executable paths, scoped to your shell:

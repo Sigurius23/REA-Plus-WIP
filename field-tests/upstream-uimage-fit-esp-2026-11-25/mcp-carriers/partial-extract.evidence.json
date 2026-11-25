@@ -1,0 +1,80 @@
+{
+  "evidence_id": "ev_fd47e2478dd72fb8f790ba12cd8dfa373b0e86f5416aa9ab508d06a7e91bc1d5",
+  "subject": {
+    "name": "partial.esp",
+    "digest": {
+      "sha256": "81fce09fc9c6b1f2b4f7a4503fb6cba89ed460ef0a46b329d7e3f6d771fb55b4"
+    },
+    "format": "esp-image",
+    "architecture": null,
+    "local_path": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/partial.esp"
+  },
+  "provider": {
+    "id": "rea-artifact-graph",
+    "name": "REA+ safe artifact graph provider",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "extract_artifact",
+  "parameters": {
+    "integrity_policy": "fail"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "manifest": {
+      "manifest_id": "agm_547ea76ce9a39b0d42b997e9d4040a5470f0b2cbc99fbcfab5aea9e6df474bc4",
+      "root_artifact_id": "art_67c32051a938a44bcd6a6dc5daf1e4fbeb4996d38623ef85e03b990f68268288",
+      "root_sha256": "81fce09fc9c6b1f2b4f7a4503fb6cba89ed460ef0a46b329d7e3f6d771fb55b4",
+      "root_format": "esp-image",
+      "graph_sha256": "43c835c1002417b08dc2f63c5c1649c1010c0a70e4a589260da7c97d59ab076e",
+      "node_count": 2,
+      "occurrence_count": 2,
+      "edge_count": 1
+    },
+    "extraction_manifest": {
+      "extraction_id": "aex_ca6db76d8fea35ffd38c4030b107b0795368050f058a2675b0e04b4c31f5071e",
+      "source_manifest_id": "agm_547ea76ce9a39b0d42b997e9d4040a5470f0b2cbc99fbcfab5aea9e6df474bc4",
+      "selected_occurrence_ids": [
+        "occ_502df7bec249e87a45d6a6242e90cfae2961a3d67637abcd2cd36b66493d9ad1"
+      ],
+      "files_sha256": "e863e1a1e5908650b012ebd7b9d73bf7165900bcfec22ff1a93eb2feee7cba1d",
+      "output_root_alias": "$OUTPUT_ROOT"
+    },
+    "output_root": "/tmp/rea-extracted-60c2159f-25ca-40c3-8df8-af8857d6576c",
+    "artifacts": [
+      {
+        "artifact_id": "art_cf5174061d59f43dfe7a605cbfed19a82a390f45c3490b9392333ad5c6a98736",
+        "relative_path": "segment-00.bin",
+        "sha256": "a12871fee210fb8619291eaea194581cbd2531e4b23759d225f6806923f63222",
+        "bytes_written": 2,
+        "created": true
+      }
+    ],
+    "containment_verified": true,
+    "cleanup": {
+      "attempted": false,
+      "verified": true,
+      "residual_paths": []
+    },
+    "provenance": [],
+    "integrity_contradictions": [],
+    "limitations": [
+      "All regular files in the active artifact were materialized; nested archive contents remain represented by their containing file.",
+      "Stored firmware bytes; load/entry/architecture/compression are file declarations, not observed execution or device identity. Payloads are not decompressed.",
+      "ESP image inventory reads the header-declared segments, checksum, appended SHA-256, descriptor and Secure Boot v2 signature blocks. Segment classification follows ESP-IDF v6.1 should_map and should_load for a cold boot and does not check RAM ranges; signatures are not cryptographically verified, and code is not disassembled.",
+      "ESP image is truncated: segment 0 declares 4 bytes at offset 0x20, but the file holds 2."
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "All regular files in the active artifact were materialized; nested archive contents remain represented by their containing file.",
+    "Stored firmware bytes; load/entry/architecture/compression are file declarations, not observed execution or device identity. Payloads are not decompressed.",
+    "ESP image inventory reads the header-declared segments, checksum, appended SHA-256, descriptor and Secure Boot v2 signature blocks. Segment classification follows ESP-IDF v6.1 should_map and should_load for a cold boot and does not check RAM ranges; signatures are not cryptographically verified, and code is not disassembled.",
+    "ESP image is truncated: segment 0 declares 4 bytes at offset 0x20, but the file holds 2."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

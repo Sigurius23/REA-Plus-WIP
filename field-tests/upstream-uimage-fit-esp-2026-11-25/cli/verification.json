@@ -1,0 +1,151 @@
+{
+  "status": "passed",
+  "records": [
+    {
+      "label": "uimage-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/multi.uimg",
+        "--max-firmware-elements",
+        "3"
+      ],
+      "evidence_id": "ev_47e02d80e884e5d21e5e98cf40c4eb1815c1baf0891ce3db4c3e74155b3c1557",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "fit-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/inline.fit",
+        "--max-firmware-elements",
+        "2"
+      ],
+      "evidence_id": "ev_623e9497b89b18ae9c4e7471abcbd54b656c37e0173474aed84f01cb1f8c03f5",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "external-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/external.fit",
+        "--max-firmware-elements",
+        "2"
+      ],
+      "evidence_id": "ev_abeb002d1cf51637fef8a2f8757ed934232d312412601e93aa1499e902df1eaf",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "late-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/late.fit",
+        "--max-firmware-elements",
+        "2"
+      ],
+      "evidence_id": "ev_7899f575b34e60b6072c7a26e4992311e444ea83375fe6ef6117bf5b2a4159fd",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "esp-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/signed.esp"
+      ],
+      "evidence_id": "ev_76709c8d7ae2aae9046051abcc273ded57b253e03313131448c7c61fcb20e01d",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "signature-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/bad-signature.esp",
+        "--integrity-policy",
+        "record-and-continue"
+      ],
+      "evidence_id": "ev_dae66c683dffbba9eea98d9552486c7a8ac5a91a21bda48be093c5b15025206c",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "uimage-extract",
+      "argv": [
+        "extract-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/multi.uimg",
+        "--max-firmware-elements",
+        "3"
+      ],
+      "evidence_id": "ev_bd288387c3b991d86a70f17f9864dda5603e97dc833c1c05ebdeaa3877e5d847",
+      "normalized_manifest_and_files_equal": true
+    },
+    {
+      "label": "external-extract",
+      "argv": [
+        "extract-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/external.fit",
+        "--max-firmware-elements",
+        "2"
+      ],
+      "evidence_id": "ev_1239193398b48387a825b5ffeadcf4829996711b6b1407d65388c04b9b120f72",
+      "normalized_manifest_and_files_equal": true
+    },
+    {
+      "label": "esp-extract",
+      "argv": [
+        "extract-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/signed.esp"
+      ],
+      "evidence_id": "ev_63082982403624e82cc825455eb9deb432db3d442006b3c474f3a94f4b7822b8",
+      "normalized_manifest_and_files_equal": true
+    },
+    {
+      "label": "partial-extract",
+      "argv": [
+        "extract-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/partial.esp"
+      ],
+      "evidence_id": "ev_54afff4de157e7068729b53d9c1fad32f45f68d579e778daafb7bac8995618ce",
+      "normalized_manifest_and_files_equal": true
+    },
+    {
+      "label": "byte-refusal",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/multi.uimg",
+        "--max-firmware-file-bytes",
+        "1"
+      ],
+      "expected_error": "resource_constraint"
+    },
+    {
+      "label": "hash-work-refusal",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/inline.fit",
+        "--max-firmware-hash-bytes",
+        "1"
+      ],
+      "expected_error": "resource_constraint"
+    },
+    {
+      "label": "crc-refusal",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uboot-esp-fixtures-zb3xilws/bad-crc.uimg"
+      ],
+      "expected_error": "artifact_operation_failed"
+    }
+  ],
+  "failure": null,
+  "verifier_run": {
+    "run_id": "34530853-97f3-466a-b790-f139ed58c55d",
+    "verifier_pid": 37428,
+    "parent_pid": 82620,
+    "process_lineage": {
+      "status": "verified",
+      "observed_at": "2026-11-25T20:59:27.387Z",
+      "launcher_pid": 37428,
+      "launcher_parent_pid": 82620,
+      "process_group_id": 37428,
+      "descendants": []
+    }
+  }
+}

@@ -51,6 +51,19 @@ inspection integrity observations, separate from entry SHA-256 contradictions.
 UF2 uses the run/byte budgets; DfuSe uses the byte budget and
 `max_firmware_elements`, counting empty declarations too. No device is contacted.
 
+uImage/FIT and standalone ESP32-family carriers use the same artifact workflow.
+uImage exposes stored payload/components and exact header/data CRCs. FIT keeps
+inline/external ranges, configuration references and hash/signature declarations;
+recognition scans the declared structure past prefix windows. ESP preserves
+segments, descriptors, checksum/digest and signature-slot facts, including partial
+coverage. Signatures remain unauthenticated, stored payloads are not decompressed,
+and load/entry/architecture declarations do not establish device execution.
+Use byte/element budgets and FIT tree/metadata/hash-work inputs when needed.
+Hash-work refusals are CPU constraints; unchanged budgets reproduce refusals.
+Explicit integrity continuation preserves observed-untrusted bytes and exact
+format checks. ESP8266, flash origin/partition/OTA selection and board operations
+remain outside this slice.
+
 ## Native targets
 
 For an unguarded arm64 Mach-O halfword dispatch, use

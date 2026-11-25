@@ -398,15 +398,33 @@ class ArtifactClient implements AnalysisClient {
     operation: "inspect_artifact" | "inventory_artifact" | "extract_artifact",
   ) {
     const format = this.target.format;
-    const allowed = ["intel-hex", "srec", "uf2", "dfuse"].includes(format);
+    const allowed = [
+      "intel-hex",
+      "srec",
+      "uf2",
+      "dfuse",
+      "uimage",
+      "fit",
+      "esp-image",
+    ].includes(format);
     const supplied = Object.entries(input).filter(
       ([key, value]) => key.startsWith("max_firmware_") && value !== undefined,
     );
     const invalid = supplied.filter(
       ([key]) =>
         !allowed ||
-        (key === "max_firmware_runs" && format === "dfuse") ||
-        (key === "max_firmware_elements" && format !== "dfuse"),
+        (key === "max_firmware_runs" &&
+          !["intel-hex", "srec", "uf2"].includes(format)) ||
+        (key === "max_firmware_elements" &&
+          !["dfuse", "uimage", "fit"].includes(format)) ||
+        ([
+          "max_firmware_tree_nodes",
+          "max_firmware_tree_properties",
+          "max_firmware_tree_depth",
+          "max_firmware_metadata_bytes",
+          "max_firmware_hash_bytes",
+        ].includes(key) &&
+          format !== "fit"),
     );
     if (invalid.length > 0)
       throw new AnalysisInputError(
@@ -416,7 +434,7 @@ class ArtifactClient implements AnalysisClient {
           path: [key],
           reason: "invalid_value" as const,
           message:
-            "Firmware file budgets require Intel HEX, S-record, UF2 or DfuSe; run budgets require Intel HEX/S-record/UF2; element budgets require DfuSe",
+            "Firmware bytes require a structured firmware carrier; runs require Intel HEX/S-record/UF2; elements require DfuSe/uImage/FIT; tree and metadata budgets require FIT",
         })),
       );
     if (allowed) return resolveFirmwareCapacity(input);

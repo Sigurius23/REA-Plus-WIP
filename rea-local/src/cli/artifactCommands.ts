@@ -200,6 +200,13 @@ const registerExtractionCommand = (
       maxFirmwareFileBytes: firmwareCapacityInputShape.max_firmware_file_bytes,
       maxFirmwareRuns: firmwareCapacityInputShape.max_firmware_runs,
       maxFirmwareElements: firmwareCapacityInputShape.max_firmware_elements,
+      maxFirmwareHashBytes: firmwareCapacityInputShape.max_firmware_hash_bytes,
+      maxFirmwareTreeNodes: firmwareCapacityInputShape.max_firmware_tree_nodes,
+      maxFirmwareTreeProperties:
+        firmwareCapacityInputShape.max_firmware_tree_properties,
+      maxFirmwareTreeDepth: firmwareCapacityInputShape.max_firmware_tree_depth,
+      maxFirmwareMetadataBytes:
+        firmwareCapacityInputShape.max_firmware_metadata_bytes,
       integrityPolicy: z
         .enum(["fail", "record-and-continue"])
         .default("fail")
@@ -221,6 +228,26 @@ const registerExtractionCommand = (
             ...(options.maxFirmwareElements === undefined
               ? {}
               : { max_firmware_elements: options.maxFirmwareElements }),
+            ...(options.maxFirmwareHashBytes === undefined
+              ? {}
+              : { max_firmware_hash_bytes: options.maxFirmwareHashBytes }),
+            ...(options.maxFirmwareTreeNodes === undefined
+              ? {}
+              : { max_firmware_tree_nodes: options.maxFirmwareTreeNodes }),
+            ...(options.maxFirmwareTreeProperties === undefined
+              ? {}
+              : {
+                  max_firmware_tree_properties:
+                    options.maxFirmwareTreeProperties,
+                }),
+            ...(options.maxFirmwareTreeDepth === undefined
+              ? {}
+              : { max_firmware_tree_depth: options.maxFirmwareTreeDepth }),
+            ...(options.maxFirmwareMetadataBytes === undefined
+              ? {}
+              : {
+                  max_firmware_metadata_bytes: options.maxFirmwareMetadataBytes,
+                }),
             output_root: createArtifactExtractionDestination(),
           },
           logger,
@@ -244,6 +271,13 @@ const registerInspectionCommand = (
       maxFirmwareFileBytes: firmwareCapacityInputShape.max_firmware_file_bytes,
       maxFirmwareRuns: firmwareCapacityInputShape.max_firmware_runs,
       maxFirmwareElements: firmwareCapacityInputShape.max_firmware_elements,
+      maxFirmwareHashBytes: firmwareCapacityInputShape.max_firmware_hash_bytes,
+      maxFirmwareTreeNodes: firmwareCapacityInputShape.max_firmware_tree_nodes,
+      maxFirmwareTreeProperties:
+        firmwareCapacityInputShape.max_firmware_tree_properties,
+      maxFirmwareTreeDepth: firmwareCapacityInputShape.max_firmware_tree_depth,
+      maxFirmwareMetadataBytes:
+        firmwareCapacityInputShape.max_firmware_metadata_bytes,
       integrityPolicy: z
         .enum(["fail", "record-and-continue"])
         .default("fail")
@@ -265,6 +299,26 @@ const registerInspectionCommand = (
             ...(options.maxFirmwareElements === undefined
               ? {}
               : { max_firmware_elements: options.maxFirmwareElements }),
+            ...(options.maxFirmwareHashBytes === undefined
+              ? {}
+              : { max_firmware_hash_bytes: options.maxFirmwareHashBytes }),
+            ...(options.maxFirmwareTreeNodes === undefined
+              ? {}
+              : { max_firmware_tree_nodes: options.maxFirmwareTreeNodes }),
+            ...(options.maxFirmwareTreeProperties === undefined
+              ? {}
+              : {
+                  max_firmware_tree_properties:
+                    options.maxFirmwareTreeProperties,
+                }),
+            ...(options.maxFirmwareTreeDepth === undefined
+              ? {}
+              : { max_firmware_tree_depth: options.maxFirmwareTreeDepth }),
+            ...(options.maxFirmwareMetadataBytes === undefined
+              ? {}
+              : {
+                  max_firmware_metadata_bytes: options.maxFirmwareMetadataBytes,
+                }),
           },
           logger,
         ),

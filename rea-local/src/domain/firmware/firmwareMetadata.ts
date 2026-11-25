@@ -1,3 +1,13 @@
+import {
+  uImageMetadataSchema,
+  uImageEntryMetadataSchema,
+} from "./uimageMetadata.js";
+import { fitMetadataSchema, fitImageMetadataSchema } from "./fitMetadata.js";
+import {
+  espImageMetadataSchema,
+  espImageSegmentMetadataSchema,
+  espImageSignatureBlockMetadataSchema,
+} from "./espMetadata.js";
 import { z } from "zod";
 import {
   hexRecordsMetadataSchema,
@@ -11,6 +21,13 @@ import {
 export const firmwareFormatMetadataSchema = z.discriminatedUnion("kind", [
   hexRecordsMetadataSchema,
   hexRecordRegionMetadataSchema,
+  uImageMetadataSchema,
+  uImageEntryMetadataSchema,
+  fitMetadataSchema,
+  fitImageMetadataSchema,
+  espImageMetadataSchema,
+  espImageSegmentMetadataSchema,
+  espImageSignatureBlockMetadataSchema,
   uf2MetadataSchema,
   uf2RegionMetadataSchema,
   dfuSeMetadataSchema,

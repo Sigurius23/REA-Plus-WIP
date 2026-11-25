@@ -30,8 +30,15 @@ export const firmwareDecodeFailure = (
     readonly maxFileBytes: number;
     readonly maxRuns?: number;
     readonly maxElements?: number;
+    readonly maxTreeNodes?: number;
+    readonly maxTreeProperties?: number;
+    readonly maxTreeDepth?: number;
+    readonly maxMetadataBytes?: number;
+    readonly maxHashBytes?: number;
   },
 ): never => {
+  if (failure.kind === "unsupported")
+    throw new ArtifactReaderFailure("unavailable", failure.message);
   if (failure.kind === "limit") {
     const limits = {
       max_firmware_file_bytes: capacity.maxFileBytes,
@@ -41,14 +48,36 @@ export const firmwareDecodeFailure = (
       ...(capacity.maxElements === undefined
         ? {}
         : { max_firmware_elements: capacity.maxElements }),
+      ...(capacity.maxTreeNodes === undefined
+        ? {}
+        : { max_firmware_tree_nodes: capacity.maxTreeNodes }),
+      ...(capacity.maxTreeProperties === undefined
+        ? {}
+        : { max_firmware_tree_properties: capacity.maxTreeProperties }),
+      ...(capacity.maxTreeDepth === undefined
+        ? {}
+        : { max_firmware_tree_depth: capacity.maxTreeDepth }),
+      ...(capacity.maxMetadataBytes === undefined
+        ? {}
+        : { max_firmware_metadata_bytes: capacity.maxMetadataBytes }),
+      ...(capacity.maxHashBytes === undefined
+        ? {}
+        : { max_firmware_hash_bytes: capacity.maxHashBytes }),
     };
     throw new AnalysisResourceConstraintError(
       "decode_firmware_records",
-      failure.boundary === "file-size" ? "file-size" : "memory",
+      failure.boundary === "file-size"
+        ? "file-size"
+        : failure.boundary === "cpu"
+          ? "cpu"
+          : "memory",
       failure.message,
       limits,
       {
-        remediationAction: `Increase the applicable caller input (${Object.keys(limits).join(", ")}) within available memory. Repeating unchanged limits reproduces the refusal.`,
+        remediationAction:
+          failure.boundary === "cpu"
+            ? "Increase max_firmware_hash_bytes only if additional hashing work and time are acceptable. Repeating unchanged limits reproduces the refusal."
+            : `Increase the applicable caller input (${Object.keys(limits).join(", ")}) within available memory. Repeating unchanged limits reproduces the refusal.`,
       },
     );
   }

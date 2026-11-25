@@ -32,4 +32,7 @@ export const binaryTargetFormatSchema = z.enum({
   srec: "srec",
   uf2: "uf2",
   dfuse: "dfuse",
+  uimage: "uimage",
+  fit: "fit",
+  "esp-image": "esp-image",
 } satisfies { [Format in BinaryTarget["format"]]: Format });

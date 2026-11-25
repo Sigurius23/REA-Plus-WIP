@@ -210,7 +210,9 @@ const buildInventorySnapshot = async (
   materializeDirectoryNodes(input.occurrences, input.nodes);
   const rootNode = createRootNode({
     digest: rootDigest,
-    ...(rootFormat === "dfuse" ? { verifiedDfuSe: true } : {}),
+    ...(["dfuse", "fit"].includes(rootFormat)
+      ? { observedContentFormat: rootFormat as "dfuse" | "fit" }
+      : {}),
     occurrences: input.occurrences,
   });
   input.nodes.set(rootNode.artifact_id, rootNode);
