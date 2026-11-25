@@ -1,0 +1,288 @@
+[
+  {
+    "name": "open_binary",
+    "arguments": {
+      "path": "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+      "provider_id": "ghidra"
+    },
+    "reply": "open.reply.json",
+    "elapsed_ms": 4110,
+    "is_error": false,
+    "thrown": null
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad 11 22 be ef",
+      "limit": 1001
+    },
+    "reply": "all.reply.json",
+    "elapsed_ms": 9233,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_c4558f9ac0072e48309bec38782957f6d9e9c36e9cf8bf43d0fa72f6c5459176"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "DEAD????BEEF",
+      "start": "0x60000000",
+      "end": "0x60000005"
+    },
+    "reply": "cross.reply.json",
+    "elapsed_ms": 4,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_87aabdaa0d5fcf9bb187c833cdb4f4b6486ff996bf2aabf16e0e4b6e3fd34bca"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad 11 22 be ef",
+      "start": "0x60000000",
+      "end": "0x60000004"
+    },
+    "reply": "end-inside.reply.json",
+    "elapsed_ms": 4,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_d99fb796dc9de3dff0dcd19ad532fac8939e204f7ffaf8f2da5ed3e80fe5a4dd"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad ?? ?? be ef",
+      "start": "0x60000100",
+      "end": "0x60000105"
+    },
+    "reply": "gap.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_c16948063d343731892b86e7fa17ea511d17e7954ca17237ffca591d77ebecf3"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "a1 a1",
+      "start": "0x60000300",
+      "end": "0x60000304",
+      "limit": 1
+    },
+    "reply": "overlap-first.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_422ba1d841d47222113552066c2808f69c10db8fb639a6e61b3d5d56db2df7a0"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "a1 a1",
+      "start": "0x60000300",
+      "end": "0x60000304",
+      "limit": 2,
+      "cursor": "e89cbfed34def05e28ee5d9785b144bc8f6ea4b0ec69a92525af934e6397db2e:0x60000301"
+    },
+    "reply": "overlap-second.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_ea793c07818ceff2eb20673df89e4da0ba973efcf5754b5bca196adc12ec680c"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "a1 a1",
+      "start": "0x60000300",
+      "end": "0x60000304",
+      "limit": 1,
+      "cursor": "e89cbfed34def05e28ee5d9785b144bc8f6ea4b0ec69a92525af934e6397db2e:0x60000303"
+    },
+    "reply": "overlap-final.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_d5b2749c9dfa5d5de1e2f1fc4b5ac159b25564ddd9e14a2ab9212db0b9480e31"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "a1 a1 a1",
+      "start": "0x60000300",
+      "end": "0x60000304",
+      "cursor": "e89cbfed34def05e28ee5d9785b144bc8f6ea4b0ec69a92525af934e6397db2e:0x60000301"
+    },
+    "reply": "bad-cursor.reply.json",
+    "elapsed_ms": 4,
+    "is_error": true,
+    "thrown": null
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "af",
+      "mask": "f0",
+      "start": "0x60000300",
+      "end": "0x60000304",
+      "limit": 1
+    },
+    "reply": "mask-first.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_d00ae68f94462267fe05a7ddec93f83b90323b577e71d1233279ae92ae1ca2ac"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "a0",
+      "mask": "f0",
+      "start": "0x60000300",
+      "end": "0x60000304",
+      "limit": 100,
+      "cursor": "cb8b36d808236961eea3d531cf1834d1c5aa01f900c1c14541569454363b1340:0x60000301"
+    },
+    "reply": "mask-rest.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_56f06960aa875bf1c23d7bc98016daeb49016eea835e5346572f8b0ccf385960"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad 11 22 be ef",
+      "start": "overlay_test:0x60000000",
+      "end": "overlay_test:0x60000005"
+    },
+    "reply": "overlay.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_b7b3880188918ee2f44cf071e88835317a987810504727eb5cd237ce2b80fd10"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad 11 22 be ef",
+      "start": "OTHER:0x60000400",
+      "end": "OTHER:0x60000405"
+    },
+    "reply": "unloaded.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_d672cb9bd7e4bce2164296dc28e4500a482e03c407fee3ce48aa3016870dafef"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad 11 22 be ef",
+      "start": "0x60000500",
+      "end": "0x60000505"
+    },
+    "reply": "auxiliary.reply.json",
+    "elapsed_ms": 3,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_b205c729c89ad9b805c67e7738c9ba63b1a74e91991c5f6bb343392a21d2b81c"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad",
+      "start": "0x60000000",
+      "end": "overlay_test:0x60000005"
+    },
+    "reply": "wrong-space.reply.json",
+    "elapsed_ms": 2,
+    "is_error": true,
+    "thrown": null
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "4 8"
+    },
+    "reply": "invalid-pattern.reply.json",
+    "elapsed_ms": 1,
+    "is_error": true,
+    "thrown": null
+  },
+  {
+    "name": "read_bytes",
+    "arguments": {
+      "address": "0x100000460",
+      "length": 4
+    },
+    "reply": "function-bytes.reply.json",
+    "elapsed_ms": 5,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_57261949c482f86f015a933c889a34b5ec0976a86fdc4b64d9db440bfc72e7f1"
+  },
+  {
+    "name": "address_to_file_offset",
+    "arguments": {
+      "address": "0x100000460"
+    },
+    "reply": "function-offset.reply.json",
+    "elapsed_ms": 5,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_c63da7854aeb7ca169a9137998b060938c71e584d65339158b298c912351b371"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "ff4300d1",
+      "start": "0x100000460",
+      "end": "0x100000463"
+    },
+    "reply": "function-search.reply.json",
+    "elapsed_ms": 4,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_795814f6671af681cf6e679cd518a329335cf68eab62d47600c602f7d6600638"
+  },
+  {
+    "name": "address_to_file_offset",
+    "arguments": {
+      "address": "0x60000500"
+    },
+    "reply": "auxiliary-offset.reply.json",
+    "elapsed_ms": 3,
+    "is_error": true,
+    "thrown": null
+  },
+  {
+    "name": "address_to_file_offset",
+    "arguments": {
+      "address": "0x100000000"
+    },
+    "reply": "target-header-offset.reply.json",
+    "elapsed_ms": 2,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_8247fcfaeff5dcf1809ac78ff788c51e24e4cee3bcd80a9d91b74a731247ed8b"
+  },
+  {
+    "name": "export_evidence_bundle",
+    "arguments": {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-owned-release/final.bundle.json"
+    },
+    "reply": "export.reply.json",
+    "elapsed_ms": 16,
+    "is_error": false,
+    "thrown": null
+  },
+  {
+    "name": "close_binary",
+    "arguments": {},
+    "reply": "close.reply.json",
+    "elapsed_ms": 387,
+    "is_error": false,
+    "thrown": null
+  }
+]

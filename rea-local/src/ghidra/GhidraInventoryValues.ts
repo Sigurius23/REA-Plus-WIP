@@ -1,3 +1,10 @@
+import {
+  bytePatternFields,
+  validateBytePattern,
+  compileBytePattern,
+  byteSearchResultSchema,
+  byteSearchPageFields,
+} from "../domain/native/bytePattern.js";
 import { z } from "zod";
 import { nativeLoadImageObservationSchema } from "../domain/native/nativeLoadImage.js";
 
@@ -20,6 +27,7 @@ import { analysisInputErrorFromIssues } from "../domain/inputIssueProjection.js"
 export const GHIDRA_INVENTORY_OPERATIONS = [
   "inspect_native_load_image",
   "read_bytes",
+  "search_bytes",
   "address_to_file_offset",
   "address_name",
   "list_documents",
@@ -72,6 +80,16 @@ const searchInput = {
 };
 
 const inputSchemas = {
+  search_bytes: z
+    .strictObject({
+      ...bytePatternFields,
+      document,
+      start: explicitAddress.optional(),
+      end: explicitAddress.optional(),
+      ...byteSearchPageFields,
+    })
+    .superRefine(validateBytePattern)
+    .transform((value) => ({ ...value, ...compileBytePattern(value) })),
   inspect_native_load_image: z.strictObject({}),
   read_bytes: z.strictObject({
     document,
@@ -271,6 +289,7 @@ const containingProcedure = z.discriminatedUnion("found", [
 ]);
 
 const resultSchemas = {
+  search_bytes: byteSearchResultSchema,
   inspect_native_load_image: nativeLoadImageObservationSchema,
   read_bytes: z
     .strictObject({

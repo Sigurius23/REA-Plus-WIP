@@ -1,0 +1,597 @@
+import { toolContract } from "../contracts/toolContracts.js";
+import { byteSearchPageFields } from "../domain/native/bytePattern.js";
+import { jsonObjectSchema } from "../domain/jsonValue.js";
+import { projectAnalysisError } from "../domain/analysisErrorProjection.js";
+import { analysisInputErrorFromIssues } from "../domain/inputIssueProjection.js";
+import { withCommandCancellation } from "./commandCancellation.js";
+import { z } from "incur";
+
+import type { DirectAnalysis } from "../composition/directAnalysis.js";
+import { CLI_COMMANDS } from "../cliCommandNames.js";
+import { logCliCommand } from "../cliLogging.js";
+import type { Logger } from "pino";
+import {
+  directAnalysisOptions,
+  formatSelectionOption,
+  providerSelectionOption,
+  stagingDirSelectionOption,
+} from "./options.js";
+import type { CliInstance } from "./types.js";
+import {
+  nativeDispatchFacetSchema,
+  nativeObjcClassNameSchema,
+  nativeSwiftClassAddressSchema,
+  nativeSwiftTypeAddressSchema,
+  nativeSwiftMetadataAddressSchema,
+  nativeSwiftConformanceAddressSchema,
+  nativeDispatchFileBudgetSchema,
+} from "../domain/native/objcSwiftMetadata.js";
+
+/** Register native load-image, memory, and annotation CLI commands. */
+export const registerCoreNativeCommands = (
+  cli: CliInstance,
+  logger: Logger,
+  runDirectAnalysis: DirectAnalysis["runDirectAnalysis"],
+): void => {
+  registerAnnotationCommand(cli, logger, runDirectAnalysis);
+  registerByteSearchCommand(cli, logger, runDirectAnalysis);
+  cli.command(CLI_COMMANDS.inspectNativeLoadImage, {
+    description:
+      "Verify loaded native bytes, source mappings, relocations and entry",
+    args: z.object({ path: z.string().describe("Local executable path") }),
+    options: z.object({
+      "target-format": formatSelectionOption,
+      "staging-dir": stagingDirSelectionOption,
+      provider: providerSelectionOption,
+    }),
+    run: ({ args, options }) =>
+      logCliCommand(logger, CLI_COMMANDS.inspectNativeLoadImage, () =>
+        runDirectAnalysis(
+          args.path,
+          "inspect_native_load_image",
+          {},
+          directAnalysisOptions(logger, {
+            providerId: options.provider,
+            formatHint: options["target-format"],
+            stagingDir: options["staging-dir"],
+          }),
+        ),
+      ),
+  });
+  cli.command(CLI_COMMANDS.readBytes, {
+    description: "Read exact provider memory bytes at one analysis address",
+    args: z.object({
+      path: z.string().describe("Local executable path"),
+      address: z.string().describe("Exact provider memory address"),
+    }),
+    options: z.object({
+      length: z
+        .number()
+        .int()
+        .min(1)
+        .default(256)
+        .describe("Requested byte count"),
+      "target-format": formatSelectionOption,
+      "staging-dir": stagingDirSelectionOption,
+      provider: providerSelectionOption,
+    }),
+    run: ({ args, options }) =>
+      logCliCommand(logger, CLI_COMMANDS.readBytes, () =>
+        runDirectAnalysis(
+          args.path,
+          "read_bytes",
+          { address: args.address, length: options.length },
+          directAnalysisOptions(logger, {
+            providerId: options.provider,
+            formatHint: options["target-format"],
+            stagingDir: options["staging-dir"],
+          }),
+        ),
+      ),
+  });
+  cli.command(CLI_COMMANDS.addressToFileOffset, {
+    description: "Resolve an analysis address to its original file byte offset",
+    args: z.object({
+      path: z.string().describe("Local executable path"),
+      address: z.string().describe("Exact provider memory address"),
+    }),
+    options: z.object({
+      "target-format": formatSelectionOption,
+      "staging-dir": stagingDirSelectionOption,
+      provider: providerSelectionOption,
+    }),
+    run: ({ args, options }) =>
+      logCliCommand(logger, CLI_COMMANDS.addressToFileOffset, () =>
+        runDirectAnalysis(
+          args.path,
+          "address_to_file_offset",
+          { address: args.address },
+          directAnalysisOptions(logger, {
+            providerId: options.provider,
+            formatHint: options["target-format"],
+            stagingDir: options["staging-dir"],
+          }),
+        ),
+      ),
+  });
+  cli.command(CLI_COMMANDS.traceNativeValues, {
+    description: "Trace bounded native def-use and call dependencies",
+    args: z.object({
+      path: z.string().describe("Local native executable or app path"),
+      procedure: z
+        .string()
+        .describe("Explicit native procedure symbol or address"),
+    }),
+    options: z.object({
+      maxDepth: z
+        .number()
+        .int()
+        .min(0)
+        .max(16)
+        .default(3)
+        .describe("Maximum call traversal depth"),
+      maxFunctions: z
+        .number()
+        .int()
+        .min(1)
+        .max(64)
+        .default(16)
+        .describe("Maximum function decompilations"),
+      maxCallSites: z
+        .number()
+        .int()
+        .min(1)
+        .max(4096)
+        .default(256)
+        .describe("Maximum static call-site resolutions"),
+      maxNodes: z
+        .number()
+        .int()
+        .min(1)
+        .max(20000)
+        .default(5000)
+        .describe("Maximum retained graph nodes"),
+      maxEdges: z
+        .number()
+        .int()
+        .min(1)
+        .max(40000)
+        .default(10000)
+        .describe("Maximum retained graph edges"),
+      offset: z
+        .number()
+        .int()
+        .min(0)
+        .default(0)
+        .describe("First graph node index"),
+      limit: z
+        .number()
+        .int()
+        .min(1)
+        .max(5000)
+        .default(1000)
+        .describe("Maximum nodes on this page"),
+      "target-format": formatSelectionOption,
+      "staging-dir": stagingDirSelectionOption,
+      provider: providerSelectionOption,
+    }),
+    run: ({ args, options }) =>
+      logCliCommand(logger, CLI_COMMANDS.traceNativeValues, () =>
+        runDirectAnalysis(
+          args.path,
+          "trace_native_values",
+          {
+            procedure: args.procedure,
+            max_depth: options.maxDepth,
+            max_functions: options.maxFunctions,
+            max_call_sites: options.maxCallSites,
+            max_nodes: options.maxNodes,
+            max_edges: options.maxEdges,
+            offset: options.offset,
+            limit: options.limit,
+          },
+          directAnalysisOptions(logger, {
+            providerId: options.provider,
+            formatHint: options["target-format"],
+            stagingDir: options["staging-dir"],
+          }),
+        ),
+      ),
+  });
+  cli.command(CLI_COMMANDS.inspectNativeDataType, {
+    description: "Inspect one recovered database type or typed data object",
+    args: z.object({
+      path: z.string().describe("Local native executable or app path"),
+    }),
+    options: z.object({
+      type: z.string().optional().describe("Exact database type category path"),
+      address: z.string().optional().describe("Exact native address"),
+      "target-format": formatSelectionOption,
+      "staging-dir": stagingDirSelectionOption,
+      provider: providerSelectionOption,
+    }),
+    run: ({ args, options }) =>
+      logCliCommand(logger, CLI_COMMANDS.inspectNativeDataType, () =>
+        runDirectAnalysis(
+          args.path,
+          "inspect_native_data_type",
+          {
+            ...(options.type === undefined ? {} : { type: options.type }),
+            ...(options.address === undefined
+              ? {}
+              : { address: options.address }),
+          },
+          directAnalysisOptions(logger, {
+            providerId: options.provider,
+            formatHint: options["target-format"],
+            stagingDir: options["staging-dir"],
+          }),
+        ),
+      ),
+  });
+  for (const [command, operation] of [
+    [CLI_COMMANDS.inspectNativeInstruction, "inspect_native_instruction"],
+    [CLI_COMMANDS.resolveNativeCallTargets, "resolve_native_call_targets"],
+  ] as const) {
+    cli.command(command, {
+      description:
+        operation === "inspect_native_instruction"
+          ? "Inspect one native instruction with decoded operand facts"
+          : "Resolve one static native call site",
+      args: z.object({
+        path: z.string().describe("Local native executable or app path"),
+        address: z.string().describe("Exact native address"),
+      }),
+      options: z.object({
+        "target-format": formatSelectionOption,
+        "staging-dir": stagingDirSelectionOption,
+        provider: providerSelectionOption,
+        ...(operation === "inspect_native_instruction"
+          ? {
+              "decode-unlisted": z
+                .boolean()
+                .optional()
+                .describe(
+                  "Interpret unlisted initialized executable bytes without changing the analysis database",
+                ),
+            }
+          : {}),
+      }),
+      run: ({ args, options }) =>
+        logCliCommand(logger, command, () =>
+          runDirectAnalysis(
+            args.path,
+            operation,
+            {
+              address: args.address,
+              ...(operation === "inspect_native_instruction" &&
+              typeof options["decode-unlisted"] === "boolean"
+                ? { decode_unlisted: options["decode-unlisted"] }
+                : {}),
+            },
+            directAnalysisOptions(logger, {
+              providerId: options.provider,
+              formatHint: options["target-format"],
+              stagingDir: options["staging-dir"],
+            }),
+          ),
+        ),
+    });
+  }
+  registerNativeApiCommand(cli, logger, runDirectAnalysis);
+  registerNativeUiActionCommand(cli, logger, runDirectAnalysis);
+  registerNativeDispatchMetadataCommand(cli, logger, runDirectAnalysis);
+};
+
+const registerNativeDispatchMetadataCommand = (
+  cli: CliInstance,
+  logger: Logger,
+  runDirectAnalysis: DirectAnalysis["runDirectAnalysis"],
+): void => {
+  cli.command(CLI_COMMANDS.inspectNativeDispatchMetadata, {
+    description: "Inspect typed Objective-C and Swift dispatch metadata",
+    args: z.object({
+      path: z.string().describe("Target path used to bind the result evidence"),
+    }),
+    options: z.object({
+      maxFileBytes: nativeDispatchFileBudgetSchema,
+      swiftConformanceAddress: nativeSwiftConformanceAddressSchema,
+      swiftTypeAddress: nativeSwiftTypeAddressSchema,
+      swiftMetadataAddress: nativeSwiftMetadataAddressSchema,
+      swiftClassAddress: nativeSwiftClassAddressSchema,
+      objcClassName: nativeObjcClassNameSchema,
+      swiftProtocolName: z
+        .string()
+        .min(1)
+        .optional()
+        .describe(
+          "Exact local protocol metadata name; requires --facet swift-conformances",
+        ),
+      swiftTypeName: z
+        .string()
+        .min(1)
+        .optional()
+        .describe(
+          "Exact local type metadata name; ANDed with --swift-protocol-name when supplied",
+        ),
+      maxRecords: z
+        .number()
+        .int()
+        .min(1)
+        .max(20_000)
+        .default(5_000)
+        .describe("Aggregate metadata decode-admission budget"),
+      facet: nativeDispatchFacetSchema
+        .default("all")
+        .describe(
+          "Metadata family to inspect; unselected families are not_requested",
+        ),
+      snapshot: z
+        .string()
+        .min(1)
+        .optional()
+        .describe("Load or update the local analysis snapshot"),
+      "target-format": formatSelectionOption,
+      "staging-dir": stagingDirSelectionOption,
+      provider: providerSelectionOption,
+    }),
+    run: async ({ args, options }) =>
+      logCliCommand(logger, "inspect-native-dispatch-metadata", () =>
+        runDirectAnalysis(
+          args.path,
+          "inspect_native_dispatch_metadata",
+          {
+            max_records: options.maxRecords,
+            facet: options.facet,
+            max_file_bytes: options.maxFileBytes,
+            ...(options.objcClassName === undefined
+              ? {}
+              : { objc_class_name: options.objcClassName }),
+            ...(options.swiftMetadataAddress === undefined
+              ? {}
+              : { swift_metadata_address: options.swiftMetadataAddress }),
+            ...(options.swiftTypeAddress === undefined
+              ? {}
+              : { swift_type_address: options.swiftTypeAddress }),
+            ...(options.swiftClassAddress === undefined
+              ? {}
+              : { swift_class_address: options.swiftClassAddress }),
+            ...(options.swiftConformanceAddress === undefined
+              ? {}
+              : { swift_conformance_address: options.swiftConformanceAddress }),
+            ...(options.swiftProtocolName === undefined &&
+            options.swiftTypeName === undefined
+              ? {}
+              : {
+                  swift_conformance_filter: {
+                    protocol_name: options.swiftProtocolName ?? null,
+                    type_name: options.swiftTypeName ?? null,
+                  },
+                }),
+          },
+          directAnalysisOptions(logger, {
+            snapshotPath: options.snapshot,
+            providerId: options.provider,
+            formatHint: options["target-format"],
+            stagingDir: options["staging-dir"],
+          }),
+        ),
+      ),
+  });
+};
+
+const registerNativeUiActionCommand = (
+  cli: CliInstance,
+  logger: Logger,
+  runDirectAnalysis: DirectAnalysis["runDirectAnalysis"],
+): void => {
+  cli.command(CLI_COMMANDS.traceNativeUiAction, {
+    description:
+      "Trace a compiled UI action selector to its native handler and direct callees",
+    args: z.object({
+      path: z.string().describe("Target path used to bind the result evidence"),
+      action: z
+        .string()
+        .min(1)
+        .describe(
+          "A unique compiled UI action selector or interface object ID",
+        ),
+    }),
+    options: z.object({
+      maxDepth: z
+        .number()
+        .int()
+        .min(0)
+        .max(32)
+        .default(8)
+        .describe("Maximum relationship depth"),
+      maxNodes: z
+        .number()
+        .int()
+        .min(1)
+        .max(2_000)
+        .default(250)
+        .describe("Maximum returned graph nodes"),
+      maxEdges: z
+        .number()
+        .int()
+        .min(1)
+        .max(5_000)
+        .default(500)
+        .describe("Maximum returned graph edges"),
+      "target-format": formatSelectionOption,
+      "staging-dir": stagingDirSelectionOption,
+      provider: providerSelectionOption,
+    }),
+    run: async ({ args, options }) =>
+      logCliCommand(logger, "trace-native-ui-action", () =>
+        runDirectAnalysis(
+          args.path,
+          "trace_native_ui_action",
+          {
+            action: args.action,
+            max_depth: options.maxDepth,
+            max_nodes: options.maxNodes,
+            max_edges: options.maxEdges,
+          },
+          directAnalysisOptions(logger, {
+            providerId: options.provider,
+            formatHint: options["target-format"],
+            stagingDir: options["staging-dir"],
+          }),
+        ),
+      ),
+  });
+};
+
+const registerNativeApiCommand = (
+  cli: CliInstance,
+  logger: Logger,
+  runDirectAnalysis: DirectAnalysis["runDirectAnalysis"],
+): void => {
+  cli.command(CLI_COMMANDS.inspectNativeApi, {
+    description: "Reconstruct one native function API boundary with evidence",
+    args: z.object({
+      path: z.string().describe("App or program path"),
+      address: z.string().describe("Procedure name or address"),
+    }),
+    options: z.object({
+      snapshot: z
+        .string()
+        .min(1)
+        .optional()
+        .describe("Load and update a local analysis snapshot"),
+      "target-format": formatSelectionOption,
+      "staging-dir": stagingDirSelectionOption,
+      provider: providerSelectionOption,
+    }),
+    run: ({ args, options }) =>
+      logCliCommand(logger, "inspect-native-api", () =>
+        runDirectAnalysis(
+          args.path,
+          "inspect_native_api",
+          { procedure: args.address },
+          directAnalysisOptions(logger, {
+            snapshotPath: options.snapshot,
+            providerId: options.provider,
+            formatHint: options["target-format"],
+            stagingDir: options["staging-dir"],
+          }),
+        ),
+      ),
+  });
+};
+
+const registerAnnotationCommand = (
+  cli: CliInstance,
+  logger: Logger,
+  runDirectAnalysis: DirectAnalysis["runDirectAnalysis"],
+): void => {
+  cli.command(CLI_COMMANDS.annotateNativeFunction, {
+    description: "Edit function annotations and return refreshed analysis",
+    args: z.object({
+      path: z.string().describe("Local executable path"),
+      procedure: z
+        .string()
+        .describe("Exact function entry address or unique name"),
+    }),
+    options: z.object({
+      name: z.string().min(1).optional().describe("Analyst function name"),
+      comment: z
+        .string()
+        .optional()
+        .describe("Regular entry comment; empty text clears it"),
+      "inline-comment": z
+        .string()
+        .optional()
+        .describe("Inline entry comment; empty text clears it"),
+      "target-format": formatSelectionOption,
+      "staging-dir": stagingDirSelectionOption,
+      provider: providerSelectionOption,
+    }),
+    run: ({ args, options }) =>
+      logCliCommand(logger, CLI_COMMANDS.annotateNativeFunction, () =>
+        runDirectAnalysis(
+          args.path,
+          "annotate_native_function",
+          {
+            procedure: args.procedure,
+            ...(options.name === undefined ? {} : { name: options.name }),
+            ...(options.comment === undefined
+              ? {}
+              : { comment: options.comment }),
+            ...(options["inline-comment"] === undefined
+              ? {}
+              : { inline_comment: options["inline-comment"] }),
+          },
+          directAnalysisOptions(logger, {
+            providerId: options.provider,
+            formatHint: options["target-format"],
+            stagingDir: options["staging-dir"],
+          }),
+        ),
+      ),
+  });
+};
+
+/** Read-only loaded-memory search; malformed patterns are refused before target admission. */
+function registerByteSearchCommand(
+  cli: CliInstance,
+  logger: Logger,
+  run: DirectAnalysis["runDirectAnalysis"],
+): void {
+  cli.command(CLI_COMMANDS.searchBytes, {
+    description:
+      "Find masked signatures in initialized analyzed memory, with page coverage and continuation",
+    args: z.object({ path: z.string(), pattern: z.string() }),
+    options: z.object({
+      mask: z.string().optional(),
+      start: z.string().optional(),
+      end: z.string().optional(),
+      ...byteSearchPageFields,
+      provider: providerSelectionOption,
+      "target-format": formatSelectionOption,
+      "staging-dir": stagingDirSelectionOption,
+    }),
+    run: ({ args, options: o }) =>
+      withCommandCancellation((signal) =>
+        logCliCommand(logger, CLI_COMMANDS.searchBytes, () => {
+          const input = {
+            pattern: args.pattern,
+            limit: o.limit,
+            ...(o.mask === undefined ? {} : { mask: o.mask }),
+            ...(o.start === undefined ? {} : { start: o.start }),
+            ...(o.end === undefined ? {} : { end: o.end }),
+            ...(o.cursor === undefined ? {} : { cursor: o.cursor }),
+          };
+          const parsed =
+            toolContract("search_bytes").inputSchema.safeParse(input);
+          if (!parsed.success)
+            return Promise.resolve({
+              error: "Byte search input is invalid",
+              ...projectAnalysisError(
+                analysisInputErrorFromIssues(
+                  "search_bytes",
+                  parsed.error.issues,
+                  input,
+                  { cause: parsed.error },
+                ),
+              ),
+            });
+          return run(
+            args.path,
+            "search_bytes",
+            jsonObjectSchema.parse(parsed.data),
+            {
+              ...directAnalysisOptions(logger, {
+                providerId: o.provider,
+                formatHint: o["target-format"],
+                stagingDir: o["staging-dir"],
+              }),
+              signal,
+            },
+          );
+        }),
+      ),
+  });
+}

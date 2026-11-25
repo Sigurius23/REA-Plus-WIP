@@ -4,6 +4,17 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Analyzed-memory byte search integrated (2026-11-25, item 62 partial):**
+  Ghidra search_bytes / CLI search-bytes support masks, inclusive bounds,
+  overlapping hits, coverage, exclusions and bound continuations. Shared native
+  file mapping now refuses auxiliary-source offsets while preserving genuine
+  zero. Native bridge ENOSPC now has a machine capacity code and actionable disk
+  error. 90 selected tests, ten Java producer controls, seven CLI/MCP Evidence
+  pairs and package checks qualify this slice. Arc's complete reducer result is
+  unchanged (10,072 bytes / 2,518 instructions) under a new bridge profile.
+  The observed disk failures, cleanup and successful release checks are recorded
+  in [qualification](field-tests/upstream-byte-search-2026-11-24.md).
+
 - **Native relationship/context views integrated (2026-11-24, item 62 partial):**
   Six native observation families now support retained pages and separate source
   overview/profile/caveat views. Four primitive tools and call graphs add summary
@@ -1848,8 +1859,13 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
       admission now stops safely with retained prefix facts/caveats; workflow
       revision 2 avoids historical replay. Public owned/Arc and CLI/MCP parity
       qualify the slice; see [report](field-tests/upstream-native-observations-2026-11-24.md).
-    - [ ] Review analyzed-memory search_bytes and decompile_all/export against
-      existing local tools.
+    - [x] Port analyzed-memory search_bytes and CLI search-bytes (2026-11-25).
+      Masked signatures, source offsets, inclusive ranges, overlapping pages and
+      explicit exclusions/cursor generation are qualified on owned Ghidra controls
+      and Arc. Fixed auxiliary-source offsets in the existing mapping owner and
+      explicit native ENOSPC classification exposed by this run. Complete CLI/MCP
+      parity and the release package gate pass; see [report](field-tests/upstream-byte-search-2026-11-24.md).
+    - [ ] Review decompile_all / bulk export against existing local tools.
     - [ ] Checkpoint extensions, Windows/special loaders, automatic profile
       refresh after retirement and automatic crashed-publisher lock recovery
       remain separate unqualified scope. Reopen to bind a newly saved generation;

@@ -1,0 +1,194 @@
+{
+  "status": "passed",
+  "failure": null,
+  "records": [
+    {
+      "label": "all",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-byte-search-final-runtime-2026-11-24/scripts/rea.mjs",
+        "search-bytes",
+        "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+        "de ad 11 22 be ef",
+        "--provider",
+        "ghidra",
+        "--limit",
+        "1001",
+        "--json"
+      ],
+      "evidence_id": "ev_04e145c101636413585423124efad7a46cec839bc67fd9ff4f566605e2a5c880",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "cross",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-byte-search-final-runtime-2026-11-24/scripts/rea.mjs",
+        "search-bytes",
+        "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+        "DEAD????BEEF",
+        "--provider",
+        "ghidra",
+        "--start",
+        "0x60000000",
+        "--end",
+        "0x60000005",
+        "--json"
+      ],
+      "evidence_id": "ev_9b08dda0b5e67ae62c3350d2082cfb616fce6a70c55bf2bedc3f5bede8713218",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "overlap-first",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-byte-search-final-runtime-2026-11-24/scripts/rea.mjs",
+        "search-bytes",
+        "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+        "a1 a1",
+        "--provider",
+        "ghidra",
+        "--start",
+        "0x60000300",
+        "--end",
+        "0x60000304",
+        "--limit",
+        "1",
+        "--json"
+      ],
+      "evidence_id": "ev_e153a49dbb635e2da94de2555a789df98fdb6b8476ddbb51dffc9feb0e19d61d",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "overlap-second",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-byte-search-final-runtime-2026-11-24/scripts/rea.mjs",
+        "search-bytes",
+        "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+        "a1 a1",
+        "--provider",
+        "ghidra",
+        "--start",
+        "0x60000300",
+        "--end",
+        "0x60000304",
+        "--limit",
+        "2",
+        "--cursor",
+        "284900dce8ff3ba05ac56a853da1e7dd9b4ab2cec1572a588f3e112d32ca11b4:0x60000301",
+        "--json"
+      ],
+      "evidence_id": "ev_f49c817df44c63c551cf9ea1cac98dd60191ca92a9ef257abe5fa5fa51f6dbf5",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "mask-first",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-byte-search-final-runtime-2026-11-24/scripts/rea.mjs",
+        "search-bytes",
+        "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+        "af",
+        "--provider",
+        "ghidra",
+        "--mask",
+        "f0",
+        "--start",
+        "0x60000300",
+        "--end",
+        "0x60000304",
+        "--limit",
+        "1",
+        "--json"
+      ],
+      "evidence_id": "ev_97a1e8b24cf03128a8312134a5e0ada8c41e5f821b1b1b085a7ffc653ca4de33",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "mask-rest",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-byte-search-final-runtime-2026-11-24/scripts/rea.mjs",
+        "search-bytes",
+        "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+        "a0",
+        "--provider",
+        "ghidra",
+        "--mask",
+        "f0",
+        "--start",
+        "0x60000300",
+        "--end",
+        "0x60000304",
+        "--limit",
+        "100",
+        "--cursor",
+        "a5fda95b83ef03d6e74c8caac5e129ee0ab0212798397ce823a4ce052bef8ada:0x60000301",
+        "--json"
+      ],
+      "evidence_id": "ev_f90d0f67034435950a9ad6d6cfd3d78a321cba5b65e552d2ad20663e9724445a",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "overlay",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-byte-search-final-runtime-2026-11-24/scripts/rea.mjs",
+        "search-bytes",
+        "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+        "de ad 11 22 be ef",
+        "--provider",
+        "ghidra",
+        "--start",
+        "overlay_test:0x60000000",
+        "--end",
+        "overlay_test:0x60000005",
+        "--json"
+      ],
+      "evidence_id": "ev_262e75e542ace9bc3b00084326716f2544ba82c169774e7ccf53717600e02a9b",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "invalid-pair",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-byte-search-final-runtime-2026-11-24/scripts/rea.mjs",
+        "search-bytes",
+        "/private/tmp/rea-byte-search-absent-target",
+        "4 8",
+        "--json"
+      ],
+      "expected_error": "invalid_request"
+    },
+    {
+      "label": "invalid-mask",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-byte-search-final-runtime-2026-11-24/scripts/rea.mjs",
+        "search-bytes",
+        "/private/tmp/rea-byte-search-absent-target",
+        "aa",
+        "--mask",
+        "ffff",
+        "--json"
+      ],
+      "expected_error": "invalid_request"
+    },
+    {
+      "label": "unconstrained",
+      "argv": [
+        "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/upstream-byte-search-final-runtime-2026-11-24/scripts/rea.mjs",
+        "search-bytes",
+        "/private/tmp/rea-byte-search-absent-target",
+        "????",
+        "--json"
+      ],
+      "expected_error": "invalid_request"
+    }
+  ],
+  "verifier_run": {
+    "run_id": "96c23b48-31a4-4dd6-8955-26a6c9deac16",
+    "verifier_pid": 89598,
+    "parent_pid": 82620,
+    "process_lineage": {
+      "status": "verified",
+      "observed_at": "2026-11-25T10:22:21.619Z",
+      "launcher_pid": 89598,
+      "launcher_parent_pid": 82620,
+      "process_group_id": 89598,
+      "descendants": []
+    }
+  }
+}

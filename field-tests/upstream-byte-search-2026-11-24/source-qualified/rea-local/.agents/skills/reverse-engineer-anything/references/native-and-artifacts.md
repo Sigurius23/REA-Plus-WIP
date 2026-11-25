@@ -1,0 +1,381 @@
+# Native, managed, and packaged artifacts
+
+## Recorded Linux crashes
+
+Use `inspect_recorded_crash` with an explicit Linux x86-64 ELF core path to
+inspect historical thread registers, signals, raw notes and original file
+ranges. It is independent of the active disassembler target. Source-bound
+register values and note bytes are observations; missing notes, signal-thread
+association and current executable/library identity remain unknown. PIDs are
+historical metadata and never authorize live attach or control.
+
+The optional `include_debugger_context` facet adds mapping candidates through
+caller-supplied GDB/pwndbg in an owned core-only session. Display names do not
+establish current file identity; zero reported flags leave permissions unknown.
+Requested unavailable context fails with setup guidance. See
+[recorded crashes](https://github.com/morluto/rea/blob/main/docs/recorded-crashes.md)
+for exact upstream profiles, bounds and verification coverage.
+
+## Offline ELF layout
+
+Use `inspect_binary_layout` with an explicit local ELF path for file-backed
+sections, symbols, relocations, linkage names, and static mitigation inferences
+without opening a disassembler target. When that complete record is already
+retained, call `inspect_analysis_view` for a summary, mitigations or linkage
+facet, one section or symbol, or a stable page. Do not re-run the decoder to
+read a single object.
+
+## Native targets
+
+For an unguarded arm64 Mach-O halfword dispatch, use
+`inspect_native_table_dispatch` when advertised, with an original absolute
+`path`, prefix `entry_address` and explicit `indices`. It reports byte-derived
+targets for that selection without a disassembler or CFG changes. CLI accepts
+`rea inspect-native-table-dispatch request.json --json`. A requested subset or
+the 16-bit machine mask does not establish a valid Swift enum domain. Optional
+`call_address` can establish a conditional singleton only for a supported
+literal suffix and exact direct BL; indirect callee identity stays unresolved.
+Preserve its assumptions, prefix stop reason and per-entry mapping failures.
+
+For “what does this function produce for these inputs?”, use
+`emulate_function` with explicit original file ranges mapped at selected
+addresses, canonical register bit patterns and fully initialized memory. It
+requires caller-supplied `REA_UNICORN_PYTHON` (Unicorn 2.1.2/Capstone 5.0.6),
+with no target process or disassembler session. CLI accepts the same JSON through
+`rea emulate-function request.json --json`.
+
+Use static evidence to select ranges and interpret arguments; do not silently
+invent a stack, object, relocated pointer, import stub or Swift/Objective-C
+runtime. Provide any needed stack/constants explicitly. The outer return stops
+before caller transfer, and external calls stop before invocation. Compare
+`registers_before` with requested values, inspect the stop reason and selected
+memory differences, and retain all assumptions. Instruction coverage describes
+one concrete path, including potentially partial faulting instructions.
+Derived `controlled-replay` Evidence is distinct from installed-app observation.
+Prefer source-built known-result checks before drawing conclusions from a new
+instruction/runtime shape. See [function emulation](https://github.com/morluto/rea/blob/main/docs/function-emulation.md)
+for register names, page-permission constraints, budgets and verified hosts.
+
+After `open_binary`, use focused search, procedure, or function tools directly.
+Use `binary_overview` when target metadata or inventory context helps answer the
+question. Prefer literal search, names, decompilation, callers, callees, and
+cross-references. Addresses and recovered pseudocode are analysis observations,
+not original source. Provider unavailability and unsupported metadata remain
+unknown rather than false.
+
+For large functions, request `analyze_function` with `detail: "summary"` in a
+retaining MCP session. Keep its `normalized_result.parent_evidence_id`; the
+complete dossier stays retained. Default complete delivery is unchanged.
+For CLI, `rea function ./app 0x100001000 --detail summary
+--evidence-output ./function.bundle.json --json` saves a new portable bundle
+before returning its summary. Import that bundle for later session views.
+Summary counts describe retained rows, not complete coverage; missing facets
+and unavailable value flow remain unknown. A summary is not a full dossier for
+comparison or further native derivation.
+
+For a completed `analyze_function` dossier, use `inspect_analysis_view` with
+`view: {kind: "native", facet: "value_flow_operations", offset: 0, limit: 32}`
+and the exact retained Evidence ID to read selected facts without reanalysis.
+Native facets also include procedure, pseudocode, assembly, basic blocks,
+comments, callers/callees, references, unresolved calls, referenced strings and
+names, the native API record, and value-flow summaries. Pseudocode offsets and limits count UTF-16
+code units; use the returned `next_offset` for continuation. Provider limitations
+and unavailable facts remain explicit; the complete parent Evidence is retained.
+
+For Swift throwing decoders, inspect `native_api.call_model_adjustments` and
+`native_value_flow.control_flow_uncertainties` when present. The supported
+ARM64 Swift repair models x21 as unknown after proved synchronous throwing
+callees in the private Program; it preserves explicit caller overrides and user
+signatures. Unproved error-register guards remain qualified by assembly and
+machine CFG. `truncated: false` describes retained p-code extent, not complete
+success/failure semantics. Historical dossiers can omit these newer facets.
+
+Swift enum-table recovery may cite `trusted-darwin-arm64-chkstk-v1` for an
+exact imported Darwin stack probe. Treat that as a normal-return ABI
+assumption, not proof of the target's runtime library binding or a completed
+allocation. The narrow profile requires a known private SP, models the
+16-byte scratch write below it, and preserves only X2/X8/X12/SP beyond ordinary
+callee-saved handling. The first lane requires an applied chained import with
+an original positive library ordinal matching the exact system install name;
+classic or ambiguous bindings remain unsupported. The separate
+`swift-dynamic-typed-snapshot-v1` lane can recover selected direct inline child
+SIMD projections from a dynamic source. Its Evidence assumes a recursively valid
+outer value at the exact runtime tag call, stable metadata/import bindings,
+normal nonwrapping monotonic stack allocations, live/disjoint intervals and a
+stable checked window through dispatch. The tag reader does not validate those
+premises. Earlier copy/retention, pre-tag nonescape and later lifetime behavior
+remain unproved; do not treat this as a copy-witness or actual-runtime binding
+proof. See the [Ghidra guide](https://github.com/morluto/rea/blob/main/docs/ghidra-provider.md#swift-enum-dispatch-recovery).
+
+To see which functions or Objective-C methods a Mach-O actually calls in one
+run, use `observe_native_calls` with explicit breakpoints and a bounded
+`duration_ms`/`max_events`. It launches a new process under LLDB, so the target
+runs and may change files or use the network. Hardened-runtime targets need the
+`get-task-allow` entitlement.
+
+Use `binary_session` with no arguments to check the open target, selected
+provider, and alignment. Its default `result.tool_availability` includes the
+complete tool inventory with availability reasons and remediation. When choosing
+a tool, use its entry in that result; `tools/list` retains the complete catalog
+when the target or provider state changes.
+
+## DOS MZ with Ghidra
+
+For an admitted DOS MZ target, use `inspect_native_load_image` to check measured
+loaded bytes, file mappings, relocations and the entry against the immutable
+snapshot. Keep `mismatch` and `unsupported` explicit. Verified import covers the
+reported static image, not runtime DOS or PC-98 hardware behavior.
+
+Use `read_bytes` for initialized analysis memory and `address_to_file_offset` to
+anchor one observed address to original file bytes. Loader fixups can change a
+word; a source offset does not imply byte equality. Complete function body ranges
+use inclusive ends and can contain gaps. Do not treat the enclosing span as code.
+For packed targets, retain the original and separately derived artifact identities;
+decompiling an unpacking stub does not recover the unpacked program.
+
+When reading Objective-C dispatch metadata, distinguish class implementation
+methods from protocol requirements: class methods report null requirement
+flags, while decoded protocol declarations retain required and optional facts.
+Property attributes remain raw name/value tokens; use the property's
+`atomicity` field for the decoded `N` marker or the default atomic behavior.
+Null class/meta flags, ivar counts, atomicity, or read-only values mean the
+selected provider did not establish that fact. Symbol names alone do not prove
+that a class is a root class or has no ivars.
+
+With `facet: "objc"`, `objc_class_name` (CLI `--objc-class-name`) selects an
+exact case-sensitive raw class name from the local Objective-C class index.
+The full identity scan runs before decode admission; preserve aliases,
+unresolved identities and admitted-class counts in `objc_class_selection`.
+The selected scope includes matching classes/metaclasses, properties and
+referenced protocols. Standalone protocol/category inventories are excluded,
+and symbol-only names cannot satisfy the selector. A Swift source name may
+differ from its encoded Objective-C runtime name. This does not change the
+aggregate record cap or prove runtime dispatch.
+
+`inspect_native_dispatch_metadata` can retain static resilient Swift
+requirement/witness pairs independently of instantiated runtime witness slots.
+Imported requirement flags and signatures can remain unknown even when a local
+executable address is recovered. With `facet: "swift-conformances"`,
+`swift_conformance_address` selects an exact indexed descriptor before spending
+decode admission on unrelated records; preserve its explicit selection scope
+and matched status. Runtime table ordering and instantiation remain unobserved.
+`swift_witness_templates` retains shipped generic pattern words, holes,
+conditional requirement/pack metadata and async-descriptor locations separately
+from dispatch slots. Preserve `extent_source`, raw flags/words, partial decode
+and `runtime_witness_table: "not_observed"`. A template word index is not an
+observed runtime slot, and an `async_descriptor` target is not a function entry.
+Generic conditions are not evaluated; no instantiator or target is executed.
+Use `swift_conformance_filter` with exact `protocol_name` and/or `type_name`
+(CLI `--swift-protocol-name` / `--swift-type-name`) when the descriptor address
+is unknown. The full identity index is scanned before matching decode admission;
+both names are ANDed, and names do not establish module uniqueness. Preserve
+`swift_conformance_discovery`'s examined/matched/admitted counts and unresolved
+pointer/bind records. Imported or malformed names are unknown; complete index
+selection does not establish complete witness decoding. Do not combine this
+filter with `swift_conformance_address` or use a symbol-only fallback to claim
+binary discovery.
+
+For one already-known nominal Swift class descriptor, select
+`facet: "swift-vtables"` and `swift_class_address` (CLI
+`--swift-class-address`). The reader proves membership across the complete
+type index before spending decode admission on that class. Preserve
+`swift_vtable_selection`'s examined/matching/unresolved counts, bounded source
+pointers and selected-scope coverage; aliases do not establish distinct classes.
+An unindexed or non-class address is not decoded, unresolved index identities
+prevent absence claims, and symbol-only names cannot satisfy the selector.
+This does not instantiate class metadata or extend unsupported vtable layouts.
+Do not combine class selection with a conformance selector or another facet.
+
+For a budget-limited investigation, select `facet: "objc"`, `"swift-conformances"`
+or `"swift-vtables"` instead of spending the aggregate `max_records` budget on
+all families. CLI uses `--facet`; omitted selection remains `"all"`.
+Unselected families are `not_requested`, and unavailable binary decoders remain
+unsupported. Selection does not raise the input-byte budget or prove that
+unsupported Swift layouts were decoded.
+The binary reader accepts explicit `max_file_bytes` (CLI `--max-file-bytes`),
+default 64 MiB and maximum 512 MiB, for the entire original file including all
+universal slices. Its error reports observed size and the required knob. This
+changes snapshot admission, not supported layouts or process RSS guarantees.
+
+## Managed PE/CLI
+
+Start with `inspect_managed_artifact`. REA+'s canonical managed inspection is
+execution-free: do not claim it loaded, reflected, executed, or resolved the
+assembly. Keep managed/native boundaries and unavailable reconstruction facts
+explicit. A bring-your-own reconstruction oracle is separate from the canonical
+parser and must not become an implicit setup dependency.
+
+For a large Ghidra import, `REA_GHIDRA_STARTUP_TIMEOUT_MS` bounds the entire
+startup. An explicit `REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS` (1–2,147,483) selects a
+separate bounded-analysis profile and can expose the stable partial Program
+after auto-analysis stops. Keep its measured completion/timeout flags and
+limitations in conclusions; incomplete inventories do not establish absence.
+The default profile still requires completed auto-analysis. Changing the policy
+requires a fresh binding, and the client's tool deadline must allow startup.
+
+When a saved expanded Ghidra project is available, select its absolute `.gpr`
+through `REA_GHIDRA_PROJECT_PATH`, optionally with one exact root
+`REA_GHIDRA_PROGRAM_NAME`, and supply the matching original executable. REA+
+opens a content-verified private copy without auto-analysis or analyst metadata
+edits. Original completeness/settings remain unknown and saved seed reports
+are historical. Import-time seeds, extensions, language and analysis-timeout
+overrides conflict with this mode. This is saved-project inspection, not
+automatic checkpoint publication or permission to save a caller project.
+
+If a partial Program has no procedure at an entry established by metadata or a
+resolved call, preserve that evidence and try the existing
+`REA_GHIDRA_SEED_FILE` workflow before declaring the code inaccessible. The
+UTF-8 TSV accepts `address<TAB>function`, `address<TAB>code` and named label
+entries. Reopen under the separately committed seed profile and check the
+reported application outcome. Seeds are caller assertions, not Ghidra
+discoveries; retain the original entry evidence, avoid invented method names,
+and keep decoding failures and remaining analysis limits explicit.
+
+### .NET NativeAOT
+
+NativeAOT binaries contain native machine code, so ordinary CIL decompilers
+cannot recover the original method bodies. When managed metadata/CIL is absent,
+classify that as a native-analysis route rather than claiming source recovery.
+Open the native image with the selected deep provider and inspect functions,
+strings, calls, and references; describe decompiler output as pseudocode and
+inference.
+
+NativeAOT images can be PE/COFF, ELF, or Mach-O executables and shared
+libraries. Use file bytes and loader metadata rather than suffixes to identify
+them. For packaged apps, inventory/extract with REA+'s artifact tools and retain
+the exact contained image identity. PDB, ELF debug, or dSYM sidecars are
+additional evidence only when the provider accepts and matches them.
+
+For deeper type recovery, the optional third-party
+[Ghidra NativeAOT analyzer](https://github.com/Washi1337/ghidra-nativeaot)
+rehydrates ReadyToRun metadata and can recover method tables, type relationships,
+frozen objects, and strings. This is a Ghidra extension with its own install and
+interactive workflow; it is not currently part of REA+'s managed parser or
+headless Ghidra bridge. Treat its annotations as analysis evidence, retain the
+binary identity, and do not present recovered types as original source. Header
+discovery may require a symbol or analyst identification of the ReadyToRun
+header, depending on the binary and analyzer version.
+
+## Packages and extraction
+
+Use `inspect_artifact` for application bundles, archives, ZIP/APK/IPA/MSIX/AppX,
+ASAR, or DMG inputs when the artifact graph and findings help answer the
+question. It returns the complete artifact graph inline. Cite graph manifest
+IDs when using them.
+
+For an IPA or a macOS `.app`, ZIP, or DMG, pass the inventory Evidence to
+`project_apple_application_graph`. It reports application roots and nested
+bundles by path convention: app extensions, XPC services, frameworks, login
+items, system and driver extensions, and plug-ins. It also lists privileged
+helpers, launchd plists, symlinks, and each bundle's `info_plist_path` and
+executable candidates. Roles are path conventions, not parsed plists; read the
+listed plists with `inspect_plist`.
+
+After `open_binary` on a `.app` or Mach-O, use `trace_dylib_resolution` to see
+which file each `@rpath`, `@loader_path` and `@executable_path` load reaches for
+every executable in the bundle. It also lists missing or weak loads and earlier
+`@rpath` candidates that are absent. Narrow large bundles with `roots` or
+`architecture`. System paths stay undetermined because the dyld shared cache
+provides them.
+
+Use `extract_artifact` when materialized files are needed. It takes no arguments
+and materializes all regular files into a fresh temporary directory chosen by
+REA+. Symlinks and encrypted entries are inventory facts, not extractable files.
+The result reports the materialized directory; callers do not choose the
+destination. No separate permission grant is needed.
+
+Native DMG traversal automatically uses a read-only mount on supported macOS
+hosts, with an owned temporary mount directory and cleanup. It needs no approval
+flag. Unsupported hosts or mount failures remain explicit limitations; do not
+claim child inventory when only root identity is available. Extraction is a
+separate filesystem-writing operation.
+
+For headerless DOS COM, explicitly open with `format: "dos-com"` (CLI
+`--target-format dos-com`). Inspect the load image before trusting function
+analysis: the entry is `0x10100`, file offset zero, with imposed real-mode segment
+context. PSP/stack/device state remains unmodeled. See [DOS guide](https://github.com/morluto/rea/blob/main/docs/ghidra-dos.md).
+
+### Function annotations in Ghidra
+
+Use `annotate_native_function` for one function name and/or entry comments, with at least one explicit change. Review its annotation readback and refreshed dossier inline. Changes are atomic and session-scoped; empty comments clear them, omitted fields preserve them. Later MCP calls observe edits until close. CLI `annotate-native-function` returns the updated analysis before discarding the session. Original executable bytes are unchanged; edits invalidate immutable snapshots. Windows P0 does not admit database mutations. For naming only, `set_address_name` / `set_addresses_names` also work with Ghidra: they name function entries or data addresses (primary labels) and return compact per-address success booleans instead of a dossier.
+
+## Offline PE resource inventory
+
+Use `inspect_pe_resources` with an absolute `path`, or
+`rea inspect-pe-resources ./selected.exe --json`, for portable PE32/PE32+
+resource inspection without opening a native target. Preserve returned Evidence:
+type/name/language IDs and UTF-16 names, original directory/data/payload ranges,
+code pages, payload hashes and static icon-group references. Same-language icon
+resolution is explicit; missing references and size mismatch remain visible.
+Other payloads are opaque, and this operation does not decode images or simulate
+Windows resource loading. Consult the budgets and supported tree profile in
+[offline binary diagnostics](https://github.com/morluto/rea/blob/main/docs/binary-diagnostics.md).
+
+## Chromium resource packs
+
+Use `inspect_chromium_resources` on an explicit unwrapped DataPack v4/v5 path;
+no active native target is required. Page original IDs/ranges/hashes and direct
+aliases, then select an exact `resource_id` for complete bounded bytes. Gzip and
+Chromium-envelope Brotli are decoded only for that selected resource; use
+`decode: false` (CLI `--stored`) to keep stored bytes. Encoding labels are hints,
+and filenames/MIME types are not embedded. Preserve source pack digest, numeric
+ID, stored range/hash and decoded digest if publishing selected bytes for later
+inert JavaScript analysis. An analyst-chosen filename is not recovered metadata.
+Resource limits fail explicitly; large retained Evidence uses export rather than
+reanalysis. See [Chromium resources](https://github.com/morluto/rea/blob/main/docs/chromium-resources.md).
+
+For literal discovery, `search_chromium_resources` searches a bounded canonical
+window, decoding each admitted payload once and grouping aliases. The query's
+encoding describes needle bytes, not a text-only filter. Preserve exact decoded
+byte ranges, both digests, skipped records, next canonical cursor and pack
+identity (`expected_sha256` on continuation). Match/scan/aggregate limits do not
+establish whole-pack absence. Search reports first occurrences per payload;
+optional text ranges require lossless decoding. No original filename or feature
+mapping follows from a string match.
+
+### Owned Ghidra checkpoints
+
+With `REA_GHIDRA_CHECKPOINT_DIR`, native Linux/macOS ELF/PE/thin Mach-O sessions
+can save initial analysis and acknowledged metadata edits. Seed content, full
+profile and bridge sources identify the checkpoint; restoration verifies its
+packed Program and preserves original partial-analysis status. Existing-project
+mode, extensions and Windows are refused. Inspect `effects.persists_after_close`
+on annotations; publication failure can leave an in-memory edit whose saved
+state is unconfirmed. Reopen after retirement to bind the saved generation.
+Publisher locks left by a crash require verified manual recovery or a new
+checkpoint directory. Never delete a lock solely from a PID guess.
+
+### Retained native inventories and batches
+
+Use `detail: summary` on native names/procedures/strings inventories, searches
+and explicit `batch_decompile` when a complete reply is too large. Complete
+Evidence remains retained. Page `inspect_analysis_view` with `native-inventory`
+or `batch-decompile`; preserve original row/batch indices and outcome caveats.
+Batch items omit bodies by default, support filtered pages, and expose one
+indexed successful pseudocode body as Unicode-safe UTF-16 pages. A null body
+is unavailable; interrupted batches expose only completed-prefix facts.
+CLI summary requires `--evidence-output` so the complete source survives exit.
+Inventory counts and missing matches never establish complete program discovery.
+
+
+Native relationship summaries and pages: `procedure_address`, `procedure_callees`,
+`procedure_callers`, `resolve_containing_procedure` and `get_call_graph` retain
+complete parents when `detail: "summary"` is selected. Read `native-observation`
+pages and `native-context` overview/profile/limitations from that parent with
+`inspect_analysis_view`. Retained `xrefs` records also support those views.
+Pages preserve duplicate indices and explicit graph node errors; exhaustion is
+only over retained observations. Read source caveats before interpretation.
+Missing profiles have null rows and unavailable coverage, not an empty proof.
+`rea native-observation` provides the same reads and portable summary bundles.
+
+
+Use `search_bytes` for known encoded bytes in Ghidra's initialized analyzed
+memory, including loader fixups. This differs from original-file
+`scan_byte_patterns` and provider-defined string search. Whole-byte ?? wildcards
+and optional bit masks are supported. Preserve inclusive bounds, page coverage,
+skipped unloaded/overlay/uninitialized blocks, nullable original-file offsets
+and next_cursor. Adjacent eligible blocks may contain one match; gaps end a run.
+Read all pages for the same query/Program generation before asserting a bounded
+negative. A limit is a match-page size, not a scan-work budget. Metadata edits
+or a different profile/query can invalidate a cursor without proving target
+bytes changed. CLI `search-bytes` shares these semantics; no target runs.

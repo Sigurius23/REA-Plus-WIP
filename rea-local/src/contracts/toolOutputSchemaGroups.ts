@@ -1,3 +1,4 @@
+import { byteSearchResultSchema } from "../domain/native/bytePattern.js";
 import { analysisDetailOutputSchemaOf } from "./analysisDetail.js";
 import { batchDecompileResultSchema } from "../domain/native/batchDecompile.js";
 import { z } from "zod";
@@ -126,6 +127,7 @@ export const officialOutputSchemas: Readonly<Record<string, z.ZodObject>> = {
   procedure_callers: analysisDetailOutputSchemaOf(addressList),
   procedure_info: procedureInfoOutput,
   read_function_instructions: evidenceResultOf(functionInstructionWindowSchema),
+  search_bytes: evidenceResultOf(byteSearchResultSchema),
   read_bytes: evidenceResultOf(
     z.object({
       address: z.string(),

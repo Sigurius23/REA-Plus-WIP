@@ -1,3 +1,9 @@
+import { toolContract } from "../contracts/toolContracts.js";
+import { byteSearchPageFields } from "../domain/native/bytePattern.js";
+import { jsonObjectSchema } from "../domain/jsonValue.js";
+import { projectAnalysisError } from "../domain/analysisErrorProjection.js";
+import { analysisInputErrorFromIssues } from "../domain/inputIssueProjection.js";
+import { withCommandCancellation } from "./commandCancellation.js";
 import { z } from "incur";
 
 import type { DirectAnalysis } from "../composition/directAnalysis.js";
@@ -28,6 +34,7 @@ export const registerCoreNativeCommands = (
   runDirectAnalysis: DirectAnalysis["runDirectAnalysis"],
 ): void => {
   registerAnnotationCommand(cli, logger, runDirectAnalysis);
+  registerByteSearchCommand(cli, logger, runDirectAnalysis);
   cli.command(CLI_COMMANDS.inspectNativeLoadImage, {
     description:
       "Verify loaded native bytes, source mappings, relocations and entry",
@@ -526,3 +533,65 @@ const registerAnnotationCommand = (
       ),
   });
 };
+
+/** Read-only loaded-memory search; malformed patterns are refused before target admission. */
+function registerByteSearchCommand(
+  cli: CliInstance,
+  logger: Logger,
+  run: DirectAnalysis["runDirectAnalysis"],
+): void {
+  cli.command(CLI_COMMANDS.searchBytes, {
+    description:
+      "Find masked signatures in initialized analyzed memory, with page coverage and continuation",
+    args: z.object({ path: z.string(), pattern: z.string() }),
+    options: z.object({
+      mask: z.string().optional(),
+      start: z.string().optional(),
+      end: z.string().optional(),
+      ...byteSearchPageFields,
+      provider: providerSelectionOption,
+      "target-format": formatSelectionOption,
+      "staging-dir": stagingDirSelectionOption,
+    }),
+    run: ({ args, options: o }) =>
+      withCommandCancellation((signal) =>
+        logCliCommand(logger, CLI_COMMANDS.searchBytes, () => {
+          const input = {
+            pattern: args.pattern,
+            limit: o.limit,
+            ...(o.mask === undefined ? {} : { mask: o.mask }),
+            ...(o.start === undefined ? {} : { start: o.start }),
+            ...(o.end === undefined ? {} : { end: o.end }),
+            ...(o.cursor === undefined ? {} : { cursor: o.cursor }),
+          };
+          const parsed =
+            toolContract("search_bytes").inputSchema.safeParse(input);
+          if (!parsed.success)
+            return Promise.resolve({
+              error: "Byte search input is invalid",
+              ...projectAnalysisError(
+                analysisInputErrorFromIssues(
+                  "search_bytes",
+                  parsed.error.issues,
+                  input,
+                  { cause: parsed.error },
+                ),
+              ),
+            });
+          return run(
+            args.path,
+            "search_bytes",
+            jsonObjectSchema.parse(parsed.data),
+            {
+              ...directAnalysisOptions(logger, {
+                providerId: o.provider,
+                formatHint: o["target-format"],
+                stagingDir: o["staging-dir"],
+              }),
+              signal,
+            },
+          );
+        }),
+      ),
+  });
+}

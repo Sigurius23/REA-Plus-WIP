@@ -1,0 +1,135 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-arc-final",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000",
+    "REA_GHIDRA_ANALYSIS_TIMEOUT_SECONDS": "1",
+    "REA_GHIDRA_SEED_FILE": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/arc-restore-ui-2026-11-24/seeds.tsv",
+    "REA_GHIDRA_CHECKPOINT_DIR": "/private/tmp/rea-byte-search-arc-checkpoints-2026-11-25-final",
+    "REA_MCP_MAX_RESPONSE_BYTES": "10485760"
+  },
+  "timeout_ms": 390000,
+  "idle_timeout_ms": 180000,
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "arc-open",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/.cache/arc-fixed-inputs-2026-11-13/Arc-arm64",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "bytes16",
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x1012a571c",
+        "length": 16
+      },
+      "expect_success": true
+    },
+    {
+      "label": "bytes128",
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x1012a571c",
+        "length": 128
+      },
+      "expect_success": true
+    },
+    {
+      "label": "exact",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-arc-final/bytes16.evidence.json",
+          "select": [
+            "normalized_result",
+            "bytes_hex"
+          ]
+        },
+        "start": "0x1012a571c",
+        "end": "0x1012a7e73"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "mask",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-arc-final/bytes16.evidence.json",
+          "select": [
+            "normalized_result",
+            "bytes_hex"
+          ]
+        },
+        "mask": "ffffffffffffffff0000000000000000",
+        "start": "0x1012a571c",
+        "end": "0x1012a579b"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "zero-first",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "00",
+        "start": "0x1012a571c",
+        "end": "0x1012a579b",
+        "limit": 1
+      },
+      "expect_success": true
+    },
+    {
+      "label": "zero-rest",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "00",
+        "start": "0x1012a571c",
+        "end": "0x1012a579b",
+        "limit": 128,
+        "cursor": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-arc-final/zero-first.evidence.json",
+          "select": [
+            "normalized_result",
+            "next_cursor"
+          ]
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "label": "offset",
+      "name": "address_to_file_offset",
+      "arguments": {
+        "address": "0x1012a571c"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "reducer",
+      "name": "read_function_instructions",
+      "arguments": {
+        "procedure": "0x1012a571c"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "export",
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-arc-final/final.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "close",
+      "name": "close_binary",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}

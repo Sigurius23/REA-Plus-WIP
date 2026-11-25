@@ -463,3 +463,68 @@ cleanup, resource/configuration failure or startup timeout. A typed failure
 preserves completed nodes, pending addresses and available source identity;
 ordinary node errors remain recorded and other branches can continue. Workflow
 revision 2 separates these interruption semantics from historical graph replay.
+
+
+## Masked search of analyzed memory
+
+`search_bytes` and CLI `rea search-bytes PATH 'de ad ?? ?? be ef' --provider ghidra`
+search initialized byte-addressed memory after loading, including loader fixups.
+This differs from `scan_byte_patterns`, which scans original artifact bytes.
+A byte match establishes neither a string object nor runtime use.
+
+Patterns contain hexadecimal pairs or whole-byte `??` wildcards. Whitespace is
+allowed only between complete pairs, with no leading/trailing whitespace. An
+optional equal-length hexadecimal mask selects bits; `a0` with mask `f0`
+matches a0 through af. Wildcard bytes remain unconstrained even under an explicit
+mask. At least one bit must be constrained. Caller spelling remains in Evidence;
+the shared pattern owner sends canonical masked bytes across the private bridge.
+
+Optional start/end addresses are inclusive and select one address space. A
+match must fit wholly inside the selection. Without bounds, loaded non-overlay
+blocks are eligible; skipped unloaded and loaded-overlay blocks are listed
+separately (a block in both categories is listed once as unloaded). Explicitly
+bound an overlay or unloaded space to inspect it. Uninitialized blocks are never
+searched. Adjacent eligible initialized blocks form one contiguous run, so a
+match may cross their boundary; gaps and excluded blocks end the run. Larger
+addressable units are explicitly unsupported rather than counted as bytes.
+
+Matches identify their start address, starting block, containing analyzed
+procedure when observed, and a unique original-target file offset or null.
+An auxiliary FileBytes object's local offset is not an original-target offset.
+The existing address_to_file_offset tool uses the same exact-target source
+identity rule and explicitly refuses such mappings. A genuine target header
+can still have offset zero.
+The starting offset does not imply that the complete match is contiguous in the
+original file or that loader-adjusted memory equals file bytes.
+
+`limit` selects a result page (default 100), not a work/byte budget. The hard
+count bound follows the bridge's signed array index; actual memory, deadline and
+transport admission remain separate. Use narrower bounds for a smaller search.
+`searched.blocks` and its byte count describe this page, including a lookahead
+match used to discover continuation. Page coverage may therefore overlap the
+next page. Exclusion arrays describe the selected query's skipped blocks and
+can repeat across pages. `complete` means no more matches in eligible memory;
+it does not claim that skipped memory or unknown runtime state was examined.
+
+Continue by reusing the same query with `cursor: next_cursor`; the page limit
+may change. Cursors bind target, full analysis profile, canonical masked pattern,
+bounds, document and the Program generation after bridge preparation. Equivalent
+masked spellings can continue the same query. Metadata edits invalidate earlier
+cursors. A binding mismatch identifies cursor as the issue, leaves the differing
+component unknown and directs a new search or the original unchanged context.
+Never describe it as proof that the executable changed. Reopening a different
+project/checkpoint generation requires starting over. Original target bytes are
+never modified, and the ordinary Ghidra cancellation/cleanup owner remains in
+charge of interrupted reads.
+
+CLI options are `--mask`, `--start`, `--end`, `--limit` and `--cursor`; malformed
+patterns are refused before opening the target. CLI and MCP share query semantics
+and Evidence. This tool is currently Ghidra-only; other providers retain their
+existing explicit capability unavailability.
+
+
+Native disk failures reported by the bridge carry an explicit disk_exhausted
+code. REA+ projects that as a disk resource constraint with capacity remediation;
+arbitrary remote error text and stale startup logs do not establish exhaustion.
+This includes failures while publishing the first owned checkpoint before the
+first requested read completes.

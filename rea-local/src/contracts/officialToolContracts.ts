@@ -19,7 +19,7 @@ import {
   nativeCallTargetsInputSchema,
 } from "../domain/native/nativeInstruction.js";
 import { functionInstructionInputSchema } from "./functionInstructionContract.js";
-import { HOPPER_MEMORY_TOOL_DEFINITIONS } from "./hopperMemoryContracts.js";
+import { NATIVE_MEMORY_TOOL_DEFINITIONS } from "./nativeMemoryDefinitions.js";
 import { analysisSearchInput } from "./analysisSearchContract.js";
 
 const official = <Name extends string, Schema extends z.ZodObject>(
@@ -179,8 +179,20 @@ export const OFFICIAL_TOOL_CONTRACTS = [
     "Return every raw instruction for one analyzed procedure. Instruction text and body extent are provider-specific. Ghidra terminal-call assumptions that may cut the analyzed body are reported in limitations.",
     functionInstructionInputSchema,
   ),
-  ...HOPPER_MEMORY_TOOL_DEFINITIONS.map(({ name, description, inputSchema }) =>
-    official(name, description, inputSchema),
+  official(
+    NATIVE_MEMORY_TOOL_DEFINITIONS.search_bytes.name,
+    NATIVE_MEMORY_TOOL_DEFINITIONS.search_bytes.description,
+    NATIVE_MEMORY_TOOL_DEFINITIONS.search_bytes.inputSchema,
+  ),
+  official(
+    NATIVE_MEMORY_TOOL_DEFINITIONS.read_bytes.name,
+    NATIVE_MEMORY_TOOL_DEFINITIONS.read_bytes.description,
+    NATIVE_MEMORY_TOOL_DEFINITIONS.read_bytes.inputSchema,
+  ),
+  official(
+    NATIVE_MEMORY_TOOL_DEFINITIONS.address_to_file_offset.name,
+    NATIVE_MEMORY_TOOL_DEFINITIONS.address_to_file_offset.description,
+    NATIVE_MEMORY_TOOL_DEFINITIONS.address_to_file_offset.inputSchema,
   ),
   official(
     "procedure_references",

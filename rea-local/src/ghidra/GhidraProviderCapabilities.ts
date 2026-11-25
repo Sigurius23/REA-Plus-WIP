@@ -92,6 +92,11 @@ export const limitationsFor = (
         ...common,
         "Independent verification supports DOS MZ and explicitly selected COM, including measured COM entry context. Measured source mappings use inclusive end addresses and complete region digests; no target execution or project mutation occurs.",
       ];
+    case "search_bytes":
+      return [
+        ...common,
+        "Byte search requires byte-addressed memory and observes initialized analyzed memory, including loader fixups; matches do not establish string identity or runtime use. Bounds are inclusive. Default searches omit unloaded blocks and loaded overlays, listed separately; explicit bounds select one address space. Uninitialized blocks are never searched. Matches may cross adjacent eligible initialized blocks; gaps end a range. A file offset describes only the start byte. Coverage is page-local and may overlap lookahead on continuation. Cursors bind the target, full analysis profile, canonical pattern/mask, bounds, document and Program modification generation; a mismatch does not identify which component differs.",
+      ];
     case "read_bytes":
       return [
         ...common,
@@ -198,10 +203,16 @@ export const CAPABILITIES: readonly CapabilityDescriptor[] = Object.freeze(
       reason: null,
       // Project writes are private import machinery. Analysis reads are bound
       // to the artifact/profile; session annotations disable snapshot replay.
+      // Search cursors additionally bind live Program generations and must be revalidated.
       ...(GHIDRA_MUTATING_OPERATIONS.has(operation) ||
       operation === "list_documents"
         ? {}
-        : { cachePolicy: "snapshot" as const }),
+        : {
+            cachePolicy:
+              operation === "search_bytes"
+                ? ("live" as const)
+                : ("snapshot" as const),
+          }),
       effects: Object.freeze({
         mutatesArtifact: GHIDRA_MUTATING_OPERATIONS.has(operation),
         launchesProcess: true,

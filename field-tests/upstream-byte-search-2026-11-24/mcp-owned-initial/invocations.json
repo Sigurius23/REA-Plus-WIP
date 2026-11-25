@@ -1,0 +1,267 @@
+[
+  {
+    "name": "open_binary",
+    "arguments": {
+      "path": "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+      "provider_id": "ghidra"
+    },
+    "reply": "open.reply.json",
+    "elapsed_ms": 4212,
+    "is_error": false,
+    "thrown": null
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad 11 22 be ef",
+      "limit": 1001
+    },
+    "reply": "all.reply.json",
+    "elapsed_ms": 10910,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_72022ee7eb13f90f60610d341f942197c916926616c0ddcd60afefdc509c6b5c"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "DEAD????BEEF",
+      "start": "0x60000000",
+      "end": "0x60000005"
+    },
+    "reply": "cross.reply.json",
+    "elapsed_ms": 14,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_27e6a9c68ece048600bfdf153ee576dcefb06cd5c1eefcdde9efb863eaa89a3e"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad 11 22 be ef",
+      "start": "0x60000000",
+      "end": "0x60000004"
+    },
+    "reply": "end-inside.reply.json",
+    "elapsed_ms": 7,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_61b07972019065c0928798c81b495fdce0f56f8f9cf06dbbc23eac8afc38affc"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad ?? ?? be ef",
+      "start": "0x60000100",
+      "end": "0x60000105"
+    },
+    "reply": "gap.reply.json",
+    "elapsed_ms": 5,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_3e097fef1fa0c38943a2c3cb4f1c2803c35a80f36ae27eec5f43510bf0443d20"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "a1 a1",
+      "start": "0x60000300",
+      "end": "0x60000304",
+      "limit": 1
+    },
+    "reply": "overlap-first.reply.json",
+    "elapsed_ms": 7,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_e9cbb224178e5ffb42b449890c23f7cae82fdc88f2733634fefdd12d927a2bc2"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "a1 a1",
+      "start": "0x60000300",
+      "end": "0x60000304",
+      "limit": 2,
+      "cursor": "884ff2ec2a1364f732424ea896462459e5b954c42acdfdfc851d9981c5486437:0x60000301"
+    },
+    "reply": "overlap-second.reply.json",
+    "elapsed_ms": 10,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_78a848f1b9672e6903d9130b52462a05987b3c43faef78b38a44084be0675817"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "a1 a1",
+      "start": "0x60000300",
+      "end": "0x60000304",
+      "limit": 1,
+      "cursor": "884ff2ec2a1364f732424ea896462459e5b954c42acdfdfc851d9981c5486437:0x60000303"
+    },
+    "reply": "overlap-final.reply.json",
+    "elapsed_ms": 12,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_6ccb91bc627214814d50af6702bb75ded6359df314d12c3e7ba209aa9fde802e"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "a1 a1 a1",
+      "start": "0x60000300",
+      "end": "0x60000304",
+      "cursor": "884ff2ec2a1364f732424ea896462459e5b954c42acdfdfc851d9981c5486437:0x60000301"
+    },
+    "reply": "bad-cursor.reply.json",
+    "elapsed_ms": 10,
+    "is_error": true,
+    "thrown": null
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "af",
+      "mask": "f0",
+      "start": "0x60000300",
+      "end": "0x60000304",
+      "limit": 1
+    },
+    "reply": "mask-first.reply.json",
+    "elapsed_ms": 6,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_7fe6661d7c389fbdef5a439928a5aca012437bdd175c3f7abaf3d671567891b6"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "a0",
+      "mask": "f0",
+      "start": "0x60000300",
+      "end": "0x60000304",
+      "limit": 100,
+      "cursor": "322a16c37946292f9aa292d146138c0a34543bd1afcbda41b4248f1fd8c909ec:0x60000301"
+    },
+    "reply": "mask-rest.reply.json",
+    "elapsed_ms": 9,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_2aca5367aebe61e2b9f04c4eaafd337f2c9a7edf9bf6a8edb38d201b17064f24"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad 11 22 be ef",
+      "start": "overlay_test:0x60000000",
+      "end": "overlay_test:0x60000005"
+    },
+    "reply": "overlay.reply.json",
+    "elapsed_ms": 5,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_73cfd253ed163dd7a87d43bf5f093619be269cc6ae9f7a49aff55d409339b425"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad 11 22 be ef",
+      "start": "OTHER:0x60000400",
+      "end": "OTHER:0x60000405"
+    },
+    "reply": "unloaded.reply.json",
+    "elapsed_ms": 5,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_fb8760bfff1b23141805b87ffb481bac3ca73503e8a86ba19d9ca51e5b88f5a1"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad 11 22 be ef",
+      "start": "0x60000500",
+      "end": "0x60000505"
+    },
+    "reply": "auxiliary.reply.json",
+    "elapsed_ms": 5,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_967dac81adb42a228356800be880a5c58119f966e26569a5056d0b8244d8b53c"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "de ad",
+      "start": "0x60000000",
+      "end": "overlay_test:0x60000005"
+    },
+    "reply": "wrong-space.reply.json",
+    "elapsed_ms": 3,
+    "is_error": true,
+    "thrown": null
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "4 8"
+    },
+    "reply": "invalid-pattern.reply.json",
+    "elapsed_ms": 2,
+    "is_error": true,
+    "thrown": null
+  },
+  {
+    "name": "read_bytes",
+    "arguments": {
+      "address": "0x100000460",
+      "length": 4
+    },
+    "reply": "function-bytes.reply.json",
+    "elapsed_ms": 13,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_b0c6d914f3e3615508cd3886491a736f8eb43541cbd05ec5e4f57ed051426caa"
+  },
+  {
+    "name": "address_to_file_offset",
+    "arguments": {
+      "address": "0x100000460"
+    },
+    "reply": "function-offset.reply.json",
+    "elapsed_ms": 10,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_7dfef387cdd5e3670504935f463a500bcb4129d4c6b49ec0d816e8b65c01ea0b"
+  },
+  {
+    "name": "search_bytes",
+    "arguments": {
+      "pattern": "ff4300d1",
+      "start": "0x100000460",
+      "end": "0x100000463"
+    },
+    "reply": "function-search.reply.json",
+    "elapsed_ms": 9,
+    "is_error": false,
+    "thrown": null,
+    "evidence_id": "ev_d714bcb4bb5589cdfd0c73bc3ee3866375d3d7b22f73e95c0f1be74b7ebadabb"
+  },
+  {
+    "name": "export_evidence_bundle",
+    "arguments": {
+      "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-owned-initial/final.bundle.json"
+    },
+    "reply": "export.reply.json",
+    "elapsed_ms": 32,
+    "is_error": false,
+    "thrown": null
+  },
+  {
+    "name": "close_binary",
+    "arguments": {},
+    "reply": "close.reply.json",
+    "elapsed_ms": 461,
+    "is_error": false,
+    "thrown": null
+  }
+]

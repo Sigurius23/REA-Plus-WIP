@@ -1,0 +1,251 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-owned-initial",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_PROJECT_PATH": "/private/tmp/rea-byte-search-fixture-2026-11-24/project/owned.gpr",
+    "REA_GHIDRA_PROGRAM_NAME": "owned-target",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "label": "open",
+      "name": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "all",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "de ad 11 22 be ef",
+        "limit": 1001
+      },
+      "expect_success": true
+    },
+    {
+      "label": "cross",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "DEAD????BEEF",
+        "start": "0x60000000",
+        "end": "0x60000005"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "end-inside",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "de ad 11 22 be ef",
+        "start": "0x60000000",
+        "end": "0x60000004"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "gap",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "de ad ?? ?? be ef",
+        "start": "0x60000100",
+        "end": "0x60000105"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "overlap-first",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "a1 a1",
+        "start": "0x60000300",
+        "end": "0x60000304",
+        "limit": 1
+      },
+      "expect_success": true
+    },
+    {
+      "label": "overlap-second",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "a1 a1",
+        "start": "0x60000300",
+        "end": "0x60000304",
+        "limit": 2,
+        "cursor": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-owned-initial/overlap-first.evidence.json",
+          "select": [
+            "normalized_result",
+            "next_cursor"
+          ]
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "label": "overlap-final",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "a1 a1",
+        "start": "0x60000300",
+        "end": "0x60000304",
+        "limit": 1,
+        "cursor": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-owned-initial/overlap-second.evidence.json",
+          "select": [
+            "normalized_result",
+            "next_cursor"
+          ]
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "label": "bad-cursor",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "a1 a1 a1",
+        "start": "0x60000300",
+        "end": "0x60000304",
+        "cursor": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-owned-initial/overlap-first.evidence.json",
+          "select": [
+            "normalized_result",
+            "next_cursor"
+          ]
+        }
+      },
+      "expect_success": false
+    },
+    {
+      "label": "mask-first",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "af",
+        "mask": "f0",
+        "start": "0x60000300",
+        "end": "0x60000304",
+        "limit": 1
+      },
+      "expect_success": true
+    },
+    {
+      "label": "mask-rest",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "a0",
+        "mask": "f0",
+        "start": "0x60000300",
+        "end": "0x60000304",
+        "limit": 100,
+        "cursor": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-owned-initial/mask-first.evidence.json",
+          "select": [
+            "normalized_result",
+            "next_cursor"
+          ]
+        }
+      },
+      "expect_success": true
+    },
+    {
+      "label": "overlay",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "de ad 11 22 be ef",
+        "start": "overlay_test:0x60000000",
+        "end": "overlay_test:0x60000005"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "unloaded",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "de ad 11 22 be ef",
+        "start": "OTHER:0x60000400",
+        "end": "OTHER:0x60000405"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "auxiliary",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "de ad 11 22 be ef",
+        "start": "0x60000500",
+        "end": "0x60000505"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "wrong-space",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "de ad",
+        "start": "0x60000000",
+        "end": "overlay_test:0x60000005"
+      },
+      "expect_success": false
+    },
+    {
+      "label": "invalid-pattern",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "4 8"
+      },
+      "expect_success": false
+    },
+    {
+      "label": "function-bytes",
+      "name": "read_bytes",
+      "arguments": {
+        "address": "0x100000460",
+        "length": 4
+      },
+      "expect_success": true
+    },
+    {
+      "label": "function-offset",
+      "name": "address_to_file_offset",
+      "arguments": {
+        "address": "0x100000460"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "function-search",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-owned-initial/function-bytes.evidence.json",
+          "select": [
+            "normalized_result",
+            "bytes_hex"
+          ]
+        },
+        "start": "0x100000460",
+        "end": "0x100000463"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "export",
+      "name": "export_evidence_bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-owned-initial/final.bundle.json"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "close",
+      "name": "close_binary",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}

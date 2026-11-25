@@ -26,6 +26,34 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest upstream analyzed-memory search integration (2026-11-25)
+
+Read `field-tests/upstream-byte-search-2026-11-24.md` and the verification receipt.
+search_bytes / CLI search-bytes now inspect initialized byte-addressed loaded
+memory with masks, inclusive bounds, contiguous-block matching, exclusions and
+bound continuation. Cursors commit the query/profile and Program generation;
+metadata edits invalidate them. Search is live rather than immutable replay.
+
+Owned controls caught the existing original-file mapping tool returning an
+auxiliary object's offset zero as a target offset. Both consumers now share the
+full immutable target source rule; genuine header offset zero remains valid.
+A real concurrent Arc/package ENOSPC failure also exposed missing remote capacity
+classification. The bridge now emits an owned disk code and the adapter projects
+capacity remediation; unrelated remote strings stay unclassified. Ten controlled
+Java cases and the MCP boundary qualify the repair. The failed runs remain saved.
+
+90 selected tests, seven full CLI/MCP Evidence pairs, release MCP controls,
+package/type/docs gates and 30 historical snapshots qualify this slice. The user
+approved npm download-cache cleanup; installed packages were preserved. Arc's
+serial release replay succeeds with the same 2,537 seeds and one-second policy.
+Its complete normalized reducer remains exactly 10,072 bytes / 2,518 instructions.
+Exact/masked queries find its start and two pages recover all 12 selected zero
+bytes. New bridge/profile commitments correctly produce new Evidence IDs.
+
+No Arc/helper/shipped JavaScript, account, profile, UI or service was executed
+or used. Full Arc recovery and Client unknown revision 3 remain open. Next item
+62 scope is decompile_all / bulk export; other integration groups remain open.
+
 ## Latest upstream native relationship/context integration (2026-11-24)
 
 Read `field-tests/upstream-native-observations-2026-11-24.md` and its verification

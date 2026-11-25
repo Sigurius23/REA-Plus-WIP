@@ -978,6 +978,20 @@ const projectPrimarySessionError = (
     return new AnalysisInputError(operation, { cause: failure }, [
       { path: ["name"], reason: "invalid_value", message: failure.message },
     ]);
+  if (
+    operation === "search_bytes" &&
+    failure.kind === "remote" &&
+    failure.remoteCode === "byte_search_cursor_mismatch"
+  )
+    return new AnalysisInputError(operation, { cause: failure }, [
+      {
+        path: ["cursor"],
+        reason: "invalid_value",
+        message:
+          failure.message +
+          " Reuse the original target, profile, pattern, mask, bounds, document and unchanged Program generation, or start a new search without cursor. The differing component is unknown; an unchanged retry will fail again.",
+      },
+    ]);
   if (failure.kind === "cancelled")
     return new AnalysisCancelledError(operation);
   const diskExhaustion = ghidraDiskExhaustion(failure);

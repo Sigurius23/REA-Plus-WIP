@@ -108,3 +108,26 @@ it("does not reclassify an operation from a stale startup exception", () => {
   );
   expect(ghidraDiskExhaustion(failure)).toBeUndefined();
 });
+
+it("recognizes the bridge-owned capacity code without reinterpreting other remote messages", () => {
+  expect(
+    ghidraDiskExhaustion(
+      new GhidraSessionError(
+        "remote",
+        "IOException: No space left on device",
+        { phase: "startup" },
+        { remoteCode: "disk_exhausted" },
+      ),
+    ),
+  ).toEqual({ source: "bridge.remote_code", signal: "ENOSPC" });
+  expect(
+    ghidraDiskExhaustion(
+      new GhidraSessionError(
+        "remote",
+        "IOException: No space left on device",
+        { phase: "startup" },
+        { remoteCode: "bridge_exception" },
+      ),
+    ),
+  ).toBeUndefined();
+});

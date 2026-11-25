@@ -1,0 +1,36 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-offset-before",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_PROJECT_PATH": "/private/tmp/rea-byte-search-fixture-2026-11-24/project/owned.gpr",
+    "REA_GHIDRA_PROGRAM_NAME": "owned-target",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "label": "open",
+      "name": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "auxiliary-offset",
+      "name": "address_to_file_offset",
+      "arguments": {
+        "address": "0x60000500"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "close",
+      "name": "close_binary",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}

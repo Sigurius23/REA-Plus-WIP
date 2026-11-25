@@ -367,3 +367,15 @@ Pages preserve duplicate indices and explicit graph node errors; exhaustion is
 only over retained observations. Read source caveats before interpretation.
 Missing profiles have null rows and unavailable coverage, not an empty proof.
 `rea native-observation` provides the same reads and portable summary bundles.
+
+
+Use `search_bytes` for known encoded bytes in Ghidra's initialized analyzed
+memory, including loader fixups. This differs from original-file
+`scan_byte_patterns` and provider-defined string search. Whole-byte ?? wildcards
+and optional bit masks are supported. Preserve inclusive bounds, page coverage,
+skipped unloaded/overlay/uninitialized blocks, nullable original-file offsets
+and next_cursor. Adjacent eligible blocks may contain one match; gaps end a run.
+Read all pages for the same query/Program generation before asserting a bounded
+negative. A limit is a match-page size, not a scan-work budget. Metadata edits
+or a different profile/query can invalidate a cursor without proving target
+bytes changed. CLI `search-bytes` shares these semantics; no target runs.

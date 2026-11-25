@@ -25,6 +25,7 @@ export const TOOL_EXAMPLE_OVERRIDES: Readonly<
   inspect_native_instruction: { address: "0x1000" },
   resolve_native_call_targets: { address: "0x1000" },
   read_function_instructions: { procedure: "main" },
+  search_bytes: { pattern: "48 8B ?? ?? 89" },
   read_bytes: { address: "0x1000", length: 16 },
   address_to_file_offset: { address: "0x1000" },
   procedure_references: { procedure: "main" },

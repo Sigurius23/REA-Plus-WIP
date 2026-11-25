@@ -28,8 +28,13 @@ const javaDiskExceptions = [
 export const ghidraDiskExhaustion = (
   failure: GhidraSessionError,
 ): Readonly<Record<string, JsonValue>> | undefined => {
-  if (failure.kind === "cancelled" || failure.kind === "remote")
-    return undefined;
+  if (failure.kind === "cancelled") return undefined;
+  // Only the bridge's machine-classified capacity failure is authoritative.
+  // Arbitrary remote messages and stale startup logs remain non-signals.
+  if (failure.kind === "remote")
+    return failure.remoteCode === "disk_exhausted"
+      ? { source: "bridge.remote_code", signal: "ENOSPC" }
+      : undefined;
   if (object(failure.cause) && failure.cause.code === "ENOSPC")
     return { source: "cause.code", signal: "ENOSPC" };
   const cause = failure.diagnostics.failure_cause;

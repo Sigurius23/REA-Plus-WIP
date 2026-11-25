@@ -1,0 +1,75 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-mutation",
+  "environment": {
+    "GHIDRA_INSTALL_DIR": "/opt/homebrew/Cellar/ghidra/12.1.4/libexec",
+    "JAVA_HOME": "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home",
+    "REA_GHIDRA_STARTUP_TIMEOUT_MS": "330000"
+  },
+  "timeout_ms": 390000,
+  "steps": [
+    {
+      "label": "open",
+      "name": "open_binary",
+      "arguments": {
+        "path": "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target",
+        "provider_id": "ghidra"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "first",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "00",
+        "start": "0x100000460",
+        "end": "0x1000004af",
+        "limit": 1
+      },
+      "expect_success": true
+    },
+    {
+      "label": "rename",
+      "name": "set_address_name",
+      "arguments": {
+        "address": "0x100000460",
+        "name": "rea_byte_cursor_label"
+      },
+      "expect_success": true
+    },
+    {
+      "label": "stale",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "00",
+        "start": "0x100000460",
+        "end": "0x1000004af",
+        "limit": 1,
+        "cursor": {
+          "$json_file": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-byte-search-2026-11-24/mcp-mutation/first.evidence.json",
+          "select": [
+            "normalized_result",
+            "next_cursor"
+          ]
+        }
+      },
+      "expect_success": false
+    },
+    {
+      "label": "fresh",
+      "name": "search_bytes",
+      "arguments": {
+        "pattern": "00",
+        "start": "0x100000460",
+        "end": "0x1000004af",
+        "limit": 1
+      },
+      "expect_success": true
+    },
+    {
+      "label": "close",
+      "name": "close_binary",
+      "arguments": {},
+      "expect_success": true
+    }
+  ]
+}

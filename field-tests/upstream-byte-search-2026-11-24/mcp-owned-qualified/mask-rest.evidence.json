@@ -1,0 +1,153 @@
+{
+  "evidence_id": "ev_2aca5367aebe61e2b9f04c4eaafd337f2c9a7edf9bf6a8edb38d201b17064f24",
+  "subject": {
+    "name": "owned-target",
+    "digest": {
+      "sha256": "7591fdfaf870b9c7ad2b398163b5c6cbb02cbc41c52273f232764b977882097a"
+    },
+    "format": "mach-o",
+    "architecture": "arm64",
+    "local_path": "/private/tmp/rea-native-pages-owned-2026-11-24/owned-target"
+  },
+  "provider": {
+    "id": "ghidra",
+    "name": "Ghidra",
+    "version": "12.1.4"
+  },
+  "analysis_profile": {
+    "provider": {
+      "id": "ghidra",
+      "name": "Ghidra",
+      "version": "12.1.4"
+    },
+    "parameters": {
+      "target_kind": "executable",
+      "target_format": "mach-o",
+      "architecture": "arm64",
+      "import_mode": "verified-existing-project-copy-v1",
+      "annotation_policy": "read-only-existing-project",
+      "original_analysis": "unknown",
+      "existing_project": {
+        "configured_path": "/private/tmp/rea-byte-search-fixture-2026-11-24/project/owned.gpr",
+        "project_path": "/private/tmp/rea-byte-search-fixture-2026-11-24/project",
+        "project_name": "owned",
+        "program_name": "owned-target",
+        "sha256": "db30fd8abf31f58dd6588a502739bf6600c9fb000f6b2eabfe6b728d51df96f3",
+        "bridge_sha256": "e521401ce29b7cc684606b0ad0caca9feeae749156212e5fd1ee53e1314d1700"
+      }
+    },
+    "digest": "04cb350f90d70a26e5bfdff69ea5a1042b1e636643c16ac3091cb765d6c3caa9"
+  },
+  "predicate_type": "rea.analysis",
+  "operation": "search_bytes",
+  "parameters": {
+    "pattern": "a0",
+    "mask": "f0",
+    "start": "0x60000300",
+    "end": "0x60000304",
+    "limit": 100,
+    "cursor": "322a16c37946292f9aa292d146138c0a34543bd1afcbda41b4248f1fd8c909ec:0x60000301"
+  },
+  "raw_result": {
+    "matches": [
+      {
+        "address": "0x60000301",
+        "segment": "overlapping",
+        "file_offset": null,
+        "procedure": null
+      },
+      {
+        "address": "0x60000302",
+        "segment": "overlapping",
+        "file_offset": null,
+        "procedure": null
+      },
+      {
+        "address": "0x60000303",
+        "segment": "overlapping",
+        "file_offset": null,
+        "procedure": null
+      },
+      {
+        "address": "0x60000304",
+        "segment": "overlapping",
+        "file_offset": null,
+        "procedure": null
+      }
+    ],
+    "searched": {
+      "blocks": [
+        {
+          "segment": "overlapping",
+          "start": "0x60000301",
+          "end": "0x60000304",
+          "bytes": 4
+        }
+      ],
+      "bytes": 4,
+      "skipped_uninitialized": [],
+      "skipped_not_loaded": [],
+      "skipped_overlays": []
+    },
+    "complete": true,
+    "next_cursor": null
+  },
+  "normalized_result": {
+    "matches": [
+      {
+        "address": "0x60000301",
+        "segment": "overlapping",
+        "file_offset": null,
+        "procedure": null
+      },
+      {
+        "address": "0x60000302",
+        "segment": "overlapping",
+        "file_offset": null,
+        "procedure": null
+      },
+      {
+        "address": "0x60000303",
+        "segment": "overlapping",
+        "file_offset": null,
+        "procedure": null
+      },
+      {
+        "address": "0x60000304",
+        "segment": "overlapping",
+        "file_offset": null,
+        "procedure": null
+      }
+    ],
+    "searched": {
+      "blocks": [
+        {
+          "segment": "overlapping",
+          "start": "0x60000301",
+          "end": "0x60000304",
+          "bytes": 4
+        }
+      ],
+      "bytes": 4,
+      "skipped_uninitialized": [],
+      "skipped_not_loaded": [],
+      "skipped_overlays": []
+    },
+    "complete": true,
+    "next_cursor": null
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "Only a content-verified private copy of the selected Ghidra project is opened; its original files are never passed to Ghidra or saved by REA+.",
+    "Original project auto-analysis completeness and import settings are unknown. Auto-analysis and import-time overrides are not applied; local bridge preparation runs on the private copy.",
+    "Saved seed reports are historical project metadata, not seeds applied by this session. Mutating analyst operations are unavailable and the private copy is deleted on close.",
+    "Default-space addresses use lowercase 0x-prefixed hexadecimal; other address spaces use <percent-encoded-space>:0x<hex>.",
+    "Byte search requires byte-addressed memory and observes initialized analyzed memory, including loader fixups; matches do not establish string identity or runtime use. Bounds are inclusive. Default searches omit unloaded blocks and loaded overlays, listed separately; explicit bounds select one address space. Uninitialized blocks are never searched. Matches may cross adjacent eligible initialized blocks; gaps end a range. A file offset describes only the start byte. Coverage is page-local and may overlap lookahead on continuation. Cursors bind the target, full analysis profile, canonical pattern/mask, bounds, document and Program modification generation; a mismatch does not identify which component differs.",
+    "Ghidra auto-analysis state: analysis_complete=null; analysis_timed_out=null.",
+    "macOS sessions require a matching executable Ghidra native decompiler; REA+ checks for it but does not build native components or change Gatekeeper quarantine state."
+  ],
+  "locations": [],
+  "evidence_links": []
+}
