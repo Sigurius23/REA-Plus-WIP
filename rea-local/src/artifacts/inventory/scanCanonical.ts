@@ -2,7 +2,7 @@ import type { ArtifactInventorySnapshot } from "../../domain/artifactInventorySn
 import { compareUnicodeCodePoints } from "../../domain/unicodeCodePointOrder.js";
 
 import { AsarArtifactReader } from "../AsarArtifactReader.js";
-import { HexRecordArtifactReader } from "../HexRecordArtifactReader.js";
+import { DecodedRegionArtifactReader } from "../DecodedRegionArtifactReader.js";
 
 import { lstat } from "node:fs/promises";
 import type { Stats } from "node:fs";
@@ -85,6 +85,7 @@ export const scanCanonicalArtifactInventoryInScope = async (
       options.environment ?? {},
       rootSource,
       options.firmwareCapacity,
+      integrity.mode,
     );
   } catch (cause: unknown) {
     readerCreationFailure = { cause };
@@ -95,7 +96,7 @@ export const scanCanonicalArtifactInventoryInScope = async (
     if (readerCreationFailure !== undefined) throw readerCreationFailure.cause;
     if (reader instanceof AsarArtifactReader)
       await reader.prepareContainer(rootDigest?.sha256, options.signal);
-    if (reader instanceof HexRecordArtifactReader && rootDigest !== null)
+    if (reader instanceof DecodedRegionArtifactReader && rootDigest !== null)
       await reader.prepareContainer(rootDigest.sha256, options.signal);
     const {
       nodes,
@@ -209,6 +210,7 @@ const buildInventorySnapshot = async (
   materializeDirectoryNodes(input.occurrences, input.nodes);
   const rootNode = createRootNode({
     digest: rootDigest,
+    ...(rootFormat === "dfuse" ? { verifiedDfuSe: true } : {}),
     occurrences: input.occurrences,
   });
   input.nodes.set(rootNode.artifact_id, rootNode);

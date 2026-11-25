@@ -69,10 +69,3 @@ export const hexRecordRegionMetadataSchema = z
         message: "Last contributing line precedes the first",
       });
   });
-export const hexRecordFormatMetadataSchema = z.discriminatedUnion("kind", [
-  hexRecordsMetadataSchema,
-  hexRecordRegionMetadataSchema,
-]);
-export type HexRecordFormatMetadata = z.infer<
-  typeof hexRecordFormatMetadataSchema
->;

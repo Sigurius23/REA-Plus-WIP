@@ -134,6 +134,8 @@ export type BinaryTarget =
         readonly format:
           | "intel-hex"
           | "srec"
+          | "uf2"
+          | "dfuse"
           | "zip"
           | "ipa"
           | "apk"

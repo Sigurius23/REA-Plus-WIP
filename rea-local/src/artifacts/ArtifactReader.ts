@@ -2,7 +2,7 @@ import type { Readable } from "node:stream";
 import type { ArtifactCommand } from "../domain/artifactGraph.js";
 import type { ZipPackageFormat } from "../domain/zipPackageFormat.js";
 import canonicalize from "canonicalize";
-import type { HexRecordFormatMetadata } from "../domain/firmware/hexRecordMetadata.js";
+import type { FirmwareFormatMetadata } from "../domain/firmware/firmwareMetadata.js";
 import type {
   AnalysisCleanupObservation,
   AnalysisPartialObservation,
@@ -27,7 +27,7 @@ export interface ArtifactEntry {
   readonly limitations: readonly string[];
   readonly adapterKey: string;
   /** Format facts belong to this occurrence, independently of byte-content identity. */
-  readonly formatMetadata?: HexRecordFormatMetadata;
+  readonly formatMetadata?: FirmwareFormatMetadata;
   /** Filesystem identity captured during traversal, when supplied by an adapter. */
   readonly sourceIdentity?: {
     readonly device: number;
@@ -41,7 +41,7 @@ export const copyArtifactEntry = (entry: ArtifactEntry): ArtifactEntry => ({
   limitations: [...entry.limitations],
   ...(entry.formatMetadata === undefined
     ? {}
-    : { formatMetadata: { ...entry.formatMetadata } }),
+    : { formatMetadata: structuredClone(entry.formatMetadata) }),
   ...(entry.sourceIdentity === undefined
     ? {}
     : { sourceIdentity: { ...entry.sourceIdentity } }),
@@ -79,8 +79,10 @@ export interface ArtifactReader {
     | "asar"
     | "file"
     | "intel-hex"
-    | "srec";
-  formatMetadata?(): HexRecordFormatMetadata | undefined;
+    | "srec"
+    | "uf2"
+    | "dfuse";
+  formatMetadata?(): FirmwareFormatMetadata | undefined;
   limitations?(): readonly string[];
   entries(signal?: AbortSignal): AsyncIterable<ArtifactEntry>;
   open(entry: ArtifactEntry, signal?: AbortSignal): Promise<Readable>;

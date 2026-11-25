@@ -1,0 +1,140 @@
+{
+  "status": "passed",
+  "records": [
+    {
+      "label": "uf2-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/families.uf2",
+        "--max-firmware-runs",
+        "2"
+      ],
+      "evidence_id": "ev_22c13661d6d030f3de6bb4bd0df992e19f7f616096d91a2a9f2be65cbc667546",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "partial-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/partial.uf2"
+      ],
+      "evidence_id": "ev_50f7629d5d188a98fdca40bd03f45cc2b18ec272f3824f69d7b79bd8fbce1cf9",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "dfu-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/valid.dfu",
+        "--max-firmware-elements",
+        "3"
+      ],
+      "evidence_id": "ev_e469f01d01ad34e056af62fed64188711f3f98f28d98736d5b2501952b0847a2",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "legacy-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/legacy.dfu"
+      ],
+      "evidence_id": "ev_01589daa00df76e7464808f95c1369ce89212d83f42931542a64dc262c997575",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "crc-inspect",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/bad-crc.dfu",
+        "--integrity-policy",
+        "record-and-continue"
+      ],
+      "evidence_id": "ev_c31ecf8c3dfe96fbd1afbff32644bcc59fc5ef21852b40744b86d78ce068701a",
+      "exact_mcp_evidence_equal": true
+    },
+    {
+      "label": "uf2-extract",
+      "argv": [
+        "extract-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/families.uf2",
+        "--max-firmware-runs",
+        "2"
+      ],
+      "evidence_id": "ev_452dba1024f6770e978375d33e8fa3e20ff5f664cd2d8cbb94a73734ae357ecf",
+      "normalized_manifest_and_files_equal": true
+    },
+    {
+      "label": "partial-extract",
+      "argv": [
+        "extract-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/partial.uf2"
+      ],
+      "evidence_id": "ev_7c8a6e5e55e73acc13dfcc507edc1b4ecba015fd2ce625984436b3fe93378663",
+      "normalized_manifest_and_files_equal": true
+    },
+    {
+      "label": "dfu-extract",
+      "argv": [
+        "extract-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/valid.dfu",
+        "--max-firmware-elements",
+        "3"
+      ],
+      "evidence_id": "ev_755657d7fde341fccca95af71ffb286044e0e26d3882689564f32148105c2816",
+      "normalized_manifest_and_files_equal": true
+    },
+    {
+      "label": "crc-extract",
+      "argv": [
+        "extract-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/bad-crc.dfu",
+        "--integrity-policy",
+        "record-and-continue"
+      ],
+      "evidence_id": "ev_4718648edc3303999165a0a6cb79f59dc99cf64c0b2c3305043621dd57c13e16",
+      "normalized_manifest_and_files_equal": true
+    },
+    {
+      "label": "byte-refusal",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/families.uf2",
+        "--max-firmware-file-bytes",
+        "1"
+      ],
+      "expected_error": "resource_constraint"
+    },
+    {
+      "label": "element-refusal",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/valid.dfu",
+        "--max-firmware-elements",
+        "2"
+      ],
+      "expected_error": "resource_constraint"
+    },
+    {
+      "label": "crc-refusal",
+      "argv": [
+        "inspect-artifact",
+        "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/bad-crc.dfu"
+      ],
+      "expected_error": "artifact_operation_failed"
+    }
+  ],
+  "failure": null,
+  "verifier_run": {
+    "run_id": "9058dea4-0ef7-4295-aa8c-b2261ff5db01",
+    "verifier_pid": 25843,
+    "parent_pid": 82620,
+    "process_lineage": {
+      "status": "verified",
+      "observed_at": "2026-11-25T20:20:00.895Z",
+      "launcher_pid": 25843,
+      "launcher_parent_pid": 82620,
+      "process_group_id": 25843,
+      "descendants": []
+    }
+  }
+}

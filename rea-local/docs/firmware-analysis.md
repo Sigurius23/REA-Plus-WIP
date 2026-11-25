@@ -61,14 +61,70 @@ carrier size and merging temporarily needs another payload copy; graph/metadata
 cost is additional. These are resource policies, not format limits. CLI accepts
 `--max-firmware-file-bytes` and `--max-firmware-runs`. Limits fail before the
 allocation/admission they control, report `resource_constraint`, and name the
-knob to change. Unchanged limits reproduce the refusal. Supplying these knobs
-for another active format is refused rather than ignored. The schema, source
+knob to change. Unchanged limits reproduce the refusal. The run knob also applies to UF2 and the byte knob to DfuSe; unrelated active
+formats refuse these knobs rather than ignoring them. The schema, source
 Evidence and exported bundle retain explicit caller choices.
 
 The format references are [Keil's Intel HEX guide](https://www.keil.com/support/docs/1584/default.htm)
 and the [SRecord project's format manual](https://srecord.sourceforge.net/reference-1.65.pdf).
 The current filesystem/CLI/MCP qualification was run on macOS; it does not
 establish a board's behavior or native analysis of raw firmware regions.
+
+## UF2 and DfuSe carriers
+
+These binary carriers use the same built-in workflow without external tools:
+
+```sh
+rea inspect-artifact ./firmware.uf2 --max-firmware-runs 65536 --json
+rea inspect-artifact ./firmware.dfu --max-firmware-elements 65536 --json
+rea extract-artifact ./firmware.dfu --json
+```
+
+UF2 recognition requires a complete first 512-byte block with all three magic
+numbers. Main-flash bytes are grouped by declared family ID and address; separate
+families never merge. Identical overlaps are counted, conflicting writes fail,
+and gaps remain separate. Region paths include the family ID, including a
+separate `no-family` space. Family names come from the revisioned registry named
+in root metadata; they do not identify an attached device. Numbering facts retain
+missing, repeated, out-of-order and ambiguous-copy counts. Invalid later blocks
+and trailing bytes leave explicit unknown `main_flash_coverage`. Not-main-flash payloads are
+counted and excluded. File-container blocks are counted without reconstructing
+their files. MD5 and extension tags are counted, **not decoded or verified**.
+UF2 region `source_location` is null because payloads are reassembled; load
+addresses are not carrier offsets.
+
+DfuSe recognition checks both its version-1 prefix and DFU 1.1a suffix. The parser
+checks target/element sizes and address bounds, retaining each nonempty element
+separately even when addresses overlap. Metadata preserves all targets, including
+empty ones, their alternate settings, names and the complete raw name fields.
+Each element retains its actual contiguous carrier payload offset separately
+from its declared load address. Both known `DFUImageSize` variants (including or
+excluding the suffix) are accepted after actual file and target bounds agree.
+
+The DfuSe suffix CRC is calculated over the carrier except its final four-byte
+CRC field. A mismatch fails inspection/extraction by default. Explicit
+`integrity_policy: "record-and-continue"` (CLI `--integrity-policy
+record-and-continue`) retains the exact declared/computed CRC pair in root
+`format_metadata`, an `integrity` observation in inspection, and
+`observed-untrusted` limitations on the carrier, derived elements and extraction.
+The existing `integrity_contradictions` array describes entry SHA-256
+disagreements; CRC values never occupy SHA-256 fields. A matching CRC establishes
+consistency, not authenticity.
+
+`max_firmware_file_bytes` also applies to UF2/DfuSe (default 134217728).
+`max_firmware_runs` bounds UF2 retained runs **before** address merging (default
+65536), so reverse-ordered blocks may need a larger run budget even when they
+finally merge. `max_firmware_elements` bounds all DfuSe declarations, including
+empty elements (default 65536). Irrelevant format knobs are refused. UF2 payload
+storage is at most 476/512 of the admitted carrier plus a temporary merge copy;
+DfuSe retains one carrier and element views. Graph and metadata storage are
+additional. The same source identity, cancellation, containment and cleanup
+rules apply as for text firmware. Root-carrier decoding does not add recursive
+firmware decoding, CPU selection, board operation or flashing.
+
+Format references: [Microsoft UF2 specification](https://github.com/microsoft/uf2),
+[ST UM0391](https://community.st.com/ysqtg83639/attachments/ysqtg83639/stm32-mcu-products-forum/41233/1/UM0391.pdf),
+and [dfu-util's producer](https://github.com/TexasInstruments/dfu-util/blob/master/dfuse-pack.py).
 
 ## Caller-supplied tools
 

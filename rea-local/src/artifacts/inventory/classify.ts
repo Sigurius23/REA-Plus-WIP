@@ -1,3 +1,9 @@
+import { hasUf2Block } from "../../domain/firmware/uf2.js";
+import {
+  DFUSE_SUFFIX_BYTES,
+  hasDfuSePrefix,
+  isDfuSeFile,
+} from "../../domain/firmware/dfuse.js";
 import { sameRegularFileState } from "../../filesystem/RegularFile.js";
 import type { FileHandle } from "node:fs/promises";
 import type { Stats } from "node:fs";
@@ -115,7 +121,9 @@ export const classifyAndHashRootForInventory = async (
       isZipPackageFormat(format) ||
       format === "mach-o-universal" ||
       format === "intel-hex" ||
-      format === "srec";
+      format === "srec" ||
+      format === "uf2" ||
+      format === "dfuse";
     outcome = {
       kind: "completed",
       value: {
@@ -151,6 +159,21 @@ const classifyRootFormat = async (
   const magic = Buffer.alloc(ARTIFACT_CLASSIFICATION_PREFIX_BYTES);
   const observed = await handle.read(magic, 0, magic.length, 0);
   const prefix = magic.subarray(0, observed.bytesRead);
+  if (hasUf2Block(prefix)) return "uf2";
+  if (hasDfuSePrefix(prefix)) {
+    const size = (await handle.stat()).size;
+    if (size >= DFUSE_SUFFIX_BYTES) {
+      const suffix = Buffer.alloc(DFUSE_SUFFIX_BYTES);
+      const tail = await handle.read(
+        suffix,
+        0,
+        suffix.length,
+        size - suffix.length,
+      );
+      if (tail.bytesRead === suffix.length && isDfuSeFile(prefix, suffix, size))
+        return "dfuse";
+    }
+  }
   const lower = path.toLowerCase();
   if (hasZipSignature(prefix)) return zipRootPackageFormat(lower);
   if (

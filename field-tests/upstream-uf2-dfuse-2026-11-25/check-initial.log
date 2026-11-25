@@ -1,0 +1,82 @@
+
+> rea-agents@6.4.0 precheck
+> npm run deps:check
+
+
+> rea-agents@6.4.0 deps:check
+> node scripts/check-dependency-install.mjs
+
+
+> rea-agents@6.4.0 check
+> node scripts/run-exclusive.mjs artifacts turbo run typecheck lint format:check knip metadata:check && npm run verify:architecture-guards
+
+
+   • turbo 2.11.7
+   • Running typecheck, lint, format:check, knip, metadata:check
+   • Remote caching disabled
+
+typecheck: cache miss, executing 13206042f629bbbc
+format:check: cache miss, executing cfa7d10dffb1fedb
+lint: cache miss, executing 3c25eda5e227690c
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs c62a8ec2dec95cfc
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+knip: cache miss, executing 30d5c39657887e11
+knip: 
+knip: > rea-agents@6.4.0 knip
+knip: > knip
+knip: 
+format:check: 
+format:check: > rea-agents@6.4.0 format:check
+format:check: > oxfmt --check .
+format:check: 
+lint: 
+lint: > rea-agents@6.4.0 lint
+lint: > oxlint && npm run verify:module-boundaries
+lint: 
+typecheck: 
+typecheck: > rea-agents@6.4.0 typecheck
+typecheck: > tsc --noEmit
+typecheck: 
+format:check: Checking formatting...
+format:check: 
+format:check: src/application/BinaryTargetResolver.ts (10ms)
+format:check: src/artifacts/ArtifactProvider.ts (0ms)
+format:check: src/artifacts/DecodedRegionArtifactReader.ts (0ms)
+format:check: src/artifacts/DfuSeArtifactReader.ts (0ms)
+format:check: src/artifacts/FirmwareRegionEntry.ts (0ms)
+format:check: src/artifacts/HexRecordArtifactReader.ts (0ms)
+format:check: src/artifacts/Uf2ArtifactReader.ts (0ms)
+format:check: src/artifacts/extraction/ArtifactExtraction.ts (0ms)
+format:check: src/artifacts/inventory/ArtifactGraphConstruction.ts (0ms)
+format:check: src/artifacts/inventory/classify.ts (0ms)
+format:check: src/artifacts/inventory/reader.ts (0ms)
+format:check: src/artifacts/inventory/scanCanonical.ts (0ms)
+format:check: src/domain/artifactInspection.ts (1ms)
+format:check: src/domain/firmware/dfuse.test.ts (1ms)
+format:check: src/domain/firmware/dfuse.ts (0ms)
+format:check: src/domain/firmware/dfuseMetadata.ts (1ms)
+format:check: src/domain/firmware/firmwareCapacity.ts (0ms)
+format:check: src/domain/firmware/firmwareMetadata.ts (0ms)
+format:check: src/domain/firmware/uf2.test.ts (0ms)
+format:check: src/domain/firmware/uf2.ts (0ms)
+format:check: src/domain/firmware/uf2Metadata.ts (0ms)
+format:check: tests/acceptance/firmwareCarriers.test.ts (0ms)
+format:check: 
+format:check: Format issues found in above 22 files. Run without `--check` to fix.
+format:check: Finished in 1596ms on 3261 files using 8 threads.
+format:check:  ERROR  command (/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/) /usr/local/bin/npm run format:check exited (1)
+
+ Tasks:    2 successful, 6 total
+Cached:    2 cached, 6 total
+  Time:    3.011s 
+Failed:    //#format:check
+
+ ERROR  run failed: command  exited (1)

@@ -25,7 +25,7 @@ retained, call `inspect_analysis_view` for a summary, mitigations or linkage
 facet, one section or symbol, or a stable page. Do not re-run the decoder to
 read a single object.
 
-## Structured text firmware
+## Structured firmware carriers
 
 Intel HEX/S-record carriers use `open_binary`, then `inspect_artifact` for sparse
 regions and declared header/start/termination metadata, or `extract_artifact`
@@ -41,6 +41,15 @@ This slice decodes root carriers; select a nested extracted carrier explicitly.
 Raw CPU/board loading and device operations remain separate. See the repository
 [firmware guide](https://github.com/morluto/rea/blob/main/docs/firmware-analysis.md)
 for the exact supported record profile and limits.
+
+UF2 and DfuSe carriers use the same artifact tools. UF2 keeps family-specific
+address spaces and numbering/skipped-block caveats; MD5/tags remain unverified.
+DfuSe preserves targets/alternate settings and element carrier offsets. Its suffix
+CRC mismatch fails by default; explicit `record-and-continue` preserves the CRC
+pair and observed-untrusted limitations. CRC facts stay in root metadata and
+inspection integrity observations, separate from entry SHA-256 contradictions.
+UF2 uses the run/byte budgets; DfuSe uses the byte budget and
+`max_firmware_elements`, counting empty declarations too. No device is contacted.
 
 ## Native targets
 

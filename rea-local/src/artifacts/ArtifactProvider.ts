@@ -1,8 +1,8 @@
 import { snapshotEnvironment } from "../process/snapshotEnvironment.js";
 import {
-  resolveHexRecordCapacity,
-  type HexRecordCapacityInput,
-} from "../domain/firmware/hexRecordCapacity.js";
+  resolveFirmwareCapacity,
+  type FirmwareCapacityInput,
+} from "../domain/firmware/firmwareCapacity.js";
 import {
   createAnalysisExecution,
   type AnalysisClient,
@@ -380,7 +380,7 @@ class ArtifactClient implements AnalysisClient {
   private inventory(
     parsed: {
       readonly integrity_policy: "fail" | "record-and-continue";
-    } & HexRecordCapacityInput,
+    } & FirmwareCapacityInput,
     options?: ExecutionOptions,
     operation: "inspect_artifact" | "inventory_artifact" = "inventory_artifact",
   ) {
@@ -394,25 +394,32 @@ class ArtifactClient implements AnalysisClient {
   }
 
   private firmwareCapacity(
-    input: HexRecordCapacityInput,
+    input: FirmwareCapacityInput,
     operation: "inspect_artifact" | "inventory_artifact" | "extract_artifact",
   ) {
-    if (this.target.format === "intel-hex" || this.target.format === "srec")
-      return resolveHexRecordCapacity(input);
+    const format = this.target.format;
+    const allowed = ["intel-hex", "srec", "uf2", "dfuse"].includes(format);
     const supplied = Object.entries(input).filter(
       ([key, value]) => key.startsWith("max_firmware_") && value !== undefined,
     );
-    if (supplied.length > 0)
+    const invalid = supplied.filter(
+      ([key]) =>
+        !allowed ||
+        (key === "max_firmware_runs" && format === "dfuse") ||
+        (key === "max_firmware_elements" && format !== "dfuse"),
+    );
+    if (invalid.length > 0)
       throw new AnalysisInputError(
         operation,
         undefined,
-        supplied.map(([key]) => ({
+        invalid.map(([key]) => ({
           path: [key],
           reason: "invalid_value" as const,
           message:
-            "Firmware decode budgets require an active Intel HEX or S-record carrier",
+            "Firmware file budgets require Intel HEX, S-record, UF2 or DfuSe; run budgets require Intel HEX/S-record/UF2; element budgets require DfuSe",
         })),
       );
+    if (allowed) return resolveFirmwareCapacity(input);
     return undefined;
   }
 }

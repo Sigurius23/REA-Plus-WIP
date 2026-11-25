@@ -1,3 +1,4 @@
+import { hasUf2Block } from "../../domain/firmware/uf2.js";
 import { compareUnicodeCodePoints } from "../../domain/unicodeCodePointOrder.js";
 import { detectHexRecordEncoding } from "../../domain/firmware/hexRecords.js";
 import { digestCanonicalValue } from "../../domain/canonicalDigest.js";
@@ -161,6 +162,7 @@ export const createRootNode = (input: {
     readonly prefix: Buffer;
   } | null;
   readonly occurrences: readonly MutableOccurrence[];
+  readonly verifiedDfuSe?: boolean;
 }): ArtifactNode =>
   createArtifactNode({
     sha256:
@@ -183,7 +185,9 @@ export const createRootNode = (input: {
     format:
       input.digest === null
         ? "directory"
-        : classifyArtifactBytes(input.digest.prefix, input.digest.bytes),
+        : input.verifiedDfuSe === true
+          ? "dfuse"
+          : classifyArtifactBytes(input.digest.prefix, input.digest.bytes),
     contentState: "materialized",
   });
 
@@ -224,7 +228,9 @@ export const rootOccurrenceFor = (
   artifact_kind:
     metadata.format === "directory" ||
     isZipPackageFormat(metadata.format) ||
-    ["asar", "dmg", "pkg", "intel-hex", "srec"].includes(metadata.format)
+    ["asar", "dmg", "pkg", "intel-hex", "srec", "uf2", "dfuse"].includes(
+      metadata.format,
+    )
       ? "container"
       : artifactRoleForFormat(metadata.path, metadata.format).kind,
   artifact_format: metadata.format,
@@ -423,7 +429,7 @@ const artifactRoleForFormat = (
       kind: "container",
       format: zipPackageFormatForPath(path) ?? format,
     };
-  if (format === "intel-hex" || format === "srec")
+  if (["intel-hex", "srec", "uf2", "dfuse"].includes(format))
     return { kind: "container", format };
   if (format === "plist") return { kind: "plist", format };
   return {
@@ -439,6 +445,7 @@ export const classifyArtifactBytes = (
   prefix: Buffer,
   fileSize = prefix.length,
 ): ArtifactNode["format"] => {
+  if (hasUf2Block(prefix)) return "uf2";
   const records = detectHexRecordEncoding(prefix);
   if (records !== undefined) return records;
   if (hasZipSignature(prefix)) return "zip";

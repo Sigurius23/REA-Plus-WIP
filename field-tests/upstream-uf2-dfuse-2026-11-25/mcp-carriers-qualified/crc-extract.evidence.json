@@ -1,0 +1,88 @@
+{
+  "evidence_id": "ev_90bc78c1bd6eb13583465b0d7e313ea2d1d712490070ee83fc897be280c79a3b",
+  "subject": {
+    "name": "bad-crc.dfu",
+    "digest": {
+      "sha256": "926ae633ead128dcda6f2de075c99fd20ec7767448aa9931831b595908f44766"
+    },
+    "format": "dfuse",
+    "architecture": null,
+    "local_path": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/bad-crc.dfu"
+  },
+  "provider": {
+    "id": "rea-artifact-graph",
+    "name": "REA+ safe artifact graph provider",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "extract_artifact",
+  "parameters": {
+    "integrity_policy": "record-and-continue"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "manifest": {
+      "manifest_id": "agm_c40c0157c8ba61dca2220651eba9d17a02f7c4f7342386a310ee586e71eb50b4",
+      "root_artifact_id": "art_9f5c32d940ebca566797ec42e183c50561b794d663d93739d79ce5e1d955a719",
+      "root_sha256": "926ae633ead128dcda6f2de075c99fd20ec7767448aa9931831b595908f44766",
+      "root_format": "dfuse",
+      "graph_sha256": "7577eae1b363cd641b9ffd69133b00d93a18d70ffdf7bd168ab400af14873f9d",
+      "node_count": 3,
+      "occurrence_count": 3,
+      "edge_count": 2
+    },
+    "extraction_manifest": {
+      "extraction_id": "aex_8be3d3ccec14c839c30e33cda596bede64a7241434e6ec3462991314938733d1",
+      "source_manifest_id": "agm_c40c0157c8ba61dca2220651eba9d17a02f7c4f7342386a310ee586e71eb50b4",
+      "selected_occurrence_ids": [
+        "occ_32162bd656372671f121aa69ed166ddece484ac9589beca42a3301593f39ce79",
+        "occ_92d71d101268935ee46d988ce2e80b59cd4bb1d02d34d341d450a39c9dd6a68e"
+      ],
+      "files_sha256": "30769d21bbd19540f169bcdd08ad1c150ce8440b755da0f6717fa10c3a93cc22",
+      "output_root_alias": "$OUTPUT_ROOT"
+    },
+    "output_root": "/tmp/rea-extracted-718eee62-53cf-4422-9269-92421b3a4686",
+    "artifacts": [
+      {
+        "artifact_id": "art_e755197069db5f8c90336954a0780636e7fa00d92bb1751c0da7d7f0f44dc5fc",
+        "relative_path": "target-0/element-0-0x08000000-0x08000002.bin",
+        "sha256": "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81",
+        "bytes_written": 3,
+        "created": true
+      },
+      {
+        "artifact_id": "art_20f101fcbd5b00614e7503eee347a6db0c50671dbd4f2fb8f63ed72652ef0205",
+        "relative_path": "target-0/element-1-0x08000001-0x08000001.bin",
+        "sha256": "beead77994cf573341ec17b58bbf7eb34d2711c993c1d976b128b3188dc1829a",
+        "bytes_written": 1,
+        "created": true
+      }
+    ],
+    "containment_verified": true,
+    "cleanup": {
+      "attempted": false,
+      "verified": true,
+      "residual_paths": []
+    },
+    "provenance": [],
+    "integrity_contradictions": [],
+    "limitations": [
+      "All regular files in the active artifact were materialized; nested archive contents remain represented by their containing file.",
+      "DfuSe suffix CRC mismatch: declared 0x00000000, computed 0x63ccd9d8 (DFU CRC-32 over all carrier bytes except the final CRC field). Carrier and derived element bytes are observed-untrusted.",
+      "1 DfuSe element(s) overlap an element earlier in address order within the same alternate setting; each stays a separate entry and no bytes were merged: target 0 element 1 (0x08000001-0x08000001) overlaps target 0 element 0 (0x08000000-0x08000002) in alternate setting 3.",
+      "DfuSe declarations without bytes have no entry: target 0 element 2 at 0x00000000 (alternate setting 3) holds no bytes; target 1 (alternate setting 7) declares no elements."
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "All regular files in the active artifact were materialized; nested archive contents remain represented by their containing file.",
+    "DfuSe suffix CRC mismatch: declared 0x00000000, computed 0x63ccd9d8 (DFU CRC-32 over all carrier bytes except the final CRC field). Carrier and derived element bytes are observed-untrusted.",
+    "1 DfuSe element(s) overlap an element earlier in address order within the same alternate setting; each stays a separate entry and no bytes were merged: target 0 element 1 (0x08000001-0x08000001) overlaps target 0 element 0 (0x08000000-0x08000002) in alternate setting 3.",
+    "DfuSe declarations without bytes have no entry: target 0 element 2 at 0x00000000 (alternate setting 3) holds no bytes; target 1 (alternate setting 7) declares no elements."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

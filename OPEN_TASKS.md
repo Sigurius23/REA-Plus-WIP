@@ -4,6 +4,17 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **UF2 / DfuSe integrated (2026-11-25, item 62 partial):** Root firmware
+  inspection/extraction preserves UF2 family/numbering/coverage facts and DfuSe
+  target/element/CRC metadata. Default CRC refusal and explicit untrusted
+  continuation are qualified. Fixed pre-merge run admission, all-element budgets
+  (including empty declarations), decoder lifetime and nested metadata ownership.
+  129 tests, 40 qualified MCP calls (12 expected refusals), 15 CLI calls, 14
+  readbacks, 33 historical snapshots and check/docs/discovery/package gates pass.
+  Arc and three historical HEX/S-record Evidence records remain exactly unchanged.
+  uImage/FIT/ESP is next; other firmware/CPU groups and full Arc remain open.
+  See [qualification](field-tests/upstream-uf2-dfuse-2026-11-25.md).
+
 - **Intel HEX / S-record integrated (2026-11-25, item 62 partial):** Root
   carriers expose sparse decoded regions, checksums, overlaps, header/start/
   termination facts and verified extraction through existing artifact tools.
@@ -12,7 +23,7 @@ Open work on `main` following PR #1 and the field tests.
   declaration scope and observed-hash provenance are repaired. 82 selected tests,
   43 final MCP calls (six expected refusals), three complete CLI/MCP pairs and
   32 historical snapshots and package/check/docs gates qualify this slice. Arc's complete reducer Evidence
-  is unchanged. UF2/DfuSe and the other firmware/CPU groups remain open. See
+  is unchanged. The UF2/DfuSe follow-up is recorded above; other firmware/CPU groups remain open. See
   [qualification](field-tests/upstream-hex-records-2026-11-25.md).
 
 - **File-backed native decompilation integrated (2026-11-25, item 62 partial):**
@@ -1906,9 +1917,16 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
         metadata/source ownership and lifecycle vocabularies qualified. 82 tests,
         public CLI/MCP, Arc and historical checks pass. See
         [qualification](field-tests/upstream-hex-records-2026-11-25.md).
-      - [ ] UF2 / DfuSe readers are next; then uImage/FIT/ESP, Android boot/OTA
-        and devicetree. Nested recursive decoding and raw CPU/board loading are
-        not implied by the text-carrier slice.
+      - [x] UF2 / DfuSe root readers (2026-11-25): family/numbering/coverage and
+        target/element/CRC facts, strict/continued integrity and verified extraction.
+        Repaired early run/all-element admission, failure/finish state, empty-target
+        metadata and nested snapshot ownership. 129 tests, CLI/MCP, historical
+        compatibility, unchanged Arc and package gates qualify the slice. See
+        [qualification](field-tests/upstream-uf2-dfuse-2026-11-25.md).
+      - [ ] uImage/FIT/ESP readers are next, then Android boot/OTA and devicetree.
+        UF2 file-container reconstruction and MD5/tag interpretation remain
+        unsupported with explicit caveats. Nested recursive decoding and raw
+        CPU/board loading are separate scope.
     - [ ] Qualify raw-image/RISC-V, expanded MIPS and PowerPC/DOL lanes
       separately. Upstream raw ARM remains A32; Cortex-M/Thumb is not established.
     - [ ] Review native diagnostics, APK signing/JNI/R8, standalone packages,

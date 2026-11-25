@@ -1,4 +1,4 @@
-import { hexRecordCapacityInputShape } from "../domain/firmware/hexRecordCapacity.js";
+import { firmwareCapacityInputShape } from "../domain/firmware/firmwareCapacity.js";
 import { z } from "incur";
 
 import type { DirectAnalysis } from "../composition/directAnalysis.js";
@@ -197,8 +197,9 @@ const registerExtractionCommand = (
       path: z.string().describe("Application or package path"),
     }),
     options: z.object({
-      maxFirmwareFileBytes: hexRecordCapacityInputShape.max_firmware_file_bytes,
-      maxFirmwareRuns: hexRecordCapacityInputShape.max_firmware_runs,
+      maxFirmwareFileBytes: firmwareCapacityInputShape.max_firmware_file_bytes,
+      maxFirmwareRuns: firmwareCapacityInputShape.max_firmware_runs,
+      maxFirmwareElements: firmwareCapacityInputShape.max_firmware_elements,
       integrityPolicy: z
         .enum(["fail", "record-and-continue"])
         .default("fail")
@@ -217,6 +218,9 @@ const registerExtractionCommand = (
             ...(options.maxFirmwareRuns === undefined
               ? {}
               : { max_firmware_runs: options.maxFirmwareRuns }),
+            ...(options.maxFirmwareElements === undefined
+              ? {}
+              : { max_firmware_elements: options.maxFirmwareElements }),
             output_root: createArtifactExtractionDestination(),
           },
           logger,
@@ -237,8 +241,9 @@ const registerInspectionCommand = (
       path: z.string().describe("Application or package path"),
     }),
     options: z.object({
-      maxFirmwareFileBytes: hexRecordCapacityInputShape.max_firmware_file_bytes,
-      maxFirmwareRuns: hexRecordCapacityInputShape.max_firmware_runs,
+      maxFirmwareFileBytes: firmwareCapacityInputShape.max_firmware_file_bytes,
+      maxFirmwareRuns: firmwareCapacityInputShape.max_firmware_runs,
+      maxFirmwareElements: firmwareCapacityInputShape.max_firmware_elements,
       integrityPolicy: z
         .enum(["fail", "record-and-continue"])
         .default("fail")
@@ -257,6 +262,9 @@ const registerInspectionCommand = (
             ...(options.maxFirmwareRuns === undefined
               ? {}
               : { max_firmware_runs: options.maxFirmwareRuns }),
+            ...(options.maxFirmwareElements === undefined
+              ? {}
+              : { max_firmware_elements: options.maxFirmwareElements }),
           },
           logger,
         ),

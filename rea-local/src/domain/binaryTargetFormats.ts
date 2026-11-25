@@ -30,4 +30,6 @@ export const binaryTargetFormatSchema = z.enum({
   "source-map": "source-map",
   "intel-hex": "intel-hex",
   srec: "srec",
+  uf2: "uf2",
+  dfuse: "dfuse",
 } satisfies { [Format in BinaryTarget["format"]]: Format });

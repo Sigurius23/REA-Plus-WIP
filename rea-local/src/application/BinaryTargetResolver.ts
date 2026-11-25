@@ -1,3 +1,9 @@
+import { hasUf2Block } from "../domain/firmware/uf2.js";
+import {
+  DFUSE_SUFFIX_BYTES,
+  hasDfuSePrefix,
+  isDfuSeFile,
+} from "../domain/firmware/dfuse.js";
 import { detectHexRecordEncoding } from "../domain/firmware/hexRecords.js";
 import { constants, type Stats } from "node:fs";
 import { createHash } from "node:crypto";
@@ -289,6 +295,26 @@ const detectArtifactFormat = async (
     if (lower.endsWith(".app")) return "app-pack";
     return zipPackageFormatForPath(lower) ?? "zip";
   }
+  const firmwarePrefix = magic.subarray(0, observed.bytesRead);
+  if (hasUf2Block(firmwarePrefix)) return "uf2";
+  if (hasDfuSePrefix(firmwarePrefix)) {
+    const size = (await handle.stat()).size;
+    if (size >= DFUSE_SUFFIX_BYTES) {
+      const suffix = Buffer.alloc(DFUSE_SUFFIX_BYTES);
+      const tail = await handle.read(
+        suffix,
+        0,
+        suffix.length,
+        size - suffix.length,
+      );
+      throwIfTargetResolutionCancelled(signal);
+      if (
+        tail.bytesRead === suffix.length &&
+        isDfuSeFile(firmwarePrefix, suffix, size)
+      )
+        return "dfuse";
+    }
+  }
   const named = namedArtifactFormat(lower);
   if (named !== undefined) return named;
   if (
@@ -332,7 +358,7 @@ const isArchiveFormat = (
   >,
 ): format is Extract<BinaryTarget, { kind: "archive" }>["format"] =>
   isZipPackageFormat(format) ||
-  ["asar", "dmg", "pkg", "intel-hex", "srec"].includes(format);
+  ["asar", "dmg", "pkg", "intel-hex", "srec", "uf2", "dfuse"].includes(format);
 
 const sha256Handle = async (
   handle: FileHandle,

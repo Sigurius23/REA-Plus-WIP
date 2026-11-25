@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { prefixedDigestSchema } from "./../domain/digests.js";
-import { hexRecordFormatMetadataSchema } from "./firmware/hexRecordMetadata.js";
+import { firmwareFormatMetadataSchema } from "./firmware/firmwareMetadata.js";
 
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/u);
 const artifactIdSchema = prefixedDigestSchema("art");
@@ -41,6 +41,8 @@ const artifactKindSchema = z.enum([
 const artifactFormatSchema = z.enum([
   "intel-hex",
   "srec",
+  "uf2",
+  "dfuse",
   "dmg",
   "zip",
   "pkg",
@@ -76,6 +78,8 @@ const artifactFormatSchema = z.enum([
 const artifactContentFormatSchema = artifactFormatSchema.extract([
   "intel-hex",
   "srec",
+  "uf2",
+  "dfuse",
   "zip",
   "mach-o-universal",
   "mach-o",
@@ -121,7 +125,7 @@ const artifactNodeSchema = z.object({
 
 /** One path or virtual location where an artifact occurs in its parent. */
 const artifactOccurrenceSchema = z.object({
-  format_metadata: hexRecordFormatMetadataSchema.exactOptional(),
+  format_metadata: firmwareFormatMetadataSchema.exactOptional(),
   occurrence_id: occurrenceIdSchema,
   artifact_id: artifactIdSchema.nullable(),
   parent_occurrence_id: occurrenceIdSchema.nullable(),
@@ -148,7 +152,7 @@ const artifactOccurrenceSchema = z.object({
   limitations: z.array(z.string()),
 });
 
-/** Observed bytes that contradict a container's declared integrity identity. */
+/** Observed entry SHA-256 disagreement. Format-specific carrier CRC facts stay in occurrence format_metadata. */
 export const integrityContradictionSchema = z.object({
   contradiction_id: contradictionIdSchema,
   occurrence_id: occurrenceIdSchema,

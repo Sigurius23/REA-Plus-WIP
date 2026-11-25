@@ -206,6 +206,31 @@ const allObservations = (
     inventory.manifest,
     evidenceId,
   ),
+  ...inventory.occurrences.flatMap((value) => {
+    const metadata = value.format_metadata;
+    if (metadata?.kind !== "dfuse") return [];
+    return [
+      observation(
+        "integrity",
+        value.occurrence_id,
+        {
+          algorithm: "dfu-crc32",
+          scope: "carrier-excluding-final-crc-field",
+          declared_crc32: metadata.suffix_crc,
+          observed_crc32: metadata.computed_crc,
+          status:
+            metadata.suffix_crc === metadata.computed_crc
+              ? "matches"
+              : "mismatched",
+          trust:
+            metadata.suffix_crc === metadata.computed_crc
+              ? "checksum-consistent-not-authenticated"
+              : "observed-untrusted",
+        },
+        evidenceId,
+      ),
+    ];
+  }),
   ...inventory.integrity_contradictions.map((value) =>
     observation("integrity", value.contradiction_id, value, evidenceId),
   ),
@@ -280,7 +305,7 @@ const probesFor = (
   inventory: ArtifactInventoryResult,
 ): ArtifactInspectionResult["next_probes"] => {
   const format = inventory.manifest.root_format;
-  if (format === "intel-hex" || format === "srec")
+  if (["intel-hex", "srec", "uf2", "dfuse"].includes(format))
     return [
       {
         operation: "extract_artifact",

@@ -1,0 +1,272 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-uf2-dfuse-2026-11-25/mcp-carriers-qualified",
+  "environment": {
+    "REA_MCP_MAX_RESPONSE_BYTES": "10485760"
+  },
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "uf2-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/families.uf2"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "uf2-inspect",
+      "arguments": {
+        "max_firmware_runs": 2
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "uf2-bytes",
+      "arguments": {
+        "max_firmware_file_bytes": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "uf2-runs",
+      "arguments": {
+        "max_firmware_runs": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "uf2-elements",
+      "arguments": {
+        "max_firmware_elements": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "extract_artifact",
+      "label": "uf2-extract",
+      "arguments": {
+        "max_firmware_runs": 2
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "uf2-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "partial-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/partial.uf2"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "partial-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "partial-extract",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "partial-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "conflict-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/conflict.uf2"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "conflict-fail",
+      "arguments": {
+        "integrity_policy": "fail"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "conflict-record-and-continue",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "close_binary",
+      "label": "conflict-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "dfu-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/valid.dfu"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "dfu-inspect",
+      "arguments": {
+        "max_firmware_elements": 3
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "dfu-bytes",
+      "arguments": {
+        "max_firmware_file_bytes": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "dfu-elements",
+      "arguments": {
+        "max_firmware_elements": 2
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "dfu-runs",
+      "arguments": {
+        "max_firmware_runs": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "extract_artifact",
+      "label": "dfu-extract",
+      "arguments": {
+        "max_firmware_elements": 3
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "dfu-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "legacy-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/legacy.dfu"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "legacy-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "legacy-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "crc-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/bad-crc.dfu"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "crc-strict",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "extract_artifact",
+      "label": "crc-extract-strict",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "crc-inspect",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "crc-extract",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "crc-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "malformed-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-uf2-dfuse-fixtures-5z0wnjho/bad-size.dfu"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "malformed-fail",
+      "arguments": {
+        "integrity_policy": "fail"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "malformed-record-and-continue",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": false
+    },
+    {
+      "name": "close_binary",
+      "label": "malformed-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-uf2-dfuse-2026-11-25/mcp-carriers-qualified/final.bundle.json"
+      },
+      "expect_success": true
+    }
+  ]
+}

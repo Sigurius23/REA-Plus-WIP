@@ -26,6 +26,35 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest UF2 / DfuSe integration (2026-11-25)
+
+Read `field-tests/upstream-uf2-dfuse-2026-11-25.md` and its verification/runtime
+receipt, independent fixture hex/build script, raw public replies and readbacks.
+Item 62 now includes root UF2/DfuSe inspection and extraction through existing
+artifact tools. Family-specific sparse ranges, numbering/unknown coverage,
+targets/elements (including empty-target names), carrier offsets and CRC facts
+survive. Byte/run/element budgets are explicit and admitted early; failures and
+finish state are sticky. The stable descriptor/stream/cleanup owner is shared
+with HEX/S-record. CRC continuation is explicit and observed-untrusted, separate
+from SHA-256 entry contradiction records.
+
+129 tests across 12 files, 40 qualified MCP calls (12 expected refusals), 15 CLI
+calls, five complete current CLI/MCP Evidence pairs, three historical HEX/S-record
+Evidence matches, four extraction manifest/file pairs and 14 file readbacks pass.
+33 historical snapshots authenticate unchanged captures/original living versions.
+Check/docs/discovery/package gates pass; 208 tools and six prompts remain. The
+first sandboxed firmware capture could not inspect process lineage; it is retained
+and superseded by the qualified capture with verified empty owned lineage.
+Arc's complete reducer Evidence is exactly unchanged, including the 2,518
+instructions / 10,072 bytes and partial-profile caveats. No target execution.
+
+Continue with **uImage/FIT/ESP**. Android boot/OTA, devicetree and separately
+qualified CPU lanes remain open. UF2 file containers and MD5/tags remain explicit
+unsupported scope. Full Arc, Client unknown revision 3 and broader durable
+persistence remain open. Runtime is frozen in
+`rea-local/.cache/upstream-uf2-dfuse-runtime-2026-11-25`; receipts pin parent
+`acb1d18e0607110ac12015d0a730e69c16b514b3`. Do not rewrite historical captures.
+
 ## Latest upstream text-firmware integration (2026-11-25)
 
 Read `field-tests/upstream-hex-records-2026-11-25.md` and its verification receipt,
@@ -52,7 +81,7 @@ Arc's complete reducer Evidence still exactly equals
 No target executable, helper, shipped JavaScript, device/account/profile, UI or
 service was executed or used.
 
-UF2/DfuSe is the next offline integration slice. uImage/FIT/ESP, Android boot/OTA,
+The UF2/DfuSe follow-up is recorded above. uImage/FIT/ESP, Android boot/OTA,
 devicetree and separately qualified raw CPU lanes remain open. Root text-carrier
 support does not add recursive nested decoding or board operation. Full Arc,
 Client unknown revision 3 and durable persistence remain open.

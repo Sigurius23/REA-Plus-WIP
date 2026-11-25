@@ -3,8 +3,11 @@ import { lstat, realpath } from "node:fs/promises";
 import { compareUnicodeCodePoints } from "../../domain/unicodeCodePointOrder.js";
 import { digestCanonicalValue } from "../../domain/canonicalDigest.js";
 import { AsarArtifactReader } from "../AsarArtifactReader.js";
+import { Uf2ArtifactReader } from "../Uf2ArtifactReader.js";
+import { DfuSeArtifactReader } from "../DfuSeArtifactReader.js";
+import { DecodedRegionArtifactReader } from "../DecodedRegionArtifactReader.js";
 import { HexRecordArtifactReader } from "../HexRecordArtifactReader.js";
-import type { HexRecordCapacity } from "../../domain/firmware/hexRecords.js";
+import type { FirmwareCapacity } from "../../domain/firmware/firmwareCapacity.js";
 import {
   ArtifactPathRegistry,
   normalizeArtifactPath,
@@ -42,7 +45,7 @@ import type { ArtifactIntegrityPolicyName } from "../../domain/artifactIntegrity
 
 /** Local extraction input with the output root chosen by the adapter. */
 export interface ArtifactExtractionInput {
-  readonly firmwareCapacity?: HexRecordCapacity | undefined;
+  readonly firmwareCapacity?: FirmwareCapacity | undefined;
   readonly inputPath: string;
   readonly inputFormat: BinaryTarget["format"];
   readonly outputRoot: string;
@@ -133,6 +136,9 @@ const materializeArtifactInventoryInScope = async (
     if (neededNodes.has(node.artifact_id)) nodes.set(node.artifact_id, node);
   const inventory: ExtractionInventory = {
     manifest: snapshot.manifest,
+    limitations: ["uf2", "dfuse"].includes(snapshot.manifest.root_format)
+      ? snapshot.limitations
+      : [],
     integrityContradictions: snapshot.integrity_contradictions.filter(
       ({ occurrence_id: id }) => selectedIds.has(id),
     ),
@@ -230,7 +236,7 @@ const materializeSelection = async ({
   let completed: ArtifactExtractionResult | undefined;
   const extracted: ExtractedOccurrence[] = [];
   try {
-    if (reader instanceof HexRecordArtifactReader)
+    if (reader instanceof DecodedRegionArtifactReader)
       await reader.prepareContainer(inventory.manifest.root_sha256, signal);
     try {
       output = await SafeOutputTree.create(input.outputRoot);
@@ -398,6 +404,7 @@ const createExtractionResult = (
     integrity_contradictions: inventory.integrityContradictions,
     limitations: [
       "All regular files in the active artifact were materialized; nested archive contents remain represented by their containing file.",
+      ...inventory.limitations,
       ...(inventory.integrityContradictions.length === 0
         ? []
         : [
@@ -408,6 +415,7 @@ const createExtractionResult = (
 };
 
 interface ExtractionInventory {
+  readonly limitations: readonly string[];
   readonly manifest: ArtifactGraphManifest;
   readonly integrityContradictions: readonly IntegrityContradiction[];
 }
@@ -446,6 +454,8 @@ const requireExtractableFormat = async (
     format !== "dmg" &&
     format !== "intel-hex" &&
     format !== "srec" &&
+    format !== "uf2" &&
+    format !== "dfuse" &&
     !isZipFormat(format)
   )
     throw new AnalysisUnsupportedTargetError(
@@ -460,12 +470,25 @@ const createReader = async (
   path: string,
   input: Pick<
     ArtifactExtractionInput,
-    "inputPath" | "inputFormat" | "environment" | "firmwareCapacity"
+    | "inputPath"
+    | "inputFormat"
+    | "environment"
+    | "firmwareCapacity"
+    | "integrityPolicy"
   >,
 ): Promise<ArtifactReader> => {
   const format = input.inputFormat;
   if (await requireExtractableFormat(path, input))
     return new DirectoryArtifactReader(path);
+  if (format === "uf2")
+    return new Uf2ArtifactReader(path, undefined, input.firmwareCapacity);
+  if (format === "dfuse")
+    return new DfuSeArtifactReader(
+      path,
+      undefined,
+      input.firmwareCapacity,
+      input.integrityPolicy,
+    );
   if (format === "asar") return new AsarArtifactReader(path);
   if (format === "intel-hex" || format === "srec")
     return new HexRecordArtifactReader(

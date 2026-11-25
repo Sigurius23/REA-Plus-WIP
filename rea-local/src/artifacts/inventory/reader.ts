@@ -1,6 +1,8 @@
 import { AsarArtifactReader } from "../AsarArtifactReader.js";
+import { Uf2ArtifactReader } from "../Uf2ArtifactReader.js";
+import { DfuSeArtifactReader } from "../DfuSeArtifactReader.js";
 import { HexRecordArtifactReader } from "../HexRecordArtifactReader.js";
-import type { HexRecordCapacity } from "../../domain/firmware/hexRecords.js";
+import type { FirmwareCapacity } from "../../domain/firmware/firmwareCapacity.js";
 import type { ArtifactReader } from "../ArtifactReader.js";
 import { DirectoryArtifactReader } from "../DirectoryArtifactReader.js";
 import { MachOSliceArtifactReader } from "../MachOSliceArtifactReader.js";
@@ -18,11 +20,21 @@ export const createReader = (
   format: ArtifactOccurrence["artifact_format"],
   environment: Readonly<NodeJS.ProcessEnv>,
   rootSource?: StableRegularFileDescriptor,
-  firmwareCapacity?: HexRecordCapacity,
+  firmwareCapacity?: FirmwareCapacity,
+  integrity: "fail" | "record-and-continue" = "fail",
 ): ArtifactReader | undefined => {
   if (isZipPackageFormat(format))
     return new ZipArtifactReader(path, format, undefined, rootSource);
   switch (format) {
+    case "uf2":
+      return new Uf2ArtifactReader(path, rootSource, firmwareCapacity);
+    case "dfuse":
+      return new DfuSeArtifactReader(
+        path,
+        rootSource,
+        firmwareCapacity,
+        integrity,
+      );
     case "intel-hex":
     case "srec":
       return new HexRecordArtifactReader(
