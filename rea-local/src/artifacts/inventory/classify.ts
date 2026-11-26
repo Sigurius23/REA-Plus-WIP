@@ -52,7 +52,10 @@ export const classifyAndHashRoot = async (
   path: string,
   directory: boolean,
   expectedMetadata: Stats,
-  options: Pick<ArtifactInventoryOptions, "resourceScope" | "signal">,
+  options: Pick<
+    ArtifactInventoryOptions,
+    "resourceScope" | "signal" | "firmwareFormat"
+  >,
 ): Promise<RootClassification> => {
   return options.resourceScope.run(async () => {
     const result = await classifyAndHashRootForInventory(
@@ -87,7 +90,10 @@ export const classifyAndHashRootForInventory = async (
   path: string,
   directory: boolean,
   expectedMetadata: Stats,
-  options: Pick<ArtifactInventoryOptions, "resourceScope" | "signal">,
+  options: Pick<
+    ArtifactInventoryOptions,
+    "resourceScope" | "signal" | "firmwareFormat"
+  >,
 ): Promise<RootInventoryClassification> => {
   if (directory)
     return { format: "directory", digest: null, rootSource: undefined };
@@ -115,7 +121,9 @@ export const classifyAndHashRootForInventory = async (
         "integrity",
         `Root artifact changed before inventory: ${path}`,
       );
-    const format = await classifyRootFormat(path, handle, options.signal);
+    const format =
+      options.firmwareFormat ??
+      (await classifyRootFormat(path, handle, options.signal));
     const digest = await hashStableRootArtifactHandle(
       path,
       handle,
@@ -131,7 +139,8 @@ export const classifyAndHashRootForInventory = async (
       format === "dfuse" ||
       format === "uimage" ||
       format === "fit" ||
-      format === "esp-image";
+      format === "esp-image" ||
+      format === "esp-flash-image";
     outcome = {
       kind: "completed",
       value: {

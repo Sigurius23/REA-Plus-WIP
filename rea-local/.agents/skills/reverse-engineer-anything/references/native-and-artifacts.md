@@ -61,8 +61,19 @@ and load/entry/architecture declarations do not establish device execution.
 Use byte/element budgets and FIT tree/metadata/hash-work inputs when needed.
 Hash-work refusals are CPU constraints; unchanged budgets reproduce refusals.
 Explicit integrity continuation preserves observed-untrusted bytes and exact
-format checks. ESP8266, flash origin/partition/OTA selection and board operations
-remain outside this slice.
+format checks. ESP8266 and board operations remain outside this slice. Flash-dump selection
+is described below.
+
+For a complete ESP flash dump or slice, explicitly open with
+`format: "esp-flash-image"`; optional `flash_offset` and
+`partition_table_offset` are flash-address hex strings, not file offsets.
+Artifact inspection/extraction preserves layout, partial/missing regions,
+written extents, table integrity and conditional OTA selection. Original
+selectors bind the session, Evidence and snapshots. Default origin is an
+assumption; a caller table address disables scanning. The running partition
+remains unknown, and erased/unset OTA records are not corrupt programmed records.
+Use byte/metadata/hash-work budgets; changed carrier bytes require reopening.
+There is no acquisition, decryption, flashing or device execution.
 
 ## Native targets
 

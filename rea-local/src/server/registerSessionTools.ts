@@ -202,6 +202,18 @@ const registerOpenLifecycleTool = ({
       const opened = await logToolExecution(logger, openContract.name, () =>
         session.open(input.path, {
           signal: context.mcpReq.signal,
+          ...(input.format !== "esp-flash-image"
+            ? {}
+            : {
+                espFlashSelection: {
+                  ...(input.flash_offset === undefined
+                    ? {}
+                    : { flash_offset: input.flash_offset }),
+                  ...(input.partition_table_offset === undefined
+                    ? {}
+                    : { partition_table_offset: input.partition_table_offset }),
+                },
+              }),
           ...(input.format === undefined ? {} : { formatHint: input.format }),
           ...(input.staging_dir === undefined
             ? {}
@@ -219,6 +231,9 @@ const registerOpenLifecycleTool = ({
               value: {
                 path: opened.value.path,
                 format: opened.value.format,
+                ...(opened.value.espFlashSelection === undefined
+                  ? {}
+                  : { esp_flash_selection: opened.value.espFlashSelection }),
                 kind: opened.value.kind,
                 sha256: opened.value.sha256,
                 architecture: opened.value.architecture ?? null,

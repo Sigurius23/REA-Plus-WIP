@@ -1,0 +1,154 @@
+
+> rea-agents@6.4.0 test:local
+> node scripts/run-development-tests.mjs local src/domain/firmware/espPartitionTable.test.ts src/domain/firmware/espOtaData.test.ts src/domain/firmware/espFlashLocation.test.ts src/domain/firmware/espFlashPlan.test.ts src/domain/firmware/espFlashLayout.test.ts
+
+Source-test feedback; compiled boundaries and real providers need explicit verification.
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |domain| src/domain/firmware/espFlashLocation.test.ts (19 tests) 11ms
+ ❯ |domain| src/domain/firmware/espFlashPlan.test.ts (17 tests | 3 failed) 23ms
+   ❯ ESP flash layout plans (4)
+     ✓ describes the bootloader region, the table sector and every partition 3ms
+     ✓ falls back to the index for unsafe or repeated labels 0ms
+     ✓ accepts the primary bootloader and table entries ESP-IDF 5.3 declares 0ms
+     × keeps a usable partition beside truncated, missing and early ones 6ms
+   ✓ ESP flash layout overlaps (4)
+     ✓ retains a zero-byte partition inside another partition as an empty declaration 1ms
+     ✓ retains a zero-byte partition at the end of the dump as an empty declaration 0ms
+     ✓ retains a zero-byte partition declared before the selected flash origin 0ms
+     ✓ reports every region inside a longer one 1ms
+   ✓ ESP flash layout partition paths (1)
+     ✓ falls back to the index for Windows device names and keeps the label 0ms
+   ❯ ESP flash layout coverage (1)
+     × keeps coverage complete for partitions the end of the file cuts short or leaves out 2ms
+   ✓ ESP flash layout otadata (4)
+     ✓ reads the otadata partition the bootloader uses: the last declared 1ms
+     ✓ does not read a record past a short otadata partition and selects none 1ms
+     ✓ selects nothing from a table whose MD5 the bootloader rejects 2ms
+     ✓ keeps the record a dump holds when it ends between the two 1ms
+   ❯ ESP flash layout facts (3)
+     ✓ describes erased gaps and reports the rest as undescribed 0ms
+     ✓ derives the selected app from the otadata records and leaves the running one unknown 1ms
+     × projects a partition's declaration with ESP-IDF names and where it is written 2ms
+ ✓ |domain| src/domain/firmware/espOtaData.test.ts (14 tests) 4ms
+ ✓ |domain| src/domain/firmware/espFlashLayout.test.ts (5 tests) 1ms
+ ❯ |domain| src/domain/firmware/espPartitionTable.test.ts (14 tests | 1 failed) 8ms
+   ✓ ESP partition tables (10)
+     ✓ decodes entries, flags and a verified MD5 as gen_esp32part writes them 0ms
+     ✓ accepts a table without an MD5 entry, as the bootloader does 0ms
+     ✓ keeps the entries of a table whose MD5 does not match 0ms
+     ✓ rejects erased flash as not a table 0ms
+     ✓ rejects an MD5 entry alone as not a table 0ms
+     ✓ rejects a foreign entry as not a table 0ms
+     ✓ rejects no terminator as not a table 0ms
+     ✓ rejects short bytes as not a table 0ms
+     ✓ names types and subtypes as ESP-IDF does, and keeps unknown flags and labels 0ms
+     ✓ keeps the partitions the bootloader keeps: the last of each role 1ms
+   ✓ retains all fixed label bytes, including valid text padding and a BOM 0ms
+   ✓ retains exact facts for every MD5 declaration when the table has more than one 0ms
+   × does not certify later partitions with an earlier MD5 and preserves unsigned invalid ranges 5ms
+   ✓ matches a partition-table MD5 vector independently constructed with Python struct/hashlib 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |domain| src/domain/firmware/espFlashPlan.test.ts > ESP flash layout plans > keeps a usable partition beside truncated, missing and early ones
+AssertionError: expected [ …(5) ] to deeply equal [ …(4) ]
+
+- Expected
++ Received
+
+@@ -3,10 +3,15 @@
+      "partition-table.bin",
+      28672,
+      4096,
+    ],
+    [
++     "partitions/early.bin",
++     -4096,
++     0,
++   ],
++   [
+      "partitions/app.bin",
+      61440,
+      65536,
+    ],
+    [
+
+ ❯ src/domain/firmware/espFlashPlan.test.ts:163:7
+    161|         available,
+    162|       ]),
+    163|     ).toEqual([
+       |       ^
+    164|       ["partition-table.bin", 0x7000, 0x1000],
+    165|       ["partitions/app.bin", 0xf000, 0x1_0000],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |domain| src/domain/firmware/espFlashPlan.test.ts > ESP flash layout coverage > keeps coverage complete for partitions the end of the file cuts short or leaves out
+AssertionError: expected 'unknown' to be 'complete' // Object.is equality
+
+Expected: "complete"
+Received: "unknown"
+
+ ❯ src/domain/firmware/espFlashPlan.test.ts:322:60
+    320|       ["partitions/ota_1.bin", 0],
+    321|     ]);
+    322|     expect(finishEspFlashLayout(cut, reads(cut)).coverage).toBe("compl…
+       |                                                            ^
+    323|     // A partition before the dump's first byte has no entry, so cover…
+    324|     // unknown even with the bootloader located.
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  |domain| src/domain/firmware/espFlashPlan.test.ts > ESP flash layout facts > projects a partition's declaration with ESP-IDF names and where it is written
+AssertionError: expected { kind: 'esp-flash-partition', …(16) } to deeply equal { kind: 'esp-flash-partition', …(15) }
+
+- Expected
++ Received
+
+@@ -2,10 +2,11 @@
+    "encrypted": false,
+    "flash_address": 36864,
+    "index": 0,
+    "kind": "esp-flash-partition",
+    "label": "nvs",
++   "label_bytes_hex": "6e767300000000000000000000000000",
+    "label_hex": null,
+    "readonly": false,
+    "size": 16384,
+    "subtype": 2,
+    "subtype_name": "nvs",
+
+ ❯ src/domain/firmware/espFlashPlan.test.ts:510:42
+    508|     const [nvs] = table(TWO_OTA_PARTITIONS).partitions;
+    509|     // A partition the dump holds none of has no observed bytes.
+    510|     expect(espFlashPartitionFacts(nvs!)).toEqual({
+       |                                          ^
+    511|       kind: "esp-flash-partition",
+    512|       index: 0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  |domain| src/domain/firmware/espPartitionTable.test.ts > does not certify later partitions with an earlier MD5 and preserves unsigned invalid ranges
+AssertionError: expected 'Partition #1 declares an end beyond t…' to contain '32-bit flash-capacity'
+
+Expected: "32-bit flash-capacity"
+Received: "Partition #1 declares an end beyond the 32-bit flash address space; physical flash-capacity acceptance is not established. Partition #1 at table byte 0x40 lies after an MD5 entry and is not covered by that entry's preceding-byte digest."
+
+ ❯ src/domain/firmware/espPartitionTable.test.ts:196:41
+    194|   expect(decoded.partitions[1]).toMatchObject({offset:0xfffff000,size:…
+    195|   expect(decoded.limitations.join(" ")).toContain("not covered");
+    196|   expect(decoded.limitations.join(" ")).toContain("32-bit flash-capaci…
+       |                                         ^
+    197| });
+    198| it("matches a partition-table MD5 vector independently constructed wit…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed | 3 passed (5)
+      Tests  4 failed | 65 passed (69)
+   Start at  02:17:43
+   Duration  290ms (transform 48%, worker 20%, tests 18%, import 14%)
+

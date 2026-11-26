@@ -323,6 +323,7 @@ const probesFor = (
       "uimage",
       "fit",
       "esp-image",
+      "esp-flash-image",
     ].includes(format)
   )
     return [

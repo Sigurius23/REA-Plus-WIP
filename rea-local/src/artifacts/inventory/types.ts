@@ -1,3 +1,4 @@
+import type { EspFlashSelectionInput } from "../../domain/targetFormatSelection.js";
 import type { ArtifactResourceScope } from "../ArtifactResourceScope.js";
 import type { FirmwareCapacity } from "../../domain/firmware/firmwareCapacity.js";
 
@@ -12,6 +13,9 @@ export const STRICT_INTEGRITY_POLICY: ArtifactIntegrityPolicy = {
 
 /** Options shared by artifact inventory scans. */
 export interface ArtifactInventoryOptions {
+  readonly expectedCarrierSha256?: string | undefined;
+  readonly firmwareFormat?: "esp-flash-image" | undefined;
+  readonly espFlashSelection?: EspFlashSelectionInput | undefined;
   readonly firmwareCapacity?: FirmwareCapacity | undefined;
   readonly resourceScope: ArtifactResourceScope;
   readonly signal?: AbortSignal | undefined;

@@ -1,3 +1,8 @@
+import { parseEspFlashImage } from "../domain/firmware/espFlashImage.js";
+import {
+  resolveEspFlashSelection,
+  type EspFlashSelectionInput,
+} from "../domain/targetFormatSelection.js";
 import { ok } from "../domain/result.js";
 import { parseUImage } from "../domain/firmware/uimage.js";
 import { parseFitImage } from "../domain/firmware/fitImage.js";
@@ -17,10 +22,11 @@ import {
 
 export function createStoredFirmwareReader(
   path: string,
-  format: "uimage" | "fit" | "esp-image",
+  format: "uimage" | "fit" | "esp-image" | "esp-flash-image",
   admitted?: StableRegularFileDescriptor,
   capacity: FirmwareCapacity = resolveFirmwareCapacity(),
   integrity: ArtifactIntegrityPolicyName = "fail",
+  selection: EspFlashSelectionInput = {},
 ) {
   return new StoredFirmwareArtifactReader(
     path,
@@ -28,13 +34,20 @@ export function createStoredFirmwareReader(
     admitted,
     capacity,
     integrity,
-    (bytes) => {
+    (bytes, signal) => {
       const parsed =
-        format === "uimage"
-          ? parseUImage(bytes, capacity)
-          : format === "fit"
-            ? parseFitImage(bytes, capacity)
-            : parseEspImage(bytes);
+        format === "esp-flash-image"
+          ? parseEspFlashImage(
+              bytes,
+              resolveEspFlashSelection(selection),
+              capacity,
+              signal,
+            )
+          : format === "uimage"
+            ? parseUImage(bytes, capacity)
+            : format === "fit"
+              ? parseFitImage(bytes, capacity)
+              : parseEspImage(bytes);
       if (!parsed.ok) return parsed;
       const image = parsed.value;
       const trust =

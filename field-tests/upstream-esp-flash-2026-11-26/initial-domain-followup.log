@@ -1,0 +1,77 @@
+
+> rea-agents@6.4.0 test:local
+> node scripts/run-development-tests.mjs local src/domain/firmware/espFlashImage.test.ts src/domain/firmware/espFlashPlan.test.ts src/domain/firmware/espPartitionTable.test.ts
+
+Source-test feedback; compiled boundaries and real providers need explicit verification.
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |domain| src/domain/firmware/espPartitionTable.test.ts (14 tests) 8ms
+ ❯ |domain| src/domain/firmware/espFlashPlan.test.ts (17 tests | 1 failed) 20ms
+   ❯ ESP flash layout plans (4)
+     ✓ describes the bootloader region, the table sector and every partition 3ms
+     ✓ falls back to the index for unsafe or repeated labels 1ms
+     ✓ accepts the primary bootloader and table entries ESP-IDF 5.3 declares 0ms
+     × keeps a usable partition beside truncated, missing and early ones 6ms
+   ✓ ESP flash layout overlaps (4)
+     ✓ retains a zero-byte partition inside another partition as an empty declaration 1ms
+     ✓ retains a zero-byte partition at the end of the dump as an empty declaration 0ms
+     ✓ retains a zero-byte partition declared before the selected flash origin 0ms
+     ✓ reports every region inside a longer one 1ms
+   ✓ ESP flash layout partition paths (1)
+     ✓ falls back to the index for Windows device names and keeps the label 0ms
+   ✓ ESP flash layout coverage (1)
+     ✓ marks coverage unknown for declared partitions cut short or absent from the dump 1ms
+   ✓ ESP flash layout otadata (4)
+     ✓ reads the otadata partition the bootloader uses: the last declared 0ms
+     ✓ does not read a record past a short otadata partition and selects none 1ms
+     ✓ selects nothing from a table whose MD5 the bootloader rejects 1ms
+     ✓ keeps the record a dump holds when it ends between the two 1ms
+   ✓ ESP flash layout facts (3)
+     ✓ describes erased gaps and reports the rest as undescribed 2ms
+     ✓ derives the selected app from the otadata records and leaves the running one unknown 1ms
+     ✓ projects a partition's declaration with ESP-IDF names and where it is written 0ms
+ ✓ |domain| src/domain/firmware/espFlashImage.test.ts (6 tests) 586ms
+   ✓ retains layout/OTA conditional facts and exact stored source intervals 573ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |domain| src/domain/firmware/espFlashPlan.test.ts > ESP flash layout plans > keeps a usable partition beside truncated, missing and early ones
+AssertionError: expected [ …(5) ] to deeply equal [ …(4) ]
+
+- Expected
++ Received
+
+@@ -3,10 +3,15 @@
+      "partition-table.bin",
+      28672,
+      4096,
+    ],
+    [
++     "partitions/early.bin",
++     -4096,
++     0,
++   ],
++   [
+      "partitions/app.bin",
+      61440,
+      65536,
+    ],
+    [
+
+ ❯ src/domain/firmware/espFlashPlan.test.ts:163:7
+    161|         available,
+    162|       ]),
+    163|     ).toEqual([
+       |       ^
+    164|       ["partition-table.bin", 0x7000, 0x1000],
+    165|       ["partitions/app.bin", 0xf000, 0x1_0000],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 36 passed (37)
+   Start at  02:19:15
+   Duration  863ms (tests 76%, transform 14%, worker 6%, import 4%)
+

@@ -293,11 +293,17 @@ export class AnalysisSnapshotCache {
           ? null
           : subject.architecture === null
             ? {
+                ...(subject.espFlashSelection === undefined
+                  ? {}
+                  : { espFlashSelection: subject.espFlashSelection }),
                 path: subject.path,
                 sha256: subject.sha256,
                 format: subject.format,
               }
             : {
+                ...(subject.espFlashSelection === undefined
+                  ? {}
+                  : { espFlashSelection: subject.espFlashSelection }),
                 path: subject.path,
                 sha256: subject.sha256,
                 format: subject.format,

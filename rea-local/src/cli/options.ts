@@ -1,8 +1,8 @@
 import { isAbsolute } from "node:path";
 import {
-  executableFormatHintSchema,
-  type ExecutableFormatHint,
-} from "../domain/dosCom.js";
+  targetFormatHintSchema,
+  type TargetFormatHint,
+} from "../domain/targetFormatSelection.js";
 import { analysisProviderSelectorSchema } from "../contracts/providerSelection.js";
 import type { AnalysisProviderSelector } from "../contracts/providerSelection.js";
 import type { Logger } from "pino";
@@ -14,10 +14,10 @@ export const providerSelectionOption = analysisProviderSelectorSchema
     "Bind deep analysis to a provider ID or use deterministic auto selection",
   );
 
-/** Explicit interpretation for headerless native executable formats. */
-export const formatSelectionOption = executableFormatHintSchema
+/** Caller-selected native or flash-carrier interpretation. */
+export const formatSelectionOption = targetFormatHintSchema
   .optional()
-  .describe("Explicit headerless DOS COM interpretation");
+  .describe("Explicit dos-com or esp-flash-image interpretation");
 
 /** Staging root for container-member opens like `/path/app.apk#classes.dex`. */
 export const stagingDirSelectionOption = localPathStringSchema
@@ -36,7 +36,7 @@ export const stagingDirSelectionOption = localPathStringSchema
 export type directAnalysisSettings = {
   readonly snapshotPath?: string | undefined;
   readonly providerId?: AnalysisProviderSelector | undefined;
-  readonly formatHint?: ExecutableFormatHint | undefined;
+  readonly formatHint?: TargetFormatHint | undefined;
   readonly stagingDir?: string | undefined;
 };
 

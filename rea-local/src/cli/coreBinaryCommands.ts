@@ -9,7 +9,7 @@ import type { DirectAnalysis } from "../composition/directAnalysis.js";
 import { CLI_COMMANDS } from "../cliCommandNames.js";
 import { logCliCommand } from "../cliLogging.js";
 import type { Logger } from "pino";
-import type { ExecutableFormatHint } from "../domain/dosCom.js";
+import type { TargetFormatHint } from "../domain/targetFormatSelection.js";
 import type { AnalysisProviderSelector } from "../contracts/providerSelection.js";
 import {
   directAnalysisOptions,
@@ -59,7 +59,7 @@ const directOptions = (
   logger: Logger,
   options: {
     readonly snapshot?: string | undefined;
-    readonly "target-format"?: ExecutableFormatHint | undefined;
+    readonly "target-format"?: TargetFormatHint | undefined;
     readonly provider?: AnalysisProviderSelector | undefined;
     readonly "staging-dir"?: string | undefined;
   },
@@ -225,7 +225,7 @@ const routesToJavaScriptAnalysis = async (
   path: string,
   options: {
     readonly snapshot?: string | undefined;
-    readonly "target-format"?: "dos-com" | undefined;
+    readonly "target-format"?: TargetFormatHint | undefined;
     readonly provider?: string | undefined;
   },
 ): Promise<boolean> =>

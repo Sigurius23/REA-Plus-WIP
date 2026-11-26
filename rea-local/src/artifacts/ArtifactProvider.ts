@@ -1,3 +1,4 @@
+import type { EspFlashSelectionInput } from "../domain/targetFormatSelection.js";
 import { snapshotEnvironment } from "../process/snapshotEnvironment.js";
 import {
   resolveFirmwareCapacity,
@@ -195,6 +196,8 @@ class ArtifactClient implements AnalysisClient {
             integrityPolicy: parsed.integrity_policy,
             resourceScope: this.#resourceScope,
             firmwareCapacity: this.firmwareCapacity(parsed, "extract_artifact"),
+            espFlashSelection: this.target.espFlashSelection,
+            expectedCarrierSha256: this.expectedCarrierSha256(),
           },
           options?.signal,
         );
@@ -205,6 +208,7 @@ class ArtifactClient implements AnalysisClient {
             subject: subjectFor(
               this.target.sourcePath ?? this.target.path,
               result.manifest,
+              this.target.espFlashSelection,
             ),
             // Each extracted file's path is already in artifacts.
             locations: [],
@@ -220,6 +224,7 @@ class ArtifactClient implements AnalysisClient {
           subject: subjectFor(
             this.target.sourcePath ?? this.target.path,
             result.manifest,
+            this.target.espFlashSelection,
           ),
           // Each occurrence's logical path is already in the result.
           locations: [],
@@ -350,6 +355,7 @@ class ArtifactClient implements AnalysisClient {
     const subject = subjectFor(
       this.target.sourcePath ?? this.target.path,
       inventory.manifest,
+      this.target.espFlashSelection,
     );
     const inventoryEvidence = createEvidence(subject, ARTIFACT_GRAPH_PROVIDER, {
       operation: "inventory_artifact",
@@ -390,7 +396,29 @@ class ArtifactClient implements AnalysisClient {
       ...(options?.signal === undefined ? {} : { signal: options.signal }),
       integrity: { mode: parsed.integrity_policy },
       firmwareCapacity: this.firmwareCapacity(parsed, operation),
+      expectedCarrierSha256: this.expectedCarrierSha256(),
+      ...(this.target.format !== "esp-flash-image"
+        ? {}
+        : {
+            firmwareFormat: "esp-flash-image",
+            espFlashSelection: this.target.espFlashSelection,
+          }),
     });
+  }
+
+  private expectedCarrierSha256(): string | undefined {
+    return [
+      "intel-hex",
+      "srec",
+      "uf2",
+      "dfuse",
+      "uimage",
+      "fit",
+      "esp-image",
+      "esp-flash-image",
+    ].includes(this.target.format)
+      ? this.target.sha256
+      : undefined;
   }
 
   private firmwareCapacity(
@@ -406,6 +434,7 @@ class ArtifactClient implements AnalysisClient {
       "uimage",
       "fit",
       "esp-image",
+      "esp-flash-image",
     ].includes(format);
     const supplied = Object.entries(input).filter(
       ([key, value]) => key.startsWith("max_firmware_") && value !== undefined,
@@ -421,10 +450,12 @@ class ArtifactClient implements AnalysisClient {
           "max_firmware_tree_nodes",
           "max_firmware_tree_properties",
           "max_firmware_tree_depth",
-          "max_firmware_metadata_bytes",
-          "max_firmware_hash_bytes",
         ].includes(key) &&
-          format !== "fit"),
+          format !== "fit") ||
+        (["max_firmware_metadata_bytes", "max_firmware_hash_bytes"].includes(
+          key,
+        ) &&
+          !["fit", "esp-flash-image"].includes(format)),
     );
     if (invalid.length > 0)
       throw new AnalysisInputError(
@@ -434,7 +465,7 @@ class ArtifactClient implements AnalysisClient {
           path: [key],
           reason: "invalid_value" as const,
           message:
-            "Firmware bytes require a structured firmware carrier; runs require Intel HEX/S-record/UF2; elements require DfuSe/uImage/FIT; tree and metadata budgets require FIT",
+            "Firmware bytes require a structured firmware carrier; runs require Intel HEX/S-record/UF2; elements require DfuSe/uImage/FIT; tree budgets require FIT; metadata/hash-work budgets require FIT or ESP flash",
         })),
       );
     if (allowed) return resolveFirmwareCapacity(input);
@@ -485,7 +516,9 @@ const subjectFor = (
     readonly root_sha256: string;
     readonly root_format: import("../domain/artifactGraph.js").ArtifactInventoryResult["manifest"]["root_format"];
   },
+  espFlashSelection?: EspFlashSelectionInput,
 ) => ({
+  ...(espFlashSelection === undefined ? {} : { espFlashSelection }),
   path,
   sha256: manifest.root_sha256,
   format: manifest.root_format,

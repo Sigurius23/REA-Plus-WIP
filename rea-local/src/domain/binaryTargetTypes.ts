@@ -1,3 +1,4 @@
+import type { EspFlashSelectionInput } from "./targetFormatSelection.js";
 /** Provider-neutral CPU families detected from supported executable headers. */
 export const BINARY_ARCHITECTURES = [
   "x86",
@@ -43,6 +44,7 @@ export interface MipsAbiFlags {
 }
 
 interface BinaryTargetIdentity {
+  readonly espFlashSelection?: never;
   readonly path: string;
   readonly sourcePath?: string;
   /** Info.plist of the app bundle the target was resolved from. */
@@ -127,6 +129,12 @@ export type BinaryTarget =
       NonExecutableMetadata & {
         readonly kind: "database";
         readonly format: "analysis-database";
+      })
+  | (Omit<BinaryTargetIdentity, "espFlashSelection"> &
+      NonExecutableMetadata & {
+        readonly kind: "archive";
+        readonly format: "esp-flash-image";
+        readonly espFlashSelection: EspFlashSelectionInput;
       })
   | (BinaryTargetIdentity &
       NonExecutableMetadata & {

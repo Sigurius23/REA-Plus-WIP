@@ -1,0 +1,78 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused src/domain/firmware/dfuse.test.ts src/domain/firmware/espFlashImage.test.ts src/domain/firmware/espFlashLayout.test.ts src/domain/firmware/espFlashLocation.test.ts src/domain/firmware/espFlashPlan.test.ts src/domain/firmware/espImage.test.ts src/domain/firmware/espOtaData.test.ts src/domain/firmware/espPartitionTable.test.ts src/domain/firmware/fitImage.test.ts src/domain/firmware/fitRecognition.test.ts src/domain/firmware/hexRecords.test.ts src/domain/firmware/retainedFirmwareDecoder.test.ts src/domain/firmware/uf2.test.ts src/domain/firmware/uimage.test.ts src/domain/targetFormatSelection.test.ts src/domain/analysisSnapshot.test.ts tests/acceptance/espFlashArtifacts.test.ts tests/acceptance/bootFirmwareArtifacts.test.ts tests/acceptance/firmwareCarriers.test.ts tests/acceptance/hexRecordArtifacts.test.ts tests/boundary/filesystem/hexRecordArtifactReader.test.ts tests/boundary/filesystem/firmwareRegionReaders.test.ts tests/boundary/filesystem/dosComTarget.test.ts tests/boundary/providers/native/artifactProvider.directoryInventory.test.ts tests/boundary/providers/native/artifactProvider.extraction.test.ts tests/boundary/providers/native/artifactProvider.extractionFormat.test.ts tests/boundary/mcp/artifactMcp.test.ts tests/boundary/mcp/artifactMcp.inlineInventory.test.ts
+
+Focused tests: src/domain/firmware/dfuse.test.ts, src/domain/firmware/espFlashImage.test.ts, src/domain/firmware/espFlashLayout.test.ts, src/domain/firmware/espFlashLocation.test.ts, src/domain/firmware/espFlashPlan.test.ts, src/domain/firmware/espImage.test.ts, src/domain/firmware/espOtaData.test.ts, src/domain/firmware/espPartitionTable.test.ts, src/domain/firmware/fitImage.test.ts, src/domain/firmware/fitRecognition.test.ts, src/domain/firmware/hexRecords.test.ts, src/domain/firmware/retainedFirmwareDecoder.test.ts, src/domain/firmware/uf2.test.ts, src/domain/firmware/uimage.test.ts, src/domain/targetFormatSelection.test.ts, src/domain/analysisSnapshot.test.ts, tests/acceptance/espFlashArtifacts.test.ts, tests/acceptance/bootFirmwareArtifacts.test.ts, tests/acceptance/firmwareCarriers.test.ts, tests/acceptance/hexRecordArtifacts.test.ts, tests/boundary/filesystem/hexRecordArtifactReader.test.ts, tests/boundary/filesystem/firmwareRegionReaders.test.ts, tests/boundary/filesystem/dosComTarget.test.ts, tests/boundary/providers/native/artifactProvider.directoryInventory.test.ts, tests/boundary/providers/native/artifactProvider.extraction.test.ts, tests/boundary/providers/native/artifactProvider.extractionFormat.test.ts, tests/boundary/mcp/artifactMcp.test.ts, tests/boundary/mcp/artifactMcp.inlineInventory.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing 367982a8a5fa47a8
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache miss, executing 42171217bd922f54
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    1 cached, 3 total
+  Time:    5.941s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |acceptance| tests/acceptance/espFlashArtifacts.test.ts (2 tests) 13784ms
+   ✓ preserves explicit flash origin, layout/OTA facts, stored extraction and complete CLI/MCP Evidence 8698ms
+   ✓ retains leading partial data, strict/continued integrity, capacity diagnostics and changed-input refusal 5086ms
+ ✓ |acceptance| tests/acceptance/bootFirmwareArtifacts.test.ts (2 tests) 16512ms
+   ✓ inspects and extracts uImage/FIT/ESP through compiled CLI and real stdio MCP with exact Evidence parity 11307ms
+   ✓ keeps strict/continued integrity, unknown coverage, resource knobs and malformed/unsupported boundaries truthful 5204ms
+ ✓ |acceptance| tests/acceptance/hexRecordArtifacts.test.ts (10 tests) 7789ms
+   ✓ inspects and extracts intel-hex sparse regions with full source/metadata and advertised schemas 4012ms
+   ✓ inspects and extracts srec sparse regions with full source/metadata and advertised schemas 3622ms
+ ✓ |boundary| tests/boundary/filesystem/dosComTarget.test.ts (6 tests) 136ms
+ ✓ |boundary| tests/boundary/providers/native/artifactProvider.extraction.test.ts (2 tests) 86ms
+ ✓ |boundary| tests/boundary/providers/native/artifactProvider.directoryInventory.test.ts (1 test) 50ms
+ ✓ |boundary| tests/boundary/filesystem/hexRecordArtifactReader.test.ts (10 tests) 36ms
+ ✓ |boundary| tests/boundary/filesystem/firmwareRegionReaders.test.ts (2 tests) 13ms
+ ✓ |boundary| tests/boundary/providers/native/artifactProvider.extractionFormat.test.ts (1 test) 12ms
+ ✓ |domain| src/domain/firmware/espFlashImage.test.ts (6 tests) 461ms
+   ✓ retains layout/OTA conditional facts and exact stored source intervals 448ms
+ ✓ |domain| src/domain/firmware/dfuse.test.ts (20 tests) 38ms
+ ✓ |domain| src/domain/analysisSnapshot.test.ts (6 tests) 44ms
+ ✓ |domain| src/domain/firmware/espImage.test.ts (70 tests) 26ms
+ ✓ |domain| src/domain/firmware/fitImage.test.ts (19 tests) 19ms
+ ✓ |domain| src/domain/firmware/espFlashPlan.test.ts (17 tests) 6ms
+ ✓ |domain| src/domain/firmware/uimage.test.ts (22 tests) 10ms
+ ✓ |acceptance| tests/acceptance/firmwareCarriers.test.ts (7 tests) 10728ms
+   ✓ retains uf2 metadata, advertised schemas, whole CLI/MCP Evidence parity and extracted bytes 5459ms
+   ✓ retains dfuse metadata, advertised schemas, whole CLI/MCP Evidence parity and extracted bytes 4589ms
+   ✓ retains partial UF2 coverage for skipped invalid/file-container and unverified tagged blocks 335ms
+ ✓ |domain| src/domain/firmware/hexRecords.test.ts (44 tests) 9ms
+ ✓ |domain| src/domain/firmware/espFlashLocation.test.ts (19 tests) 5ms
+ ✓ |domain| src/domain/firmware/espPartitionTable.test.ts (14 tests) 2ms
+ ✓ |domain| src/domain/firmware/espOtaData.test.ts (14 tests) 2ms
+ ✓ |domain| src/domain/firmware/fitRecognition.test.ts (5 tests) 3ms
+ ✓ |domain| src/domain/targetFormatSelection.test.ts (2 tests) 2ms
+ ✓ |domain| src/domain/firmware/espFlashLayout.test.ts (5 tests) 1ms
+ ✓ |domain| src/domain/firmware/retainedFirmwareDecoder.test.ts (2 tests) 1ms
+ ✓ |domain| src/domain/firmware/uf2.test.ts (18 tests) 11ms
+ ✓ |mcp-boundary| tests/boundary/mcp/artifactMcp.test.ts (8 tests) 279ms
+ ✓ |mcp-boundary| tests/boundary/mcp/artifactMcp.inlineInventory.test.ts (2 tests) 647ms
+   ✓ returns all 520 ZIP file occurrences in one inspect_artifact MCP result 574ms
+
+ Test Files  28 passed (28)
+      Tests  336 passed (336)
+   Start at  02:27:46
+   Duration  31.88s (tests 82%, import 10%, transform 9%)
+

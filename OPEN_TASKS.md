@@ -4,6 +4,19 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **ESP flash layout / partition / OTA integrated (2026-11-26, item 62 partial):**
+  Explicit flash interpretation preserves original origin/table selectors in
+  session, snapshot and Evidence identity. Partition declarations, partial stored
+  windows, table MD5 and OTA CRC/conditional selection facts survive inspection
+  and extraction. Fixed erased-record false corruption, leading-partition loss,
+  resource admission and changed-carrier retargeting across structured firmware.
+  336 tests, 39 qualified MCP calls (six expected refusals), 28 CLI calls, 78
+  readbacks, 35 historical snapshots and check/docs/discovery/package gates pass.
+  Fourteen historical firmware Evidence records and Arc's complete reducer
+  Evidence remain unchanged. Android boot/OTA and devicetree are next; broader
+  firmware and full Arc remain open. See
+  [qualification](field-tests/upstream-esp-flash-2026-11-26.md).
+
 - **uImage / FIT / standalone ESP integrated (2026-11-25, item 62 partial):**
   Existing artifact tools retain stored ranges, declarations and exact integrity
   facts, with strict or explicit untrusted continuation. Fixed FIT prefix-window
@@ -11,8 +24,8 @@ Open work on `main` following PR #1 and the field tests.
   budget diagnostics. 249 tests, 76 qualified MCP calls (25 expected refusals),
   21 CLI calls, 30 readbacks, 34 historical snapshots and check/docs/discovery/
   package gates pass. Eight historical firmware Evidence records and Arc's
-  complete reducer Evidence remain exactly unchanged. ESP flash-layout/partition/
-  OTA selection is next; full Arc and later integration groups remain open. See
+  complete reducer Evidence remain exactly unchanged. The ESP flash-layout/partition/
+  OTA follow-up is recorded above; full Arc and later integration groups remain open. See
   [qualification](field-tests/upstream-uimage-fit-esp-2026-11-25.md).
 
 - **UF2 / DfuSe integrated (2026-11-25, item 62 partial):** Root firmware
@@ -1941,8 +1954,15 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
         retention. 249 tests, public CLI/MCP, historical compatibility, unchanged
         Arc and package gates qualify the slice. See
         [qualification](field-tests/upstream-uimage-fit-esp-2026-11-25.md).
-      - [ ] ESP flash-dump origin/layout, partition and OTA selection are next,
-        then Android boot/OTA and devicetree inspection. UF2 file-container
+      - [x] Explicit ESP flash-dump origin/layout, partition and conditional OTA
+        selection (2026-11-26). Original selectors bind session/snapshot/Evidence;
+        all declarations and partial stored ranges remain visible. Fixed erased
+        OTA false corruption, leading-partition loss, hash/metadata admission and
+        changed-carrier identity refusal. 336 tests, public CLI/MCP, 78 readbacks,
+        14 historical firmware Evidence matches, unchanged Arc and package gates
+        qualify the slice. See
+        [qualification](field-tests/upstream-esp-flash-2026-11-26.md).
+      - [ ] Android boot/OTA and devicetree inspection are next. UF2 file-container
         reconstruction and MD5/tag interpretation remain unsupported with explicit
         caveats. Recursive expansion and raw CPU/board loading are separate scope.
     - [ ] Qualify raw-image/RISC-V, expanded MIPS and PowerPC/DOL lanes

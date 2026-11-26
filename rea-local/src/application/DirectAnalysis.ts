@@ -1,5 +1,6 @@
+import type { EspFlashSelectionInput } from "../domain/targetFormatSelection.js";
 import type { NativeObservationOperation } from "../domain/native/nativeObservation.js";
-import type { ExecutableFormatHint } from "../domain/dosCom.js";
+import type { TargetFormatHint } from "../domain/targetFormatSelection.js";
 import type { JsonValue } from "../domain/jsonValue.js";
 import type { DirectAnalysisDependencies } from "./DirectAnalysisDependencies.js";
 import type { BinarySession } from "./binary/BinarySession.js";
@@ -97,7 +98,8 @@ export const runDirectAnalysis = async (
     readonly snapshotPath?: string | undefined;
     readonly signal?: AbortSignal;
     readonly providerId?: AnalysisProviderSelector;
-    readonly formatHint?: ExecutableFormatHint;
+    readonly formatHint?: TargetFormatHint;
+    readonly espFlashSelection?: EspFlashSelectionInput;
     readonly stagingDir?: string;
   } = {},
 ): Promise<JsonValue> =>
@@ -106,6 +108,9 @@ export const runDirectAnalysis = async (
       logger: options.logger ?? silentLogger,
       snapshotPath: options.snapshotPath,
       signal,
+      ...(options.espFlashSelection === undefined
+        ? {}
+        : { espFlashSelection: options.espFlashSelection }),
       ...(options.formatHint === undefined
         ? {}
         : { formatHint: options.formatHint }),
@@ -121,12 +126,23 @@ export const runDirectAnalysis = async (
 /** Execute one provider-native semantic operation with atomic provenance. */
 export const runProviderAnalysis = async (
   dependencies: DirectAnalysisDependencies,
-  ...[path, tool, arguments_, logger = silentLogger, signal]: readonly [
+  ...[
+    path,
+    tool,
+    arguments_,
+    logger = silentLogger,
+    signal,
+    targetSelection,
+  ]: readonly [
     path: string,
     tool: NativeToolName | ArtifactAnalysisOperation | ManagedToolName,
     arguments_: Readonly<Record<string, JsonValue>>,
     logger?: Logger,
     signal?: AbortSignal,
+    targetSelection?: {
+      readonly formatHint?: TargetFormatHint;
+      readonly espFlashSelection?: EspFlashSelectionInput;
+    },
   ]
 ): Promise<JsonValue> =>
   isManagedToolName(tool)
@@ -135,6 +151,7 @@ export const runProviderAnalysis = async (
         runAnalysis(dependencies, path, tool, arguments_, {
           logger,
           snapshotPath: undefined,
+          ...(targetSelection ?? {}),
           signal: operationSignal,
         }),
       );
@@ -197,7 +214,8 @@ const runAnalysis = async (
     readonly snapshotPath: string | undefined;
     readonly signal: AbortSignal;
     readonly providerId?: AnalysisProviderSelector;
-    readonly formatHint?: ExecutableFormatHint;
+    readonly formatHint?: TargetFormatHint;
+    readonly espFlashSelection?: EspFlashSelectionInput;
     readonly stagingDir?: string;
   },
 ): Promise<JsonValue> => {
@@ -212,6 +230,9 @@ const runAnalysis = async (
         path,
         snapshotPath,
         signal,
+        ...(options.espFlashSelection === undefined
+          ? {}
+          : { espFlashSelection: options.espFlashSelection }),
         ...(options.formatHint === undefined
           ? {}
           : { formatHint: options.formatHint }),
@@ -226,6 +247,9 @@ const runAnalysis = async (
         const preview = await session.previewTarget(prepared.value.target, {
           signal,
           snapshot,
+          ...(options.espFlashSelection === undefined
+            ? {}
+            : { espFlashSelection: options.espFlashSelection }),
           ...(options.formatHint === undefined
             ? {}
             : { formatHint: options.formatHint }),
@@ -258,6 +282,9 @@ const runAnalysis = async (
       }
       const openOptions = {
         signal,
+        ...(options.espFlashSelection === undefined
+          ? {}
+          : { espFlashSelection: options.espFlashSelection }),
         ...(options.formatHint === undefined
           ? {}
           : { formatHint: options.formatHint }),
@@ -466,7 +493,8 @@ const withProcessCancellation = async <Value>(
 
 const prepareSnapshot = async (options: {
   readonly path: string;
-  readonly formatHint?: ExecutableFormatHint;
+  readonly formatHint?: TargetFormatHint;
+  readonly espFlashSelection?: EspFlashSelectionInput;
   readonly stagingDir?: string;
   readonly snapshotPath: string | undefined;
   readonly signal: AbortSignal;
@@ -483,6 +511,9 @@ const prepareSnapshot = async (options: {
   if (!loaded.ok) return loaded;
   const target = await parseBinaryTarget(path, {
     signal: options.signal,
+    ...(options.espFlashSelection === undefined
+      ? {}
+      : { espFlashSelection: options.espFlashSelection }),
     ...(options.formatHint === undefined
       ? {}
       : { formatHint: options.formatHint }),

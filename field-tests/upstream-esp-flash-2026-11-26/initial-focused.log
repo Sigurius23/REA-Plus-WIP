@@ -1,0 +1,36 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused src/domain/firmware/espPartitionTable.test.ts src/domain/firmware/espOtaData.test.ts src/domain/firmware/espFlashLocation.test.ts src/domain/firmware/espFlashPlan.test.ts src/domain/firmware/espFlashLayout.test.ts src/domain/firmware/espFlashImage.test.ts src/domain/targetFormatSelection.test.ts src/domain/analysisSnapshot.test.ts tests/acceptance/espFlashArtifacts.test.ts tests/acceptance/bootFirmwareArtifacts.test.ts tests/acceptance/firmwareCarriers.test.ts tests/acceptance/hexRecordArtifacts.test.ts tests/boundary/filesystem/hexRecordArtifactReader.test.ts tests/boundary/filesystem/firmwareRegionReaders.test.ts
+
+Focused tests: src/domain/firmware/espPartitionTable.test.ts, src/domain/firmware/espOtaData.test.ts, src/domain/firmware/espFlashLocation.test.ts, src/domain/firmware/espFlashPlan.test.ts, src/domain/firmware/espFlashLayout.test.ts, src/domain/firmware/espFlashImage.test.ts, src/domain/targetFormatSelection.test.ts, src/domain/analysisSnapshot.test.ts, tests/acceptance/espFlashArtifacts.test.ts, tests/acceptance/bootFirmwareArtifacts.test.ts, tests/acceptance/firmwareCarriers.test.ts, tests/acceptance/hexRecordArtifacts.test.ts, tests/boundary/filesystem/hexRecordArtifactReader.test.ts, tests/boundary/filesystem/firmwareRegionReaders.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing c8dfd2c7eb2b45e1
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+compile: src/application/BinaryTargetResolver.ts(212,13): error TS2322: Type 'Result<{ path: string; sourcePath: string; sha256: string; kind: "archive"; format: "aab" | "apk" | "apks" | "app-pack" | "appx" | "asar" | "dfuse" | "dmg" | "esp-flash-image" | "esp-image" | ... 11 more ... | "zip"; }, never>' is not assignable to type 'Result<BinaryTarget, AnalysisCancelledError | BinaryTargetError>'.
+compile:   Type '{ readonly ok: true; readonly value: { path: string; sourcePath: string; sha256: string; kind: "archive"; format: "aab" | "apk" | "apks" | "app-pack" | "appx" | "asar" | "dfuse" | "dmg" | "esp-flash-image" | ... 12 more ... | "zip"; }; }' is not assignable to type 'Result<BinaryTarget, AnalysisCancelledError | BinaryTargetError>'.
+compile:     Type '{ readonly ok: true; readonly value: { path: string; sourcePath: string; sha256: string; kind: "archive"; format: "aab" | "apk" | "apks" | "app-pack" | "appx" | "asar" | "dfuse" | "dmg" | "esp-flash-image" | ... 12 more ... | "zip"; }; }' is not assignable to type '{ readonly ok: true; readonly value: BinaryTarget; }'.
+compile:       Types of property 'value' are incompatible.
+compile:         Type '{ path: string; sourcePath: string; sha256: string; kind: "archive"; format: "aab" | "apk" | "apks" | "app-pack" | "appx" | "asar" | "dfuse" | "dmg" | "esp-flash-image" | "esp-image" | "fit" | ... 10 more ... | "zip"; }' is not assignable to type 'BinaryTarget'.
+compile:           Type '{ path: string; sourcePath: string; sha256: string; kind: "archive"; format: "aab" | "apk" | "apks" | "app-pack" | "appx" | "asar" | "dfuse" | "dmg" | "esp-flash-image" | "esp-image" | "fit" | ... 10 more ... | "zip"; }' is not assignable to type '(BinaryTargetIdentity & NonExecutableMetadata & { readonly kind: "archive"; readonly format: "aab" | "apk" | "apks" | "app-pack" | "appx" | ... 15 more ... | "zip"; }) | (Omit<...> & ... 1 more ... & { ...; })'.
+compile:             Type '{ path: string; sourcePath: string; sha256: string; kind: "archive"; format: "aab" | "apk" | "apks" | "app-pack" | "appx" | "asar" | "dfuse" | "dmg" | "esp-flash-image" | "esp-image" | "fit" | ... 10 more ... | "zip"; }' is not assignable to type 'Omit<BinaryTargetIdentity, "espFlashSelection"> & NonExecutableMetadata & { readonly kind: "archive"; readonly format: "esp-flash-image"; readonly espFlashSelection: { ...; }; }'.
+compile:               Property 'espFlashSelection' is missing in type '{ path: string; sourcePath: string; sha256: string; kind: "archive"; format: "aab" | "apk" | "apks" | "app-pack" | "appx" | "asar" | "dfuse" | "dmg" | "esp-flash-image" | "esp-image" | "fit" | ... 10 more ... | "zip"; }' but required in type '{ readonly kind: "archive"; readonly format: "esp-flash-image"; readonly espFlashSelection: { flash_offset?: string; partition_table_offset?: string; }; }'.
+compile:  ERROR  command (/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/) /usr/local/bin/npm run compile exited (2)
+
+ Tasks:    1 successful, 2 total
+Cached:    1 cached, 2 total
+  Time:    5.819s 
+Failed:    //#compile
+
+ ERROR  run failed: command  exited (2)

@@ -35,4 +35,5 @@ export const binaryTargetFormatSchema = z.enum({
   uimage: "uimage",
   fit: "fit",
   "esp-image": "esp-image",
+  "esp-flash-image": "esp-flash-image",
 } satisfies { [Format in BinaryTarget["format"]]: Format });

@@ -92,6 +92,9 @@ export const binarySessionStatus = ({
     : {
         open: true,
         ...common,
+        ...(target.espFlashSelection === undefined
+          ? {}
+          : { esp_flash_selection: target.espFlashSelection }),
         path: target.path,
         sha256: target.sha256,
         format: target.format,

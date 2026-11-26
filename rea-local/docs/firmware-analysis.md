@@ -189,6 +189,67 @@ References: [U-Boot image declarations](https://github.com/u-boot/u-boot/blob/ec
 [ESP image format](https://docs.espressif.com/projects/esptool/en/latest/esp32s2/advanced-topics/firmware-image-format.html)
 and [Secure Boot v2](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/security/secure-boot-v2.html).
 
+## ESP flash dumps, partitions and OTA selection
+
+Select this interpretation explicitly. Omission keeps existing byte-based
+recognition and does not scan arbitrary files as flash dumps:
+
+```sh
+rea inspect-artifact ./dump.bin --target-format esp-flash-image --json
+rea inspect-artifact ./slice.bin --target-format esp-flash-image --flash-offset 0x1000 --partition-table-offset 0x8000 --json
+rea extract-artifact ./dump.bin --target-format esp-flash-image --json
+```
+
+In MCP, use `open_binary` with `format: "esp-flash-image"`, optionally
+`flash_offset` and `partition_table_offset`. Both addresses are hexadecimal
+strings in flash coordinates. The table address must align to 0x1000; it is
+not an offset relative to the file. Omitted origin assumes zero and is marked
+`default`; explicit zero remains a caller declaration. A supplied table address
+disables scanning. Otherwise the reader tries 0x8000, then MD5-verified sector
+candidates after the located bootloader. Missing/wrong-origin layouts report
+an explicit refusal or assumption. A scan does not establish the bootloader's
+configured table address.
+
+Original selector text survives in lifecycle results, `binary_session`, Evidence
+subject identity and snapshot binding. Reopening the same bytes with different
+choices creates a new interpretation; cached metadata from the old origin is
+not reused. Structured firmware changed since opening is refused before decoder
+allocation. Reopen it to admit new bytes; integrity continuation does not bypass
+that identity check.
+
+The inventory retains the bootloader/table ranges and every declared partition,
+including overlapping, fully missing, truncated and partial-leading ranges.
+`declared_file_offset` may be negative; `source_location` is always an actual
+nonnegative carrier interval, or null with no bytes. `stored_offset` says where
+the retained slice starts inside the full declaration. Missing prefixes are
+never zero-filled. Exact label bytes, flags, written extents and unclassified
+gaps remain visible. An encrypted flag is a declaration; stored bytes can be
+extracted without claiming decryption.
+
+Partition MD5 declarations retain every stored/computed pair and its covered
+prefix. OTA records retain sequence/state/label bytes, stored/computed CRC and
+usability. Erased/unset records can have CRC disagreement by design and do not
+force untrusted continuation. Programmed-record disagreement, bad table MD5
+metadata and decoded-image integrity failures follow the existing fail/continue
+policy. Readable app/bootloader images reuse the standalone ESP facts and retain
+signature-authentication limits. The derived OTA choice always has
+`running_partition: "unknown"`; flash capacity, rollback/eFuse policy, load
+fallback and GPIO/deep-sleep overrides are not established by stored bytes.
+
+The file-byte budget admits one retained carrier. Flash accepts
+`max_firmware_metadata_bytes` and `max_firmware_hash_bytes`, with the same defaults
+as FIT. The model conservatively reserves locator/table and per-image metadata,
+charges locator reads and worst-case table MD5 prefixes, scans merged written
+extents once, and charges three times each newly decoded image range. Identical
+ranges reuse decoding. Admission precedes the work; graph/serialization/output
+storage is additional. The hash/scan refusal is a CPU constraint, metadata a
+memory constraint. Other format-specific knobs are rejected. This is offline
+interpretation only: acquisition, flashing and device execution are separate.
+
+References: [ESP-IDF partition tables](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/partition-tables.html),
+[OTA selection source](https://github.com/espressif/esp-idf/blob/v6.1/components/bootloader_support/src/bootloader_utility.c)
+and [partition verification source](https://github.com/espressif/esp-idf/blob/v6.1/components/bootloader_support/src/flash_partitions.c).
+
 ## Caller-supplied tools
 
 Provide existing tools using absolute executable paths, scoped to your shell:

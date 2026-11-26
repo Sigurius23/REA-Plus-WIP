@@ -84,7 +84,8 @@ export interface ArtifactReader {
     | "dfuse"
     | "uimage"
     | "fit"
-    | "esp-image";
+    | "esp-image"
+    | "esp-flash-image";
   formatMetadata?(): FirmwareFormatMetadata | undefined;
   limitations?(): readonly string[];
   entries(signal?: AbortSignal): AsyncIterable<ArtifactEntry>;

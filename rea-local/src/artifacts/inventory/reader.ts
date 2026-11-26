@@ -1,3 +1,4 @@
+import type { EspFlashSelectionInput } from "../../domain/targetFormatSelection.js";
 import { createStoredFirmwareReader } from "../createStoredFirmwareReader.js";
 import { AsarArtifactReader } from "../AsarArtifactReader.js";
 import { Uf2ArtifactReader } from "../Uf2ArtifactReader.js";
@@ -23,6 +24,7 @@ export const createReader = (
   rootSource?: StableRegularFileDescriptor,
   firmwareCapacity?: FirmwareCapacity,
   integrity: "fail" | "record-and-continue" = "fail",
+  espFlashSelection?: EspFlashSelectionInput,
 ): ArtifactReader | undefined => {
   if (isZipPackageFormat(format))
     return new ZipArtifactReader(path, format, undefined, rootSource);
@@ -30,12 +32,14 @@ export const createReader = (
     case "uimage":
     case "fit":
     case "esp-image":
+    case "esp-flash-image":
       return createStoredFirmwareReader(
         path,
         format,
         rootSource,
         firmwareCapacity,
         integrity,
+        espFlashSelection,
       );
     case "uf2":
       return new Uf2ArtifactReader(path, rootSource, firmwareCapacity);

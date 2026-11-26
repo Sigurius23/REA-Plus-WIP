@@ -61,13 +61,13 @@ const allZero = (bytes: Uint8Array): boolean =>
 const UTF8 = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true });
 
 /** The bytes of a NUL-terminated C string in a fixed array. */
-const cStringBytes = (bytes: Uint8Array): Uint8Array => {
+export const cStringBytes = (bytes: Uint8Array): Uint8Array => {
   const end = bytes.indexOf(0);
   return end < 0 ? bytes : bytes.subarray(0, end);
 };
 
 /** A NUL-terminated C string in a fixed array, or null when not UTF-8. */
-const cString = (bytes: Uint8Array): string | null => {
+export const cString = (bytes: Uint8Array): string | null => {
   try {
     return UTF8.decode(cStringBytes(bytes));
   } catch {

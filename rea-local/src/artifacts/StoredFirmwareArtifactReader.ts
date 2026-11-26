@@ -18,7 +18,7 @@ import {
 export interface StoredFirmwareImage extends DecodedFirmwareImage {
   readonly regions: readonly {
     readonly path: string;
-    readonly offset: number;
+    readonly offset: number | null;
     readonly bytes: Uint8Array;
     readonly metadata: FirmwareFormatMetadata;
   }[];
@@ -30,37 +30,42 @@ export const STORED_FIRMWARE_SCOPE =
 export class StoredFirmwareArtifactReader extends DecodedRegionArtifactReader<StoredFirmwareImage> {
   constructor(
     path: string,
-    readonly format: "uimage" | "fit" | "esp-image",
+    readonly format: "uimage" | "fit" | "esp-image" | "esp-flash-image",
     admitted: StableRegularFileDescriptor | undefined,
     private readonly capacity: FirmwareCapacity,
     private readonly integrity: ArtifactIntegrityPolicyName,
     private readonly parse: (
       bytes: Uint8Array,
+      signal?: AbortSignal,
     ) => Result<StoredFirmwareImage, RegionDecodeFailure>,
   ) {
     super(path, admitted);
   }
-  protected decoder(fileBytes: number) {
+  protected decoder(fileBytes: number, signal?: AbortSignal) {
     return createRetainedFirmwareDecoder(
       fileBytes,
       this.capacity.maxFileBytes,
-      this.parse,
+      (bytes) => this.parse(bytes, signal),
     );
   }
   protected decodeFailure(failure: RegionDecodeFailure): never {
     return firmwareDecodeFailure(failure, {
       maxFileBytes: this.capacity.maxFileBytes,
-      ...(this.format === "esp-image"
+      ...(["esp-image", "esp-flash-image"].includes(this.format)
         ? {}
         : { maxElements: this.capacity.maxElements }),
+      ...(!["fit", "esp-flash-image"].includes(this.format)
+        ? {}
+        : {
+            maxMetadataBytes: this.capacity.maxMetadataBytes,
+            maxHashBytes: this.capacity.maxHashBytes,
+          }),
       ...(this.format !== "fit"
         ? {}
         : {
             maxTreeNodes: this.capacity.maxTreeNodes,
             maxTreeProperties: this.capacity.maxTreeProperties,
             maxTreeDepth: this.capacity.maxTreeDepth,
-            maxMetadataBytes: this.capacity.maxMetadataBytes,
-            maxHashBytes: this.capacity.maxHashBytes,
           }),
     });
   }

@@ -74,7 +74,12 @@ describe("artifact directory inventory", () => {
 
 const target = (
   path: string,
-  format: Extract<BinaryTarget, { kind: "archive" }>["format"] | "directory",
+  format:
+    | Exclude<
+        Extract<BinaryTarget, { kind: "archive" }>["format"],
+        "esp-flash-image"
+      >
+    | "directory",
 ): BinaryTarget => ({
   path,
   sourcePath: path,

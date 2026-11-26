@@ -1,3 +1,4 @@
+import type { EspFlashSelectionInput } from "../../domain/targetFormatSelection.js";
 import { createStoredFirmwareReader } from "../createStoredFirmwareReader.js";
 import { lstat, realpath } from "node:fs/promises";
 
@@ -46,6 +47,8 @@ import type { ArtifactIntegrityPolicyName } from "../../domain/artifactIntegrity
 
 /** Local extraction input with the output root chosen by the adapter. */
 export interface ArtifactExtractionInput {
+  readonly expectedCarrierSha256?: string | undefined;
+  readonly espFlashSelection?: EspFlashSelectionInput | undefined;
   readonly firmwareCapacity?: FirmwareCapacity | undefined;
   readonly inputPath: string;
   readonly inputFormat: BinaryTarget["format"];
@@ -76,6 +79,13 @@ const extractArtifactInScope = async (
     environment: input.environment,
     integrity: { mode: input.integrityPolicy },
     firmwareCapacity: input.firmwareCapacity,
+    expectedCarrierSha256: input.expectedCarrierSha256,
+    ...(input.inputFormat !== "esp-flash-image"
+      ? {}
+      : {
+          firmwareFormat: "esp-flash-image",
+          espFlashSelection: input.espFlashSelection,
+        }),
   });
   return materializeArtifactInventoryInScope(
     input,
@@ -137,9 +147,14 @@ const materializeArtifactInventoryInScope = async (
     if (neededNodes.has(node.artifact_id)) nodes.set(node.artifact_id, node);
   const inventory: ExtractionInventory = {
     manifest: snapshot.manifest,
-    limitations: ["uf2", "dfuse", "uimage", "fit", "esp-image"].includes(
-      snapshot.manifest.root_format,
-    )
+    limitations: [
+      "uf2",
+      "dfuse",
+      "uimage",
+      "fit",
+      "esp-image",
+      "esp-flash-image",
+    ].includes(snapshot.manifest.root_format)
       ? snapshot.limitations
       : [],
     integrityContradictions: snapshot.integrity_contradictions.filter(
@@ -462,6 +477,7 @@ const requireExtractableFormat = async (
     format !== "uimage" &&
     format !== "fit" &&
     format !== "esp-image" &&
+    format !== "esp-flash-image" &&
     !isZipFormat(format)
   )
     throw new AnalysisUnsupportedTargetError(
@@ -481,18 +497,25 @@ const createReader = async (
     | "environment"
     | "firmwareCapacity"
     | "integrityPolicy"
+    | "espFlashSelection"
   >,
 ): Promise<ArtifactReader> => {
   const format = input.inputFormat;
   if (await requireExtractableFormat(path, input))
     return new DirectoryArtifactReader(path);
-  if (format === "uimage" || format === "fit" || format === "esp-image")
+  if (
+    format === "uimage" ||
+    format === "fit" ||
+    format === "esp-image" ||
+    format === "esp-flash-image"
+  )
     return createStoredFirmwareReader(
       path,
       format,
       undefined,
       input.firmwareCapacity,
       input.integrityPolicy,
+      input.espFlashSelection,
     );
   if (format === "uf2")
     return new Uf2ArtifactReader(path, undefined, input.firmwareCapacity);

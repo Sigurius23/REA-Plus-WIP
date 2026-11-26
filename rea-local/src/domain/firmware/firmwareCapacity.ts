@@ -69,7 +69,7 @@ export const firmwareCapacityInputShape = {
     .positive()
     .exactOptional()
     .describe(
-      "FIT decoded metadata representation budget; default 33554432. Charges names, property/reference values and retained metadata before allocation. Stored payload views do not consume this budget.",
+      "FIT/ESP-flash metadata admission budget; default 33554432. FIT charges tree/metadata expansion. Flash conservatively reserves locator/table metadata, region metadata and per-image output facts before expansion. Stored payload views do not consume this budget.",
     ),
   max_firmware_hash_bytes: z
     .number()
@@ -77,7 +77,7 @@ export const firmwareCapacityInputShape = {
     .positive()
     .exactOptional()
     .describe(
-      "FIT aggregate supported-hash byte-work budget; default 1073741824. Identical algorithm/range computations may be reused. Admitted before hashing; only supported for FIT.",
+      "FIT hash byte-work or ESP-flash conservative scan/image-hash work budget; default 1073741824. Flash charges locator reads, worst-case table MD5 prefixes, merged written/gap scans and three times each newly decoded image range. Identical range computations are reused. Admitted before work; only FIT/ESP-flash.",
     ),
 };
 export type FirmwareCapacityInput = {

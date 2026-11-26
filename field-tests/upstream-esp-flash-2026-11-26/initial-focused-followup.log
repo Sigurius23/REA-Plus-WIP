@@ -1,0 +1,63 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused src/domain/firmware/espPartitionTable.test.ts src/domain/firmware/espOtaData.test.ts src/domain/firmware/espFlashLocation.test.ts src/domain/firmware/espFlashPlan.test.ts src/domain/firmware/espFlashLayout.test.ts src/domain/firmware/espFlashImage.test.ts src/domain/targetFormatSelection.test.ts src/domain/analysisSnapshot.test.ts tests/acceptance/espFlashArtifacts.test.ts tests/acceptance/bootFirmwareArtifacts.test.ts tests/acceptance/firmwareCarriers.test.ts tests/acceptance/hexRecordArtifacts.test.ts tests/boundary/filesystem/hexRecordArtifactReader.test.ts tests/boundary/filesystem/firmwareRegionReaders.test.ts
+
+Focused tests: src/domain/firmware/espPartitionTable.test.ts, src/domain/firmware/espOtaData.test.ts, src/domain/firmware/espFlashLocation.test.ts, src/domain/firmware/espFlashPlan.test.ts, src/domain/firmware/espFlashLayout.test.ts, src/domain/firmware/espFlashImage.test.ts, src/domain/targetFormatSelection.test.ts, src/domain/analysisSnapshot.test.ts, tests/acceptance/espFlashArtifacts.test.ts, tests/acceptance/bootFirmwareArtifacts.test.ts, tests/acceptance/firmwareCarriers.test.ts, tests/acceptance/hexRecordArtifacts.test.ts, tests/boundary/filesystem/hexRecordArtifactReader.test.ts, tests/boundary/filesystem/firmwareRegionReaders.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing 970915d8c3d8d5bd
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache miss, executing 0859c685a878b8e8
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    1 cached, 3 total
+  Time:    5.703s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |acceptance| tests/acceptance/firmwareCarriers.test.ts (7 tests) 11213ms
+   ✓ retains uf2 metadata, advertised schemas, whole CLI/MCP Evidence parity and extracted bytes 5857ms
+   ✓ retains dfuse metadata, advertised schemas, whole CLI/MCP Evidence parity and extracted bytes 4720ms
+   ✓ fails a DfuSe CRC mismatch by default and preserves the exact pair and untrusted status under explicit continuation 304ms
+ ✓ |acceptance| tests/acceptance/bootFirmwareArtifacts.test.ts (2 tests) 17392ms
+   ✓ inspects and extracts uImage/FIT/ESP through compiled CLI and real stdio MCP with exact Evidence parity 12199ms
+   ✓ keeps strict/continued integrity, unknown coverage, resource knobs and malformed/unsupported boundaries truthful 5192ms
+ ✓ |acceptance| tests/acceptance/hexRecordArtifacts.test.ts (10 tests) 7915ms
+   ✓ inspects and extracts intel-hex sparse regions with full source/metadata and advertised schemas 4020ms
+   ✓ inspects and extracts srec sparse regions with full source/metadata and advertised schemas 3739ms
+ ✓ |boundary| tests/boundary/filesystem/hexRecordArtifactReader.test.ts (10 tests) 37ms
+ ✓ |boundary| tests/boundary/filesystem/firmwareRegionReaders.test.ts (2 tests) 13ms
+ ✓ |domain| src/domain/firmware/espFlashPlan.test.ts (17 tests) 12ms
+ ✓ |domain| src/domain/firmware/espFlashImage.test.ts (6 tests) 467ms
+   ✓ retains layout/OTA conditional facts and exact stored source intervals 456ms
+ ✓ |domain| src/domain/analysisSnapshot.test.ts (6 tests) 43ms
+ ✓ |domain| src/domain/firmware/espFlashLocation.test.ts (19 tests) 5ms
+ ✓ |domain| src/domain/firmware/espPartitionTable.test.ts (14 tests) 3ms
+ ✓ |domain| src/domain/firmware/espOtaData.test.ts (14 tests) 2ms
+ ✓ |domain| src/domain/firmware/espFlashLayout.test.ts (5 tests) 1ms
+ ✓ |domain| src/domain/targetFormatSelection.test.ts (2 tests) 1ms
+ ✓ |acceptance| tests/acceptance/espFlashArtifacts.test.ts (2 tests) 13101ms
+   ✓ preserves explicit flash origin, layout/OTA facts, stored extraction and complete CLI/MCP Evidence 8281ms
+   ✓ retains leading partial data, strict/continued integrity, capacity diagnostics and changed-input refusal 4819ms
+
+ Test Files  14 passed (14)
+      Tests  116 passed (116)
+   Start at  02:25:38
+   Duration  31.24s (tests 88%, transform 7%, import 5%)
+

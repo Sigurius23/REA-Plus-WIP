@@ -1,3 +1,6 @@
+import { espFlashSelectionInputSchema } from "../domain/targetFormatSelection.js";
+import type { EspFlashSelectionInput } from "../domain/targetFormatSelection.js";
+import { validateDosComLength } from "../domain/dosCom.js";
 import { recognizeFitCarrier } from "../domain/firmware/fitRecognition.js";
 import { hasUImageMagic } from "../domain/firmware/uimage.js";
 import { recognizeEspImage } from "../domain/firmware/espImage.js";
@@ -40,10 +43,7 @@ import {
   resolveAppBundleExecutable,
   type ResolvedAppBundle,
 } from "./AppBundleExecutable.js";
-import {
-  validateDosComLength,
-  type ExecutableFormatHint,
-} from "../domain/dosCom.js";
+import type { TargetFormatHint } from "../domain/targetFormatSelection.js";
 import { mzWindowsHeaderOffset } from "../domain/dosMz.js";
 import {
   hasZipSignature,
@@ -62,7 +62,8 @@ export interface BinaryTargetResolverOptions {
   readonly cwd?: string;
   readonly hostArchitecture?: NodeJS.Architecture;
   readonly targetKind?: BinaryTarget["kind"];
-  readonly formatHint?: ExecutableFormatHint;
+  readonly formatHint?: TargetFormatHint;
+  readonly espFlashSelection?: EspFlashSelectionInput;
   /** Staging root for container-member extraction; unset uses a sibling directory. */
   readonly stagingDir?: string;
   readonly signal?: AbortSignal;
@@ -82,12 +83,34 @@ export const parseBinaryTarget = async (
   const cwd = options.cwd ?? process.cwd();
   const hostArchitecture = options.hostArchitecture ?? process.arch;
   const { targetKind, formatHint, signal } = options;
+  if (
+    options.espFlashSelection !== undefined &&
+    formatHint !== "esp-flash-image"
+  )
+    return err(
+      new BinaryTargetError(
+        input,
+        "Flash offsets require format=esp-flash-image",
+      ),
+    );
+  const flash = espFlashSelectionInputSchema.safeParse(
+    options.espFlashSelection ?? {},
+  );
+  if (!flash.success)
+    return err(new BinaryTargetError(input, flash.error.message));
   const fragment = splitContainerFragment(input);
   if (fragment !== null) {
     const containerInput = isAbsolute(fragment.container)
       ? fragment.container
       : resolve(cwd, fragment.container);
     if (await isExistingRegularFile(containerInput)) {
+      if (formatHint === "esp-flash-image")
+        return err(
+          new BinaryTargetError(
+            input,
+            "ESP flash interpretation requires the complete carrier, not an archive member selector",
+          ),
+        );
       const member = validateMemberSelector(fragment.member, input);
       if (!member.ok) return member;
       // Container classification ignores targetKind/formatHint: the route
@@ -130,6 +153,23 @@ export const parseBinaryTarget = async (
       throwIfTargetResolutionCancelled(signal);
       const metadata = await handle.stat();
       throwIfTargetResolutionCancelled(signal);
+      if (formatHint === "esp-flash-image") {
+        if (targetKind !== undefined && targetKind !== "archive")
+          return err(
+            new BinaryTargetError(
+              path,
+              "ESP flash format requires an archive target kind",
+            ),
+          );
+        return ok({
+          path,
+          sourcePath: canonical,
+          sha256: await sha256Handle(handle, path, metadata, signal),
+          kind: "archive",
+          format: "esp-flash-image",
+          espFlashSelection: flash.data,
+        });
+      }
       if (formatHint === "dos-com") {
         if (targetKind !== undefined && targetKind !== "executable")
           return err(
@@ -277,6 +317,7 @@ const detectArtifactFormat = async (
 ): Promise<
   | Exclude<
       BinaryTarget["format"],
+      | "esp-flash-image"
       | "analysis-database"
       | "apk-set"
       | "mach-o"
@@ -373,7 +414,10 @@ const isArchiveFormat = (
     BinaryTarget["format"],
     "analysis-database" | "mach-o" | "elf" | "pe" | "dos-mz" | "dos-com" | "dex"
   >,
-): format is Extract<BinaryTarget, { kind: "archive" }>["format"] =>
+): format is Exclude<
+  Extract<BinaryTarget, { kind: "archive" }>["format"],
+  "esp-flash-image"
+> =>
   isZipPackageFormat(format) ||
   [
     "asar",

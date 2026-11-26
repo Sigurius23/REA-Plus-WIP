@@ -86,6 +86,7 @@ export const scanCanonicalArtifactInventoryInScope = async (
       rootSource,
       options.firmwareCapacity,
       integrity.mode,
+      options.espFlashSelection,
     );
   } catch (cause: unknown) {
     readerCreationFailure = { cause };
@@ -94,6 +95,14 @@ export const scanCanonicalArtifactInventoryInScope = async (
   let outcome: InventoryScanOutcome;
   try {
     if (readerCreationFailure !== undefined) throw readerCreationFailure.cause;
+    if (
+      options.expectedCarrierSha256 !== undefined &&
+      rootDigest?.sha256 !== options.expectedCarrierSha256
+    )
+      throw new ArtifactReaderFailure(
+        "integrity",
+        "Selected firmware carrier changed since open; reopen it to admit the new bytes",
+      );
     if (reader instanceof AsarArtifactReader)
       await reader.prepareContainer(rootDigest?.sha256, options.signal);
     if (reader instanceof DecodedRegionArtifactReader && rootDigest !== null)
@@ -210,8 +219,13 @@ const buildInventorySnapshot = async (
   materializeDirectoryNodes(input.occurrences, input.nodes);
   const rootNode = createRootNode({
     digest: rootDigest,
-    ...(["dfuse", "fit"].includes(rootFormat)
-      ? { observedContentFormat: rootFormat as "dfuse" | "fit" }
+    ...(["dfuse", "fit", "esp-flash-image"].includes(rootFormat)
+      ? {
+          observedContentFormat: rootFormat as
+            | "dfuse"
+            | "fit"
+            | "esp-flash-image",
+        }
       : {}),
     occurrences: input.occurrences,
   });

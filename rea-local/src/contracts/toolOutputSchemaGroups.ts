@@ -1,3 +1,4 @@
+import { espFlashSelectionInputSchema } from "../domain/targetFormatSelection.js";
 import { byteSearchResultSchema } from "../domain/native/bytePattern.js";
 import { analysisDetailOutputSchemaOf } from "./analysisDetail.js";
 import { batchDecompileResultSchema } from "../domain/native/batchDecompile.js";
@@ -380,6 +381,7 @@ export const managedWorkflowOutputSchemas: Readonly<
 export const sessionOutputSchemas = {
   open_binary: lifecycleResultOf(
     z.object({
+      esp_flash_selection: espFlashSelectionInputSchema.exactOptional(),
       path: z.string(),
       format: targetFormatSchema,
       kind: targetKindSchema,
@@ -421,6 +423,7 @@ export const sessionOutputSchemas = {
         }),
         sessionProvider.extend({
           open: z.literal(true),
+          esp_flash_selection: espFlashSelectionInputSchema.exactOptional(),
           path: z.string(),
           format: targetFormatSchema,
           kind: targetKindSchema,

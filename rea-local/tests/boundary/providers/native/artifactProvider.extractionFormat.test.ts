@@ -46,7 +46,10 @@ describe("artifact extraction format support", () => {
 
 const archiveTarget = (
   path: string,
-  format: Extract<BinaryTarget, { kind: "archive" }>["format"],
+  format: Exclude<
+    Extract<BinaryTarget, { kind: "archive" }>["format"],
+    "esp-flash-image"
+  >,
 ): BinaryTarget => ({
   path,
   sourcePath: path,

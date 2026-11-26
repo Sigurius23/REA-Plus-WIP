@@ -1,0 +1,258 @@
+{
+  "output_dir": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-esp-flash-2026-11-26/mcp-carriers",
+  "environment": {
+    "REA_MCP_MAX_RESPONSE_BYTES": "10485760"
+  },
+  "steps": [
+    {
+      "name": "open_binary",
+      "label": "whole-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-esp-flash-fixtures-xd96ynp_/whole.bin",
+        "format": "esp-flash-image"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "whole-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "whole-extract",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "whole-max_firmware_file_bytes",
+      "arguments": {
+        "max_firmware_file_bytes": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "whole-max_firmware_metadata_bytes",
+      "arguments": {
+        "max_firmware_metadata_bytes": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "whole-max_firmware_hash_bytes",
+      "arguments": {
+        "max_firmware_hash_bytes": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "whole-max_firmware_runs",
+      "arguments": {
+        "max_firmware_runs": 1
+      },
+      "expect_success": false
+    },
+    {
+      "name": "close_binary",
+      "label": "whole-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "erased-ota-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-esp-flash-fixtures-xd96ynp_/erased-ota.bin",
+        "format": "esp-flash-image"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "erased-ota-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "erased-ota-extract",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "erased-ota-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "bad-md5-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-esp-flash-fixtures-xd96ynp_/bad-md5.bin",
+        "format": "esp-flash-image"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "bad-md5-strict-inspect_artifact",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "extract_artifact",
+      "label": "bad-md5-strict-extract_artifact",
+      "arguments": {},
+      "expect_success": false
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "bad-md5-inspect",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "bad-md5-extract",
+      "arguments": {
+        "integrity_policy": "record-and-continue"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "bad-md5-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "no-md5-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-esp-flash-fixtures-xd96ynp_/no-md5.bin",
+        "format": "esp-flash-image",
+        "partition_table_offset": "0x8000"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "no-md5-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "no-md5-extract",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "no-md5-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "leading-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-esp-flash-fixtures-xd96ynp_/leading.bin",
+        "format": "esp-flash-image",
+        "flash_offset": "0x00001000",
+        "partition_table_offset": "0x8000"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "leading-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "leading-extract",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "leading-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "scanned-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-esp-flash-fixtures-xd96ynp_/scanned.bin",
+        "format": "esp-flash-image"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "scanned-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "extract_artifact",
+      "label": "scanned-extract",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "scanned-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "open_binary",
+      "label": "selected-open",
+      "arguments": {
+        "path": "/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-esp-flash-fixtures-xd96ynp_/whole.bin",
+        "format": "esp-flash-image",
+        "flash_offset": "0x00000000",
+        "partition_table_offset": "0x8000"
+      },
+      "expect_success": true
+    },
+    {
+      "name": "inspect_artifact",
+      "label": "selected-inspect",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "binary_session",
+      "label": "selected-session",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "close_binary",
+      "label": "selected-close",
+      "arguments": {},
+      "expect_success": true
+    },
+    {
+      "name": "export_evidence_bundle",
+      "label": "bundle",
+      "arguments": {
+        "path": "/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/field-tests/upstream-esp-flash-2026-11-26/mcp-carriers/final.bundle.json"
+      },
+      "expect_success": true
+    }
+  ]
+}

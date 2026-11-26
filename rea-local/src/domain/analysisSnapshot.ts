@@ -1,3 +1,4 @@
+import { espFlashSelectionInputSchema } from "./targetFormatSelection.js";
 import { binaryTargetFormatSchema } from "./binaryTargetFormats.js";
 import { createHash } from "node:crypto";
 
@@ -45,6 +46,7 @@ const architectureSchema = z.enum(BINARY_ARCHITECTURES);
 
 const kindSchema = z.enum(["executable", "database", "archive", "artifact"]);
 const subjectSchema = z.object({
+  espFlashSelection: espFlashSelectionInputSchema.exactOptional(),
   path: z.string().min(1),
   sha256: digestSchema,
   format: z.enum([
@@ -60,6 +62,7 @@ const subjectSchema = z.object({
   architecture: architectureSchema.nullable(),
 });
 const targetSchema = z.object({
+  esp_flash_selection: espFlashSelectionInputSchema.exactOptional(),
   sha256: digestSchema,
   kind: kindSchema,
   format: binaryTargetFormatSchema,
@@ -244,6 +247,9 @@ const snapshotContentDigest = (
       execution.subject === null
         ? null
         : {
+            ...(execution.subject.espFlashSelection === undefined
+              ? {}
+              : { esp_flash_selection: execution.subject.espFlashSelection }),
             local_path: execution.subject.path,
             sha256: execution.subject.sha256,
             format: execution.subject.format,
@@ -291,6 +297,9 @@ const canonicalJson = (value: unknown): string => {
 export const snapshotTarget = (
   target: BinaryTarget,
 ): AnalysisSnapshotTarget => ({
+  ...(target.espFlashSelection === undefined
+    ? {}
+    : { esp_flash_selection: structuredClone(target.espFlashSelection) }),
   sha256: target.sha256,
   kind: target.kind,
   format: target.format,
@@ -311,6 +320,8 @@ export const snapshotMatchesTarget = (
   snapshot: AnalysisSnapshotTarget,
   target: BinaryTarget,
 ): boolean =>
+  canonicalize(snapshot.esp_flash_selection) ===
+    canonicalize(target.espFlashSelection) &&
   snapshot.sha256 === target.sha256 &&
   snapshot.kind === target.kind &&
   snapshot.format === target.format &&
@@ -697,6 +708,8 @@ const isCorrespondingEvidence = (
   evidence.predicate_type === "rea.analysis" &&
   evidence.confidence === "observed" &&
   evidence.authority === "shipped-artifact" &&
+  canonicalize(evidence.subject?.esp_flash_selection) ===
+    canonicalize(snapshot.target.esp_flash_selection) &&
   evidence.subject?.digest.sha256 === snapshot.target.sha256 &&
   evidence.analysis_profile !== null &&
   analysisProfilesEqual(
@@ -773,6 +786,8 @@ const isWorkflowEvidence = (
   evidence.predicate_type === "rea.analysis" &&
   evidence.confidence === "derived" &&
   evidence.authority === "shipped-artifact" &&
+  canonicalize(evidence.subject?.esp_flash_selection) ===
+    canonicalize(snapshot.target.esp_flash_selection) &&
   evidence.subject?.digest.sha256 === snapshot.target.sha256 &&
   evidence.analysis_profile !== null &&
   analysisProfilesEqual(
@@ -801,6 +816,9 @@ const evidenceContentMetadata = (evidence: Evidence) => ({
     evidence.subject === null
       ? null
       : {
+          ...(evidence.subject.esp_flash_selection === undefined
+            ? {}
+            : { esp_flash_selection: evidence.subject.esp_flash_selection }),
           local_path: evidence.subject.local_path,
           sha256: evidence.subject.digest.sha256,
           format: evidence.subject.format,

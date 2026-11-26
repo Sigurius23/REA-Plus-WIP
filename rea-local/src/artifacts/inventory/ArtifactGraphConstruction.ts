@@ -241,6 +241,7 @@ export const rootOccurrenceFor = (
       "uimage",
       "fit",
       "esp-image",
+      "esp-flash-image",
     ].includes(metadata.format)
       ? "container"
       : artifactRoleForFormat(metadata.path, metadata.format).kind,
@@ -449,6 +450,7 @@ const artifactRoleForFormat = (
       "uimage",
       "fit",
       "esp-image",
+      "esp-flash-image",
     ].includes(format)
   )
     return { kind: "container", format };

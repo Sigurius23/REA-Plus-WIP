@@ -6,6 +6,16 @@ export function firmwareIntegrityObservation(
   metadata: FirmwareFormatMetadata | undefined,
   occurrences: ArtifactInventoryResult["occurrences"],
 ): Record<string, JsonValue> | undefined {
+  if (metadata?.kind === "esp-flash-image")
+    return {
+      format: "esp-flash-image",
+      coverage: metadata.coverage,
+      table_md5: metadata.partition_table.md5,
+      table_md5_entries: metadata.partition_table.md5_entries,
+      otadata: metadata.otadata,
+      boot_selection: metadata.boot_selection,
+      apps_examined: metadata.apps.length,
+    };
   if (metadata?.kind === "uimage")
     return {
       format: "uimage",

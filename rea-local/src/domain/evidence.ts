@@ -1,3 +1,7 @@
+import {
+  espFlashSelectionInputSchema,
+  type EspFlashSelectionInput,
+} from "./targetFormatSelection.js";
 import { binaryTargetFormatSchema } from "./binaryTargetFormats.js";
 import { z } from "zod";
 
@@ -34,6 +38,7 @@ export const providerSchema = z.object({
   version: z.string().nullable(),
 });
 const subjectSchema = z.object({
+  esp_flash_selection: espFlashSelectionInputSchema.exactOptional(),
   name: z.string().min(1),
   digest: z.object({ sha256: digestSchema }),
   format: z.enum([
@@ -157,6 +162,7 @@ export type EvidenceLocation = z.infer<typeof evidenceLocationSchema>;
 
 /** Minimal immutable local artifact identity accepted by Evidence. */
 export interface EvidenceSubjectTarget {
+  readonly espFlashSelection?: EspFlashSelectionInput;
   readonly path: string;
   readonly sha256: string;
   readonly format: z.infer<typeof subjectSchema>["format"];
@@ -197,6 +203,9 @@ export const evidenceSubjectIdentity = (
   subject === null
     ? null
     : {
+        ...(subject.esp_flash_selection === undefined
+          ? {}
+          : { esp_flash_selection: subject.esp_flash_selection }),
         digest: subject.digest,
         format: subject.format,
         architecture: subject.architecture,
@@ -301,6 +310,11 @@ const normalizeEvidenceObservation = (
     target === undefined
       ? null
       : {
+          ...(target.espFlashSelection === undefined
+            ? {}
+            : {
+                esp_flash_selection: structuredClone(target.espFlashSelection),
+              }),
           name: target.path.split("/").at(-1) || "artifact",
           digest: { sha256: target.sha256 },
           format: target.format,
@@ -312,6 +326,9 @@ const normalizeEvidenceObservation = (
       subject === null
         ? null
         : {
+            ...(subject.esp_flash_selection === undefined
+              ? {}
+              : { esp_flash_selection: subject.esp_flash_selection }),
             digest: subject.digest,
             format: subject.format,
             architecture: subject.architecture,

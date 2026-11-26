@@ -43,9 +43,11 @@ export abstract class DecodedRegionArtifactReader<
     | "dfuse"
     | "uimage"
     | "fit"
-    | "esp-image";
+    | "esp-image"
+    | "esp-flash-image";
   protected abstract decoder(
     fileBytes: number,
+    signal?: AbortSignal,
   ): Result<RegionDecoder<Image>, RegionDecodeFailure>;
   protected abstract regions(image: Image): readonly DecodedFirmwareRegion[];
   protected abstract decodeFailure(failure: RegionDecodeFailure): never;
@@ -204,7 +206,7 @@ export abstract class DecodedRegionArtifactReader<
     await this.#verifySource();
     this.#active(signal);
     const source = this.#source;
-    const decoder = this.decoder(source.initial.size);
+    const decoder = this.decoder(source.initial.size, signal);
     if (!decoder.ok) this.decodeFailure(decoder.error);
     const hash = createHash("sha256");
     let bytes = 0;

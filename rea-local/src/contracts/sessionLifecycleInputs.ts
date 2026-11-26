@@ -1,5 +1,8 @@
 import { isAbsolute } from "node:path";
-import { executableFormatHintSchema } from "../domain/dosCom.js";
+import {
+  espFlashSelectionInputSchema,
+  targetFormatHintSchema,
+} from "../domain/targetFormatSelection.js";
 import { localPathStringSchema } from "../domain/localPath.js";
 import { z } from "zod";
 import { analysisProviderSelectorSchema } from "./providerSelection.js";
@@ -35,17 +38,29 @@ const stagingDirSchema = localPathStringSchema
   );
 
 /** Input contract for opening a target with an optional staged snapshot. */
-export const openBinaryInputSchema = z.strictObject({
-  path: binaryTargetPathSchema,
-  staging_dir: stagingDirSchema.optional(),
-  format: executableFormatHintSchema
-    .optional()
-    .describe(
-      "Explicit headerless DOS COM interpretation; omission preserves header-based detection",
-    ),
-  provider_id: analysisProviderSelectorSchema.optional(),
-  snapshot_path: snapshotPathSchema.optional(),
-});
+export const openBinaryInputSchema = z
+  .strictObject({
+    path: binaryTargetPathSchema,
+    ...espFlashSelectionInputSchema.shape,
+    staging_dir: stagingDirSchema.optional(),
+    format: targetFormatHintSchema
+      .optional()
+      .describe(
+        "Explicit dos-com or esp-flash-image interpretation; omission preserves header-based detection",
+      ),
+    provider_id: analysisProviderSelectorSchema.optional(),
+    snapshot_path: snapshotPathSchema.optional(),
+  })
+  .superRefine((input, context) => {
+    if (input.format !== "esp-flash-image")
+      for (const key of ["flash_offset", "partition_table_offset"] as const)
+        if (input[key] !== undefined)
+          context.addIssue({
+            code: "custom",
+            path: [key],
+            message: "Flash offsets require format=esp-flash-image",
+          });
+  });
 
 /** Input contract for closing a target after an optional atomic snapshot. */
 export const closeBinaryInputSchema = z.strictObject({

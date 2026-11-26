@@ -1,3 +1,7 @@
+import {
+  targetFormatHintSchema,
+  espFlashSelectionInputSchema,
+} from "../domain/targetFormatSelection.js";
 import { firmwareCapacityInputShape } from "../domain/firmware/firmwareCapacity.js";
 import { z } from "incur";
 
@@ -197,6 +201,10 @@ const registerExtractionCommand = (
       path: z.string().describe("Application or package path"),
     }),
     options: z.object({
+      "target-format": targetFormatHintSchema.exactOptional(),
+      flashOffset: espFlashSelectionInputSchema.shape.flash_offset,
+      partitionTableOffset:
+        espFlashSelectionInputSchema.shape.partition_table_offset,
       maxFirmwareFileBytes: firmwareCapacityInputShape.max_firmware_file_bytes,
       maxFirmwareRuns: firmwareCapacityInputShape.max_firmware_runs,
       maxFirmwareElements: firmwareCapacityInputShape.max_firmware_elements,
@@ -251,6 +259,28 @@ const registerExtractionCommand = (
             output_root: createArtifactExtractionDestination(),
           },
           logger,
+          undefined,
+          {
+            ...(options["target-format"] === undefined
+              ? {}
+              : { formatHint: options["target-format"] }),
+            ...(options["target-format"] !== "esp-flash-image" &&
+            options.flashOffset === undefined &&
+            options.partitionTableOffset === undefined
+              ? {}
+              : {
+                  espFlashSelection: {
+                    ...(options.flashOffset === undefined
+                      ? {}
+                      : { flash_offset: options.flashOffset }),
+                    ...(options.partitionTableOffset === undefined
+                      ? {}
+                      : {
+                          partition_table_offset: options.partitionTableOffset,
+                        }),
+                  },
+                }),
+          },
         ),
       ),
   });
@@ -268,6 +298,10 @@ const registerInspectionCommand = (
       path: z.string().describe("Application or package path"),
     }),
     options: z.object({
+      "target-format": targetFormatHintSchema.exactOptional(),
+      flashOffset: espFlashSelectionInputSchema.shape.flash_offset,
+      partitionTableOffset:
+        espFlashSelectionInputSchema.shape.partition_table_offset,
       maxFirmwareFileBytes: firmwareCapacityInputShape.max_firmware_file_bytes,
       maxFirmwareRuns: firmwareCapacityInputShape.max_firmware_runs,
       maxFirmwareElements: firmwareCapacityInputShape.max_firmware_elements,
@@ -321,6 +355,28 @@ const registerInspectionCommand = (
                 }),
           },
           logger,
+          undefined,
+          {
+            ...(options["target-format"] === undefined
+              ? {}
+              : { formatHint: options["target-format"] }),
+            ...(options["target-format"] !== "esp-flash-image" &&
+            options.flashOffset === undefined &&
+            options.partitionTableOffset === undefined
+              ? {}
+              : {
+                  espFlashSelection: {
+                    ...(options.flashOffset === undefined
+                      ? {}
+                      : { flash_offset: options.flashOffset }),
+                    ...(options.partitionTableOffset === undefined
+                      ? {}
+                      : {
+                          partition_table_offset: options.partitionTableOffset,
+                        }),
+                  },
+                }),
+          },
         ),
       ),
   });

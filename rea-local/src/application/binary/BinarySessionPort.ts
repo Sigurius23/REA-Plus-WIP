@@ -1,5 +1,6 @@
+import type { EspFlashSelectionInput } from "../../domain/targetFormatSelection.js";
 import type { InvestigationRecordPort } from "../investigation/InvestigationRecordPort.js";
-import type { ExecutableFormatHint } from "../../domain/dosCom.js";
+import type { TargetFormatHint } from "../../domain/targetFormatSelection.js";
 import type { BinaryTarget } from "../../domain/binaryTargetTypes.js";
 import type { JsonValue } from "../../domain/jsonValue.js";
 import type { AnalysisSnapshot } from "../../domain/analysisSnapshot.js";
@@ -43,7 +44,8 @@ export interface BinarySessionPort
     options?: {
       readonly signal?: AbortSignal;
       readonly targetKind?: BinaryTarget["kind"];
-      readonly formatHint?: ExecutableFormatHint;
+      readonly formatHint?: TargetFormatHint;
+      readonly espFlashSelection?: EspFlashSelectionInput;
       readonly snapshot?: AnalysisSnapshot;
       readonly providerId?: AnalysisProviderSelector;
     },

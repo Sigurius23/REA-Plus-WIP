@@ -1,4 +1,9 @@
 import {
+  espFlashImageMetadataSchema,
+  espFlashPartitionMetadataSchema,
+  espFlashRegionMetadataSchema,
+} from "./espFlashMetadata.js";
+import {
   uImageMetadataSchema,
   uImageEntryMetadataSchema,
 } from "./uimageMetadata.js";
@@ -23,6 +28,9 @@ export const firmwareFormatMetadataSchema = z.discriminatedUnion("kind", [
   hexRecordRegionMetadataSchema,
   uImageMetadataSchema,
   uImageEntryMetadataSchema,
+  espFlashImageMetadataSchema,
+  espFlashPartitionMetadataSchema,
+  espFlashRegionMetadataSchema,
   fitMetadataSchema,
   fitImageMetadataSchema,
   espImageMetadataSchema,
