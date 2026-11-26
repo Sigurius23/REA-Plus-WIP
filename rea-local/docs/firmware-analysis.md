@@ -423,3 +423,62 @@ REA_FIRMWARE_VERIFY_GHIDRA=1 npm run verify:firmware
 `scripts/rea.mjs` to verify the packaged CLI/MCP workflow. Real coverage here is
 generated gzip/USTAR/ext4 with a Linux x64 ELF child; SquashFS, UBIFS, proprietary
 firmware, other hosts and architectures remain unverified.
+
+## Android boot and OTA stored carriers
+
+The built-in artifact tools recognize `ANDROID!` boot headers (v0–v4), `VNDRBOOT`
+vendor headers (v3/v4), and `CrAU` Android OTA v2 payloads by exact bytes:
+
+```sh
+rea inspect-artifact ./boot.img --json
+rea extract-artifact ./vendor_boot.img --json
+rea inspect-artifact ./payload.bin --max-firmware-elements 65536 --json
+```
+
+MCP uses `open_binary`, then `inspect_artifact` or `extract_artifact`. Android
+boot metadata retains complete raw headers, command-line/name bytes, OS/version
+and address declarations, vendor table entries/board IDs/extensions, signature
+sizes and AVB footer/vbmeta ranges. The header id, boot signature and AVB metadata
+are not cryptographically verified. Compression labels inspect leading magic;
+components stay compressed. Vendor ramdisk paths use indices, keeping arbitrary
+or duplicate names as metadata rather than filesystem paths. All table entries,
+including empty ones, remain declarations; overlapping fragments and the complete
+stored vendor section/table remain separate views. Coverage is unknown where
+extensions, overlap or undescribed bytes leave interpretation incomplete.
+
+OTA metadata retains the protobuf manifest, signatures and ordered partition/
+operation/extents declarations. Unsigned 64-bit values use exact decimal strings;
+source extents never become carrier offsets. Optional fields preserve omission,
+raw string bytes and unknown wire fields. Operation type labels come from the
+pinned AOSP schema; other numeric codes remain unknown. Stored operation data
+keeps actual available source windows and supported data SHA-256 comparisons.
+A mismatching supported data SHA-256 fails by default; `--integrity-policy
+record-and-continue` retains exact declared/observed hashes and untrusted bytes.
+Missing data yields unknown coverage and unavailable checks, not invented zeros.
+
+OTA extraction writes stored header/manifest/signature/operation blobs. These
+are **not reconstructed partition images**. REPLACE/ZERO application, delta
+source reads, decompression, DISCARD effects and unknown operation semantics are
+not applied. Partition/source hashes and signatures remain unverified; declared
+postinstall paths are never executed. Partition reconstruction remains a separate
+integration task. This profile does not support legacy OTA v1 or historical
+pre-version boot-header conventions that reused the version word as a DT size.
+
+`max_firmware_file_bytes` admits one retained carrier (default 134217728).
+`max_firmware_elements` bounds boot declarations/views and OTA decoded records/
+derived entries (default 65536), including empty declarations. The metadata knob
+(default 33554432) reserves raw hexadecimal/text fields, records and copied
+metadata before expansion. Boot reserves eight bytes per raw header/table-entry
+byte plus per-declaration/fixed output costs. OTA reserves raw fields at eight
+bytes per source byte plus wire-field/record/entry costs. `max_firmware_hash_bytes`
+(default 1073741824) admits OTA operation-data SHA-256 work, reusing identical
+ranges. Other run/tree budgets are refused; boot does not accept a hash-work knob
+because this profile makes no cryptographic checks. Budgets are caller resource
+policies, not hidden format ceilings. Extraction and changed-input checks reuse
+the existing stable descriptor and cleanup owner.
+
+Format references: [AOSP boot headers](https://android.googlesource.com/platform/system/tools/mkbootimg/+/refs/heads/android16-release/include/bootimg/bootimg.h),
+[AOSP AVB footer](https://android.googlesource.com/platform/external/avb/+/refs/heads/main/libavb/avb_footer.h),
+and [AOSP OTA schema](https://android.googlesource.com/platform/system/update_engine/+/refs/heads/main/update_metadata.proto).
+No boot/device execution, flashing, mounting a partition, or publisher
+acceptance is established by these stored-byte observations.

@@ -438,3 +438,14 @@ Read all pages for the same query/Program generation before asserting a bounded
 negative. A limit is a match-page size, not a scan-work budget. Metadata edits
 or a different profile/query can invalidate a cursor without proving target
 bytes changed. CLI `search-bytes` shares these semantics; no target runs.
+
+### Android boot and OTA carriers
+
+Open a selected boot/vendor_boot image or Android OTA v2 payload, then use
+`inspect_artifact` for complete format metadata and `extract_artifact` for stored
+ranges. Boot signatures/header ids/AVB and OTA signatures/source/partition hashes
+remain unverified. OTA children are operation blobs and metadata, not rebuilt
+partition images; no decompression, source reads, operation application or
+postinstall execution occurs. Names stay metadata while indexed paths prevent
+manifest names from controlling extraction paths. Use firmware file/element/
+metadata budgets; OTA also supports its operation-data hash-work budget.

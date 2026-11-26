@@ -6,6 +6,41 @@ export function firmwareIntegrityObservation(
   metadata: FirmwareFormatMetadata | undefined,
   occurrences: ArtifactInventoryResult["occurrences"],
 ): Record<string, JsonValue> | undefined {
+  if (metadata?.kind === "android-boot-image")
+    return {
+      format: "android-boot-image",
+      image_kind: metadata.image_kind,
+      header_version: metadata.header_version,
+      coverage: metadata.coverage,
+      avb_footer_present: metadata.avb_footer_present,
+      header_id_verification: "unverified",
+      signature_authentication: "unverified",
+    };
+  if (metadata?.kind === "android-ota-payload") {
+    let operations = 0,
+      valid = 0,
+      invalid = 0,
+      unavailable = 0;
+    for (const partition of metadata.partitions)
+      for (const operation of partition.operations) {
+        operations++;
+        if (operation.data_sha256.status === "valid") valid++;
+        if (operation.data_sha256.status === "invalid") invalid++;
+        if (operation.data_sha256.status === "unavailable") unavailable++;
+      }
+    return {
+      format: "android-ota-payload",
+      coverage: metadata.coverage,
+      partitions: metadata.partitions.length,
+      operations,
+      operation_data_hashes_matching: valid,
+      operation_data_hashes_mismatched: invalid,
+      operation_data_hashes_unavailable: unavailable,
+      partition_images_reconstructed: false,
+      source_and_partition_hashes_verified: false,
+      signature_authentication: "unverified",
+    };
+  }
   if (metadata?.kind === "esp-flash-image")
     return {
       format: "esp-flash-image",

@@ -1,3 +1,5 @@
+import { hasAndroidBootImageMagic } from "../domain/firmware/androidBootImage.js";
+import { hasAndroidOtaPayloadMagic } from "../domain/firmware/androidOtaImage.js";
 import { espFlashSelectionInputSchema } from "../domain/targetFormatSelection.js";
 import type { EspFlashSelectionInput } from "../domain/targetFormatSelection.js";
 import { validateDosComLength } from "../domain/dosCom.js";
@@ -342,6 +344,8 @@ const detectArtifactFormat = async (
   }
   const firmwarePrefix = magic.subarray(0, observed.bytesRead);
   const fileSize = (await handle.stat()).size;
+  if (hasAndroidBootImageMagic(firmwarePrefix)) return "android-boot-image";
+  if (hasAndroidOtaPayloadMagic(firmwarePrefix)) return "android-ota-payload";
   if (hasUImageMagic(firmwarePrefix)) return "uimage";
   if (recognizeEspImage(firmwarePrefix, fileSize) !== undefined)
     return "esp-image";
@@ -429,6 +433,8 @@ const isArchiveFormat = (
     "dfuse",
     "uimage",
     "fit",
+    "android-boot-image",
+    "android-ota-payload",
     "esp-image",
   ].includes(format);
 

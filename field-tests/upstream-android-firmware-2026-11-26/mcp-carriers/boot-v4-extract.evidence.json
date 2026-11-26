@@ -1,0 +1,116 @@
+{
+  "evidence_id": "ev_30351bb42a6c694475e7d9b936bc7b9634339c6b1dd9d5e74d8120cfa40d462e",
+  "subject": {
+    "name": "boot-v4.bin",
+    "digest": {
+      "sha256": "160318187416a8fc75bb7bf4587e7db3359f78412ec7ca9fcbfaa9ee0ddf0be1"
+    },
+    "format": "android-boot-image",
+    "architecture": null,
+    "local_path": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-android-firmware-fixtures-h7mj356i/boot-v4.bin"
+  },
+  "provider": {
+    "id": "rea-artifact-graph",
+    "name": "REA+ safe artifact graph provider",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "extract_artifact",
+  "parameters": {
+    "integrity_policy": "fail"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "manifest": {
+      "manifest_id": "agm_a90d1b6979ebf9107d17f90d48b6e892ff67b32847288d87aabfaadabc3f2cf4",
+      "root_artifact_id": "art_8044607cbba000ed62d13802a9cd91e92007a5ee329ccbe730eda436e921bacb",
+      "root_sha256": "160318187416a8fc75bb7bf4587e7db3359f78412ec7ca9fcbfaa9ee0ddf0be1",
+      "root_format": "android-boot-image",
+      "graph_sha256": "ecea723ffdf02be3225397865bfb454d4c04b1dfd6148fa536cd8643e82d10ed",
+      "node_count": 6,
+      "occurrence_count": 6,
+      "edge_count": 5
+    },
+    "extraction_manifest": {
+      "extraction_id": "aex_c51f3bd0f3779c37020b98800727e2e72bd7bb02b44bc1d01c73ad8a074cefef",
+      "source_manifest_id": "agm_a90d1b6979ebf9107d17f90d48b6e892ff67b32847288d87aabfaadabc3f2cf4",
+      "selected_occurrence_ids": [
+        "occ_083bf425d56d13412b86f13aa49227b140ad5527d442339dd05490a548142093",
+        "occ_4f918d1010b61c38c85e5f509caa3c8f0fb1cbf712f54998982bf705aa49267f",
+        "occ_d040004e0af1d5225662387dea1a113f3f0444692b03d9e46ea7d31e09c507ac",
+        "occ_e7ef0a08e5ee3de376a0a6b0f39ec8b239884398aae0da9fe3e691f5cd989885",
+        "occ_f833b4a38722e0152cd00e23098ce0bcd1f7ab463f7206e260972026b4beafba"
+      ],
+      "files_sha256": "525cb884fd1919cf1822f89c69ec84c175d00910ea5ababfdbdcc3f66f795a99",
+      "output_root_alias": "$OUTPUT_ROOT"
+    },
+    "output_root": "/tmp/rea-extracted-1a970724-57e2-491d-ad47-a8ecdda71c60",
+    "artifacts": [
+      {
+        "artifact_id": "art_91ced656c3484b9def8d72303b7e0fb2c732f64422b8483726228e46224605c0",
+        "relative_path": "avb_footer",
+        "sha256": "2eb240538ce36927fe16fd4b61119a6da17e7dc868545b708212e650041d3d90",
+        "bytes_written": 64,
+        "created": true
+      },
+      {
+        "artifact_id": "art_fb7b7139a0aacb4e6b8dd52b5d4948f707280440c15da206eba0cd03b8279596",
+        "relative_path": "avb_vbmeta",
+        "sha256": "0bfb6cc3ed574d40c0d491e26faaceb9bc8eaafb4ed157b799c7dd66fb4cdd13",
+        "bytes_written": 32,
+        "created": true
+      },
+      {
+        "artifact_id": "art_59f726f9d54968e2dd77cf59dc080349c89752fe3c10639929cbe4e5300275f2",
+        "relative_path": "kernel",
+        "sha256": "3d80102fb7c39746b13330983840f44acf413cc6e77e87e47bc7ce750f18977e",
+        "bytes_written": 7,
+        "created": true
+      },
+      {
+        "artifact_id": "art_7ed22f92f133fb360e411e80a4110d7ca6872581ef17b00a6c8489031dffa215",
+        "relative_path": "ramdisk",
+        "sha256": "eb6c050a1ab2c3d194064b075f70edd2d6ce65020bf575ecbe2ab93fce89778e",
+        "bytes_written": 10,
+        "created": true
+      },
+      {
+        "artifact_id": "art_04c8ec588885bacf9131537087d8d1f3741d845b13bee08743c315fe480a6c37",
+        "relative_path": "signature",
+        "sha256": "8025ca456a778cd3be0c844ac77c9962acc5622328ad877a829359eb4b16ed85",
+        "bytes_written": 9,
+        "created": true
+      }
+    ],
+    "containment_verified": true,
+    "cleanup": {
+      "attempted": false,
+      "verified": true,
+      "residual_paths": []
+    },
+    "provenance": [],
+    "integrity_contradictions": [],
+    "limitations": [
+      "All regular files in the active artifact were materialized; nested archive contents remain represented by their containing file.",
+      "Stored firmware bytes; load/entry/architecture/compression are file declarations, not observed execution or device identity. Payloads are not decompressed.",
+      "Command line, board name, and vendor ramdisk names are target-derived and untrusted.",
+      "ANDROID! covers boot, init_boot, and recovery images; the header does not record which role the file had.",
+      "Stored component bytes are not decompressed or executed; compression labels observe leading magic only.",
+      "Header id, v4 boot signature and AVB metadata are retained without cryptographic verification or trusted-key/platform acceptance."
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "All regular files in the active artifact were materialized; nested archive contents remain represented by their containing file.",
+    "Stored firmware bytes; load/entry/architecture/compression are file declarations, not observed execution or device identity. Payloads are not decompressed.",
+    "Command line, board name, and vendor ramdisk names are target-derived and untrusted.",
+    "ANDROID! covers boot, init_boot, and recovery images; the header does not record which role the file had.",
+    "Stored component bytes are not decompressed or executed; compression labels observe leading magic only.",
+    "Header id, v4 boot signature and AVB metadata are retained without cryptographic verification or trusted-key/platform acceptance."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

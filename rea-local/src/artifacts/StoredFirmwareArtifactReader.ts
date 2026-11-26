@@ -30,7 +30,13 @@ export const STORED_FIRMWARE_SCOPE =
 export class StoredFirmwareArtifactReader extends DecodedRegionArtifactReader<StoredFirmwareImage> {
   constructor(
     path: string,
-    readonly format: "uimage" | "fit" | "esp-image" | "esp-flash-image",
+    readonly format:
+      | "uimage"
+      | "fit"
+      | "esp-image"
+      | "esp-flash-image"
+      | "android-boot-image"
+      | "android-ota-payload",
     admitted: StableRegularFileDescriptor | undefined,
     private readonly capacity: FirmwareCapacity,
     private readonly integrity: ArtifactIntegrityPolicyName,
@@ -54,11 +60,18 @@ export class StoredFirmwareArtifactReader extends DecodedRegionArtifactReader<St
       ...(["esp-image", "esp-flash-image"].includes(this.format)
         ? {}
         : { maxElements: this.capacity.maxElements }),
-      ...(!["fit", "esp-flash-image"].includes(this.format)
+      ...(![
+        "fit",
+        "esp-flash-image",
+        "android-boot-image",
+        "android-ota-payload",
+      ].includes(this.format)
         ? {}
         : {
             maxMetadataBytes: this.capacity.maxMetadataBytes,
-            maxHashBytes: this.capacity.maxHashBytes,
+            ...(this.format === "android-boot-image"
+              ? {}
+              : { maxHashBytes: this.capacity.maxHashBytes }),
           }),
       ...(this.format !== "fit"
         ? {}

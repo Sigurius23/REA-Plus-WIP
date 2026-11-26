@@ -34,6 +34,8 @@ export const binaryTargetFormatSchema = z.enum({
   dfuse: "dfuse",
   uimage: "uimage",
   fit: "fit",
+  "android-boot-image": "android-boot-image",
+  "android-ota-payload": "android-ota-payload",
   "esp-image": "esp-image",
   "esp-flash-image": "esp-flash-image",
 } satisfies { [Format in BinaryTarget["format"]]: Format });

@@ -414,6 +414,8 @@ class ArtifactClient implements AnalysisClient {
       "dfuse",
       "uimage",
       "fit",
+      "android-boot-image",
+      "android-ota-payload",
       "esp-image",
       "esp-flash-image",
     ].includes(this.target.format)
@@ -433,6 +435,8 @@ class ArtifactClient implements AnalysisClient {
       "dfuse",
       "uimage",
       "fit",
+      "android-boot-image",
+      "android-ota-payload",
       "esp-image",
       "esp-flash-image",
     ].includes(format);
@@ -445,17 +449,28 @@ class ArtifactClient implements AnalysisClient {
         (key === "max_firmware_runs" &&
           !["intel-hex", "srec", "uf2"].includes(format)) ||
         (key === "max_firmware_elements" &&
-          !["dfuse", "uimage", "fit"].includes(format)) ||
+          ![
+            "dfuse",
+            "uimage",
+            "fit",
+            "android-boot-image",
+            "android-ota-payload",
+          ].includes(format)) ||
         ([
           "max_firmware_tree_nodes",
           "max_firmware_tree_properties",
           "max_firmware_tree_depth",
         ].includes(key) &&
           format !== "fit") ||
-        (["max_firmware_metadata_bytes", "max_firmware_hash_bytes"].includes(
-          key,
-        ) &&
-          !["fit", "esp-flash-image"].includes(format)),
+        (key === "max_firmware_metadata_bytes" &&
+          ![
+            "fit",
+            "esp-flash-image",
+            "android-boot-image",
+            "android-ota-payload",
+          ].includes(format)) ||
+        (key === "max_firmware_hash_bytes" &&
+          !["fit", "esp-flash-image", "android-ota-payload"].includes(format)),
     );
     if (invalid.length > 0)
       throw new AnalysisInputError(
@@ -465,7 +480,7 @@ class ArtifactClient implements AnalysisClient {
           path: [key],
           reason: "invalid_value" as const,
           message:
-            "Firmware bytes require a structured firmware carrier; runs require Intel HEX/S-record/UF2; elements require DfuSe/uImage/FIT; tree budgets require FIT; metadata/hash-work budgets require FIT or ESP flash",
+            "Firmware bytes require a structured firmware carrier; runs require Intel HEX/S-record/UF2; elements require DfuSe/uImage/FIT/Android firmware; tree budgets require FIT; metadata budgets require FIT, ESP flash or Android firmware; hash-work budgets require FIT, ESP flash or Android OTA",
         })),
       );
     if (allowed) return resolveFirmwareCapacity(input);

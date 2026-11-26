@@ -1,0 +1,92 @@
+{
+  "evidence_id": "ev_ba1b2bb44ddf13829168f10f43f8e57480a287b4fe9a882776f4858a3f14514c",
+  "subject": {
+    "name": "vendor-v3.bin",
+    "digest": {
+      "sha256": "589f6640a4a5af3eff5fb4f2de6c5449e9194de328f5093e51fed32049a59b66"
+    },
+    "format": "android-boot-image",
+    "architecture": null,
+    "local_path": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-android-firmware-fixtures-h7mj356i/vendor-v3.bin"
+  },
+  "provider": {
+    "id": "rea-artifact-graph",
+    "name": "REA+ safe artifact graph provider",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "extract_artifact",
+  "parameters": {
+    "integrity_policy": "fail"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "manifest": {
+      "manifest_id": "agm_ac1bf994457285d971fda492de7c2bc6dc989f8ee04896122feee6effbd5af40",
+      "root_artifact_id": "art_0dc388bd50f8ca1cf9172165e30bae4d3e729193c3cce139e7c66e712917cc5d",
+      "root_sha256": "589f6640a4a5af3eff5fb4f2de6c5449e9194de328f5093e51fed32049a59b66",
+      "root_format": "android-boot-image",
+      "graph_sha256": "08cc821ec622ea8f930599e4ffc346c8d5d634e0c837f4dbf1b043a477809aca",
+      "node_count": 3,
+      "occurrence_count": 3,
+      "edge_count": 2
+    },
+    "extraction_manifest": {
+      "extraction_id": "aex_38d8aedf60d9fd98e47b6da80509795fd4f70e10541fdfde0e9ce124fd8814ea",
+      "source_manifest_id": "agm_ac1bf994457285d971fda492de7c2bc6dc989f8ee04896122feee6effbd5af40",
+      "selected_occurrence_ids": [
+        "occ_3718a0441a80a514c143c60eb5aa5f957af20965480413901f4bce5059e2f532",
+        "occ_bc06559d67af999ba26749c80ade1b7cf7749217957b2e362f0eb7a8981f20b3"
+      ],
+      "files_sha256": "ca1894b2091023a6bcffe9f6331079e42bace75a6839beca48167a29da3bd261",
+      "output_root_alias": "$OUTPUT_ROOT"
+    },
+    "output_root": "/tmp/rea-extracted-c934707d-f21d-43c2-a337-a7d2be1f3ae1",
+    "artifacts": [
+      {
+        "artifact_id": "art_e63e37a6142ac8ce93f0dde60d37f8503b88323a283c95f67c3e2a91ed1aa2bc",
+        "relative_path": "dtb",
+        "sha256": "8470076f020db8fa1d5d006dd617ecc914584f47d727a497c43a16a883cd31d2",
+        "bytes_written": 7,
+        "created": true
+      },
+      {
+        "artifact_id": "art_8008fff431a3353ad9329fef004e4f3a5310180018070cb5baffb698b93a146c",
+        "relative_path": "vendor_ramdisk",
+        "sha256": "38025759bf2e2047f9367d4c495c6c192595652ae3ab3b963e87d06393db28bb",
+        "bytes_written": 16,
+        "created": true
+      }
+    ],
+    "containment_verified": true,
+    "cleanup": {
+      "attempted": false,
+      "verified": true,
+      "residual_paths": []
+    },
+    "provenance": [],
+    "integrity_contradictions": [],
+    "limitations": [
+      "All regular files in the active artifact were materialized; nested archive contents remain represented by their containing file.",
+      "Stored firmware bytes; load/entry/architecture/compression are file declarations, not observed execution or device identity. Payloads are not decompressed.",
+      "Command line, board name, and vendor ramdisk names are target-derived and untrusted.",
+      "Stored component bytes are not decompressed or executed; compression labels observe leading magic only.",
+      "Header id, v4 boot signature and AVB metadata are retained without cryptographic verification or trusted-key/platform acceptance.",
+      "4089 trailing bytes follow the boot image and were not decoded as an AVB footer."
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "All regular files in the active artifact were materialized; nested archive contents remain represented by their containing file.",
+    "Stored firmware bytes; load/entry/architecture/compression are file declarations, not observed execution or device identity. Payloads are not decompressed.",
+    "Command line, board name, and vendor ramdisk names are target-derived and untrusted.",
+    "Stored component bytes are not decompressed or executed; compression labels observe leading magic only.",
+    "Header id, v4 boot signature and AVB metadata are retained without cryptographic verification or trusted-key/platform acceptance.",
+    "4089 trailing bytes follow the boot image and were not decoded as an AVB footer."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

@@ -43,6 +43,8 @@ export abstract class DecodedRegionArtifactReader<
     | "dfuse"
     | "uimage"
     | "fit"
+    | "android-boot-image"
+    | "android-ota-payload"
     | "esp-image"
     | "esp-flash-image";
   protected abstract decoder(

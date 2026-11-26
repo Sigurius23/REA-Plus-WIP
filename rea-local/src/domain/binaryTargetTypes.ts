@@ -146,6 +146,8 @@ export type BinaryTarget =
           | "dfuse"
           | "uimage"
           | "fit"
+          | "android-boot-image"
+          | "android-ota-payload"
           | "esp-image"
           | "zip"
           | "ipa"

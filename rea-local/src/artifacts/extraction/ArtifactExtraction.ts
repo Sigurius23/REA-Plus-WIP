@@ -152,6 +152,8 @@ const materializeArtifactInventoryInScope = async (
       "dfuse",
       "uimage",
       "fit",
+      "android-boot-image",
+      "android-ota-payload",
       "esp-image",
       "esp-flash-image",
     ].includes(snapshot.manifest.root_format)
@@ -476,6 +478,8 @@ const requireExtractableFormat = async (
     format !== "dfuse" &&
     format !== "uimage" &&
     format !== "fit" &&
+    format !== "android-boot-image" &&
+    format !== "android-ota-payload" &&
     format !== "esp-image" &&
     format !== "esp-flash-image" &&
     !isZipFormat(format)
@@ -506,6 +510,8 @@ const createReader = async (
   if (
     format === "uimage" ||
     format === "fit" ||
+    format === "android-boot-image" ||
+    format === "android-ota-payload" ||
     format === "esp-image" ||
     format === "esp-flash-image"
   )

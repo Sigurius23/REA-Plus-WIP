@@ -1,0 +1,48 @@
+
+> rea-agents@6.4.0 test:local
+> node scripts/run-development-tests.mjs local src/domain/firmware/androidBootImage.test.ts
+
+Source-test feedback; compiled boundaries and real providers need explicit verification.
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ❯ |domain| src/domain/firmware/androidBootImage.test.ts (17 tests | 1 failed) 27ms
+   ✓ retains v0 boot layout/source windows and unverified header declarations 5ms
+   ✓ retains v1 boot layout/source windows and unverified header declarations 1ms
+   ✓ retains v2 boot layout/source windows and unverified header declarations 1ms
+   ✓ retains v3 boot layout/source windows and unverified header declarations 0ms
+   ✓ retains v4 boot layout/source windows and unverified header declarations 0ms
+   ✓ keeps invalid text and command-line boundary bytes without lossy decoding 0ms
+   ✓ retains a declared physical u64 address beyond JS-safe integers without rounding 0ms
+   ✓ retains vendor v3 assembled section and v4 declarations including zero-size ramdisks 1ms
+   ✓ keeps overlapping vendor fragments as separate views and marks coverage unknown 0ms
+   ✓ preserves extension bytes and accepts entry sizes beyond the old hidden cap 1ms
+   ✓ admits counts beyond 4096 but charges every empty declaration before table parsing 12ms
+   ✓ accepts large vendor header declarations under caller metadata policy 0ms
+   ✓ preserves AVB footer and vbmeta stored bytes without asserting verification 0ms
+   ✓ recognizes a footer after present unpadded data instead of requiring imaginary final padding 0ms
+   ✓ retains unexplained aligned trailing ranges as unknown 0ms
+   × refuses truncated, unsupported, overlapping structural extents and metadata limits 3ms
+   ✓ uses exact magic bytes and propagates cancellation 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |domain| src/domain/firmware/androidBootImage.test.ts > refuses truncated, unsupported, overlapping structural extents and metadata limits
+Error: Expected refusal
+ ❯ failed src/domain/firmware/androidBootImage.test.ts:24:24
+     22| const failed = (bytes: Uint8Array, limits = capacity) => {
+     23|   const result = parseAndroidBootImage(bytes, limits);
+     24|   if (result.ok) throw Error("Expected refusal");
+       |                        ^
+     25|   return result.error;
+     26| };
+ ❯ src/domain/firmware/androidBootImage.test.ts:274:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 passed (17)
+   Start at  08:50:56
+   Duration  232ms (transform 32%, import 26%, tests 24%, worker 19%)
+

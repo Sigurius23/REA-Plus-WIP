@@ -1,0 +1,57 @@
+
+> rea-agents@6.4.0 test:local
+> node scripts/run-development-tests.mjs local src/domain/firmware/androidOtaImage.test.ts
+
+Source-test feedback; compiled boundaries and real providers need explicit verification.
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ❯ |domain| src/domain/firmware/androidOtaImage.test.ts (13 tests | 1 failed) 33ms
+   ✓ returns exact stored ranges and SHA facts, never a reconstructed partition hash 9ms
+   ✓ retains ZERO/source-copy/compressed/unknown operations and empty blobs as declarations 0ms
+   ✓ preserves exact uint64 declarations and sparse-hole distinction beyond JS safe integers 0ms
+   ✓ merges repeated singular message fields and preserves scalar last-value semantics 0ms
+   ✓ retains raw unknown fields/groups, invalid UTF-8 names and signed int64 facts 0ms
+   ✓ keeps invalid operation data SHA facts for the shared strict/continue policy 1ms
+   ✓ retains partial operation blobs without hashing a truncated range as the complete data 0ms
+   × parses signature facts without authentication and keeps malformed signature bytes 4ms
+   ✓ admission refuses metadata/record/hash work before expansion 1ms
+   ✓ reuses identical data hashes without reserving the same byte work twice 0ms
+   ✓ rejects unsupported/truncated headers and malformed protobuf without invented defaults 0ms
+   ✓ honors cancellation rather than converting it into format failure 1ms
+   ✓ admits more than the old 4096 partition ceiling when the caller admits its representation 15ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |domain| src/domain/firmware/androidOtaImage.test.ts > parses signature facts without authentication and keeps malformed signature bytes
+AssertionError: expected Buffer[ 10, 128 ] to deeply equal Uint8Array[ 10, 128 ]
+
+- Expected
++ Received
+
+- Uint8Array [
++ {
++   "data": [
+      10,
+      128,
+- ]
++   ],
++   "type": "Buffer",
++ }
+
+ ❯ src/domain/firmware/androidOtaImage.test.ts:202:5
+    200|   expect(
+    201|     malformed.regions.find((r) => r.path === "metadata-signatures.pb")…
+    202|   ).toEqual(Uint8Array.of(0x0a, 0x80));
+       |     ^
+    203| });
+    204| it("admission refuses metadata/record/hash work before expansion", () …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 12 passed (13)
+   Start at  08:51:42
+   Duration  189ms (tests 31%, import 28%, transform 26%, worker 15%)
+

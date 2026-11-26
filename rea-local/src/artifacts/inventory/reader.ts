@@ -31,6 +31,8 @@ export const createReader = (
   switch (format) {
     case "uimage":
     case "fit":
+    case "android-boot-image":
+    case "android-ota-payload":
     case "esp-image":
     case "esp-flash-image":
       return createStoredFirmwareReader(

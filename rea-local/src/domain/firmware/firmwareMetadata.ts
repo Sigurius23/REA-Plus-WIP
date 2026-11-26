@@ -1,4 +1,12 @@
 import {
+  androidBootImageMetadataSchema,
+  androidBootEntryMetadataSchema,
+} from "./androidBootMetadata.js";
+import {
+  androidOtaPayloadMetadataSchema,
+  androidOtaRegionMetadataSchema,
+} from "./androidOtaMetadata.js";
+import {
   espFlashImageMetadataSchema,
   espFlashPartitionMetadataSchema,
   espFlashRegionMetadataSchema,
@@ -24,6 +32,10 @@ import {
   dfuSeElementMetadataSchema,
 } from "./dfuseMetadata.js";
 export const firmwareFormatMetadataSchema = z.discriminatedUnion("kind", [
+  androidBootImageMetadataSchema,
+  androidBootEntryMetadataSchema,
+  androidOtaPayloadMetadataSchema,
+  androidOtaRegionMetadataSchema,
   hexRecordsMetadataSchema,
   hexRecordRegionMetadataSchema,
   uImageMetadataSchema,

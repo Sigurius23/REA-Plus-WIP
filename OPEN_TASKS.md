@@ -4,6 +4,18 @@ Open work on `main` following PR #1 and the field tests.
 
 ## Status
 
+- **Android boot / stored OTA integrated (2026-11-26, item 62 partial):**
+  Boot v0–v4/vendor v3/v4 retain raw headers, components, table/board facts and
+  unverified AVB/signature declarations. OTA v2 retains ordered manifest/operation/
+  extent facts and exact stored blobs, with supported data SHA-256 checks and
+  explicit unknowns. Fixed admission/hidden caps, raw-field preservation, vendor
+  table expansion and literal Unicode BOM loss. 370 tests, 62 qualified MCP calls
+  (13 expected refusals), 40 CLI calls, 89 readbacks, 36 historical snapshots and
+  check/docs/discovery/package gates pass. Twenty-one historical firmware Evidence
+  records and Arc's complete reducer Evidence remain unchanged. Source-independent
+  OTA partition reconstruction is next, then devicetree; full Arc remains open.
+  See [qualification](field-tests/upstream-android-firmware-2026-11-26.md).
+
 - **ESP flash layout / partition / OTA integrated (2026-11-26, item 62 partial):**
   Explicit flash interpretation preserves original origin/table selectors in
   session, snapshot and Evidence identity. Partition declarations, partial stored
@@ -13,8 +25,8 @@ Open work on `main` following PR #1 and the field tests.
   336 tests, 39 qualified MCP calls (six expected refusals), 28 CLI calls, 78
   readbacks, 35 historical snapshots and check/docs/discovery/package gates pass.
   Fourteen historical firmware Evidence records and Arc's complete reducer
-  Evidence remain unchanged. Android boot/OTA and devicetree are next; broader
-  firmware and full Arc remain open. See
+  Evidence remain unchanged. The Android stored-carrier follow-up is recorded
+  above; broader firmware and full Arc remain open. See
   [qualification](field-tests/upstream-esp-flash-2026-11-26.md).
 
 - **uImage / FIT / standalone ESP integrated (2026-11-25, item 62 partial):**
@@ -1962,9 +1974,22 @@ numbered defect was reproduced, and full Arc feature recovery remains open.
         14 historical firmware Evidence matches, unchanged Arc and package gates
         qualify the slice. See
         [qualification](field-tests/upstream-esp-flash-2026-11-26.md).
-      - [ ] Android boot/OTA and devicetree inspection are next. UF2 file-container
-        reconstruction and MD5/tag interpretation remain unsupported with explicit
-        caveats. Recursive expansion and raw CPU/board loading are separate scope.
+      - [x] Android boot/vendor_boot and stored OTA v2 carriers (2026-11-26).
+        Raw headers, components/vendor declarations, AVB/signatures and ordered
+        protobuf operation/extents/hash facts preserve stored-byte provenance and
+        unknowns. Replaced hidden caps, removed table argument-count ceilings and
+        fixed literal Unicode BOM loss. 370 tests, public CLI/MCP, 89 readbacks,
+        21 historical firmware Evidence matches, unchanged Arc and package gates
+        qualify this stored-carrier slice. See
+        [qualification](field-tests/upstream-android-firmware-2026-11-26.md).
+      - [ ] Port source-independent OTA REPLACE/ZERO partition reconstruction
+        with explicit output-byte admission and source/compressed/delta refusal
+        semantics, then devicetree inspection. Stored OTA blobs are currently
+        not reconstructed images; signatures/source/partition hashes remain
+        unverified. Legacy OTA v1 and historical pre-version boot headers remain
+        outside the supported profile. UF2 file-container reconstruction and
+        MD5/tag interpretation remain unsupported with explicit caveats.
+        Recursive expansion and raw CPU/board loading are separate scope.
     - [ ] Qualify raw-image/RISC-V, expanded MIPS and PowerPC/DOL lanes
       separately. Upstream raw ARM remains A32; Cortex-M/Thumb is not established.
     - [ ] Review native diagnostics, APK signing/JNI/R8, standalone packages,

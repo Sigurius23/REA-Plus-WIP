@@ -26,6 +26,33 @@ URLs, use accounts/profiles, submit requests to its services, or collect live
 UI/runtime behavior.** Owned source fixtures were compiled/analyzed and, where explicitly stated,
 replayed inside the bounded emulator; they were never launched as host programs. The earlier HeyClicky UI permission does not authorize Arc execution.
 
+## Latest Android boot / stored OTA integration (2026-11-26)
+
+Read `field-tests/upstream-android-firmware-2026-11-26.md`, its verification,
+frozen runtime/source commitments, independent fixtures, replies and readbacks.
+Item 62 includes boot v0–v4/vendor v3/v4 and stored OTA v2 readers. Boot raw
+headers/components/table/AVB facts and OTA manifest/operations/extents/raw fields
+remain inline. Supported operation-data SHA-256 is checked; signature, source and
+partition hashes remain unverified. OTA children are stored blobs, never claimed
+as reconstructed partition images.
+
+Fixed hidden resource caps, pre-expansion metadata admission, vendor table
+argument-count limits, raw/unsafe-u64 preservation, unpadded AVB handling and
+literal Unicode BOM loss. 370 tests across 31 files, 62 MCP calls (13 expected
+refusals), 40 CLI calls, ten complete current Evidence pairs, 21 historical
+firmware matches, five extraction manifest/file pairs and 89 readbacks pass.
+Static/docs/discovery (997 files), package (208 tools / six prompts), 36 historical
+snapshots and empty owned lineages qualify the slice. Arc's complete reducer
+Evidence remains unchanged at 2,518 instructions / 10,072 bytes under the same
+partial analysis policy.
+
+Continue with **source-independent OTA REPLACE/ZERO partition reconstruction**:
+admit output bytes before expansion and keep source/compressed/delta requirements
+explicit. Then devicetree inspection. Full Arc persistence/features, Client
+unknown revision 3, recursive expansion and raw CPU/board loading remain open.
+Runtime: `rea-local/.cache/upstream-android-firmware-runtime-2026-11-26`; source
+parent `d4a54894c46f3fac904e8fed8468633e833f1f59`. No target execution or services.
+
 ## Latest ESP flash layout / partition / OTA integration (2026-11-26)
 
 Read `field-tests/upstream-esp-flash-2026-11-26.md`, its verification, frozen
@@ -44,7 +71,8 @@ docs, discovery (994 files), package (208 tools / six prompts), 35 historical
 snapshots and empty owned process lineages pass. Arc's complete reducer Evidence
 is unchanged: 2,518 instructions / 10,072 bytes under the same partial profile.
 
-Continue with **Android boot/OTA, then devicetree inspection**. Explicit flash
+The Android stored-carrier follow-up is recorded above. Continue with OTA
+partition reconstruction, then devicetree inspection. Explicit flash
 interpretation is not device execution, cryptographic authentication, decryption
 or proof of a running partition. Full Arc persistence/features, Client unknown
 revision 3, recursive firmware expansion and raw CPU/board loading remain open.
@@ -73,7 +101,8 @@ six prompts). Process lineages verify no owned descendants remain. Arc's whole
 exactly unchanged. No target execution or service/account/profile use occurred.
 
 The ESP flash-dump origin/layout, partition and OTA follow-up is recorded above;
-continue with Android boot/OTA and devicetree. Do not mark the broader ESP/firmware or Arc
+the Android stored-carrier follow-up is recorded above. Continue with OTA
+partition reconstruction and devicetree. Do not mark the broader ESP/firmware or Arc
 investigation complete. UF2 file-container/MD5/tag interpretation, raw CPU/board
 loading, full Arc persistence/features and Client unknown revision 3 remain open.
 Runtime: `rea-local/.cache/upstream-uimage-fit-esp-runtime-2026-11-25`; receipts
@@ -101,8 +130,8 @@ and superseded by the qualified capture with verified empty owned lineage.
 Arc's complete reducer Evidence is exactly unchanged, including the 2,518
 instructions / 10,072 bytes and partial-profile caveats. No target execution.
 
-The standalone uImage/FIT/ESP follow-up is recorded above. Android boot/OTA, devicetree and separately
-qualified CPU lanes remain open. UF2 file containers and MD5/tags remain explicit
+The uImage/FIT/ESP and Android stored-carrier follow-ups are recorded above.
+OTA partition reconstruction, devicetree and separately qualified CPU lanes remain open. UF2 file containers and MD5/tags remain explicit
 unsupported scope. Full Arc, Client unknown revision 3 and broader durable
 persistence remain open. Runtime is frozen in
 `rea-local/.cache/upstream-uf2-dfuse-runtime-2026-11-25`; receipts pin parent
@@ -135,7 +164,7 @@ No target executable, helper, shipped JavaScript, device/account/profile, UI or
 service was executed or used.
 
 The UF2/DfuSe, uImage/FIT/ESP and explicit flash follow-ups are recorded above.
-Android boot/OTA, devicetree and separately qualified raw CPU lanes remain open. Root text-carrier
+OTA partition reconstruction, devicetree and separately qualified raw CPU lanes remain open. Root text-carrier
 support does not add recursive nested decoding or board operation. Full Arc,
 Client unknown revision 3 and durable persistence remain open.
 

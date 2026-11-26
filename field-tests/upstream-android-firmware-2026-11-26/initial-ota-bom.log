@@ -1,0 +1,55 @@
+
+> rea-agents@6.4.0 test:local
+> node scripts/run-development-tests.mjs local src/domain/firmware/androidOtaImage.test.ts
+
+Source-test feedback; compiled boundaries and real providers need explicit verification.
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ❯ |domain| src/domain/firmware/androidOtaImage.test.ts (15 tests | 1 failed) 36ms
+   ✓ returns exact stored ranges and SHA facts, never a reconstructed partition hash 6ms
+   ✓ retains ZERO/source-copy/compressed/unknown operations and empty blobs as declarations 0ms
+   ✓ preserves exact uint64 declarations and sparse-hole distinction beyond JS safe integers 0ms
+   ✓ merges repeated singular message fields and preserves scalar last-value semantics 0ms
+   ✓ retains raw unknown fields/groups, invalid UTF-8 names and signed int64 facts 0ms
+   ✓ keeps invalid operation data SHA facts for the shared strict/continue policy 1ms
+   ✓ retains partial operation blobs without hashing a truncated range as the complete data 0ms
+   ✓ parses signature facts without authentication and keeps malformed signature bytes 0ms
+   ✓ admission refuses metadata/record/hash work before expansion 0ms
+   ✓ reuses identical data hashes without reserving the same byte work twice 0ms
+   ✓ rejects unsupported/truncated headers and malformed protobuf without invented defaults 0ms
+   ✓ honors cancellation rather than converting it into format failure 0ms
+   ✓ admits more than the old 4096 partition ceiling when the caller admits its representation 15ms
+   ✓ iteratively retains deeply nested unknown groups within the admitted metadata budget 6ms
+   × preserves a literal leading Unicode BOM in protobuf strings 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |domain| src/domain/firmware/androidOtaImage.test.ts > preserves a literal leading Unicode BOM in protobuf strings
+AssertionError: expected { value: 'system', …(1) } to deeply equal { value: '\ufeffsystem', …(1) }
+
+- Expected
++ Received
+
+  {
+    "bytes_hex": "efbbbf73797374656d",
+-   "value": "﻿system",
++   "value": "system",
+  }
+
+ ❯ src/domain/firmware/androidOtaImage.test.ts:293:46
+    291|   const name = "\ufeffsystem";
+    292|   const image = parse(androidOtaPayload({ manifest: f(13, f(1, name)),…
+    293|   expect(image.metadata.partitions[0]?.name).toEqual({ value: name, by…
+       |                                              ^
+    294| });
+    295|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 passed (15)
+   Start at  09:03:50
+   Duration  186ms (tests 34%, transform 27%, import 25%, worker 14%)
+

@@ -21,7 +21,7 @@ export const firmwareCapacityInputShape = {
     .positive()
     .exactOptional()
     .describe(
-      "Firmware carrier-byte admission budget; default 134217728. Intel HEX/S-record payload arenas are at most half the carrier, UF2 arenas at most 476/512; merging temporarily copies payload. DfuSe retains one carrier and element views. uImage/FIT/ESP also retain one carrier with payload views. This resource policy applies to supported structured firmware formats.",
+      "Firmware carrier-byte admission budget; default 134217728. Intel HEX/S-record payload arenas are at most half the carrier, UF2 arenas at most 476/512; merging temporarily copies payload. DfuSe retains one carrier and element views. uImage/FIT/ESP/Android boot/OTA also retain one carrier with stored payload views. This resource policy applies to supported structured firmware formats.",
     ),
   max_firmware_runs: z
     .number()
@@ -37,7 +37,7 @@ export const firmwareCapacityInputShape = {
     .positive()
     .exactOptional()
     .describe(
-      "DfuSe declared elements (including empty), uImage payload/component entries, or FIT image entries; default 65536. Bounds element processing and derived graph entries before expansion. Supported for DfuSe, uImage and FIT.",
+      "DfuSe declared elements (including empty), uImage payload/component entries, FIT image entries, or Android boot components / OTA decoded records and derived entries; default 65536. Bounds element processing and derived graph entries before expansion. Supported for DfuSe, uImage, FIT and Android boot/OTA.",
     ),
   max_firmware_tree_nodes: z
     .number()
@@ -69,7 +69,7 @@ export const firmwareCapacityInputShape = {
     .positive()
     .exactOptional()
     .describe(
-      "FIT/ESP-flash metadata admission budget; default 33554432. FIT charges tree/metadata expansion. Flash conservatively reserves locator/table metadata, region metadata and per-image output facts before expansion. Stored payload views do not consume this budget.",
+      "FIT/ESP-flash/Android firmware metadata admission budget; default 33554432. FIT charges tree/metadata expansion. Flash conservatively reserves locator/table metadata, region metadata and per-image output facts before expansion. Android charges raw header/protobuf field and metadata expansion before allocation. Stored payload views do not consume this budget.",
     ),
   max_firmware_hash_bytes: z
     .number()
@@ -77,7 +77,7 @@ export const firmwareCapacityInputShape = {
     .positive()
     .exactOptional()
     .describe(
-      "FIT hash byte-work or ESP-flash conservative scan/image-hash work budget; default 1073741824. Flash charges locator reads, worst-case table MD5 prefixes, merged written/gap scans and three times each newly decoded image range. Identical range computations are reused. Admitted before work; only FIT/ESP-flash.",
+      "FIT hash byte-work or ESP-flash conservative scan/image-hash work budget; default 1073741824. Flash charges locator reads, worst-case table MD5 prefixes, merged written/gap scans and three times each newly decoded image range. Android OTA charges supported operation-data SHA-256 work and reuses identical ranges. Declared source/partition hashes remain unverified. Admitted before work; only FIT/ESP-flash/Android OTA.",
     ),
 };
 export type FirmwareCapacityInput = {

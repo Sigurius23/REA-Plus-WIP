@@ -1,3 +1,5 @@
+import { parseAndroidBootImage } from "../domain/firmware/androidBootImage.js";
+import { parseAndroidOtaImage } from "../domain/firmware/androidOtaImage.js";
 import { parseEspFlashImage } from "../domain/firmware/espFlashImage.js";
 import {
   resolveEspFlashSelection,
@@ -22,7 +24,13 @@ import {
 
 export function createStoredFirmwareReader(
   path: string,
-  format: "uimage" | "fit" | "esp-image" | "esp-flash-image",
+  format:
+    | "uimage"
+    | "fit"
+    | "esp-image"
+    | "esp-flash-image"
+    | "android-boot-image"
+    | "android-ota-payload",
   admitted?: StableRegularFileDescriptor,
   capacity: FirmwareCapacity = resolveFirmwareCapacity(),
   integrity: ArtifactIntegrityPolicyName = "fail",
@@ -36,18 +44,22 @@ export function createStoredFirmwareReader(
     integrity,
     (bytes, signal) => {
       const parsed =
-        format === "esp-flash-image"
-          ? parseEspFlashImage(
-              bytes,
-              resolveEspFlashSelection(selection),
-              capacity,
-              signal,
-            )
-          : format === "uimage"
-            ? parseUImage(bytes, capacity)
-            : format === "fit"
-              ? parseFitImage(bytes, capacity)
-              : parseEspImage(bytes);
+        format === "android-boot-image"
+          ? parseAndroidBootImage(bytes, capacity, signal)
+          : format === "android-ota-payload"
+            ? parseAndroidOtaImage(bytes, capacity, signal)
+            : format === "esp-flash-image"
+              ? parseEspFlashImage(
+                  bytes,
+                  resolveEspFlashSelection(selection),
+                  capacity,
+                  signal,
+                )
+              : format === "uimage"
+                ? parseUImage(bytes, capacity)
+                : format === "fit"
+                  ? parseFitImage(bytes, capacity)
+                  : parseEspImage(bytes);
       if (!parsed.ok) return parsed;
       const image = parsed.value;
       const trust =

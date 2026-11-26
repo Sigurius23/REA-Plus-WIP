@@ -1,3 +1,5 @@
+import { hasAndroidBootImageMagic } from "../../domain/firmware/androidBootImage.js";
+import { hasAndroidOtaPayloadMagic } from "../../domain/firmware/androidOtaImage.js";
 import { hasUImageMagic } from "../../domain/firmware/uimage.js";
 import { recognizeEspImage } from "../../domain/firmware/espImage.js";
 import { hasUf2Block } from "../../domain/firmware/uf2.js";
@@ -240,6 +242,8 @@ export const rootOccurrenceFor = (
       "dfuse",
       "uimage",
       "fit",
+      "android-boot-image",
+      "android-ota-payload",
       "esp-image",
       "esp-flash-image",
     ].includes(metadata.format)
@@ -449,6 +453,8 @@ const artifactRoleForFormat = (
       "dfuse",
       "uimage",
       "fit",
+      "android-boot-image",
+      "android-ota-payload",
       "esp-image",
       "esp-flash-image",
     ].includes(format)
@@ -468,6 +474,8 @@ export const classifyArtifactBytes = (
   prefix: Buffer,
   fileSize = prefix.length,
 ): ArtifactNode["format"] => {
+  if (hasAndroidBootImageMagic(prefix)) return "android-boot-image";
+  if (hasAndroidOtaPayloadMagic(prefix)) return "android-ota-payload";
   if (hasUImageMagic(prefix)) return "uimage";
   if (recognizeEspImage(prefix, fileSize) !== undefined) return "esp-image";
   if (hasUf2Block(prefix)) return "uf2";

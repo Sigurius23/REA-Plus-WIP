@@ -1,3 +1,5 @@
+import { hasAndroidBootImageMagic } from "../../domain/firmware/androidBootImage.js";
+import { hasAndroidOtaPayloadMagic } from "../../domain/firmware/androidOtaImage.js";
 import { recognizeFitCarrier } from "../../domain/firmware/fitRecognition.js";
 import { hasUImageMagic } from "../../domain/firmware/uimage.js";
 import { recognizeEspImage } from "../../domain/firmware/espImage.js";
@@ -139,6 +141,8 @@ export const classifyAndHashRootForInventory = async (
       format === "dfuse" ||
       format === "uimage" ||
       format === "fit" ||
+      format === "android-boot-image" ||
+      format === "android-ota-payload" ||
       format === "esp-image" ||
       format === "esp-flash-image";
     outcome = {
@@ -178,6 +182,8 @@ const classifyRootFormat = async (
   const observed = await handle.read(magic, 0, magic.length, 0);
   const prefix = magic.subarray(0, observed.bytesRead);
   const fileSize = (await handle.stat()).size;
+  if (hasAndroidBootImageMagic(prefix)) return "android-boot-image";
+  if (hasAndroidOtaPayloadMagic(prefix)) return "android-ota-payload";
   if (hasUImageMagic(prefix)) return "uimage";
   if (recognizeEspImage(prefix, fileSize) !== undefined) return "esp-image";
   if (

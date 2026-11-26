@@ -1,0 +1,61 @@
+
+> rea-agents@6.4.0 precheck
+> npm run deps:check
+
+
+> rea-agents@6.4.0 deps:check
+> node scripts/check-dependency-install.mjs
+
+
+> rea-agents@6.4.0 check
+> node scripts/run-exclusive.mjs artifacts turbo run typecheck lint format:check knip metadata:check && npm run verify:architecture-guards
+
+
+   • turbo 2.11.7
+   • Running typecheck, lint, format:check, knip, metadata:check
+   • Remote caching disabled
+
+format:check: cache miss, executing 76d27eda5c86979a
+typecheck: cache miss, executing dbb90b0d9e558f3e
+lint: cache miss, executing d16d886f8e5c57ff
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache hit, replaying logs 7fbf4cec35b162a1
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+knip: cache miss, executing e7e67bc9e9d3cd6a
+format:check: 
+format:check: > rea-agents@6.4.0 format:check
+format:check: > oxfmt --check .
+format:check: 
+lint: 
+lint: > rea-agents@6.4.0 lint
+lint: > oxlint && npm run verify:module-boundaries
+lint: 
+typecheck: 
+typecheck: > rea-agents@6.4.0 typecheck
+typecheck: > tsc --noEmit
+typecheck: 
+knip: 
+knip: > rea-agents@6.4.0 knip
+knip: > knip
+knip: 
+format:check: Checking formatting...
+format:check: 
+format:check: .agents/skills/reverse-engineer-anything/references/native-and-artifacts.md (1ms)
+format:check: 
+format:check: Format issues found in above 1 files. Run without `--check` to fix.
+format:check: Finished in 1223ms on 3319 files using 8 threads.
+format:check:  ERROR  command (/Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local/) /usr/local/bin/npm run format:check exited (1)
+
+ Tasks:    2 successful, 6 total
+Cached:    2 cached, 6 total
+  Time:    2.476s 
+Failed:    //#format:check
+
+ ERROR  run failed: command  exited (1)

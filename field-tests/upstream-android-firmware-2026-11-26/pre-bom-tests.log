@@ -1,0 +1,82 @@
+
+> rea-agents@6.4.0 test:focused
+> node scripts/run-development-tests.mjs focused src/domain/firmware/dfuse.test.ts src/domain/firmware/espFlashImage.test.ts src/domain/firmware/espFlashLayout.test.ts src/domain/firmware/espFlashLocation.test.ts src/domain/firmware/espFlashPlan.test.ts src/domain/firmware/espImage.test.ts src/domain/firmware/espOtaData.test.ts src/domain/firmware/espPartitionTable.test.ts src/domain/firmware/fitImage.test.ts src/domain/firmware/fitRecognition.test.ts src/domain/firmware/hexRecords.test.ts src/domain/firmware/retainedFirmwareDecoder.test.ts src/domain/firmware/uf2.test.ts src/domain/firmware/uimage.test.ts src/domain/targetFormatSelection.test.ts src/domain/analysisSnapshot.test.ts tests/acceptance/espFlashArtifacts.test.ts tests/acceptance/bootFirmwareArtifacts.test.ts tests/acceptance/firmwareCarriers.test.ts tests/acceptance/hexRecordArtifacts.test.ts tests/boundary/filesystem/hexRecordArtifactReader.test.ts tests/boundary/filesystem/firmwareRegionReaders.test.ts tests/boundary/filesystem/dosComTarget.test.ts tests/boundary/providers/native/artifactProvider.directoryInventory.test.ts tests/boundary/providers/native/artifactProvider.extraction.test.ts tests/boundary/providers/native/artifactProvider.extractionFormat.test.ts tests/boundary/mcp/artifactMcp.test.ts tests/boundary/mcp/artifactMcp.inlineInventory.test.ts src/domain/firmware/androidBootImage.test.ts src/domain/firmware/androidOtaImage.test.ts tests/acceptance/androidFirmwareArtifacts.test.ts
+
+Focused tests: src/domain/firmware/dfuse.test.ts, src/domain/firmware/espFlashImage.test.ts, src/domain/firmware/espFlashLayout.test.ts, src/domain/firmware/espFlashLocation.test.ts, src/domain/firmware/espFlashPlan.test.ts, src/domain/firmware/espImage.test.ts, src/domain/firmware/espOtaData.test.ts, src/domain/firmware/espPartitionTable.test.ts, src/domain/firmware/fitImage.test.ts, src/domain/firmware/fitRecognition.test.ts, src/domain/firmware/hexRecords.test.ts, src/domain/firmware/retainedFirmwareDecoder.test.ts, src/domain/firmware/uf2.test.ts, src/domain/firmware/uimage.test.ts, src/domain/targetFormatSelection.test.ts, src/domain/analysisSnapshot.test.ts, tests/acceptance/espFlashArtifacts.test.ts, tests/acceptance/bootFirmwareArtifacts.test.ts, tests/acceptance/firmwareCarriers.test.ts, tests/acceptance/hexRecordArtifacts.test.ts, tests/boundary/filesystem/hexRecordArtifactReader.test.ts, tests/boundary/filesystem/firmwareRegionReaders.test.ts, tests/boundary/filesystem/dosComTarget.test.ts, tests/boundary/providers/native/artifactProvider.directoryInventory.test.ts, tests/boundary/providers/native/artifactProvider.extraction.test.ts, tests/boundary/providers/native/artifactProvider.extractionFormat.test.ts, tests/boundary/mcp/artifactMcp.test.ts, tests/boundary/mcp/artifactMcp.inlineInventory.test.ts, src/domain/firmware/androidBootImage.test.ts, src/domain/firmware/androidOtaImage.test.ts, tests/acceptance/androidFirmwareArtifacts.test.ts
+
+   • turbo 2.11.7
+   • Running artifacts:skills
+   • Remote caching disabled
+
+metadata:check: cache hit, replaying logs caccbae15c469251
+metadata:check: 
+metadata:check: > rea-agents@6.4.0 metadata:check
+metadata:check: > node scripts/generate-package-metadata.mjs --check
+metadata:check: 
+compile: cache miss, executing 96d6ac295617c1c9
+compile: 
+compile: > rea-agents@6.4.0 compile
+compile: > node scripts/clean-build-output.mjs && tsc -p tsconfig.build.json
+compile: 
+artifacts:skills: cache miss, executing 9d3605fa12bd55c2
+artifacts:skills: 
+artifacts:skills: > rea-agents@6.4.0 artifacts:skills
+artifacts:skills: > node scripts/generate-skill-metadata.mjs
+artifacts:skills: 
+
+ Tasks:    3 successful, 3 total
+Cached:    1 cached, 3 total
+  Time:    5.033s 
+
+
+ RUN  v5.0.3 /Users/sigur/Desktop/projekte/reverse engineering/workspace-01a14115-4dfe-72d4-b07e-0d1507a1ebf3/rea-local
+
+ ✓ |acceptance| tests/acceptance/androidFirmwareArtifacts.test.ts (2 tests) 12363ms
+   ✓ preserves Android boot/vendor ranges, AVB declarations and complete CLI/MCP Evidence 7450ms
+   ✓ keeps OTA operation blobs distinct from partitions and enforces integrity, work and identity 4912ms
+ ✓ |acceptance| tests/acceptance/bootFirmwareArtifacts.test.ts (2 tests) 13688ms
+   ✓ inspects and extracts uImage/FIT/ESP through compiled CLI and real stdio MCP with exact Evidence parity 9317ms
+   ✓ keeps strict/continued integrity, unknown coverage, resource knobs and malformed/unsupported boundaries truthful 4370ms
+ ✓ |acceptance| tests/acceptance/espFlashArtifacts.test.ts (2 tests) 10848ms
+   ✓ preserves explicit flash origin, layout/OTA facts, stored extraction and complete CLI/MCP Evidence 6852ms
+   ✓ retains leading partial data, strict/continued integrity, capacity diagnostics and changed-input refusal 3995ms
+ ✓ |acceptance| tests/acceptance/firmwareCarriers.test.ts (7 tests) 8777ms
+   ✓ retains uf2 metadata, advertised schemas, whole CLI/MCP Evidence parity and extracted bytes 4431ms
+   ✓ retains dfuse metadata, advertised schemas, whole CLI/MCP Evidence parity and extracted bytes 3815ms
+ ✓ |boundary| tests/boundary/filesystem/dosComTarget.test.ts (6 tests) 109ms
+ ✓ |boundary| tests/boundary/providers/native/artifactProvider.extraction.test.ts (2 tests) 103ms
+ ✓ |boundary| tests/boundary/providers/native/artifactProvider.directoryInventory.test.ts (1 test) 43ms
+ ✓ |boundary| tests/boundary/filesystem/hexRecordArtifactReader.test.ts (10 tests) 29ms
+ ✓ |boundary| tests/boundary/providers/native/artifactProvider.extractionFormat.test.ts (1 test) 9ms
+ ✓ |boundary| tests/boundary/filesystem/firmwareRegionReaders.test.ts (2 tests) 11ms
+ ✓ |domain| src/domain/firmware/espFlashImage.test.ts (6 tests) 365ms
+   ✓ retains layout/OTA conditional facts and exact stored source intervals 355ms
+ ✓ |domain| src/domain/analysisSnapshot.test.ts (6 tests) 35ms
+ ✓ |domain| src/domain/firmware/dfuse.test.ts (20 tests) 31ms
+ ✓ |domain| src/domain/firmware/androidOtaImage.test.ts (14 tests) 25ms
+ ✓ |domain| src/domain/firmware/espImage.test.ts (70 tests) 20ms
+ ✓ |domain| src/domain/firmware/androidBootImage.test.ts (17 tests) 16ms
+ ✓ |domain| src/domain/firmware/fitImage.test.ts (19 tests) 15ms
+ ✓ |domain| src/domain/firmware/uimage.test.ts (22 tests) 8ms
+ ✓ |domain| src/domain/firmware/hexRecords.test.ts (44 tests) 7ms
+ ✓ |domain| src/domain/firmware/uf2.test.ts (18 tests) 6ms
+ ✓ |domain| src/domain/firmware/espFlashPlan.test.ts (17 tests) 5ms
+ ✓ |domain| src/domain/firmware/espFlashLocation.test.ts (19 tests) 4ms
+ ✓ |domain| src/domain/firmware/espOtaData.test.ts (14 tests) 2ms
+ ✓ |domain| src/domain/firmware/espPartitionTable.test.ts (14 tests) 2ms
+ ✓ |domain| src/domain/firmware/fitRecognition.test.ts (5 tests) 2ms
+ ✓ |domain| src/domain/targetFormatSelection.test.ts (2 tests) 1ms
+ ✓ |domain| src/domain/firmware/espFlashLayout.test.ts (5 tests) 1ms
+ ✓ |domain| src/domain/firmware/retainedFirmwareDecoder.test.ts (2 tests) 0ms
+ ✓ |acceptance| tests/acceptance/hexRecordArtifacts.test.ts (10 tests) 6367ms
+   ✓ inspects and extracts intel-hex sparse regions with full source/metadata and advertised schemas 3258ms
+   ✓ inspects and extracts srec sparse regions with full source/metadata and advertised schemas 2974ms
+ ✓ |mcp-boundary| tests/boundary/mcp/artifactMcp.inlineInventory.test.ts (2 tests) 542ms
+   ✓ returns all 520 ZIP file occurrences in one inspect_artifact MCP result 484ms
+ ✓ |mcp-boundary| tests/boundary/mcp/artifactMcp.test.ts (8 tests) 200ms
+
+ Test Files  31 passed (31)
+      Tests  369 passed (369)
+   Start at  09:02:50
+   Duration  32.14s (tests 86%, import 8%, transform 6%)
+

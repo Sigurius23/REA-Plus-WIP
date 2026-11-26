@@ -1,0 +1,94 @@
+{
+  "evidence_id": "ev_be828ac29dbed8386b4cc77e79d45c45ac1bdb24b48574ac4b6be658d775a2c0",
+  "subject": {
+    "name": "boot-v0.bin",
+    "digest": {
+      "sha256": "ce8577b4ff5a8e30f19b86a795598a3e0ac680552de3ae2ca70f8b8339646b1f"
+    },
+    "format": "android-boot-image",
+    "architecture": null,
+    "local_path": "/private/var/folders/6w/_phhjy192k51xm2k7dl_vzvr0000gn/T/rea-android-firmware-fixtures-h7mj356i/boot-v0.bin"
+  },
+  "provider": {
+    "id": "rea-artifact-graph",
+    "name": "REA+ safe artifact graph provider",
+    "version": "1"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.analysis",
+  "operation": "extract_artifact",
+  "parameters": {
+    "integrity_policy": "fail"
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "manifest": {
+      "manifest_id": "agm_b31a5bc7afd099cca74cffc83a349e73ed6d61b4ec409368b22720c06c835f41",
+      "root_artifact_id": "art_df90236500390995a3677ad706b439cb11e19b763973184110920ace2567343b",
+      "root_sha256": "ce8577b4ff5a8e30f19b86a795598a3e0ac680552de3ae2ca70f8b8339646b1f",
+      "root_format": "android-boot-image",
+      "graph_sha256": "9c6ed02b2b7606057d16ffe2a18a9562cbe7cc2b807b6dba79f8b9ae2b32f809",
+      "node_count": 3,
+      "occurrence_count": 3,
+      "edge_count": 2
+    },
+    "extraction_manifest": {
+      "extraction_id": "aex_a8407d386b57d985f59d6d85d4c5cab6a911d0fe255b18df2f820ef09bfb485e",
+      "source_manifest_id": "agm_b31a5bc7afd099cca74cffc83a349e73ed6d61b4ec409368b22720c06c835f41",
+      "selected_occurrence_ids": [
+        "occ_01f4e097ef28a513994805870fdd23a1fec8290dd8975024b96ae5faa5a273be",
+        "occ_c76d373e4d50bed1d551b3d526fc8c8af9270a8f86952d41b2ed0fe642856e1b"
+      ],
+      "files_sha256": "f54eefb16f3c3bdca9c74f5eb6d7ee015efa4f934dde2efbcbaabb8f1e608af1",
+      "output_root_alias": "$OUTPUT_ROOT"
+    },
+    "output_root": "/tmp/rea-extracted-b2c0f5fa-8dbd-4a9b-bb15-ba39e0a88533",
+    "artifacts": [
+      {
+        "artifact_id": "art_59f726f9d54968e2dd77cf59dc080349c89752fe3c10639929cbe4e5300275f2",
+        "relative_path": "kernel",
+        "sha256": "3d80102fb7c39746b13330983840f44acf413cc6e77e87e47bc7ce750f18977e",
+        "bytes_written": 7,
+        "created": true
+      },
+      {
+        "artifact_id": "art_7ed22f92f133fb360e411e80a4110d7ca6872581ef17b00a6c8489031dffa215",
+        "relative_path": "ramdisk",
+        "sha256": "eb6c050a1ab2c3d194064b075f70edd2d6ce65020bf575ecbe2ab93fce89778e",
+        "bytes_written": 10,
+        "created": true
+      }
+    ],
+    "containment_verified": true,
+    "cleanup": {
+      "attempted": false,
+      "verified": true,
+      "residual_paths": []
+    },
+    "provenance": [],
+    "integrity_contradictions": [],
+    "limitations": [
+      "All regular files in the active artifact were materialized; nested archive contents remain represented by their containing file.",
+      "Stored firmware bytes; load/entry/architecture/compression are file declarations, not observed execution or device identity. Payloads are not decompressed.",
+      "Command line, board name, and vendor ramdisk names are target-derived and untrusted.",
+      "ANDROID! covers boot, init_boot, and recovery images; the header does not record which role the file had.",
+      "Stored component bytes are not decompressed or executed; compression labels observe leading magic only.",
+      "Header id, v4 boot signature and AVB metadata are retained without cryptographic verification or trusted-key/platform acceptance.",
+      "4086 trailing bytes follow the boot image and were not decoded as an AVB footer."
+    ]
+  },
+  "confidence": "observed",
+  "authority": "shipped-artifact",
+  "environment": null,
+  "limitations": [
+    "All regular files in the active artifact were materialized; nested archive contents remain represented by their containing file.",
+    "Stored firmware bytes; load/entry/architecture/compression are file declarations, not observed execution or device identity. Payloads are not decompressed.",
+    "Command line, board name, and vendor ramdisk names are target-derived and untrusted.",
+    "ANDROID! covers boot, init_boot, and recovery images; the header does not record which role the file had.",
+    "Stored component bytes are not decompressed or executed; compression labels observe leading magic only.",
+    "Header id, v4 boot signature and AVB metadata are retained without cryptographic verification or trusted-key/platform acceptance.",
+    "4086 trailing bytes follow the boot image and were not decoded as an AVB footer."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

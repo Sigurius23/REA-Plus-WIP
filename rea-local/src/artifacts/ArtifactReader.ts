@@ -84,6 +84,8 @@ export interface ArtifactReader {
     | "dfuse"
     | "uimage"
     | "fit"
+    | "android-boot-image"
+    | "android-ota-payload"
     | "esp-image"
     | "esp-flash-image";
   formatMetadata?(): FirmwareFormatMetadata | undefined;
